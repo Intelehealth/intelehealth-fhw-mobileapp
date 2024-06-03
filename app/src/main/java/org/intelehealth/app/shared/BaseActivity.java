@@ -5,8 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.github.ajalt.timberkt.Timber;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
@@ -16,10 +19,19 @@ import org.intelehealth.app.ui.language.activity.LanguageActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.notification.AppNotification;
+import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
+import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
+import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
+import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,6 +46,21 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SocketManager.getInstance().setNotificationListener(this);
+        loadFeatureActiveStatus();
+    }
+
+    /**
+     * This method will load the active/deactivate status of overall application feature
+     * like appointment = false, vital = false means as per this status we need to hide/show
+     * the specific feature from the app
+     */
+    private void loadFeatureActiveStatus() {
+        FeatureActiveStatusRepository repository = new FeatureActiveStatusRepository(ConfigDatabase.getInstance(this).featureActiveStatusDao());
+        FeatureActiveStatusViewModelFactory factory = new FeatureActiveStatusViewModelFactory(repository);
+        FeatureActiveStatusViewModel featureActiveStatusViewModel = new ViewModelProvider(this, factory).get(FeatureActiveStatusViewModel.class);
+        featureActiveStatusViewModel.fetchFeaturesActiveStatus().observe(this, featureActiveStatus -> {
+            if (featureActiveStatus != null) onFeatureActiveStatusLoaded(featureActiveStatus);
+        });
     }
 
     @Override
@@ -73,5 +100,9 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         } catch (DAOException e) {
             Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
         }
+    }
+
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
     }
 }

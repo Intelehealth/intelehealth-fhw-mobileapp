@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +52,7 @@ public class VisitReasonSummaryFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private boolean mIsEditMode = false;
-    private TextView mAssociateSymptomsLabelTextView,mAssociateSymptChangeTextView;
+    private TextView mAssociateSymptomsLabelTextView, mAssociateSymptChangeTextView;
 
     public VisitReasonSummaryFragment() {
         // Required empty public constructor
@@ -82,6 +84,16 @@ public class VisitReasonSummaryFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 2 : 1;
+        int total = status.getVitalSection() ? 4 : 3;
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(getString(R.string._visit_reason_summary, index, total));
     }
 
     @Override
@@ -257,14 +269,14 @@ public class VisitReasonSummaryFragment extends Fragment {
 
             mAssociateSymptomsLinearLayout.removeAllViews();
 
-            if(!associatedSymptomsString.trim().isEmpty()) {
+            if (!associatedSymptomsString.trim().isEmpty()) {
                 String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
                 Log.v(TAG, associatedSymptomsString);
                 String[] spt1 = associatedSymptomsString.trim().split("•");
                 Log.e("node", associatedSymptomsString);
                 Log.e("node", String.valueOf(spt1.length));
-                Log.e("node", "sections.length - "+String.valueOf(sections.length));
+                Log.e("node", "sections.length - " + String.valueOf(sections.length));
                 for (int i = 0; i < sections.length; i++) {
                     String patientReports = sections[i]; // Patient reports & // Patient denies
                     if (patientReports != null && patientReports.length() >= 2) {
@@ -286,7 +298,7 @@ public class VisitReasonSummaryFragment extends Fragment {
                 }
                 mAssociateSymptomsLabelTextView.setVisibility(View.VISIBLE);
                 mAssociateSymptChangeTextView.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 mAssociateSymptomsLabelTextView.setVisibility(View.INVISIBLE);
                 mAssociateSymptChangeTextView.setVisibility(View.INVISIBLE);
             }

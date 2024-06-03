@@ -84,6 +84,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -164,6 +165,7 @@ import org.intelehealth.config.presenter.language.factory.SpecializationViewMode
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -209,7 +211,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
-    private LinearLayout btn_bottom_printshare, btn_bottom_vs;
+    private LinearLayout btn_bottom_printshare;
+    private ConstraintLayout btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -423,6 +426,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             startActivity(in);
         }*/
 
+    }
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.relative_speciality_block).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -2524,7 +2538,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("actionTag", "new_schedule");
             in.putExtra("openMrsId", patient.getOpenmrs_id());
             in.putExtra("speciality", speciality_selected);
-            in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+            in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
             mStartForScheduleAppointment.launch(in);
         });
     }
@@ -2636,7 +2650,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("app_start_day", appointmentInfo.getSlotDay());
                 in.putExtra("rescheduleReason", mEngReason);
                 in.putExtra("speciality", speciality_selected);
-                in.putExtra("requestCode",AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+                in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
                 mStartForScheduleAppointment.launch(in);
             }
         });
@@ -2669,13 +2683,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     });
 
     void navigateToMyAppointment() {
-        if(!isFinishing() && !isDestroyed()){
+        if (!isFinishing() && !isDestroyed()) {
             Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.appointment_booked_successfully), Toast.LENGTH_LONG).show();
             Intent in = new Intent(VisitSummaryActivity_New.this, MyAppointmentActivityNew.class);
             startActivity(in);
             finish();
-        }else {
-            Log.d("CCCCCV","Destry"+VisitSummaryActivity_New.this);
+        } else {
+            Log.d("CCCCCV", "Destry" + VisitSummaryActivity_New.this);
         }
     }
 

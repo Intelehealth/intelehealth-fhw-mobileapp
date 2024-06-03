@@ -1466,8 +1466,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="respiratory_rate_breaths_min">শ্বাস-প্ৰশ্বাসৰ হাৰ (শ্বাস/মিনিট)</string>
     <string name="temperature_f_new">তাপমাত্ৰা (F)</string>
     <string name="confirm">কনফাৰ্ম</string>
-    <string name="ui2_physical_exam_summay_title">৩/৪.শাৰীৰিক পৰীক্ষাৰ সাৰাংশ</string>
-    <string name="ui2_medical_hist_title_text">৪/৪.চিকিৎসা ইতিহাসৰ সাৰাংশ</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d শাৰীৰিক পৰীক্ষাৰ সাৰাংশ</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d চিকিৎসা ইতিহাসৰ সাৰাংশ</string>
     <string name="sync_strated">"চিংক আৰম্ভ হ\'ল!"</string>
     <string name="priority_hint">যদি ভিজিট জৰুৰীকালীন হয় তেন্তে ইয়াক ইনেবল কৰক।</string>
     <string name="mobile_no_not_provided">মোবাইল নম্বৰ দিয়া হোৱা নাই।</string>
@@ -1672,7 +1672,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="some_issue_with_mindmap">মাইণ্ডমেপৰ সৈতে কিছুমান ইছ্যু।</string>
     <string name="of">of</string>
     <string name="questions">প্ৰশ্ন</string>
-    <string name="visit_reason">২/৪ ভিজিটৰ কাৰণ</string>
+    <string name="visit_reason">%1$d/%2$d ভিজিটৰ কাৰণ</string>
     <string name="please_select_range">অনুগ্ৰহ কৰি ৰেঞ্জটো নিৰ্বাচন কৰক!</string>
     <string name="level">স্তৰ %1$d</string>
     <string name="drag_to_select">অনুগ্ৰহ কৰি নিৰ্বাচন কৰিবলৈ টানি নিয়ক!</string>
@@ -1690,8 +1690,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="_appointment">এপইণ্টমেণ্ট!</string>
     <string name="today_at">আজি বজাত</string>
     <string name="has_an_appointment_with">ৰ সৈতে এপইণ্টমেণ্ট আছে</string>
-    <string name="_phy_examination">৩/৪ শাৰীৰিক পৰীক্ষা</string>
-    <string name="_medical_family_history">৪/৪। চিকিৎসাৰ ইতিহাস: পাৰিবাৰিক ইতিহাস</string>
+    <string name="_phy_examination">%1$d/%2$d শাৰীৰিক পৰীক্ষা</string>
+    <string name="_medical_family_history">%1$d/%2$d চিকিৎসাৰ ইতিহাস: পাৰিবাৰিক ইতিহাস</string>
     <string name="add_image_by">দ্বাৰা ছবি যোগ কৰক</string>
     <string name="please_take">অনুগ্ৰহ কৰি লওক</string>
     <string name="s_follow_up_visit"> ফ\'ল\'-আপ ভিজিট।</string>
@@ -1770,7 +1770,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="not_searched_anything_yet">এতিয়াও একো সন্ধান কৰা হোৱা নাই!</string>
     <string name="most_common_reasons">আটাইতকৈ সাধাৰণ কাৰণ</string>
     <string name="all_reasons">সকলো কাৰণ</string>
-    <string name="_visit_reason_summary">২/৪। কাৰণ সাৰাংশ চাওক</string>
+    <string name="_visit_reason_summary">%1$d/%2$d কাৰণ সাৰাংশ চাওক</string>
     <string name="change">সলনি কৰা</string>
     <string name="_vitals_summary">1/4.ভাইটেল্ছ সাৰাংশ</string>
     <string name="mo">সোম</string>
@@ -1830,8 +1830,8 @@ The disclosure of personal information to third parties shall be only for identi
     //IDA-913
     <string name="profile_update_requires_internet">প্ৰফাইল আপডেট কৰিবলৈ এটা ভাল ইণ্টাৰনেট সংযোগৰ প্ৰয়োজন। আপুনি ইণ্টাৰনেটৰ সৈতে সংযুক্ত নহয়, অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
     <string name="describe_lbl">বৰ্ণনা</string>
-    <string name="patinet_history">৪/৪। চিকিৎসাৰ ইতিহাস: ৰোগীৰ ইতিহাস</string>
-    <string name="_1_4_vitals">১/৪ ভাইটেল্ছ</string>
+    <string name="patinet_history">%1$d/%2$d চিকিৎসাৰ ইতিহাস: ৰোগীৰ ইতিহাস</string>
+    <string name="_1_4_vitals">%1$d/%2$d ভাইটেল্ছ</string>
     <string name="close_all">সকলো বন্ধ কৰক</string>
     <string name="open_all">সকলো খোলক</string>
     <string name="go_to_website">ৱেবচাইটলৈ যাওক</string>

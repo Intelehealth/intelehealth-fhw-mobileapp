@@ -19,7 +19,6 @@
             android:layout_marginStart="@dimen/toolbar_margin_left"
             android:layout_marginTop="@dimen/fu_card_margin_sides"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
-            android:layout_marginBottom="@dimen/margin_20dp"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
             app:cardElevation="@dimen/margin_5">
@@ -106,8 +105,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
-                                app:tint="?attr/colorPrimary"
-                                android:src="@drawable/edit" />
+                                android:src="@drawable/edit"
+                                app:tint="?attr/colorPrimary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -453,8 +452,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/vitalsCard"
             android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
-            android:layout_marginBottom="@dimen/margin_20dp"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
             app:cardElevation="@dimen/margin_5">
@@ -542,8 +541,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
-                                app:tint="?attr/colorPrimary"
-                                android:src="@drawable/edit" />
+                                android:src="@drawable/edit"
+                                app:tint="?attr/colorPrimary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -807,8 +806,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/visitReasonCard"
             android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
-            android:layout_marginBottom="@dimen/margin_20dp"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
             app:cardElevation="@dimen/margin_5">
@@ -893,8 +892,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
-                                app:tint="?attr/colorPrimary"
-                                android:src="@drawable/edit" />
+                                android:src="@drawable/edit"
+                                app:tint="?attr/colorPrimary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -971,8 +970,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/physExamCard"
             android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
-            android:layout_marginBottom="@dimen/margin_10"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
             app:cardElevation="@dimen/margin_5">
@@ -1061,8 +1060,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
-                                app:tint="?attr/colorPrimary"
-                                android:src="@drawable/edit" />
+                                android:src="@drawable/edit"
+                                app:tint="?attr/colorPrimary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -1132,8 +1131,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:layout_margin="5dp"
-                                app:tint="?attr/colorPrimary"
-                                android:src="@drawable/edit" />
+                                android:src="@drawable/edit"
+                                app:tint="?attr/colorPrimary" />
 
                             <TextView
                                 android:layout_width="wrap_content"

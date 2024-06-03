@@ -842,8 +842,8 @@
     <string name="respiratory_rate_breaths_min">श्वसन दर (सांस/मिनट)</string>
     <string name="temperature_f_new">तापमान (F)</string>
     <string name="confirm">पुष्टि करें</string>
-    <string name="ui2_physical_exam_summay_title">3/4. शारीरिक जांच विवरण</string>
-    <string name="ui2_medical_hist_title_text">4/4. मेडिकल हिस्ट्री विवरण</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d शारीरिक जांच विवरण</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d मेडिकल हिस्ट्री विवरण</string>
     <string name="sync_strated">“सिंक शुरू हुआ! “</string>
     <string name="priority_hint">केस विज़िट में सक्रिय करें कि यह एक एमर्जेंसी है।</string>
     <string name="mobile_no_not_provided">मोबाइल नंबर नहीं दिया गया है।</string>
@@ -891,8 +891,8 @@
     <string name="error_field_valid_village_required">कृपया गांव का मान्य नाम दर्ज करें (न्यूनतम 3 वर्ण)</string>
     <string name="app_sync_dialog_title">ऐप सिंक किया जा रहा है</string>
     <string name="describe_lbl">वर्णन करें</string>
-    <string name="patinet_history">4/4. मेडिकल हिस्ट्री : रोगी हिस्ट्री</string>
-    <string name="_1_4_vitals">"1/4. वायटल्स "</string>
+    <string name="patinet_history">%1$d/%2$d मेडिकल हिस्ट्री : रोगी हिस्ट्री</string>
+    <string name="_1_4_vitals">%1$d/%2$d वायटल्स</string>
     <string name="intro_title_1">हम कौन हैं?</string>
     <string name="and">”, और “</string>
     <string name="your_time_spent_today">आपके द्वारा आज बिताया गया समय</string>
@@ -1280,7 +1280,7 @@
     <string name="some_issue_with_mindmap">माइंडमैप में कुछ समस्या है।</string>
     <string name="of">"का "</string>
     <string name="questions">प्रश्न</string>
-    <string name="visit_reason">2/4 विज़िट कारण</string>
+    <string name="visit_reason">%1$d/%2$d विज़िट कारण</string>
     <string name="please_select_range">कृपया सीमा चुनें!</string>
     <string name="level">लेवल %1$d</string>
     <string name="drag_to_select">सेलेक्ट करने के लिए कृपया ड्रैग करें!</string>
@@ -1297,8 +1297,8 @@
     <string name="results_for">के लिए परिणाम</string>
     <string name="_appointment">अपॉइंटमेंट!</string>
     <string name="has_an_appointment_with">के साथ पॉइंटमेंट है</string>
-    <string name="_phy_examination">3/4 शारीरिक जांच</string>
-    <string name="_medical_family_history">4/4. मेडिकल हिस्ट्री : पारिवारिक हिस्ट्री</string>
+    <string name="_phy_examination">%1$d/%2$d शारीरिक जांच</string>
+    <string name="_medical_family_history">%1$d/%2$d मेडिकल हिस्ट्री : पारिवारिक हिस्ट्री</string>
     <string name="add_image_by">के अनुसार इमेज शामिल करें</string>
     <string name="please_take">"कृपया इसे ले "</string>
     <string name="s_follow_up_visit">का फॉलो-अप विज़िट लें।</string>
@@ -1371,7 +1371,7 @@
     <string name="not_searched_anything_yet">अभी तक कुछ सर्च नहीं हुआ!</string>
     <string name="most_common_reasons">सर्वाधिक सामान्य कारण</string>
     <string name="all_reasons">सभी कारण</string>
-    <string name="_visit_reason_summary">2/4. विज़िट के कारण का संक्षिप्त विवरण</string>
+    <string name="_visit_reason_summary">%1$d/%2$d विज़िट के कारण का संक्षिप्त विवरण</string>
     <string name="change">बदलें</string>
     <string name="_vitals_summary">1/4. वायटल्स का संक्षिप्त विवरण</string>
     <string name="mo">सोम</string>
