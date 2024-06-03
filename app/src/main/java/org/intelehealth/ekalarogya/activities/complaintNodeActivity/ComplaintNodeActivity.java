@@ -247,20 +247,20 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
                 for (int i = 0; i < complaints.size(); i++) {
                     if (mgender.equalsIgnoreCase("M") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                            complaints.get(i).getGender()!=null && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                         complaints.get(i).remove(complaints, i);
                         i--;
                     } else if (mgender.equalsIgnoreCase("F") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                            complaints.get(i).getGender()!=null && complaints.get(i).getGender().equalsIgnoreCase("1")) {
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
                 }
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+                    if (complaints.get(i).getMin_age()!=null && !complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                            complaints.get(i).getMax_age()!=null && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
                             i--;

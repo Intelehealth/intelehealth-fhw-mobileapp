@@ -10,6 +10,9 @@ public class InputFilterMinMax implements InputFilter {
     public InputFilterMinMax(int min, int max) {
         this.min = min;
         this.max = max;
+    }public InputFilterMinMax(double  min, double max) {
+        this.min = (int) min;
+        this.max = (int) max;
     }
 
     public InputFilterMinMax(String min, String max) {

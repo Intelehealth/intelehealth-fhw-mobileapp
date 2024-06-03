@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/std_16dp">
+
+
+    <EditText
+        android:id="@+id/etv_1st_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/std_8dp"
+        android:background="@drawable/edit_box_round_corner_gray_light"
+        android:fontFamily="@font/lato_regular"
+        android:hint="Enter number"
+        android:inputType="number"
+        android:minHeight="42dip"
+        android:padding="@dimen/std_8dp"
+        android:textColor="@color/gray_6"
+        android:textColorHint="@color/medium_gray"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etv_2nd_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/std_8dp"
+        android:background="@drawable/edit_box_round_corner_gray_light"
+        android:fontFamily="@font/lato_regular"
+        android:hint="Enter number"
+        android:inputType="number"
+        android:minHeight="42dip"
+        android:padding="@dimen/std_8dp"
+        android:textColor="@color/gray_6"
+        android:textColorHint="@color/medium_gray"
+        android:textSize="14sp" />
+
+</LinearLayout>

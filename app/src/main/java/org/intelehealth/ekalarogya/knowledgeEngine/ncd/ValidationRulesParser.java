@@ -21,6 +21,8 @@ public class ValidationRulesParser {
 
         } else if (type.equals(ValidationConstants.TYPE_TEXT_DATE)) {
 
+        }else if (type.equals(ValidationConstants.RECURRING_NUMBER_SET)) {
+            return parseDataNameTypeByUnderscore(data);
         }
         return null;
     }

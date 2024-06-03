@@ -33,6 +33,24 @@ public class DataSourceManager {
         return sourceDataInfoList;
     }
 
+    public static List<SourceData> getValuesForDataSourceFromCurrentNodeRecurringPairDataList(List<SourceData> sourceDataInfoList, Node selectedNode) {
+        // get the last value "120/8", "125/89"
+        // here two data are saved by separated by "/"
+        String lastVal = selectedNode.getRecurringCapturedDataList().get(selectedNode.getRecurringCapturedDataList().size() - 1);
+        if (lastVal != null && lastVal.contains("/")) {
+            String[] temp = lastVal.split("/");
+            if (temp.length >= 2)
+                for (int i = 0; i < sourceDataInfoList.size(); i++) {
+                    //SourceData sourceData = sourceDataInfoList.get(i);
+                    sourceDataInfoList.get(i).setValue(temp[i]);
+
+
+                }
+        }
+
+        return sourceDataInfoList;
+    }
+
     public static List<SourceData> getValuesForDataSourceFromTargetNode(List<SourceData> sourceDataInfoList, Node rootNode, String nodeText) {
         List<Node> questionsNode = rootNode.getOptionsList();
         for (int i = 0; i < questionsNode.size(); i++) {
@@ -60,15 +78,15 @@ public class DataSourceManager {
                 if (tempNode.isTerminal()) {
                     sourceDataInfo.setValue(tempNode.getLanguage());
                 } else {
-                    if(tempNode.getOptionsList().size()==1){
+                    if (tempNode.getOptionsList().size() == 1) {
                         // expected here values are in language key
                         sourceDataInfo.setValue(tempNode.getOptionsList().get(0).getLanguage());
 
-                    }else{
+                    } else {
                         // expected the selected option is the final value
                         // expected only single choice
                         for (int j = 0; j < tempNode.getOptionsList().size(); j++) {
-                            if(tempNode.getOptionsList().get(j).isSelected()){
+                            if (tempNode.getOptionsList().get(j).isSelected()) {
                                 sourceDataInfo.setValue(tempNode.getOptionsList().get(j).getLanguage());
                             }
                         }

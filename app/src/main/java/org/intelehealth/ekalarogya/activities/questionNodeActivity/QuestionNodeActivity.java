@@ -332,8 +332,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         filePath.mkdirs();
                     }
                     Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
+               return;
                 } else {
                     Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
+                return;
                 }
                 //If there is an input type, then the question has a special method of data entry.
             }
