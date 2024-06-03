@@ -851,6 +851,8 @@
                 android:padding="@dimen/margin_12"
                 android:text="@string/view_prescription_lbl"
                 android:textColor="@color/white"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
             <!--<Button
@@ -948,6 +950,8 @@
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
                 android:text="@string/send_visit_button"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />

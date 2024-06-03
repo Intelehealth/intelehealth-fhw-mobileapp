@@ -6,17 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.pdf.PdfDocument
 import android.util.DisplayMetrics
-import android.util.Log
-import com.itextpdf.text.Document
-import com.itextpdf.text.DocumentException
-import com.itextpdf.text.pdf.PdfWriter
-import com.itextpdf.tool.xml.XMLWorkerHelper
 import org.intelehealth.app.R
-import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-import java.nio.charset.StandardCharsets
+import java.io.OutputStream
 
 
 /**
@@ -28,15 +21,18 @@ class PdfGenerationUtils {
         val document = PdfDocument()
 
         @JvmStatic
-        fun generatePDF(context:Context,bitmap: Bitmap, fileName: String?): String {
+        fun generatePDF(context: Context, bitmap: Bitmap, fileName: String?): String {
             val displayMetrics = DisplayMetrics()
             (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-            val page:Double = bitmap.height/(displayMetrics.heightPixels.toDouble() - context.resources.getDimension(R.dimen.mergin_30dp))
+            val page: Double =
+                bitmap.height / (displayMetrics.heightPixels.toDouble() - context.resources.getDimension(
+                    R.dimen.mergin_30dp
+                ))
             val width = bitmap.width
-            val fullHeight = bitmap.height/
-                    if(page.toInt() == 1) 2
-                    else if(page.toInt() == 0) 1
+            val fullHeight = bitmap.height /
+                    if (page.toInt() == 1) 2
+                    else if (page.toInt() == 0) 1
                     else page.toInt()
 
             val partialHeight = (bitmap.height - page.toInt() * fullHeight)
@@ -59,46 +55,53 @@ class PdfGenerationUtils {
 
             val partList = mutableListOf<Bitmap>()
             for (i in 0..page.toInt()) {
-                if(i == page.toInt()){
-                    if(partialHeight > context.resources.getDimension(R.dimen.mergin_30dp)){
-                        partList.add(Bitmap.createBitmap(bitmap, 0, fullHeight*i, width, partialHeight.toInt()))
+                if (i == page.toInt()) {
+                    if (partialHeight > context.resources.getDimension(R.dimen.mergin_30dp)) {
+                        partList.add(
+                            Bitmap.createBitmap(
+                                bitmap,
+                                0,
+                                fullHeight * i,
+                                width,
+                                partialHeight.toInt()
+                            )
+                        )
                     }
-                }else{
-                    partList.add(Bitmap.createBitmap(bitmap, 0, fullHeight*i, width, fullHeight))
+                } else {
+                    partList.add(Bitmap.createBitmap(bitmap, 0, fullHeight * i, width, fullHeight))
                 }
             }
 
-            for(i in 1..partList.size){
-                addPage(partList[i-1], i)
+            for (i in 1..partList.size) {
+                addPage(partList[i - 1], i)
             }
 
             val directory = context.filesDir
             val file = File(directory, fileName)
 
-           // val file = filePath?.let { File(it) }
+            // val file = filePath?.let { File(it) }
             pdfDocument.writeTo(FileOutputStream(file))
             pdfDocument.close()
             return file.absolutePath
         }
 
-        @JvmStatic
-        fun generatePDFFromHtml(context: Context,htmlContent:String,fileName: String?): String {
-            Log.d("HHHHHHHH",htmlContent)
-            val document = Document()
+       /* @JvmStatic
+        fun generatePDFFromHtml(context: Context, htmlContent: String, fileName: String?): String {
             try {
-                val writer = PdfWriter.getInstance(document, FileOutputStream("${context.filesDir}/$fileName"))
-                document.open()
-                XMLWorkerHelper.getInstance()
-                    .parseXHtml(writer, document, ByteArrayInputStream(htmlContent.toByteArray(StandardCharsets.UTF_8)))
-                document.close()
-                return "${context.filesDir}/$fileName"
-            } catch (e: DocumentException) {
-                e.printStackTrace()
-            } catch (e: IOException) {
+                // Create the output file
+                val file: File = File(context.getFilesDir().toString() + "/visit_summary.pdf")
+                file.parentFile.mkdirs()
+                val outputStream: OutputStream = FileOutputStream(file)
+
+                // Convert HTML to PDF
+                HtmlConverter.convertToPdf(htmlContent, outputStream)
+
+                // Close the output stream
+                outputStream.close()
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return ""
-        }
-
+        }*/
     }
+
 }

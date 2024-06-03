@@ -43,6 +43,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.LocaleList;
+import android.print.PdfConverter;
 import android.print.PdfPrint;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -99,6 +100,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.adapter.PdfPrintDocumentAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -138,7 +140,6 @@ import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
-import org.intelehealth.app.utilities.PdfGenerationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -185,7 +186,7 @@ import okhttp3.ResponseBody;
 /**
  * Created by: Tanvir 0n 27-05-24 : 2:18 PM
  */
-public class VisitSummaryActivityPreview extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class VisitSummaryActivityPreview extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface, PdfConverter.Companion.OnComplete {
     private static final String TAG = VisitSummaryActivityPreview.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
@@ -346,6 +347,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private View view;
     private StringBuilder physicalExamStringBuilder;
     private StringBuilder medicalHistoryStringBuilder;
+    private int countPdfGeneration = 0;
+    String htmlContent ="<b>Pdf</b>";
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -421,25 +424,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         scrollView.setDrawingCacheEnabled(true);
         scrollView.buildDrawingCache();
-        AlertDialog loadingDialog = new DialogUtils().showCommonLoadingDialog(
-                this,
-                getString(R.string.loading),
-                getString(R.string.please_wait)
-        );
-        loadingDialog.setCancelable(false);
 
         removeUnnecessaryView();
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                captureScrollView(scrollView);
-                loadingDialog.dismiss();
-            }
-        }, 5000);
-
-
     }
 
     private void removeUnnecessaryView() {
@@ -903,13 +889,13 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
-                tempHeader = ContextCompat.getString(this,R.string.visit_summary_temperature);
+                tempHeader = ContextCompat.getString(this, R.string.visit_summary_temperature);
                 tempStr = temperature.getValue();
                 Log.d("temp", "temp_C: " + temperature.getValue());
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
-                tempHeader = ContextCompat.getString(this,R.string.temperature_f);
+                tempHeader = ContextCompat.getString(this, R.string.temperature_f);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     tempStr = convertCtoF(TAG, temperature.getValue());
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
@@ -1510,27 +1496,55 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         shareBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shareOperation();
+                countPdfGeneration = 0;
+                try {
+                    shareOperation(false);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
-    private void shareOperation() {
+    private void shareOperation(boolean isCallback) throws Exception {
+        htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
+       /* PdfConverter.Companion.getInstance()
+                .convert(context, htmlContent, new File(this.getFilesDir() + "/visit_summary.pdf"),this);*/
         WebView webView = new WebView(this);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        String htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
         webView.setWebViewClient(new WebViewClient() {
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                var path = PdfGenerationUtils.generatePDFFromHtml(VisitSummaryActivityPreview.this,htmlContent,"Visit_Summary_Pdf");
-                share(path);
+
+                PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+                pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+                pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+                pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+                // Create a print job with name and adapter instance
+                String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
+                PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), VisitSummaryActivityPreview.this.getFilesDir(), "visit_summary.pdf", new PdfPrint.CallbackPrint() {
+                    @Override
+                    public void success(String path) {
+                        share(path);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
             }
         });
 
         webView.loadDataWithBaseURL(null, htmlContent, "text/HTML", "UTF-8", null);
+
     }
 
     private void createWebPrintJob(WebView webView) {
@@ -1581,7 +1595,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                PdfGenerationUtils.generatePDFFromHtml(VisitSummaryActivityPreview.this,htmlContent,"Visit_Summary_Pdf");
             }
         });
 
@@ -1717,6 +1730,16 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             Toast.makeText(this, "Error printing PDF", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onWriteComplete() {
+        share(this.getFilesDir() + "/visit_summary.pdf");
+    }
+
+    @Override
+    public void onWriteFailed() {
+
     }
 
 
@@ -3692,7 +3715,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 if (valueArray[0] != null) {
                     complaintView.setText(Html.fromHtml(valueArray[0]));
                     chifComplainStringBuilder
-                            .append("</ br>")
+                            .append("<br />")
                             .append("<b>")
                             .append("<h3>")
                             .append(ContextCompat.getString(this, R.string.details))
@@ -3706,7 +3729,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
 
                     if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -</ br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
+                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
 
                         // index 0 - Reports
                         String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
@@ -3735,25 +3758,25 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
                 // associated symp.
                 chifComplainStringBuilder
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<b>")
                         .append("<h3>")
                         .append(ContextCompat.getString(this, R.string.associated_symptoms))
                         .append("</h3>")
                         .append("</b>")
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<span style=\"color: grey;\">")
                         .append(ContextCompat.getString(this, R.string.patient_reports))
                         .append("</span>")
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<p class=\"text-with-margin\">")
                         .append(patientReports)
                         .append("</p>")
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<span style=\"color: grey;\">")
                         .append(ContextCompat.getString(this, R.string.patient_denies))
                         .append("</span>")
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<p class=\"text-with-margin\">")
                         .append(patientDenies)
                         .append("</p>");
@@ -3851,12 +3874,12 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             if (isInOldFormat) {
                 patHistView.setVisibility(View.VISIBLE);
                 patHistView.setText(Html.fromHtml(value));
-                medicalHistoryStringBuilder.append("<b>")
-                        .append("</ br>")
+                medicalHistoryStringBuilder
+                        .append("<br />")
                         .append("<h3>")
                         .append(ContextCompat.getString(this, R.string.button_history))
                         .append("</h3>")
-                        .append("</b></br>")
+                        .append("</br>")
                         .append(value);
                 visitSummaryPdfData.setMedicalHistory(medicalHistoryStringBuilder.toString());
             } else setDataForPatientMedicalHistorySummary(patientHistoryLocaleString);
@@ -3889,7 +3912,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 famHistView.setVisibility(View.VISIBLE);
                 famHistView.setText(Html.fromHtml(value));
                 medicalHistoryStringBuilder
-                        .append("</br></br><b>")
+                        .append("<br /></br><b>")
                         .append("<h3>")
                         .append(ContextCompat.getString(this, R.string.header_family_history))
                         .append("</h3>")
@@ -3934,13 +3957,13 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         chifComplainStringBuilder
                 .append("<b>")
-                .append("</ br>")
+                .append("<br />")
                 .append("<b>")
                 .append("<h3>")
                 .append(ContextCompat.getString(this, R.string.details))
                 .append("</h3>")
                 .append("<b>")
-                .append("</ br>");
+                .append("<br />");
 
         for (int i = 0; i < list.size(); i++) {
             String complainName = "";
@@ -4008,9 +4031,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
                 if (visitSummaryDataList.size() > 0) {
                     chifComplainStringBuilder
-                            .append("</ br><h4>")
+                            .append("<br /><h4>")
                             .append(complainName)
-                            .append("</h4></ br></ br>");
+                            .append("</h4><br /><br />");
                 }
 
                 for (VisitSummaryData data : visitSummaryDataList) {
@@ -4019,8 +4042,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getQuestion())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     } else {
                         chifComplainStringBuilder
                                 .append("&nbsp;")
@@ -4028,7 +4051,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("●")
                                 .append("&nbsp;")
                                 .append(data.getQuestion())
-                                .append("</ br>")
+                                .append("<br />")
                                 .append("</span>")
                                 .append("&nbsp;")
                                 .append("&nbsp;")
@@ -4037,8 +4060,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getDisplayValue())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     }
 
                 }
@@ -4082,7 +4105,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 TextView valueTextView = view.findViewById(R.id.tv_answer_value);
                 valueTextView.setText(patientReports);
                 chifComplainStringBuilder
-                        .append("</ br>")
+                        .append("<br />")
                         .append("<span style=\"color: grey;\">")
                         .append(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies))
                         .append("</span>")
@@ -4124,7 +4147,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         List<String> list = new ArrayList<>();
         LinkedHashMap<String, List<String>> mapData = new LinkedHashMap<String, List<String>>();
         physicalExamStringBuilder
-                .append("</ br>")
+                .append("<br />")
                 .append("<h3>")
                 .append(ContextCompat.getString(this, R.string.general_exams))
                 .append("</h3>");
@@ -4221,9 +4244,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
                 if (visitSummaryDataList.size() > 0 && !_complain.isEmpty()) {
                     physicalExamStringBuilder
-                            .append("</ br>")
+                            .append("<br />")
                             .append(getFormattedComplain(_complain))
-                            .append("</ br>");
+                            .append("<br />");
                 }
 
                 for (VisitSummaryData data : visitSummaryDataList) {
@@ -4232,8 +4255,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getQuestion())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     } else {
                         physicalExamStringBuilder
                                 .append("&nbsp;")
@@ -4241,7 +4264,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("●")
                                 .append("&nbsp;")
                                 .append(data.getQuestion())
-                                .append("</ br>")
+                                .append("<br />")
                                 .append("</span>")
                                 .append("&nbsp;")
                                 .append("&nbsp;")
@@ -4250,8 +4273,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getDisplayValue())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     }
 
                 }
@@ -4410,11 +4433,11 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
                 if (visitSummaryDataList.size() > 0) {
                     medicalHistoryStringBuilder
-                            .append("</ br>")
+                            .append("<br />")
                             .append("<h3>")
                             .append(getFormattedComplain(_complain))
                             .append("</h3>")
-                            .append("</ br>");
+                            .append("<br />");
                 }
 
                 for (VisitSummaryData data : visitSummaryDataList) {
@@ -4423,8 +4446,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getQuestion())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     } else {
                         medicalHistoryStringBuilder
                                 .append("&nbsp;")
@@ -4432,7 +4455,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("●")
                                 .append("&nbsp;")
                                 .append(data.getQuestion())
-                                .append("</ br>")
+                                .append("<br />")
                                 .append("</span>")
                                 .append("&nbsp;")
                                 .append("&nbsp;")
@@ -4441,8 +4464,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getDisplayValue())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     }
 
                 }
@@ -4587,12 +4610,12 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
                 if (visitSummaryDataList.size() > 0) {
                     medicalHistoryStringBuilder
-                            .append("</ br>")
-                            .append("</ br>")
+                            .append("<br />")
+                            .append("<br />")
                             .append("<h3>")
                             .append(getFormattedComplain(_complain))
                             .append("</h3>")
-                            .append("</ br>");
+                            .append("<br />");
                 }
 
                 for (VisitSummaryData data : visitSummaryDataList) {
@@ -4601,8 +4624,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("</h3>")
                                 .append(data.getQuestion())
                                 .append("</h3>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     } else {
                         medicalHistoryStringBuilder
                                 .append("&nbsp;")
@@ -4610,7 +4633,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("●")
                                 .append("&nbsp;")
                                 .append(data.getQuestion())
-                                .append("</ br>")
+                                .append("<br />")
                                 .append("</span>")
                                 .append("&nbsp;")
                                 .append("&nbsp;")
@@ -4619,8 +4642,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                                 .append("<span style=\"color: black;\">")
                                 .append(data.getDisplayValue())
                                 .append("</span>")
-                                .append("</ br>")
-                                .append("</ br>");
+                                .append("<br />")
+                                .append("<br />");
                     }
 
                 }

@@ -28,7 +28,7 @@ class VisitSummaryPdfGenerator {
             return StringBuilder()
                 .append("<html lang=\"en\">")
                 .append("<head>")
-                .append("  <meta charset=\"UTF-8\"/>")
+                .append(meta)
                 .append(getStyle(context))
                 .append("</head>")
                 .append("<body>")
@@ -65,13 +65,13 @@ class VisitSummaryPdfGenerator {
             return "        <div class=\"section\">\n" +
                     "            <div>\n" +
                     "         <ul>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.chw_worker
                         )
                     }</label><label> ${visitSummaryPdfData.chwName}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.visitID
@@ -98,50 +98,50 @@ class VisitSummaryPdfGenerator {
                     "                ${ContextCompat.getString(context, R.string.details)}\n" +
                     "            </p>\n" +
                     "            <ul>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.height_cm
                         )
                     }</label><label> ${visitSummaryPdfData.height}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.weight_kg
                         )
                     }</label><label> ${visitSummaryPdfData.weight}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.visit_summary_bmi
                         )
                     }</label><label> ${visitSummaryPdfData.bmi}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.visit_summary_bp
                         )
                     }</label><label> ${visitSummaryPdfData.bp}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.visit_summary_pulse
                         )
                     }</label><label> ${visitSummaryPdfData.pulse}</label></li>\n" +
-                    "             <li><label>•${visitSummaryPdfData.tempHeader}</label><label> ${visitSummaryPdfData.temp}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${visitSummaryPdfData.tempHeader}</label><label> ${visitSummaryPdfData.temp}</label></li>\n" +
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.table_spo2
                         )
                     }</label><label> ${visitSummaryPdfData.spoTwo}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.respiratory_rate
                         )
                     }</label><label> ${visitSummaryPdfData.respiratory}</label></li>\n" +
-                    "             <li><label>•${
+                    "             <li><label>• ${
                         ContextCompat.getString(
                             context,
                             R.string.blood_group_txt
@@ -208,7 +208,7 @@ class VisitSummaryPdfGenerator {
                             R.string.physical_examination
                         )
                     }\n" +
-                    "            </h2>\n" + visitSummaryPdfData.physicalExam + "</ br></ br>" + getPhysicalExamImages(
+                    "            </h2>\n" + visitSummaryPdfData.physicalExam + "<br /><br />" + getPhysicalExamImages(
                 visitSummaryPdfData.physicalExamImageList
             ) +
                     "        </div>\n" + ""
@@ -350,17 +350,17 @@ class VisitSummaryPdfGenerator {
 
         private fun getStyle(context: Context): Any {
             return "<style>\n" +
-                    "body {\n" +
-                    "font-family: DM Sans;\n" +
-                    "background-color: #f4f4f4;\n" +
-                    "margin: 0;\n" +
+                    "      body {\n" +
+                    "            width: 80%;\n" +
+                    "            font-family: DM Sans;\n" +
+                    "            background-color: #FFFFFF;\n" +
+                    "            margin: 20px auto;\n" +
                     "            padding: 0;\n" +
                     "        }\n" +
                     "        .container {\n" +
                     "            width: 80%;\n" +
                     "            margin: 20px auto;\n" +
-                    "            background-color: #fff;\n" +
-                    "            padding: 20px;\n" +
+                    "            background-color: #FFFFFF;\n" +
                     "            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
                     "        }\n" +
                     "        .header {\n" +
@@ -400,6 +400,7 @@ class VisitSummaryPdfGenerator {
                     "        }\n" +
                     "        .section h2 svg {\n" +
                     "            margin-right: 10px;\n" +
+                    "            margin-bottom: 10px;\n" +
                     "            page-break-inside: avoid;\n" +
                     "        }\n" +
                     "        ul {\n" +
