@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -86,6 +87,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
     private String intentAdviceFrom;
+
+    String protocolDirectory = "";
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -160,6 +163,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
+        protocolDirectory = FileUtils.getDirectoryForProtocols(intentAdviceFrom);
+
         JSONObject currentFile = null;
         for (int i = 0; i < complaints.size(); i++) {
             if (hasLicense) {
@@ -172,7 +177,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
-                String fileLocation = "engines/" + complaints.get(i) + ".json";
+                String fileLocation = protocolDirectory + "/" + complaints.get(i) + ".json";
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
             }
 
@@ -425,7 +430,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
                         complaints.add(associatedComplaint);
-                        String fileLocation = "engines/" + associatedComplaint + ".json";
+                        String fileLocation = protocolDirectory + "/" + associatedComplaint + ".json";
                         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
                         Node currentNode = new Node(currentFile);
                         complaintsNodes.add(currentNode);
@@ -669,7 +674,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
                                     mCurrentNodeIndex += 1;
                                     // need to check the autofill node
-                                    if(mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()){
+                                    if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
                                         NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
                                         mCurrentNode = autoFillResult.getUpdatedNode();
                                     }

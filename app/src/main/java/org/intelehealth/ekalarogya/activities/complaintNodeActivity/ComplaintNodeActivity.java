@@ -47,9 +47,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionNodeActivity;
@@ -229,24 +231,33 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
         } else {
-            String[] fileNames = new String[0];
+            String protocolDirectory = FileUtils.getDirectoryForProtocols(intentAdviceFrom);
+            String[] fileNames = {};
             try {
-                fileNames = getApplicationContext().getAssets().list("engines");
+                List<String> tempArrayList = new ArrayList<>();
+                String[] tempFileNames = getApplicationContext().getAssets().list(protocolDirectory);
+
+                if (tempFileNames != null) {
+                    for (String fileName : tempFileNames) {
+                        if (fileName.endsWith(".json")) {
+                            tempArrayList.add(fileName);
+                        }
+                    }
+
+                    fileNames = tempArrayList.toArray(new String[0]);
+                }
             } catch (IOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
+
             if (fileNames != null) {
                 for (String name : fileNames) {
-                    String fileLocation = "engines/" + name;
+                    String fileLocation = protocolDirectory + "/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-//                    if(name.equalsIgnoreCase("Fever.json") || name.equalsIgnoreCase("Abdominal Pain.json") ||
-//                        name.equalsIgnoreCase("Dry mouth.json") || name.equalsIgnoreCase("Fever & Rash.json") ||
-//                                name.equalsIgnoreCase("Jaundice.json"))
-//                        suggestedComplaints.add(currentNode);
-//                    else
                     complaints.add(currentNode);
                 }
+
                 //remove items from complaints array here...
                 mgender = PatientsDAO.fetch_gender(patientUuid);
 

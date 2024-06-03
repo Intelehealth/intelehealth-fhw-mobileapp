@@ -1534,6 +1534,8 @@ public class VisitSummaryActivity extends BaseActivity {
 
                         if (isNcdVisit) {
                             intent1.putExtra("advicefrom", "Sevika");
+                        } else {
+                            intent1.putExtra("advicefrom", "Doctor");
                         }
 
                         startActivity(intent1);
