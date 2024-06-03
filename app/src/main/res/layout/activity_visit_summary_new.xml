@@ -1041,8 +1041,8 @@
                             android:textAppearance="@style/blur_txtview"
                             android:textSize="@null" />
 
-                        <EditText
-                            android:id="@+id/etFollowup"
+                        <TextView
+                            android:id="@+id/tvtFollowUp"
                             style="@style/edittext_textcolor"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"

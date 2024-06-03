@@ -77,5 +77,12 @@ public class UuidDictionary {
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
 
+    public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
+    public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
+
+//Health worker follow up 596c7f50-ec12-4ad8-b92a-7491ad80341b
+
+
+
 
 }

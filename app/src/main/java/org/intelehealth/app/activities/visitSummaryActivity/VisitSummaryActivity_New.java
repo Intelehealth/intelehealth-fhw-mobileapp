@@ -13,7 +13,9 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
+import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
@@ -120,6 +122,7 @@ import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
+import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -363,7 +366,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private SpecializationViewModel viewModel;
     private ActivityVisitSummaryNewBinding mBinding;
     private List<FacilityToVisitModel> facilityList = null;
+    private List<String> severityList = null;
     private FacilityToVisitModel selectedFacilityToVisit = null;
+    private String selectedSeverity = null;
+    private String selectedFollowupDate;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -415,28 +421,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
-        /*EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitID);
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitID);
-        Intent in = new Intent(VisitDetailsActivity.this, CompleteActivity.class);
-        String roomId = patientUuid;
-        String doctorName = "";
-        String nurseId = encounterDTO.getProvideruuid();
-        in.putExtra("roomId", roomId);
-        in.putExtra("isInComingRequest", false);
-        in.putExtra("doctorname", doctorName);
-        in.putExtra("nurseId", nurseId);
-        in.putExtra("startNewCall", true);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-            startActivity(in);
-        }*/
-
     }
 
     @Override
@@ -446,7 +430,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
 
         setupSpecialization();
-        setFacilityToVisitSpinner();
+
         context = VisitSummaryActivity_New.this;
 
 
@@ -462,10 +446,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
-        mBinding.etFollowup.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvtFollowUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              showDatePickerDialog();
+                showDatePickerDialog();
             }
         });
 
@@ -480,8 +464,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                    mBinding.etFollowup.setText(selectedDate);
+                    selectedFollowupDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    mBinding.tvtFollowUp.setText(selectedFollowupDate);
                 },
                 year, month, day);
 
@@ -509,6 +493,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         viewModel.fetchSpecialization().observe(this, specializations -> {
             Timber.tag(TAG).d(new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
+            setFacilityToVisitSpinner();
+            setSeveritySpinner();
         });
     }
 
@@ -584,53 +570,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 physicalExams.addAll(selectedExams);
             }
 
-/*
-            Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
-                    visitUuid + "\n" +
-                    patientGender + "\n" +
-                    encounterVitals + "\n" +
-                    encounterUuidAdultIntial + "\n" +
-                    EncounterAdultInitial_LatestVisit + "\n" +
-                    patientName + "\n" +
-                    float_ageYear_Month + "\n" +
-                    intentTag + "\n" +
-                    isPastVisit + "\n");
-*/
+
             queryData(String.valueOf(patientUuid));
         }
-
-       /* // todo: testing - start
-        patientUuid = "5beb27c8-4bae-4d8e-91a1-1fa5dabb51c8";
-        visitUuid = "f133d3ca-f448-44c0-b1b4-5889f85e7d5a";
-        patientGender = "M";
-        encounterVitals = "1c4b19a7-0c1d-48a8-a0a0-a9222018ccef";
-        encounterUuidAdultIntial = "e4e5b1f1-72cf-437f-978f-c42a4a0d1183";
-        EncounterAdultInitial_LatestVisit = "";
-        mSharedPreference = this.getSharedPreferences(
-                "visit_summary", Context.MODE_PRIVATE);
-        patientName = "Testing Banana";
-        float_ageYear_Month = 48.0f;
-        intentTag = "new";
-        isPastVisit = false;
-//            hasPrescription = intent.getStringExtra("hasPrescription");
-
-      //  Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
-        Set<String> selectedExams = new HashSet<>();
-        selectedExams.add("");
-        selectedExams.add("Abdomen:Distension");
-        selectedExams.add("Abdomen:Scars");
-        selectedExams.add("Abdomen:Peristaltic sound");
-        selectedExams.add("Physical Growth:Sexual Maturation");
-        selectedExams.add("Abdomen:Tenderness");
-        selectedExams.add("Abdomen:Lumps");
-        selectedExams.add("Abdomen:Rebound tenderness");
-
-        if (physicalExams == null) physicalExams = new ArrayList<>();
-        physicalExams.clear();
-        if (selectedExams != null && !selectedExams.isEmpty()) {
-            physicalExams.addAll(selectedExams);
-        }
-        // todo: testing - end*/
 
 
         // receiver
@@ -705,6 +647,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
+
+                mBinding.cvFacilityToVisitDoc.setVisibility(View.VISIBLE);
+                mBinding.cvFacilityToVisit.setVisibility(View.GONE);
+
+                mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
+                mBinding.cvSeverity.setVisibility(View.GONE);
+
                 // vs_add_notes.setVisibility(View.GONE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
@@ -760,6 +709,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (!isVisitSpecialityExists) {
             doc_speciality_card.setVisibility(View.VISIBLE);
             special_vd_card.setVisibility(View.GONE);
+
+
             flag.setEnabled(true);
             flag.setClickable(true);
         } else {
@@ -786,6 +737,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
+
+            mBinding.cvFacilityToVisitDoc.setVisibility(View.VISIBLE);
+            mBinding.cvFacilityToVisit.setVisibility(View.GONE);
+
+            mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
+            mBinding.cvSeverity.setVisibility(View.GONE);
+
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
 
@@ -807,7 +765,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void expandableCardVisibilityHandling() {
         openall_btn.setOnClickListener(v -> {
 
-//            Drawable drawable = openall_btn.getDrawable();
             if (mOpenCount == 0) {
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
@@ -838,14 +795,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             else vs_header_expandview.setVisibility(View.VISIBLE);
         });
 
-/*
-        btn_up_vitals_header.setOnClickListener(v -> {
-            if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE)
-                vs_vitals_header_expandview.setVisibility(View.GONE);
-            else
-                vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
+
         vitals_header_relative.setOnClickListener(v -> {
             if (vs_vitals_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_vitals_header_expandview.setVisibility(View.GONE);
@@ -862,14 +812,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-/*
-        btn_up_visitreason_header.setOnClickListener(v -> {
-            if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE)
-                vs_visitreason_header_expandview.setVisibility(View.GONE);
-            else
-                vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
+
         chiefcomplaint_header_relative.setOnClickListener(v -> {
             if (vs_visitreason_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
@@ -886,14 +829,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-/*
-        btn_up_phyexam_header.setOnClickListener(v -> {
-            if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE)
-                vs_phyexam_header_expandview.setVisibility(View.GONE);
-            else
-                vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
+
         physExam_header_relative.setOnClickListener(v -> {
             if (vs_phyexam_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
@@ -910,14 +846,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-/*
-        btn_up_medhist_header.setOnClickListener(v -> {
-            if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE)
-                vs_medhist_header_expandview.setVisibility(View.GONE);
-            else
-                vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
+
         pathistory_header_relative.setOnClickListener(v -> {
             if (vs_medhist_header_expandview.getVisibility() == View.VISIBLE) {
                 vs_medhist_header_expandview.setVisibility(View.GONE);
@@ -934,14 +863,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-/*
-        btn_up_special_vd_header.setOnClickListener(v -> {
-            if (vd_special_header_expandview.getVisibility() == View.VISIBLE)
-                vd_special_header_expandview.setVisibility(View.GONE);
-            else
-                vd_special_header_expandview.setVisibility(View.VISIBLE);
-        });
-*/
+
         special_vd_header_relative.setOnClickListener(v -> {
             if (vd_special_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_special_header_expandview.setVisibility(View.GONE);
@@ -957,15 +879,38 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
-
-/*
-        btn_up_addnotes_vd_header.setOnClickListener(v -> {
-            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE)
-                vd_addnotes_header_expandview.setVisibility(View.GONE);
-            else
-                vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+        mBinding.rlFacilityToVisitHeader.setOnClickListener(v -> {
+            if (mBinding.rlFacilityToVisitHeaderExpandView.getVisibility() == View.VISIBLE) {
+                mBinding.rlFacilityToVisitHeaderExpandView.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.rlFacilityToVisitHeaderExpandView.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
         });
-*/
+        mBinding.rlSeverityHeader.setOnClickListener(v -> {
+            if (mBinding.rlSavertyHeaderExpandView.getVisibility() == View.VISIBLE) {
+                mBinding.rlSavertyHeaderExpandView.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.rlSavertyHeaderExpandView.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+
         addnotes_vd_header_relative.setOnClickListener(v -> {
             if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
@@ -1843,12 +1788,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
         // edit listeners - end
 
-        // upload btn click - start
-      /*  uploadButton.setOnClickListener(v -> {
-            visitSendDialog(context, getResources().getDrawable(R.drawable.dialog_close_visit_icon), "Send visit?",
-                    "Are you sure you want to send the visit to the doctor?",
-                    "Yes", "No");
-        });*/
+
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -1962,6 +1902,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private List<FacilityToVisitModel> getFacilityList() {
         facilityList = new ArrayList<FacilityToVisitModel>();
+        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
         facilityList.add(new FacilityToVisitModel("1", "Asha"));
         facilityList.add(new FacilityToVisitModel("2", "AWW"));
         facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
@@ -1973,9 +1914,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         return facilityList;
     }
 
+    private List<String> getSeverityList() {
+        severityList = new ArrayList<String>();
+        severityList.add("Select Severity");
+        severityList.add("Low");
+        severityList.add("Normal");
+        severityList.add("Moderate");
+        severityList.add("High");
+        severityList.add("Critical");
+        return severityList;
+    }
+
     private void setFacilityToVisitSpinner() {
         if (facilityList == null || facilityList.isEmpty()) {
             facilityList = getFacilityList();
+        }
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        if (!TextUtils.isEmpty(facility))
+        {
+            mBinding.tvFacilityToVisitValue.setText(" " + Node.bullet + "  " + facility);
         }
 
         FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
@@ -1988,6 +1945,38 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     selectedFacilityToVisit = facilityList.get(i);
                 } else {
                     selectedFacilityToVisit = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setSeveritySpinner() {
+        if (severityList == null || severityList.isEmpty()) {
+            severityList = getSeverityList();
+        }
+
+        SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
+
+        String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
+        if (!TextUtils.isEmpty(severity))
+        {
+            mBinding.tvSavertyValue.setText(" " + Node.bullet + "  " + severity);
+        }
+
+
+        mBinding.spinnerSeverity.setAdapter(arrayAdapter);
+        mBinding.spinnerSeverity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    selectedSeverity = severityList.get(i);
+                } else {
+                    selectedSeverity = null;
                 }
             }
 
@@ -2341,29 +2330,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this);
-        builder.setTitle(R.string.additional_doc_image_picker_title);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    checkPerm(item);
-                } else if (item == 1) {
-                    checkPerm(item);
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        //  builder.show();
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();*/
 
     }
 
@@ -2562,17 +2529,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 startActivity(in);
             }
         });
-        /*btn_vs_print.setOnClickListener(v -> {
-            try {
-                doWebViewPrint_Button();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        });*/
 
-        /*btn_vs_share.setOnClickListener(v -> {
-            sharePresc();
-        });*/
         // Bottom Buttons - end
         refresh.setOnClickListener(v -> {
             syncNow(VisitSummaryActivity_New.this, refresh, syncAnimator);
@@ -2782,31 +2739,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             EditText editText = convertView.findViewById(R.id.editText_mobileno);
             Button sharebtn = convertView.findViewById(R.id.sharebtn);
 
-           /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            EditText editText = new EditText(this);
-            editText.setInputType(InputType.TYPE_CLASS_PHONE);
 
-            InputFilter inputFilter = new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    return null;
-                }
-            };*/
 
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
             String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
 
-//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
-
-            //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
-           /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            editText.setLayoutParams(layoutParams);
-            alertDialog.setView(editText);
-*/
-            //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
             sharebtn.setOnClickListener(v -> {
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -2830,166 +2769,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
             alertDialog.show();
 
-//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-//
-//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-//                                startActivity(new Intent(Intent.ACTION_VIEW,
-//                                        Uri.parse(
-//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                                        phoneNumber, whatsappMessage))));
-//
-//                                // isreturningWhatsapp = true;
-//
-//                            } else {
-//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-           /* AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
         } else {
-            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
 
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
 
             Toast.makeText(context, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
         }
     }
 
-/*
-    private void setGenderAgeLocal(Context context, TextView genderView, Patient patient, SessionManager sessionManager) {
-        //  1. Age
-        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), this.context);
-        String gender = patient.getGender();
-
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else {
-            genderView.setText(gender + " " + age);
-        }
-    }
-*/
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
 
@@ -3045,10 +2831,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             });
 
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
             boolean isUpdateVisitDone = false;
             try {
                 if (!isVisitSpecialityExists) {
                     isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
+                }
+                if (selectedFacilityToVisit != null) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+                }
+                if (selectedSeverity != null) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
+                }
+                if (!TextUtils.isEmpty(selectedFollowupDate))
+                {
+                    EncounterDTO encounterDTO = new EncounterDTO();
+                    encounterDTO.setVisituuid(visitUuid);
                 }
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             } catch (DAOException e) {
