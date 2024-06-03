@@ -446,7 +446,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
-        mBinding.tvtFollowUp.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvtFollowUpDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
@@ -465,7 +465,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 context,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
                     selectedFollowupDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                    mBinding.tvtFollowUp.setText(selectedFollowupDate);
+                    mBinding.tvtFollowUpDate.setText(selectedFollowupDate);
                 },
                 year, month, day);
 
