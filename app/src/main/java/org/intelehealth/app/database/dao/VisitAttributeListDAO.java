@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -157,5 +158,36 @@ public class VisitAttributeListDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
         return visit_id;
+    }
+
+    public boolean insertVisitAttributesUploadTime(String visitUuid, String uploadTime) throws DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", uploadTime);
+            values.put("visit_attribute_type_uuid", UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (count != -1) {
+                isInserted = true;
+            }
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: " + isInserted);
+        return isInserted;
     }
 }

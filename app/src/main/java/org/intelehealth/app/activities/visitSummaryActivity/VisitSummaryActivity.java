@@ -1098,7 +1098,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
-
+                    String uploadTime = AppConstants.dateAndTimeUtils.getVisitUploadDateTime();
+                    VisitAttributeListDAO upload_time_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateUploadTimeDone = false;
+                    try {
+                        if (!isVisitSpecialityExists) {
+                            isUpdateUploadTimeDone = upload_time_attributes.insertVisitAttributesUploadTime(visitUUID, uploadTime);
+                        }
+                    } catch (DAOException exception) {
+                        exception.printStackTrace();
+                    }
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
@@ -5092,6 +5101,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                             @Override
                             public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                t.printStackTrace();
+                                Log.d(TAG, "onFailure: t  :: "+t.getLocalizedMessage());
                                 Log.v("onFailure", t.getMessage());
                             }
                         });
