@@ -493,7 +493,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intentTag = mCommonVisitData.getIntentTag();
 
                 isPastVisit = mCommonVisitData.isPastVisit();
-            } else {
+            }
+            else {
                 visitUuid = intent.getStringExtra("visitUuid");
                 mCommonVisitData = new CommonVisitData();
                 mCommonVisitData.setVisitUuid(visitUuid);
@@ -634,12 +635,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             boolean isCompletedExitedSurvey = false;
             boolean isPrescriptionReceived = false;
             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-            try {
+            /*try {
                 isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUUID);
                 isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
             } catch (DAOException e) {
                 e.printStackTrace();
-            }
+            }*/
             boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {

@@ -1461,24 +1461,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         // edit - end
 
-        // Bottom Buttons - start
-        /*btn_vs_print = findViewById(R.id.btn_vs_print);   // print
-        btn_vs_share = findViewById(R.id.btn_vs_share);   // share*/
-
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
-
-        /*btn_vs_print.setOnClickListener(v -> {
-            try {
-                doWebViewPrint_Button();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        });*/
-
-        /*btn_vs_share.setOnClickListener(v -> {
-            sharePresc();
-        });*/
-        // Bottom Buttons - end
 
         // file set
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -1508,9 +1491,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private void shareOperation(boolean isCallback) throws Exception {
         htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
-       /* PdfConverter.Companion.getInstance()
-                .convert(context, htmlContent, new File(this.getFilesDir() + "/visit_summary.pdf"),this);*/
         WebView webView = new WebView(this);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setAllowFileAccess(true);
         webView.setWebViewClient(new WebViewClient() {
 
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -1545,13 +1528,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         webView.loadDataWithBaseURL(null, htmlContent, "text/HTML", "UTF-8", null);
 
-    }
-
-    private void createWebPrintJob(WebView webView) {
-        PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
-        String jobName = "${getString(R.string.app_name)} Document";
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(jobName);
-        printManager.print(jobName, printAdapter, new PrintAttributes.Builder().build());
     }
 
     private boolean isWhatsAppInstalled() {

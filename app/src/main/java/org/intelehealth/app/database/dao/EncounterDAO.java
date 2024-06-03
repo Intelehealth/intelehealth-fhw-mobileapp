@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -567,28 +568,27 @@ public class EncounterDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-            if(visitUUID != null) {
-                String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " +
-                        "e.visituuid = ? " +
-                        "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
-                        "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
+        if (visitUUID != null) {
+            String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " +
+                    "e.visituuid = ? " +
+                    "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
+                    "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
 
-                final Cursor cursor = db.rawQuery(complaint_query, new String[]{visitUUID});
-                if (cursor.moveToFirst()) {
-                    do {
-                        try {
-                            complaintValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                            Log.v("Followup", "chiefcomplaint: " + complaintValue);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-                db.setTransactionSuccessful();
-                db.endTransaction();
+            final Cursor cursor = db.rawQuery(complaint_query, new String[]{visitUUID});
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        complaintValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                        Log.v("Followup", "chiefcomplaint: " + complaintValue);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
             }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
         boolean needToShowCoreValue = false;
         if (complaintValue.startsWith("{") && complaintValue.endsWith("}")) {
             try {
@@ -613,6 +613,7 @@ public class EncounterDAO {
     /**
      * This function we are using to get the encoun modified date so that on VD details we can show the value of Precri received time
      * Eg: Presc received 2 hours ago.
+     *
      * @param visitUUID
      * @return
      */
@@ -622,7 +623,7 @@ public class EncounterDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        if(visitUUID != null) {
+        if (visitUUID != null) {
             final Cursor cursor = db.rawQuery("select modified_date from tbl_encounter where visituuid = ? and " +
                     "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
                     "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VISIT_NOTE});
@@ -632,8 +633,7 @@ public class EncounterDAO {
                     try {
                         modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
                         Log.v("modifiedDate", "modifiedDate: " + modifiedDate);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } while (cursor.moveToNext());
@@ -648,6 +648,7 @@ public class EncounterDAO {
 
     /**
      * Fetching the uuid from Enc table for visit having ENCOUNTER_VITALS.
+     *
      * @param visitUUID
      * @return
      */
@@ -657,7 +658,7 @@ public class EncounterDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        if(visitUUID != null) {
+        if (visitUUID != null) {
             final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
                     "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
                     "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VITALS});
@@ -667,8 +668,7 @@ public class EncounterDAO {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
                         Log.v("modifiedDate", "uuid: " + uuid);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } while (cursor.moveToNext());
@@ -683,6 +683,7 @@ public class EncounterDAO {
 
     /**
      * Fetching the uuid from Enc table for visit having ENCOUNTER_ADULTINITIALS.
+     *
      * @param visitUUID
      * @return
      */
@@ -692,7 +693,7 @@ public class EncounterDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        if(visitUUID != null) {
+        if (visitUUID != null) {
             final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
                     "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
                     "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
@@ -702,8 +703,7 @@ public class EncounterDAO {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
                         Log.v("modifiedDate", "uuid: " + uuid);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } while (cursor.moveToNext());
@@ -824,5 +824,50 @@ public class EncounterDAO {
         //  db.close();
 
         return encounterDTO;
+    }
+
+
+    public static ArrayList<FollowUpNotificationData> getFollowUpDateListFromConceptId() throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        ArrayList<FollowUpNotificationData> list = new ArrayList<>();
+
+        try {
+
+            String query = """
+                    select p.uuid,p.first_name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs
+                     left JOIN tbl_encounter as e on obs.encounteruuid = e.uuid\s
+                     left JOIN tbl_visit as v on e.visituuid = v.uuid
+                     left join tbl_patient as p on v.patientuuid = p.uuid
+                     where obs.conceptuuid = 'e8caffd6-5d22-41c4-8d6a-bc31a44d0c86'""";
+
+            Cursor idCursor = db.rawQuery(query, new String[]{});
+
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    list.add(new FollowUpNotificationData(
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("gender")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("value"))
+                    ));
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return list;
     }
 }
