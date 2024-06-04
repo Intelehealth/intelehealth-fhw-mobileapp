@@ -82,15 +82,17 @@ public class VisitAttributeListDAO {
         return isCreated;
     }
 
-    public String getVisitAttributesList_specificVisit(String VISITUUID) {
+    public String getVisitAttributesList_specificVisit(String VISITUUID, String visit_attribute_type_uuid) {
         String isValue = "";
         Log.d("specc", "spec_fun: " + VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{VISITUUID});
-
+      /*  Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
+                new String[]{VISITUUID});*/
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
+                        "visit_attribute_type_uuid = ? and voided = 0",
+                new String[]{VISITUUID, visit_attribute_type_uuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
