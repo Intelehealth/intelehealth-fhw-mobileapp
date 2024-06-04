@@ -24,5 +24,7 @@ data class ConfigResponse(
     val patientVitalSection: Boolean,
     @SerializedName("webrtc")
     val webrtcStatus: WebRtcActiveStatus,
+    @SerializedName("webrtc_section")
+    val webrtcSection: Boolean = true,
     val version: Int = 0
 )
