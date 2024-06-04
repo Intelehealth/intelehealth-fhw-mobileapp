@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.notification.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
 import org.intelehealth.app.activities.notification.view.NotificationAdapter.MyHolderView
+import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
 
 /**
@@ -54,6 +56,12 @@ class NotificationAdapter(
             }
             holder.delete_imgview.setOnClickListener { _: View? ->
                 clickListener.deleteNotification(model, holder.layoutPosition)
+            }
+
+            if(model.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION){
+                holder.open_presc_btn.visibility = View.GONE
+            }else{
+                holder.open_presc_btn.visibility = View.VISIBLE
             }
             holder.open_presc_btn.setOnClickListener {
                 clickListener.openNotification(

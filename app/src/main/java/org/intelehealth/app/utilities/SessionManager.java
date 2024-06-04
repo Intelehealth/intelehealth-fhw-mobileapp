@@ -404,7 +404,8 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getLastSyncDateTime() {
+    public String
+    getLastSyncDateTime() {
         return pref.getString(LAST_SYNC_SUCCESS_DATE_TIME, "- - - -");
     }  //getting the sync value  and time and saving in the sharedpref
 

@@ -852,7 +852,7 @@
                 android:text="@string/view_prescription_lbl"
                 android:textColor="@color/white"
                 android:maxLines="1"
-                android:ellipsize="end"
+                android:autoSizeTextType="uniform"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
             <!--<Button
@@ -951,7 +951,7 @@
                 android:padding="@dimen/margin_12"
                 android:text="@string/send_visit_button"
                 android:maxLines="1"
-                android:ellipsize="end"
+                android:autoSizeTextType="uniform"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />

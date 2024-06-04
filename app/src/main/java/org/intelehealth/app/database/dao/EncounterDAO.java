@@ -830,17 +830,18 @@ public class EncounterDAO {
     public static ArrayList<FollowUpNotificationData> getFollowUpDateListFromConceptId() throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
+        String followUpDateConcept = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
 
         ArrayList<FollowUpNotificationData> list = new ArrayList<>();
 
         try {
 
             String query = """
-                    select p.uuid,p.first_name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs
+                    select p.uuid,p.openmrs_id,p.first_name || " " || p.last_name as name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs
                      left JOIN tbl_encounter as e on obs.encounteruuid = e.uuid\s
                      left JOIN tbl_visit as v on e.visituuid = v.uuid
                      left join tbl_patient as p on v.patientuuid = p.uuid
-                     where obs.conceptuuid = 'e8caffd6-5d22-41c4-8d6a-bc31a44d0c86'""";
+                     where obs.value > datetime('now') and obs.conceptuuid = \s"""+ "'"+followUpDateConcept+"'";
 
             Cursor idCursor = db.rawQuery(query, new String[]{});
 
@@ -848,7 +849,8 @@ public class EncounterDAO {
                 while (idCursor.moveToNext()) {
                     list.add(new FollowUpNotificationData(
                             idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")),
-                            idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("name")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("gender")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid")),

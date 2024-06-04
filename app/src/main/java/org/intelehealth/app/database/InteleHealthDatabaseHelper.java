@@ -245,6 +245,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT," +
                     "sync TEXT)";
 
+
+    public static final String FOLLOW_UP_NOTIFICATION_SCHEDULE = "CREATE TABLE IF NOT EXISTS tbl_follow_up_notification_schedule (" +
+            "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "visituuid TEXT," +
+            "schedule_date_time TEXT" +
+            ")";
+
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -311,6 +318,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENTS);
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
+        db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
         uuidInsert(db);
         database = db;
 

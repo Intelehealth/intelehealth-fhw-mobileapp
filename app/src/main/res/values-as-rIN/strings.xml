@@ -1939,5 +1939,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="preview">Preview</string>
     <string name="visit_preview">Visit Preview</string>
     <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
+    <string name="follow_up_appointment_will_start_in_hours_for">Follow up appointment will start in %1$s hours for (%2$s , %3$s)</string>
 
 </resources>

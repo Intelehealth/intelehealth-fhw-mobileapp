@@ -6,6 +6,7 @@ package org.intelehealth.app.models
  */
 data class FollowUpNotificationData(
     var patientUid: String,
+    var openMrsId: String,
     var name: String,
     var gender: String,
     var encounterTypeUid: String,
@@ -15,7 +16,7 @@ data class FollowUpNotificationData(
     var value: String,
 ) {
     constructor() : this(
-        "",
+        "","",
         "", "", "",
         "", "", "",
         ""

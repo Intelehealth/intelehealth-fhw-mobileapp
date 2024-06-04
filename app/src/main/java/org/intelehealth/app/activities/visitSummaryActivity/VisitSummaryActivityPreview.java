@@ -1679,7 +1679,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bitmap.recycle();
     }
 
     private void printImage(Bitmap bitmap) {

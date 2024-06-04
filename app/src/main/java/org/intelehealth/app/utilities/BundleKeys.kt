@@ -12,5 +12,15 @@ class BundleKeys {
         const val TITLE = "title"
         const val DESCRIPTION = "description"
         const val CHANNEL_ID = "channel_id"
+        const val PATIENT_UUID = "patientUuid"
+        const val PATIENT_ID = "patientId"
+        const val VISIT_UUI = "visitUuid"
+        const val GENDER = "gender"
+        const val NAME = "name"
+        const val ENCOUNTER_TYPE_UUID = "encounterTypeUid"
+        const val CONCEPT_UUID = "conceptUuid"
+        const val ENCOUNTER_UUID = "encounterUuid"
+        const val VALUE = "value"
+        const val FLOAT_AGE_YEAR_MONTH = "float_ageYear_Month"
     }
 }
