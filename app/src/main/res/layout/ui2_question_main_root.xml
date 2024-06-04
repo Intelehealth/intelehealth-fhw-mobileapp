@@ -120,6 +120,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:drawableTint="@color/colorPrimary"
                         app:drawableEndCompat="@drawable/info_blue_svg" />
                 </LinearLayout>
 
