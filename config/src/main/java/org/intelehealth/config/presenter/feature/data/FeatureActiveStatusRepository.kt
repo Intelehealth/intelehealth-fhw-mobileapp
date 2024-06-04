@@ -11,4 +11,6 @@ class FeatureActiveStatusRepository(private val featureActiveStatusDao: FeatureA
     fun getFeaturesActiveStatus() = featureActiveStatusDao.getFeatureActiveStatusLiveRecord()
 
     suspend fun getAllRecord() = featureActiveStatusDao.getAllRecord()
+
+    suspend fun getRecord() = featureActiveStatusDao.getRecord()
 }

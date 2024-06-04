@@ -41,6 +41,7 @@ import java.util.UUID;
  **/
 public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
     private static final String TAG = "BaseActivity";
+    private FeatureActiveStatus featureActiveStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,23 +66,25 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
 
     @Override
     public void showNotification(@NonNull ChatMessage chatMessage) {
-        RtcArgs args = new RtcArgs();
-        args.setPatientName(chatMessage.getPatientName());
-        args.setPatientId(chatMessage.getPatientId());
-        args.setVisitId(chatMessage.getVisitId());
-        args.setNurseId(chatMessage.getToUser());
-        args.setDoctorUuid(chatMessage.getFromUser());
-        try {
-            String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
-            new AppNotification.Builder(this)
-                    .title(title)
-                    .body(chatMessage.getMessage())
-                    .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
-                    .send();
+        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
+            RtcArgs args = new RtcArgs();
+            args.setPatientName(chatMessage.getPatientName());
+            args.setPatientId(chatMessage.getPatientId());
+            args.setVisitId(chatMessage.getVisitId());
+            args.setNurseId(chatMessage.getToUser());
+            args.setDoctorUuid(chatMessage.getFromUser());
+            try {
+                String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
+                new AppNotification.Builder(this)
+                        .title(title)
+                        .body(chatMessage.getMessage())
+                        .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
+                        .send();
 
-            saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
+                saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -103,6 +106,7 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
     }
 
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        featureActiveStatus = activeStatus;
         Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
     }
 }

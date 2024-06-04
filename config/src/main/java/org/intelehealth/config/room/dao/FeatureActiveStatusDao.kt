@@ -22,6 +22,9 @@ interface FeatureActiveStatusDao : CoreDao<FeatureActiveStatus> {
     suspend fun getAllRecord(): List<FeatureActiveStatus>
 
     @Query("SELECT * FROM tbl_feature_active_status")
+    suspend fun getRecord(): FeatureActiveStatus
+
+    @Query("SELECT * FROM tbl_feature_active_status")
     fun getAllLiveRecord(): LiveData<List<FeatureActiveStatus>>
 
     @Query("SELECT * FROM tbl_feature_active_status")

@@ -6,6 +6,10 @@ import android.content.Intent
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
@@ -14,6 +18,8 @@ import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity
+import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
+import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
@@ -39,27 +45,39 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         if (sessionManager.isLogout) return
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
-
-                Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
-                    nurseName = sessionManager.chwname
-                    callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
-                    PatientsDAO().getPatientName(roomId).apply {
-                        patientName = get(0).name
-                    }
-                }.also { arg ->
-                    Timber.tag(TAG).d("onMessageReceived: $arg")
-                    if (isAppInForeground()) {
-                        arg.callMode = CallMode.INCOMING
-                        CallHandlerUtils.saveIncomingCall(context, arg)
-                        context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
-                    } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg)
+                checkVideoActiveStatus(context) {
+                    Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
+                        nurseName = sessionManager.chwname
+                        callType = CallType.VIDEO
+                        url = BuildConfig.LIVE_KIT_URL
+                        socketUrl =
+                            BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                        PatientsDAO().getPatientName(roomId).apply {
+                            patientName = get(0).name
+                        }
+                    }.also { arg ->
+                        Timber.tag(TAG).d("onMessageReceived: $arg")
+                        if (isAppInForeground()) {
+                            arg.callMode = CallMode.INCOMING
+                            CallHandlerUtils.saveIncomingCall(context, arg)
+                            context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
+                        } else {
+                            CallHandlerUtils.operateIncomingCall(it, arg)
+                        }
                     }
                 }
             } else {
                 parseMessage(notification, context)
+            }
+        }
+    }
+
+    private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
+        val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        scope.launch {
+            FeatureActiveStatusRepository(dao).apply {
+                if (getRecord().videoSection) block.invoke()
             }
         }
     }

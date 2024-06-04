@@ -431,12 +431,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
-        findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
-        findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
-        findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
-        findViewById(R.id.relative_speciality_block).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
-        findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-        findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+        if (activeStatus != null) {
+            findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.relative_speciality_block).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -1077,8 +1080,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
-                    tempView.setText(convertCtoF(TAG, temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
+                    tempView.setText(convertCtoF(TAG, temperature.getValue()));
                 }
             }
 
@@ -2178,9 +2181,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void showSelectSpeciliatyErrorDialog() {
         TextView t = (TextView) speciality_spinner.getSelectedView();
-        t.setError(getString(R.string.please_select_specialization_msg));
-        t.setTextColor(Color.RED);
-        showSpecialisationDialog();
+        if (t != null) {
+            t.setError(getString(R.string.please_select_specialization_msg));
+            t.setTextColor(Color.RED);
+            showSpecialisationDialog();
+        }
     }
 
     private void showSpecialisationDialog() {
