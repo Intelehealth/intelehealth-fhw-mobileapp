@@ -751,6 +751,7 @@
 
             <!--            Priority Visit-->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardPriorityVisit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relative_speciality_block"
@@ -874,7 +875,7 @@
 
         <!--Visit Details - end -->
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btn_bottom_vs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -892,9 +893,11 @@
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
                 android:text="@string/appointment"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
@@ -903,6 +906,9 @@
                 android:id="@+id/btn_vs_sendvisit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_vs_appointment"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="@dimen/common_edittext_margin_top"
                 android:layout_marginEnd="@dimen/margin_24"
@@ -916,7 +922,7 @@
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <FrameLayout

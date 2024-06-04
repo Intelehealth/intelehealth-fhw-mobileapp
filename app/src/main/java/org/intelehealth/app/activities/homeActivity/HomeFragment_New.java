@@ -52,11 +52,13 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.shared.BaseFragment;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver {
+public class HomeFragment_New extends BaseFragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
@@ -447,7 +449,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     totalUpcomingApps = 0;
                 }*/
 
-                int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);;
+                int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
+                ;
                 if (mUpcomingAppointmentCountTextView != null) {
                     Activity activity = getActivity();
                     if (isAdded() && activity != null) {
@@ -481,8 +484,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    Log.v(TAG, "value_text - "+value_text);
-                    Log.v(TAG, "visitUuid - "+visitUuid);
+                    Log.v(TAG, "value_text - " + value_text);
+                    Log.v(TAG, "visitUuid - " + visitUuid);
                     if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no"))
 //                    boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
 //                    if (isCompletedExitedSurvey) {
@@ -498,6 +501,13 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         cursor.close();
 
         return count;
+    }
+
+    @Override
+    public void onFeatureStatusLoaded(@NonNull FeatureActiveStatus status) {
+        super.onFeatureStatusLoaded(status);
+        view.findViewById(R.id.cardView4_appointment)
+                .setVisibility(status.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
     }
 }
 
