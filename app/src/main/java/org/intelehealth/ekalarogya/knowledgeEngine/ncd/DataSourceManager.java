@@ -5,6 +5,7 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,5 +99,42 @@ public class DataSourceManager {
             }
         }
         return sourceDataInfo;
+    }
+
+    public static List<SourceData> getValuesForDataSourceFromTargetNestedNode(String rulesType, String sourceDataType, String sourceDataNameType, Node mmRootNode) {
+        List<SourceData> resultSourceDataList = new ArrayList<>();
+        String[] tempNodeNames = sourceDataNameType.split("#=>>"); // node & node separator
+        Node node = null;
+        for (int i = 0; i < tempNodeNames.length; i++) {
+            String tempText = tempNodeNames[i].trim();
+            boolean isLastNode = tempText.contains("<=>") || i == tempNodeNames.length - 1; // node & value separator
+            List<Node> options = node == null ? mmRootNode.getOptionsList() : node.getOptionsList();
+            for (int j = 0; j < options.size(); j++) {
+                if (isLastNode) {
+                    String nodeText = tempText.split("<=>")[0];
+                    String nodeVal = tempText.split("<=>")[1];
+                    // resultSourceDataList = parseDataNameTypeByUnderscore
+                    if (options.get(j).getText().equals(nodeText)) {
+                        node = options.get(j);
+                        if(node.isRecurring()){
+                            List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataType, nodeVal);
+                            //String lastVal
+                            if (sourceDataInfoList != null) {
+                                resultSourceDataList = DataSourceManager.getValuesForDataSourceFromCurrentNodeRecurringPairDataList(sourceDataInfoList, node);
+                            }
+                        }
+
+                        break;
+                    }
+                } else {
+                    if (options.get(j).getText().equals(tempText)) {
+                        node = options.get(j);
+
+                        break;
+                    }
+                }
+            }
+        }
+        return resultSourceDataList;
     }
 }

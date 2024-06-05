@@ -13,6 +13,7 @@ public class ValidationConstants {
     //source data types
     public static final String SOURCE_DATA_TYPE_PATIENT_ATTRIBUTE = "PATIENT_ATTRIBUTE";
     public static final String SOURCE_DATA_TYPE_NODE_VAL_INT = "NODE_VAL_INT";
+    public static final String SOURCE_DATA_TYPE_NODE_VAL_INT_SET = "NODE_VAL_INT_SET";
     public static final String SOURCE_DATA_TYPE_NODE_VAL_DOUBLE = "NODE_VAL_DOUBLE";
     public static final String SOURCE_DATA_TYPE_NODE_VAL_STR = "NODE_VAL_STR";
     public static final String SOURCE_DATA_TYPE_THIS_NODE_VAL_LIST_INT_SET = "THIS_NODE_VAL_LIST_INT_SET";
@@ -47,6 +48,7 @@ public class ValidationConstants {
 
     public static final String ACTION_TYPE_SET_SINGLE_OPTION_VALUE = "SET_SINGLE_OPTION_VALUE";
     public static final String ACTION_TYPE_WAIT_FOR_RECURRING_DATA_CAPTURE = "WAIT_FOR_RECURRING_DATA_CAPTURE";
+    public static final String ACTION_QUESTION_STATUS_UPDATE = "org.intelehealth.ekalarogya.ACTION_QUESTION_STATUS_UPDATE";
 
 
 }

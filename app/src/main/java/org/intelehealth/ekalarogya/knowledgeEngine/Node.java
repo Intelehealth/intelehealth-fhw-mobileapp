@@ -48,6 +48,7 @@ import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionsAdap
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDNodeValidationLogic;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDValidationResult;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationConstants;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationRules;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.utilities.DecimalDigitsInputFilter;
@@ -87,7 +88,18 @@ public class Node implements Serializable {
     }
 
     private boolean isRecurring;
+
+    public boolean isLazyPopuShow() {
+        return isLazyPopuShow;
+    }
+
+    public void setLazyPopuShow(boolean lazyPopuShow) {
+        isLazyPopuShow = lazyPopuShow;
+    }
+
+    private boolean isLazyPopuShow;
     private int recurringWaitTimeInMin;
+
     private int recurringMaxCount;
 
     private int recurringCurrentCount = 1;
@@ -213,6 +225,7 @@ public class Node implements Serializable {
 
             this.text = jsonNode.getString("text");
             this.isRecurring = jsonNode.optBoolean("is-recurring");
+            this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
             this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
             this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
@@ -369,6 +382,7 @@ public class Node implements Serializable {
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
         this.isRecurring = source.isRecurring;
+        this.isLazyPopuShow = source.isLazyPopuShow;
         this.recurringMaxCount = source.recurringMaxCount;
         this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
 
@@ -2121,21 +2135,46 @@ public class Node implements Serializable {
                             node.addLanguage(et_enter_value.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }*/
+                    node1.setLanguage(node1.getText()+"-"+value1);
+                    node2.setLanguage(node2.getText()+"-"+value2);
+                    node1.setSelected(true);
+                    node2.setSelected(true);
                     node.getRecurringCapturedDataList().add(value1 + "/" + value2);
                     node.setSelected(true);
                     node.setDataCapture(true);
-                    NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(context, "", null, -1, node, false, null);
+                    NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(context, "", null, -1, node, false, null, false);
                     if (ncdValidationResult.getActionResult() != null) {
                         String target = ncdValidationResult.getActionResult().getTarget();
                         if (target.equals("[ALT]")) {
-                            Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
-                            node.setRecurringCurrentCount(node.getRecurringCurrentCount()+1);
-                            // count limit if it exceeded then move to next question
-                            // show countdonwn timer
+                            node.setRecurringCurrentCount(node.getRecurringCurrentCount() + 1);
+                            if(node.getRecurringCurrentCount()>node.getRecurringMaxCount()){
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("move_next", true);
+                                context.sendBroadcast(intent);
+                            }else {
+                                Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
+                                // count limit if it exceeded then move to next question
+                                // show countdown timer
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("recurring_wait_time_min", node.getRecurringWaitTimeInMin());
+                                intent.putExtra("recurring_max_try_count", node.getRecurringMaxCount());
+                                intent.putExtra("recurring_current_step", node.getRecurringCurrentCount());
+                                intent.putExtra("move_next", false);
+                                intent.putExtra("node_text", node.getDisplay());
+                                context.sendBroadcast(intent);
+                            }
 
+
+                        } else {
+                            Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                            intent.putExtra("move_next", true);
+                            context.sendBroadcast(intent);
                         }
-                    }else{
+                    } else {
                         //// go to next question
+                        Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                        intent.putExtra("move_next", true);
+                        context.sendBroadcast(intent);
                     }
 
                 }
@@ -4753,5 +4792,23 @@ public class Node implements Serializable {
     public void setRecurringCurrentCount(int recurringCurrentCount) {
         this.recurringCurrentCount = recurringCurrentCount;
     }
+
+
+    public int getRecurringWaitTimeInMin() {
+        return recurringWaitTimeInMin;
+    }
+
+    public void setRecurringWaitTimeInMin(int recurringWaitTimeInMin) {
+        this.recurringWaitTimeInMin = recurringWaitTimeInMin;
+    }
+
+    public int getRecurringMaxCount() {
+        return recurringMaxCount;
+    }
+
+    public void setRecurringMaxCount(int recurringMaxCount) {
+        this.recurringMaxCount = recurringMaxCount;
+    }
+
 }
 

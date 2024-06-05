@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ValidationRulesParser {
 
@@ -14,14 +16,16 @@ public class ValidationRulesParser {
      * @param data
      * @return
      */
-    public static List<SourceData> getSourceDataInfoList(String type, String data) {
+    public static List<SourceData> getSourceDataInfoList(String type, String dataType, String data) {
         if (type.equals(ValidationConstants.TYPE_NAVIGATE)) {
             return parseDataNameTypeByUnderscore(data);
         } else if (type.equals(ValidationConstants.TYPE_RANGE_TEXT)) {
-
+            if (dataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT_SET)) {
+                return parseDataNameTypeByUnderscore(data);
+            }
         } else if (type.equals(ValidationConstants.TYPE_TEXT_DATE)) {
 
-        }else if (type.equals(ValidationConstants.RECURRING_NUMBER_SET)) {
+        } else if (type.equals(ValidationConstants.RECURRING_NUMBER_SET)) {
             return parseDataNameTypeByUnderscore(data);
         }
         return null;
@@ -65,31 +69,50 @@ public class ValidationRulesParser {
 
     public static List<CheckInfoData> getCheckInfoList(String check) {
         //  "check": "AGE[GREATER_THAN]-AND-GENDER[EQUAL]",
+        // C1(SBP[GREATER_THAN]-OR-DBP[GREATER_THAN]),C2(SBP[LESS_THAN]-OR-DBP[LESS_THAN])
+        String[] checkSection = checkSection = check.split(",");
 
         List<CheckInfoData> checkInfoDataList = new ArrayList<CheckInfoData>();
-        String[] tempLevel1 = check.split("-");
-
-        for (String tempItem : tempLevel1) {
-
-            CheckInfoData checkInfoData = new CheckInfoData();
-            if (tempItem.contains("[") && tempItem.contains("]")) {
-                //"source-data": "AGE[INT]_GENDER[STR]",
-                String[] temp1 = tempItem.split("\\[");
-                String dataName = temp1[0];
-                String condition = temp1[1].substring(0, temp1[1].length() - 1);
-                checkInfoData.setDataName(dataName);
-                checkInfoData.setCondition(condition);
-            } else {
-                //checkInfoData.setCondition(tempItem);
-                // this
-                int lastIndex = checkInfoDataList.size() - 1;
-
-                checkInfoDataList.get(lastIndex).setAssociateOperator(tempItem);
-                checkInfoDataList.get(lastIndex).setHavingAssociateCondition(true);
-                continue;
+        for (String checkSecItem : checkSection) {
+            String prefix = checkSecItem.substring(0, 3);
+            String regex = "^C\\d\\($";
+            // Compile the pattern
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(prefix);
+            boolean matches = matcher.matches();
+            String checkSec = "";
+            String finalCheckString = checkSecItem;
+            if (matches) {
+                checkSec = prefix.substring(0, 2);
+                finalCheckString = checkSecItem.substring(3, checkSecItem.length() - 1);
             }
-            checkInfoDataList.add(checkInfoData);
 
+
+            String[] tempLevel1 = finalCheckString.split("-");
+
+            for (String tempItem : tempLevel1) {
+
+                CheckInfoData checkInfoData = new CheckInfoData();
+                if (tempItem.contains("[") && tempItem.contains("]")) {
+                    //"source-data": "AGE[INT]_GENDER[STR]",
+                    String[] temp1 = tempItem.split("\\[");
+                    String dataName = temp1[0];
+                    String condition = temp1[1].substring(0, temp1[1].length() - 1);
+                    checkInfoData.setDataName(dataName);
+                    checkInfoData.setCondition(condition);
+                    checkInfoData.setCheckSectionName(checkSec);
+                } else {
+                    //checkInfoData.setCondition(tempItem);
+                    // this
+                    int lastIndex = checkInfoDataList.size() - 1;
+
+                    checkInfoDataList.get(lastIndex).setAssociateOperator(tempItem);
+                    checkInfoDataList.get(lastIndex).setHavingAssociateCondition(true);
+                    continue;
+                }
+                checkInfoDataList.add(checkInfoData);
+
+            }
         }
         return checkInfoDataList;
 

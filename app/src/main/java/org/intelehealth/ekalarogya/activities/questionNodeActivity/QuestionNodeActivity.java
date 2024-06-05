@@ -3,13 +3,17 @@ package org.intelehealth.ekalarogya.activities.questionNodeActivity;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.node_fetch_local_language;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +23,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +53,7 @@ import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDNodeValidationLogic;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDValidationResult;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationConstants;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.models.dto.ObsDTO;
 import org.intelehealth.ekalarogya.utilities.FileUtils;
@@ -59,10 +67,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -116,8 +127,79 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     RelativeLayout navButtonRelativeLayout;
     RecyclerView question_recyclerView;
     Context context;
+    private LinearLayout mTimerLinearLayout;
+    private TextView mTimerTitleTextView, mTimerTextView;
 
     private HorizontalScrollLockLayoutManager linearLayoutManager;
+    private BroadcastReceiver mQuestionActionBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Handle the broadcast
+            String action = intent.getAction();
+            if (action != null && action.equals(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE)) {
+                // Perform your actions here
+                int waitTime = intent.getIntExtra("recurring_wait_time_min", 0);
+                int maxTryCount = intent.getIntExtra("recurring_max_try_count", 0);
+                int currentStep = intent.getIntExtra("recurring_current_step", 0);
+                String nodeText = intent.getStringExtra("node_text");
+                boolean isRequiredToMoveNextQuestion = intent.getBooleanExtra("move_next", false);
+                if (isRequiredToMoveNextQuestion) {
+                    forwardButton.setVisibility(View.VISIBLE);
+                    mTimerLinearLayout.setVisibility(View.GONE);
+                    Toast.makeText(context, R.string.please_move_to_next_question, Toast.LENGTH_SHORT).show();
+                } else {
+                    forwardButton.setVisibility(View.INVISIBLE);
+                    mTimerLinearLayout.setVisibility(View.VISIBLE);
+                    mTimerTitleTextView.setText("Waiting for " + nodeText + " - " + currentStep);
+                    mCountDownTimer = new CountDownTimer(waitTime * 60 * 1000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // Used for formatting digit to be in 2 digits only
+                            NumberFormat f = new DecimalFormat("00");
+                            //long hour = (millisUntilFinished / 3600000) % 24;
+                            long min = (millisUntilFinished / 60000) % 60;
+                            long sec = (millisUntilFinished / 1000) % 60;
+                            //mTimerTextView.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+                            mTimerTextView.setText(f.format(min) + ":" + f.format(sec));
+                        }
+
+                        // When the task is over it will print 00:00:00 there
+                        public void onFinish() {
+                            mTimerTextView.setText("00:00");
+                            mTimerLinearLayout.setVisibility(View.GONE);
+                            // Get instance of Vibrator from current Context
+                            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+                            // Vibrate for 400 milliseconds
+                            v.vibrate(400);
+                            Toast.makeText(context, "Please take the reading for " + nodeText, Toast.LENGTH_SHORT).show();
+
+                            // TODO:directly open the input box
+                            mQuestionListingadapter.manualClickActionOnRecurringInput();
+
+                        }
+                    }.start();
+                }
+
+            }
+        }
+    };
+
+    private CountDownTimer mCountDownTimer;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Register the receiver
+        IntentFilter filter = new IntentFilter(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+        registerReceiver(mQuestionActionBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the receiver
+        unregisterReceiver(mQuestionActionBroadcastReceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +280,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 fabClick();
             }
         });
+
+        mTimerLinearLayout = findViewById(R.id.ll_timer);
+        mTimerTitleTextView = findViewById(R.id.tv_timer_title);
+        mTimerTextView = findViewById(R.id.tv_timer);
 
         navButtonRelativeLayout = findViewById(R.id.rl_nav_btn);
         forwardButton = findViewById(R.id.btn_forward);
@@ -332,10 +418,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         filePath.mkdirs();
                     }
                     Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
-               return;
+                    return;
                 } else {
                     Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
-                return;
+                    return;
                 }
                 //If there is an input type, then the question has a special method of data entry.
             }
@@ -671,18 +757,65 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         if (!currentDisplayingNode.isSelected() || !currentDisplayingNode.isNestedMandatoryOptionsAnswered()) {
                             Toast.makeText(QuestionNodeActivity.this, "Please answer!", Toast.LENGTH_SHORT).show();
                         } else {
-                            //mCurrentNodeIndex += 1;
-                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
 
-                            mCurrentNode = ncdValidationResult.getUpdatedNode();
+                            //mCurrentNodeIndex += 1;
+
+                            Node pastActionNode = currentNode.getOption(mCurrentNodeIndex);
+                            String popupMessage = pastActionNode.getPop_up();
+                            Set<String> popSet = new HashSet<>();
+                            if (popupMessage == null || popupMessage.isEmpty()) {
+                                for (int i = 0; i < pastActionNode.getOptionsList().size(); i++) {
+                                    Node tempNode = pastActionNode.getOptionsList().get(i);
+                                    if (tempNode.isSelected() && tempNode.getPop_up() != null && !tempNode.getPop_up().isEmpty()) {
+                                        popSet.add(tempNode.getPop_up());
+                                    }
+                                }
+                            }
+                            StringBuilder stringBuilder = new StringBuilder();
+
+                            Iterator<String> setIterator = popSet.iterator();
+                            while(setIterator.hasNext()){
+                                if(!stringBuilder.toString().isEmpty()){
+                                    stringBuilder.append("\n");
+                                }
+                                stringBuilder.append(setIterator.next());
+                            }
+                            String tempMsg = stringBuilder.toString().trim();
+                            if(!tempMsg.isEmpty()){
+                                popupMessage = tempMsg;
+                            }
+
+                            if (pastActionNode.isLazyPopuShow() && !popupMessage.isEmpty()) {
+                                MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(QuestionNodeActivity.this);
+                                alertdialogBuilder.setMessage(popupMessage);
+                                alertdialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                //alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+                                AlertDialog alertDialog = alertdialogBuilder.create();
+                                alertDialog.show();
+                                Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                                //Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                //negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                IntelehealthApplication.setAlertDialogCustomTheme(QuestionNodeActivity.this, alertDialog);
+                            }
+
+                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
+                            if (ncdValidationResult.getUpdatedNode() != null)
+                                mCurrentNode = ncdValidationResult.getUpdatedNode();
+
                             if (ncdValidationResult.isReadyToEndTheScreening()) {
                                 Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
                             } else {
                                 if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
                                     mCurrentNodeIndex += 1;
                                     // need to check the autofill node
-                                    if(mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()){
-                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
+                                    if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
                                         mCurrentNode = autoFillResult.getUpdatedNode();
                                     }
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
@@ -724,6 +857,37 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
         }
     }
+
+   /* private void postSubmitCheckLogic(Node rootNode, Node pastActionNode){
+        NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, rootNode, mCurrentNodeIndex, pastActionNode, false, null, true);
+        if (ncdValidationResult.getUpdatedNode() != null)
+            mCurrentNode = ncdValidationResult.getUpdatedNode();
+        if (ncdValidationResult.isReadyToEndTheScreening()) {
+            Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
+        } else {
+            if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
+                mCurrentNodeIndex += 1;
+                // need to check the autofill node
+                if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                    NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, rootNode, mCurrentNodeIndex, rootNode.getOption(mCurrentNodeIndex), false, null, true);
+                    mCurrentNode = autoFillResult.getUpdatedNode();
+                }
+                question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+
+                decideToDisplayTheActionButtons();
+            } else {
+                for (int i = 0; i < mCurrentNode.getOptionsList().size(); i++) {
+                    Node tempNode = mCurrentNode.getOptionsList().get(i);
+                    if (tempNode.getId().equals(ncdValidationResult.getTargetNodeID())) {
+                        mCurrentNodeIndex = i;
+                    }
+                }
+                Log.v(TAG, mCurrentNode.toString());
+                question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                decideToDisplayTheActionButtons();
+            }
+        }
+    }*/
 
     private void decideToDisplayTheActionButtons() {
         if (mCurrentNodeIndex == 0) {

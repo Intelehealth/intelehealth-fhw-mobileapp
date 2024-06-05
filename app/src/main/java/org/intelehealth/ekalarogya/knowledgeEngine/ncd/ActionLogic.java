@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides action generation logic for nodes using the validation rules.
@@ -17,15 +19,39 @@ public class ActionLogic {
         for (int i = 0; i < actionList.size(); i++) {
             Action action = actionList.get(i);
             String conditionStatement = action.getIfCondition();
+
+            String prefix = conditionStatement.substring(0, 3);
+            String regex = "^C\\d\\($";
+            // Compile the pattern
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(prefix);
+            boolean matches = matcher.matches();
+            String checkSec = "";
+
+            if (matches) {
+                checkSec = prefix.substring(0, 2);
+                conditionStatement = conditionStatement.substring(3, conditionStatement.length() - 1);
+            }
+            List<CheckInfoData> finalCheckInfoDataList = new ArrayList<>();
+            for (int j = 0; j < checkInfoDataList.size(); j++) {
+                CheckInfoData temp = checkInfoDataList.get(j);
+                if(temp.getCheckSectionName().equals(checkSec)){
+                    finalCheckInfoDataList.add(temp);
+                }
+            }
+            if(finalCheckInfoDataList.isEmpty()){
+                finalCheckInfoDataList = checkInfoDataList;
+            }
+
             // check for multiple attribute required
-            if (checkInfoDataList.size() > 1) {
+            if (finalCheckInfoDataList.size() > 1) {
                 //Ex: "check": "AGE[GREATER_THAN]AND-GENDER[EQUAL]"
                 // "IF": "11-MALE"
                 String[] targetValues = conditionStatement.split("-");
                 List<Boolean> conditionsPassStatuList = new ArrayList<>();
                 List<String> associateOperatorList = new ArrayList<>();
                 for (int j = 0; j < targetValues.length; j++) {
-                    CheckInfoData checkInfoData = checkInfoDataList.get(j);
+                    CheckInfoData checkInfoData = finalCheckInfoDataList.get(j);
                     SourceData sourceData = sourceDataInfoValueList.size() == 1 ? sourceDataInfoValueList.get(0) : sourceDataInfoValueList.get(j);
                     if (checkInfoData.isHavingAssociateCondition())
                         associateOperatorList.add(checkInfoData.getAssociateOperator());
