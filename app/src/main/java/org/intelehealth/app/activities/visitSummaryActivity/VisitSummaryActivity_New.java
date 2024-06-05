@@ -137,6 +137,7 @@ import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.FollowUpNotificationScheduleDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -168,6 +169,7 @@ import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.PdfGenerationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -229,7 +231,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare;
     private ConstraintLayout btn_bottom_vs;
-    private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private Button preview_with_prescription_lay,preview_with_save_visit_lay;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
@@ -3098,7 +3099,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     EncounterDTO encounterDTO = new EncounterDTO();
-                    encounterDTO.setUuid(UUID.randomUUID().toString());
+                    String encounterUuid = UUID.randomUUID().toString();
+                    encounterDTO.setUuid(encounterUuid);
                     encounterDTO.setVisituuid(visitUuid);
                     encounterDTO.setSyncd(false);
                     encounterDTO.setProvideruuid(sessionManager.getProviderID());
@@ -3223,6 +3225,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
+                            new FollowUpNotificationScheduleDAO().deleteFollowUpNotificationDataFromVisitUuid(visitUUID);
+
+                            NotificationSchedulerUtils.scheduleFollowUpNotification();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),

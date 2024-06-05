@@ -842,7 +842,7 @@ public class EncounterDAO {
                      left JOIN tbl_encounter as e on obs.encounteruuid = e.uuid\s
                      left JOIN tbl_visit as v on e.visituuid = v.uuid
                      left join tbl_patient as p on v.patientuuid = p.uuid
-                     where obs.value > datetime('now') and obs.conceptuuid = \s"""+ "'"+followUpDateConcept+"'";
+                     where obs.conceptuuid = \s""" + "'" + followUpDateConcept + "'";
 
             Cursor idCursor = db.rawQuery(query, new String[]{});
 
@@ -856,8 +856,8 @@ public class EncounterDAO {
                             idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")),
-                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")),
-                            idCursor.getString(idCursor.getColumnIndexOrThrow("value"))
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("value")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("value"))
                     ));
                 }
             }

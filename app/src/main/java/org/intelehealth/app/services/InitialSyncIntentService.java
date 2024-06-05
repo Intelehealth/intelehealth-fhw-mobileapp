@@ -43,7 +43,7 @@ public class InitialSyncIntentService extends IntentService {
         SyncDAO syncDAO = new SyncDAO();
         String fromActivity = intent.getStringExtra("from");
         try {
-            sync = syncDAO.SyncData(responseDTO);
+            sync = syncDAO.SyncData(responseDTO,this);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

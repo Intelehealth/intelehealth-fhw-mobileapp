@@ -1,6 +1,5 @@
 package org.intelehealth.app.utilities
 
-import android.content.Context
 import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
@@ -14,11 +13,11 @@ import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.models.FollowUpNotificationShData
 import org.intelehealth.app.utilities.exception.DAOException
 import org.intelehealth.app.worker.ScheduleNotificationWorker
+import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
+import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.math.round
+
 
 /**
  * Created by Tanvir Hasan on 26-05-2024 : 11-58.
@@ -27,30 +26,29 @@ import kotlin.math.round
 class NotificationSchedulerUtils {
     companion object {
         @JvmStatic
-        fun scheduleFollowUpNotification(context: Context) {
+        fun scheduleFollowUpNotification() {
 
             try {
                 val notificationDataList = EncounterDAO.getFollowUpDateListFromConceptId()
                 for (notificationData in notificationDataList) {
                     if (FollowUpNotificationScheduleDAO().countScheduleByVisitUuid(notificationData.visitUuid) <= 0) {
-                        val followUpTime = getDateTimeMiliFromString( notificationData.value)
-                            //System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5)
+                        val followUpTime = parseDateTimeToTimestamp(notificationData.value)
 
-                        scheduleNotification(
-                            context,
-                            followUpTime,
-                            AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
-                            TimeUnit.MINUTES,
-                            notificationData
-                        )
+                        if (followUpTime > System.currentTimeMillis()) {
+                            scheduleNotification(
+                                followUpTime,
+                                AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
+                                TimeUnit.MINUTES,
+                                notificationData
+                            )
 
-                        scheduleNotification(
-                            context,
-                            followUpTime,
-                            AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION,
-                            TimeUnit.HOURS,
-                            notificationData
-                        )
+                            scheduleNotification(
+                                followUpTime,
+                                /*AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION*/5,
+                                TimeUnit.MINUTES,
+                                notificationData
+                            )
+                        }
                     }
                 }
 
@@ -61,32 +59,48 @@ class NotificationSchedulerUtils {
 
         }
 
-        private fun getDateTimeMiliFromString(dateTime: String): Long {
-            val dateTimeString = /*"2024-06-03T17:53:04.000+0530"*/dateTime
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-            sdf.timeZone = TimeZone.getTimeZone("UTC")
-            val date: Date? = sdf.parse(dateTimeString)
+        fun parseDateTimeToTimestamp(input: String): Long {
+            val formatter = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.getDefault())
+            val date = formatter.parse(input)
             return date?.time ?: 0
+        }
+
+        fun parseDateTimeToDateTime(input: String): String {
+
+            val inputDateStr = input
+
+
+            val inputFormat = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.ENGLISH)
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH)
+
+            try {
+                val date = inputFormat.parse(inputDateStr)
+
+                return outputFormat.format(date)
+
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            return ""
         }
 
 
         @JvmStatic
         fun scheduleNotification(
-            context: Context,
             dateTime: Long,
             duration: Long,
             durationType: TimeUnit,
             notificationData: FollowUpNotificationData,
         ) {
             val data = Data.Builder()
-                .putString(BundleKeys.TITLE, "Reminder")
+                .putString(BundleKeys.TITLE, IntelehealthApplication.getAppContext().getString(R.string.reminder))
                 .putString(
                     BundleKeys.DESCRIPTION,
-                    context.getString(
-                        R.string.follow_up_appointment_will_start_in_hours_for,
-                        duration.toInt().toString(),
+                    IntelehealthApplication.getAppContext().getString(
+                        R.string.patient_follow_up_appointment_on,
                         notificationData.name,
-                        notificationData.openMrsId
+                        notificationData.openMrsId,
+                        notificationData.value
                     )
                 )
                 .putString(
@@ -109,13 +123,16 @@ class NotificationSchedulerUtils {
 
             val delay = dateTime - System.currentTimeMillis() - durationType.toMillis(duration)
 
-            Log.d("DDDDDDEEEEE",""+delay+"  "+durationType.toMillis(duration)+"  "+dateTime)
+            Log.d(
+                "DDDDDDEEEEE",
+                "" + delay + "  " + durationType.toMillis(duration) + "  " + dateTime
+            )
             val workRequest2Hours = OneTimeWorkRequestBuilder<ScheduleNotificationWorker>()
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .setInputData(data)
                 .build()
 
-            if(delay < 0) return
+            if (delay < 0) return
 
             WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .enqueue(workRequest2Hours)

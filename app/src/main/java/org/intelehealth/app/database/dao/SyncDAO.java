@@ -28,6 +28,7 @@ import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.PatientsFrameJson;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -62,7 +63,7 @@ public class SyncDAO {
     private static final SyncProgress liveDataSync = new SyncProgress();
 
 
-    public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
+    public boolean SyncData(ResponseDTO responseDTO,Context context) throws DAOException {
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         appLanguage = sessionManager.getAppLanguage();
@@ -97,6 +98,9 @@ public class SyncDAO {
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
+
+            //scheduling followup date notification after pull push
+            NotificationSchedulerUtils.scheduleFollowUpNotification();
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
         } catch (Exception e) {
@@ -179,7 +183,7 @@ public class SyncDAO {
         boolean sync = false;
 
         try {
-            sync = SyncData(response.body());
+            sync = SyncData(response.body(),context);
             Log.d(TAG, "onResponse: response body : " + response.body().toString());
 
         } catch (DAOException e) {
@@ -267,7 +271,7 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
-                        sync = SyncData(response.body());
+                        sync = SyncData(response.body(),context);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
@@ -453,6 +457,8 @@ public class SyncDAO {
                 //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
                /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
+
+                NotificationSchedulerUtils.scheduleFollowUpNotification();
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
             }

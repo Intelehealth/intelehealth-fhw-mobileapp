@@ -110,5 +110,6 @@
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="visit_preview">Visit Preview</string>
     <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
+    <string name="reminder">Reminder</string>
 
 </resources>

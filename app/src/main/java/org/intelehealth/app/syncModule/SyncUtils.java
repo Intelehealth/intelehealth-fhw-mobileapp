@@ -19,6 +19,7 @@ import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 

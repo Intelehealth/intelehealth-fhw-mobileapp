@@ -22,6 +22,7 @@ import org.intelehealth.fcm.utils.NotificationBroadCast
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 
 /**
@@ -128,13 +129,17 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
         notificationManager.notify(id, builder.build())
     }
 
-    private fun getFormatDateFromTimestamp(): String {
-        val timestampMillis = System.currentTimeMillis()
+    companion object{
+         fun getFormatDateFromTimestamp(): String {
+            val timestampMillis = System.currentTimeMillis()
 
-        val date = Date(timestampMillis)
+            val date = Date(timestampMillis)
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-        return sdf.format(date)
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+             sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+            return sdf.format(date)
+        }
     }
 
     private fun getPendingIntentFlag(): Int {
