@@ -115,5 +115,8 @@
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="facility_to_visit">Facility to visit</string>
+    <string name="follow_up_date">Follow up date</string>
+    <string name="please_select_valid_followup_date">Please select valid followup date</string>
 
 </resources>

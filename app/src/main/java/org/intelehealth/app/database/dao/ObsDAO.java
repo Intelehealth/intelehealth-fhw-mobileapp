@@ -2,6 +2,7 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
+import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 
 import android.content.ContentValues;
@@ -370,12 +371,54 @@ public class ObsDAO {
         encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='"+ HW_FOLLOWUP_CONCEPT_ID +"'";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        return dbValue;
+        // fetch dr details from local db - end
+    }
+    public static String fetchValueFromLocalDb(String visitUuid) {
+        // fetch dr details from local db - start
+        String dbValue = null;
+
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        String encounterIDSelection = "visituuid = ? ";
+        String[] encounterIDArgs = {visitUuid};
+        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided!='1'";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
                 dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
             } while (visitCursor.moveToNext());
         }

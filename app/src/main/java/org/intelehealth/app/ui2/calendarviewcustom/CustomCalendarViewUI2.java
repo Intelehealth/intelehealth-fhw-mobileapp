@@ -651,6 +651,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         }
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public AlertDialog showDatePicker(Context context, String whichDate1) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);

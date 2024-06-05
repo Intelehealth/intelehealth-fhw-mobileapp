@@ -1516,4 +1516,7 @@
     <string name="sorted_by_descending_order">अवरोही क्रम में क्रमबद्ध</string>
     <string name="sorted_by_ascending_order">आरोही क्रम में क्रमबद्ध</string>
     <string name="over">" Over"</string>
+    <string name="facility_to_visit">Facility to visit</string>
+    <string name="follow_up_date">Follow up date</string>
+    <string name="please_select_valid_followup_date">Please select valid followup date</string>
 </resources>
