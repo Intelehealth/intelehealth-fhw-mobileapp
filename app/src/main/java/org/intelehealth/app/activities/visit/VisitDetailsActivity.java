@@ -51,6 +51,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -207,7 +208,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+            Timber.tag("TAG").e("TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
