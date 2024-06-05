@@ -246,14 +246,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
             routeByType(genericViewHolder, mParentNode, genericViewHolder.node, position, true, false);
-            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
+//            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
             Log.v(TAG, "mLoadedIds Nested - " + mLoadedIds.contains(genericViewHolder.node.getId()) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             mLoadedIds.add(genericViewHolder.node.getId());
 
         }
     }
 
-    private int[] mColors = new int[]{R.color.colorPrimary1,
+    private int[] mColors = new int[]{R.color.colorPrimary,
             R.color.ui2_bmi3,
             R.color.ui2_bmi4,
             R.color.ui2_bmi5,

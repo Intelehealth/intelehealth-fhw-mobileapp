@@ -527,7 +527,7 @@
     </style>
 
     <style name="slider_scrollbar" parent="Widget.MaterialComponents.Slider">
-        <item name="trackColorActive">@color/colorPrimary1</item>
+        <item name="trackColorActive">@color/colorPrimary</item>
         <item name="trackColorInactive">@color/gray_1</item>
 
     </style>
