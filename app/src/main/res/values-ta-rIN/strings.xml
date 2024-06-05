@@ -698,8 +698,8 @@
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
     <string name="confirm">Confirm</string>
-    <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
-    <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -740,8 +740,8 @@
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
     <string name="describe_lbl">Describe</string>
-    <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
+    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="duration_type">Duration Type</string>
@@ -790,6 +790,9 @@
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
     <string name="view_prescription_lbl">View Prescription</string>
+    <string name="facility_to_visit">Facility to visit</string>
+    <string name="follow_up_date">Follow up date</string>
+    <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="preview">Preview</string>
     <string name="visit_preview">Visit Preview</string>
     <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>

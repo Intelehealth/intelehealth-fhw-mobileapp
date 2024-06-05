@@ -9,7 +9,7 @@
         <clip-path android:pathData="M8 0H140C144.418 0 148 3.58172 148 8V140C148 144.418 144.418 148 140 148H8C3.58172 148 0 144.418 0 140V8C0 3.58172 3.58172 0 8 0Z" />
 
         <path
-            android:fillColor="#FFE8E8"
+            android:fillColor="@color/colorPrimaryLightCard"
             android:pathData="M0 0V148H148V0" />
 
     </group>

@@ -809,8 +809,8 @@
     <string name="respiratory_rate_breaths_min">ಉಸಿರಾಟದ ದರ (ಉಸಿರಾಟ/ನಿಮಿಷ)</string>
     <string name="temperature_f_new">ತಾಪಮಾನ (ಎಫ್)</string>
     <string name="confirm">ದೃಢೀಕರಿಸಿ</string>
-    <string name="ui2_physical_exam_summay_title">3/4. ದೈಹಿಕ ಪರೀಕ್ಷೆಯ ಸಾರಾಂಶ</string>
-    <string name="ui2_medical_hist_title_text">4/4. ವೈದ್ಯಕೀಯ ಇತಿಹಾಸದ ಸಾರಾಂಶ</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d ದೈಹಿಕ ಪರೀಕ್ಷೆಯ ಸಾರಾಂಶ</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d ವೈದ್ಯಕೀಯ ಇತಿಹಾಸದ ಸಾರಾಂಶ</string>
     <string name="sync_strated">"ಸಿಂಕ್ ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ! "</string>
     <string name="select_any_one">ಯಾವುದಾದರೂ ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="select_one_or_more">ಒಂದು ಅಥವಾ ಹೆಚ್ಚಿನದನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
@@ -851,8 +851,8 @@
     <string name="select_date_hint">ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="error_field_valid_village_required">ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಗ್ರಾಮದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ (ಕನಿಷ್ಟ 3 ಅಕ್ಷರ)</string>
     <string name="describe_lbl">ವಿವರಿಸಿ</string>
-    <string name="patinet_history">4/4. ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ: ರೋಗಿಯ ಇತಿಹಾಸ</string>
-    <string name="_1_4_vitals">1/4 ವೈಟಲ್ಸ್</string>
+    <string name="patinet_history">%1$d/%2$d ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ: ರೋಗಿಯ ಇತಿಹಾಸ</string>
+    <string name="_1_4_vitals">%1$d/%2$d ವೈಟಲ್ಸ್</string>
     <string name="bp_validation_sys"><![CDATA[ಬಿಪಿ ಸಿಸ್ಟೊಲಿಕ್ ಯಾವಾಗಲೂ ಬಿಪಿ ಡಯಾಸ್ಟೊಲಿಕ್ ಗಿಂತ ಹೆಚ್ಚಿರಬೇಕು.]]></string>
     <string name="bp_validation_dia"><![CDATA[ಬಿಪಿ ಡಯಾಸ್ಟೊಲಿಕ್ ಯಾವಾಗಲೂ ಬಿಪಿ ಸಿಸ್ಟೊಲಿಕ್ಗಿಂತ ಕಡಿಮೆಯಿರಬೇಕು.]]></string>
     <string name="duration_type">ಅವಧಿಯ ಪ್ರಕಾರ</string>
@@ -905,6 +905,9 @@
     <string name="sorted_by_descending_order">Sorted By Descending order</string>
     <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
     <string name="over">" Over"</string>
+    <string name="facility_to_visit">Facility to visit</string>
+    <string name="follow_up_date">Follow up date</string>
+    <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="preview">Preview</string>
     <string name="visit_preview">Visit Preview</string>
     <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>

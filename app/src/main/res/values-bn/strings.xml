@@ -1465,8 +1465,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
     <string name="confirm">Confirm</string>
-    <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
-    <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided.</string>
@@ -1671,7 +1671,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="some_issue_with_mindmap">Some issue with the mindmaps.</string>
     <string name="of">of</string>
     <string name="questions">questions</string>
-    <string name="visit_reason">2/4 Visit reason</string>
+    <string name="visit_reason">%1$d/%2$d Visit reason</string>
     <string name="please_select_range">Please select the range!</string>
     <string name="level">Level %1$d</string>
     <string name="drag_to_select">Please drag to select!</string>
@@ -1689,8 +1689,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="_appointment">Appointment!</string>
     <string name="today_at">Today at</string>
     <string name="has_an_appointment_with">has an appointment with</string>
-    <string name="_phy_examination">3/4 Physical Examination</string>
-    <string name="_medical_family_history">4/4. Medical history: Family history</string>
+    <string name="_phy_examination">%1$d/%2$d Physical Examination</string>
+    <string name="_medical_family_history">%1$d/%2$d Medical history: Family history</string>
     <string name="add_image_by">Add image by</string>
     <string name="please_take">Please take</string>
     <string name="s_follow_up_visit">\'s follow-up visit.</string>
@@ -1769,7 +1769,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="not_searched_anything_yet">Not searched anything yet!</string>
     <string name="most_common_reasons">Most common reasons</string>
     <string name="all_reasons">All reasons</string>
-    <string name="_visit_reason_summary">2/4. Visit Reason summary</string>
+    <string name="_visit_reason_summary">%1$d/%2$d Visit Reason summary</string>
     <string name="change">Change</string>
     <string name="_vitals_summary">1/4. Vitals summary</string>
     <string name="mo">Mo</string>
@@ -1829,8 +1829,8 @@ The disclosure of personal information to third parties shall be only for identi
     //IDA-913
     <string name="profile_update_requires_internet">Profile update requires a strong internet connection. You are not connected to internet, please try again later.</string>
     <string name="describe_lbl">Describe</string>
-    <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
+    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="close_all">Close all</string>
     <string name="open_all">Open all</string>
     <string name="go_to_website">Go to website</string>
@@ -1935,6 +1935,9 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="sorted_by_descending_order">Sorted By Descending order</string>
     <string name="sorted_by_ascending_order">Sorted By Ascending order</string>
     <string name="over">" Over"</string>
+    <string name="facility_to_visit">Facility to visit</string>
+    <string name="follow_up_date">Follow up date</string>
+    <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="preview">Preview</string>
     <string name="visit_preview">Visit Preview</string>
     <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>

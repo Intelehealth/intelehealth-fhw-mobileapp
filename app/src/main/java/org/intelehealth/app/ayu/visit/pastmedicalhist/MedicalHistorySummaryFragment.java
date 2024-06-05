@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +79,16 @@ public class MedicalHistorySummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 4 : 3;
+        int total = status.getVitalSection() ? 4 : 3;
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(getString(R.string.ui2_medical_hist_title_text, index, total));
     }
 
     @Override
@@ -199,8 +211,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
-                        if(v.endsWith(",")){
-                            v =  v.substring(0, v.length()-1);
+                        if (v.endsWith(",")) {
+                            v = v.substring(0, v.length() - 1);
                         }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k.isEmpty() ? v : k);
@@ -208,7 +220,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         visitSummaryDataList.add(summaryData);
                     } else {
                         boolean isOddSequence = qa.length % 2 != 0;
-                        Log.v("isOddSequence", qa.length+" = " + isOddSequence);
+                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
@@ -229,8 +241,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                         v = v.split(":")[1];
                                     }
 
-                                    if(v.endsWith(",")){
-                                        v =  v.substring(0, v.length()-1);
+                                    if (v.endsWith(",")) {
+                                        v = v.substring(0, v.length() - 1);
                                     }
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(k1);
@@ -260,8 +272,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
                             }
                             String v2 = stringBuilder.toString().trim();
-                            if(v2.endsWith(",")){
-                                v2 =  v2.substring(0, v2.length()-1);
+                            if (v2.endsWith(",")) {
+                                v2 = v2.substring(0, v2.length() - 1);
                             }
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(k1);

@@ -165,10 +165,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
 
-    TableRow nameTr,genderTr,dobTr,ageTr,phoneNumTr,guardianTypeTr,guardianNameTr,
-            emContactNameTr,emContactTypeTr,emContactNumberTr,postalCodeTr,countryTr,
-            stateTr, districtTr,villageCityTr,addressOneTr,addressTwoTr,nidTr,occupationTr,socialCategoryTr,
-            educationTr,economicCategoryTr;
+    TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
+            emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
+            stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
+            educationTr, economicCategoryTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -652,7 +652,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
                         PatientRegFieldsUtils.Companion.configField(
                                 false,
                                 fields,
@@ -664,7 +664,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
+                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
                         PatientRegFieldsUtils.Companion.configField(
                                 false,
                                 fields,
@@ -800,16 +800,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
-                case PatientRegConfigKeys.EDUCATION -> {
-                    PatientRegFieldsUtils.Companion.configField(
-                            false,
-                            fields,
-                            educationTr,
-                            null,
-                            null,
-                            null
-                    );
-                }
+                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.Companion.configField(
+                        false,
+                        fields,
+                        educationTr,
+                        null,
+                        null,
+                        null
+                );
+
                 case PatientRegConfigKeys.ECONOMIC_CATEGORY ->
                         PatientRegFieldsUtils.Companion.configField(
                                 false,
@@ -1232,7 +1231,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setTitle(patientDTO.getOpenmrs_id());
 
         Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
-        int mAgeYears = -1, mAgeMonths=0, mAgeDays=0;
+        int mAgeYears = -1, mAgeMonths = 0, mAgeDays = 0;
         // setting age
         if (patientDTO.getDateofbirth() != null) {
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
@@ -1449,17 +1448,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
 
-            if (district != null) {
-                patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-            } else {
-                patientdistrict.setText(getResources().getString(R.string.no_district_added));
-            }
+        if (district != null) {
+            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+        } else {
+            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+        }
 
-            if (city_village != null) {
-                village.setText(city_village);
-            } else {
-                village.setText(getResources().getString(R.string.no_city_added));
-            }
+        if (city_village != null) {
+            village.setText(city_village);
+        } else {
+            village.setText(getResources().getString(R.string.no_city_added));
+        }
+
 
         // end - city and district
 
@@ -1705,27 +1705,33 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting son/daughet_wife value
-        if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().equals("")) {
+        if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().
+
+                equals("")) {
             son_daughter_wife.setText(patientDTO.getSon_dau_wife());
         } else {
             son_daughter_wife.setVisibility(View.GONE);
         }
 
         // setting national ID value
-        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
+        if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().
+
+                equals("")) {
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
             patientNationalID.setText(getResources().getString(R.string.not_provided));
         }
 
         // setting occupation value
-        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().equals("")) {
+        if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().
+
+                equals("")) {
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if (AgeUtils.Companion.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && mAgeYears > -1) {
+        if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
             guardianNameTr.setVisibility(View.VISIBLE);
             guardianTypeTr.setVisibility(View.VISIBLE);
 
@@ -1754,7 +1760,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //contact type
-        if (patientDTO.getContactType() != null && !patientDTO.getContactType().equals("")) {
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
+
+                equals("")) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
@@ -1766,14 +1774,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //emergency contact name
-        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().equals("")) {
+        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().
+
+                equals("")) {
             em_contact_name_tv.setText(patientDTO.getEmContactName());
         } else {
             em_contact_name_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact number
-        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().equals("")) {
+        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().
+
+                equals("")) {
             em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
@@ -1910,6 +1922,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+
     }
 
     @Override
@@ -2319,4 +2332,4 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-}
+    }

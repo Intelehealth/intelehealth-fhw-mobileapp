@@ -248,6 +248,7 @@ public class EncounterDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         ContentValues values = new ContentValues();
