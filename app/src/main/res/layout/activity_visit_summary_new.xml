@@ -1121,6 +1121,7 @@
 
                 <!--            Priority Visit-->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardPriorityVisit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/relative_speciality_block"
