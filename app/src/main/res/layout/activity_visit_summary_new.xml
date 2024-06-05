@@ -1023,74 +1023,99 @@
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
-                    <LinearLayout
-                        android:id="@+id/llFollowup"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvFollowup"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/flSeverity"
                         android:layout_marginHorizontal="@dimen/margin_24"
                         android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvFollowup"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="3sp"
-                            android:text="@string/follow_up_date"
-                            android:textAppearance="@style/blur_txtview"
-                            android:textSize="@null" />
+                        android:elevation="16dp"
+                        app:cardCornerRadius="@dimen/margin_5"
+                        app:cardElevation="@dimen/margin_5">
 
                         <LinearLayout
+                            android:id="@+id/llFollowup"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/fu_card_margin_sides"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tvtFollowUpDate"
+                                android:id="@+id/tvFollowup"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3sp"
+                                android:text="@string/follow_up_date"
+                                android:textAppearance="@style/blur_txtview"
+                                android:textSize="@null" />
+
+                            <TextView
+                                android:id="@+id/tvViewFollowUpDateTime"
                                 style="@style/edittext_textcolor"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/hamburger_margin_start"
                                 android:layout_weight="1"
-                                android:background="@drawable/edittext_border"
-                                android:drawableEnd="@drawable/followup_item_calendar"
-                                android:focusable="false"
-                                android:hint="@string/select_date"
-                                android:inputType=""
-                                android:maxLines="1"
                                 android:paddingStart="@dimen/fu_margin_start"
                                 android:paddingTop="@dimen/margin_10"
                                 android:paddingEnd="@dimen/margin_16"
                                 android:paddingBottom="@dimen/margin_10"
                                 android:singleLine="true"
                                 android:textColorHint="@color/edittext_hint_color"
-                                android:textSize="@dimen/edittext_textsize_16sp" />
+                                android:textSize="@dimen/edittext_textsize_16sp"
+                                android:visibility="gone" />
 
-                            <TextView
-                                android:id="@+id/tvtFollowUpTime"
-                                style="@style/edittext_textcolor"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/edittext_height_44dp"
-                                android:layout_marginTop="@dimen/hamburger_margin_start"
-                                android:layout_weight="1"
-                                android:background="@drawable/edittext_border"
-                                android:drawableEnd="@drawable/followup_item_calendar"
-                                android:focusable="false"
-                                android:hint="@string/select_time"
-                                android:inputType=""
-                                android:maxLines="1"
-                                android:paddingStart="@dimen/fu_margin_start"
-                                android:paddingTop="@dimen/margin_10"
-                                android:paddingEnd="@dimen/margin_16"
-                                android:paddingBottom="@dimen/margin_10"
-                                android:singleLine="true"
-                                android:textColorHint="@color/edittext_hint_color"
-                                android:textSize="@dimen/edittext_textsize_16sp" />
+                            <LinearLayout
+                                android:id="@+id/llDateTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvtFollowUpDate"
+                                    style="@style/edittext_textcolor"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                                    android:layout_weight="1"
+
+                                    android:drawableEnd="@drawable/followup_item_calendar"
+                                    android:focusable="false"
+                                    android:hint="@string/select_date"
+                                    android:inputType=""
+                                    android:maxLines="1"
+                                    android:paddingStart="@dimen/fu_margin_start"
+                                    android:paddingTop="@dimen/margin_10"
+                                    android:paddingEnd="@dimen/margin_16"
+                                    android:paddingBottom="@dimen/margin_10"
+                                    android:singleLine="true"
+                                    android:textColorHint="@color/edittext_hint_color"
+                                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+                                <TextView
+                                    android:id="@+id/tvtFollowUpTime"
+                                    style="@style/edittext_textcolor"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                                    android:layout_weight="1"
+                                    android:drawableEnd="@drawable/followup_item_calendar"
+                                    android:focusable="false"
+                                    android:hint="@string/select_time"
+                                    android:inputType=""
+                                    android:maxLines="1"
+                                    android:paddingStart="@dimen/fu_margin_start"
+                                    android:paddingTop="@dimen/margin_10"
+                                    android:paddingEnd="@dimen/margin_16"
+                                    android:paddingBottom="@dimen/margin_10"
+                                    android:singleLine="true"
+                                    android:textColorHint="@color/edittext_hint_color"
+                                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
+                    </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 

@@ -6,6 +6,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAsso
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
@@ -13,7 +14,9 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
+import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -23,6 +26,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,10 +70,8 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -93,7 +95,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -115,7 +116,6 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.Fragment_FirstScreen;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
@@ -155,8 +155,6 @@ import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
-import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
-import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
@@ -369,7 +367,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private List<String> severityList = null;
     private FacilityToVisitModel selectedFacilityToVisit = null;
     private String selectedSeverity = null;
-    private String selectedFollowupDate;
+    private String selectedFollowupDate, selectedFollowupTime;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -452,7 +450,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 showDatePickerDialog();
             }
         });
+        mBinding.tvtFollowUpTime.setOnClickListener(v -> {
+            // Get current time
+            showTimePickerDialog();
 
+        });
+
+    }
+
+    private void showTimePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Create TimePickerDialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                (view, hourOfDay, minute1) -> {
+                    selectedFollowupTime = hourOfDay + ":" + minute1;
+                    mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
+                }, hour, minute, true);
+        timePickerDialog.show();
+        timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+        timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void showDatePickerDialog() {
@@ -464,7 +483,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    selectedFollowupDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    selectedFollowupDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
                     mBinding.tvtFollowUpDate.setText(selectedFollowupDate);
                 },
                 year, month, day);
@@ -495,6 +514,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
             setSeveritySpinner();
+            String followupValue = fetchValueFromLocalDb(visitUUID);
+            if (!TextUtils.isEmpty(followupValue))
+            {
+                mBinding.tvViewFollowUpDateTime.setText(followupValue);
+            }
         });
     }
 
@@ -654,6 +678,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
                 mBinding.cvSeverity.setVisibility(View.GONE);
 
+                mBinding.tvViewFollowUpDateTime.setVisibility(View.VISIBLE);
+                mBinding.llDateTime.setVisibility(View.GONE);
+
                 // vs_add_notes.setVisibility(View.GONE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
@@ -743,6 +770,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
             mBinding.cvSeverity.setVisibility(View.GONE);
+
+            mBinding.tvViewFollowUpDateTime.setVisibility(View.VISIBLE);
+            mBinding.llDateTime.setVisibility(View.GONE);
 
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
@@ -1789,8 +1819,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // edit listeners - end
 
 
-
-
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1930,8 +1958,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             facilityList = getFacilityList();
         }
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
-        if (!TextUtils.isEmpty(facility))
-        {
+        if (!TextUtils.isEmpty(facility)) {
             mBinding.tvFacilityToVisitValue.setText(" " + Node.bullet + "  " + facility);
         }
 
@@ -1963,8 +1990,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
 
         String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
-        if (!TextUtils.isEmpty(severity))
-        {
+        if (!TextUtils.isEmpty(severity)) {
             mBinding.tvSavertyValue.setText(" " + Node.bullet + "  " + severity);
         }
 
@@ -2329,7 +2355,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             }
         });
-
 
 
     }
@@ -2740,7 +2765,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Button sharebtn = convertView.findViewById(R.id.sharebtn);
 
 
-
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
             String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
@@ -2843,10 +2867,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-                if (!TextUtils.isEmpty(selectedFollowupDate))
-                {
+                if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
+                    EncounterDAO encounterDAO = new EncounterDAO();
                     EncounterDTO encounterDTO = new EncounterDTO();
+                    encounterDTO.setUuid(UUID.randomUUID().toString());
                     encounterDTO.setVisituuid(visitUuid);
+                    encounterDTO.setSyncd(false);
+                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                    encounterDTO.setEncounterTypeUuid(ENCOUNTER_ADULTINITIAL);
+                    encounterDTO.setVoided(0);
+                    try {
+                        encounterDAO.createEncountersToDB(encounterDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+//                    Step - 2 Create observation data object and set the value
+
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
+                    obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
+                    obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
+                    obsDTO.setValue(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+
+//                    Step - 3 create observation dao and call insertObs method
+
+                    try {
+                        ObsDAO obsDAO = new ObsDAO();
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+
                 }
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             } catch (DAOException e) {
@@ -3181,7 +3236,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+//                parseDoctorDetails(dbValue);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
