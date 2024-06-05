@@ -102,7 +102,7 @@
     <string name="table_bpsys" translatable="false">"బిపి సిస్/పైన  "</string>
     <string name="table_bpdia" translatable="false">"బిపి డయా/కింద "</string>
     <string name="table_temp" translatable="false">" ఉష్ణోగ్రత (సి)"</string>
-<!--    <string name="table_spo" translatable="false">SpO2 (%)</string>-->
+    <!--    <string name="table_spo" translatable="false">SpO2 (%)</string>-->
     <string name="search_hint" translatable="false">" రోగి పేరును శోధించడానికి టైప్ చేయండి…"</string>
     <string name="action_search" translatable="false">" వెతకండి"</string>
     <string name="alert_none_found" translatable="false">" దయచేసి వినియోగదారు పేరు మరియు పాస్‌వర్డ్ నమోదుచేసినది తనిఖీ చేయండి"</string>
@@ -242,7 +242,7 @@
     <string name="patient_not_registered" translatable="false">రోగి నమోదు కాలేదు</string>
     <string name="weight_error">" బరువు %1$s కిలోల కంటే తక్కువగా ఉండాలి"</string>
     <string name="height_error">" ఎత్తు 0 మరియు %1$s సెం.మీ మధ్య ఉండాలి"</string>
-<!--    <string name="spo_error">SpO2  %1$s మరియు %2$s మధ్య ఉండాలి</string>-->
+    <!--    <string name="spo_error">SpO2  %1$s మరియు %2$s మధ్య ఉండాలి</string>-->
     <string name="pulse_error">పల్స్ %1$s మరియు %2$s మధ్య ఉండాలి</string>
     <string name="bpsys_error">సిస్టోలిక్ పీడనం %1$s మరియు %2$s మధ్య ఉండాలి</string>
     <string name="bpdia_error">డయాస్టొలిక్ ఒత్తిడి %1$s మరియు %2$s మధ్య ఉండాలి</string>
@@ -455,27 +455,27 @@
     <string name="no_family_member_registered">" కుటుంబ సభ్యుడు నమోదు కాలేదు"</string>
     <string name="document_">" పత్రం -"</string>
     <string name="gender">" లింగం"</string>
-<!--    <string name="are_you_head_of_the_family">" మీరు కుటుంబానికి అధిపతినా?"</string>-->
-<!--    <string name="what_is_your_occupation">" మీ వృత్తి ఏమిటి?*"</string>-->
-<!--    <string name="do_you_have_a_bank_account">" మీకు బ్యాంక్ ఖాతా ఉందా? *"</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">" మీరు వ్యక్తిగతంగా ఎలాంటి మొబైల్ ఫోన్‌ను కలిగి ఉన్నారు? *"</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">" మీరు లేదా మీ కుటుంబ సభ్యుల్లో ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా? *"</string>-->
-<!--    <string name="total_number_of_members_in_the_household">" ఇంట్లో మొత్తం సభ్యుల సంఖ్య *"</string>-->
-<!--    <string name="enter_number">" సంఖ్యను నమోదు చేయండి"</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">" మీ ఇంటిలో సాధారణంగా ఎంత మంది సభ్యులు నివసిస్తున్నారు లేదా ఇప్పుడు మీతో ఉన్నారు *"</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">" మీ ఇంటి సభ్యులకు తాగునీటి ప్రధాన వనరు ఏమిటి? *"</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">" తాగునీటిని సురక్షితంగా చేయడానికి మీరు ఏమి చేస్తారు? *"</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">" అక్కడికి వెళ్లి, నీరు తీసుకొని, ఒక ట్రిప్‌లో తిరిగి రావడానికి ఎంత సమయం పడుతుంది? *"</string>-->
-<!--    <string name="declined">" సమాధానం ఇవ్వడానికి నిరాకరించారు"</string>-->
-<!--    <string name="enter_time">" సమయాన్ని నమోదు చేయండి"</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">" గత రెండు వారాల్లో, ఈ మూలం నుండి నీరు కనీసం ఒక పూర్తి రోజు కూడా అందుబాటులో ఉండలేదా? *"</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">" మీ ఇంటి సభ్యులు సాధారణంగా ఎలాంటి టాయిలెట్ సౌకర్యాన్ని ఉపయోగిస్తారు? *"</string>-->
-<!--    <string name="select_the_structure_of_house">" ఇంటి నిర్మాణాన్ని ఎంచుకోండి *"</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">" మీ కుటుంబానికి ఎంత హెక్టార్ల సాగు భూమి ఉంది? *"</string>-->
-<!--    <string name="enter_answer">" సమాధానం నమోదు చేయండి"</string>-->
-<!--    <string name="enter_occupation">" వృత్తిని నమోదు చేయండి"</string>-->
-<!--    <string name="image_saved">" చిత్రం విజయవంతంగా సేవ్ చేయబడింది!"</string>-->
-<!--    <string name="emergency_confirmation">" మీరు ఈ సందర్శనను అత్యవసర పరిస్థితిగా సెట్ చేయాలనుకుంటున్నారా?"</string>-->
+    <!--    <string name="are_you_head_of_the_family">" మీరు కుటుంబానికి అధిపతినా?"</string>-->
+    <!--    <string name="what_is_your_occupation">" మీ వృత్తి ఏమిటి?*"</string>-->
+    <!--    <string name="do_you_have_a_bank_account">" మీకు బ్యాంక్ ఖాతా ఉందా? *"</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">" మీరు వ్యక్తిగతంగా ఎలాంటి మొబైల్ ఫోన్‌ను కలిగి ఉన్నారు? *"</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">" మీరు లేదా మీ కుటుంబ సభ్యుల్లో ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా? *"</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">" ఇంట్లో మొత్తం సభ్యుల సంఖ్య *"</string>-->
+    <!--    <string name="enter_number">" సంఖ్యను నమోదు చేయండి"</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">" మీ ఇంటిలో సాధారణంగా ఎంత మంది సభ్యులు నివసిస్తున్నారు లేదా ఇప్పుడు మీతో ఉన్నారు *"</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">" మీ ఇంటి సభ్యులకు తాగునీటి ప్రధాన వనరు ఏమిటి? *"</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">" తాగునీటిని సురక్షితంగా చేయడానికి మీరు ఏమి చేస్తారు? *"</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">" అక్కడికి వెళ్లి, నీరు తీసుకొని, ఒక ట్రిప్‌లో తిరిగి రావడానికి ఎంత సమయం పడుతుంది? *"</string>-->
+    <!--    <string name="declined">" సమాధానం ఇవ్వడానికి నిరాకరించారు"</string>-->
+    <!--    <string name="enter_time">" సమయాన్ని నమోదు చేయండి"</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">" గత రెండు వారాల్లో, ఈ మూలం నుండి నీరు కనీసం ఒక పూర్తి రోజు కూడా అందుబాటులో ఉండలేదా? *"</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">" మీ ఇంటి సభ్యులు సాధారణంగా ఎలాంటి టాయిలెట్ సౌకర్యాన్ని ఉపయోగిస్తారు? *"</string>-->
+    <!--    <string name="select_the_structure_of_house">" ఇంటి నిర్మాణాన్ని ఎంచుకోండి *"</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">" మీ కుటుంబానికి ఎంత హెక్టార్ల సాగు భూమి ఉంది? *"</string>-->
+    <!--    <string name="enter_answer">" సమాధానం నమోదు చేయండి"</string>-->
+    <!--    <string name="enter_occupation">" వృత్తిని నమోదు చేయండి"</string>-->
+    <!--    <string name="image_saved">" చిత్రం విజయవంతంగా సేవ్ చేయబడింది!"</string>-->
+    <!--    <string name="emergency_confirmation">" మీరు ఈ సందర్శనను అత్యవసర పరిస్థితిగా సెట్ చేయాలనుకుంటున్నారా?"</string>-->
     <string name="per_Hour">" గంటకు"</string>
     <string name="per_Day">" రోజుకు"</string>
     <string name="per_Week">" వారానికి"</string>
@@ -530,41 +530,39 @@
     <string name="Ayu_name">ఆయు</string>
     <string name="close_button">"క్లోస్ "</string>
     <string name="active_tag_patientDetail">యాక్టివ్</string>
-<!--    <string name="select">"ఎన్నుకొను / సెలెక్ట్ "</string>-->
+    <!--    <string name="select">"ఎన్నుకొను / సెలెక్ట్ "</string>-->
     <string name="Hours">గంటలు</string>
     <string name="Days">రోజులు</string>
     <string name="Weeks">వారాలు</string>
     <string name="Months">నెలలు</string>
     <string name="Years">సంవత్సరాలు</string>
-<!--    <string name="speciality">స్పెషలైజేషన్</string>-->
-<!--    <string name="select_speciality">స్పెషలైజేషన్ ఎంచుకోండి</string>-->
-<!--    <string name="please_select_specialization">దయచేసి స్పెషలైజేషన్ ఎంచుకోండి</string>-->
+    <!--    <string name="speciality">స్పెషలైజేషన్</string>-->
+    <!--    <string name="select_speciality">స్పెషలైజేషన్ ఎంచుకోండి</string>-->
+    <!--    <string name="please_select_specialization">దయచేసి స్పెషలైజేషన్ ఎంచుకోండి</string>-->
 
-<!--    <string name="error_medical_visit_data">దయచేసి వైద్య సలహాను ఎంచుకోండి లేదా నమోదు చేయండి</string>-->
-<!--    <string name="text_patient_and_advice_created">రోగి &amp; వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>-->
-<!--    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>-->
+    <!--    <string name="error_medical_visit_data">దయచేసి వైద్య సలహాను ఎంచుకోండి లేదా నమోదు చేయండి</string>-->
+    <!--    <string name="text_patient_and_advice_created">రోగి &amp; వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>-->
+    <!--    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>-->
 
 
     <string name="take_photo">ఫోటో తీసుకో</string>
     <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
     <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>
 
-<!--    <string name="text_medical_advice">కొత్త వైద్య సలహా</string>-->
-<!--    <string name="text_new_visit">కొత్త డాక్టర్ సందర్శన</string>-->
-<!--    <string name="text_new_advice">కొత్త వైద్య సలహా</string>-->
+    <!--    <string name="text_medical_advice">కొత్త వైద్య సలహా</string>-->
+    <!--    <string name="text_new_visit">కొత్త డాక్టర్ సందర్శన</string>-->
+    <!--    <string name="text_new_advice">కొత్త వైద్య సలహా</string>-->
 
-<!--    <string name="vaccination_guidance">టీకా మార్గదర్శకత్వం</string>-->
-<!--    <string name="concern_about_covid_re_infection">COVID తిరిగి సంక్రమణ గురించి ఆందోళన</string>-->
-<!--    <string name="managing_breathlessness">శ్వాస తీసుకోకపోవడం</string>-->
-<!--    <string name="managing_issues_with_voice">వాయిస్‌తో సమస్యలను నిర్వహించడం</string>-->
-<!--    <string name="managing_eating_drinking">కోలుకున్న తర్వాత తినడం, త్రాగటం మరియు మింగడం</string>-->
-<!--    <string name="dealing_problems">శ్రద్ధ, జ్ఞాపకశక్తి మరియు స్పష్టత యొక్క సమస్యలను పరిష్కరించడం</string>-->
-<!--    <string name="managing_mental_health">మానసిక ఆరోగ్యాన్ని నిర్వహించడం</string>-->
-<!--    <string name="exercises">వ్యాయామాలు</string>-->
-<!--    <string name="txt_additional_info">అదనపు సమాచారం</string>-->
-<!--    <string name="medical_advice">వైద్య సలహా</string>-->
-
-
+    <!--    <string name="vaccination_guidance">టీకా మార్గదర్శకత్వం</string>-->
+    <!--    <string name="concern_about_covid_re_infection">COVID తిరిగి సంక్రమణ గురించి ఆందోళన</string>-->
+    <!--    <string name="managing_breathlessness">శ్వాస తీసుకోకపోవడం</string>-->
+    <!--    <string name="managing_issues_with_voice">వాయిస్‌తో సమస్యలను నిర్వహించడం</string>-->
+    <!--    <string name="managing_eating_drinking">కోలుకున్న తర్వాత తినడం, త్రాగటం మరియు మింగడం</string>-->
+    <!--    <string name="dealing_problems">శ్రద్ధ, జ్ఞాపకశక్తి మరియు స్పష్టత యొక్క సమస్యలను పరిష్కరించడం</string>-->
+    <!--    <string name="managing_mental_health">మానసిక ఆరోగ్యాన్ని నిర్వహించడం</string>-->
+    <!--    <string name="exercises">వ్యాయామాలు</string>-->
+    <!--    <string name="txt_additional_info">అదనపు సమాచారం</string>-->
+    <!--    <string name="medical_advice">వైద్య సలహా</string>-->
 
 
     <string name="loading_more">మరింత లోడ్ అవుతోంది...</string>
@@ -578,7 +576,7 @@
     <string name="str_check_India">భారతదేశం</string>
     <string name="str_check_UnitedStates">సంయుక్త రాష్ట్రాలు</string>
     <string name="str_check_Philippines">ఫిలిప్పీన్స్</string>
-    <string name = "change_languages">భాషలను మార్చండి</string>
+    <string name="change_languages">భాషలను మార్చండి</string>
     <string name="speciality_cardview_title">ప్రత్యేకత</string>
 
     <string name="location_setup">స్థానం సెటప్ - </string>
@@ -603,17 +601,17 @@
     <string name="please_select_speciality">దయచేసి ప్రత్యేకతను ఎంచుకోండి!</string>
 
     <string name="doctor_appointments">డాక్టర్ నియామకాలు</string>
-<string name="slot_info">స్లాట్ సమాచారం</string>
-<string name="appointment_booked">అపాయింట్‌మెంట్ బుక్ చేయబడింది</string>
-<string name="minutes_txt">నిమిషాలు</string>
-<string name="booked_txt">బుక్ చేయబడింది</string>
-<string name="cancelled_txt">రద్దు చేయబడింది</string>
-<string name="please_upload_visit">దయచేసి అపాయింట్‌మెంట్ బుకింగ్ చేయడానికి ముందు సందర్శనను అప్‌లోడ్ చేయండి.</string>
-<string name="appointment_booked_successfully">అపాయింట్‌మెంట్ విజయవంతంగా బుక్ చేయబడింది!</string>
-<string name="appointment_booked_failed">అపాయింట్‌మెంట్ బుక్ చేయడం విఫలమైంది!</string>
-<string name="postal_code_invalid_txt">దయచేసి చెల్లుబాటు అయ్యే పోస్టల్ కోడ్‌ని నమోదు చేయండి</string>
-<string name="failed_to_cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయడంలో విఫలమైంది!</string>
-<string name="appointment_cancelled_success_txt">అపాయింట్‌మెంట్ విజయవంతంగా రద్దు చేయబడింది!</string>
+    <string name="slot_info">స్లాట్ సమాచారం</string>
+    <string name="appointment_booked">అపాయింట్‌మెంట్ బుక్ చేయబడింది</string>
+    <string name="minutes_txt">నిమిషాలు</string>
+    <string name="booked_txt">బుక్ చేయబడింది</string>
+    <string name="cancelled_txt">రద్దు చేయబడింది</string>
+    <string name="please_upload_visit">దయచేసి అపాయింట్‌మెంట్ బుకింగ్ చేయడానికి ముందు సందర్శనను అప్‌లోడ్ చేయండి.</string>
+    <string name="appointment_booked_successfully">అపాయింట్‌మెంట్ విజయవంతంగా బుక్ చేయబడింది!</string>
+    <string name="appointment_booked_failed">అపాయింట్‌మెంట్ బుక్ చేయడం విఫలమైంది!</string>
+    <string name="postal_code_invalid_txt">దయచేసి చెల్లుబాటు అయ్యే పోస్టల్ కోడ్‌ని నమోదు చేయండి</string>
+    <string name="failed_to_cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయడంలో విఫలమైంది!</string>
+    <string name="appointment_cancelled_success_txt">అపాయింట్‌మెంట్ విజయవంతంగా రద్దు చేయబడింది!</string>
 
     <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
     <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
@@ -713,8 +711,8 @@
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
     <string name="confirm">Confirm</string>
-    <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
-    <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
@@ -755,8 +753,8 @@
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
     <string name="describe_lbl">Describe</string>
-    <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
+    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="duration_type">Duration Type</string>

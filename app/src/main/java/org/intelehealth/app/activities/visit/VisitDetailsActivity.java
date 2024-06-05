@@ -91,6 +91,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,6 +133,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
     private RecyclerView mPastVisitsRecyclerView;
     private Context context;
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null && !activeStatus.getChatSection()) {
+            findViewById(R.id.fabStartChat).setVisibility(View.GONE);
+        } else findViewById(R.id.fabStartChat).setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +249,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     .skipMemoryCache(true)
                     .into(profile_image);
         } else {
-            profile_image.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }
 
         // visit summary - start
@@ -294,7 +303,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
                 presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_icon));
+                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
             }
 
 /*
@@ -358,8 +367,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 timeText = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
             presc_time.setText(timeText);
-            presc_time.setTextColor(ContextCompat.getColor(this,R.color.red));
-            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_red_icon));
+            presc_time.setTextColor(ContextCompat.getColor(this, R.color.red));
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_red_icon));
         }
         // presc block - end
 
@@ -482,7 +491,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 chief_complaint_txt.setText(stringBuilder.toString());
             }
         }
-        chief_complaint_txt.setTextColor(ContextCompat.getColor(this,R.color.headline_text_color));
+        chief_complaint_txt.setTextColor(ContextCompat.getColor(this, R.color.headline_text_color));
         chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
         //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
@@ -882,9 +891,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 

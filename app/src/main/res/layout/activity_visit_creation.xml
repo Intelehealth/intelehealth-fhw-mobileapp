@@ -83,14 +83,12 @@
         android:textSize="@dimen/toolbar_text_size"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_progress_steps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_sub_title"
-        android:layout_marginTop="@dimen/margin_14"
-        android:orientation="horizontal"
-        android:weightSum="4">
+        android:layout_marginTop="@dimen/margin_14">
 
         <ProgressBar
             android:id="@+id/prog_bar_step1"
@@ -99,17 +97,23 @@
             android:layout_height="4dip"
             android:layout_weight="1"
             android:progress="80"
-            android:progressTint="@color/colorPrimary" />
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@id/prog_bar_step2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/prog_bar_step2"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dip"
+            android:layout_width="0dp"
             android:layout_height="4dip"
             android:layout_marginStart="@dimen/margin_8"
             android:layout_weight="1"
             android:progress="0"
-            android:progressTint="@color/colorPrimary" />
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@id/prog_bar_step3"
+            app:layout_constraintStart_toEndOf="@id/prog_bar_step1"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/prog_bar_step3"
@@ -117,9 +121,11 @@
             android:layout_width="0dip"
             android:layout_height="4dip"
             android:layout_marginStart="@dimen/margin_8"
-            android:layout_weight="1"
             android:progress="0"
-            android:progressTint="@color/colorPrimary" />
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@id/prog_bar_step4"
+            app:layout_constraintStart_toEndOf="@id/prog_bar_step2"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/prog_bar_step4"
@@ -127,10 +133,23 @@
             android:layout_width="0dip"
             android:layout_height="4dip"
             android:layout_marginStart="@dimen/margin_8"
-            android:layout_weight="1"
             android:progress="0"
-            android:progressTint="@color/colorPrimary" />
-    </LinearLayout>
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/prog_bar_step3"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/ll_progress_steps"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/tv_sub_title"-->
+    <!--        android:layout_marginTop="@dimen/margin_14"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:weightSum="4">-->
+
+    <!--        -->
+    <!--    </LinearLayout>-->
 
     <FrameLayout
         android:id="@+id/fl_steps_body"
