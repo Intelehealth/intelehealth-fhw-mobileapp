@@ -477,20 +477,24 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     }
 
-    private void showTimePickerDialog() {
+    private void showTimePickerDialog( ) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        // Create TimePickerDialog
+        // Create TimePickerDialog in 12-hour format
         TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                 (view, hourOfDay, minute1) -> {
-                    selectedFollowupTime = hourOfDay + ":" + minute1;
-                    mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
-                }, hour, minute, true);
+                    int hour12Format = hourOfDay % 12;
+                    if (hour12Format == 0) hour12Format = 12;
+                    String amPm = (hourOfDay >= 12) ? "PM" : "AM";
+                    selectedFollowupTime = String.format("%02d:%02d %s", hour12Format, minute1, amPm);
+                   mBinding. tvtFollowUpTime.setText(selectedFollowupTime);
+                }, hour, minute, false);  // 'false' for 12-hour format
         timePickerDialog.show();
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary));
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void showDatePickerDialog() {
@@ -502,7 +506,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    selectedFollowupDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                    Calendar selectedCalendar = Calendar.getInstance();
+                    selectedCalendar.set(selectedYear, selectedMonth, selectedDay);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    selectedFollowupDate = dateFormat.format(selectedCalendar.getTime());
                     mBinding.tvtFollowUpDate.setText(selectedFollowupDate);
                 },
                 year, month, day);
@@ -513,14 +520,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // Handling the Cancel button click
         datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
-                // Handle the cancel button action here if needed
                 dialog.dismiss();
             }
         });
 
         datePickerDialog.show();
-        // Change button colors dynamically after the dialog is shown
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary));
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
