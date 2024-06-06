@@ -46,6 +46,9 @@ import org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity;
 import org.intelehealth.ekalarogya.activities.complaintNodeActivity.CustomArrayAdapter;
 import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDNodeValidationLogic;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDValidationResult;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationConstants;
 import org.intelehealth.ekalarogya.knowledgeEngine.ncd.ValidationRules;
 import org.intelehealth.ekalarogya.models.AnswerResult;
 import org.intelehealth.ekalarogya.utilities.DecimalDigitsInputFilter;
@@ -73,6 +76,33 @@ import java.util.Locale;
  * Contact me: contact@amal.io
  */
 public class Node implements Serializable {
+
+    private List<String> recurringCapturedDataList = new ArrayList<>(); // if isRecurring then data will add to this list
+
+    public boolean isRecurring() {
+        return isRecurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        isRecurring = recurring;
+    }
+
+    private boolean isRecurring;
+
+    public boolean isLazyPopuShow() {
+        return isLazyPopuShow;
+    }
+
+    public void setLazyPopuShow(boolean lazyPopuShow) {
+        isLazyPopuShow = lazyPopuShow;
+    }
+
+    private boolean isLazyPopuShow;
+    private int recurringWaitTimeInMin;
+
+    private int recurringMaxCount;
+
+    private int recurringCurrentCount = 1;
     private boolean isDataCapture;
     /**
      * we are putting the validation of data type using below attribute
@@ -194,6 +224,10 @@ public class Node implements Serializable {
             this.validation = jsonNode.optString("validation");
 
             this.text = jsonNode.getString("text");
+            this.isRecurring = jsonNode.optBoolean("is-recurring");
+            this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
+            this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
+            this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
             this.gender = jsonNode.optString("gender");
 
@@ -347,6 +381,11 @@ public class Node implements Serializable {
         this.isMultiChoice = source.isMultiChoice;
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
+        this.isRecurring = source.isRecurring;
+        this.isLazyPopuShow = source.isLazyPopuShow;
+        this.recurringMaxCount = source.recurringMaxCount;
+        this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
+
         this.display = source.display;
         this.display_hindi = source.display_hindi;
         this.display_bengali = source.display_bengali;
@@ -1867,6 +1906,9 @@ public class Node implements Serializable {
             case "number":
                 askNumber(questionNode, context, adapter, false);
                 break;
+            case "number-pair":
+                askNumberPair(questionNode, context, adapter, false);
+                break;
             case "decimal":
                 askNumber(questionNode, context, adapter, true);
                 break;
@@ -1919,7 +1961,7 @@ public class Node implements Serializable {
         double max = 0d;
         double min = 0d;
         String validation = node.getValidation();
-        if (validation != null) {
+        if (validation != null && !validation.isEmpty()) {
             min = Double.parseDouble(validation.split("-")[0]);
             max = Double.parseDouble(validation.split("-")[1]);
         }
@@ -1995,6 +2037,188 @@ public class Node implements Serializable {
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
+                node.setSelected(false);
+                node.setDataCapture(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+    }
+
+    public static void askNumberPair(final Node node, Activity context, final QuestionsAdapter adapter, boolean isDecimalType) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setCancelable(false);
+        numberDialog.setTitle(node.findDisplay());
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_number_pair_picker, null);
+        numberDialog.setView(convertView);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);*/
+        double max1 = 1000;
+        double max2 = 1000;
+        double min1 = 1;
+        double min2 = 1;
+        Node node1 = node.getOptionsList().get(0);
+        Node node2 = node.getOptionsList().get(1);
+        String validation1 = node1.getValidation();
+        String validation2 = node2.getValidation();
+        if (validation1 != null && !validation1.isEmpty()) {
+            min1 = Double.parseDouble(validation1.split("-")[0]);
+            max1 = Double.parseDouble(validation1.split("-")[1]);
+        }
+        double finalMin1 = min1;
+        double finalMax1 = max1;
+
+        if (validation2 != null && !validation2.isEmpty()) {
+            min2 = Double.parseDouble(validation2.split("-")[0]);
+            max2 = Double.parseDouble(validation2.split("-")[1]);
+        }
+        double finalMin2 = min2;
+        double finalMax2 = max2;
+        EditText firstValueEditText = convertView.findViewById(R.id.etv_1st_value);
+        firstValueEditText.setHint(node1.findDisplay() + "(" + min1 + " to " + max1 + ")");
+        EditText secondValueEditText = convertView.findViewById(R.id.etv_2nd_value);
+        secondValueEditText.setHint(node2.findDisplay() + "(" + min2 + " to " + max2 + ")");
+        if (isDecimalType) {
+            firstValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            firstValueEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
+
+            secondValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            secondValueEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
+
+        } /*else {
+            firstValueEditText.setFilters(new InputFilter[]{new InputFilterMinMax(finalMin1, finalMax1)});
+
+            secondValueEditText.setFilters(new InputFilter[]{new InputFilterMinMax(finalMin2, finalMax2)});
+        }*/
+
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value1 = firstValueEditText.getText().toString().trim();
+                String value2 = secondValueEditText.getText().toString().trim();
+                double valueDouble1 = value1.isEmpty() ? 0d : Double.parseDouble(value1);
+                double valueDouble2 = value2.isEmpty() ? 0d : Double.parseDouble(value2);
+
+                if (value1.isEmpty()) {
+                    Toast.makeText(context, context.getString(R.string.node_input_empty_error, node1.findDisplay()), Toast.LENGTH_SHORT).show();
+
+                } else if ((finalMin1 != 0 && finalMax1 != 0) && valueDouble1 < finalMin1 || valueDouble1 > finalMax1) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_error, node1.findDisplay(), String.valueOf(finalMin1), String.valueOf(finalMax1)), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
+                } else if (value2.isEmpty()) {
+                    Toast.makeText(context, context.getString(R.string.node_input_empty_error, node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                } else if ((finalMin2 != 0 && finalMax2 != 0) && valueDouble2 < finalMin2 || valueDouble2 > finalMax2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_error, node2.findDisplay(), String.valueOf(finalMin2), String.valueOf(finalMax2)), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
+                } else {
+                    //valueDouble1 = Double.parseDouble(value1);
+                    //valueDouble2 = Double.parseDouble(value2);
+
+                        /*if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                        } else {
+                            node.addLanguage(et_enter_value.getText().toString());
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }*/
+                    node1.setLanguage(node1.getText()+"-"+value1);
+                    node2.setLanguage(node2.getText()+"-"+value2);
+                    node1.setSelected(true);
+                    node2.setSelected(true);
+                    node.getRecurringCapturedDataList().add(value1 + "/" + value2);
+                    node.setSelected(true);
+                    node.setDataCapture(true);
+                    NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(context, "", null, -1, node, false, null, false);
+                    if (ncdValidationResult.getActionResult() != null) {
+                        String target = ncdValidationResult.getActionResult().getTarget();
+                        if (target.equals("[ALT]")) {
+                            node.setRecurringCurrentCount(node.getRecurringCurrentCount() + 1);
+                            if(node.getRecurringCurrentCount()>node.getRecurringMaxCount()){
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("move_next", true);
+                                context.sendBroadcast(intent);
+                            }else {
+                                Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
+                                // count limit if it exceeded then move to next question
+                                // show countdown timer
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("recurring_wait_time_min", node.getRecurringWaitTimeInMin());
+                                intent.putExtra("recurring_max_try_count", node.getRecurringMaxCount());
+                                intent.putExtra("recurring_current_step", node.getRecurringCurrentCount());
+                                intent.putExtra("move_next", false);
+                                intent.putExtra("node_text", node.getDisplay());
+                                context.sendBroadcast(intent);
+                            }
+
+
+                        } else {
+                            Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                            intent.putExtra("move_next", true);
+                            context.sendBroadcast(intent);
+                        }
+                    } else {
+                        //// go to next question
+                        Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                        intent.putExtra("move_next", true);
+                        context.sendBroadcast(intent);
+                    }
+
+                }
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+               /* if (!value.equalsIgnoreCase("")) {
+
+
+
+                } else {
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+                    //} else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }*/
+                // node.setSelected(true);
+
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                    } else {
+                        node.addLanguage(et_enter_value.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }*/
                 node.setSelected(false);
                 node.setDataCapture(false);
                 adapter.refreshChildAdapter();
@@ -2661,7 +2885,7 @@ public class Node implements Serializable {
         double max = 0d;
         double min = 0d;
         String validation = node.getValidation();
-        if (validation != null) {
+        if (validation != null && !validation.isEmpty()) {
             min = Double.parseDouble(validation.split("-")[0]);
             max = Double.parseDouble(validation.split("-")[1]);
         }
@@ -4525,32 +4749,66 @@ public class Node implements Serializable {
         isDataCapture = dataCapture;
     }
 
-  /*  public Boolean getFlowEnd() {
-        return flowEnd;
-    }
-
-    public void setFlowEnd(Boolean flowEnd) {
-        this.flowEnd = flowEnd;
-    }
-
-    public Boolean getAutoFill() {
-        return isAutoFill;
-    }
-
-    public void setAutoFill(Boolean autoFill) {
-        isAutoFill = autoFill;
-    }*/
-  public void unselectAllNestedNode() {
-      Log.v(TAG, "unselectAllNestedNode - " + getText());
-      if (optionsList != null) {
-          for (int i = 0; i < optionsList.size(); i++) {
-              optionsList.get(i).setSelected(false);
-              optionsList.get(i).setDataCapture(false);
-              if (optionsList.get(i).optionsList != null) {
-                  optionsList.get(i).unselectAllNestedNode();
-              }
-          }
+    /*  public Boolean getFlowEnd() {
+          return flowEnd;
       }
-  }
+
+      public void setFlowEnd(Boolean flowEnd) {
+          this.flowEnd = flowEnd;
+      }
+
+      public Boolean getAutoFill() {
+          return isAutoFill;
+      }
+
+      public void setAutoFill(Boolean autoFill) {
+          isAutoFill = autoFill;
+      }*/
+    public void unselectAllNestedNode() {
+        Log.v(TAG, "unselectAllNestedNode - " + getText());
+        if (optionsList != null) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).setSelected(false);
+                optionsList.get(i).setDataCapture(false);
+                if (optionsList.get(i).optionsList != null) {
+                    optionsList.get(i).unselectAllNestedNode();
+                }
+            }
+        }
+    }
+
+    public List<String> getRecurringCapturedDataList() {
+        return recurringCapturedDataList;
+    }
+
+    public void setRecurringCapturedDataList(List<String> recurringCapturedDataList) {
+        this.recurringCapturedDataList = recurringCapturedDataList;
+    }
+
+    public int getRecurringCurrentCount() {
+        return recurringCurrentCount;
+    }
+
+    public void setRecurringCurrentCount(int recurringCurrentCount) {
+        this.recurringCurrentCount = recurringCurrentCount;
+    }
+
+
+    public int getRecurringWaitTimeInMin() {
+        return recurringWaitTimeInMin;
+    }
+
+    public void setRecurringWaitTimeInMin(int recurringWaitTimeInMin) {
+        this.recurringWaitTimeInMin = recurringWaitTimeInMin;
+    }
+
+    public int getRecurringMaxCount() {
+        return recurringMaxCount;
+    }
+
+    public void setRecurringMaxCount(int recurringMaxCount) {
+        this.recurringMaxCount = recurringMaxCount;
+    }
+
 }
 

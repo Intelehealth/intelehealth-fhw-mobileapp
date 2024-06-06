@@ -9,6 +9,8 @@ public class CheckInfoData implements Parcelable {
     private boolean havingAssociateCondition;
     private String associateOperator;
 
+    private String checkSectionName;
+
 
     public CheckInfoData() {
 
@@ -19,6 +21,7 @@ public class CheckInfoData implements Parcelable {
         condition = in.readString();
         havingAssociateCondition = in.readByte() != 0;
         associateOperator = in.readString();
+        checkSectionName = in.readString();
     }
 
     @Override
@@ -27,6 +30,7 @@ public class CheckInfoData implements Parcelable {
         dest.writeString(condition);
         dest.writeByte((byte) (havingAssociateCondition ? 1 : 0));
         dest.writeString(associateOperator);
+        dest.writeString(checkSectionName);
     }
 
     public static final Creator<CheckInfoData> CREATOR = new Creator<CheckInfoData>() {
@@ -78,5 +82,13 @@ public class CheckInfoData implements Parcelable {
 
     public void setHavingAssociateCondition(boolean havingAssociateCondition) {
         this.havingAssociateCondition = havingAssociateCondition;
+    }
+
+    public String getCheckSectionName() {
+        return checkSectionName;
+    }
+
+    public void setCheckSectionName(String checkSectionName) {
+        this.checkSectionName = checkSectionName;
     }
 }

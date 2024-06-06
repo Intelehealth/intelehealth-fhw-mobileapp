@@ -1166,4 +1166,7 @@
     <string name="type_to_search">Type to Search..</string>
     <string name="back_desc">back_desc</string>
     <string name="next_desc">next_desc</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
 </resources>

@@ -27,7 +27,7 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return An instance of NCDValidationResult representing the result of the validation.
      */
-    public static NCDValidationResult validateAndFindNextPath(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, boolean isInboundRequest, ActionResult previousActionResult) {
+    public static NCDValidationResult validateAndFindNextPath(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, boolean isInboundRequest, ActionResult previousActionResult, boolean isFromNextClick) {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         boolean isFlowEnd = selectedNode.getFlowEnd();
         ValidationRules validationRules = selectedNode.getValidationRules();
@@ -40,11 +40,18 @@ public class NCDNodeValidationLogic {
 
         if (validationRules != null) {
             if (validationRules.getType().equalsIgnoreCase("NAVIGATE")) {
-                return checkForNavigationType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules);
+                return checkForNavigationType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isFromNextClick);
             } else if (validationRules.getType().equalsIgnoreCase("RANGE_TEXT")) {
                 return checkForRangeTextType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isInboundRequest, previousActionResult);
             } else if (validationRules.getType().equalsIgnoreCase("TEXT_DATE")) {
                 return checkForTextDateType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isInboundRequest, previousActionResult);
+
+            } else if (validationRules.getType().equalsIgnoreCase("RECURRING_NUMBER_SET")) {
+                if (isFromNextClick) {
+                    return ncdValidationResult;
+                } else {
+                    return checkForRecurringNumberSetType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isInboundRequest, previousActionResult);
+                }
 
             }
         } else {
@@ -82,12 +89,12 @@ public class NCDNodeValidationLogic {
      * @param selectedNode
      * @return
      */
-    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRules) {
+    private static NCDValidationResult checkForNavigationType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRules, boolean isFromNextClick) {
         NCDValidationResult ncdValidationResult = new NCDValidationResult();
         String rulesType = validationRules.getType();
         String sourceDataType = validationRules.getSourceDataType();
         String sourceDataNameType = validationRules.getSourceData();
-        List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataNameType);
+        List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataType, sourceDataNameType);
         if (sourceDataInfoList != null) {
             List<SourceData> sourceDataInfoValueList = new ArrayList<>();
             if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_PATIENT_ATTRIBUTE)) {
@@ -96,7 +103,7 @@ public class NCDNodeValidationLogic {
                 sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNode(sourceDataInfoList, mmRootNode, patientUUID);
             }*/
             List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
-            ActionResult actionResult = ActionLogic.foundNextTargetNodeText(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
+            ActionResult actionResult = ActionLogic.foundActionResult(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
             if (actionResult == null) {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(false);
@@ -113,7 +120,7 @@ public class NCDNodeValidationLogic {
                             // "is-auto-fill": true,
                             if (tempNode.getAutoFill()) {
                                 // need to again parse the
-                                NCDValidationResult targetNcdValidationResult = validateAndFindNextPath(context, patientUUID, mmRootNode, i, tempNode, true, actionResult);
+                                NCDValidationResult targetNcdValidationResult = validateAndFindNextPath(context, patientUUID, mmRootNode, i, tempNode, true, actionResult, isFromNextClick);
                                 mmRootNode = targetNcdValidationResult.getUpdatedNode();
                             }
                         } else {
@@ -166,12 +173,20 @@ public class NCDNodeValidationLogic {
 
             //if (sourceDataInfoList.size() == 1)
             sourceDataInfoValueList.add(DataSourceManager.getValuesForDataSourceFromTargetNode(sourceData, mmRootNode));
-        } /*else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_RANGE_NODE_VAL)) {
+        } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT_SET)) {
+            // Nested node separator '#=>>'
+            // target data and type separator '->'
+            if(sourceDataNameType.contains("#=>>")){
+                sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNestedNode(rulesType, sourceDataType, sourceDataNameType, mmRootNode);
+            }
+
+        }
+        /*else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_RANGE_NODE_VAL)) {
                 sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNode(sourceDataInfoList, mmRootNode, patientUUID);
             }*/
         List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
 
-        ActionResult actionResult = ActionLogic.foundNextTargetNodeText(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
+        ActionResult actionResult = ActionLogic.foundActionResult(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
         if (actionResult == null) {
             ncdValidationResult.setTargetNodeID(null);
             ncdValidationResult.setReadyToEndTheScreening(false);
@@ -266,6 +281,67 @@ public class NCDNodeValidationLogic {
                     ncdValidationResult.setUpdatedNode(mmRootNode);
                 }
 
+            }
+        }
+
+       /* } else {
+            List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataNameType);
+
+        }*/
+
+        return ncdValidationResult;
+    }
+
+    private static NCDValidationResult checkForRecurringNumberSetType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRules, boolean isInboundRequest, ActionResult previousActionResult) {
+        NCDValidationResult ncdValidationResult = new NCDValidationResult();
+        String rulesType = validationRules.getType();
+        String sourceDataType = validationRules.getSourceDataType();
+        String sourceDataNameType = validationRules.getSourceData();
+        //List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
+        // if (isInboundRequest) {
+        // no need to check the source data bcz we have already the value in previousActionResult object
+        if (validationRules.getActionType().equals(ValidationConstants.ACTION_TYPE_WAIT_FOR_RECURRING_DATA_CAPTURE)) {
+            if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_THIS_NODE_VAL_LIST_INT_SET)) {
+                List<SourceData> sourceDataInfoList = ValidationRulesParser.getSourceDataInfoList(rulesType, sourceDataType, sourceDataNameType);
+                List<SourceData> sourceDataInfoValueList = new ArrayList<>();
+                if (sourceDataInfoList != null) {
+                    sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromCurrentNodeRecurringPairDataList(sourceDataInfoList, selectedNode);
+                }
+
+                List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
+                if (checkInfoDataList.size() != sourceDataInfoValueList.size()) {
+                    for (int i = 0; i < checkInfoDataList.size(); i++) {
+
+                        if (i >= sourceDataInfoValueList.size()) {
+                            int size = sourceDataInfoValueList.size();
+                            for (int j = 0; j < size; j++) {
+                                if (checkInfoDataList.get(i).getDataName().equals(sourceDataInfoValueList.get(j).getDataName())) {
+                                    SourceData sourceData = sourceDataInfoValueList.get(j);
+                                    sourceDataInfoValueList.add(sourceData);
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+
+                ActionResult actionResult = ActionLogic.foundActionResult(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
+
+                if (actionResult == null) {
+                    ncdValidationResult.setTargetNodeID(null);
+                    ncdValidationResult.setReadyToEndTheScreening(false);
+                    ncdValidationResult.setUpdatedNode(mmRootNode);
+                } else {
+                    /*for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+                        selectedNode.getOptionsList().get(i).setHidden(true);
+                    }    */
+
+                    ncdValidationResult.setActionResult(actionResult);
+                    ncdValidationResult.setReadyToEndTheScreening(false);
+                    ncdValidationResult.setUpdatedNode(mmRootNode);
+
+                }
             }
         }
 

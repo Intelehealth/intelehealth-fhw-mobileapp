@@ -1,7 +1,11 @@
 package org.intelehealth.ekalarogya.knowledgeEngine.ncd;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides action generation logic for nodes using the validation rules.
@@ -9,22 +13,46 @@ import java.util.List;
  * Contact me: lincon@intelehealth.org
  */
 public class ActionLogic {
-    public static ActionResult foundNextTargetNodeText(List<SourceData> sourceDataInfoValueList, List<CheckInfoData> checkInfoDataList, List<Action> actionList) {
+    public static ActionResult foundActionResult(List<SourceData> sourceDataInfoValueList, List<CheckInfoData> checkInfoDataList, List<Action> actionList) {
         ActionResult actionResult = new ActionResult();
 
         for (int i = 0; i < actionList.size(); i++) {
             Action action = actionList.get(i);
             String conditionStatement = action.getIfCondition();
+
+            String prefix = conditionStatement.substring(0, 3);
+            String regex = "^C\\d\\($";
+            // Compile the pattern
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(prefix);
+            boolean matches = matcher.matches();
+            String checkSec = "";
+
+            if (matches) {
+                checkSec = prefix.substring(0, 2);
+                conditionStatement = conditionStatement.substring(3, conditionStatement.length() - 1);
+            }
+            List<CheckInfoData> finalCheckInfoDataList = new ArrayList<>();
+            for (int j = 0; j < checkInfoDataList.size(); j++) {
+                CheckInfoData temp = checkInfoDataList.get(j);
+                if(temp.getCheckSectionName().equals(checkSec)){
+                    finalCheckInfoDataList.add(temp);
+                }
+            }
+            if(finalCheckInfoDataList.isEmpty()){
+                finalCheckInfoDataList = checkInfoDataList;
+            }
+
             // check for multiple attribute required
-            if (checkInfoDataList.size() > 1) {
+            if (finalCheckInfoDataList.size() > 1) {
                 //Ex: "check": "AGE[GREATER_THAN]AND-GENDER[EQUAL]"
                 // "IF": "11-MALE"
                 String[] targetValues = conditionStatement.split("-");
                 List<Boolean> conditionsPassStatuList = new ArrayList<>();
                 List<String> associateOperatorList = new ArrayList<>();
                 for (int j = 0; j < targetValues.length; j++) {
-                    CheckInfoData checkInfoData = checkInfoDataList.get(j);
-                    SourceData sourceData = sourceDataInfoValueList.size()==1 ? sourceDataInfoValueList.get(0) : sourceDataInfoValueList.get(j);
+                    CheckInfoData checkInfoData = finalCheckInfoDataList.get(j);
+                    SourceData sourceData = sourceDataInfoValueList.size() == 1 ? sourceDataInfoValueList.get(0) : sourceDataInfoValueList.get(j);
                     if (checkInfoData.isHavingAssociateCondition())
                         associateOperatorList.add(checkInfoData.getAssociateOperator());
                     if (sourceData.getDataType().equals(ValidationConstants.INTEGER)) {
@@ -53,7 +81,7 @@ public class ActionLogic {
                             conditionsPassStatuList.add(valA == valB);
 
                         }
-                    }else if (sourceData.getDataType().equals(ValidationConstants.DOUBLE)) {
+                    } else if (sourceData.getDataType().equals(ValidationConstants.DOUBLE)) {
                         double valA = Double.parseDouble(sourceData.getValue());
                         double valB = Double.parseDouble(targetValues[j]);
                         if (checkInfoData.getCondition().equals(ValidationConstants.CHECK_GREATER_THAN)) {
@@ -91,20 +119,33 @@ public class ActionLogic {
                     }
                 }
                 boolean isFinalPass = false;
-                for (int j = 0; j < conditionsPassStatuList.size(); j++) {
-                    boolean isFinalItem = j == conditionsPassStatuList.size() - 1;
-                    if (isFinalItem) break;
-                    if (associateOperatorList.isEmpty()) {
-                        isFinalPass = conditionsPassStatuList.get(j);
-                        break;
+                if (associateOperatorList.isEmpty()) {
+                    isFinalPass = conditionsPassStatuList.get(0);
+
+                } else {
+                    // check all are one type or mixed
+                    Set<String> tempSet = new HashSet<>(associateOperatorList);
+                    if (tempSet.size() == 1) {
+                        if (tempSet.toArray()[0].equals(ValidationConstants.CHECK_OR)) {
+                            isFinalPass = conditionsPassStatuList.contains(true);
+
+
+                        } else if (tempSet.toArray()[0].equals(ValidationConstants.CHECK_AND)) {
+                            isFinalPass = !conditionsPassStatuList.contains(false);
+                        }
                     } else {
-                        if (associateOperatorList.get(j).equals(ValidationConstants.CHECK_AND)) {
-                            isFinalPass = conditionsPassStatuList.get(j) && conditionsPassStatuList.get(j + 1);
-                        } else if (associateOperatorList.get(j).equals(ValidationConstants.CHECK_OR)) {
-                            isFinalPass = conditionsPassStatuList.get(j) || conditionsPassStatuList.get(j + 1);
+                        for (int j = 0; j < conditionsPassStatuList.size(); j++) {
+                            boolean isFinalItem = j == conditionsPassStatuList.size() - 1;
+                            if (isFinalItem) break;
+
+                            if (associateOperatorList.get(j).equals(ValidationConstants.CHECK_AND)) {
+                                isFinalPass = conditionsPassStatuList.get(j) && conditionsPassStatuList.get(j + 1);
+                            } else if (associateOperatorList.get(j).equals(ValidationConstants.CHECK_OR)) {
+                                isFinalPass = conditionsPassStatuList.get(j) || conditionsPassStatuList.get(j + 1);
+                            }
+
                         }
                     }
-
 
                 }
                 if (isFinalPass) {

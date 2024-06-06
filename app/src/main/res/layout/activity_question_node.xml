@@ -105,6 +105,38 @@
             app:srcCompat="@drawable/ic_done_24dp"
             app:useCompatPadding="true" />
 
+
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_timer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/colorPrimaryTrans"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_timer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blood pressure measurement - 2"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="04:30"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>

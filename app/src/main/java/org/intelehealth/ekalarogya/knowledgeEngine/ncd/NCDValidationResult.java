@@ -3,8 +3,6 @@ package org.intelehealth.ekalarogya.knowledgeEngine.ncd;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
 import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 /**
  * Represents the result of Node validation.
@@ -16,10 +14,25 @@ public class NCDValidationResult implements Parcelable {
     private String targetNodeID;
     private boolean isReadyToEndTheScreening;
     private Node updatedNode;
+    private ActionResult actionResult;
+
+
+
+    public NCDValidationResult() {
+
+    }
 
     protected NCDValidationResult(Parcel in) {
         targetNodeID = in.readString();
         isReadyToEndTheScreening = in.readByte() != 0;
+        actionResult = in.readParcelable(ActionResult.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(targetNodeID);
+        dest.writeByte((byte) (isReadyToEndTheScreening ? 1 : 0));
+        dest.writeParcelable(actionResult, flags);
     }
 
     public static final Creator<NCDValidationResult> CREATOR = new Creator<NCDValidationResult>() {
@@ -33,10 +46,6 @@ public class NCDValidationResult implements Parcelable {
             return new NCDValidationResult[size];
         }
     };
-
-    public NCDValidationResult() {
-
-    }
 
     public String getTargetNodeID() {
         return targetNodeID;
@@ -68,9 +77,12 @@ public class NCDValidationResult implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(targetNodeID);
-        parcel.writeByte((byte) (isReadyToEndTheScreening ? 1 : 0));
+
+    public ActionResult getActionResult() {
+        return actionResult;
+    }
+
+    public void setActionResult(ActionResult actionResult) {
+        this.actionResult = actionResult;
     }
 }

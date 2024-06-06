@@ -1047,6 +1047,9 @@
     <string name="you_have_unuploaded_visits">तुमच्याकडे अपलोड न केलेल्या %1$s भेटी आहेत.</string>
     <string name="back_desc">back_desc</string>
     <string name="next_desc">next_desc</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
 
     <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">तुमच्या कुटुंब सदस्य WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
     <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">तुमच्या वैयक्तिक WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
