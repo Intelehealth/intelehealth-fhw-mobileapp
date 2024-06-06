@@ -565,7 +565,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
 
         // Format the date and time into the desired format
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, h:mm a"));
+        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
     }
 
     private void fetchingIntent() {
