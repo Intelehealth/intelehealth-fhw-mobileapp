@@ -1079,7 +1079,6 @@
                                     android:layout_height="@dimen/edittext_height_44dp"
                                     android:layout_marginTop="@dimen/hamburger_margin_start"
                                     android:layout_weight="1"
-
                                     android:drawableEnd="@drawable/followup_item_calendar"
                                     android:focusable="false"
                                     android:hint="@string/select_date"
