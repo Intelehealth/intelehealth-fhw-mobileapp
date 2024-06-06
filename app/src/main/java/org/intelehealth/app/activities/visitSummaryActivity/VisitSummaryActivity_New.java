@@ -89,6 +89,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -189,6 +190,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -482,15 +485,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        // Create TimePickerDialog
+        // Create TimePickerDialog in 12-hour format
         TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                 (view, hourOfDay, minute1) -> {
-                    selectedFollowupTime = hourOfDay + ":" + minute1;
+                    int hour12Format = hourOfDay % 12;
+                    if (hour12Format == 0) hour12Format = 12;
+                    String amPm = (hourOfDay >= 12) ? "PM" : "AM";
+                    selectedFollowupTime = String.format("%02d:%02d %s", hour12Format, minute1, amPm);
                     mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
-                }, hour, minute, true);
+                }, hour, minute, false);  // 'false' for 12-hour format
         timePickerDialog.show();
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary));
+        timePickerDialog.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void showDatePickerDialog() {
@@ -502,7 +509,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    selectedFollowupDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                    Calendar selectedCalendar = Calendar.getInstance();
+                    selectedCalendar.set(selectedYear, selectedMonth, selectedDay);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    selectedFollowupDate = dateFormat.format(selectedCalendar.getTime());
                     mBinding.tvtFollowUpDate.setText(selectedFollowupDate);
                 },
                 year, month, day);
@@ -513,14 +523,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // Handling the Cancel button click
         datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
-                // Handle the cancel button action here if needed
                 dialog.dismiss();
             }
         });
 
         datePickerDialog.show();
-        // Change button colors dynamically after the dialog is shown
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary));
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -534,11 +543,29 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setFacilityToVisitSpinner();
             setSeveritySpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
-            if (!TextUtils.isEmpty(followupValue))
-            {
-                mBinding.tvViewFollowUpDateTime.setText(followupValue);
+            if (!TextUtils.isEmpty(followupValue)) {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        mBinding.tvViewFollowUpDateTime.setText(getFormattedDateTime(followupValue));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getFormattedDateTime(String followupValue) {
+        // Extract the date and time part
+        String datePart = followupValue.split(", Time:")[0];
+        String timePart = followupValue.split(", Time:")[1].split(", Remark:")[0];
+
+        // Parse the date and time parts
+        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
+
+        // Format the date and time into the desired format
+        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
     }
 
     private void fetchingIntent() {
@@ -2864,6 +2891,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
+
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Log.d("visitUUID", "upload_click: " + visitUUID);
@@ -2911,7 +2939,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
                     obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
                     obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
-                    obsDTO.setValue(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
+                    obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
                     obsDTO.setCreator(sessionManager.getCreatorID());
 
 //                    Step - 3 create observation dao and call insertObs method
