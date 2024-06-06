@@ -770,6 +770,7 @@
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
+
                             app:cardCornerRadius="@dimen/margin_5"
                             app:cardElevation="@dimen/margin_5">
 
@@ -1372,5 +1373,4 @@
         android:src="@drawable/icons8_chat_new" />
 
 </RelativeLayout>
-
 </layout>

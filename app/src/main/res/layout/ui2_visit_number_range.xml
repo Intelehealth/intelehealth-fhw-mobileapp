@@ -50,7 +50,7 @@
         android:padding="@dimen/padding_10"
         android:text="---"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary1"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/card_content_normal_text_size"
         android:textStyle="bold"
         tools:ignore="TextContrastCheck" />

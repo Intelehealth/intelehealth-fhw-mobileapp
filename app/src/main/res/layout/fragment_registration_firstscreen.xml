@@ -25,8 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"
-                >
+                tools:visibility="visible">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/img_profile"
                     android:layout_width="@dimen/patregist_profileimg_icon"
@@ -73,11 +73,11 @@
                     android:id="@+id/profile_image_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_below="@+id/add_picture"
                     android:layout_centerHorizontal="true"
+                    android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:layout_below="@+id/add_picture"
                     android:text="@string/profile_picture_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
@@ -91,11 +91,11 @@
                 android:id="@+id/linear_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/add_picture_lay"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/first_name_tv"
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:hint="@string/enter_first_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -142,11 +142,11 @@
                 android:id="@+id/linear_middlename"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_firstname"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/middle_name_tv"
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:hint="@string/enter_middle_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -194,11 +194,11 @@
                 android:id="@+id/linear_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_middlename"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/last_name_tv"
@@ -215,7 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:hint="@string/enter_last_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -247,11 +247,11 @@
                 android:id="@+id/linear_gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_lastname"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/gender_tv"
@@ -328,11 +328,11 @@
                 android:id="@+id/linear_dob"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_gender"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/dob_tv"
@@ -350,7 +350,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:focusable="false"
                     android:hint="@string/enter_date_of_birth"
@@ -386,11 +386,11 @@
                 android:id="@+id/linear_age"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_dob"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/age_tv"
@@ -408,7 +408,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:focusable="false"
                     android:hint="@string/enter_age"
                     android:inputType=""
@@ -442,11 +442,11 @@
                 android:id="@+id/linear_guardian_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_age"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/guardian_name_tv"
@@ -463,7 +463,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
+                    android:background="@drawable/input_edittext_border"
                     android:hint="@string/enter_guardian_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -493,11 +493,11 @@
                 android:id="@+id/linear_guardian_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_guardian_name"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/guardian_type_tv"
@@ -512,9 +512,9 @@
                     android:id="@+id/guardian_type_spinner"
                     style="@style/AppTheme"
                     android:layout_width="match_parent"
-                    android:background="@drawable/ui2_spinner_background_new"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/ui2_spinner_background_new"
                     android:dropDownVerticalOffset="50dp"
                     android:gravity="center_vertical"
                     android:hint="@string/select_guardian_type"
@@ -547,12 +547,12 @@
                 android:id="@+id/linear_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_guardian_type"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/phone_num_tv"
@@ -574,7 +574,7 @@
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/input_edittext_border"
                         android:gravity="center_vertical"
                         app:ccp_countryPreference="us,in"
                         app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
@@ -587,7 +587,7 @@
                         android:layout_marginStart="@dimen/fu_card_margin_updown"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/input_edittext_border"
                         android:digits="1234567890"
                         android:hint="@string/phone_number"
                         android:inputType="number"
@@ -621,11 +621,11 @@
                 android:id="@+id/linear_contact_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_phone_num"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/contact_type_tv"
@@ -640,9 +640,9 @@
                     android:id="@+id/contact_type_spinner"
                     style="@style/AppTheme"
                     android:layout_width="match_parent"
-                    android:background="@drawable/ui2_spinner_background_new"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/ui2_spinner_background_new"
                     android:dropDownVerticalOffset="50dp"
                     android:gravity="center_vertical"
                     android:hint="@string/select_guardian_type"
@@ -675,11 +675,11 @@
                 android:id="@+id/linear_em_contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_contact_type"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/em_contact_name_tv"
@@ -697,8 +697,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:background="@drawable/edittext_border"
-                    android:hint="@string/enter_emergency_contact_name"                    android:inputType="textCapWords"
+                    android:background="@drawable/input_edittext_border"
+                    android:hint="@string/enter_emergency_contact_name"
+                    android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
@@ -726,12 +727,12 @@
                 android:id="@+id/linear_emergency_contact_num"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/linear_em_contact_name"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/em_contact_num_tv"
@@ -753,7 +754,7 @@
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/input_edittext_border"
                         android:gravity="center_vertical"
                         app:ccp_countryPreference="us,in"
                         app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
@@ -766,7 +767,7 @@
                         android:layout_marginStart="@dimen/fu_card_margin_updown"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_weight="1"
-                        android:background="@drawable/edittext_border"
+                        android:background="@drawable/input_edittext_border"
                         android:digits="1234567890"
                         android:hint="Emergency Contact Number"
                         android:inputType="number"

@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_15"
                 android:visibility="visible"
-                app:SpinKit_Color="@color/ui2_green" />
+                app:SpinKit_Color="@color/colorAccent" />
 
             <LinearLayout
                 android:id="@+id/rl_body"
@@ -120,6 +120,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:drawableTint="@color/colorPrimary"
                         app:drawableEndCompat="@drawable/info_blue_svg" />
                 </LinearLayout>
 
