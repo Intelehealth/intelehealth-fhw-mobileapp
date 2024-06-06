@@ -842,7 +842,7 @@ public class EncounterDAO {
                       tbl_encounter as e on obs.encounteruuid = e.uuid,\s
                       tbl_visit as v on e.visituuid = v.uuid,
                       tbl_patient as p on v.patientuuid = p.uuid
-                     where obs.conceptuuid = \s""" + "'" + followUpDateConcept + "'";
+                     where v.enddate IS NULL and obs.conceptuuid = \s""" + "'" + followUpDateConcept + "'";
 
             Cursor idCursor = db.rawQuery(query, new String[]{});
 
