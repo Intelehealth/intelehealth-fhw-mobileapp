@@ -434,7 +434,7 @@
 
     <style name="RadioButtonStyleSelection" parent="Theme.AppCompat.Light">
         <!--        <item name="colorControlNormal">@color/indigo</item>-->
-        <item name="colorControlActivated">@color/colorPrimary1</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
     <style name="SpinnerTheme1" parent="Theme.AppCompat.Light">
@@ -527,7 +527,7 @@
     </style>
 
     <style name="slider_scrollbar" parent="Widget.MaterialComponents.Slider">
-        <item name="trackColorActive">@color/colorPrimary1</item>
+        <item name="trackColorActive">@color/colorPrimary</item>
         <item name="trackColorInactive">@color/gray_1</item>
 
     </style>

@@ -4,7 +4,7 @@
     <solid android:color="@color/white" />
     <stroke
         android:width="1dip"
-        android:color="@color/ui2_chat_edit_bubble_color"
+        android:color="@color/colorAccent"
         android:dashWidth="1dip" />
     <corners android:radius="8dp" />
 
