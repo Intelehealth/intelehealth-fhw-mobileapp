@@ -1008,7 +1008,7 @@
 
     <string name="what_is_your_marital_status">আপনার বৈবাহিক অবস্থা কি?*</string>
     <string name="currently_married">বর্তমানে বিবাহিত</string>
-<!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
+    <!--    <string name="married_gauna_not_performed">বিবাহিত, গৌণ সঞ্চালিত নয়</string>-->
     <string name="widowed">বিধবা</string>
     <string name="divorced">তালাকপ্রাপ্ত</string>
     <string name="separated">বিচ্ছিন্ন</string>
@@ -1197,5 +1197,31 @@
     <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
     <string name="node_input_empty_error">%1$s  should not be empty !</string>
     <string name="please_move_to_next_question">Please move to next question</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">পরিবারের সদস্য হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ব্যক্তিগত হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="i_dont_know">আমি জানি না</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">একল কি আপনাকে আমাদের সফরের সারাংশের একটি বিনামূল্যের হোয়াটসঅ্যাপ বার্তা পাঠাতে পারে?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">আপনি কি বর্তমানে BP এর জন্য ওষুধ খাচ্ছেন?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">আপনি কি বর্তমানে ডায়াবেটিস এর জন্য ওষুধ খাচ্ছেন? </string>
+    <string name="are_you_taking_any_medication_for_anemia">আপনি কি বর্তমানে রক্তাল্পতা এর জন্য ওষুধ খাচ্ছেন?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">আপনার BP জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">আপনার ডায়াবেটিস জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">আপনার রক্তাল্পতা জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">কেন আপনি আপনার BP ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">কেন আপনি আপনার ডায়াবেটিস ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">কেন আপনি আপনার রক্তাল্পতা ওষুধ খাচ্ছেন না?</string>
+
+    <string name="never_prescribed_medication">আমাকে কখনই ওষুধ দেওয়া হয়নি</string>
+    <string name="forgot_to_take_it">নিতে ভুলে গেছি</string>
+    <string name="cannot_afford_medications">আমি ওষুধ দিতে পারি না</string>
+    <string name="ran_out_of_medication">আমার ওষুধ ফুরিয়ে গেছে/ ওষুধ হারিয়ে গেছে</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">আমার পিএইচসি এর সাথে ফলোআপ করা দরকার</string>
+    <string name="i_dont_think_i_need_it">আমি এটা প্রয়োজন মনে করি না</string>
+    <string name="side_effect_related_to_medication">ওষুধের সাথে সম্পর্কিত পার্শ্ব প্রতিক্রিয়া</string>
+    <string name="unknown_other">অজানা/অন্য</string>
 
 </resources>

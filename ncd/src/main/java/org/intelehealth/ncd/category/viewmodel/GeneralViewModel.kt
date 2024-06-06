@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
-import org.intelehealth.ncd.data.SearchRepository
+import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
 
-class GeneralViewModel(private val repository: SearchRepository) : ViewModel() {
+class GeneralViewModel(private val repository: CategoryRepository) : ViewModel() {
 
     private val _generalMutableLiveData = MutableLiveData<List<Patient>>()
     val generalLiveData: LiveData<List<Patient>> = _generalMutableLiveData

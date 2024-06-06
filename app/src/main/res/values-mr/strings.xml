@@ -1050,4 +1050,32 @@
     <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
     <string name="node_input_empty_error">%1$s  should not be empty !</string>
     <string name="please_move_to_next_question">Please move to next question</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">तुमच्या कुटुंब सदस्य WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">तुमच्या वैयक्तिक WhatsApp खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+
+    <string name="i_dont_know">मला माहित नाही</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">एकल तुम्हाला आपल्या भेटीचा सारांश मोफत व्हॉट्सॲप मेसेज पाठवू शकेल का?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">तुम्ही सध्या BP साठी औषधे घेत आहात का?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">तुम्ही सध्या मधुमेह साठी औषधे घेत आहात का?</string>
+    <string name="are_you_taking_any_medication_for_anemia">तुम्ही सध्या ॲनिमिया साठी औषधे घेत आहात का?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">तुम्हाला तुमच्या BP साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">तुम्हाला तुमच्या मधुमेह साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">तुम्हाला तुमच्या ॲनिमिया साठी गेल्या 1 वर्षात आरोग्य सेवा कर्मचाऱ्याने पाहिले आहे का?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">तुम्ही तुमची BP औषधे का घेत नाही?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">तुम्ही तुमची मधुमेह औषधे का घेत नाही?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">तुम्ही तुमची ॲनिमिया औषधे का घेत नाही?</string>
+
+    <string name="never_prescribed_medication">मला कधीच औषधे लिहून दिली नाहीत</string>
+    <string name="forgot_to_take_it">मी ते घ्यायला विसरलो</string>
+    <string name="cannot_afford_medications">मला औषधे परवडत नाहीत</string>
+    <string name="ran_out_of_medication">माझी औषधे संपली / औषधे हरवली</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">मला माझ्या PHC कडे पाठपुरावा करायचा आहे</string>
+    <string name="i_dont_think_i_need_it">मला त्याची गरज वाटत नाही</string>
+    <string name="side_effect_related_to_medication">औषधांशी संबंधित दुष्परिणाम</string>
+    <string name="unknown_other">अज्ञात/इतर</string>
+
 </resources>

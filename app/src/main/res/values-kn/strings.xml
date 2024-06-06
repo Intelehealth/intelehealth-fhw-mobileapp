@@ -1197,4 +1197,32 @@
     <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
     <string name="node_input_empty_error">%1$s  should not be empty !</string>
     <string name="please_move_to_next_question">Please move to next question</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">ನಿಮ್ಮ ಕುಟುಂಬದ ಸದಸ್ಯ WhatsApp ಖಾತೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಯಾವುದು?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ನಿಮ್ಮ ವೈಯಕ್ತಿಕ WhatsApp ಖಾತೆಯೊಂದಿಗೆ ಸಂಯೋಜಿತವಾಗಿರುವ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಯಾವುದು?</string>
+
+    <string name="i_dont_know">ನನಗೆ ಗೊತ್ತಿಲ್ಲ</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">ನಮ್ಮ ಭೇಟಿಯ ಸಾರಾಂಶದ ಉಚಿತ WhatsApp ಸಂದೇಶವನ್ನು ಏಕಲ್ ನಿಮಗೆ ಕಳುಹಿಸಬಹುದೇ?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">ನೀವು ಪ್ರಸ್ತುತ BP ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ನೀವು ಪ್ರಸ್ತುತ ಮಧುಮೇಹ ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ನೀವು ಪ್ರಸ್ತುತ ರಕ್ತಹೀನತೆ ಮತ್ತು ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ನಿಮ್ಮ BP ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ನಿಮ್ಮ ಮಧುಮೇಹ ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ನಿಮ್ಮ ರಕ್ತಹೀನತೆ ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">ನೀವು ನಿಮ್ಮ BP ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ನೀವು ನಿಮ್ಮ ಮಧುಮೇಹ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ನೀವು ನಿಮ್ಮ ರಕ್ತಹೀನತೆ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+
+    <string name="never_prescribed_medication">ನಾನು ಎಂದಿಗೂ ಔಷಧಿಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಿಲ್ಲ</string>
+    <string name="forgot_to_take_it">ನಾನು ಅದನ್ನು ತೆಗೆದುಕೊಳ್ಳಲು ಮರೆತಿದ್ದೇನೆ</string>
+    <string name="cannot_afford_medications">ನಾನು ಔಷಧಿಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ</string>
+    <string name="ran_out_of_medication">ನನ್ನಲ್ಲಿ ಔಷಧಿಗಳು ಖಾಲಿಯಾದವು / ಕಳೆದುಹೋದ ಔಷಧಿಗಳು</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">ನನ್ನ ಪಿಎಚ್‌ಸಿಯನ್ನು ಅನುಸರಿಸುವ ಅಗತ್ಯವಿದೆ</string>
+    <string name="i_dont_think_i_need_it">ನನಗೆ ಅದರ ಅವಶ್ಯಕತೆ ಇಲ್ಲ ಎಂದು ನಾನು ಭಾವಿಸುತ್ತೇನೆ</string>
+    <string name="side_effect_related_to_medication">ಔಷಧಿಗೆ ಸಂಬಂಧಿಸಿದ ಅಡ್ಡ ಪರಿಣಾಮ</string>
+    <string name="unknown_other">ಅಜ್ಞಾತ / ಇತರೆ</string>
+
 </resources>

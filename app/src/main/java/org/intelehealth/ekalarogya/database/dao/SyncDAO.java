@@ -102,9 +102,8 @@ public class SyncDAO {
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList
-                    (responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+            providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
+            visitAttributeListDAO.insertVisitAttributeList(responseDTO.getData().getVisitAttributeList());
 //            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());

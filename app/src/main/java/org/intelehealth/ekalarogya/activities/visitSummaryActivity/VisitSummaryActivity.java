@@ -872,14 +872,11 @@ public class VisitSummaryActivity extends BaseActivity {
                 VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                 boolean isUpdateVisitDone = false;
                 try {
-
                     if (!isVisitSpecialityExists) {
                         isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "General Physician");
                     }
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 }
 
                 VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
@@ -888,10 +885,8 @@ public class VisitSummaryActivity extends BaseActivity {
                     if (!isVisitSpecialityExists) {
                         isUpdateVisitState = visit_state_attributes.insertVisitAttributesState(visitUuid, "" + sessionManager.getStateName());
                     }
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 }
 
                 VisitAttributeListDAO upload_time_attributes = new VisitAttributeListDAO();
@@ -962,7 +957,10 @@ public class VisitSummaryActivity extends BaseActivity {
 */
 
                     mComplaint = mComplaint.replace(Node.big_bullet, "").replace("<br/>", ",");
-                    Log.v("Chief Complaint", "cc_title: " + mComplaint);
+
+                    if (mComplaint.endsWith("<br")) {
+                        mComplaint = mComplaint.substring(0, mComplaint.length() - 3);
+                    }
                 }
 
                 VisitAttributeListDAO cc_title_attributes = new VisitAttributeListDAO();
@@ -1049,7 +1047,7 @@ public class VisitSummaryActivity extends BaseActivity {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                             //Do something after 100ms
                             SyncUtils syncUtils = new SyncUtils();
-                            boolean isSynced = syncUtils.syncForeground("visitSummary");
+                            boolean isSynced = syncUtils.syncForeground("visitSummary", null);
                             if (isSynced) {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 showVisitID();
@@ -1524,6 +1522,7 @@ public class VisitSummaryActivity extends BaseActivity {
                             }
                         }
 
+                        boolean isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
@@ -1532,6 +1531,13 @@ public class VisitSummaryActivity extends BaseActivity {
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+
+                        if (isNcdVisit) {
+                            intent1.putExtra("advicefrom", "Sevika");
+                        } else {
+                            intent1.putExtra("advicefrom", "Doctor");
+                        }
+
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1809,7 +1815,7 @@ public class VisitSummaryActivity extends BaseActivity {
                     Toast.makeText(context, getString(R.string.fetching_details_please_wait), Toast.LENGTH_LONG).show();
 
                     SyncUtils syncUtils = new SyncUtils();
-                    syncUtils.syncForeground("downloadPrescription");
+                    syncUtils.syncForeground("downloadPrescription", null);
                     uploaded = true;
 
                     final Handler handler = new Handler();
@@ -1951,7 +1957,7 @@ public class VisitSummaryActivity extends BaseActivity {
         vitalsObject.setBpsys(checkAndReturnVitalsValue(bpSys));
         vitalsObject.setBpdia(checkAndReturnVitalsValue(bpDias));
         vitalsObject.setPulse(checkAndReturnVitalsValue(pulse));
-        vitalsObject.setTemperature((convertCtoF(temperature.getValue())));
+        vitalsObject.setTemperature(checkAndReturnTemperatureValue(temperature));
         vitalsObject.setResp(checkAndReturnVitalsValue(resp));
         vitalsObject.setHsb(checkAndReturnVitalsValue(hemoglobin));
         vitalsObject.setBlood(checkAndReturnVitalsValue(blood));
@@ -1968,6 +1974,14 @@ public class VisitSummaryActivity extends BaseActivity {
             return "NA";
         } else {
             return dto.getValue();
+        }
+    }
+
+    public String checkAndReturnTemperatureValue(ObsDTO dto) {
+        if (dto == null || dto.getValue() == null || dto.getValue().isEmpty()) {
+            return "NA";
+        } else {
+            return convertCtoF(dto.getValue());
         }
     }
 
@@ -2029,17 +2043,17 @@ public class VisitSummaryActivity extends BaseActivity {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND visit_attribute_type_uuid=?", new String[]{uuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 isExists = true;
             }
         }
+
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-
         return isExists;
     }
 

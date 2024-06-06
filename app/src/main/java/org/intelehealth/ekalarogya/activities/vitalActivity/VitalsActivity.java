@@ -131,10 +131,6 @@ public class VitalsActivity extends AppCompatActivity {
             intentTag = intent.getStringExtra("tag");
             intentAdviceFrom = intent.getStringExtra("advicefrom");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
-            Log.v(TAG, "Patient ID: " + patientUuid);
-            Log.v(TAG, "Visit ID: " + visitUuid);
-            Log.v(TAG, "Patient Name: " + patientName);
-            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
         super.onCreate(savedInstanceState);
@@ -188,6 +184,7 @@ public class VitalsActivity extends AppCompatActivity {
                         textView.setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -801,10 +798,9 @@ public class VitalsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if(intentTag!=null && intentTag.equalsIgnoreCase("new")) {
+            if (intentTag != null && intentTag.equalsIgnoreCase("new")) {
                 showConfirmationDialog();
-            }
-            else
+            } else
                 finish();
             return true;
         }
@@ -820,27 +816,26 @@ public class VitalsActivity extends AppCompatActivity {
         alertDialog.setTitle(getResources().getString(R.string.generic_warning));
         alertDialog.setMessage(getResources().getString(R.string.exit_vitals_warning_dialog));
         alertDialog.setPositiveButton(context.getResources().getString(R.string.vital_alert_continue_button), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            isVisitVoid[0] = visitsDAO.voidVisit(visitUuid);
-                            isEncounterVoid[0] = encounterDAO.voidEncounter(encounterVitals);
-                        } catch (DAOException e) {
-                            dialog.dismiss();
-                            throw new RuntimeException(e);
-                        }
-                        dialog.dismiss();
-                        if(isVisitVoid[0] == true && isEncounterVoid[0] == true)
-                        {
-                            onBackPressed();
-                        }
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    isVisitVoid[0] = visitsDAO.voidVisit(visitUuid);
+                    isEncounterVoid[0] = encounterDAO.voidEncounter(encounterVitals);
+                } catch (DAOException e) {
+                    dialog.dismiss();
+                    throw new RuntimeException(e);
+                }
+                dialog.dismiss();
+                if (isVisitVoid[0] == true && isEncounterVoid[0] == true) {
+                    onBackPressed();
+                }
 
-                    }
-                });
+            }
+        });
         alertDialog.setNegativeButton(context.getResources().getString(R.string.survey_no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                dialog.dismiss();
+            }
+        });
 
         AlertDialog dialog = alertDialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -866,8 +861,7 @@ public class VitalsActivity extends AppCompatActivity {
             } else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.severe_obesity) + ")");
                 mBMI.setTextColor(getResources().getColor(R.color.scale_1));
-            }
-            else mBMI.setTextColor(null);
+            } else mBMI.setTextColor(null);
         }
     }
 
@@ -879,10 +873,10 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
             } else if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys >= Double.valueOf(SYS_RED_MAX)) {   // red
                 mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))){
-                    mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
-            } else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))){
-                    mBpSys.setTextColor(getResources().getColor(R.color.green));
+            } else if (bpSys >= Double.valueOf(SYS_YELLOW_MIN) && (bpSys <= Double.valueOf(SYS_YELLOW_MAX))) {
+                mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
+            } else if (bpSys >= Double.valueOf(SYS_GREEN_MIN) && (bpSys < Double.valueOf(SYS_GREEN_MAX))) {
+                mBpSys.setTextColor(getResources().getColor(R.color.green));
             } else
                 mBpSys.setTextColor(getResources().getColor(R.color.font_black_0));
 
@@ -892,12 +886,12 @@ public class VitalsActivity extends AppCompatActivity {
     private void bpDiaColorCode(String bpDiaValue) {
         if (bpDiaValue != null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
-            if(bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS))
+            if (bpDia < Double.valueOf(MINIMUM_BP_DSYS) || bpDia > Double.valueOf(MAXIMUM_BP_DSYS))
                 mBpDia.setTextColor(getResources().getColor(R.color.font_black_0));
-            else if (bpDia > Double.valueOf(DIA_RED_MAX))  {  // red
+            else if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
                 mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
-            } else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))){
-                    mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
+            } else if (bpDia >= Double.valueOf(DIA_YELLOW_MIN) && (bpDia < Double.valueOf(DIA_YELLOW_MAX))) {
+                mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
             } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 mBpDia.setTextColor(getResources().getColor(R.color.green));
             } else
@@ -1536,6 +1530,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("advicefrom", intentAdviceFrom);
                 intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
             } catch (DAOException dao) {
@@ -1712,12 +1707,12 @@ public class VitalsActivity extends AppCompatActivity {
             } else {
                 String alertMsg = "";
                 String bmiValue = mBMI.getText().toString().trim();
-                if(bmiValue.length() == 3)
-                    bmiValue = bmiValue.substring(0,3);
-                else if(bmiValue.length() == 4)
-                    bmiValue = bmiValue.substring(0,4);
+                if (bmiValue.length() == 3)
+                    bmiValue = bmiValue.substring(0, 3);
+                else if (bmiValue.length() == 4)
+                    bmiValue = bmiValue.substring(0, 4);
                 else if (bmiValue.length() >= 5)
-                    bmiValue = bmiValue.substring(0,5);
+                    bmiValue = bmiValue.substring(0, 5);
                 if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) < 18.5) {
                     alertMsg = alertMsg + getResources().getString(R.string.weight_loss_alert_msg) + "\n";
                 } else if (mBMI.getText() != null && mBMI.getText().toString().trim().length() != 0 && Double.parseDouble(bmiValue) > 25.0) {
@@ -1879,7 +1874,7 @@ public class VitalsActivity extends AppCompatActivity {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
+        new SyncUtils().syncForeground("", null); //Sync function will work in foreground of app and
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
         Intent intent = new Intent(VitalsActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -1896,6 +1891,7 @@ public class VitalsActivity extends AppCompatActivity {
         intent.putExtra("state", state);
         intent.putExtra("name", patientName);
         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+        intent.putExtra("advicefrom", intentAdviceFrom);
         intent.putExtra("tag", intentTag);
         startActivity(intent);
     }
@@ -1925,7 +1921,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(intentTag!=null && intentTag.equalsIgnoreCase("new")) {
+        if (intentTag != null && intentTag.equalsIgnoreCase("new")) {
             Intent intent = new Intent(VitalsActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -1945,7 +1941,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     public void ConvertHeightIntoCm(String height) {
         try {
-            if(height.contains("फीट") || height.contains("इंच"))  //this condition has been hardcoded because of the repetitive crash happening on the field.
+            if (height.contains("फीट") || height.contains("इंच"))  //this condition has been hardcoded because of the repetitive crash happening on the field.
                 height = height.replaceAll("फीट", "").replaceAll("इंच", "");
             height = height.replaceAll(getString(R.string.ft), "").replaceAll(getString(R.string.in), "");
             String[] heightArr = height.split(" ");
@@ -1954,9 +1950,7 @@ public class VitalsActivity extends AppCompatActivity {
             int val = (int) ((feets + inches) * 2.54) + 1;
             heightvalue = val + "";
             System.out.println("value of height=" + val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

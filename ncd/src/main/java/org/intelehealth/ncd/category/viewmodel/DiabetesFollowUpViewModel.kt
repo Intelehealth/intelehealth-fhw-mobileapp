@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
-import org.intelehealth.ncd.data.SearchRepository
+import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class DiabetesFollowUpViewModel(
-    private val repository: SearchRepository,
+    private val repository: CategoryRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 

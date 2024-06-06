@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="-5000dp"
+    android:orientation="vertical"
     tools:context=".activities.identificationActivity.IdentificationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -1012,6 +1012,53 @@
                                 android:layout_width="10dp"
                                 android:layout_height="10dp" />
 
+                            <LinearLayout
+                                android:id="@+id/ll_whatsapp_data"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/tv_whatsapp_number_family_personal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="5dp"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
+
+                                <EditText
+                                    android:id="@+id/et_whatsapp_number"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/enter_number"
+                                    android:inputType="number"
+                                    android:maxLength="10"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
+
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:id="@+id/cb_i_do_not_know"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:paddingStart="4sp"
+                                    android:paddingEnd="4sp"
+                                    android:text="@string/i_dont_know"
+                                    android:textSize="13sp" />
+
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
+
+                            </LinearLayout>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -1219,7 +1266,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="10dp"
                                 android:background="?android:attr/listDivider"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                             <Space
                                 android:layout_width="10dp"
@@ -1231,18 +1278,18 @@
                                 android:paddingHorizontal="5dp"
                                 android:text="@string/when_was_the_last_time_your_bmi_was_checked"
                                 android:textSize="@dimen/card_content_sub_text_size"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                             <Space
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                             <Spinner
                                 android:id="@+id/bmi_level_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -1621,37 +1668,37 @@
                                 android:text="@string/not_sure"
                                 android:textSize="13sp" />
 
-                          <!--  <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_seen"
-                                android:textSize="13sp" />
+                            <!--  <com.google.android.material.radiobutton.MaterialRadioButton
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:fontFamily="@font/lato_bold"
+                                  android:text="@string/yes_card_seen"
+                                  android:textSize="13sp" />
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/yes_card_not_seen"
-                                android:textSize="13sp" />
+                              <com.google.android.material.radiobutton.MaterialRadioButton
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:fontFamily="@font/lato_bold"
+                                  android:text="@string/yes_card_not_seen"
+                                  android:textSize="13sp" />
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/no_card"
-                                android:textSize="13sp" />
+                              <com.google.android.material.radiobutton.MaterialRadioButton
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:fontFamily="@font/lato_bold"
+                                  android:text="@string/no_card"
+                                  android:textSize="13sp" />
 
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/do_not_know"
-                                android:textSize="13sp" />-->
+                              <com.google.android.material.radiobutton.MaterialRadioButton
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:fontFamily="@font/lato_bold"
+                                  android:text="@string/do_not_know"
+                                  android:textSize="13sp" />-->
 
                         </RadioGroup>
 
@@ -1712,10 +1759,10 @@
                             android:id="@+id/religion_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15sp"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/religion"
                             android:textColor="@color/primary_text"
-                            android:layout_marginTop="15sp"
                             android:textSize="15sp" />
 
                         <Spinner
@@ -2215,16 +2262,16 @@
                                 android:text="@string/hand_pump_at_home"
                                 android:textSize="13sp" />
 
-<!--                            <com.google.android.material.checkbox.MaterialCheckBox-->
-<!--                                android:id="@+id/nal_jal_yojana_checkbox"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="10dp"-->
-<!--                                android:gravity="center_vertical"-->
-<!--                                android:paddingStart="4sp"-->
-<!--                                android:paddingEnd="4sp"-->
-<!--                                android:text="@string/nal_jal_yojana"-->
-<!--                                android:textSize="13sp" />-->
+                            <!--                            <com.google.android.material.checkbox.MaterialCheckBox-->
+                            <!--                                android:id="@+id/nal_jal_yojana_checkbox"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginTop="10dp"-->
+                            <!--                                android:gravity="center_vertical"-->
+                            <!--                                android:paddingStart="4sp"-->
+                            <!--                                android:paddingEnd="4sp"-->
+                            <!--                                android:text="@string/nal_jal_yojana"-->
+                            <!--                                android:textSize="13sp" />-->
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/others_water_checkbox"
@@ -2448,7 +2495,7 @@
                             android:id="@+id/water_availability_spinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"
@@ -2616,7 +2663,7 @@
                             android:text="@string/average_expenditure_on_health"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <RadioGroup
                             android:id="@+id/annual_health_expenditure_radio_group"
@@ -2678,7 +2725,7 @@
                             android:text="@string/average_expenditure_on_education"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <RadioGroup
                             android:id="@+id/education_expenditure_radio_group"
@@ -2686,7 +2733,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
                             android:orientation="vertical"
-                            android:visibility="gone" >
+                            android:visibility="gone">
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:layout_width="match_parent"
@@ -2896,37 +2943,37 @@
                             android:layout_marginTop="20sp"
                             android:orientation="vertical">
 
-                           <!-- <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/lantern_checkbox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:paddingStart="4sp"
-                                android:paddingEnd="4sp"
-                                android:text="@string/lantern"
-                                android:textSize="13sp" />
+                            <!-- <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/lantern_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:gravity="center_vertical"
+                                 android:paddingStart="4sp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/lantern"
+                                 android:textSize="13sp" />
 
-                            <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/kerosene_lamp_checkbox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
-                                android:paddingStart="4sp"
-                                android:paddingEnd="4sp"
-                                android:text="@string/kerosene_lamp"
-                                android:textSize="13sp" />
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/kerosene_lamp_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="center_vertical"
+                                 android:paddingStart="4sp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/kerosene_lamp"
+                                 android:textSize="13sp" />
 
-                            <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/candle_checkbox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
-                                android:paddingStart="4sp"
-                                android:paddingEnd="4sp"
-                                android:text="@string/candle"
-                                android:textSize="13sp" />-->
+                             <com.google.android.material.checkbox.MaterialCheckBox
+                                 android:id="@+id/candle_checkbox"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="10dp"
+                                 android:gravity="center_vertical"
+                                 android:paddingStart="4sp"
+                                 android:paddingEnd="4sp"
+                                 android:text="@string/candle"
+                                 android:textSize="13sp" />-->
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/lantern_kerso_candle_checkbox"
@@ -2950,18 +2997,18 @@
                                 android:text="@string/electricity"
                                 android:textSize="13sp" />
 
-<!--
-                            <com.google.android.material.checkbox.MaterialCheckBox
-                                android:id="@+id/lpg_checkbox"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
-                                android:paddingStart="4sp"
-                                android:paddingEnd="4sp"
-                                android:text="@string/lpg"
-                                android:textSize="13sp" />
--->
+                            <!--
+                                                        <com.google.android.material.checkbox.MaterialCheckBox
+                                                            android:id="@+id/lpg_checkbox"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginTop="10dp"
+                                                            android:gravity="center_vertical"
+                                                            android:paddingStart="4sp"
+                                                            android:paddingEnd="4sp"
+                                                            android:text="@string/lpg"
+                                                            android:textSize="13sp" />
+                            -->
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/solar_energy_checkbox"
@@ -3008,7 +3055,7 @@
                             android:text="@string/in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <RadioGroup
                             android:id="@+id/open_defecation_radio_group"
@@ -3043,8 +3090,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="gone"
-                            >
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/reason_for_open_defecation_text_view"
@@ -3327,7 +3373,7 @@
                             android:text="@string/what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/food_cooked_in_twenty_four_hours_linear_layout"

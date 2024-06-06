@@ -114,6 +114,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -146,6 +147,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
     TextView lastSyncTextView, lastSyncAgo, newPatient_textview, findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview, unUploadedVisitNotificationTV;
     Toolbar toolbar;
     private Intent updatedIntent = null;
+    private Boolean isVisitPresent = null;
 
     ActivityResultLauncher<Intent> result = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<>() {
         @Override
@@ -269,7 +271,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
-                syncUtils.syncForeground("home");
+                syncUtils.syncForeground("home", null);
             }
         });
         setLocale(HomeActivity.this);
@@ -284,9 +286,17 @@ public class HomeActivity extends BaseActivity implements SyncListener {
             sessionManager.setFirstTimeLaunched(true);
             clickAction = intent.getStringExtra(FcmConstants.INTENT_CLICK_ACTION);
             if (clickAction != null && clickAction.equalsIgnoreCase(FcmConstants.FCM_PLUGIN_HOME_ACTIVITY)) {
+
                 notificationPatientUuid = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
                 notificationVisitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
-                switchLocation(notificationPatientUuid, notificationVisitUuid);
+
+                isVisitPresent = isVisitPresentInTheCurrentLocation(notificationVisitUuid);
+                if (!isVisitPresent) {
+                    switchLocation(notificationPatientUuid, notificationVisitUuid);
+                } else {
+                    syncUtils.syncForeground("home", this);
+                }
+
                 intent.removeExtra(FcmConstants.INTENT_CLICK_ACTION);
             }
         } else {
@@ -329,6 +339,10 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         }
     }
 
+    private boolean isVisitPresentInTheCurrentLocation(String visitUuid) {
+        return VisitsDAO.isVisitPresent(visitUuid);
+    }
+
     private void fetchVisitDataRecordForRedirection() {
         Intent intent = getIntent();
         if (intent == null) return;
@@ -341,12 +355,15 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         String patientId = intent.getStringExtra(AppConstants.INTENT_PATIENT_ID);
         String visitUuid = intent.getStringExtra(AppConstants.INTENT_VISIT_UUID);
 
+        openVisitSummary(visitUuid, patientId);
+    }
+
+    private void openVisitSummary(String visitUuid, String patientId) {
         Patient patientDetails = PatientsDAO.getPatientDetailsForRedirection(patientId);
         String patientName = patientDetails.getFirst_name() + " " + patientDetails.getLast_name();
         float age = DateAndTimeUtils.getFloat_Age_Year_Month(patientDetails.getDate_of_birth());
 
         HashMap<String, String> map = EncounterDAO.getEncountersForRedirection(visitUuid);
-
         String encounterVitals = map.get(AppConstants.ENCOUNTER_VITALS_KEY);
         String encounterAdultInitials = map.get(AppConstants.ENCOUNTER_ADULT_INITIAL);
 
@@ -394,11 +411,19 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 }
             }
         }
-        if (isVisitVoid[0] = true) {
-            int count = getUnUploadedVisitCount();
-            unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
-            if (count == 0)
-                unUploadedVisitNotificationCV.setVisibility(View.GONE);
+        if (isVisitVoid[0]) {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                int count = getUnUploadedVisitCount();
+
+                runOnUiThread(() -> {
+                    if (count > 0) {
+                        unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
+                        unUploadedVisitNotificationCV.setVisibility(View.VISIBLE);
+                    } else {
+                        unUploadedVisitNotificationCV.setVisibility(View.GONE);
+                    }
+                });
+            });
         }
     }
 
@@ -464,11 +489,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
 
     public int getUnUploadedVisitCount() {
         int unUploadedVisitCount = 0;
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.sync ASC ";
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, " + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " + "FROM tbl_visit a, tbl_patient b " + "WHERE a.patientuuid = b.uuid " + "AND a.voided = 0 AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.sync ASC ";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor cursor = db.rawQuery(query, null);
         if (cursor != null) {
@@ -521,7 +542,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         } else if (itemId == R.id.switchLocation) {
             if ((isNetworkConnected())) {
                 mSyncDialog.show();
-                boolean isSynced = syncUtils.syncForeground("home");
+                boolean isSynced = syncUtils.syncForeground("home", null);
                 if (isSynced) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -610,9 +631,7 @@ public class HomeActivity extends BaseActivity implements SyncListener {
     private void showConfirmationDialog() {
         mSyncDialog.dismiss();
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertdialogBuilder.setMessage(getString(R.string.confirm_switch_location,
-                sessionManager.getCurrentLocationName(),
-                sessionManager.getSecondaryLocationName()));
+        alertdialogBuilder.setMessage(getString(R.string.confirm_switch_location, sessionManager.getCurrentLocationName(), sessionManager.getSecondaryLocationName()));
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -764,33 +783,32 @@ public class HomeActivity extends BaseActivity implements SyncListener {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, mProgressDialog);
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        checkExistingMindMaps();
+                    } else {
+                        Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                            Log.v(TAG, "jwt_response: " + e.toString());
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    customProgressDialog.dismiss();
+                    Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                    Log.v(TAG, "jwt_response: " + e.toString());
+                }
 
-                        @Override
-                        public void onComplete() {
-                        }
-                    });
+                @Override
+                public void onComplete() {
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
@@ -858,16 +876,15 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                         builder = new android.app.AlertDialog.Builder(HomeActivity.this);
                     }
                     builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                    try {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                    } catch (ActivityNotFoundException anfe) {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                    }
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
+                        public void onClick(DialogInterface dialog, int which) {
+                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                            } catch (ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            }
+                        }
+                    }).setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
                     Dialog dialog = builder.show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
@@ -1059,5 +1076,11 @@ public class HomeActivity extends BaseActivity implements SyncListener {
     @Override
     public void onSyncComplete() {
         fetchVisitDataRecordForRedirection();
+
+        if (isVisitPresent != null && isVisitPresent) {
+            isVisitPresent = null;
+            showAppInfo();
+            openVisitSummary(notificationVisitUuid, notificationPatientUuid);
+        }
     }
 }

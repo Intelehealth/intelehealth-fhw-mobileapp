@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name=".search.NcdSearchActivity"
+            android:name=".search.activity.NcdSearchActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
 

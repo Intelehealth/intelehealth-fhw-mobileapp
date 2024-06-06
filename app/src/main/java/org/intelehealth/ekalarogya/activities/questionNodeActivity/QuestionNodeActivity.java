@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -95,6 +97,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
+    private String intentAdviceFrom;
+
+    String protocolDirectory = "";
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -229,6 +234,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            intentAdviceFrom = intent.getStringExtra("advicefrom");
             complaints = intent.getStringArrayListExtra("complaints");
         }
         complaintDetails = new HashMap<>();
@@ -238,6 +244,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         boolean hasLicense = false;
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
+
+        protocolDirectory = FileUtils.getDirectoryForProtocols(intentAdviceFrom);
 
         JSONObject currentFile = null;
         for (int i = 0; i < complaints.size(); i++) {
@@ -251,7 +259,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
-                String fileLocation = "engines/" + complaints.get(i) + ".json";
+                String fileLocation = protocolDirectory + "/" + complaints.get(i) + ".json";
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
             }
 
@@ -510,7 +518,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
                         complaints.add(associatedComplaint);
-                        String fileLocation = "engines/" + associatedComplaint + ".json";
+                        String fileLocation = protocolDirectory + "/" + associatedComplaint + ".json";
                         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
                         Node currentNode = new Node(currentFile);
                         complaintsNodes.add(currentNode);
@@ -535,37 +543,34 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;
             } else {
-                if (intentTag != null && intentTag.equals("edit")) {
-                    Log.i(TAG, "fabClick: update" + insertion);
 
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
+                    insertion = insertion.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
+                    insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_update: " + insertion);
-                    updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
+                insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
+                updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
 
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                        //  object.put("text_en", insertion_REG);
-                        updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
-                        Log.v("insertion_tag", "insertion_update_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
+                    //  object.put("text_en", insertion_REG);
+                    updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
-                    Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                if (intentAdviceFrom != null && intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+                    Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -574,53 +579,43 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
-
+                    intent.putExtra("advicefrom", intentAdviceFrom);
                     startActivity(intent);
                 } else {
-                    Log.i(TAG, "fabClick: " + insertion);
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
+                    Intent intent;
+
+                    if (intentTag != null && intentTag.equals("edit")) {
+                        intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
+
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
+                    } else {
+
+                        intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
                     }
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
-
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_insert: " + insertion);
-                    insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
-
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                        //   object.put("text_en", insertion_REG);
-                        insertDb(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // inserting regional data.
-                        Log.v("insertion_tag", "insertion_insert_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    Intent intent = new Intent
-                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
-
                     startActivity(intent);
                 }
             }

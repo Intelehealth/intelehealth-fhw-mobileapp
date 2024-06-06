@@ -27,25 +27,25 @@
                     android:id="@+id/unUploadedVisitsNotificationCardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="startActiveVisits"
                     android:layout_margin="10dp"
+                    android:onClick="startActiveVisits"
+                    android:visibility="gone"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
                         android:background="@color/lite_red"
+                        android:orientation="horizontal"
                         android:padding="16dp">
 
                         <TextView
                             android:id="@+id/unUploadedVisitsNotificationTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="You have 10 un-uploaded visits."
-                            android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"/>
+                            android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -110,8 +110,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        android:onClick="startActiveVisits"
                         android:foreground="?android:attr/selectableItemBackground"
+                        android:onClick="startActiveVisits"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="5dp"
                         app:cardUseCompatPadding="true">
@@ -502,7 +502,7 @@
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
-                    
+
                 </LinearLayout>
 
                 <include layout="@layout/view_app_version_info" />

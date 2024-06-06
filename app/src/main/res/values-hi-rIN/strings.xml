@@ -1212,4 +1212,31 @@
     <string name="node_input_empty_error">%1$s  should not be empty !</string>
     <string name="please_move_to_next_question">Please move to next question</string>
 
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">परिवार के सदस्य व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">व्यक्तिगत व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+
+    <string name="i_dont_know">मुझे नहीं पता</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">क्या एकल आपको हमारी यात्रा के सारांश का एक मुफ्त व्हाट्सएप संदेश भेज सकता है?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">क्या आप वर्तमान में बीपी के लिए दवाएं ले रहे हैं?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">क्या आप वर्तमान में मधुमेह के लिए दवाएं ले रहे हैं?</string>
+    <string name="are_you_taking_any_medication_for_anemia">क्या आप वर्तमान में एनीमिया के लिए दवाएं ले रहे हैं?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी बीपी के लिए देखा है?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी मधुमेह के लिए देखा है?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी एनीमिया के लिए देखा है?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">आप अपनी बीपी दवाएँ क्यों नहीं ले रहे हैं?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">आप अपनी मधुमेह दवाएँ क्यों नहीं ले रहे हैं?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">आप अपनी एनीमिया दवाएँ क्यों नहीं ले रहे हैं?</string>
+
+    <string name="never_prescribed_medication">मुझे कभी दवाएँ निर्धारित नहीं की गईं</string>
+    <string name="forgot_to_take_it">मैं इसे लेना भूल गया</string>
+    <string name="cannot_afford_medications">मैं दवाएँ नहीं खरीद सकता</string>
+    <string name="ran_out_of_medication">मेरी दवाएँ ख़त्म हो गईं / दवाएँ खो गईं</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">मुझे अपने पीएचसी से अनुवर्ती कार्रवाई की आवश्यकता है</string>
+    <string name="i_dont_think_i_need_it">मुझे नहीं लगता कि मुझे इसकी जरूरत है</string>
+    <string name="side_effect_related_to_medication">दवा से संबंधित दुष्प्रभाव</string>
+    <string name="unknown_other">अज्ञात / अन्य</string>
+
 </resources>
