@@ -118,6 +118,7 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
@@ -924,6 +925,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (mNavigationView != null) {
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+        }
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -1518,7 +1527,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 // FCM A added action received
                 String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
                 ivNotificationIcon.setVisibility(View.VISIBLE);
-                preferenceHelper.save(PreferenceHelper.IS_NOTIFICATION,true);
+                preferenceHelper.save(PreferenceHelper.IS_NOTIFICATION, true);
             }
         }
 
