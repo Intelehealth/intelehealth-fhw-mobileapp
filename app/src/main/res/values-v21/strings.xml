@@ -232,7 +232,7 @@
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
     <string name="button_new_visit" translatable="false">Start Doctor new advice</string>
-    <string name="button_sevika_advice" translatable="false">Start Sevika new advice</string>
+    <string name="button_sevika_advice" translatable="false">New NCD/Sevika Visit</string>
     <string name="header_previous_visits" translatable="false">Previous visits</string>
     <string name="header_patient_history" translatable="false">Medical history</string>
     <string name="header_family_history" translatable="false">Family history</string>
@@ -728,7 +728,7 @@
     //-----------start new visit confirmation dialog string-----------
     <string name="start_newvisit_confirmation_msg">Are you sure you want to start a Doctor advice?</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
-    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="start_newadvice_confirmation_msg">Do you want to start NCD Sevika visit?</string>
 
     //Language Screen
     <string name="choose_lang_title">Choose your Language</string>
@@ -1169,4 +1169,6 @@
     <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
     <string name="enter_valid_phone_number">Enter valid phone number.</string>
     <string name="type_to_search">Type to Search..</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
 </resources>

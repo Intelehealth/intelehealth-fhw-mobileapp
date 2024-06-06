@@ -47,6 +47,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -136,7 +137,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     RadioButton mGenderM, mGenderF, mGenderO, radioYes, radioNo;
     Spinner mCountry, mState, mVillage, mCaste, mEducation, mEconomicStatus, spinner_vaccination;
     TextInputLayout casteLayout, economicLayout, educationLayout;
-    LinearLayout countryStateLayout;
+    LinearLayout countryStateLayout, whatsAppDataLayout;
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
@@ -171,6 +172,9 @@ public class IdentificationActivity extends AppCompatActivity implements
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+
+    private MaterialCheckBox iDontKnowCheckbox;
+    private EditText whatsAppNumberEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +289,10 @@ public class IdentificationActivity extends AppCompatActivity implements
         hohRadioGroup = findViewById(R.id.hoh_radio_group);
         ekalProcessRadioGroup = findViewById(R.id.ekal_process_radio_group);
         waterSourceWithin30minutesRadioGroup = findViewById(R.id.water_source_30minutes_radio_group);
+
+        whatsAppDataLayout = findViewById(R.id.ll_whatsapp_data);
+        iDontKnowCheckbox = findViewById(R.id.cb_i_do_not_know);
+        whatsAppNumberEditText = findViewById(R.id.et_whatsapp_number);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -687,7 +695,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         whatsapp_id, android.R.layout.simple_spinner_dropdown_item);
             }
             whatsapp_spinner.setAdapter(whatsapp_adapt);
-
+            setWhatsAppSpinnerListener(whatsapp_spinner);
         } catch (Exception e) {
             Toast.makeText(this, "Whatsapp values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -1259,6 +1267,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 String whatsAppTranslation = getWhatsAppStrings(patient1.getWhatsapp_mobile(), updatedResources, originalResources, sessionManager.getAppLanguage());
                 int whatsAppPosition = whatsapp_adapt.getPosition(whatsAppTranslation);
                 whatsapp_spinner.setSelection(whatsAppPosition);
+            }
+
+            String mobileNumberAssociatedWithWhatsApp = getWhatsAppStrings(patient1.getMobileNumberAssociatedWithWhatsApp(), updatedResources, originalResources, sessionManager.getAppLanguage());
+            if (mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase(originalResources.getString(R.string.i_dont_know))) {
+                iDontKnowCheckbox.setChecked(true);
+            } else {
+                if (!mobileNumberAssociatedWithWhatsApp.equalsIgnoreCase("-")) {
+                    whatsAppNumberEditText.setText(mobileNumberAssociatedWithWhatsApp);
+                }
             }
 
             //vaccination - start
@@ -2249,12 +2266,13 @@ public class IdentificationActivity extends AppCompatActivity implements
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            if (patientID_edit != null) {
-                onPatientUpdateClicked(patient1);
+            if (!iDontKnowCheckbox.isChecked()) {
+                showEkalWhatsAppMessageDialog();
             } else {
-                onPatientCreateClicked();
+                triggerDbTransactions(null);
             }
         });
 
@@ -2271,6 +2289,64 @@ public class IdentificationActivity extends AppCompatActivity implements
                     cardview_household.setVisibility(View.GONE);
                     hohRelationshipCardView.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+    }
+
+    private void showEkalWhatsAppMessageDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogStyle);
+        builder.setMessage(getString(R.string.can_ekal_send_a_summary_of_visit_to_you));
+        builder.setNegativeButton(getString(R.string.generic_no), (dialog, which) -> {
+            triggerDbTransactions(updatedResources.getString(R.string.generic_no));
+            dialog.dismiss();
+        });
+
+        builder.setPositiveButton(getString(R.string.generic_yes), (dialog, which) -> {
+            triggerDbTransactions(updatedResources.getString(R.string.generic_yes));
+            dialog.dismiss();
+        });
+
+        builder.show();
+    }
+
+    private void triggerDbTransactions(String ekalWhatsAppResponse) {
+        if (patientID_edit != null) {
+            onPatientUpdateClicked(patient1, ekalWhatsAppResponse);
+        } else {
+            onPatientCreateClicked(ekalWhatsAppResponse);
+        }
+    }
+
+    private void setWhatsAppSpinnerListener(Spinner whatsappSpinner) {
+        whatsappSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String) parent.getItemAtPosition(position);
+
+                if (item.equalsIgnoreCase(getString(R.string.yes_personal))) {
+                    binding.tvWhatsappNumberFamilyPersonal.setText(getString(R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account));
+                    whatsAppDataLayout.setVisibility(View.VISIBLE);
+                } else if (item.equalsIgnoreCase(getString(R.string.yes_family_member))) {
+                    binding.tvWhatsappNumberFamilyPersonal.setText(getString(R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account));
+                    whatsAppDataLayout.setVisibility(View.VISIBLE);
+                } else {
+                    whatsAppDataLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        iDontKnowCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                whatsAppNumberEditText.setEnabled(false);
+                whatsAppNumberEditText.getText().clear();
+                whatsAppNumberEditText.setError(null);
+            } else {
+                whatsAppNumberEditText.setEnabled(true);
             }
         });
     }
@@ -2532,6 +2608,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                 }
                 if (name.equalsIgnoreCase("Use WhatsApp")) {
                     patient1.setWhatsapp_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("doYourFamilyMembersUseWhatsAppResponse")) {
+                    patient1.setMobileNumberAssociatedWithWhatsApp(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Covid Vaccination")) {
                     patient1.setVaccination(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2799,7 +2878,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         }
     }
 
-    public void onPatientCreateClicked() {
+    public void onPatientCreateClicked(String ekalWhatsAppResponse) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -3050,6 +3129,15 @@ public class IdentificationActivity extends AppCompatActivity implements
             return;
         }
 
+        if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+            if (whatsAppNumberEditText.getText().toString().isEmpty() && !iDontKnowCheckbox.isChecked()) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                whatsAppNumberEditText.setText(getString(R.string.enter_number));
+                focusView = whatsAppDataLayout;
+                cancel = true;
+                return;
+            }
+        }
 
         //vaccination
         if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
@@ -3687,6 +3775,32 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("doYourFamilyMembersUseWhatsAppResponse"));
+
+                if (iDontKnowCheckbox.isChecked()) {
+                    patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(iDontKnowCheckbox.getText().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+                } else {
+                    patientAttributesDTO.setValue(whatsAppNumberEditText.getText().toString());
+                }
+
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE && !iDontKnowCheckbox.isChecked()) {
+                if (ekalWhatsAppResponse != null) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("canEkalSendFreeWhatsAppMessageForVisitSummary"));
+                    patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(ekalWhatsAppResponse, originalResources, updatedResources, sessionManager.getAppLanguage()));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+            }
 
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
@@ -4392,7 +4506,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
     }
 
-    public void onPatientUpdateClicked(Patient patientdto) {
+    public void onPatientUpdateClicked(Patient patientdto, String ekalWhatsAppResponse) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -4644,6 +4758,16 @@ public class IdentificationActivity extends AppCompatActivity implements
             focusView = whatsapp_spinner;
             cancel = true;
             return;
+        }
+
+        if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+            if (whatsAppNumberEditText.getText().toString().isEmpty() && !iDontKnowCheckbox.isChecked()) {
+                Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
+                whatsAppNumberEditText.setText(getString(R.string.enter_number));
+                focusView = whatsAppDataLayout;
+                cancel = true;
+                return;
+            }
         }
 
         //vaccination
@@ -5288,6 +5412,32 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(whatsapp_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("doYourFamilyMembersUseWhatsAppResponse"));
+
+                if (iDontKnowCheckbox.isChecked()) {
+                    patientAttributesDTO.setValue(StringUtils.getWhatsAppStrings(iDontKnowCheckbox.getText().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+                } else {
+                    patientAttributesDTO.setValue(whatsAppNumberEditText.getText().toString());
+                }
+
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+
+            if (whatsAppDataLayout.getVisibility() == View.VISIBLE && !iDontKnowCheckbox.isChecked()) {
+                if (ekalWhatsAppResponse != null) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("canEkalSendFreeWhatsAppMessageForVisitSummary"));
+                    patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(ekalWhatsAppResponse, originalResources, updatedResources, sessionManager.getAppLanguage()));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+            }
 
             if (framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
                 if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
@@ -6103,6 +6253,18 @@ public class IdentificationActivity extends AppCompatActivity implements
                 bundle.putString("anaemia", medicalHistory.getAnaemia());
                 bundle.putString("anySurgeries", medicalHistory.getAnySurgeries());
                 bundle.putString("reasonForSurgery", medicalHistory.getReasonForSurgery());
+
+                bundle.putString("medicationForBP", medicalHistory.getMedicationForBP());
+                bundle.putString("healthWorkerForBP", medicalHistory.getHealthWorkerForBP());
+                bundle.putString("reasonForNoBPMedication", medicalHistory.getReasonForNoBPMedication());
+
+                bundle.putString("medicationForDiabetes", medicalHistory.getMedicationForDiabetes());
+                bundle.putString("healthWorkerForDiabetes", medicalHistory.getHealthWorkerForDiabetes());
+                bundle.putString("reasonForNoDiabetesMedication", medicalHistory.getReasonForNoDiabetesMedication());
+
+                bundle.putString("medicationForAnemia", medicalHistory.getMedicationForAnemia());
+                bundle.putString("healthWorkerForAnemia", medicalHistory.getHealthWorkerForAnemia());
+                bundle.putString("reasonForNoAnemiaMedication", medicalHistory.getReasonForNoAnemiaMedication());
 
                 MedicalHistoryDialog medicalHistoryDialog = new MedicalHistoryDialog();
                 medicalHistoryDialog.setArguments(bundle);

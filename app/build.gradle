@@ -121,6 +121,8 @@ dependencies {
     implementation project(':klivekit')
     implementation project(':fcm')
     implementation project(':videolibrary')
+    implementation project(':ncd')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -164,7 +166,7 @@ dependencies {
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
-    implementation 'joda-time:joda-time:2.9.9'
+    implementation 'joda-time:joda-time:2.10.9'
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 

@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1">
+
+    <RelativeLayout
+        android:id="@+id/action_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="TODO"
+            android:visibility="visible"
+            app:rippleColor="@color/amber"
+            app:srcCompat="@drawable/ic_done_24dp"
+            app:useCompatPadding="true" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/LL_body"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/action_rl"
         android:layout_marginTop="5dp"
-        android:layout_weight="0.88"
         android:gravity="top"
         android:orientation="vertical">
 
@@ -27,7 +50,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -45,10 +70,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/lato_bold"
-                tools:text="@string/since_when_have_you_had_this_symptom"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:text="@string/since_when_have_you_had_this_symptom" />
 
         </LinearLayout>
 
@@ -62,14 +87,15 @@
             android:id="@+id/rv_chips"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-
-            android:scrollbarThumbVertical="@color/colorPrimary"
-            android:fitsSystemWindows="true"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:fadeScrollbars="false"
-            android:scrollbarFadeDuration="0"
+            android:fitsSystemWindows="true"
             android:nestedScrollingEnabled="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarThumbVertical="@color/colorPrimary"
             android:scrollbars="vertical" />
 
 
@@ -86,25 +112,7 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
 
-        android:layout_weight=".12">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-           android:layout_marginEnd="10dp"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_done_24dp" />
-
-    </RelativeLayout>
-
-
-</LinearLayout>
+</RelativeLayout>
 
 

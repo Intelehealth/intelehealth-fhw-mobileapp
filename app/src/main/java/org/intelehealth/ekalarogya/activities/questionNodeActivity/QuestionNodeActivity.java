@@ -10,20 +10,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -33,10 +19,43 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+
+import org.intelehealth.ekalarogya.R;
+import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
+import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
+import org.intelehealth.ekalarogya.database.dao.ObsDAO;
+import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
+import org.intelehealth.ekalarogya.knowledgeEngine.Node;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDNodeValidationLogic;
+import org.intelehealth.ekalarogya.knowledgeEngine.ncd.NCDValidationResult;
 import org.intelehealth.ekalarogya.models.AnswerResult;
+import org.intelehealth.ekalarogya.models.dto.ObsDTO;
+import org.intelehealth.ekalarogya.utilities.FileUtils;
+import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
+import org.intelehealth.ekalarogya.utilities.UuidDictionary;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,26 +70,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.app.AppConstants;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ObsDAO;
-import org.intelehealth.ekalarogya.models.dto.ObsDTO;
-import org.intelehealth.ekalarogya.utilities.FileUtils;
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.UuidDictionary;
-
-import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.ekalarogya.knowledgeEngine.Node;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
-import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator;
-
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
@@ -87,6 +86,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
+    private String intentAdviceFrom;
+
+    String protocolDirectory = "";
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -97,9 +99,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     ArrayList<String> complaints; //list of complaints going to be used
     List<Node> complaintsNodes; //actual nodes to be used
     ArrayList<String> physicalExams;
-    Node currentNode;
+    private Node mCurrentNode;
     // CustomExpandableListAdapter adapter;
-    QuestionsAdapter adapter;
+    QuestionsAdapter mQuestionListingadapter;
     boolean nodeComplete = false;
 
     int lastExpandedPosition = -1;
@@ -115,10 +117,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private JSONObject finalAssoSympObj = new JSONObject();
     ScrollingPagerIndicator recyclerViewIndicator;
 
-    FloatingActionButton fab;
+    FloatingActionButton fab, forwardButton, backButton;
+    RelativeLayout navButtonRelativeLayout;
     RecyclerView question_recyclerView;
     Context context;
 
+    private HorizontalScrollLockLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            intentAdviceFrom = intent.getStringExtra("advicefrom");
             complaints = intent.getStringArrayListExtra("complaints");
         }
         complaintDetails = new HashMap<>();
@@ -157,6 +162,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         boolean hasLicense = false;
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
+
+        protocolDirectory = FileUtils.getDirectoryForProtocols(intentAdviceFrom);
 
         JSONObject currentFile = null;
         for (int i = 0; i < complaints.size(); i++) {
@@ -170,7 +177,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
-                String fileLocation = "engines/" + complaints.get(i) + ".json";
+                String fileLocation = protocolDirectory + "/" + complaints.get(i) + ".json";
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
             }
 
@@ -199,9 +206,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 fabClick();
             }
         });
+
+        navButtonRelativeLayout = findViewById(R.id.rl_nav_btn);
+        forwardButton = findViewById(R.id.btn_forward);
+        backButton = findViewById(R.id.btn_back);
+
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        linearLayoutManager = new HorizontalScrollLockLayoutManager(this);
         question_recyclerView.setLayoutManager(linearLayoutManager);
 
         question_recyclerView.setNestedScrollingEnabled(true);
@@ -241,14 +253,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
-        Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
-        if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
-            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+        Log.e(TAG, "CLICKED: " + mCurrentNode.getOption(groupPosition).toString());
+        if ((mCurrentNode.getOption(groupPosition).getChoiceType().equals("single")) && !mCurrentNode.getOption(groupPosition).anySubSelected()) {
+            Node question = mCurrentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
+            if (mCurrentNode.getOption(groupPosition).anySubSelected()) {
+                mCurrentNode.getOption(groupPosition).setSelected(true);
             } else {
-                currentNode.getOption(groupPosition).setUnselected();
+                mCurrentNode.getOption(groupPosition).setUnselected();
             }
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
@@ -257,18 +269,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         filePath.mkdirs();
                     }
                     imageName = UUID.randomUUID().toString();
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 } else {
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
                 }
             }
 
 
             if (!question.isTerminal() && question.isSelected()) {
-                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
-        } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+        } else if ((mCurrentNode.getOption(groupPosition).getChoiceType().equals("single")) && mCurrentNode.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -283,29 +295,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         } else {
 
-            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+            Node question = mCurrentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
+            if (mCurrentNode.getOption(groupPosition).anySubSelected()) {
+                mCurrentNode.getOption(groupPosition).setSelected(true);
             } else {
-                currentNode.getOption(groupPosition).setUnselected();
+                mCurrentNode.getOption(groupPosition).setUnselected();
             }
 
-            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
-                    && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
-                    && !currentNode.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
-                    && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
-                    && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
-                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
-                    && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
+            if (!mCurrentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
+                    && !mCurrentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
                 //code added to handle multiple and single option selection.
-                Node rootNode = currentNode.getOption(groupPosition);
+                Node rootNode = mCurrentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setDataCapture(false);
                         }
                     }
                 }
@@ -315,7 +328,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {
-                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            mCurrentNode.getOption(groupPosition).getOptionsList().get(i).setDataCapture(false);
                         }
                     }
                 }
@@ -325,20 +339,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     if (!filePath.exists()) {
                         filePath.mkdirs();
                     }
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 } else {
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, null, null);
                 }
                 //If there is an input type, then the question has a special method of data entry.
             }
 
             if (!question.isTerminal() && question.isSelected()) {
-                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, mQuestionListingadapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         }
         //adapter.updateNode(currentNode);
-        adapter.notifyDataSetChanged();
+        mQuestionListingadapter.notifyDataSetChanged();
 
     }
 
@@ -351,7 +365,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private void fabClick() {
         nodeComplete = true;
 
-        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(context);
+        AnswerResult answerResult = mCurrentNode.checkAllRequiredAnswered(context);
         if (!answerResult.result) {
             // show alert dialog
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -372,7 +386,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (!complaintConfirmed) {
             questionsMissing();
         } else {
-            List<String> imagePathList = currentNode.getImagePathList();
+            List<String> imagePathList = mCurrentNode.getImagePathList();
 
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
@@ -380,26 +394,26 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            String complaintString = currentNode.generateLanguage();
-            String complaintString_REG = currentNode.generateRegional_Language(sessionManager.getAppLanguage());
-            String complaint = currentNode.getText();
+            String complaintString = mCurrentNode.generateLanguage();
+            String complaintString_REG = mCurrentNode.generateRegional_Language(sessionManager.getAppLanguage());
+            String complaint = mCurrentNode.getText();
             String complaint_REG = "";
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                complaint_REG = currentNode.getDisplay_hindi();
+                complaint_REG = mCurrentNode.getDisplay_hindi();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
-                complaint_REG = currentNode.getDisplay_bengali();
+                complaint_REG = mCurrentNode.getDisplay_bengali();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
-                complaint_REG = currentNode.getDisplay_kannada();
+                complaint_REG = mCurrentNode.getDisplay_kannada();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-                complaint_REG = currentNode.getDisplay_marathi();
+                complaint_REG = mCurrentNode.getDisplay_marathi();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
-                complaint_REG = currentNode.getDisplay_oriya();
+                complaint_REG = mCurrentNode.getDisplay_oriya();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
-                complaint_REG = currentNode.getDisplay_gujarati();
+                complaint_REG = mCurrentNode.getDisplay_gujarati();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
-                complaint_REG = currentNode.getDisplay_assamese();
+                complaint_REG = mCurrentNode.getDisplay_assamese();
             else
-                complaint_REG = currentNode.getDisplay();
+                complaint_REG = mCurrentNode.getDisplay();
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
@@ -411,12 +425,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
+            ArrayList<String> selectedAssociatedComplaintsList = mCurrentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
                         complaints.add(associatedComplaint);
-                        String fileLocation = "engines/" + associatedComplaint + ".json";
+                        String fileLocation = protocolDirectory + "/" + associatedComplaint + ".json";
                         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
                         Node currentNode = new Node(currentFile);
                         complaintsNodes.add(currentNode);
@@ -424,11 +438,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
 
-            ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
+            ArrayList<String> childNodeSelectedPhysicalExams = mCurrentNode.getPhysicalExamList();
             if (!childNodeSelectedPhysicalExams.isEmpty())
                 physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-            ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
+            ArrayList<String> rootNodePhysicalExams = parseExams(mCurrentNode);
             if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
                 physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
@@ -441,37 +455,34 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;
             } else {
-                if (intentTag != null && intentTag.equals("edit")) {
-                    Log.i(TAG, "fabClick: update" + insertion);
 
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
+                    insertion = insertion.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
+                if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
+                    insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
+                            .replaceAll("Other \\[Describe]", "")
+                            .replaceAll("\\[Describe]", "");
+                }
 
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_update: " + insertion);
-                    updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
+                insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
+                insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG, sessionManager);  // English to Regional - for HW to show in reg lang.
+                updateDatabase(insertion, UuidDictionary.CURRENT_COMPLAINT);  // updating data.
 
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                      //  object.put("text_en", insertion_REG);
-                        updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
-                        Log.v("insertion_tag", "insertion_update_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
+                    //  object.put("text_en", insertion_REG);
+                    updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
-                    Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                if (intentAdviceFrom != null && intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+                    Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -480,53 +491,43 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
-
+                    intent.putExtra("advicefrom", intentAdviceFrom);
                     startActivity(intent);
                 } else {
-                    Log.i(TAG, "fabClick: " + insertion);
-                    if (insertion.contains("Yes [Describe]") || insertion.contains("[Describe]") || insertion.contains("Other [Describe]")) {
-                        insertion = insertion.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
+                    Intent intent;
+
+                    if (intentTag != null && intentTag.equals("edit")) {
+                        intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
+
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
+                    } else {
+
+                        intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        intent.putExtra("tag", intentTag);
+                        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                        sessionManager.setVisitSummary(patientUuid, selectedExams);
+
                     }
-                    if (insertion_REG.contains("Yes [Describe]") || insertion_REG.contains("[Describe]") || insertion_REG.contains("Other [Describe]")) {
-                        insertion_REG = insertion_REG.replaceAll("Yes \\[Describe]", "")
-                                .replaceAll("Other \\[Describe]", "")
-                                .replaceAll("\\[Describe]", "");
-                    }
-
-                    insertion = Node.dateformate_hi_or_gu_as_en(insertion, sessionManager); // Regional to English - for doctor data
-                    insertion_REG = Node.dateformat_en_hi_or_gu_as(insertion_REG,sessionManager);  // English to Regional - for HW to show in reg lang.
-                    Log.v("insertion_tag", "insertion_insert: " + insertion);
-                    insertDb(insertion, UuidDictionary.CURRENT_COMPLAINT);    // inserting data.
-
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("text_" + sessionManager.getAppLanguage(), insertion_REG);
-                     //   object.put("text_en", insertion_REG);
-                        insertDb(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // inserting regional data.
-                        Log.v("insertion_tag", "insertion_insert_regional: " + object.toString());
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    Intent intent = new Intent
-                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    sessionManager.setVisitSummary(patientUuid, selectedExams);
-
                     startActivity(intent);
                 }
             }
@@ -534,7 +535,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         // question_recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+        mQuestionListingadapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
 
@@ -615,32 +616,120 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (complaints.size() >= 1) {
             getAssociatedSymptoms(complaintIndex);
         } else {
-            currentNode = complaintsNodes.get(complaintIndex);
+            mCurrentNode = complaintsNodes.get(complaintIndex);
+            setupUI(mCurrentNode);
         }
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if (currentNode != null) {
+        if (mCurrentNode != null) {
             if (mgender.equalsIgnoreCase("M")) {
-                currentNode.fetchItem("0");
+                mCurrentNode.fetchItem("0");
             } else if (mgender.equalsIgnoreCase("F")) {
-                currentNode.fetchItem("1");
+                mCurrentNode.fetchItem("1");
             }
 
             // flaoting value of age is passed to Node for comparison...
-            currentNode.fetchAge(float_ageYear_Month);
+            mCurrentNode.fetchAge(float_ageYear_Month);
 
 
-            adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
-            question_recyclerView.setAdapter(adapter);
+            mQuestionListingadapter = new QuestionsAdapter(this, mCurrentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
+            question_recyclerView.setAdapter(mQuestionListingadapter);
+            mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-            setTitle(patientName + ": " + currentNode.findDisplay());
-        }
-        else {
+            setTitle(patientName + ": " + mCurrentNode.findDisplay());
+            getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
+        } else {
             Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
         }
 
+    }
+
+    private int mCurrentNodeIndex = 0;
+    private int mTotalQuestions = 0;
+
+    private void setupUI(Node currentNode) {
+        if (currentNode != null) {
+            if (currentNode.getIsNcdProtocol()) {
+                recyclerViewIndicator.setVisibility(View.GONE);
+                linearLayoutManager.setHorizontalScrollEnabled(false);
+                navButtonRelativeLayout.setVisibility(View.VISIBLE);
+                mTotalQuestions = currentNode.getOptionsList().size();
+                decideToDisplayTheActionButtons();
+                forwardButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Node currentDisplayingNode = currentNode.getOptionsList().get(mCurrentNodeIndex);
+                        if (!currentDisplayingNode.isSelected() || !currentDisplayingNode.isNestedMandatoryOptionsAnswered()) {
+                            Toast.makeText(QuestionNodeActivity.this, "Please answer!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //mCurrentNodeIndex += 1;
+                            NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
+
+                            mCurrentNode = ncdValidationResult.getUpdatedNode();
+                            if (ncdValidationResult.isReadyToEndTheScreening()) {
+                                Toast.makeText(QuestionNodeActivity.this, "Screening done!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
+                                    mCurrentNodeIndex += 1;
+                                    // need to check the autofill node
+                                    if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null);
+                                        mCurrentNode = autoFillResult.getUpdatedNode();
+                                    }
+                                    question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+
+                                    decideToDisplayTheActionButtons();
+                                } else {
+                                    for (int i = 0; i < mCurrentNode.getOptionsList().size(); i++) {
+                                        Node tempNode = mCurrentNode.getOptionsList().get(i);
+                                        if (tempNode.getId().equals(ncdValidationResult.getTargetNodeID())) {
+                                            mCurrentNodeIndex = i;
+                                        }
+                                    }
+                                    Log.v(TAG, mCurrentNode.toString());
+                                    question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                                    decideToDisplayTheActionButtons();
+                                }
+                            }
+                        }
+                        question_recyclerView.getAdapter().notifyItemChanged(mCurrentNodeIndex);
+                    }
+                });
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mCurrentNodeIndex -= 1;
+                        if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex) != null)
+                            while (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()) {
+                                mCurrentNodeIndex -= 1;
+                            }
+                        question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
+                        question_recyclerView.getAdapter().notifyItemChanged(mCurrentNodeIndex);
+                        decideToDisplayTheActionButtons();
+                    }
+                });
+            } else {
+                recyclerViewIndicator.setVisibility(View.VISIBLE);
+                linearLayoutManager.setHorizontalScrollEnabled(true);
+                navButtonRelativeLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void decideToDisplayTheActionButtons() {
+        if (mCurrentNodeIndex == 0) {
+            forwardButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.GONE);
+        } else if (mCurrentNodeIndex == mTotalQuestions - 1) {
+            forwardButton.setVisibility(View.GONE);
+            backButton.setVisibility(View.VISIBLE);
+        } else {
+            forwardButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(View.VISIBLE);
+        }
+        fab.setVisibility(View.GONE);
     }
 
     private void getAssociatedSymptoms(int complaintIndex) {
@@ -670,18 +759,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
                     assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
-                    currentNode = assoComplaintsNodes.get(complaintIndex);
-                 //   Log.e("CurrentNode", "" + currentNode);
-
+                    mCurrentNode = assoComplaintsNodes.get(complaintIndex);
+                    //   Log.e("CurrentNode", "" + currentNode);
+                    setupUI(mCurrentNode);
                 } else {
-                    currentNode = complaintsNodes.get(complaintIndex);
+                    mCurrentNode = complaintsNodes.get(complaintIndex);
+                    setupUI(mCurrentNode);
                 }
             }
         }
     }
 
     public void setRecyclerViewIndicator() {
-        question_recyclerView.setAdapter(adapter);
+        question_recyclerView.setAdapter(mQuestionListingadapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
     }
 
@@ -740,24 +830,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             assoSympNode.getOptionsList().get(0).setOptionsList(finalOptionsList);
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
-            currentNode = assoSympNode;
+            mCurrentNode = assoSympNode;
 
             mgender = PatientsDAO.fetch_gender(patientUuid);
 
-            if (currentNode != null) {
+            if (mCurrentNode != null) {
                 if (mgender.equalsIgnoreCase("M")) {
-                    currentNode.fetchItem("0");
+                    mCurrentNode.fetchItem("0");
                 } else if (mgender.equalsIgnoreCase("F")) {
-                    currentNode.fetchItem("1");
+                    mCurrentNode.fetchItem("1");
                 }
 
                 // flaoting value of age is passed to Node for comparison...
-                currentNode.fetchAge(float_ageYear_Month);
+                mCurrentNode.fetchAge(float_ageYear_Month);
 
-                adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
-                question_recyclerView.setAdapter(adapter);
+                mQuestionListingadapter = new QuestionsAdapter(this, mCurrentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
+                question_recyclerView.setAdapter(mQuestionListingadapter);
+                mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getIsNcdProtocol());
                 //setTitle(patientName + ": " + currentNode.getText());
-                setTitle(patientName + ": " + currentNode.findDisplay());
+                setTitle(patientName + ": " + mCurrentNode.findDisplay());
+
+                getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
             }
         }
     }
@@ -771,7 +864,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String currentNodeVal = node_fetch_local_language(context, sessionManager, currentNode);
+        String currentNodeVal = node_fetch_local_language(context, sessionManager, mCurrentNode);
         alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
@@ -810,8 +903,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
+                mCurrentNode.setImagePath(mCurrentPhotoPath);
+                mCurrentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }

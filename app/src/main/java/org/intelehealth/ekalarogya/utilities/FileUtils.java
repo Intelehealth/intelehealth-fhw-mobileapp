@@ -128,4 +128,11 @@ public class FileUtils {
         }
     }
 
+    public static String getDirectoryForProtocols(String adviceType) {
+        if (adviceType.equalsIgnoreCase("Sevika")) {
+            return AppConstants.NCD_PROTOCOL_DIRECTORY;
+        } else {
+            return AppConstants.PROTOCOL_DIRECTORY;
+        }
+    }
 }

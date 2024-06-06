@@ -67,6 +67,8 @@ public class Patient {
     private String hohRelationship;
     private String relationWithHead;
 
+    private String mobileNumberAssociatedWithWhatsApp;
+
     public String getMaritalStatus() {
         return maritalStatus;
     }
@@ -585,5 +587,13 @@ public class Patient {
 
     public void setEkalProcess(String ekalProcess) {
         this.ekalProcess = ekalProcess;
+    }
+
+    public String getMobileNumberAssociatedWithWhatsApp() {
+        return mobileNumberAssociatedWithWhatsApp;
+    }
+
+    public void setMobileNumberAssociatedWithWhatsApp(String mobileNumberAssociatedWithWhatsApp) {
+        this.mobileNumberAssociatedWithWhatsApp = mobileNumberAssociatedWithWhatsApp;
     }
 }

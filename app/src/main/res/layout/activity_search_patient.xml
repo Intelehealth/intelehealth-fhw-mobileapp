@@ -6,82 +6,82 @@
     android:layout_height="match_parent"
     tools:context=".activities.searchPatientActivity.SearchPatientActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_margin="10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/type_to_search"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:background="@null"
+                    android:id="@+id/toolbar_ET" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_margin="10dp">
+                    app:srcCompat="@drawable/ic_baseline_clear_24"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/toolbar_clear"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/type_to_search"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:background="@null"
-                        android:id="@+id/toolbar_ET" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_baseline_search_24"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/toolbar_search"
+                    android:paddingHorizontal="5dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_baseline_clear_24"
-                        android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_clear"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_baseline_search_24"
-                        android:layout_marginHorizontal="5dp"
-                        android:id="@+id/toolbar_search"
-                        android:paddingHorizontal="5dp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-                </LinearLayout>
+    <!--<include layout="@layout/content_search_patient" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.search_patient_activity.SearchPatientActivity"
+        tools:showIn="@layout/activity_ncd_patient_category">
 
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/textviewmessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/please_wait_till_sync_is_completed"
+            android:fontFamily="@font/lato_regular"
+            android:visibility="visible" />
 
-        <!--<include layout="@layout/content_search_patient" />-->
-        <RelativeLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="10dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".activities.search_patient_activity.SearchPatientActivity"
-            tools:showIn="@layout/activity_search_patient">
-
-            <TextView
-                android:id="@+id/textviewmessage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/please_wait_till_sync_is_completed"
-                android:fontFamily="@font/lato_regular"
-                android:visibility="visible" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-        </RelativeLayout>
+            android:visibility="gone" />
+    </RelativeLayout>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

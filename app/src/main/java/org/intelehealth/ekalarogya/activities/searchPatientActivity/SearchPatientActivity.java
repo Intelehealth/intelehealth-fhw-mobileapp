@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 
@@ -213,14 +212,14 @@ public class SearchPatientActivity extends BaseActivity {
         executorService.execute(() -> {
             List<PatientDTO> patientDTOList = getQueryPatients(query);
             runOnUiThread(() -> {
-        try {
-            recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
-            fullyLoaded = true;
-            recyclerView.setAdapter(recycler);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("doquery", "doquery", e);
-        }
+                try {
+                    recycler = new SearchPatientAdapter(patientDTOList, SearchPatientActivity.this);
+                    fullyLoaded = true;
+                    recyclerView.setAdapter(recycler);
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    Logger.logE("doquery", "doquery", e);
+                }
             });
         });
     }
@@ -619,7 +618,3 @@ public class SearchPatientActivity extends BaseActivity {
         super.onStop();
     }
 }
-
-
-
-

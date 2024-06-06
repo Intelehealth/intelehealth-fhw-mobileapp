@@ -60,7 +60,6 @@ import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivi
 import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
 import org.intelehealth.ekalarogya.activities.privacyNoticeActivity.PrivacyNotice_Activity;
-import org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ekalarogya.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
@@ -246,13 +245,9 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 }
             }
         });
-        c2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        c2.setOnClickListener(view -> ncdModule());
+
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -473,6 +468,15 @@ public class HomeActivity extends BaseActivity implements SyncListener {
 //            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
 //        }
 //    }
+
+    private void ncdModule() {
+        try {
+            Intent intent = new Intent(this, Class.forName("org.intelehealth.ncd.category.activity.NcdPatientCategoryActivity"));
+            startActivity(intent);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     private void videoLibrary() {
         try {

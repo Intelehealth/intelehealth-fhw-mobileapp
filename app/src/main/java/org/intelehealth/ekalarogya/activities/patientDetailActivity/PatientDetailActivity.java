@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -50,8 +49,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -126,7 +127,7 @@ public class PatientDetailActivity extends BaseActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit, button_sevika_advice, householdSurvey;
+    Button newVisit, buttonSevikaAdvice, householdSurvey;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -170,7 +171,7 @@ public class PatientDetailActivity extends BaseActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
-        button_sevika_advice = findViewById(R.id.button_sevika_advice);
+        buttonSevikaAdvice = findViewById(R.id.button_sevika_advice);
         householdSurvey = findViewById(R.id.button_household_survey);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -230,8 +231,8 @@ public class PatientDetailActivity extends BaseActivity {
 
         setDisplay(patientUuid);
 
-        button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+        buttonSevikaAdvice.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        buttonSevikaAdvice.setTextColor(getResources().getColor(R.color.white));
 
         householdSurvey.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         householdSurvey.setTextColor(getResources().getColor(R.color.white));
@@ -252,7 +253,7 @@ public class PatientDetailActivity extends BaseActivity {
             }
         });
 
-        button_sevika_advice.setOnClickListener(new View.OnClickListener() {
+        buttonSevikaAdvice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startVisitConfirmation("Sevika");
@@ -279,7 +280,6 @@ public class PatientDetailActivity extends BaseActivity {
 
     private void startVisitConfirmation(String startNewAdviceBy) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
         if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
             alertDialogBuilder.setMessage(getResources().getString(R.string.start_newadvice_confirmation_msg));
         } else {
@@ -291,6 +291,7 @@ public class PatientDetailActivity extends BaseActivity {
                 dialogInterface.dismiss();
             }
         });
+
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -299,7 +300,6 @@ public class PatientDetailActivity extends BaseActivity {
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
-        //alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
     }
 
@@ -320,14 +320,15 @@ public class PatientDetailActivity extends BaseActivity {
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        if (!startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -373,10 +374,6 @@ public class PatientDetailActivity extends BaseActivity {
         // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
         // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
-        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
-        intent2.putExtra("patientUuid", patientUuid);
         VisitDTO visitDTO = new VisitDTO();
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patient_new.getUuid());
@@ -392,19 +389,55 @@ public class PatientDetailActivity extends BaseActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+            insertIsNcdSevikaVisitAttribute(uuid);
+            navigateToComplaintScreen(uuid);
+        } else {
+            navigateToVitalsScreen(uuid);
+        }
+    }
+
+    private void insertIsNcdSevikaVisitAttribute(String visitUuid) {
+        VisitAttributeListDAO dao = new VisitAttributeListDAO();
+        try {
+            boolean isInserted = dao.insertIsNcdVisitAttribute(visitUuid, "true");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void navigateToComplaintScreen(String visitUuid) {
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
         intent2.putExtra("patientUuid", patientUuid);
-        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("visitUuid", visitUuid);
         intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
         intent2.putExtra("encounterUuidAdultIntial", "");
         intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
         intent2.putExtra("name", fullName);
         intent2.putExtra("age", age);
         intent2.putExtra("tag", "new");
-        if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
-            intent2.putExtra("advicefrom", "Sevika");
-        } else {
-            intent2.putExtra("advicefrom", "Doctor");
-        }
+        intent2.putExtra("advicefrom", "Sevika");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
+    }
+
+    private void navigateToVitalsScreen(String visitUuid) {
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", visitUuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("age", age);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("advicefrom", "Doctor");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
     }
@@ -1131,19 +1164,19 @@ public class PatientDetailActivity extends BaseActivity {
             }
             past_visit = false;
 
-            if (button_sevika_advice.isEnabled()) {
-                button_sevika_advice.setEnabled(false);
+            if (buttonSevikaAdvice.isEnabled()) {
+                buttonSevikaAdvice.setEnabled(false);
             }
-            if (button_sevika_advice.isClickable()) {
-                button_sevika_advice.setClickable(false);
+            if (buttonSevikaAdvice.isClickable()) {
+                buttonSevikaAdvice.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    button_sevika_advice.setBackgroundColor
+                    buttonSevikaAdvice.setBackgroundColor
                             (getColor(R.color.divider));
-                    button_sevika_advice.setTextColor(getColor(R.color.white));
+                    buttonSevikaAdvice.setTextColor(getColor(R.color.white));
                 } else {
-                    button_sevika_advice.setBackgroundColor(getResources().getColor(R.color.divider));
-                    button_sevika_advice.setTextColor(getResources().getColor(R.color.white));
+                    buttonSevikaAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                    buttonSevikaAdvice.setTextColor(getResources().getColor(R.color.white));
                 }
             }
 

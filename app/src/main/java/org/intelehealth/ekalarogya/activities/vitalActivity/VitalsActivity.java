@@ -131,10 +131,6 @@ public class VitalsActivity extends AppCompatActivity {
             intentTag = intent.getStringExtra("tag");
             intentAdviceFrom = intent.getStringExtra("advicefrom");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
-            Log.v(TAG, "Patient ID: " + patientUuid);
-            Log.v(TAG, "Visit ID: " + visitUuid);
-            Log.v(TAG, "Patient Name: " + patientName);
-            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
         super.onCreate(savedInstanceState);
@@ -1534,6 +1530,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("advicefrom", intentAdviceFrom);
                 intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
             } catch (DAOException dao) {
@@ -1894,6 +1891,7 @@ public class VitalsActivity extends AppCompatActivity {
         intent.putExtra("state", state);
         intent.putExtra("name", patientName);
         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+        intent.putExtra("advicefrom", intentAdviceFrom);
         intent.putExtra("tag", intentTag);
         startActivity(intent);
     }

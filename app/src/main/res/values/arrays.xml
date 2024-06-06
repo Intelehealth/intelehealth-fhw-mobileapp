@@ -2704,4 +2704,101 @@
         <item>8ଫୁଟ 2ଇଞ୍ଚ</item>
         <item>8ଫୁଟ 3ଇଞ୍ଚ</item>
     </string-array>
+
+    <string-array name="reason_for_no_medication_en">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_hi">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_gu">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_as">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_mr">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_kn">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_bn">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
+    <string-array name="reason_for_no_medication_or">
+        <item>@string/select</item>
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
+    </string-array>
+
 </resources>

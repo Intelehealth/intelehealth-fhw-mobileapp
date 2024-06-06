@@ -1,15 +1,21 @@
 package org.intelehealth.ekalarogya.database.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.models.FamilyMemberRes;
 import org.intelehealth.ekalarogya.models.dto.VisitAttributeDTO;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
@@ -24,7 +30,7 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
 
-    public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
+    public boolean insertVisitAttributeList(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -52,32 +58,17 @@ public class VisitAttributeListDAO {
         String where = "visit_uuid=?";
         String whereArgs[] = {visitDTO.getVisit_uuid()};
         try {
-
-//            values.put("speciality_value", visitDTO.getValue());
             values.put("uuid", visitDTO.getUuid());
             values.put("visit_uuid", visitDTO.getVisit_uuid());
             values.put("value", visitDTO.getValue());
             values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
-
-            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d")
-                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK))
-            {
-                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                if (createdRecordsCount != -1) {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                } else {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
-            }
+            createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
-        } finally {
-
         }
-
         return isCreated;
     }
 
@@ -136,6 +127,34 @@ public class VisitAttributeListDAO {
         }
 
         Log.d("isInserted", "isInserted: " + isInserted);
+        return isInserted;
+    }
+
+    public boolean insertIsNcdVisitAttribute(String visitUuid, String isNcdVisit) throws DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", isNcdVisit);
+            values.put("visit_attribute_type_uuid", AppConstants.IS_NCD_VISIT_ATTRIBUTE);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (count != -1) {
+                isInserted = true;
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
         return isInserted;
     }
 
@@ -230,8 +249,29 @@ public class VisitAttributeListDAO {
             db.endTransaction();
         }
 
-        Log.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
     }
 
+    public static Boolean isNcdVisit(String visitUuid) {
+        boolean isNcdVisit = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ?", new String[]{visitUuid, AppConstants.IS_NCD_VISIT_ATTRIBUTE});
+            if (cursor.getCount() != 0 && cursor.moveToFirst()) {
+                String value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                if (value.equalsIgnoreCase("true")) {
+                    isNcdVisit = true;
+                }
+            }
+            cursor.close();
+        } catch (SQLException exception) {
+            FirebaseCrashlytics.getInstance().recordException(exception);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isNcdVisit;
+    }
 }

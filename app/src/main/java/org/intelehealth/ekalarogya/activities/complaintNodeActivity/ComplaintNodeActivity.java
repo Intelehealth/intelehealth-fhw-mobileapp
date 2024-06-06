@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -37,15 +38,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.ncd.constants.Constants;
+import org.intelehealth.ncd.utils.CategorySegregationUtils;
+import org.intelehealth.ncd.utils.DateAndTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionNodeActivity;
@@ -67,13 +73,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     SearchView searchView;
     List<Node> complaints/*, suggestedComplaints*/;
     ComplaintNodeListAdapter listAdapter;
-//    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
+    //    SuggestedComplaintNodeListAdapter suggestedComplaintListAdapter;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
     TextView tv_selectComplaint;
     RecyclerView list_recyclerView/*, rv_suggested_complaints*/;
     private float float_ageYear_Month;
+    private String intentAdviceFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +107,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
+            intentAdviceFrom = intent.getStringExtra("advicefrom");
         }
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
@@ -222,26 +230,34 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
-        else {
-            String[] fileNames = new String[0];
+        } else {
+            String protocolDirectory = FileUtils.getDirectoryForProtocols(intentAdviceFrom);
+            String[] fileNames = {};
             try {
-                fileNames = getApplicationContext().getAssets().list("engines");
+                List<String> tempArrayList = new ArrayList<>();
+                String[] tempFileNames = getApplicationContext().getAssets().list(protocolDirectory);
+
+                if (tempFileNames != null) {
+                    for (String fileName : tempFileNames) {
+                        if (fileName.endsWith(".json")) {
+                            tempArrayList.add(fileName);
+                        }
+                    }
+
+                    fileNames = tempArrayList.toArray(new String[0]);
+                }
             } catch (IOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
+
             if (fileNames != null) {
                 for (String name : fileNames) {
-                    String fileLocation = "engines/" + name;
+                    String fileLocation = protocolDirectory + "/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-//                    if(name.equalsIgnoreCase("Fever.json") || name.equalsIgnoreCase("Abdominal Pain.json") ||
-//                        name.equalsIgnoreCase("Dry mouth.json") || name.equalsIgnoreCase("Fever & Rash.json") ||
-//                                name.equalsIgnoreCase("Jaundice.json"))
-//                        suggestedComplaints.add(currentNode);
-//                    else
-                        complaints.add(currentNode);
+                    complaints.add(currentNode);
                 }
+
                 //remove items from complaints array here...
                 mgender = PatientsDAO.fetch_gender(patientUuid);
 
@@ -264,8 +280,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
                             i--;
-                        }
-                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                        } else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
                             complaints.get(i).remove(complaints, i);
                             i--;
                         }
@@ -285,6 +300,30 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         list_recyclerView.setVisibility(View.VISIBLE);
 //        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
+        autoSelectComplaints();
+    }
+
+    private void autoSelectComplaints() {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        try {
+            String patientBirthDate = PatientsDAO.getPatientDetailsForRedirection(patientUuid).getDate_of_birth();
+            String patientMedicalHistoryJson = patientsDAO.getValueFromPatientAttrbTable(patientUuid, Constants.OTHER_MEDICAL_HISTORY);
+            List<String> diseaseList = new CategorySegregationUtils(getResources()).populateDiseaseListBasedOnAgeAndHistory(
+                    DateAndTimeUtils.INSTANCE.calculateAgeInYears(patientBirthDate),
+                    patientMedicalHistoryJson
+            );
+
+            for (String disease : diseaseList) {
+                for (Node complaint : complaints) {
+                    if (disease.equalsIgnoreCase(complaint.getText())) {
+                        complaint.toggleSelected();
+                    }
+                }
+            }
+
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -342,7 +381,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
                         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
                         if (intentTag != null) {
                             intent.putExtra("tag", intentTag);
                         }

@@ -26,7 +26,7 @@ import org.intelehealth.ekalarogya.syncModule.SyncWorkManager;
 public class AppConstants {
     //Constants
     public static final String DATABASE_NAME = "localrecords.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";
@@ -164,6 +164,10 @@ public class AppConstants {
     public static final String INTENT_VISIT_UUID = "visitUuid";
     public static final String ENCOUNTER_VITALS_KEY = "ENCOUNTER_VITALS";
     public static final String ENCOUNTER_ADULT_INITIAL = "ENCOUNTER_ADULTINITIAL";
+
+    public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
+    public static final String NCD_PROTOCOL_DIRECTORY = "engines/ncd";
+    public static final String PROTOCOL_DIRECTORY = "engines";
 
 }
 

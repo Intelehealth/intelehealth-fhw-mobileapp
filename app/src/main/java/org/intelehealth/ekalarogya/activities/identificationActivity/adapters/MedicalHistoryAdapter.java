@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.identificationActivity.callback.ViewPagerCallback;
 import org.intelehealth.ekalarogya.activities.identificationActivity.data_classes.MedicalHistory;
 import org.intelehealth.ekalarogya.databinding.LayoutMedicalHistoryBinding;
@@ -84,9 +85,56 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
             this.position = position;
 
             binding.tvHypertension.setText(getMedicalHistoryStrings(medicalHistory.getHypertension(), updatedResources, resources, locale));
+            if (!medicalHistory.getHypertension().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvHypertensionMedication.setText(getMedicalHistoryStrings(medicalHistory.getMedicationForBP(), updatedResources, resources, locale));
+                binding.llBpMedication.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForBP().equalsIgnoreCase(updatedResources.getString(R.string.generic_yes))) {
+                binding.tvHypertensionHealthcare.setText(getMedicalHistoryStrings(medicalHistory.getHealthWorkerForBP(), updatedResources, resources, locale));
+                binding.llBpHealthcareWorker.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForBP().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvHypertensionNoMedication.setText(getMedicalHistoryStrings(medicalHistory.getReasonForNoBPMedication(), updatedResources, resources, locale));
+                binding.llBpNoMedicationReason.setVisibility(View.VISIBLE);
+            }
+
             binding.tvDiabetes.setText(getMedicalHistoryStrings(medicalHistory.getDiabetes(), updatedResources, resources, locale));
+
+            if (!medicalHistory.getDiabetes().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvDiabetesMedication.setText(getMedicalHistoryStrings(medicalHistory.getMedicationForDiabetes(), updatedResources, resources, locale));
+                binding.llDiabetesMedication.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForDiabetes().equalsIgnoreCase(updatedResources.getString(R.string.generic_yes))) {
+                binding.tvDiabetesHealthcare.setText(getMedicalHistoryStrings(medicalHistory.getHealthWorkerForDiabetes(), updatedResources, resources, locale));
+                binding.llDiabetesHealthcareWorker.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForDiabetes().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvDiabetesNoMedication.setText(getMedicalHistoryStrings(medicalHistory.getReasonForNoDiabetesMedication(), updatedResources, resources, locale));
+                binding.llDiabetesNoMedicationReason.setVisibility(View.VISIBLE);
+            }
+
             binding.tvArthritis.setText(getMedicalHistoryStrings(medicalHistory.getArthritis(), updatedResources, resources, locale));
             binding.tvAnaemia.setText(getMedicalHistoryStrings(medicalHistory.getAnaemia(), updatedResources, resources, locale));
+
+            if (!medicalHistory.getAnaemia().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvAnemiaMedication.setText(getMedicalHistoryStrings(medicalHistory.getMedicationForAnemia(), updatedResources, resources, locale));
+                binding.llAnemiaMedication.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForAnemia().equalsIgnoreCase(updatedResources.getString(R.string.generic_yes))) {
+                binding.tvAnemiaHealthcare.setText(getMedicalHistoryStrings(medicalHistory.getHealthWorkerForAnemia(), updatedResources, resources, locale));
+                binding.llAnemiaHealthcareWorker.setVisibility(View.VISIBLE);
+            }
+
+            if (medicalHistory.getMedicationForAnemia().equalsIgnoreCase(updatedResources.getString(R.string.generic_no))) {
+                binding.tvAnemiaNoMedication.setText(getMedicalHistoryStrings(medicalHistory.getReasonForNoAnemiaMedication(), updatedResources, resources, locale));
+                binding.llAnemiaNoMedicationReason.setVisibility(View.VISIBLE);
+            }
+
             binding.tvAnySurgeries.setText(getMedicalHistoryStrings(medicalHistory.getAnySurgeries(), updatedResources, resources, locale));
 
             if (medicalHistory.getAnySurgeries().equalsIgnoreCase("Yes")) {

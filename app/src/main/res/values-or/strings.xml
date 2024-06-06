@@ -1085,5 +1085,34 @@
     <string name="title_un_uploaded_visit_reminder">ପରିଦର୍ଶନ ନ ହେବାକୁ ମନେ ପକାଇବା</string>
     <string name="title_un_uploaded_visit_reminder_desc">ହ।ଲୋ , କିଛି ପରିଦର୍ଶନ ଅଛି ଅପଲୋଡ଼ ହେବା ପାଇଁ, ଦୟାକରି ଚେଷ୍ଟା ଜାରି ରଖ</string>
     <string name="you_have_unuploaded_visits">ତୁମର %1$s ଅପଲୋଡ଼ ନ ହୋଇଥିବା ପରିଦର୍ଶନ</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">ପରିବାର ସଦସ୍ୟ Whatsapp ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ବ୍ୟକ୍ତିଗତ Whatsapp ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
+
+    <string name="i_dont_know">ମୁଁ ଜାଣେ ନାହିଁ|</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">ଏକଲ୍ ଆପଣଙ୍କ ଭ୍ରମଣର ସାରାଂଶର ଏକ ମାଗଣା Whatsapp ବାର୍ତ୍ତା ପଠାଇ ପାରିବ କି?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">ଆପଣ ବର୍ତ୍ତମାନ BP ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ମଧୁମେହ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ଆପଣ ବର୍ତ୍ତମାନ ରକ୍ତହୀନତା ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ତୁମର ବିପି ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ତୁମର ମଧୁମେହ ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ତୁମର ରକ୍ତହୀନତା ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">ତୁମେ ତୁମର BP ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ତୁମେ ତୁମର ରକ୍ତହୀନତା ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+
+    <string name="never_prescribed_medication">ମୋତେ କଦାପି ଔଷଧ ଚିଠା ଦିଆଯାଇନଥିଲା</string>
+    <string name="forgot_to_take_it">ମୁଁ ଏହାକୁ ନେବାକୁ ଭୁଲିଗଲି |</string>
+    <string name="cannot_afford_medications">ମୁଁ ଔଷଧ ନିଜ ପାଇଁ ଦେଇ ପାରୁନାହିଁ </string>
+    <string name="ran_out_of_medication">ମୁଁ ଔଷଧପାଇଁ ବ୍ୟସ୍ତ ଅଛି / ଔଷଧ ହଜିଗଲା </string>
+    <string name="i_am_needing_follow_up_with_my_PHC">ମୁଁ ମୋର PHC ସହିତ ଅନୁସରଣ କରିବା ଆବଶ୍ୟକ କରୁଛି |</string>
+    <string name="i_dont_think_i_need_it">ମୁଁ ଭାବୁନାହିଁ ଯେ ଏହା ମୋର ଦରକାର ବୋଲି </string>
+    <string name="side_effect_related_to_medication">ଔଷଧ ସମ୍ବନ୍ଧୀୟ ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା |</string>
+    <string name="unknown_other">ଅଜ୍ଞାତ / ଅନ୍ୟ</string>
 
 </resources>

@@ -122,6 +122,7 @@
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
     <string name="title_activity_search_patient" translatable="false">Patient Lookup</string>
+    <string name="toolbar_search_patient">Search Patient</string>
 
     //Complaint Node Screen
     <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
@@ -233,8 +234,8 @@
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
     <string name="button_new_visit" translatable="false">Start Doctor new advice</string>
-    <string name="button_sevika_advice" translatable="false">Start Sevika new advice</string>
-    <string name="header_previous_visits" translatable="false">Previous visits</string>
+    <string name="button_sevika_advice" translatable="false">New NCD/Sevika Visit</string>
+    <string name="header_previous_visits" translatable="false">Previous` visits</string>
     <string name="header_patient_history" translatable="false">Medical history</string>
     <string name="header_family_history" translatable="false">Family history</string>
     <string name="string_no_hist" translatable="false">No history of illness</string>
@@ -731,7 +732,7 @@
     //-----------start new visit confirmation dialog string-----------
     <string name="start_newvisit_confirmation_msg">Are you sure you want to start a Doctor advice?</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
-    <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
+    <string name="start_newadvice_confirmation_msg">Do you want to start NCD Sevika visit?</string>
 
     //Language Screen
     <string name="choose_lang_title">Choose your Language</string>
@@ -1228,5 +1229,42 @@
     <string name="prescription_dr_email">Email: %1$s</string>
     <string name="prescription_dr_registration">Registration No: %1$s</string>
     <string name="please_install_whatsapp">Please install WhatsApp for sharing this prescription.</string>
+
+    // Search Patient Screen Tabs
+    <string name="tab_anemia_screening">Anemia Screening</string>
+    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
+    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
+    <string name="tab_hypertension_screening">Hypertension Screening</string>
+    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_general">General</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">What is the mobile number associated with your family member WhatsApp account?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">What is the mobile number associated with your personal WhatsApp account?</string>
+    <string name="i_dont_know">I don\’t know</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">Can Ekal send a free WhatsApp message of the summary of our visit to you?</string>
+
+    <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
+    <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+
+    <string name="never_prescribed_medication">I was never prescribed medications.</string>
+    <string name="forgot_to_take_it">I forgot to take it.</string>
+    <string name="cannot_afford_medications">I cannot afford medications.</string>
+    <string name="ran_out_of_medication">I ran out of medications / lost medications.</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">I am needing follow up with my PHC.</string>
+    <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
+    <string name="side_effect_related_to_medication">Side effect related to medication.</string>
+    <string name="unknown_other">Unknown / Other</string>
 
 </resources>
