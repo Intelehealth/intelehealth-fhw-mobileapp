@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.patientSurveyActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.work.WorkManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -238,6 +239,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+            WorkManager.getInstance(this).cancelUniqueWork(visitUuid);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

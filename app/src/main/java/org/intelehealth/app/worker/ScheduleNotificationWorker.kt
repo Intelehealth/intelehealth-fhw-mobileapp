@@ -124,7 +124,7 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
         list.add(notificationModel)
 
         NotificationDAO().insertNotifications(list)
-        IntelehealthApplication.getAppContext().sendBroadcast(Intent(NotificationBroadCast.CUSTOM_ACTION))
+        NotificationBroadCast.initialize(IntelehealthApplication.getAppContext())
 
         notificationManager.notify(id, builder.build())
     }

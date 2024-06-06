@@ -30,25 +30,24 @@ class NotificationSchedulerUtils {
 
             try {
                 val notificationDataList = EncounterDAO.getFollowUpDateListFromConceptId()
+                WorkManager.getInstance(IntelehealthApplication.getAppContext()).cancelAllWork()
                 for (notificationData in notificationDataList) {
-                    if (FollowUpNotificationScheduleDAO().countScheduleByVisitUuid(notificationData.visitUuid) <= 0) {
-                        val followUpTime = parseDateTimeToTimestamp(notificationData.value)
+                    val followUpTime = parseDateTimeToTimestamp(notificationData.value)
 
-                        if (followUpTime > System.currentTimeMillis()) {
-                            scheduleNotification(
-                                followUpTime,
-                                AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
-                                TimeUnit.MINUTES,
-                                notificationData
-                            )
+                    if (followUpTime > System.currentTimeMillis()) {
+                        scheduleNotification(
+                            followUpTime,
+                            AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
+                            TimeUnit.HOURS,
+                            notificationData
+                        )
 
-                            scheduleNotification(
-                                followUpTime,
-                                /*AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION*/5,
-                                TimeUnit.MINUTES,
-                                notificationData
-                            )
-                        }
+                        scheduleNotification(
+                            followUpTime,
+                            AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION,
+                            TimeUnit.HOURS,
+                            notificationData
+                        )
                     }
                 }
 
@@ -60,9 +59,13 @@ class NotificationSchedulerUtils {
         }
 
         fun parseDateTimeToTimestamp(input: String): Long {
-            val formatter = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.getDefault())
-            val date = formatter.parse(input)
-            return date?.time ?: 0
+            return try {
+                val formatter = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.getDefault())
+                val date = formatter.parse(input)
+                date?.time ?: 0
+            }catch (_:Exception){
+                0
+            }
         }
 
         fun parseDateTimeToDateTime(input: String): String {
@@ -100,7 +103,7 @@ class NotificationSchedulerUtils {
                         R.string.patient_follow_up_appointment_on,
                         notificationData.name,
                         notificationData.openMrsId,
-                        notificationData.value
+                        parseDateTimeToDateTime(notificationData.value)
                     )
                 )
                 .putString(
@@ -130,19 +133,20 @@ class NotificationSchedulerUtils {
             val workRequest2Hours = OneTimeWorkRequestBuilder<ScheduleNotificationWorker>()
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .setInputData(data)
+                .addTag(notificationData.visitUuid)
                 .build()
 
             if (delay < 0) return
 
-            WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(workRequest2Hours)
+            val workManager = WorkManager.getInstance(IntelehealthApplication.getAppContext())
+            workManager.enqueue(workRequest2Hours)
 
-            FollowUpNotificationScheduleDAO().insertEncounter(
-                FollowUpNotificationShData(
-                    notificationData.visitUuid,
-                    (System.currentTimeMillis() + delay).toString()
-                )
-            )
+            /*    FollowUpNotificationScheduleDAO().insertEncounter(
+                    FollowUpNotificationShData(
+                        notificationData.visitUuid,
+                        (System.currentTimeMillis() + delay).toString()
+                    )
+                )*/
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
@@ -400,7 +401,7 @@ public class ObsDAO {
 
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
-        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        String encounter_type_uuid_comp = ENCOUNTER_ADULTINITIAL; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
 
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
@@ -414,8 +415,8 @@ public class ObsDAO {
         encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1'";
-        String[] visitArgs = {visitnote};
+        String visitSelection = "encounteruuid = ? and conceptuuid = ? and voided!='1'";
+        String[] visitArgs = {visitnote,"596c7f50-ec12-4ad8-b92a-7491ad80341b"};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {

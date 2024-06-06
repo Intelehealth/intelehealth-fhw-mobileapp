@@ -378,7 +378,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private FacilityToVisitModel selectedFacilityToVisit = null;
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
-
+    boolean isSynced = false;
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -445,6 +445,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
+    private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -461,6 +469,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         getWindow().setStatusBarColor(Color.WHITE);
 
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -3112,7 +3122,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
 
-                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+                    String adultInitialUUID = encounterUuidAdultIntial;/*fetchEncounterUuidForEncounterAdultInitials(visitUUID);*/
 
 //                    Step - 2 Create observation data object and set the value
 
@@ -3131,6 +3141,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
+
 
                 }
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
@@ -3214,7 +3225,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                         //Do something after 100ms
                         SyncUtils syncUtils = new SyncUtils();
-                        boolean isSynced = syncUtils.syncForeground("visitSummary");
+                        isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
                             // remove the local cache
                             sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
@@ -3225,7 +3236,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
-                            new FollowUpNotificationScheduleDAO().deleteFollowUpNotificationDataFromVisitUuid(visitUUID);
 
                             NotificationSchedulerUtils.scheduleFollowUpNotification();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
@@ -3245,6 +3255,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
+                                }
+                            });
                             fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
