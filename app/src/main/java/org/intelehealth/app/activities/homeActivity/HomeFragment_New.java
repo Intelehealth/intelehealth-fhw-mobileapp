@@ -54,6 +54,7 @@ import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseFragment;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;

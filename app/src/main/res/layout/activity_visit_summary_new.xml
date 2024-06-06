@@ -1189,20 +1189,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             android:weightSum="2">
+            <Button
+                android:id="@+id/preview_bt_with_prescription_lay"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:lineHeight="@dimen/button_line_height"
+                android:padding="@dimen/margin_12"
+                android:text="@string/preview"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnPrescriptionView"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
                 android:text="@string/view_prescription_lbl"
                 android:textColor="@color/white"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
             <!--<Button
@@ -1260,10 +1279,11 @@
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_8"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:padding="@dimen/margin_12"
                 android:text="@string/appointment"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
@@ -1272,12 +1292,32 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/preview_bt_with_save_visit_lay"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
+                android:layout_weight="1"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:padding="@dimen/margin_12"
+                android:text="@string/preview"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold" />
+
+
+            <Button
                 android:id="@+id/btn_vs_sendvisit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_vs_appointment"
+                app:layout_constraintStart_toEndOf="@id/preview_bt_with_save_visit_lay"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="@dimen/common_edittext_margin_top"
                 android:layout_marginEnd="@dimen/margin_24"

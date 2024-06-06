@@ -118,5 +118,7 @@
     <string name="facility_to_visit">Facility to visit</string>
     <string name="follow_up_date">Follow up date</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
+    <string name="visit_preview">Visit Preview</string>
+    <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
 
 </resources>

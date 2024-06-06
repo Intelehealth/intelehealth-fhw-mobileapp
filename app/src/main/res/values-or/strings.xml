@@ -772,6 +772,10 @@
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="past">ଅତୀତ</string>
+    <string name="preview">Preview</string>
+    <string name="visit_preview">Visit Preview</string>
+    <string name="whatsapp_not_installed_on_your_device">WhatsApp not installed on your device</string>
+    <string name="follow_up_appointment_will_start_in_hours_for">Follow up appointment will start in %1$s hours for (%2$s , %3$s)</string>
     <string name="facility_to_visit">Facility to visit</string>
     <string name="follow_up_date">Follow up date</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>

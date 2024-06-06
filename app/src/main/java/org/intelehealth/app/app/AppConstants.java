@@ -34,10 +34,14 @@ public class AppConstants {
     public static final int FORGOT_USER_PASSWORD_ACTION = 50002;
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
+    public static final String PDF_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + File.separator;
+
     public static final String MESSAGE_PROGRESS = "message_progress";
 
     public static final int PAGE_LIMIT = 50;
 
+    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 2;
+    public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;
 
     //App vitals constants
 

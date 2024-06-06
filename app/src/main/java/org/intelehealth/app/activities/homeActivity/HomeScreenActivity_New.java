@@ -110,6 +110,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -306,6 +307,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return Unit.INSTANCE;
         });
 //        catchFCMMessageData();
+
+       Log.d("TTTTTTTTTTTT",""+ NotificationSchedulerUtils.Companion.parseDateTimeToDateTime("2024-06-05, Time: 1:50 AM, Remark: Follow-up"));
 
 
         notificationReceiver = new NotificationReceiver();
