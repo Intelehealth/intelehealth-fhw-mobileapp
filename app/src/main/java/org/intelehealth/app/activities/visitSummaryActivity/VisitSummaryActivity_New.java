@@ -435,6 +435,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (activeStatus != null) {
+            findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
             findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
             findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
             findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
@@ -469,8 +471,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         getWindow().setStatusBarColor(Color.WHITE);
 
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
-        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -3259,6 +3259,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    setupSpecialization();
                                     mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
                                 }
                             });
