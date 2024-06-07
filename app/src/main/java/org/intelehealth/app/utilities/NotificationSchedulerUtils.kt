@@ -30,11 +30,12 @@ class NotificationSchedulerUtils {
 
             try {
                 val notificationDataList = EncounterDAO.getFollowUpDateListFromConceptId()
-                WorkManager.getInstance(IntelehealthApplication.getAppContext()).cancelAllWork()
                 for (notificationData in notificationDataList) {
                     val followUpTime = parseDateTimeToTimestamp(notificationData.value)
 
                     if (followUpTime > System.currentTimeMillis()) {
+                        WorkManager.getInstance(IntelehealthApplication.getAppContext()).cancelAllWorkByTag(notificationData.visitUuid)
+
                         scheduleNotification(
                             followUpTime,
                             AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
