@@ -19,7 +19,7 @@
         app:draggedItem="@id/scroll_relative"
         app:isEnabledSwipe="true"
         app:isFreeDragAfterOpen="true"
-       android:elevation="@dimen/space_10dp"
+        android:elevation="@dimen/space_10dp"
         app:rightItem="@id/delete_relative"
         app:swipeDirection="left">
 
@@ -46,7 +46,7 @@
             android:background="@color/white"
             android:padding="@dimen/fu_margin_start"
 
-             >
+            >
 
             <ImageView
                 android:id="@+id/profile"
@@ -97,6 +97,7 @@
 
 
                         <TextView
+                            android:id="@+id/button_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -128,7 +129,6 @@
 
     </com.zerobranch.layout.SwipeLayout>
 </androidx.cardview.widget.CardView>
-
 
 
 

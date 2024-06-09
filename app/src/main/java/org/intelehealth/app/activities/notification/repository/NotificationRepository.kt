@@ -16,7 +16,7 @@ const val OFFSET = 0
 
 class NotificationRepository {
     private val notificationDao = NotificationDAO()
-     private val syncUtils = SyncUtils()
+    private val syncUtils = SyncUtils()
 
     fun fetchNonDeletedNotification(): List<NotificationModel> {
         syncUtils.syncInBackground()
@@ -40,7 +40,8 @@ class NotificationRepository {
 
         nonDeletedNotificationList.forEach { notificationModel ->
             allVisitList.find { visitItem ->
-                visitItem.visitUuid == notificationModel.uuid
+                visitItem.visitUuid == if(notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION)
+                    notificationModel.uuid.split(" ")[0] else notificationModel.uuid
             }?.let { visitItem ->
                 notificationModel.apply {
                     first_name = visitItem.first_name

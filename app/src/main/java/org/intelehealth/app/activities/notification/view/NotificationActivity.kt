@@ -15,7 +15,10 @@ import org.intelehealth.app.activities.notification.listeners.NotificationClickL
 import org.intelehealth.app.activities.notification.result.NotificationResult
 import org.intelehealth.app.activities.notification.viewmodel.NotificationViewModel
 import org.intelehealth.app.activities.visit.PrescriptionActivity
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.EncounterDAO
+import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.databinding.ActivityNotificationBinding
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
@@ -127,26 +130,41 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                         getString(R.string.this_visit_is_completed)
                     )
                 } else {
-                    val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
-                    intent.putExtra("patientname", "$first_name $last_name")
-                    intent.putExtra("patientUuid", patientuuid)
-                    intent.putExtra("patient_photo", patient_photo)
-                    intent.putExtra("visit_ID", visitUUID)
-                    intent.putExtra("visit_startDate", visit_startDate)
-                    intent.putExtra("gender", gender)
-                    val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
-                    val adultInitialUUID =
-                        EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
-                    intent.putExtra("encounterUuidVitals", vitalsUUID)
-                    intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
-                    intent.putExtra(
-                        "age",
-                        DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
-                    )
-                    intent.putExtra("tag", "VisitDetailsActivity")
-                    intent.putExtra("followupDate", followupDate)
-                    intent.putExtra("openmrsID", openmrsID)
-                    startActivity(intent)
+                    if(notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION){
+                        val intent = Intent(IntelehealthApplication.getAppContext(), VisitSummaryActivity_New::class.java).apply {
+                            putExtra("patientUuid", patientuuid)
+                            putExtra("visitUuid", visitUUID)
+                            putExtra("gender", gender)
+                            putExtra("name", "$first_name $last_name")
+                            putExtra("encounterUuidVitals", "")
+                            putExtra("encounterUuidAdultIntial", "")
+                            putExtra("float_ageYear_Month", 0)
+                            putExtra("tag", "Notification")
+                        }
+                        startActivity(intent)
+                    }else{
+                        val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
+                        intent.putExtra("patientname", "$first_name $last_name")
+                        intent.putExtra("patientUuid", patientuuid)
+                        intent.putExtra("patient_photo", patient_photo)
+                        intent.putExtra("visit_ID", visitUUID)
+                        intent.putExtra("visit_startDate", visit_startDate)
+                        intent.putExtra("gender", gender)
+                        val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
+                        val adultInitialUUID =
+                            EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
+                        intent.putExtra("encounterUuidVitals", vitalsUUID)
+                        intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
+                        intent.putExtra(
+                            "age",
+                            DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
+                        )
+                        intent.putExtra("tag", "VisitDetailsActivity")
+                        intent.putExtra("followupDate", followupDate)
+                        intent.putExtra("openmrsID", openmrsID)
+                        startActivity(intent)
+                    }
+
                 }
 
             }

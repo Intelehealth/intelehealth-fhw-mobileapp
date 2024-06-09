@@ -115,7 +115,7 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
 
         val list = mutableListOf<NotificationModel>()
         val notificationModel = NotificationModel()
-        notificationModel.uuid = visitUuid + System.currentTimeMillis()
+        notificationModel.uuid = visitUuid +" "+ System.currentTimeMillis()
         notificationModel.notification_type
         notificationModel.description = description
         notificationModel.notification_type = NotificationDbConstants.FOLLOW_UP_NOTIFICATION
@@ -130,13 +130,13 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
     }
 
     companion object{
-         fun getFormatDateFromTimestamp(): String {
+        fun getFormatDateFromTimestamp(): String {
             val timestampMillis = System.currentTimeMillis()
 
             val date = Date(timestampMillis)
 
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-             sdf.timeZone = TimeZone.getTimeZone("UTC")
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
 
             return sdf.format(date)
         }

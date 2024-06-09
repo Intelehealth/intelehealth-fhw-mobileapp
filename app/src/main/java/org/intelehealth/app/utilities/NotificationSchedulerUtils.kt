@@ -33,7 +33,7 @@ class NotificationSchedulerUtils {
                 for (notificationData in notificationDataList) {
                     val followUpTime = parseDateTimeToTimestamp(notificationData.value)
 
-                    if (followUpTime > System.currentTimeMillis()) {
+                    if (followUpTime > System.currentTimeMillis() && followUpTime > 0) {
                         WorkManager.getInstance(IntelehealthApplication.getAppContext()).cancelAllWorkByTag(notificationData.visitUuid)
 
                         scheduleNotification(
@@ -61,10 +61,12 @@ class NotificationSchedulerUtils {
 
         fun parseDateTimeToTimestamp(input: String): Long {
             return try {
-                val formatter = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.getDefault())
-                val date = formatter.parse(input)
+                val datetimeRelevantPart = input.substringBefore(", Remark:")
+                val formatter = SimpleDateFormat("dd-MM-yyyy, 'Time:'hh:mm a", Locale.getDefault())
+                val date = formatter.parse(datetimeRelevantPart)
                 date?.time ?: 0
-            }catch (_:Exception){
+            }catch (e:Exception){
+                Log.e("ERRRR",e?.message?:"")
                 0
             }
         }
@@ -72,17 +74,18 @@ class NotificationSchedulerUtils {
         fun parseDateTimeToDateTime(input: String): String {
 
             val inputDateStr = input
+            val datetimeRelevantPart = input.substringBefore(", Remark:")
 
-
-            val inputFormat = SimpleDateFormat("yyyy-M-d, 'Time':HH:mm", Locale.ENGLISH)
+            val inputFormat = SimpleDateFormat("dd-MM-yyyy, 'Time:'hh:mm a", Locale.ENGLISH)
             val outputFormat = SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH)
 
             try {
-                val date = inputFormat.parse(inputDateStr)
+                val date = inputFormat.parse(datetimeRelevantPart)
 
                 return outputFormat.format(date)
 
             } catch (e: ParseException) {
+                Log.e("ERRRR",e?.message?:"")
                 e.printStackTrace()
             }
             return ""
@@ -131,7 +134,7 @@ class NotificationSchedulerUtils {
                 "DDDDDDEEEEE",
                 "" + delay + "  " + durationType.toMillis(duration) + "  " + dateTime
             )
-            val workRequest2Hours = OneTimeWorkRequestBuilder<ScheduleNotificationWorker>()
+            val workRequest = OneTimeWorkRequestBuilder<ScheduleNotificationWorker>()
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .setInputData(data)
                 .addTag(notificationData.visitUuid)
@@ -140,7 +143,7 @@ class NotificationSchedulerUtils {
             if (delay < 0) return
 
             val workManager = WorkManager.getInstance(IntelehealthApplication.getAppContext())
-            workManager.enqueue(workRequest2Hours)
+            workManager.enqueue(workRequest)
 
             /*    FollowUpNotificationScheduleDAO().insertEncounter(
                     FollowUpNotificationShData(
