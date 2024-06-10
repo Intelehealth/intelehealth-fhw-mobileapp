@@ -176,7 +176,7 @@ public class NCDNodeValidationLogic {
         } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT_SET)) {
             // Nested node separator '#=>>'
             // target data and type separator '->'
-            if(sourceDataNameType.contains("#=>>")){
+            if (sourceDataNameType.contains("#=>>")) {
                 sourceDataInfoValueList = DataSourceManager.getValuesForDataSourceFromTargetNestedNode(rulesType, sourceDataType, sourceDataNameType, mmRootNode);
             }
 
@@ -193,15 +193,23 @@ public class NCDNodeValidationLogic {
             ncdValidationResult.setUpdatedNode(mmRootNode);
         } else {
             if (validationRules.isSelfCheck()) {
-                for (int i = 0; i < mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().size(); i++) {
-                    if (mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).getText().equalsIgnoreCase(actionResult.getTarget())) {
-                        mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setSelected(true);
-                        mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setDataCapture(true);
-                        mmRootNode.getOptionsList().get(selectedRootIndex).setSelected(true);
+                if (validationRules.getActionType().equals(ValidationConstants.THEN_CONST_HIDE_THE_NODE)) {
+                    mmRootNode.getOptionsList().get(selectedRootIndex).setHidden(true);
+                    ncdValidationResult.setMoveToNextQuestion(true);
+                } else {
+                    mmRootNode.getOptionsList().get(selectedRootIndex).setHidden(false);
+                    ncdValidationResult.setMoveToNextQuestion(false);
 
-                    } else {
-                        mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setSelected(false);
-                        mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setDataCapture(false);
+                    for (int i = 0; i < mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().size(); i++) {
+                        if (mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).getText().equalsIgnoreCase(actionResult.getTarget())) {
+                            mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setSelected(true);
+                            mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setDataCapture(true);
+                            mmRootNode.getOptionsList().get(selectedRootIndex).setSelected(true);
+
+                        } else {
+                            mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setSelected(false);
+                            mmRootNode.getOptionsList().get(selectedRootIndex).getOptionsList().get(i).setDataCapture(false);
+                        }
                     }
                 }
             }

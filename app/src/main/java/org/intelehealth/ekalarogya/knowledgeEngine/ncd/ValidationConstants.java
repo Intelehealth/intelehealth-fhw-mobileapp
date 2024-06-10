@@ -22,6 +22,8 @@ public class ValidationConstants {
     public static final String SOURCE_DATA_NAME_AGE = "AGE";
     public static final String SOURCE_DATA_NAME_GENDER = "GENDER";
 
+    public static final String THEN_CONST_HIDE_THE_NODE = "HIDE_THE_NODE";
+
 
     // check
     public static final String CHECK_EQUAL = "EQUAL";

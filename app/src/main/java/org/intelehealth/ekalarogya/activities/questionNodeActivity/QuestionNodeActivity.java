@@ -36,8 +36,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -46,6 +44,7 @@ import com.google.gson.Gson;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
@@ -769,14 +768,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             StringBuilder stringBuilder = new StringBuilder();
 
                             Iterator<String> setIterator = popSet.iterator();
-                            while(setIterator.hasNext()){
-                                if(!stringBuilder.toString().isEmpty()){
+                            while (setIterator.hasNext()) {
+                                if (!stringBuilder.toString().isEmpty()) {
                                     stringBuilder.append("\n");
                                 }
                                 stringBuilder.append(setIterator.next());
                             }
                             String tempMsg = stringBuilder.toString().trim();
-                            if(!tempMsg.isEmpty()){
+                            if (!tempMsg.isEmpty()) {
                                 popupMessage = tempMsg;
                             }
 
@@ -808,10 +807,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             } else {
                                 if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
                                     mCurrentNodeIndex += 1;
-                                    // need to check the autofill node
-                                    if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
-                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
-                                        mCurrentNode = autoFillResult.getUpdatedNode();
+                                    boolean scrollToPosition = false;
+                                    while (!scrollToPosition) {
+                                        // need to check the autofill node
+                                        if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                                            NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
+                                            mCurrentNode = autoFillResult.getUpdatedNode();
+                                            if (autoFillResult.isMoveToNextQuestion()) {
+                                                mCurrentNodeIndex += 1;
+                                            } else {
+                                                scrollToPosition = true;
+                                            }
+                                        }
                                     }
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
 

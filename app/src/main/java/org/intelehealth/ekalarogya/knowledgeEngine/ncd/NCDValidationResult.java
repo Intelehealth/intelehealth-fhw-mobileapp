@@ -13,6 +13,7 @@ import org.intelehealth.ekalarogya.knowledgeEngine.Node;
 public class NCDValidationResult implements Parcelable {
     private String targetNodeID;
     private boolean isReadyToEndTheScreening;
+    private boolean moveToNextQuestion;
     private Node updatedNode;
     private ActionResult actionResult;
 
@@ -25,6 +26,7 @@ public class NCDValidationResult implements Parcelable {
     protected NCDValidationResult(Parcel in) {
         targetNodeID = in.readString();
         isReadyToEndTheScreening = in.readByte() != 0;
+        moveToNextQuestion = in.readByte() != 0;
         actionResult = in.readParcelable(ActionResult.class.getClassLoader());
     }
 
@@ -32,6 +34,7 @@ public class NCDValidationResult implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(targetNodeID);
         dest.writeByte((byte) (isReadyToEndTheScreening ? 1 : 0));
+        dest.writeByte((byte) (moveToNextQuestion ? 1 : 0));
         dest.writeParcelable(actionResult, flags);
     }
 
@@ -84,5 +87,13 @@ public class NCDValidationResult implements Parcelable {
 
     public void setActionResult(ActionResult actionResult) {
         this.actionResult = actionResult;
+    }
+
+    public boolean isMoveToNextQuestion() {
+        return moveToNextQuestion;
+    }
+
+    public void setMoveToNextQuestion(boolean moveToNextQuestion) {
+        this.moveToNextQuestion = moveToNextQuestion;
     }
 }
