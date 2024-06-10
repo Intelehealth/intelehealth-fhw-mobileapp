@@ -257,6 +257,9 @@ public class VisitSummaryActivity extends BaseActivity {
     int patientAge = 0;
     String visitStartDate = "";
 
+    private boolean isNcdVisit;
+    private CardView vitalsCardView, physicalExamCardView, patientHistoryCardView, familyHistoryCardView;
+
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
         DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
@@ -554,6 +557,10 @@ public class VisitSummaryActivity extends BaseActivity {
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
+        vitalsCardView = findViewById(R.id.cardView_vitals);
+        physicalExamCardView = findViewById(R.id.cardView_physexam);
+        patientHistoryCardView = findViewById(R.id.cardView_pathist);
+        familyHistoryCardView = findViewById(R.id.cardView_famhist);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1522,7 +1529,6 @@ public class VisitSummaryActivity extends BaseActivity {
                             }
                         }
 
-                        boolean isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
@@ -1901,6 +1907,18 @@ public class VisitSummaryActivity extends BaseActivity {
             }
         });
         getAppointmentDetails(visitUuid);
+
+        isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
+        if (isNcdVisit) {
+            hideSectionsForSevikaVisit();
+        }
+    }
+
+    private void hideSectionsForSevikaVisit() {
+        vitalsCardView.setVisibility(View.GONE);
+        physicalExamCardView.setVisibility(View.GONE);
+        patientHistoryCardView.setVisibility(View.GONE);
+        familyHistoryCardView.setVisibility(View.GONE);
     }
 
     private void buildAndSavePrescription(String fileName) {

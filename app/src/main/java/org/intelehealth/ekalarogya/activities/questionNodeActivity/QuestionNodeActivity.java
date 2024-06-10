@@ -32,6 +32,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -196,7 +197,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         super.onResume();
         // Register the receiver
         IntentFilter filter = new IntentFilter(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
-        registerReceiver(mQuestionActionBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, mQuestionActionBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -769,14 +770,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             StringBuilder stringBuilder = new StringBuilder();
 
                             Iterator<String> setIterator = popSet.iterator();
-                            while(setIterator.hasNext()){
-                                if(!stringBuilder.toString().isEmpty()){
+                            while (setIterator.hasNext()) {
+                                if (!stringBuilder.toString().isEmpty()) {
                                     stringBuilder.append("\n");
                                 }
                                 stringBuilder.append(setIterator.next());
                             }
                             String tempMsg = stringBuilder.toString().trim();
-                            if(!tempMsg.isEmpty()){
+                            if (!tempMsg.isEmpty()) {
                                 popupMessage = tempMsg;
                             }
 
