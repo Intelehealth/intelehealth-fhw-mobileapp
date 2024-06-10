@@ -115,6 +115,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/bottom_btn_relative"
             android:layout_below="@+id/relativeCardview"
+            android:layout_marginBottom="@dimen/std_16dp"
+            android:paddingBottom="@dimen/margin_16"
             android:fillViewport="true">
 
             <RelativeLayout
@@ -555,7 +557,7 @@
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_20"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/add_docs_title"
@@ -770,7 +772,6 @@
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
-
                             app:cardCornerRadius="@dimen/margin_5"
                             app:cardElevation="@dimen/margin_5">
 
@@ -1079,7 +1080,6 @@
                                     android:layout_height="@dimen/edittext_height_44dp"
                                     android:layout_marginTop="@dimen/hamburger_margin_start"
                                     android:layout_weight="1"
-
                                     android:drawableEnd="@drawable/followup_item_calendar"
                                     android:focusable="false"
                                     android:hint="@string/select_date"
@@ -1127,9 +1127,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/relative_speciality_block"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/std_16dp"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="65dp"
+                    android:layout_marginBottom="@dimen/std_16dp"
                     android:elevation="16dp"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
@@ -1176,201 +1176,201 @@
 
             </RelativeLayout>
         </ScrollView>
-<!--Visit Details - start -->
-    <RelativeLayout
-        android:id="@+id/bottom_btn_relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingTop="@dimen/fu_margin_start"
-        android:paddingBottom="@dimen/fu_card_margin_sides">
-
-        <LinearLayout
-            android:id="@+id/btn_bottom_printshare"
+        <!--Visit Details - start -->
+        <RelativeLayout
+            android:id="@+id/bottom_btn_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2">
-            <Button
-                android:id="@+id/preview_bt_with_prescription_lay"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/preview"
-                android:visibility="visible"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+            android:layout_alignParentBottom="true"
+            android:paddingTop="@dimen/fu_margin_start"
+            android:paddingBottom="@dimen/fu_card_margin_sides">
 
-            <Button
-                android:id="@+id/btnPrescriptionView"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginHorizontal="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/view_prescription_lbl"
-                android:textColor="@color/white"
-                android:maxLines="1"
-                android:autoSizeTextType="uniform"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-            <!--<Button
-                android:id="@+id/btn_vs_print"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:backgroundTint="@color/grey_button_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/action_print"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btn_vs_share"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/share"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />-->
-
-        </LinearLayout>
-
-        <!--Visit Details - end -->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_bottom_vs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2"
-            tools:visibility="visible">
-
-            <Button
-                android:id="@+id/btn_vs_appointment"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="0"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:padding="@dimen/margin_12"
-                android:text="@string/appointment"
+            <LinearLayout
+                android:id="@+id/btn_bottom_printshare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                android:weightSum="2">
 
-            <Button
-                android:id="@+id/preview_bt_with_save_visit_lay"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginBottom="@dimen/margin_5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:padding="@dimen/margin_12"
-                android:text="@string/preview"
-                android:visibility="visible"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                <Button
+                    android:id="@+id/preview_bt_with_prescription_lay"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/preview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/btnPrescriptionView"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginHorizontal="@dimen/margin_24"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/view_prescription_lbl"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold" />
+                <!--<Button
+                    android:id="@+id/btn_vs_print"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:backgroundTint="@color/grey_button_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/action_print"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_vs_share"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/common_edittext_margin_top"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/share"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold" />-->
+
+            </LinearLayout>
+
+            <!--Visit Details - end -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_bottom_vs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <Button
+                    android:id="@+id/btn_vs_appointment"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="0"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/appointment"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/preview_bt_with_save_visit_lay"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/preview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <Button
-                android:id="@+id/btn_vs_sendvisit"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fu_btn_size"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/preview_bt_with_save_visit_lay"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/margin_12"
-                android:text="@string/send_visit_button"
-                android:textColor="@color/white"
-                android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btn_vs_sendvisit"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/fu_btn_size"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/common_edittext_margin_top"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:layout_weight="1"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:lineHeight="@dimen/button_line_height"
+                    android:padding="@dimen/margin_12"
+                    android:text="@string/save_visit_button"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_button_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/preview_bt_with_save_visit_lay"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/filter_framelayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_45"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <include layout="@layout/notifi_filter_layout" />
+
+        </FrameLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="92dip"
+            android:contentDescription="@string/chat_fab"
+            android:onClick="startVideoChat"
+            android:src="@drawable/icons8_video_call"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabStartChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="80dip"
+            android:contentDescription="@string/chat_fab"
+            android:onClick="startTextChat"
+            android:src="@drawable/icons8_chat_new" />
+
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/filter_framelayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/margin_45"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <include layout="@layout/notifi_filter_layout" />
-
-    </FrameLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="92dip"
-        android:contentDescription="@string/chat_fab"
-        android:onClick="startVideoChat"
-        android:src="@drawable/icons8_video_call"
-        android:visibility="gone" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabStartChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dip"
-        android:contentDescription="@string/chat_fab"
-        android:onClick="startTextChat"
-        android:src="@drawable/icons8_chat_new" />
-
-</RelativeLayout>
 </layout>
