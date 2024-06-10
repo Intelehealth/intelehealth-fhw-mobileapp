@@ -838,7 +838,8 @@ public class EncounterDAO {
         try {
 
             String query = """
-                    select p.uuid,p.openmrs_id,p.first_name || " " || p.last_name as name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs,
+                    select p.uuid,p.openmrs_id,p.first_name || " " || p.last_name as name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,
+                    obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs,
                       tbl_encounter as e on obs.encounteruuid = e.uuid,\s
                       tbl_visit as v on e.visituuid = v.uuid,
                       tbl_patient as p on v.patientuuid = p.uuid
