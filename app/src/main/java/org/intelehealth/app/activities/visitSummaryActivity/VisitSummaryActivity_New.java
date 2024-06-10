@@ -817,7 +817,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
 
+                Log.d("EEEENNNNNN",""+encounterUuidAdultIntial);
                 getEncounterId(visitUuid);
+                Log.d("EEEENNNNNN2",""+encounterUuidAdultIntial);
 
             }
 
@@ -3289,7 +3291,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 @Override
                                 public void run() {
                                     setupSpecialization();
-                                    mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
+                                    mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" +selectedFollowupTime);
                                 }
                             });
                             fetchingIntent();

@@ -25,6 +25,15 @@ public class PrescriptionModel {
     String chiefComplaint;
     boolean hasPrescription = false;
     String obsservermodifieddate = "";
+    String endDate;
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
     public String getEncounterUuid() {
         return encounterUuid;

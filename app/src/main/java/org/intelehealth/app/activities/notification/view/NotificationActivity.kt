@@ -70,10 +70,10 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     setNotificationAdapter()
                     if (!notificationList.isNullOrEmpty()) {
                         mBinding.notifiHeaderTitle.text = String.format(
-                            getString(
-                                R.string.five_presc_received,
-                                mViewModel.getPrescriptionCount().toString()
-                            )
+                                getString(
+                                        R.string.five_presc_received,
+                                        mViewModel.getPrescriptionCount().toString()
+                                )
                         )
 
                     } else {
@@ -92,8 +92,8 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             }
             ibClearAll.setOnClickListener {
                 DeleteNotificationDialog.newInstance(
-                    supportFragmentManager,
-                    this@NotificationActivity
+                        supportFragmentManager,
+                        this@NotificationActivity
                 )
             }
         }
@@ -110,7 +110,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 notificationAdapter = NotificationAdapter(notificationList, clickListener)
                 adapter = notificationAdapter
                 layoutManager =
-                    LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
+                        LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
             }
         }
     }
@@ -124,25 +124,28 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
 
         override fun openNotification(notificationModel: NotificationModel, position: Int) {
             notificationModel.apply {
+                if (notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION) {
+                    visitUUID = uuid.split(" ")[0]
+                }
                 if (visitUUID.isNullOrBlank()) {
                     ToastUtil.showLongToast(
-                        this@NotificationActivity,
-                        getString(R.string.this_visit_is_completed)
+                            this@NotificationActivity,
+                            getString(R.string.this_visit_is_completed)
                     )
                 } else {
-                    if(notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION){
+                    if (notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION) {
                         val intent = Intent(IntelehealthApplication.getAppContext(), VisitSummaryActivity_New::class.java).apply {
                             putExtra("patientUuid", patientuuid)
                             putExtra("visitUuid", visitUUID)
                             putExtra("gender", gender)
-                            putExtra("name", "$first_name $last_name")
+                            putExtra("name", "$first_name")
                             putExtra("encounterUuidVitals", "")
                             putExtra("encounterUuidAdultIntial", "")
                             putExtra("float_ageYear_Month", 0)
                             putExtra("tag", "Notification")
                         }
                         startActivity(intent)
-                    }else{
+                    } else {
                         val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
                         intent.putExtra("patientname", "$first_name $last_name")
                         intent.putExtra("patientUuid", patientuuid)
@@ -152,12 +155,12 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                         intent.putExtra("gender", gender)
                         val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
                         val adultInitialUUID =
-                            EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
+                                EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
                         intent.putExtra("encounterUuidVitals", vitalsUUID)
                         intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
                         intent.putExtra(
-                            "age",
-                            DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
+                                "age",
+                                DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
                         )
                         intent.putExtra("tag", "VisitDetailsActivity")
                         intent.putExtra("followupDate", followupDate)

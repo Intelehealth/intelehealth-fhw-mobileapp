@@ -40,8 +40,11 @@ class NotificationRepository {
 
         nonDeletedNotificationList.forEach { notificationModel ->
             allVisitList.find { visitItem ->
-                visitItem.visitUuid == if(notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION)
-                    notificationModel.uuid.split(" ")[0] else notificationModel.uuid
+                if(notificationModel.notification_type != NotificationDbConstants.FOLLOW_UP_NOTIFICATION){
+                    visitItem.visitUuid ==  notificationModel.uuid
+                }else{
+                    false
+                }
             }?.let { visitItem ->
                 notificationModel.apply {
                     first_name = visitItem.first_name

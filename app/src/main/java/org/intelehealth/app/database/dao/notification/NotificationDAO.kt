@@ -39,6 +39,9 @@ class NotificationDAO {
         val values = ContentValues()
         values.put(NotificationDbConstants.UUID, model.uuid)
         values.put(NotificationDbConstants.DESCRIPTION, model.description)
+        values.put(NotificationDbConstants.PATIENT_UID, model.patientuuid)
+        values.put(NotificationDbConstants.GENDER, model.gender)
+        values.put(NotificationDbConstants.NAME, model.first_name)//here firstname means fname and lname
         values.put(NotificationDbConstants.NOTIFICATION_TYPE, model.notification_type)
         values.put(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE, model.obs_server_modified_date)
         values.put(
@@ -81,6 +84,12 @@ class NotificationDAO {
                         val uuidIndex = cursor.getColumnIndex(NotificationDbConstants.UUID)
                         val descIndex =
                             cursor.getColumnIndex(NotificationDbConstants.DESCRIPTION)
+                        val patientUid =
+                                cursor.getColumnIndex(NotificationDbConstants.PATIENT_UID)
+                        val gender =
+                                cursor.getColumnIndex(NotificationDbConstants.GENDER)
+                        val name =
+                                cursor.getColumnIndex(NotificationDbConstants.NAME)
                         val typeIndex =
                             cursor.getColumnIndex(NotificationDbConstants.NOTIFICATION_TYPE)
                         val obsIndex =
@@ -88,6 +97,9 @@ class NotificationDAO {
 
                         model.uuid = cursor.getString(uuidIndex)
                         model.description = cursor.getString(descIndex)
+                        model.patientuuid = cursor.getString(patientUid)
+                        model.gender = cursor.getString(gender)
+                        model.first_name = cursor.getString(name)
                         model.notification_type = cursor.getString(typeIndex)
                         model.obs_server_modified_date = cursor.getString(obsIndex)
                         nonDeletedNotifications.add(model)

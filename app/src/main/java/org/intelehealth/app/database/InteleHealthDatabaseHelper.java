@@ -66,6 +66,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "notification_type TEXT," +
             "obs_server_modified_date TEXT," +
             "isdeleted TEXT," +
+            "patient_uid TEXT," +
+            "gender TEXT," +
+            "name TEXT," +
             "UNIQUE(uuid) ON CONFLICT IGNORE)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +

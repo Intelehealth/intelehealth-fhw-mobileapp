@@ -102,7 +102,7 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(false)
+                .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -116,7 +116,9 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
         val list = mutableListOf<NotificationModel>()
         val notificationModel = NotificationModel()
         notificationModel.uuid = visitUuid +" "+ System.currentTimeMillis()
-        notificationModel.notification_type
+        notificationModel.patientuuid = patientUuid
+        notificationModel.gender = gender
+        notificationModel.first_name = name
         notificationModel.description = description
         notificationModel.notification_type = NotificationDbConstants.FOLLOW_UP_NOTIFICATION
         notificationModel.obs_server_modified_date = getFormatDateFromTimestamp()
