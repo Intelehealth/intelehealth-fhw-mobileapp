@@ -24,6 +24,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -222,6 +223,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
+@SuppressLint("Range")
 public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
@@ -234,7 +236,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare;
     private ConstraintLayout btn_bottom_vs;
-    private Button preview_with_prescription_lay,preview_with_save_visit_lay;
+    private Button preview_with_prescription_lay, preview_with_save_visit_lay;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -334,7 +336,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String gender_tv;
     String mFileName = CONFIG_FILE_NAME;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String speciality_selected = "General Physician";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -382,6 +384,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     boolean isSynced = false;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -731,7 +734,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
 
-                                Log.d("EEEEE",encountervitalsLocal+"  "+encounterlocalAdultintial);
+                                Log.d("EEEEE", encountervitalsLocal + "  " + encounterlocalAdultintial);
                                 //mCurrentVisitDataList.add(pastVisitData);
 
                             } catch (ParseException e) {
@@ -747,7 +750,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
         encounterVitals = mCommonVisitData.getEncounterUuidVitals();
-}
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
         // Extract the date and time part
@@ -2138,7 +2142,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //            speciality_spinner.setAdapter(stringArrayAdapter);
 //        }
 
-        if (special_value != null) {
+        if (special_value != null && !special_value.isEmpty()) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
             Specialization sp = stringArrayAdapter.getItem(spinner_position);
@@ -2158,9 +2162,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
                     Log.d("ResUtils", "SPINNER_Selected_final: " + value);
-                } else {
-                    speciality_selected = "";
                 }
+//                else {
+//                    speciality_selected = "";
+//                }
 
             }
 
@@ -2866,7 +2871,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void navigateToPreview() {
-        Intent intent = new Intent(VisitSummaryActivity_New.this,VisitSummaryActivityPreview.class);
+        Intent intent = new Intent(VisitSummaryActivity_New.this, VisitSummaryActivityPreview.class);
         intent.putExtras(getIntent());
         startActivity(intent);
     }
@@ -3070,7 +3075,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
 
-        if (speciality_selected == null || speciality_selected.isEmpty()) {
+        if (featureActiveStatus.getVisitSummeryDoctorSpeciality()
+                && (speciality_selected == null || speciality_selected.isEmpty())) {
             showSelectSpeciliatyErrorDialog();
             return;
         }
@@ -3111,201 +3117,408 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
 
+    private void saveVisitAttributes() {
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
+        boolean isUpdateVisitDone = false;
+        try {
+            if (!featureActiveStatus.getVisitSummeryDoctorSpeciality()) {
+                speciality_selected = "General Physician";
+            }
+
+            if (speciality_selected != null && !speciality_selected.isEmpty() && !isVisitSpecialityExists) {
+                isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
+            }
+            if (selectedFacilityToVisit != null) {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+            }
+            if (selectedSeverity != null) {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
+            }
+            if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
+//                EncounterDAO encounterDAO = new EncounterDAO();
+//                EncounterDTO encounterDTO = new EncounterDTO();
+//                String encounterUuid = UUID.randomUUID().toString();
+//                encounterDTO.setUuid(encounterUuid);
+//                encounterDTO.setVisituuid(visitUuid);
+//                encounterDTO.setSyncd(false);
+//                encounterDTO.setProvideruuid(sessionManager.getProviderID());
+//                encounterDTO.setEncounterTypeUuid(ENCOUNTER_ADULTINITIAL);
+//                encounterDTO.setVoided(0);
+//                try {
+//                    encounterDAO.createEncountersToDB(encounterDTO);
+//                } catch (DAOException e) {
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+
+                String adultInitialUUID = encounterUuidAdultIntial;/*fetchEncounterUuidForEncounterAdultInitials(visitUUID);*/
+
+//                    Step - 2 Create observation data object and set the value
+
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
+                obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
+                obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
+                obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: HW Follow-up");
+                obsDTO.setCreator(sessionManager.getCreatorID());
+
+//                    Step - 3 create observation dao and call insertObs method
+
+                try {
+                    ObsDAO obsDAO = new ObsDAO();
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+
+            }
+            Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+        }
+
+        if (isVisitSpecialityExists) {
+            speciality_spinner.setEnabled(false);
+            flag.setEnabled(false);
+            flag.setClickable(false);
+        } else {
+            flag.setEnabled(true);
+            flag.setClickable(true);
+        }
+    }
+
+    private void saveAdditionalNote() {
+        // Additional Notes - Start
+        try {
+            String addnotes = etAdditionalNotesVS.getText().toString().trim();
+            Log.v("addnotes", "addnotes: " + addnotes);
+            if (!addnotes.equalsIgnoreCase("") && addnotes != null)
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+            else
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+            // keeping raw string as we dont want regional lang data to be stored in DB.
+        } catch (DAOException e) {
+            e.printStackTrace();
+            Log.v("addnotes", "addnotes - error: " + e.getMessage());
+        }
+    }
+
+    private void setAsPriorityVisit() {
+        if (flag.isChecked()) {
+            priorityVisit = true;
+            try {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                encounterDAO.setEmergency(visitUuid, true);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    private void validatOpenMrsId() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+            String patientSelection = "uuid = ?";
+            String[] patientArgs = {String.valueOf(patient.getUuid())};
+            String table = "tbl_patient";
+            String[] columnsToReturn = {"openmrs_id"};
+            final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+            if (idCursor.moveToFirst()) {
+                do {
+                    patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                } while (idCursor.moveToNext());
+            }
+            idCursor.close();
+        }
+    }
+
+    private void validateVisit() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        if (visitUUID == null || visitUUID.isEmpty()) {
+            String visitIDSelection = "uuid = ?";
+            String[] visitIDArgs = {visitUuid};
+            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+        }
+    }
+
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-        if (speciality_selected != null && !speciality_selected.isEmpty()) {
+        if (featureActiveStatus.getVisitSummeryDoctorSpeciality() && speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
                 String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                 vd_special_value.setText(" " + Node.bullet + "  " + value);
             });
+            saveVisit();
+//            saveVisitAttributes();
 
-            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-
-            boolean isUpdateVisitDone = false;
-            try {
-                if (!isVisitSpecialityExists) {
-                    isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
-                }
-                if (selectedFacilityToVisit != null) {
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
-                }
-                if (selectedSeverity != null) {
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
-                }
-                if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    EncounterDTO encounterDTO = new EncounterDTO();
-                    String encounterUuid = UUID.randomUUID().toString();
-                    encounterDTO.setUuid(encounterUuid);
-                    encounterDTO.setVisituuid(visitUuid);
-                    encounterDTO.setSyncd(false);
-                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                    encounterDTO.setEncounterTypeUuid(ENCOUNTER_ADULTINITIAL);
-                    encounterDTO.setVoided(0);
-                    try {
-                        encounterDAO.createEncountersToDB(encounterDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-
-                    String adultInitialUUID = encounterUuidAdultIntial;/*fetchEncounterUuidForEncounterAdultInitials(visitUUID);*/
-
-//                    Step - 2 Create observation data object and set the value
-
-                    ObsDTO obsDTO = new ObsDTO();
-                    obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
-                    obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
-                    obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
-                    obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-
-//                    Step - 3 create observation dao and call insertObs method
-
-                    try {
-                        ObsDAO obsDAO = new ObsDAO();
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-
-
-                }
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-            } catch (DAOException e) {
-                e.printStackTrace();
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-            }
-
+//            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+//
+//            boolean isUpdateVisitDone = false;
+//            try {
+//                if (speciality_selected != null && !isVisitSpecialityExists) {
+//                    isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
+//                }
+//                if (selectedFacilityToVisit != null) {
+//                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+//                }
+//                if (selectedSeverity != null) {
+//                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
+//                }
+//                if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
+//                    EncounterDAO encounterDAO = new EncounterDAO();
+//                    EncounterDTO encounterDTO = new EncounterDTO();
+//                    String encounterUuid = UUID.randomUUID().toString();
+//                    encounterDTO.setUuid(encounterUuid);
+//                    encounterDTO.setVisituuid(visitUuid);
+//                    encounterDTO.setSyncd(false);
+//                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+//                    encounterDTO.setEncounterTypeUuid(ENCOUNTER_ADULTINITIAL);
+//                    encounterDTO.setVoided(0);
+//                    try {
+//                        encounterDAO.createEncountersToDB(encounterDTO);
+//                    } catch (DAOException e) {
+//                        FirebaseCrashlytics.getInstance().recordException(e);
+//                    }
+//
+//                    String adultInitialUUID = encounterUuidAdultIntial;/*fetchEncounterUuidForEncounterAdultInitials(visitUUID);*/
+//
+////                    Step - 2 Create observation data object and set the value
+//
+//                    ObsDTO obsDTO = new ObsDTO();
+//                    obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
+//                    obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
+//                    obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
+//                    obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
+//                    obsDTO.setCreator(sessionManager.getCreatorID());
+//
+////                    Step - 3 create observation dao and call insertObs method
+//
+//                    try {
+//                        ObsDAO obsDAO = new ObsDAO();
+//                        obsDAO.insertObs(obsDTO);
+//                    } catch (DAOException e) {
+//                        FirebaseCrashlytics.getInstance().recordException(e);
+//                    }
+//
+//
+//                }
+//                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+//            }
+//            saveAdditionalNote();
             // Additional Notes - Start
-            try {
-                String addnotes = etAdditionalNotesVS.getText().toString().trim();
-                Log.v("addnotes", "addnotes: " + addnotes);
-                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
-                else
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
-                // keeping raw string as we dont want regional lang data to be stored in DB.
-            } catch (DAOException e) {
-                e.printStackTrace();
-                Log.v("addnotes", "addnotes - error: " + e.getMessage());
-            }
+//            try {
+//                String addnotes = etAdditionalNotesVS.getText().toString().trim();
+//                Log.v("addnotes", "addnotes: " + addnotes);
+//                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
+//                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+//                else
+//                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+//                // keeping raw string as we dont want regional lang data to be stored in DB.
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//                Log.v("addnotes", "addnotes - error: " + e.getMessage());
+//            }
             // Additional Notes - End
 
-            if (isVisitSpecialityExists) {
-                speciality_spinner.setEnabled(false);
-                flag.setEnabled(false);
-                flag.setClickable(false);
-            } else {
-                flag.setEnabled(true);
-                flag.setClickable(true);
-            }
+//            if (isVisitSpecialityExists) {
+//                speciality_spinner.setEnabled(false);
+//                flag.setEnabled(false);
+//                flag.setClickable(false);
+//            } else {
+//                flag.setEnabled(true);
+//                flag.setClickable(true);
+//            }
+//            setAsPriorityVisit();
+//            if (flag.isChecked()) {
+//                priorityVisit = true;
+//                try {
+//                    EncounterDAO encounterDAO = new EncounterDAO();
+//                    encounterDAO.setEmergency(visitUuid, true);
+//                } catch (DAOException e) {
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//            }
+//            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+//                String patientSelection = "uuid = ?";
+//                String[] patientArgs = {String.valueOf(patient.getUuid())};
+//                String table = "tbl_patient";
+//                String[] columnsToReturn = {"openmrs_id"};
+//                final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+//
+//                if (idCursor.moveToFirst()) {
+//                    do {
+//                        patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+//                    } while (idCursor.moveToNext());
+//                }
+//                idCursor.close();
+//            }
 
-            if (flag.isChecked()) {
-                priorityVisit = true;
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, true);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                String patientSelection = "uuid = ?";
-                String[] patientArgs = {String.valueOf(patient.getUuid())};
-                String table = "tbl_patient";
-                String[] columnsToReturn = {"openmrs_id"};
-                final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+//            validatOpenMrsId();
 
-                if (idCursor.moveToFirst()) {
-                    do {
-                        patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
-                    } while (idCursor.moveToNext());
-                }
-                idCursor.close();
-            }
+//            if (visitUUID == null || visitUUID.isEmpty()) {
+//                String visitIDSelection = "uuid = ?";
+//                String[] visitIDArgs = {visitUuid};
+//                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+//                if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+//                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+//                }
+//                if (visitIDCursor != null) visitIDCursor.close();
+//            }
+//
+//            if (!flag.isChecked()) {
+//                //
+//            }
+//            validateVisit();
+//            uploadVisit();
+//            if (NetworkConnection.isOnline(getApplication())) {
+//                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+//
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
+//                        //Do something after 100ms
+//                        SyncUtils syncUtils = new SyncUtils();
+//                        isSynced = syncUtils.syncForeground("visitSummary");
+//                        if (isSynced) {
+//                            // remove the local cache
+//                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+//                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+//                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+//                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+//                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
+//                            // ie. visit is uploded successfully.
+//                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+//                            setAppointmentButtonStatus();
+//
+//                            NotificationSchedulerUtils.scheduleFollowUpNotification();
+//                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+//
+//                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+//                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
+//                            isSynedFlag = "1";
+//                            //
+//                            showVisitID();
+//                            Log.d("visitUUID", "showVisitID: " + visitUUID);
+//                            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                            if (isVisitSpecialityExists) {
+//                                speciality_spinner.setEnabled(false);
+//                                flag.setEnabled(false);
+//                                flag.setClickable(false);
+//                            } else {
+//                                flag.setEnabled(true);
+//                                flag.setClickable(true);
+//                            }
+//
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    setupSpecialization();
+//                                    mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
+//                                }
+//                            });
+//                            fetchingIntent();
+//                        } else {
+//                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+//                        }
+//                        uploaded = true;
+//                    }
+//                }, 4000);
+//            } else {
+//                add_additional_doc.setVisibility(View.GONE);
+//                fetchingIntent();
+//                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+//            }
+        } else {
+            if (featureActiveStatus.getVisitSummeryDoctorSpeciality())
+                showSelectSpeciliatyErrorDialog();
+            else saveVisit();
+        }
+    }
 
-            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-            }
+    private void saveVisit() {
+        saveVisitAttributes();
+        saveAdditionalNote();
+        setAsPriorityVisit();
+        validatOpenMrsId();
+        validateVisit();
+        uploadVisit();
+    }
 
-            if (visitUUID == null || visitUUID.isEmpty()) {
-                String visitIDSelection = "uuid = ?";
-                String[] visitIDArgs = {visitUuid};
-                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-                if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
-                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                }
-                if (visitIDCursor != null) visitIDCursor.close();
-            }
+    private void uploadVisit() {
+        if (NetworkConnection.isOnline(getApplication())) {
+            Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
-            if (!flag.isChecked()) {
-                //
-            }
-
-            if (NetworkConnection.isOnline(getApplication())) {
-                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                        //Do something after 100ms
-                        SyncUtils syncUtils = new SyncUtils();
-                        isSynced = syncUtils.syncForeground("visitSummary");
-                        if (isSynced) {
-                            // remove the local cache
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
-                            // ie. visit is uploded successfully.
-                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
-                            setAppointmentButtonStatus();
+                    //Do something after 100ms
+                    SyncUtils syncUtils = new SyncUtils();
+                    isSynced = syncUtils.syncForeground("visitSummary");
+                    if (isSynced) {
+                        // remove the local cache
+                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+                        sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+                        sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+                        sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
+                        // ie. visit is uploded successfully.
+                        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                        setAppointmentButtonStatus();
 
-                            NotificationSchedulerUtils.scheduleFollowUpNotification();
-                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                        NotificationSchedulerUtils.scheduleFollowUpNotification();
+                        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
-                            isSynedFlag = "1";
-                            //
-                            showVisitID();
-                            Log.d("visitUUID", "showVisitID: " + visitUUID);
-                            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                            if (isVisitSpecialityExists) {
-                                speciality_spinner.setEnabled(false);
-                                flag.setEnabled(false);
-                                flag.setClickable(false);
-                            } else {
-                                flag.setEnabled(true);
-                                flag.setClickable(true);
-                            }
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setupSpecialization();
-                                    mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
-                                }
-                            });
-                            fetchingIntent();
+                        isSynedFlag = "1";
+                        //
+                        showVisitID();
+                        Log.d("visitUUID", "showVisitID: " + visitUUID);
+                        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                        if (isVisitSpecialityExists) {
+                            speciality_spinner.setEnabled(false);
+                            flag.setEnabled(false);
+                            flag.setClickable(false);
                         } else {
-                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                            flag.setEnabled(true);
+                            flag.setClickable(true);
                         }
-                        uploaded = true;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setupSpecialization();
+                                mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
+                            }
+                        });
+                        fetchingIntent();
+                    } else {
+                        AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                     }
-                }, 4000);
-            } else {
-                add_additional_doc.setVisibility(View.GONE);
-                fetchingIntent();
-                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-            }
+                    uploaded = true;
+                }
+            }, 4000);
         } else {
-            showSelectSpeciliatyErrorDialog();
+            add_additional_doc.setVisibility(View.GONE);
+            fetchingIntent();
+            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
         }
     }
 
@@ -3746,6 +3959,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * @param dataString variable of type String
      * @return void
      */
+    @SuppressLint("Range")
     public void queryData(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String patientSelection = "uuid = ?";

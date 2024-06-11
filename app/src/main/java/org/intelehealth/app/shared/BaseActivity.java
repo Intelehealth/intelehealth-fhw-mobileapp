@@ -41,7 +41,7 @@ import java.util.UUID;
  **/
 public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
     private static final String TAG = "BaseActivity";
-    private FeatureActiveStatus featureActiveStatus;
+    protected FeatureActiveStatus featureActiveStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
