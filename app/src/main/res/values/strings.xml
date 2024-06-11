@@ -1944,4 +1944,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="follow_up_appointment_will_start_in_hours_for">Follow up appointment will start in %1$s hours for (%2$s , %3$s)</string>
     <string name="reminder">Reminder</string>
     <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
+    <string name="visit_left_action_btn_label">@string/appointment</string>
+    <string name="visit_right_action_btn_label">@string/send_visit_button</string>
 </resources>

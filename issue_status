@@ -1,3 +1,11 @@
+11 Jun, 2024
+======================================
+- When the Admin activates fields in the admin panel, the changes are not reflected in the mobile app.
+- The follow-up date field erroneously accepts past times.
+- The "Associated Symptoms" text is displayed incorrectly when there are no associated symptoms.
+- Fields for PULSE, TEMPERATURE, SPO2, and RESPIRATORY RATE in vitals screen are incorrectly outlined in green when selecting "change" in the visit summary
+- The follow-up date section is partially obscured and not fully visible
+
 24 May, 2024
 - PNG need to be convert into vector
 
