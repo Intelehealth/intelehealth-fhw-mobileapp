@@ -236,7 +236,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout add_additional_doc;
     private LinearLayout btn_bottom_printshare;
     private ConstraintLayout btn_bottom_vs;
-    private Button preview_with_prescription_lay, preview_with_save_visit_lay;
+    private Button preview_with_prescription_lay;
+    //    preview_with_save_visit_lay;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -449,7 +450,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+            if (!activeStatus.getVisitSummeryAppointment()) {
+                Button btn = findViewById(R.id.btn_vs_appointment);
+                boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
+                btn.setVisibility(isAppointment ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
@@ -2819,42 +2824,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // navigation for book appointmnet
         btnAppointment = findViewById(R.id.btn_vs_appointment);
         btnAppointment.setOnClickListener(v -> {
-            if (!NetworkConnection.isOnline(context)) {
-                setAppointmentButtonStatus();
-                Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (priorityVisit) {
-                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (!isVisitSpecialityExists) {
-                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (doesAppointmentExist) {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
-                rescheduleAppointment(VisitSummaryActivity_New.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
-                return;
-            }
-
-            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-            in.putExtra("visitUuid", visitUuid);
-            in.putExtra("patientUuid", patientUuid);
-            in.putExtra("patientName", patientName);
-            in.putExtra("appointmentId", 0);
-            in.putExtra("actionTag", "new_schedule");
-            in.putExtra("openMrsId", patient.getOpenmrs_id());
-            in.putExtra("speciality", speciality_selected);
-            in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
-            mStartForScheduleAppointment.launch(in);
+            handleLeftButtonClick();
         });
 
         preview_with_prescription_lay = findViewById(R.id.preview_bt_with_prescription_lay);
-        preview_with_save_visit_lay = findViewById(R.id.preview_bt_with_save_visit_lay);
+//        preview_with_save_visit_lay = findViewById(R.id.preview_bt_with_save_visit_lay);
         preview_with_prescription_lay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2862,12 +2836,53 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
 
-        preview_with_save_visit_lay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToPreview();
-            }
-        });
+//        preview_with_save_visit_lay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                navigateToPreview();
+//            }
+//        });
+    }
+
+    private void handleLeftButtonClick() {
+        String btnLabel = btnAppointment.getText().toString();
+        if (btnLabel.equals(getString(R.string.appointment))) startBookAppointment();
+        else if (btnLabel.equals(getString(R.string.preview))) navigateToPreview();
+    }
+
+    private void startBookAppointment() {
+        if (!NetworkConnection.isOnline(context)) {
+            setAppointmentButtonStatus();
+            Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (priorityVisit) {
+            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isVisitSpecialityExists) {
+            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (doesAppointmentExist) {
+            String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
+            rescheduleAppointment(VisitSummaryActivity_New.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
+            return;
+        }
+
+        Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+        in.putExtra("visitUuid", visitUuid);
+        in.putExtra("patientUuid", patientUuid);
+        in.putExtra("patientName", patientName);
+        in.putExtra("appointmentId", 0);
+        in.putExtra("actionTag", "new_schedule");
+        in.putExtra("openMrsId", patient.getOpenmrs_id());
+        in.putExtra("speciality", speciality_selected);
+        in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+        mStartForScheduleAppointment.launch(in);
     }
 
     private void navigateToPreview() {

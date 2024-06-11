@@ -1270,8 +1270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:visibility="visible">
 
                 <Button
                     android:id="@+id/btn_vs_appointment"
@@ -1287,29 +1286,29 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_button_text_size"
                     android:textStyle="bold"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/preview_bt_with_save_visit_lay"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/fu_btn_size"
-                    android:layout_marginStart="@dimen/margin_24"
-                    android:layout_marginEnd="@dimen/margin_8"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_weight="1"
-                    android:background="@drawable/ui2_common_primary_bg"
-                    android:padding="@dimen/margin_12"
-                    android:text="@string/visit_left_action_btn_label"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/common_button_text_size"
-                    android:textStyle="bold"
                     android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+<!--                <Button-->
+<!--                    android:id="@+id/preview_bt_with_save_visit_lay"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="@dimen/fu_btn_size"-->
+<!--                    android:layout_marginStart="@dimen/margin_24"-->
+<!--                    android:layout_marginEnd="@dimen/margin_8"-->
+<!--                    android:layout_marginBottom="@dimen/margin_5"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/ui2_common_primary_bg"-->
+<!--                    android:padding="@dimen/margin_12"-->
+<!--                    android:text="@string/visit_left_action_btn_label"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="@dimen/common_button_text_size"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:visibility="visible"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
 
                 <Button
@@ -1329,7 +1328,7 @@
                     android:textSize="@dimen/common_button_text_size"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/preview_bt_with_save_visit_lay"
+                    app:layout_constraintStart_toEndOf="@id/btn_vs_appointment"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
