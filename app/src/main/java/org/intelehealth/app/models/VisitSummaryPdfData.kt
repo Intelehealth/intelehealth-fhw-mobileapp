@@ -1,5 +1,6 @@
 package org.intelehealth.app.models
 
+import org.intelehealth.config.room.entity.FeatureActiveStatus
 import java.io.File
 
 /**
@@ -24,6 +25,9 @@ data class VisitSummaryPdfData(
     var respiratory: String,
     var blGroup: String,
     var tempHeader: String,
+    var severity: String,
+    var facility: String,
+    var followUpDate: String,
 
     var chiefComplain: String,
     var associateSymptoms: String,
@@ -34,10 +38,11 @@ data class VisitSummaryPdfData(
     var priorityVisit: String,
     var additionalDocList: MutableList<DocumentObject>,
     var chiefComplaintList: MutableList<String>,
-    var physicalExamImageList: MutableList<File>
+    var physicalExamImageList: MutableList<File>,
+    var activeStatus: FeatureActiveStatus?
 ) {
 
-    constructor() : this(
+    constructor() : this("","","",
         "",
         "","","",
         "","","",
@@ -46,6 +51,6 @@ data class VisitSummaryPdfData(
         "", "", "",
         "", "", "",
         "", "", "", "",
-        mutableListOf(), mutableListOf(), mutableListOf()
+        mutableListOf(), mutableListOf(), mutableListOf(),null
     )
 }

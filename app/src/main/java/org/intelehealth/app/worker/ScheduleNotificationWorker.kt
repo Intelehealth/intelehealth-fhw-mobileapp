@@ -30,7 +30,7 @@ import java.util.TimeZone
  * Email: mhasan@intelehealth.org
  */
 class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters) :
-    Worker(context, parameters) {
+        Worker(context, parameters) {
     override fun doWork(): Result {
         val title = inputData.getString(BundleKeys.TITLE)
         val description = inputData.getString(BundleKeys.DESCRIPTION)
@@ -43,36 +43,39 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
         val encounterTypeUid = inputData.getString(BundleKeys.ENCOUNTER_TYPE_UUID) ?: ""
         val conceptUuid = inputData.getString(BundleKeys.CONCEPT_UUID) ?: ""
         val encounterUuid = inputData.getString(BundleKeys.ENCOUNTER_UUID) ?: ""
+        val encounterUuidVitals = inputData.getString(BundleKeys.ENCOUNTER_UUID_VITALS) ?: ""
         val value = inputData.getString(BundleKeys.VALUE) ?: ""
         val float_ageYear_Month = inputData.getString(BundleKeys.FLOAT_AGE_YEAR_MONTH) ?: ""
 
 
         sendNotification(
-            title, description, channelId,
-            patientUuid,
-            name,
-            gender,
-            encounterTypeUid,
-            visitUuid,
-            conceptUuid,
-            encounterUuid,
-            value,
+                title, description, channelId,
+                patientUuid,
+                name,
+                gender,
+                encounterTypeUid,
+                visitUuid,
+                conceptUuid,
+                encounterUuid,
+                encounterUuidVitals,
+                value,
         )
         return Result.success()
     }
 
     private fun sendNotification(
-        title: String?,
-        description: String?,
-        channelId: String?,
-        patientUuid: String = "",
-        name: String = "",
-        gender: String = "",
-        encounterTypeUid: String = "",
-        visitUuid: String = "",
-        conceptUuid: String = "",
-        encounterUuid: String = "",
-        value: String = "",
+            title: String?,
+            description: String?,
+            channelId: String?,
+            patientUuid: String = "",
+            name: String = "",
+            gender: String = "",
+            encounterTypeUid: String = "",
+            visitUuid: String = "",
+            conceptUuid: String = "",
+            encounterUuid: String = "",
+            encounterUuidVitals: String = "",
+            value: String = "",
     ) {
         val id = System.currentTimeMillis().toInt()
 
@@ -81,43 +84,47 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
             putExtra("visitUuid", visitUuid)
             putExtra("gender", gender)
             putExtra("name", name)
-            putExtra("encounterUuidVitals", encounterUuid)
+            putExtra("encounterUuidVitals", encounterUuidVitals)
             putExtra("encounterUuidAdultIntial", encounterUuid)
             putExtra("float_ageYear_Month", 0)
             putExtra("tag", "Notification")
         }
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(
-            IntelehealthApplication.getAppContext(), System.currentTimeMillis().toInt(), intent,
-            getPendingIntentFlag()
+                IntelehealthApplication.getAppContext(), System.currentTimeMillis().toInt(), intent,
+                getPendingIntentFlag()
         )
 
         val notificationManager =
-            IntelehealthApplication.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                IntelehealthApplication.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val builder =
-            NotificationCompat.Builder(IntelehealthApplication.getAppContext(), channelId ?: "")
-                .setContentTitle(title)
-                .setContentText(description)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(false)
+                NotificationCompat.Builder(IntelehealthApplication.getAppContext(), channelId ?: "")
+                        .setContentTitle(title)
+                        .setContentText(description)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                description,
-                NotificationManager.IMPORTANCE_DEFAULT
+                    channelId,
+                    description,
+                    NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
 
         val list = mutableListOf<NotificationModel>()
         val notificationModel = NotificationModel()
-        notificationModel.uuid = visitUuid + System.currentTimeMillis()
-        notificationModel.notification_type
+        notificationModel.uuid = visitUuid +" "+ System.currentTimeMillis()
+        notificationModel.patientuuid = patientUuid
+        notificationModel.gender = gender
+        notificationModel.first_name = name
         notificationModel.description = description
+        notificationModel.encounterUuidAdultIntial = encounterUuid
+        notificationModel.encounterUuidVitals = encounterUuidVitals
         notificationModel.notification_type = NotificationDbConstants.FOLLOW_UP_NOTIFICATION
         notificationModel.obs_server_modified_date = getFormatDateFromTimestamp()
 
@@ -130,13 +137,13 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
     }
 
     companion object{
-         fun getFormatDateFromTimestamp(): String {
+        fun getFormatDateFromTimestamp(): String {
             val timestampMillis = System.currentTimeMillis()
 
             val date = Date(timestampMillis)
 
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-             sdf.timeZone = TimeZone.getTimeZone("UTC")
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
 
             return sdf.format(date)
         }

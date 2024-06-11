@@ -790,6 +790,8 @@
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="reminder">Reminder</string>
     <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
+    <string name="hw_message_sent_text"><![CDATA[Hello! This is %1$s from Arogya Path, your Health Worker. Sending your visit summary for your reference. If you have any questions, feel free to ask. Thank you!]]></string>
+    <string name="please_attach_the_patient_visit_details_pdf">Please attach the patient visit details pdf</string>
 
 </resources>
 

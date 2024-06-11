@@ -239,7 +239,9 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-            WorkManager.getInstance(this).cancelAllWorkByTag(visitUuid);
+            WorkManager workManager =  WorkManager.getInstance(this);
+            workManager.cancelUniqueWork(visitUuid+" "+ AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION);
+            workManager.cancelUniqueWork(visitUuid+" "+ AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

@@ -39,19 +39,24 @@ class NotificationDAO {
         val values = ContentValues()
         values.put(NotificationDbConstants.UUID, model.uuid)
         values.put(NotificationDbConstants.DESCRIPTION, model.description)
+        values.put(NotificationDbConstants.PATIENT_UID, model.patientuuid)
+        values.put(NotificationDbConstants.GENDER, model.gender)
+        values.put(NotificationDbConstants.ENCOUNTER_UUID, model.encounterUuidAdultIntial)
+        values.put(NotificationDbConstants.ENCOUNTER_UUID_VITALS, model.encounterUuidVitals)
+        values.put(NotificationDbConstants.NAME, model.first_name)//here firstname means fname and lname
         values.put(NotificationDbConstants.NOTIFICATION_TYPE, model.notification_type)
         values.put(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE, model.obs_server_modified_date)
         values.put(
-            NotificationDbConstants.IS_DELETED,
-            false
+                NotificationDbConstants.IS_DELETED,
+                false
         ) // Assuming 0 represents false for IS_DELETED
 
         return try {
             val createdRecordsCount = db.insertWithOnConflict(
-                NotificationDbConstants.NOTIFICATION_TABLE,
-                null,
-                values,
-                SQLiteDatabase.CONFLICT_IGNORE
+                    NotificationDbConstants.NOTIFICATION_TABLE,
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_IGNORE
             )
 
             // Check if record insertion was successful
@@ -66,13 +71,13 @@ class NotificationDAO {
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
         try {
             db.query(
-                NotificationDbConstants.NOTIFICATION_TABLE,
-                null,
-                NotificationDbConstants.IS_DELETED + " = ?",
-                arrayOf("0"),  // "0" represents false for IS_DELETED
-                null,
-                null,
-                null
+                    NotificationDbConstants.NOTIFICATION_TABLE,
+                    null,
+                    NotificationDbConstants.IS_DELETED + " = ?",
+                    arrayOf("0"),  // "0" represents false for IS_DELETED
+                    null,
+                    null,
+                    null
             ).use { cursor ->
                 // "0" represents false for IS_DELETED
                 if (cursor != null) {
@@ -80,15 +85,30 @@ class NotificationDAO {
                         val model = NotificationModel()
                         val uuidIndex = cursor.getColumnIndex(NotificationDbConstants.UUID)
                         val descIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.DESCRIPTION)
+                                cursor.getColumnIndex(NotificationDbConstants.DESCRIPTION)
+                        val patientUid =
+                                cursor.getColumnIndex(NotificationDbConstants.PATIENT_UID)
+                        val gender =
+                                cursor.getColumnIndex(NotificationDbConstants.GENDER)
+                        val name =
+                                cursor.getColumnIndex(NotificationDbConstants.NAME)
+                        val enUUid =
+                                cursor.getColumnIndex(NotificationDbConstants.ENCOUNTER_UUID)
+                        val enUUidVitals =
+                                cursor.getColumnIndex(NotificationDbConstants.ENCOUNTER_UUID_VITALS)
                         val typeIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.NOTIFICATION_TYPE)
+                                cursor.getColumnIndex(NotificationDbConstants.NOTIFICATION_TYPE)
                         val obsIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE)
+                                cursor.getColumnIndex(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE)
 
                         model.uuid = cursor.getString(uuidIndex)
                         model.description = cursor.getString(descIndex)
+                        model.patientuuid = cursor.getString(patientUid)
+                        model.gender = cursor.getString(gender)
+                        model.first_name = cursor.getString(name)
                         model.notification_type = cursor.getString(typeIndex)
+                        model.encounterUuidAdultIntial = cursor.getString(enUUid)
+                        model.encounterUuidVitals = cursor.getString(enUUidVitals)
                         model.obs_server_modified_date = cursor.getString(obsIndex)
                         nonDeletedNotifications.add(model)
                     }
@@ -106,9 +126,9 @@ class NotificationDAO {
             val values = ContentValues()
             values.put(NotificationDbConstants.IS_DELETED, true)
             val rowsAffected = db.update(
-                NotificationDbConstants.NOTIFICATION_TABLE,
-                values,
-                NotificationDbConstants.UUID + " = ?", arrayOf(uuid)
+                    NotificationDbConstants.NOTIFICATION_TABLE,
+                    values,
+                    NotificationDbConstants.UUID + " = ?", arrayOf(uuid)
             )
 
             // Check if any rows were affected
@@ -124,10 +144,10 @@ class NotificationDAO {
             val values = ContentValues()
             values.put(NotificationDbConstants.IS_DELETED, true)
             val rowsAffected = db.update(
-                NotificationDbConstants.NOTIFICATION_TABLE,
-                values,
-                null,
-                null
+                    NotificationDbConstants.NOTIFICATION_TABLE,
+                    values,
+                    null,
+                    null
             )
             // Check if any rows were affected
             rowsAffected > 0
@@ -144,13 +164,13 @@ class NotificationDAO {
         if (cursor_count.count > 0) {
             while (cursor_count.moveToNext()) {
                 val cursor = db.rawQuery(
-                    "SELECT * FROM tbl_notifications WHERE description = ? AND " +
-                            "notification_type = ? AND obs_server_modified_date = ?",
-                    arrayOf(
-                        model.description,
-                        model.notification_type,
-                        model.obs_server_modified_date
-                    )
+                        "SELECT * FROM tbl_notifications WHERE description = ? AND " +
+                                "notification_type = ? AND obs_server_modified_date = ?",
+                        arrayOf(
+                                model.description,
+                                model.notification_type,
+                                model.obs_server_modified_date
+                        )
                 )
                 if (cursor.count > 0) {
                     while (cursor.moveToNext()) {
@@ -185,28 +205,28 @@ class NotificationDAO {
             var cursor: Cursor? = null
             try {
                 cursor = db.query(
-                    NotificationDbConstants.NOTIFICATION_TABLE, arrayOf(
+                        NotificationDbConstants.NOTIFICATION_TABLE, arrayOf(
                         NotificationDbConstants.UUID,
                         NotificationDbConstants.DESCRIPTION,
                         NotificationDbConstants.NOTIFICATION_TYPE,
                         NotificationDbConstants.OBS_SERVER_MODIFIED_DATE
-                    ),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                ),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
                 )
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
                         val model = NotificationModel()
                         val uuidIndex = cursor.getColumnIndex(NotificationDbConstants.UUID)
                         val descIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.DESCRIPTION)
+                                cursor.getColumnIndex(NotificationDbConstants.DESCRIPTION)
                         val typeIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.NOTIFICATION_TYPE)
+                                cursor.getColumnIndex(NotificationDbConstants.NOTIFICATION_TYPE)
                         val obsIndex =
-                            cursor.getColumnIndex(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE)
+                                cursor.getColumnIndex(NotificationDbConstants.OBS_SERVER_MODIFIED_DATE)
                         if (uuidIndex >= 0 && descIndex >= 0 && typeIndex >= 0 && obsIndex >= 0) {
                             model.uuid = cursor.getString(uuidIndex)
                             model.description = cursor.getString(descIndex)

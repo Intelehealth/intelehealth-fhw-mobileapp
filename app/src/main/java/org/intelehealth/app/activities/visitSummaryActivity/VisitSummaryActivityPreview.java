@@ -6,12 +6,15 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAsso
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
+import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
@@ -57,6 +60,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -73,6 +77,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -100,7 +105,9 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
+import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
 import org.intelehealth.app.adapter.PdfPrintDocumentAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -151,6 +158,7 @@ import org.intelehealth.config.presenter.language.factory.SpecializationViewMode
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -162,6 +170,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -308,7 +318,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     ImageButton editAddDocs;
     ImageButton btn_up_special_vd_header;
 
-    CircleImageView profile_image;
+    ImageView profile_image;
     String profileImage = "";
     String profileImage1 = "";
     ImagesDAO imagesDAO = new ImagesDAO();
@@ -336,8 +346,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private SpecializationViewModel viewModel;
 
-    private ScrollView scrollView;
-
     Button printBt, shareBt;
     private Bitmap bitmap;
     private String filePath;
@@ -347,8 +355,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private View view;
     private StringBuilder physicalExamStringBuilder;
     private StringBuilder medicalHistoryStringBuilder;
-    private int countPdfGeneration = 0;
-    String htmlContent ="<b>Pdf</b>";
+    String htmlContent = "<b>Pdf</b>";
+    private List<FacilityToVisitModel> facilityList = null;
+    private List<String> severityList = null;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -422,9 +431,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivityPreview.this);
 
-        scrollView.setDrawingCacheEnabled(true);
-        scrollView.buildDrawingCache();
-
         removeUnnecessaryView();
     }
 
@@ -445,16 +451,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         btn_up_medhist_header.setVisibility(View.GONE);
         btn_up_special_vd_header.setVisibility(View.GONE);
         btn_up_addnotes_vd_header.setVisibility(View.GONE);
-    }
-
-    private void setupSpecialization() {
-        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
-        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
-        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
-        viewModel.fetchSpecialization().observe(this, specializations -> {
-            Timber.tag(TAG).d(new Gson().toJson(specializations));
-            setupSpecializationDataSpinner(specializations);
-        });
     }
 
     private void fetchingIntent() {
@@ -678,6 +674,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         vd_special_header_expandview.setVisibility(View.VISIBLE);
 
         vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+        findViewById(R.id.rlSavertyHeaderExpandView).setVisibility(View.VISIBLE);
+        findViewById(R.id.rlFacilityToVisitHeaderExpandView).setVisibility(View.VISIBLE);
 
 
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
@@ -713,6 +711,94 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             }
         }
     }
+
+    private List<FacilityToVisitModel> getFacilityList() {
+        facilityList = new ArrayList<FacilityToVisitModel>();
+        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
+        facilityList.add(new FacilityToVisitModel("1", "Asha"));
+        facilityList.add(new FacilityToVisitModel("2", "AWW"));
+        facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
+        facilityList.add(new FacilityToVisitModel("4", "CHC"));
+        facilityList.add(new FacilityToVisitModel("5", "DH"));
+        facilityList.add(new FacilityToVisitModel("6", "Medical"));
+        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
+        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
+        return facilityList;
+    }
+
+    private List<String> getSeverityList() {
+        severityList = new ArrayList<String>();
+        severityList.add("Select Severity");
+        severityList.add("Low");
+        severityList.add("Normal");
+        severityList.add("Moderate");
+        severityList.add("High");
+        severityList.add("Critical");
+        return severityList;
+    }
+
+    private void setupSpecialization() {
+        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
+        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
+        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
+        viewModel.fetchSpecialization().observe(this, specializations -> {
+            Timber.tag(TAG).d(new Gson().toJson(specializations));
+            setupSpecializationDataSpinner(specializations);
+            setFacilityToVisitSpinner();
+            setSeveritySpinner();
+            String followupValue = fetchValueFromLocalDb(visitUUID);
+            if (!TextUtils.isEmpty(followupValue)) {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                       ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
+                        visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getFormattedDateTime(String followupValue) {
+        // Extract the date and time part
+        String datePart = followupValue.split(", Time:")[0];
+        String timePart = followupValue.split(", Time:")[1].split(", Remark:")[0];
+
+        // Parse the date and time parts
+        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
+
+        // Format the date and time into the desired format
+        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
+
+    }
+
+    private void setFacilityToVisitSpinner() {
+        if (facilityList == null || facilityList.isEmpty()) {
+            facilityList = getFacilityList();
+        }
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        if (!TextUtils.isEmpty(facility)) {
+            ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(" " + Node.bullet + "  " + facility);
+            visitSummaryPdfData.setFacility(" " + Node.bullet + "  " + facility);
+        }
+    }
+
+    private void setSeveritySpinner() {
+        if (severityList == null || severityList.isEmpty()) {
+            severityList = getSeverityList();
+        }
+        SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
+
+        String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
+        if (!TextUtils.isEmpty(severity)) {
+            ((TextView) findViewById(R.id.tvSavertyValue)).setText(" " + Node.bullet + "  " + severity);
+            visitSummaryPdfData.setSeverity(" " + Node.bullet + "  " + severity);
+        }
+
+    }
+
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
 
@@ -1055,6 +1141,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                     dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
+
                         }
                     });
                 }
@@ -1319,9 +1406,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void initUI() {
-        scrollView = findViewById(R.id.scroll_view);
-
-        printBt = findViewById(R.id.print_bt);
         shareBt = findViewById(R.id.share_bt);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
@@ -1469,27 +1553,34 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
 
-        printBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                printOperation();
-            }
-        });
-
         shareBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countPdfGeneration = 0;
-                try {
-                    shareOperation(false);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                showShareDialog();
             }
         });
     }
 
-    private void shareOperation(boolean isCallback) throws Exception {
+    private void showShareDialog() {
+        String msg = String.format(getString(R.string.hw_message_sent_text), sessionManager.getChwname());
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.info_blue_svg, getResources().getString(R.string.alert_txt),
+                msg, true, getResources().getString(R.string.sent), null, new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                        shareOperation(msg);
+                    }
+                });
+    }
+
+    private void sentMsgToWhatsApp(String msg) {
+        String phoneNumber = patient.getPhone_number();
+        String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, msg);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
+
+    }
+
+    private void shareOperation(String msg) {
         htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
         WebView webView = new WebView(this);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -1508,13 +1599,19 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
                 pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
                 // Create a print job with name and adapter instance
+
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/InteleHealthVisitSummaryPdf";
+                String fileName = patientName.replace(" ", "_") + "_" + System.currentTimeMillis() + ".pdf";
+                File dir = new File(path);
+                if (!dir.exists()) dir.mkdirs();
                 String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
                 PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
                 //to write to a pdf file...
-                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), VisitSummaryActivityPreview.this.getFilesDir(), "visit_summary.pdf", new PdfPrint.CallbackPrint() {
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                     @Override
                     public void success(String path) {
-                        share(path);
+                        sentMsgToWhatsApp(msg);
+                        Toast.makeText(VisitSummaryActivityPreview.this, R.string.please_attach_the_patient_visit_details_pdf, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -1667,13 +1764,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     public void openAll(View view) {
 
-    }
-
-    public void captureScrollView(View view) {
-        try {
-            bitmap = LayoutCaptureUtils.captureScrollView(scrollView);
-        } catch (Exception e) {
-        }
     }
 
     @Override
@@ -4628,5 +4718,21 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             }
         }
 
+    }
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+            //findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+            visitSummaryPdfData.setActiveStatus(activeStatus);
+        }
     }
 }

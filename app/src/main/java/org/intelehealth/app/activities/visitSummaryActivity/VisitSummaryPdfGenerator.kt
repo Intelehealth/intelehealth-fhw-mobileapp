@@ -19,33 +19,42 @@ class VisitSummaryPdfGenerator {
     companion object {
         @JvmStatic
         fun generateHtmlContent(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): String {
             val meta =
-                "<meta charset=\"utf-8\" />" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />" + "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\" />\n" + "<title>Intelehealth</title>\n" + "<link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\" />" + "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.8.2/css/all.css\" integrity=\"sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay\" crossorigin=\"anonymous\" />" + "<link rel=\"apple-touch-icon\" href=\"/assets/icons/icon-180x180.png\" />\n" + " <link rel=\"manifest\" href=\"manifest.webmanifest\" />\n" + "<link href=\"https://fonts.googleapis.com/css?family=DM Sans\" rel=\"stylesheet\" />\n" + "<meta name=\"theme-color\" content=\"#2e1e91\" />\n" + "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\">\n" + "<link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap\" rel=\"stylesheet\">\n" + "<link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n" + "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\" integrity=\"sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N\" crossorigin=\"anonymous\">";
+                    "<meta charset=\"utf-8\" />" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />" +
+                            "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\" />\n" +
+                            "<title>Intelehealth</title>\n" +
+                            "<link rel=\"apple-touch-icon\" href=\"/assets/icons/icon-180x180.png\" />\n" + " <link rel=\"manifest\" href=\"manifest.webmanifest\" />\n" +
+                            "<meta name=\"theme-color\" content=\"#2e1e91\" />\n" +
+                            "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\">\n" +
+                            "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\" integrity=\"sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N\" crossorigin=\"anonymous\">";
 
             return StringBuilder()
-                .append("<html lang=\"en\">")
-                .append("<head>")
-                .append(meta)
-                .append(getStyle(context))
-                .append("</head>")
-                .append("<body>")
-                .append("<div>")
-                .append(getUserHtml(context, visitSummaryPdfData))
-                .append(getChwHtml(context, visitSummaryPdfData))
-                .append(getVitalHtml(context, visitSummaryPdfData))
-                .append(getVisitReasonHtml(context, visitSummaryPdfData))
-                .append(getPhysicalExamHtml(context, visitSummaryPdfData))
-                .append(getMedicalHistoryHtml(context, visitSummaryPdfData))
-                .append(getAdditionalNoteHtml(context, visitSummaryPdfData))
-                .append(getAdditionalDocHtml(context, visitSummaryPdfData))
-                .append(getDoctorSpecialityHtml(context, visitSummaryPdfData.doctorSpeciality))
-                .append(getPriorityHtml(context, visitSummaryPdfData))
-                .append("</div>")
-                .append("</body>")
-                .append("</html>").toString()
+                    .append("<html lang=\"en\">")
+                    .append("<head>")
+                    .append(meta)
+                    .append(getStyle(context))
+                    .append("</head>")
+                    .append("<body>")
+                    .append("<div>")
+                    .append(getUserHtml(context, visitSummaryPdfData))
+                    .append(getChwHtml(context, visitSummaryPdfData))
+                    .append(getVitalHtml(context, visitSummaryPdfData))
+                    .append(getVisitReasonHtml(context, visitSummaryPdfData))
+                    .append(getPhysicalExamHtml(context, visitSummaryPdfData))
+                    .append(getMedicalHistoryHtml(context, visitSummaryPdfData))
+                    .append(getAdditionalNoteHtml(context, visitSummaryPdfData))
+                    .append(getAdditionalDocHtml(context, visitSummaryPdfData))
+                    .append(getDoctorSpecialityHtml(context, visitSummaryPdfData))
+                    .append(getFacility(context, visitSummaryPdfData))
+                    .append(getSeverity(context, visitSummaryPdfData))
+                    .append(getFollowupDate(context, visitSummaryPdfData))
+                    .append(getPriorityHtml(context, visitSummaryPdfData))
+                    .append("</div>")
+                    .append("</body>")
+                    .append("</html>").toString()
         }
 
         private fun getUserHtml(context: Context, visitSummaryPdfData: VisitSummaryPdfData): Any? {
@@ -67,14 +76,14 @@ class VisitSummaryPdfGenerator {
                     "         <ul>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.chw_worker
+                                context,
+                                R.string.chw_worker
                         )
                     }</label><label> ${visitSummaryPdfData.chwName}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visitID
+                                context,
+                                R.string.visitID
                         )
                     }</label><label> ${visitSummaryPdfData.visitId}</label></li>\n" +
                     "         </ul>" +
@@ -83,12 +92,13 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getVitalHtml(context: Context, visitSummaryPdfData: VisitSummaryPdfData): Any? {
+            if(visitSummaryPdfData.activeStatus?.vitalSection != true) return "";
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getVitalsSvg() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visit_summary_vitals
+                                context,
+                                R.string.visit_summary_vitals
                         )
                     }\n" +
                     "            </h2>\n" +
@@ -100,51 +110,51 @@ class VisitSummaryPdfGenerator {
                     "            <ul>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.height_cm
+                                context,
+                                R.string.height_cm
                         )
                     }</label><label> ${visitSummaryPdfData.height}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.weight_kg
+                                context,
+                                R.string.weight_kg
                         )
                     }</label><label> ${visitSummaryPdfData.weight}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visit_summary_bmi
+                                context,
+                                R.string.visit_summary_bmi
                         )
                     }</label><label> ${visitSummaryPdfData.bmi}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visit_summary_bp
+                                context,
+                                R.string.visit_summary_bp
                         )
                     }</label><label> ${visitSummaryPdfData.bp}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visit_summary_pulse
+                                context,
+                                R.string.visit_summary_pulse
                         )
                     }</label><label> ${visitSummaryPdfData.pulse}</label></li>\n" +
                     "             <li><label>• ${visitSummaryPdfData.tempHeader}</label><label> ${visitSummaryPdfData.temp}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.table_spo2
+                                context,
+                                R.string.table_spo2
                         )
                     }</label><label> ${visitSummaryPdfData.spoTwo}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.respiratory_rate
+                                context,
+                                R.string.respiratory_rate
                         )
                     }</label><label> ${visitSummaryPdfData.respiratory}</label></li>\n" +
                     "             <li><label>• ${
                         ContextCompat.getString(
-                            context,
-                            R.string.blood_group_txt
+                                context,
+                                R.string.blood_group_txt
                         )
                     }</label><label> ${visitSummaryPdfData.blGroup}</label></li>\n" +
                     "            </ul></div></div>\n"
@@ -152,28 +162,28 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getVisitReasonHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getVisitReasonSvg() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.complaint_dialog_title
+                                context,
+                                R.string.complaint_dialog_title
                         )
                     }\n" +
                     "            </h2>\n" +
                     "            <b><h3>${
                         ContextCompat.getString(
-                            context,
-                            R.string.chief_complaint
+                                context,
+                                R.string.chief_complaint
                         )
                     }</h3></b>\n" + "" +
                     "            ${
                         getChiefComplainList(
-                            context,
-                            visitSummaryPdfData
+                                context,
+                                visitSummaryPdfData
                         )
                     }" + visitSummaryPdfData.chiefComplain +
                     "        </div>\n"
@@ -181,50 +191,50 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getChiefComplainList(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): String {
             val buttonStringBuilder = StringBuilder()
             for (name in visitSummaryPdfData.chiefComplaintList) {
                 buttonStringBuilder
-                    .append("<button class=\"button\">${name}</button>")
+                        .append("<button class=\"button\">${name}</button>")
             }
             return StringBuilder()
-                .append("<div>")
-                .append(buttonStringBuilder.toString())
-                .append("</div>")
-                .toString()
+                    .append("<div>")
+                    .append(buttonStringBuilder.toString())
+                    .append("</div>")
+                    .toString()
         }
 
         private fun getPhysicalExamHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getPhysicalExamSvg() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.physical_examination
+                                context,
+                                R.string.physical_examination
                         )
                     }\n" +
                     "            </h2>\n" + visitSummaryPdfData.physicalExam + "<br /><br />" + getPhysicalExamImages(
-                visitSummaryPdfData.physicalExamImageList
+                    visitSummaryPdfData.physicalExamImageList
             ) +
                     "        </div>\n" + ""
         }
 
         private fun getMedicalHistoryHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
             if (visitSummaryPdfData.medicalHistory.isEmpty()) return ""
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getMedicalHistory() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.visit_summary_medical_history
+                                context,
+                                R.string.visit_summary_medical_history
                         )
                     }\n" +
                     "            </h2>\n" + visitSummaryPdfData.medicalHistory +
@@ -232,16 +242,16 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getAdditionalNoteHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
-            if (visitSummaryPdfData.additionalNote.isEmpty()) return ""
+            if (visitSummaryPdfData.additionalNote.isEmpty() || visitSummaryPdfData.activeStatus?.visitSummeryNote != true) return ""
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getAdditionalNote() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.additional_notes
+                                context,
+                                R.string.additional_notes
                         )
                     }\n" +
                     "            </h2>\n" + visitSummaryPdfData.additionalNote +
@@ -250,15 +260,16 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getPriorityHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
+            if(visitSummaryPdfData.activeStatus?.visitSummeryPriorityVisit != true) return ""
             return "        <div class=\"section\">\n" +
                     "            <h3>\n" +
                     "                 ${
                         ContextCompat.getString(
-                            context,
-                            R.string.priority_visits
+                                context,
+                                R.string.priority_visits
                         )
                     }\n" +
                     "            </h3>\n" +
@@ -268,15 +279,15 @@ class VisitSummaryPdfGenerator {
         }
 
         private fun getAdditionalDocHtml(
-            context: Context,
-            visitSummaryPdfData: VisitSummaryPdfData,
+                context: Context,
+                visitSummaryPdfData: VisitSummaryPdfData,
         ): Any {
-            if (visitSummaryPdfData.additionalDocList.isEmpty()) return ""
+            if (visitSummaryPdfData.additionalDocList.isEmpty() || visitSummaryPdfData.activeStatus?.visitSummeryAttachment != true) return ""
             return "        <div class=\"section\">\n" +
                     "            <h3>  ${
                         ContextCompat.getString(
-                            context,
-                            R.string.add_additional_documents
+                                context,
+                                R.string.add_additional_documents
                         )
                     }(${visitSummaryPdfData.additionalDocList.size})\n" +
                     "            </h3>\n" + getAdditionalDocImages(visitSummaryPdfData.additionalDocList) +
@@ -284,18 +295,66 @@ class VisitSummaryPdfGenerator {
 
         }
 
-        private fun getDoctorSpecialityHtml(context: Context, doctorSpeciality: String): Any {
-            if (doctorSpeciality.isEmpty()) return ""
+        private fun getDoctorSpecialityHtml(context: Context, visitSummaryPdfData: VisitSummaryPdfData): Any {
+            if (visitSummaryPdfData.doctorSpeciality.isEmpty() || visitSummaryPdfData.activeStatus?.visitSummeryDoctorSpeciality != true) return ""
             return "        <div class=\"section\">\n" +
                     "            <h2>\n" + VisitSummarySvgUtils.getDoctorSpeciality() +
                     "                ${
                         ContextCompat.getString(
-                            context,
-                            R.string.doctor_speciality
+                                context,
+                                R.string.doctor_speciality
                         )
                     }\n" +
                     "            </h2>\n" +
-                    "            <p>${doctorSpeciality}</p>\n" +
+                    "            <p>${visitSummaryPdfData.doctorSpeciality}</p>\n" +
+                    "        </div>\n"
+
+        }
+
+        private fun getFacility(context: Context, visitSummaryPdfData: VisitSummaryPdfData,): Any {
+            if (visitSummaryPdfData.facility.isEmpty() || visitSummaryPdfData.activeStatus?.visitSummeryFacilityToVisit != true) return ""
+            return "        <div class=\"section\">\n" +
+                    "            <h2>\n" + VisitSummarySvgUtils.getDoctorSpeciality() +
+                    "                ${
+                        ContextCompat.getString(
+                                context,
+                                R.string.facility_to_visit
+                        )
+                    }\n" +
+                    "            </h2>\n" +
+                    "            <p>${visitSummaryPdfData.facility}</p>\n" +
+                    "        </div>\n"
+
+        }
+
+        private fun getSeverity(context: Context,  visitSummaryPdfData: VisitSummaryPdfData,): Any {
+            if (visitSummaryPdfData.severity.isEmpty() || visitSummaryPdfData.activeStatus?.visitSummerySeverityOfCase != true) return ""
+            return "        <div class=\"section\">\n" +
+                    "            <h2>\n" + VisitSummarySvgUtils.getDoctorSpeciality() +
+                    "                ${
+                        ContextCompat.getString(
+                                context,
+                                R.string.severity_of_case
+                        )
+                    }\n" +
+                    "            </h2>\n" +
+                    "            <p>${visitSummaryPdfData.severity}</p>\n" +
+                    "        </div>\n"
+
+        }
+
+        private fun getFollowupDate(context: Context,  visitSummaryPdfData: VisitSummaryPdfData,): Any {
+            if (visitSummaryPdfData.followUpDate.isEmpty()) return ""
+            return "        <div class=\"section\">\n" +
+                    "            <h3>\n"+
+                    "                ${
+                        ContextCompat.getString(
+                                context,
+                                R.string.follow_up_date
+                        )
+                    }\n" +
+                    "            </h3>\n" +
+                    "            <p>${visitSummaryPdfData.followUpDate}</p>\n" +
                     "        </div>\n"
 
         }
@@ -320,10 +379,10 @@ class VisitSummaryPdfGenerator {
         private fun getAdditionalDocImages(fileList: List<DocumentObject>): String {
             if (fileList.isEmpty()) return ""
             val stringBuilder = StringBuilder()
-                .append("<div class=\"image-container\">")
+                    .append("<div class=\"image-container\">")
             for (doc in fileList) {
                 stringBuilder
-                    .append(" <img src=\'file://${doc.documentPhoto}'/>")
+                        .append(" <img src=\'file://${doc.documentPhoto}'/>")
             }
             stringBuilder.append("</div>")
             return stringBuilder.toString()
@@ -333,7 +392,7 @@ class VisitSummaryPdfGenerator {
             var patientProfilePhoto = ""
             if (patientImage.isNotEmpty()) {
                 patientProfilePhoto =
-                    Base64Utils().getBase64FromFileWithConversion(patientImage)
+                        Base64Utils().getBase64FromFileWithConversion(patientImage)
                 val format = patientImage.substring(patientImage.length - 3)
                 patientProfilePhoto = if (format.equals("png", ignoreCase = true)) {
                     "data:image/png;base64,$patientProfilePhoto"
@@ -342,7 +401,7 @@ class VisitSummaryPdfGenerator {
                 }
             } else {
                 patientProfilePhoto =
-                    "https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg"
+                        "https://dev.intelehealth.org/intelehealth/assets/svgs/user.svg"
             }
             return patientProfilePhoto
         }
@@ -451,10 +510,10 @@ class VisitSummaryPdfGenerator {
                     "         .button {\n" +
                     "              background-color: ${
                         intToHex(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.colorPrimary
-                            )
+                                ContextCompat.getColor(
+                                        context,
+                                        R.color.colorPrimary
+                                )
                         )
                     };\n" +
                     "              border: none;\n" +

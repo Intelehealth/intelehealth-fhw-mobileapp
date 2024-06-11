@@ -13,10 +13,11 @@ data class FollowUpNotificationData(
     var visitUuid: String,
     var conceptUuid: String,
     var encounterUuid: String,
+    var encounterUuidVitals: String,
     var value: String,
 ) {
     constructor() : this(
-        "","",
+        "","","",
         "", "", "",
         "", "", "",
         ""

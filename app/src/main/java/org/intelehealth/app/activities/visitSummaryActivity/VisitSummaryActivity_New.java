@@ -486,6 +486,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         initUI();
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
+
+        Log.d("ADDDD",""+encounterUuidAdultIntial);
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -578,185 +580,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-
-    void getEncounterId(String visitId) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitSelection = "patientuuid = ?";
-        String[] visitArgs = {patientUuid};
-        String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-        if (visitCursor.moveToLast()) {
-            do {
-                EncounterDAO encounterDAO = new EncounterDAO();
-                String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
-                String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-
-                boolean isCompletedExitedSurvey = false;
-                try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-                if (!isCompletedExitedSurvey) {
-
-                    String encounterlocalAdultintial = "";
-                    String encountervitalsLocal = null;
-                    String encounterIDSelection = "visituuid = ?";
-
-                    String[] encounterIDArgs = {visit_id};
-
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-
-                                mCommonVisitData.setEncounterUuidVitals(encountervitalsLocal);
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                                mCommonVisitData.setEncounterUuidAdultIntial(encounterlocalAdultintial);
-
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                    if (previsitCursor != null && previsitCursor.moveToLast()) {
-
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                        boolean needToShowCoreValue = false;
-                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                            try {
-                                // isInOldFormat = false;
-                                JSONObject jsonObject = new JSONObject(visitValue);
-                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                    needToShowCoreValue = false;
-                                } else {
-                                    needToShowCoreValue = true;
-                                    visitValue = jsonObject.getString("en");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            needToShowCoreValue = true;
-                        }
-
-                        if (visitValue != null && !visitValue.isEmpty()) {
-
-                            if (needToShowCoreValue) {
-
-                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
-
-                                visitValue = "";
-                                String colon = ":";
-                                if (complaints != null) {
-                                    for (String comp : complaints) {
-                                        if (!comp.trim().isEmpty() && comp.indexOf(colon) > 0) {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        }
-                                    }
-                                    if (!visitValue.isEmpty()) {
-                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", ", ");
-                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                        visitValue = visitValue.replaceAll("<b>", "");
-                                        visitValue = visitValue.replaceAll("</b>", "");
-                                        visitValue = visitValue.trim();
-                                        while (visitValue.endsWith(",")) {
-                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
-                                        }
-                                    }
-                                }
-                            } else {
-                                String chiefComplain = "";
-                                visitValue = visitValue.replaceAll("<.*?>", "");
-                                System.out.println(visitValue);
-                                Log.v(TAG, visitValue);
-                                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
-
-                                String[] spt = visitValue.split("►");
-                                List<String> list = new ArrayList<>();
-
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (String s : spt) {
-                                    String complainName = "";
-                                    if (s.isEmpty()) continue;
-                                    //String s1 =  new String(s.getBytes(), "UTF-8");
-                                    System.out.println(s);
-                                    String[] spt1 = s.split("::●");
-                                    complainName = spt1[0];
-
-                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                        System.out.println(complainName);
-                                        if (!stringBuilder.toString().isEmpty())
-                                            stringBuilder.append(", ");
-                                        stringBuilder.append(complainName);
-                                    }
-
-                                }
-                                /*StringBuilder stringBuilder = new StringBuilder();
-                                int size = list.size() == 1 ? list.size() : list.size() - 1;
-                                for (int i = 0; i < size; i++) {
-                                    String complainName = "";
-                                    List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
-                                    String[] spt1 = list.get(i).split("●");
-                                    for (String value : spt1) {
-                                        if (value.contains("::")) {
-                                            if (!stringBuilder.toString().isEmpty())
-                                                stringBuilder.append(",");
-                                            complainName = value.replace("::", "");
-                                            System.out.println(complainName);
-                                            stringBuilder.append(complainName);
-                                        }
-                                    }*/
-                                visitValue = stringBuilder.toString();
-
-                            }
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
-
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                PastVisitData pastVisitData = new PastVisitData();
-                                pastVisitData.setVisitDate(visitDate);
-                                pastVisitData.setVisitUUID(visit_id);
-                                pastVisitData.setChiefComplain(visitValue);
-                                pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-
-                                Log.d("EEEEE", encountervitalsLocal + "  " + encounterlocalAdultintial);
-                                //mCurrentVisitDataList.add(pastVisitData);
-
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-                        }
-                    }
-
-
-                }
-            } while (visitCursor.moveToPrevious());
-        }
-
-        encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
-        encounterVitals = mCommonVisitData.getEncounterUuidVitals();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
         // Extract the date and time part
@@ -825,8 +648,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
-
-                getEncounterId(visitUuid);
 
             }
 
