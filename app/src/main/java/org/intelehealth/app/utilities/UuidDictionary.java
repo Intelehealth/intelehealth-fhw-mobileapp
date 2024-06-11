@@ -81,9 +81,4 @@ public class UuidDictionary {
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
-
-
-
-
-
 }

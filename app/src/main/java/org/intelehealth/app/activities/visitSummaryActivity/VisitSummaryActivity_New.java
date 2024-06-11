@@ -1036,6 +1036,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
             add_additional_doc.setVisibility(visibility);
             editAddDocs.setVisibility(visibility);
+            uploadButton.setVisibility(visibility);
             if (recyclerViewAdapter != null) {
                 recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
             }
