@@ -123,10 +123,11 @@ class NotificationSchedulerUtils {
                     )
                     .putString(BundleKeys.CONCEPT_UUID, notificationData.conceptUuid)
                     .putString(BundleKeys.ENCOUNTER_UUID, notificationData.encounterUuid)
+                    .putString(BundleKeys.ENCOUNTER_UUID_VITALS, notificationData.encounterUuidVitals)
                     .putString(BundleKeys.VALUE, notificationData.value)
                     .build()
 
-            val delay = dateTime - System.currentTimeMillis() - durationType.toMillis(duration)
+            val delay = (dateTime - System.currentTimeMillis()) - durationType.toMillis(duration)
 
             Log.d(
                     "DDDDDDEEEEE",

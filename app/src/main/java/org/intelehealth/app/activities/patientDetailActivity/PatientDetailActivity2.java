@@ -419,6 +419,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     protected void onResume() {
         super.onResume();
         setDisplay(patientDTO.getUuid());
+//        syncNow(refresh);
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
@@ -608,12 +609,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      * fetching reg config from local db
      */
     private void fetchAllConfig() {
-        regFieldViewModel.fetchEnabledAllRegFields()
-                .observe(this, it -> {
-                            patientAllFields = it;
-                            configAllFields();
-                        }
-                );
+        regFieldViewModel.fetchEnabledAllRegFields().observe(this, it -> {
+                    patientAllFields = it;
+                    configAllFields();
+                }
+        );
     }
 
     /**
@@ -1944,15 +1944,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     refresh.clearAnimation();
                     syncAnimator.cancel();
                     recreate();
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
         };
 
 
-
-         // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
-         // because the onreceive function listen the broadcaster receiver even out activity is on background mode
-         // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+        // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+        // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+        // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
 
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -2332,4 +2332,4 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-    }
+}

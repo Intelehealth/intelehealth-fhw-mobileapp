@@ -12,6 +12,8 @@ object NotificationDbConstants {
     const val PATIENT_UID = "patient_uid"
     const val GENDER = "gender"
     const val NAME = "name"
+    const val ENCOUNTER_UUID = "encounter_uuid"
+    const val ENCOUNTER_UUID_VITALS = "encounter_uuid_vitals"
     const val OBS_SERVER_MODIFIED_DATE = "obs_server_modified_date"
     const val IS_DELETED = "isdeleted"
     const val PRESCRIPTION_TYPE_NOTIFICATION: String = "prescription_type"

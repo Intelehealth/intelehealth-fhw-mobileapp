@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import androidx.room.util.UUIDUtil;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -837,6 +839,15 @@ public class EncounterDAO {
 
         try {
 
+            String vitalsQ = "(obs.conceptuuid =  "+"'" + UuidDictionary.HEIGHT  + "' or " +
+                    "obs.conceptuuid =  "+"'" + UuidDictionary.WEIGHT  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.DIASTOLIC_BP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.SYSTOLIC_BP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.TEMPERATURE  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.SPO2  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.BLOOD_GROUP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.RESPIRATORY   +"') ";
+
             String query = """
                     select p.uuid,p.openmrs_id,p.first_name || " " || p.last_name as name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,
                     obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs,
@@ -845,21 +856,42 @@ public class EncounterDAO {
                       tbl_patient as p on v.patientuuid = p.uuid
                      where v.enddate IS NULL and obs.conceptuuid = \s""" + "'" + followUpDateConcept + "'";
 
+
             Cursor idCursor = db.rawQuery(query, new String[]{});
 
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
+                    String vitalEncounterUuid = "";
+                    String visitUid = idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid"));
+                    String vitalEncounterQuery = " " +
+                            "select obs.encounteruuid from tbl_obs as obs, " +
+                            "tbl_encounter as e on obs.encounteruuid = e.uuid,  " +
+                            "tbl_visit as v on e.visituuid = v.uuid, " +
+                            "tbl_patient as p on v.patientuuid = p.uuid " +
+                            "where v.enddate IS NULL and  " +
+                            " v.uuid = "+"'"+visitUid+"' and "+vitalsQ;
+
+                    Cursor cursor = db.rawQuery(vitalEncounterQuery, new String[]{});
+                    if (cursor.getCount() != 0) {
+                        while (cursor.moveToNext()) {
+                            vitalEncounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("encounteruuid"));
+                        }
+                    }
+
                     list.add(new FollowUpNotificationData(
                             idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("name")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("gender")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")),
-                            idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid")),
+                            visitUid,
                             idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")),
                             idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")),
+                            vitalEncounterUuid,
                             idCursor.getString(idCursor.getColumnIndexOrThrow("value")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("value"))
                     ));
+
+                    cursor.close();
                 }
             }
             idCursor.close();

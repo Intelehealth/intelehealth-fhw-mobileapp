@@ -3,3 +3,117 @@ Layout
 - layout_second_intro_screen_ui2
 - layout_third_intro_screen_ui2
 - common_button_bg_primary_new_ui2
+
+{
+  "appointments": [
+
+  ],
+  "encounters": [
+    {
+      "encounterDatetime": "2024-06-10T18:44:45.497+0530",
+      "encounterProviders": [
+        {
+          "encounterRole": "73bbb069-9781-4afc-a9d1-54b6b2270e04",
+          "provider": "02920f0d-1d8d-486b-9821-5e222cb57bc9"
+        }
+      ],
+      "encounterType": "67a71486-1a54-468f-ac3e-7091a9a79584",
+      "location": "9172f0c5-2a6d-43ba-84f8-37276a2db14b",
+      "obs": [
+        {
+          "comments": "",
+          "concept": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "uuid": "6244bf53-4fcd-4217-9d68-6fcb63f9a233",
+          "value": "0"
+        }
+      ],
+      "patient": "bd3e5e6d-a427-4f35-8abf-6fa98ab54a63",
+      "uuid": "54ccfe71-42cc-4d25-8d83-9795c67296ca",
+      "visit": "1d6fb892-c2cd-4cfb-8233-af0a84191388",
+      "voided": 0
+    },
+    {
+      "encounterDatetime": "2024-06-10T18:44:45.578+0530",
+      "encounterProviders": [
+        {
+          "encounterRole": "73bbb069-9781-4afc-a9d1-54b6b2270e04",
+          "provider": "02920f0d-1d8d-486b-9821-5e222cb57bc9"
+        }
+      ],
+      "encounterType": "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f",
+      "location": "9172f0c5-2a6d-43ba-84f8-37276a2db14b",
+      "obs": [
+        {
+          "comments": "",
+          "concept": "3edb0e09-9135-481e-b8f0-07a26fa9a5ce",
+          "uuid": "6c11e5b4-6367-46d4-a461-56faff2005ce",
+          "value": "{\"en\":\"►\u003cb\u003eOther\u003c/b\u003e: \u003cbr/\u003e• patient\u0027s complaint - Saff.\u003cbr/\u003e• Prior treatment sought - None.\u003cbr/\u003e• Additional information - Sdfdsfsdf.\u003cbr/\u003e \",\"l-en\":\"►Other::● Describe the patient\u0027s complaint in his/her words as best as you can*\u003cbr/\u003e•Saff\u003cbr/\u003e● Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?*\u003cbr/\u003e•None\u003cbr/\u003e● Additional information\u003cbr/\u003e•Sdfdsfsdf\u003cbr/\u003e\"}"
+        },
+        {
+          "comments": "",
+          "concept": "e1761e85-9b50-48ae-8c4d-e6b7eeeba084",
+          "uuid": "89ccd927-c8cf-4301-bad5-6163392a2eab",
+          "value": "{\"en\":\"\u003cbr/\u003e►\u003cb\u003eGeneral exams: \u003c/b\u003e\u003cbr/\u003e• Eyes: Jaundice-no jaundice seen. \u003cbr/\u003e• Eyes: Pallor-normal pallor. \u003cbr/\u003e• Arm-Pinch skin* - pinch test normal. \u003cbr/\u003e• Nail abnormality-nails normal. \u003cbr/\u003e• Nail anemia-Nails are normal. \u003cbr/\u003e• Ankle-no pedal oedema.\",\"l-en\":\"►\u003cb\u003eGeneral exams: \u003c/b\u003e\u003cbr/\u003e• Eyes: Jaundice-● Is there jaundice?*\u003cbr/\u003e•No-\u003cbr/\u003e• Eyes: Pallor-● Is there pallor?*\u003cbr/\u003e•Normal-\u003cbr/\u003e• Arm-● Pinch skin*\u003cbr/\u003e•Normal-\u003cbr/\u003e• Nail abnormality-● Is there any nail abnormality?*\u003cbr/\u003e•Nails are normal-\u003cbr/\u003e• Nail anemia-● Are the nails pale?*\u003cbr/\u003e•Nails are normal-\u003cbr/\u003e• Ankle-● Is there ankle oedema?\u003cbr/\u003e•No oedema--\"}"
+        },
+        {
+          "comments": "",
+          "concept": "62bff84b-795a-45ad-aae1-80e7f5163a82",
+          "uuid": "ff86b9f6-a07a-4c07-bbed-e3de13277513",
+          "value": "{\"en\":\"• Current Vaccinations status - Incomplete.\u003cbr/\u003e• Medical History - None.\u003cbr/\u003e• Drug history - No recent medication.\u003cbr/\u003e• Allergies - No known allergies.\u003cbr/\u003e• Chewing tobacco status - Do not Chew.\u003cbr/\u003e• Smoking history* - Patient denied/has no h/o smoking.\u003cbr/\u003e• Alcohol use* - No.\u003cbr/\u003e\",\"l-en\":\"● Has your child been vaccinated?\u003cbr/\u003e•Incomplete\u003cbr/\u003e● Do you have a history of any of the following?*\u003cbr/\u003e•None\u003cbr/\u003e● Have you recently taken any kind of medicine (including ayurvedic/homeopathic/unani/herbal)?*\u003cbr/\u003e•No\u003cbr/\u003e● Do you have any allergies?*\u003cbr/\u003e•No known allergies\u003cbr/\u003e● Do you chew tobbaco?\u003cbr/\u003e•Do not Chew\u003cbr/\u003e● Smoking history*\u003cbr/\u003e•Never-smoker\u003cbr/\u003e● Alcohol use*\u003cbr/\u003e•No\u003cbr/\u003e\"}"
+        },
+        {
+          "comments": "",
+          "concept": "d63ae965-47fb-40e8-8f08-1f46a8a60b2b",
+          "uuid": "f055b053-2304-45ef-9319-7d7812152b41",
+          "value": "{\"en\":\"Do you have a family history of any of the following?* : • None.\u003cbr/\u003e\",\"l-en\":\"Do you have a family history of any of the following?* : ?   2a-7491ad80341b",
+          "uuid": "186c19fa-5688-4779-85b4-0789bd40c3f1",
+          "value": "27-06-2024, Time:06:46 PM, Remark: HW Follow-up"
+        }
+      ],
+      "patient": "bd3e5e6d-a427-4f35-8abf-6fa98ab54a63",
+      "uuid": "f4fdec0d-b1c2-4c6b-8d7e-e3063de67bd9",
+      "visit": "1d6fb892-c2cd-4cfb-8233-af0a84191388",
+      "voided": 0
+    }
+  ],
+  "patients": [
+
+  ],
+  "persons": [
+
+  ],
+  "providers": [
+
+  ],
+  "visits": [
+    {
+      "attributes": [
+        {
+          "attributeType": "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d",
+          "uuid": "8edad9ce-46e0-4576-8544-604ffcd2979d",
+          "value": ""
+        },
+        {
+          "attributeType": "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b",
+          "uuid": "bb216ecf-8682-4b1a-b235-4bb55484eb41",
+          "value": "HWC/AAM"
+        },
+        {
+          "attributeType": "6593f000-f1f8-4f35-a3b9-8d1909f5c945",
+          "uuid": "6941ae59-a842-4d85-9122-3687b690e8f6",
+          "value": "Critical"
+        },
+        {
+          "attributeType": "64aa50c8-e913-48c6-b8ad-dfa0bccb202b",
+          "uuid": "88110de8-cdd0-4656-b858-2c8d21796115",
+          "value": "No notes added for Doctor."
+        }
+      ],
+      "location": "9172f0c5-2a6d-43ba-84f8-37276a2db14b",
+      "patient": "bd3e5e6d-a427-4f35-8abf-6fa98ab54a63",
+      "startDatetime": "2024-06-10T18:44:45.497+0530",
+      "uuid": "1d6fb892-c2cd-4cfb-8233-af0a84191388",
+      "visitType": "a86ac96e-2e07-47a7-8e72-8216a1a75bfd"
+    }
+  ]
+}

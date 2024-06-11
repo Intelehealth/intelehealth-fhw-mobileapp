@@ -780,11 +780,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         }
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
         if (!TextUtils.isEmpty(facility)) {
-            findViewById(R.id.flFacilityToVisit).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(" " + Node.bullet + "  " + facility);
             visitSummaryPdfData.setFacility(" " + Node.bullet + "  " + facility);
-        }else {
-            findViewById(R.id.flFacilityToVisit).setVisibility(View.GONE);
         }
     }
 
@@ -796,11 +793,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
         if (!TextUtils.isEmpty(severity)) {
-            findViewById(R.id.flSeverity).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.tvSavertyValue)).setText(" " + Node.bullet + "  " + severity);
             visitSummaryPdfData.setSeverity(" " + Node.bullet + "  " + severity);
-        }else {
-            findViewById(R.id.flSeverity).setVisibility(View.GONE);
         }
 
     }

@@ -20,6 +20,7 @@ class BundleKeys {
         const val ENCOUNTER_TYPE_UUID = "encounterTypeUid"
         const val CONCEPT_UUID = "conceptUuid"
         const val ENCOUNTER_UUID = "encounterUuid"
+        const val ENCOUNTER_UUID_VITALS = "encounterUuidVitals"
         const val VALUE = "value"
         const val FLOAT_AGE_YEAR_MONTH = "float_ageYear_Month"
     }

@@ -139,8 +139,8 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                             putExtra("visitUuid", visitUUID)
                             putExtra("gender", gender)
                             putExtra("name", "$first_name")
-                            putExtra("encounterUuidVitals", "")
-                            putExtra("encounterUuidAdultIntial", "")
+                            putExtra("encounterUuidVitals", encounterUuidVitals)
+                            putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial)
                             putExtra("float_ageYear_Month", 0)
                             putExtra("tag", "Notification")
                         }

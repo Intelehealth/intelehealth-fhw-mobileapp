@@ -346,14 +346,14 @@ class VisitSummaryPdfGenerator {
         private fun getFollowupDate(context: Context,  visitSummaryPdfData: VisitSummaryPdfData,): Any {
             if (visitSummaryPdfData.followUpDate.isEmpty()) return ""
             return "        <div class=\"section\">\n" +
-                    "            <h2>\n" + VisitSummarySvgUtils.getDoctorSpeciality() +
+                    "            <h3>\n"+
                     "                ${
                         ContextCompat.getString(
                                 context,
                                 R.string.follow_up_date
                         )
                     }\n" +
-                    "            </h2>\n" +
+                    "            </h3>\n" +
                     "            <p>${visitSummaryPdfData.followUpDate}</p>\n" +
                     "        </div>\n"
 
