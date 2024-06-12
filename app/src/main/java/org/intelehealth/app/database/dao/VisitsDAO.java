@@ -279,7 +279,6 @@ public class VisitsDAO {
 
     private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
-        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -288,7 +287,7 @@ public class VisitsDAO {
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-
+                VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
                 speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 speciality.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
                 speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
@@ -324,7 +323,7 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-    //    db.close();   // NAS-172: no need to close db instance this causes the issue of Sqlite object being closed - Prajwal.
+        //    db.close();   // NAS-172: no need to close db instance this causes the issue of Sqlite object being closed - Prajwal.
         return visitDTOList;
     }
 

@@ -5,6 +5,7 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.minus_MinutesAgo;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_SPECIALITY;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -384,7 +385,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private PrinterInterface curPrinterInterface = null;
     IntelehealthApplication application;*/
 
-        private void collectChatConnectionInfoFromFirebase() {
+    private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
         DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
         chatDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -469,7 +470,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        ContextCompat.registerReceiver(this,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, downloadPrescriptionService, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
 
@@ -931,7 +932,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         List<String> items = providerAttributeLIstDAO.getAllValues();
         items.remove("All");
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, VISIT_SPECIALITY);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -945,6 +946,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
 
+        Log.d(TAG, "onCreate: special_value : " + special_value);
         if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
@@ -1098,7 +1100,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
-
+                    String uploadTime = AppConstants.dateAndTimeUtils.getVisitUploadDateTime();
+                    VisitAttributeListDAO upload_time_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateUploadTimeDone = false;
+                    try {
+                        if (!isVisitSpecialityExists) {
+                            isUpdateUploadTimeDone = upload_time_attributes.insertVisitAttributesUploadTime(visitUUID, uploadTime);
+                        }
+                    } catch (DAOException exception) {
+                        exception.printStackTrace();
+                    }
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
@@ -2008,9 +2019,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String remark = fuData.substring(fuData.indexOf(","));
                 showFollowupRescheduleDialog(remark);
                 Log.d(TAG, "reschedule btn: " + remark);
-            }
-            else {  // ie. 08-08-2023
-              //  followupDate = fuData;
+            } else {  // ie. 08-08-2023
+                //  followupDate = fuData;
                 showFollowupRescheduleDialog(null);
             }
             Log.d(TAG, "reschedule btn: " + followupDate);
@@ -2086,10 +2096,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             else if (!et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
                 et_reason.requestFocus();
                 et_reason.setError(context.getString(R.string.error_field_required));
-            }
-
-
-            else {  // ie. date is not empty ie. user has selected the date from the date picker.
+            } else {  // ie. date is not empty ie. user has selected the date from the date picker.
                 et_date.setError(null);
                 et_reason.setError(null);
 
@@ -2097,7 +2104,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String reasonValue = et_reason.getText().toString().trim();
 
                 if (remark != null)
-                    followupValue =  followupValue + remark;    // ie. 08-08-2023, Remark: abc
+                    followupValue = followupValue + remark;    // ie. 08-08-2023, Remark: abc
 
                 Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
                 try {
@@ -2171,8 +2178,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             encounterTIME_MINUS_ONE_MINUTE = formatDateFromOnetoAnother
                     (visitendDate, "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             encounterTIME_MINUS_ONE_MINUTE = minus_MinutesAgo(encounterTIME_MINUS_ONE_MINUTE, 1);   // ie. minus 1mins.
-        }
-        else {
+        } else {
             encounterTIME_MINUS_ONE_MINUTE = AppConstants.dateAndTimeUtils.currentDateTime();
         }
 
@@ -2325,6 +2331,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     /**
      * starting chat activity here
+     *
      * @param view
      */
     public void startTextChat(View view) {
@@ -4194,8 +4201,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     String fuData = followUpDateTextView.getText().toString().trim();
                     if (!fuData.isEmpty() && (fuData.contains(",") || !fuData.contains("Remark"))) {    // ie. date is present and this can we changed too.
                         followupRescheduleBtn.setVisibility(View.VISIBLE);
-                    }
-                    else
+                    } else
                         followupRescheduleBtn.setVisibility(View.GONE);
 
                 }
@@ -4297,7 +4303,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            ContextCompat.registerReceiver(this,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
@@ -4788,7 +4794,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     protected void onStart() {
         registerDownloadPrescription();
         callBroadcastReceiver();
-        ContextCompat.registerReceiver(this,(mMessageReceiver), new IntentFilter(FILTER),ContextCompat.RECEIVER_NOT_EXPORTED);
+        ContextCompat.registerReceiver(this, (mMessageReceiver), new IntentFilter(FILTER), ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 
@@ -5069,6 +5075,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         CancelRequest request = new CancelRequest();
                         request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
                         request.setId(mAppointmentDetailsResponse.getData().getId());
+                        request.setHwUUID(mAppointmentDetailsResponse.getData().getUserUuid());
+                        Log.d(TAG, "onClick: CancelRequest : " + new Gson().toJson(request));
                         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
                         ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
                             @Override
@@ -5092,6 +5100,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                             @Override
                             public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                t.printStackTrace();
+                                Log.d(TAG, "onFailure: t  :: " + t.getLocalizedMessage());
                                 Log.v("onFailure", t.getMessage());
                             }
                         });
@@ -5335,11 +5345,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (advice_doctor__.indexOf("Start") != -1 || advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
             String advice_split = new StringBuilder(advice_doctor__).delete(advice_doctor__.indexOf("Start"), advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
-           advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
+            advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
             advice_web = advice_web.replace(Node.big_bullet, "- ");
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
-        }
-        else {
+        } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
             advice_web = advice_web.replace(Node.big_bullet, "- ");
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button

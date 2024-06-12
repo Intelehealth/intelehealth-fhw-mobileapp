@@ -3,6 +3,7 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -20,7 +21,11 @@ import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
+import org.intelehealth.klivekit.chat.model.ChatMessageModel
+import org.intelehealth.klivekit.chat.utils.MySharedPreferences
+import org.intelehealth.klivekit.model.ChatMessage
 import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.extensions.fromJson
 
 /**
@@ -30,11 +35,13 @@ import org.intelehealth.klivekit.utils.extensions.fromJson
  **/
 class FCMNotificationReceiver : FcmBroadcastReceiver() {
     override fun onMessageReceived(
-        context: Context?,
-        notification: RemoteMessage.Notification?,
-        data: HashMap<String, String>
+            context: Context?,
+            notification: RemoteMessage.Notification?,
+            data: HashMap<String, String>
     ) {
-        Timber.tag(TAG).d("onMessageReceived: ")
+        Timber.tag(TAG).d("onMessageReceived: data : ${Gson().toJson(data)}")
+        Timber.tag(TAG).d("onMessageReceived: notification : ${Gson().toJson(notification)}")
+
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -47,13 +54,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     socketUrl = IntelehealthApplication.getInstance().socketUrl
                     PatientsDAO().getPatientName(roomId).apply {
                         patientName = ""
-                        if(isNotEmpty()){
+                        if (isNotEmpty()) {
                             patientName = get(0).name
                         }
 
                     }
                 }.also { arg ->
-                    Timber.tag(TAG).d("onMessageReceived: $arg")
+                    Timber.tag(TAG).d("lllonMessageReceived: $arg")
                     if (isAppInForeground()) {
                         arg.callMode = CallMode.INCOMING
                         CallHandlerUtils.saveIncomingCall(context, arg)
@@ -61,6 +68,10 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     } else {
                         CallHandlerUtils.operateIncomingCall(it, arg)
                     }
+                }
+            } else if (data.containsKey("actionType") && data["actionType"].equals("TEXT_CHAT")) {
+                Gson().fromJson<ChatMessage>(Gson().toJson(data)).apply {
+                    NotificationUtils.sendChatNotification(context, this);
                 }
             } else {
                 parseMessage(notification, context)
@@ -96,19 +107,19 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val notificationIntent = Intent(context, HomeActivity::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            notificationIntent,
-            NotificationUtils.getPendingIntentFlag()
+                context,
+                0,
+                notificationIntent,
+                NotificationUtils.getPendingIntentFlag()
         )
 
         FcmNotification.Builder(context)
-            .channelName("EKAL")
-            .title(messageTitle ?: "Ekal")
-            .content(messageBody ?: "")
-            .smallIcon(R.mipmap.ic_launcher)
-            .contentIntent(pendingIntent)
-            .build().startNotify()
+                .channelName("EKAL")
+                .title(messageTitle ?: "Ekal")
+                .content(messageBody ?: "")
+                .smallIcon(R.mipmap.ic_launcher)
+                .contentIntent(pendingIntent)
+                .build().startNotify()
 
 //        val channelId = "CHANNEL_ID"
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

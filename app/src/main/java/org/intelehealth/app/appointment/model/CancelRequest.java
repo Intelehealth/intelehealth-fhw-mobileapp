@@ -5,12 +5,26 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class CancelRequest implements Serializable {
+    public int getId() {
+        return id;
+    }
+
+    public String getHwUUID() {
+        return hwUUID;
+    }
+
+    public void setHwUUID(String hwUUID) {
+        this.hwUUID = hwUUID;
+    }
 
     @SerializedName("id")
     private int id;
 
     @SerializedName("visitUuid")
     private String visitUuid;
+
+    @SerializedName("hwUUID")
+    private String hwUUID;
 
 
     public String getVisitUuid() {

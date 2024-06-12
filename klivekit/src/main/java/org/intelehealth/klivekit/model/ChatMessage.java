@@ -221,4 +221,15 @@ public class ChatMessage implements ItemHeader {
     public void setOpenMrsId(String openMrsId) {
         this.openMrsId = openMrsId;
     }
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("body")
+    private String body;
+
+    @SerializedName("actionType")
+    private String actionType;
+
+
 }
