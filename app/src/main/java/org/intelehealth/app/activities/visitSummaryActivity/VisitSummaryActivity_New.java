@@ -487,7 +487,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
 
-        Log.d("ADDDD",""+encounterUuidAdultIntial);
+        Log.d("ADDDD", "" + encounterUuidAdultIntial);
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -571,7 +571,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        mBinding.tvViewFollowUpDateTime.setText(getFormattedDateTime(followupValue));
+                        String formattedDate = getFormattedDateTime(followupValue);
+                        if (TextUtils.isEmpty(formattedDate)) {
+                            mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
+                        } else {
+                            mBinding.tvViewFollowUpDateTime.setText(formattedDate);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3342,7 +3347,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             @Override
                             public void run() {
                                 setupSpecialization();
-                                mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
+
+                                if (TextUtils.isEmpty(selectedFollowupDate) && TextUtils.isEmpty(selectedFollowupTime)) {
+                                    mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
+                                } else {
+                                    if (TextUtils.isEmpty(selectedFollowupTime)) {
+                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate);
+                                    } else {
+                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
+                                    }
+                                }
+
                             }
                         });
                         fetchingIntent();

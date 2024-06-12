@@ -840,7 +840,7 @@
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="" />
+                                        android:text="@string/no_information" />
 
                                 </RelativeLayout>
 
@@ -974,7 +974,7 @@
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="" />
+                                        android:text="@string/no_information" />
 
                                 </RelativeLayout>
 

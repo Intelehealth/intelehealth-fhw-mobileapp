@@ -110,6 +110,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             followup_data();
             Toast.makeText(this, getResources().getString(R.string.refreshed_successfully), Toast.LENGTH_SHORT).show();
         });
+
     }
 
     @Override
@@ -385,8 +386,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth();
             if (initialFollowUpPatients.isEmpty()) {
-                commonLoadingDialog.dismiss();
-                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
+                runOnUiThread(() -> {
+                    commonLoadingDialog.dismiss();
+                    shouldShowNoDataTextViewForAllRecyclerViews(true);
+                });
             } else {
                 finalMonthsFollowUpDates = initialFollowUpPatients;
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
@@ -588,8 +591,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = c.visit_uuid AND  " +
                 //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND " +
-                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                + "date(substr(o.value, 1, 10)) = DATE('now') AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
+                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and " +
+                "date(substr(o.value, 1, 10)) = DATE('now') AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
         Log.v(TAG, "query - " + query);
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
