@@ -750,7 +750,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                       ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
+                        ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
                         visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
                     }
                 } catch (Exception e) {
@@ -1600,7 +1600,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
                 // Create a print job with name and adapter instance
 
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/InteleHealthVisitSummaryPdf";
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/" + getString(R.string.app_name);
                 String fileName = patientName.replace(" ", "_") + "_" + System.currentTimeMillis() + ".pdf";
                 File dir = new File(path);
                 if (!dir.exists()) dir.mkdirs();
