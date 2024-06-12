@@ -793,5 +793,7 @@
     <string name="facility_to_visit">Facility to visit</string>
     <string name="follow_up_date">Follow up date</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
+    <string name="forgot_your_username">Forgot your username?</string>
+    <string name="contact_your_admin">Contact your admin</string>
 </resources>
 

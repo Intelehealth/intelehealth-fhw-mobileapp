@@ -127,7 +127,7 @@ public class LoginActivityNew extends AppCompatActivity {
                 intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
                 startActivity(intent);*/
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showOkDialog(LoginActivityNew.this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                dialogUtils.showOkDialog(LoginActivityNew.this, getString(R.string.forgot_your_username), getString(R.string.contact_your_admin), getString(R.string.generic_ok));
             }
         });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
