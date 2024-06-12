@@ -83,6 +83,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.text.SpannedStringKt;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.print.PrintHelper;
@@ -120,6 +121,7 @@ import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -132,6 +134,7 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
@@ -1562,15 +1565,20 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void showShareDialog() {
-        String msg = String.format(getString(R.string.hw_message_sent_text), sessionManager.getChwname());
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.info_blue_svg, getResources().getString(R.string.alert_txt),
-                msg, true, getResources().getString(R.string.action_btn_send), null, new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-                        shareOperation(msg);
-                    }
-                });
+        try {
+            String hwName = new ProviderDAO().getProviderName(sessionManager.getCreatorID(), ProviderDTO.Columns.USER_UUID.value);
+            if(hwName != null && !hwName.isEmpty()) {
+                hwName = hwName.substring(0, 1).toUpperCase(Locale.getDefault()) + hwName.substring(1);
+                String msg = String.format(getString(R.string.hw_message_sent_text), hwName);
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.info_blue_svg, getResources().getString(R.string.alert_txt),
+                        msg, true, getResources().getString(R.string.action_btn_send),
+                        getResources().getString(R.string.cancel), action -> shareOperation(msg));
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void sentMsgToWhatsApp(String msg) {
