@@ -16,6 +16,7 @@ import java.lang.StringBuilder
  */
 class PatientRegFieldsUtils {
     companion object {
+        @JvmStatic
         fun configField(
             isEditMode: Boolean,
             field: PatientRegistrationFields,
@@ -24,20 +25,20 @@ class PatientRegFieldsUtils {
             fieldViewSecondary: View?,
             titleTv: TextView?
         ) {
-            layoutView.visibility = View.VISIBLE
+            layoutView.visibility = if (field.isEnabled) View.VISIBLE else View.GONE
 
             //if existing title has * then removing it first
-            var titleStr = titleTv?.text
-            titleStr?.let {
-                if(it.contains('*')){
-                    titleStr = it.toString().replace("*","")
-                }
-            }
+//            var titleStr = titleTv?.text
+//            titleStr?.let {
+//                if(it.contains('*')){
+//                    titleStr = it.toString().replace("*","")
+//                }
+//            }
             //setting asterisk for mandatory fields
             if (field.isMandatory) {
-                titleTv?.text = StringBuilder().append(titleStr).append(" *")
-            }else{
-                titleTv?.text = titleStr
+                titleTv?.text = StringBuilder().append(field.name).append(" *")
+            } else {
+                titleTv?.text = field.name
             }
 
             //view updating while edit mode is false
@@ -79,6 +80,7 @@ class PatientRegFieldsUtils {
         /**
          * checking enable status of each field
          */
+        @JvmStatic
         fun getFieldEnableStatus(
             patientRegistrationFields: List<PatientRegistrationFields>,
             fieldType: String
@@ -93,6 +95,7 @@ class PatientRegFieldsUtils {
         /**
          * checking mandatory status of each field
          */
+        @JvmStatic
         fun getFieldMandatoryStatus(
             patientRegistrationFields: List<PatientRegistrationFields>,
             fieldType: String

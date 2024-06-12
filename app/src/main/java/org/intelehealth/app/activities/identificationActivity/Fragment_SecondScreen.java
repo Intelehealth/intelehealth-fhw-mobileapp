@@ -453,15 +453,12 @@ public class Fragment_SecondScreen extends Fragment {
      * fetching reg config from local db
      */
     private void fetchRegConfig() {
-        if (getActivity() != null) {
-            regFieldViewModel.fetchEnabledAddressRegFields()
-                    .observe(getActivity(), it -> {
-                                patientRegistrationFields = it;
-                                configAllFields();
-                                updateUiFromFirstAndSecondFrag();
-                            }
-                    );
-        }
+        regFieldViewModel.fetchAddressRegFields().observe(getViewLifecycleOwner(), it -> {
+                    patientRegistrationFields = it;
+                    configAllFields();
+                    updateUiFromFirstAndSecondFrag();
+                }
+        );
     }
 
     /**
@@ -489,7 +486,7 @@ public class Fragment_SecondScreen extends Fragment {
                     district = mDistName = district_city[0];
                     city_village = mCityVillageName = district_city[1];
                     mCityVillageET.setText(city_village);
-                }else {
+                } else {
                     mCityVillageET.setText(patientDTO.getCityvillage());
                 }
             }
@@ -537,7 +534,7 @@ public class Fragment_SecondScreen extends Fragment {
         for (PatientRegistrationFields fields : patientRegistrationFields) {
             switch (fields.getIdKey()) {
                 case PatientRegConfigKeys.POSTAL_CODE ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.configField(
                                 isEditMode,
                                 fields,
                                 postalCodeLay,
@@ -546,7 +543,7 @@ public class Fragment_SecondScreen extends Fragment {
                                 postalCodeTv
                         );
                 case PatientRegConfigKeys.COUNTRY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.configField(
                             isEditMode,
                             fields,
                             countryLay,
@@ -554,11 +551,11 @@ public class Fragment_SecondScreen extends Fragment {
                             null,
                             countryTv
                     );
-                    if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+                    if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
                         setMarginToLayout(countryLay);
                     }
                 }
-                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.configField(
                         isEditMode,
                         fields,
                         stateLay,
@@ -566,7 +563,7 @@ public class Fragment_SecondScreen extends Fragment {
                         null,
                         stateTv
                 );
-                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.configField(
                         isEditMode,
                         fields,
                         districtLay,
@@ -575,7 +572,7 @@ public class Fragment_SecondScreen extends Fragment {
                         districtTv
                 );
                 case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.configField(
                             isEditMode,
                             fields,
                             villTownCityLay,
@@ -583,11 +580,11 @@ public class Fragment_SecondScreen extends Fragment {
                             null,
                             villTownCityTv
                     );
-                    if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+                    if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                         setMarginToLayout(villTownCityLay);
                     }
                 }
-                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.configField(
                         isEditMode,
                         fields,
                         address1Lay,
@@ -595,7 +592,7 @@ public class Fragment_SecondScreen extends Fragment {
                         null,
                         address1Tv
                 );
-                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.configField(
                         isEditMode,
                         fields,
                         address2Lay,
@@ -688,8 +685,8 @@ public class Fragment_SecondScreen extends Fragment {
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
             if (this.editText.getId() == R.id.postalcode_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
                         if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
                             mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                             mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
@@ -708,8 +705,8 @@ public class Fragment_SecondScreen extends Fragment {
 
             }
             if (this.editText.getId() == R.id.state_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
                         mStateNameErrorTextView.setVisibility(View.VISIBLE);
                         mStateNameErrorTextView.setText(getString(R.string.error_field_required));
                         editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -719,8 +716,8 @@ public class Fragment_SecondScreen extends Fragment {
                     }
                 }
             } else if (this.editText.getId() == R.id.district_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                         mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                         mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
                         editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -730,8 +727,8 @@ public class Fragment_SecondScreen extends Fragment {
                     }
                 }
             } else if (this.editText.getId() == R.id.city_village_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
                         mCityNameErrorTextView.setVisibility(View.VISIBLE);
                         mCityNameErrorTextView.setText(getString(R.string.error_field_required));
                         editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -741,8 +738,8 @@ public class Fragment_SecondScreen extends Fragment {
                     }
                 }
             } else if (this.editText.getId() == R.id.address1_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
                         mAddress1ErrorTextView.setVisibility(View.VISIBLE);
                         mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
                         editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -752,8 +749,8 @@ public class Fragment_SecondScreen extends Fragment {
                     }
                 }
             } else if (this.editText.getId() == R.id.address2_edittext) {
-                if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
-                    if (val.isEmpty() && PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
+                if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
+                    if (val.isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
                         mAddress2ErrorTextView.setVisibility(View.VISIBLE);
                         mAddress2ErrorTextView.setText(getString(R.string.error_field_required));
                         editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -829,7 +826,7 @@ public class Fragment_SecondScreen extends Fragment {
         mCityVillageName = mCityVillageET.getText().toString().trim();
 
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-        patientDTO.setCountry(mCountryNameSpinner.getSelectedItem() == null?"":StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+        patientDTO.setCountry(mCountryNameSpinner.getSelectedItem() == null ? "" : StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
         if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
             patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
@@ -861,9 +858,9 @@ public class Fragment_SecondScreen extends Fragment {
         boolean cancel = false;
         View focusView = null;
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
             if (mPostalCodeEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
                 if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
                     mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                     mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
@@ -880,9 +877,9 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
             if (mCountryNameSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
                 mCountryNameErrorTextView.setVisibility(View.VISIBLE);
                 mCountryNameErrorTextView.setText(getString(R.string.error_field_required));
                 mCountryNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -894,9 +891,9 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
             if (mStateNameSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
                 mStateNameErrorTextView.setVisibility(View.VISIBLE);
                 mStateNameErrorTextView.setText(getString(R.string.error_field_required));
                 mStateNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -908,11 +905,11 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
             if (mDistrictNameSpinner.getVisibility() == View.VISIBLE &&
                     (mDistrictNameSpinner.getSelectedItemPosition() == 0 ||
                             mDistrictNameSpinner.getChildCount() == 0) &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                 mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                 mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
                 mDistrictNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -924,10 +921,10 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
             if (mDistrictET.getVisibility() == View.VISIBLE
                     && mDistrictET.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                 mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                 mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
                 mDistrictET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -939,16 +936,16 @@ public class Fragment_SecondScreen extends Fragment {
             }
         }
 
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
             if (mCityVillageET.getText().toString().isEmpty() &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
                 mCityNameErrorTextView.setVisibility(View.VISIBLE);
                 mCityNameErrorTextView.setText(getString(R.string.error_field_required));
                 mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 mCityVillageET.requestFocus();
                 return;
             } else if (mCityVillageET.getText().toString().length() < 3 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.VILLAGE_TOWN_CITY)) {
                 mCityNameErrorTextView.setVisibility(View.VISIBLE);
                 mCityNameErrorTextView.setText(getString(R.string.error_field_valid_village_required));
                 mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -961,9 +958,9 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         //address 1
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
             if (mAddress1EditText.getText().toString().isEmpty() &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
                 mAddress1ErrorTextView.setVisibility(View.VISIBLE);
                 mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
                 mAddress1EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -976,9 +973,9 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         //address 2
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
+        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
             if (mAddress2EditText.getText().toString().isEmpty() &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
+                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
                 mAddress2ErrorTextView.setVisibility(View.VISIBLE);
                 mAddress2ErrorTextView.setText(getString(R.string.error_field_required));
                 mAddress2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1002,11 +999,11 @@ public class Fragment_SecondScreen extends Fragment {
             mCityVillageName = mCityVillageET.getText().toString().trim();
 
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-            patientDTO.setCountry(mCountryNameSpinner.getSelectedItem()==null?"":StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+            patientDTO.setCountry(mCountryNameSpinner.getSelectedItem() == null ? "" : StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
             patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
-            if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null){
+            if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null) {
                 patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
-            }else {
+            } else {
                 patientDTO.setCityvillage(mCityVillageName);
             }
 
