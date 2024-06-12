@@ -20,6 +20,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
@@ -2888,6 +2889,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
                 if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     EncounterDTO encounterDTO = new EncounterDTO();
