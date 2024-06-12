@@ -1142,6 +1142,7 @@
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
     <string name="dr_specility_generalphysician">General Physician</string>
+    <string name="specialty_ncd_consultation">NCD Consultation</string>
     <string name="update_hw_profile">Updated Succussfully</string>
     <string name="enter_valid_email">Enter valid email address</string>
     <string name="enter_valid_gender">Enter gender male or female</string>

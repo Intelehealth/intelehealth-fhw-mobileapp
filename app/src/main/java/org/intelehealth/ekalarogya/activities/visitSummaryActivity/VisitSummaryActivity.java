@@ -259,6 +259,7 @@ public class VisitSummaryActivity extends BaseActivity {
 
     private boolean isNcdVisit;
     private CardView vitalsCardView, physicalExamCardView, patientHistoryCardView, familyHistoryCardView;
+    private TextView tvSpecialty;
 
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
@@ -561,6 +562,7 @@ public class VisitSummaryActivity extends BaseActivity {
         physicalExamCardView = findViewById(R.id.cardView_physexam);
         patientHistoryCardView = findViewById(R.id.cardView_pathist);
         familyHistoryCardView = findViewById(R.id.cardView_famhist);
+        tvSpecialty = findViewById(R.id.tv_specialty);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -880,7 +882,11 @@ public class VisitSummaryActivity extends BaseActivity {
                 boolean isUpdateVisitDone = false;
                 try {
                     if (!isVisitSpecialityExists) {
-                        isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "General Physician");
+                        if (isNcdVisit) {
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "NCD Consultation");
+                        } else {
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "General Physician");
+                        }
                     }
                 } catch (DAOException e) {
                     e.printStackTrace();
@@ -1909,8 +1915,17 @@ public class VisitSummaryActivity extends BaseActivity {
         getAppointmentDetails(visitUuid);
 
         isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
+        setSpecialtyBasedOnVisitType(isNcdVisit);
         if (isNcdVisit) {
             hideSectionsForSevikaVisit();
+        }
+    }
+
+    private void setSpecialtyBasedOnVisitType(boolean isNcdVisit) {
+        if (isNcdVisit) {
+            tvSpecialty.setText(getString(R.string.specialty_ncd_consultation));
+        } else {
+            tvSpecialty.setText(getString(R.string.dr_specility_generalphysician));
         }
     }
 
