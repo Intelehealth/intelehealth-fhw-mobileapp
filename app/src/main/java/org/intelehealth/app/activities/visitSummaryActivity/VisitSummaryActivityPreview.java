@@ -1565,7 +1565,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         String msg = String.format(getString(R.string.hw_message_sent_text), sessionManager.getChwname());
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showCommonDialog(VisitSummaryActivityPreview.this, R.drawable.info_blue_svg, getResources().getString(R.string.alert_txt),
-                msg, true, getResources().getString(R.string.sent), null, new DialogUtils.CustomDialogListener() {
+                msg, true, getResources().getString(R.string.action_btn_send), null, new DialogUtils.CustomDialogListener() {
                     @Override
                     public void onDialogActionDone(int action) {
                         shareOperation(msg);

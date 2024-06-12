@@ -1948,4 +1948,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_attach_the_patient_visit_details_pdf">Please attach the patient visit details pdf</string>
     <string name="visit_left_action_btn_label">@string/appointment</string>
     <string name="visit_right_action_btn_label">@string/send_visit_button</string>
+    <string name="action_btn_send">Send</string>
 </resources>
