@@ -416,7 +416,7 @@ public class ObsDAO {
 
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and conceptuuid = ? and voided!='1'";
-        String[] visitArgs = {visitnote,"596c7f50-ec12-4ad8-b92a-7491ad80341b"};
+        String[] visitArgs = {visitnote, HW_FOLLOWUP_CONCEPT_ID};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {

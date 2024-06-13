@@ -919,6 +919,27 @@ public class DateAndTimeUtils {
         return parsedDate;
     }
 
+
+    public static  Date formatToTargetedDateTime(String oldFormat,String newFormat,String dateTime) {
+
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat(oldFormat, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(newFormat, Locale.ENGLISH);
+
+        try {
+            Date date = inputFormat.parse(dateTime);
+            assert date != null;
+            String formattedDateString = outputFormat.format(date);
+
+            return outputFormat.parse(formattedDateString);
+
+        } catch (ParseException e) {
+            Log.e("ERRRR", e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
         Date parsedDate = convertStringToDateObject(date, format, localeCode);

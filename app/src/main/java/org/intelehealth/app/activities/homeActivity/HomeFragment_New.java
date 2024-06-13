@@ -478,7 +478,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 //+ "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) "
                 + " and o.value is NOT NULL GROUP BY a.patientuuid";
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.HW_FOLLOWUP_CONCEPT_ID});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
             do {
                 try {
