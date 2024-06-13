@@ -445,8 +445,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private List<FollowUpModel> getWeeksVisitsFromList(List<FollowUpModel> followUpList) {
         List<FollowUpModel> weekFollowUpList = new ArrayList<>();
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
-            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            //String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
+            //Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            Date followUpDateObject = DateAndTimeUtils.formatToTargetedDateTime("dd-MM-yyyy","yyyy-MM-dd",followUpModel.getFollowup_date());
             if (DateAndTimeUtils.isDateInCurrentWeek(followUpDateObject)) {
                 weekFollowUpList.add(followUpModel);
             }
@@ -458,8 +459,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         List<FollowUpModel> todaysFollowUpList = new ArrayList<>();
         Date todaysDate = DateAndTimeUtils.getCurrentDateWithoutTime();
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
-            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            //String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
+            Date followUpDateObject = DateAndTimeUtils.formatToTargetedDateTime("dd-MM-yyyy","yyyy-MM-dd",followUpModel.getFollowup_date());
             if (todaysDate.compareTo(followUpDateObject) == 0) {
                 todaysFollowUpList.add(followUpModel);
             }
@@ -731,7 +732,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 //+ "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
                 + "o.value is NOT NULL GROUP BY a.patientuuid";
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.HW_FOLLOWUP_CONCEPT_ID});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
             do {
                 try {

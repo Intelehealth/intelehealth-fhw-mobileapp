@@ -132,34 +132,35 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
                 // Followup Date section
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
-                    try {
-                        Log.v("getFollowup_date", model.getFollowup_date());
+                    Log.v("getFollowup_date", model.getFollowup_date());
 
-                        String followupDateTimeRaw = "";
-                        try {
-                            followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
-                        } catch (Exception e) {
-                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
-                        }
+                    String followupDateTimeRaw = "";
+                    //try {
+                    //  followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                    //} catch (Exception e) {
+                    followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                    // }
 
-                        Log.v("getFollowup_date", followupDateTimeRaw + "OK");
-                        String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
-                        Log.v("getFollowup_date", "final followupDate " + followupDateTime);
+                    Log.v("getFollowup_date", followupDateTimeRaw + "OK");
+                    String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", " ");
+                    Log.v("getFollowup_date", "final followupDate " + followupDateTime);
 
-                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
-                        Date nowDate = new Date();
-                        if (fDate.getTime() >= nowDate.getTime()) {
-                            holder.fu_date_txtview.setTextColor(context.getColor(R.color.gray_3));
-                        } else {
-                            holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
-                        }
-                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM, hh:mm a");
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            followupDate = StringUtils.en__hi_dob(followupDate);
-                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + "\n" + followupDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    //Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
+                    Date fDate = DateAndTimeUtils.formatToTargetedDateTime("dd-MM-yyyy hh:mm a","yyyy-MM-dd hh:mm a",followupDateTime);
+                    Date nowDate = new Date();
+                    Log.v("getFollowup_dateParse", "final followupDate " + fDate.toString());
+
+                    if (fDate.getTime() >= nowDate.getTime()) {
+                        holder.fu_date_txtview.setTextColor(context.getColor(R.color.gray_3));
+                    } else {
+                        holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                     }
+                    Date flDate = DateAndTimeUtils.formatToTargetedDateTime("dd-MM-yyyy hh:mm a","dd MMMM, hh:mm a" ,followupDateTime);
+                    String followupDate = DateAndTimeUtils.convertDateObjectToString(flDate,"dd MMMM, hh:mm a");
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        followupDate = StringUtils.en__hi_dob(followupDate);
+                    holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + "\n" + followupDate);
                 }
 
                 // Emergency/Priority tag code.
