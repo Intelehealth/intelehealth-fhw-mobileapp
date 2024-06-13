@@ -833,7 +833,7 @@ public class EncounterDAO {
     public static ArrayList<FollowUpNotificationData> getFollowUpDateListFromConceptId() throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        String followUpDateConcept = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
+        String followUpDateConcept = UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 
         ArrayList<FollowUpNotificationData> list = new ArrayList<>();
 

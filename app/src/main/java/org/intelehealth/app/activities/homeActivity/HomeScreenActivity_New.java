@@ -308,9 +308,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
 //        catchFCMMessageData();
 
-       Log.d("TTTTTTTTTTTT",""+ NotificationSchedulerUtils.Companion.parseDateTimeToDateTime("2024-06-05, Time: 1:50 AM, Remark: Follow-up"));
-
-
         notificationReceiver = new NotificationReceiver();
         notificationReceiver.registerModuleBReceiver(this);
 
