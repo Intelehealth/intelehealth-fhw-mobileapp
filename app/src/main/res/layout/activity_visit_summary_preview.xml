@@ -20,7 +20,7 @@
         android:background="@drawable/frame_10021">
 
         <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -33,7 +33,7 @@
             android:weightSum="1">
 
             <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
@@ -76,6 +76,7 @@
                 android:layout_marginStart="@dimen/margin_20"
                 android:layout_weight="0.3"
                 android:gravity="end"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <ImageButton

@@ -627,7 +627,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
-                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         genderTr,
@@ -635,7 +635,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         dobTr,
@@ -643,7 +643,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         ageTr,
@@ -652,8 +652,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.Companion.configField(
+                    if (AgeUtils.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                        PatientRegFieldsUtils.configField(
                                 false,
                                 fields,
                                 guardianTypeTr,
@@ -664,8 +664,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.Companion.configField(
+                    if (AgeUtils.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                        PatientRegFieldsUtils.configField(
                                 false,
                                 fields,
                                 guardianNameTr,
@@ -675,7 +675,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         );
                     }
                 }
-                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         phoneNumTr,
@@ -683,45 +683,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.EM_CONTACT_TYPE ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                emContactTypeTr,
-                                null,
-                                null,
-                                null
-                        );
-                case PatientRegConfigKeys.EM_CONTACT_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                emContactNameTr,
-                                null,
-                                null,
-                                null
-                        );
-                case PatientRegConfigKeys.EM_CONTACT_NUMBER ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                emContactNumberTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.EM_CONTACT_TYPE -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        emContactTypeTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.EM_CONTACT_NAME -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        emContactNameTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.EM_CONTACT_NUMBER -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        emContactNumberTr,
+                        null,
+                        null,
+                        null
+                );
 
-                case PatientRegConfigKeys.POSTAL_CODE ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                postalCodeTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.POSTAL_CODE -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        postalCodeTr,
+                        null,
+                        null,
+                        null
+                );
                 case PatientRegConfigKeys.COUNTRY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.configField(
                             false,
                             fields,
                             countryTr,
@@ -730,7 +726,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         stateTr,
@@ -738,7 +734,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         districtTr,
@@ -747,7 +743,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.configField(
                             false,
                             fields,
                             villageCityTr,
@@ -756,7 +752,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         addressOneTr,
@@ -764,7 +760,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         addressTwoTr,
@@ -774,7 +770,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 );
 
                 case PatientRegConfigKeys.NATIONAL_ID -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.configField(
                             false,
                             fields,
                             nidTr,
@@ -783,7 +779,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         occupationTr,
@@ -791,16 +787,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.SOCIAL_CATEGORY ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                socialCategoryTr,
-                                null,
-                                null,
-                                null
-                        );
-                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.SOCIAL_CATEGORY -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        socialCategoryTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.configField(
                         false,
                         fields,
                         educationTr,
@@ -809,15 +804,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
 
-                case PatientRegConfigKeys.ECONOMIC_CATEGORY ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                economicCategoryTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.ECONOMIC_CATEGORY -> PatientRegFieldsUtils.configField(
+                        false,
+                        fields,
+                        economicCategoryTr,
+                        null,
+                        null,
+                        null
+                );
             }
         }
     }
@@ -1731,9 +1725,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
-            guardianNameTr.setVisibility(View.VISIBLE);
-            guardianTypeTr.setVisibility(View.VISIBLE);
+        if (AgeUtils.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
+//            guardianNameTr.setVisibility(View.VISIBLE);
+//            guardianTypeTr.setVisibility(View.VISIBLE);
 
             //guardian type
             if (patientDTO.getGuardianType() != null && !patientDTO.getGuardianType().equals("")) {
