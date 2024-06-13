@@ -3303,7 +3303,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void uploadVisit() {
         if (NetworkConnection.isOnline(getApplication())) {
-            Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, getResources().getString(R.string.visit_save_and_upload_status), Toast.LENGTH_LONG).show();
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
