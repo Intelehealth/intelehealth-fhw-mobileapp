@@ -750,6 +750,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             setFacilityToVisitSpinner();
             setSeveritySpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
+            Timber.tag(TAG).d("follow up=>%s", followupValue);
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -759,6 +760,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                String noInfo = getString(R.string.no_information);
+                ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(noInfo);
+                visitSummaryPdfData.setFollowUpDate(noInfo);
             }
         });
     }
@@ -782,9 +787,14 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             facilityList = getFacilityList();
         }
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        Timber.tag(TAG).d("facility=>%s", facility);
         if (!TextUtils.isEmpty(facility)) {
             ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(" " + Node.bullet + "  " + facility);
             visitSummaryPdfData.setFacility(" " + Node.bullet + "  " + facility);
+        } else {
+            String noInfo = getString(R.string.no_information);
+            ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(noInfo);
+            visitSummaryPdfData.setFacility(noInfo);
         }
     }
 
@@ -795,9 +805,14 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
 
         String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
+        Timber.tag(TAG).d("severity=>%s", severity);
         if (!TextUtils.isEmpty(severity)) {
             ((TextView) findViewById(R.id.tvSavertyValue)).setText(" " + Node.bullet + "  " + severity);
             visitSummaryPdfData.setSeverity(" " + Node.bullet + "  " + severity);
+        } else {
+            String noInfo = getString(R.string.no_information);
+            ((TextView) findViewById(R.id.tvSavertyValue)).setText(noInfo);
+            visitSummaryPdfData.setSeverity(noInfo);
         }
 
     }
@@ -1567,7 +1582,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     private void showShareDialog() {
         try {
             String hwName = new ProviderDAO().getProviderName(sessionManager.getCreatorID(), ProviderDTO.Columns.USER_UUID.value);
-            if(hwName != null && !hwName.isEmpty()) {
+            if (hwName != null && !hwName.isEmpty()) {
                 hwName = hwName.substring(0, 1).toUpperCase(Locale.getDefault()) + hwName.substring(1);
                 String msg = String.format(getString(R.string.hw_message_sent_text), hwName);
                 DialogUtils dialogUtils = new DialogUtils();

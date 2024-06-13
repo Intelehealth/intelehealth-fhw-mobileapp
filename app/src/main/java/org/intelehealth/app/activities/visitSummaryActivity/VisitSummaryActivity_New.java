@@ -581,6 +581,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
             }
         });
     }
