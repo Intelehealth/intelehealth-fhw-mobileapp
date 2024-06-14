@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
+import org.intelehealth.app.abdm.activity.AbhaCardVerificationActivity;
 import org.intelehealth.app.abdm.activity.ConsentActivity;
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -87,7 +88,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
 
                                 Intent intent;
                                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                    intent = new Intent(context, AadharMobileVerificationActivity.class);
+                                    intent = new Intent(context, AbhaCardVerificationActivity.class);
                                     intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
                                 }
                                 else {
