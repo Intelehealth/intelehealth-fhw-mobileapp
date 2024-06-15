@@ -1032,6 +1032,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String currentNodeVal = node_fetch_local_language(context, sessionManager, mCurrentNode);
+        alertDialogBuilder.setTitle(getString(R.string.please_confirm_your_details));
         alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {

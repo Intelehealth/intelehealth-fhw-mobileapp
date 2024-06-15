@@ -1270,5 +1270,6 @@
     <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
     <string name="side_effect_related_to_medication">Side effect related to medication.</string>
     <string name="unknown_other">Unknown / Other</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
 
 </resources>
