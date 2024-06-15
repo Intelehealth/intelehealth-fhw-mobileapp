@@ -211,14 +211,13 @@ public class DateAndTimeUtils {
         age = tyears + " " + tmonth + " " + tdays;
 
         int roundOffAge = period.getYears();
-        if(period.getYears() == 2 && period.getMonths() == 0 && period.getDays() == 0)
+        if (period.getYears() == 2 && period.getMonths() == 0 && period.getDays() == 0)
             roundOffAge = 2;
-        else if(period.getYears() == 2 && (period.getMonths() > 0 || period.getDays() > 0))
+        else if (period.getYears() == 2 && (period.getMonths() > 0 || period.getDays() > 0))
             roundOffAge = 3;
 
         return roundOffAge;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -385,5 +384,11 @@ public class DateAndTimeUtils {
     public String getVisitUploadDateTime() {
         DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
         return date.format(new Date());
+    }
+
+    public static String getCurrentTimeAsVisitEndedTime() {
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        return currentDateFormat.format(todayDate);
     }
 }

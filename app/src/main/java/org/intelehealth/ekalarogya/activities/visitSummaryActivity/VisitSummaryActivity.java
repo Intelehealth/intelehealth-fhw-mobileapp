@@ -1065,20 +1065,19 @@ public class VisitSummaryActivity extends BaseActivity {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 showVisitID();
                                 Log.d("visitUUID", "showVisitID: " + visitUUID);
-
                             } else {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
-
                             }
                             uploaded = true;
                             uploadButton.setEnabled(true);
 //                            editComplaint.setVisibility(View.GONE);
+                            endSevikaVisitOnUpload();
                         }
                     }, 4000);
                 } else {
                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                    endSevikaVisitOnUpload();
                 }
-
             }
         });
 
@@ -1919,6 +1918,24 @@ public class VisitSummaryActivity extends BaseActivity {
         if (isNcdVisit) {
             hideSectionsForSevikaVisit();
         }
+    }
+
+    private void endSevikaVisitOnUpload() {
+        if (!isNcdVisit) return;
+
+        String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endDateTime);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        new SyncUtils().syncForeground("", null);
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void setSpecialtyBasedOnVisitType(boolean isNcdVisit) {
