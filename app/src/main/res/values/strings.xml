@@ -1271,5 +1271,8 @@
     <string name="side_effect_related_to_medication">Side effect related to medication.</string>
     <string name="unknown_other">Unknown / Other</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
+    <string name="yes_move_ahead">"Yes, move ahead."</string>
+    <string name="no_go_back">No, go back.</string>
 
 </resources>

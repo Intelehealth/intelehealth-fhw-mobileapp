@@ -274,4 +274,12 @@ public class VisitAttributeListDAO {
 
         return isNcdVisit;
     }
+
+    public static int deleteVisitAttributeUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_visit_attribute";
+        String whereClause = "visit_uuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
+    }
 }

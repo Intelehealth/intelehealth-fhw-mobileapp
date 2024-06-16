@@ -415,4 +415,12 @@ public class VisitsDAO {
         cursor.close();
         return isPresent;
     }
+
+    public static int deleteVisitUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_visit";
+        String whereClause = "uuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
+    }
 }

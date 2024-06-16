@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.activities.complaintNodeActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -38,6 +39,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
+import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ncd.constants.Constants;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
@@ -201,21 +204,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 mgender = PatientsDAO.fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (mgender.equalsIgnoreCase("M") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                    if (mgender.equalsIgnoreCase("M") && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                         complaints.get(i).remove(complaints, i);
                         i--;
-                    } else if (mgender.equalsIgnoreCase("F") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    } else if (mgender.equalsIgnoreCase("F") && complaints.get(i).getGender().equalsIgnoreCase("1")) {
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
                 }
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
 
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
@@ -262,21 +262,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 mgender = PatientsDAO.fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (mgender.equalsIgnoreCase("M") &&
-                            complaints.get(i).getGender()!=null && complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                    if (mgender.equalsIgnoreCase("M") && complaints.get(i).getGender() != null && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                         complaints.get(i).remove(complaints, i);
                         i--;
-                    } else if (mgender.equalsIgnoreCase("F") &&
-                            complaints.get(i).getGender()!=null && complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    } else if (mgender.equalsIgnoreCase("F") && complaints.get(i).getGender() != null && complaints.get(i).getGender().equalsIgnoreCase("1")) {
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
                 }
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (complaints.get(i).getMin_age()!=null && !complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                            complaints.get(i).getMax_age()!=null && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+                    if (complaints.get(i).getMin_age() != null && !complaints.get(i).getMin_age().equalsIgnoreCase("") && complaints.get(i).getMax_age() != null && !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
                         if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                             complaints.get(i).remove(complaints, i);
                             i--;
@@ -300,29 +297,58 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         list_recyclerView.setVisibility(View.VISIBLE);
 //        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
-        autoSelectComplaints();
+        fetchEligibleProtocols();
     }
 
-    private void autoSelectComplaints() {
+    private void fetchEligibleProtocols() {
         PatientsDAO patientsDAO = new PatientsDAO();
+        List<String> diseaseList;
+
         try {
             String patientBirthDate = PatientsDAO.getPatientDetailsForRedirection(patientUuid).getDate_of_birth();
             String patientMedicalHistoryJson = patientsDAO.getValueFromPatientAttrbTable(patientUuid, Constants.OTHER_MEDICAL_HISTORY);
-            List<String> diseaseList = new CategorySegregationUtils(getResources()).populateDiseaseListBasedOnAgeAndHistory(
-                    DateAndTimeUtils.INSTANCE.calculateAgeInYears(patientBirthDate),
-                    patientMedicalHistoryJson
-            );
 
-            for (String disease : diseaseList) {
-                for (Node complaint : complaints) {
-                    if (disease.equalsIgnoreCase(complaint.getText())) {
-                        complaint.toggleSelected();
-                    }
-                }
-            }
-
+            diseaseList = new CategorySegregationUtils(getResources()).populateDiseaseListBasedOnAgeAndHistory(DateAndTimeUtils.INSTANCE.calculateAgeInYears(patientBirthDate), patientMedicalHistoryJson);
         } catch (DAOException e) {
             throw new RuntimeException(e);
+        }
+
+        if (diseaseList.size() == 0) {
+            displayIneligibleConfirmationDialog();
+        } else if (diseaseList.size() == 1 && diseaseList.get(0).equalsIgnoreCase(getString(R.string.tab_general))) {
+            displayIneligibleConfirmationDialog();
+        } else {
+            autoSelectComplaints(diseaseList);
+        }
+    }
+
+    private void displayIneligibleConfirmationDialog() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(getString(R.string.not_eligible_for_protocols_message));
+
+        alertDialogBuilder.setPositiveButton(getString(R.string.yes_move_ahead), (dialog, which) -> dialog.dismiss());
+        alertDialogBuilder.setNegativeButton(getString(R.string.no_go_back), (dialog, which) -> {
+            deleteVisitAndGoBack();
+        });
+
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void deleteVisitAndGoBack() {
+        VisitAttributeListDAO.deleteVisitAttributeUsingVisitUuid(visitUuid);
+        EncounterDAO.deleteEncounterUsingVisitUuid(visitUuid);
+        VisitsDAO.deleteVisitUsingVisitUuid(visitUuid);
+        finish();
+    }
+
+    private void autoSelectComplaints(List<String> diseaseList) {
+        for (String disease : diseaseList) {
+            for (Node complaint : complaints) {
+                if (disease.equalsIgnoreCase(complaint.getText())) {
+                    complaint.toggleSelected();
+                }
+            }
         }
     }
 
@@ -372,8 +398,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Intent intent = new Intent(
-                                ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                        Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -461,8 +486,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private void bottomUpAnimation(View v) {
 
         v.setVisibility(View.VISIBLE);
-        Animation bottomUp = AnimationUtils.loadAnimation(this,
-                R.anim.bottom_up);
+        Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
         v.startAnimation(bottomUp);
 
     }
