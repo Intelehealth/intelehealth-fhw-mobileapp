@@ -24,6 +24,10 @@ public class OTPVerificationRequestBody {
     @Expose
     private String scope;
 
+    @SerializedName("authMethod")
+    @Expose
+    private String authMethod;
+
     public String getOtp() {
         return otp;
     }
@@ -54,5 +58,13 @@ public class OTPVerificationRequestBody {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public String getAuthMethod() {
+        return authMethod;
+    }
+
+    public void setAuthMethod(String authMethod) {
+        this.authMethod = authMethod;
     }
 }

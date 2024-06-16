@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm.activity;
 
-import static org.intelehealth.app.abdm.ABDMConstant.AADHAR_CARD_SELECTION;
+import static org.intelehealth.app.abdm.ABDMConstant.AADHAAR_CARD_SELECTION;
+import static org.intelehealth.app.abdm.ABDMConstant.ABHA_OTP_AADHAAR;
 import static org.intelehealth.app.abdm.ABDMConstant.ABHA_SELECTION;
 import static org.intelehealth.app.abdm.ABDMConstant.MOBILE_NUMBER_SELECTION;
 import static org.intelehealth.app.abdm.ABDMConstant.SCOPE_ABHA_ADDRESS;
@@ -33,6 +34,7 @@ import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.ABDMConstant;
+import org.intelehealth.app.abdm.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
@@ -78,7 +80,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     private ActivityAbhaCardVerificationBinding binding;
     private String accessToken = "";
-    String optionSelected = AADHAR_CARD_SELECTION;
+    private String abhaAuthType = ABHA_OTP_AADHAAR;
+    String optionSelected = AADHAAR_CARD_SELECTION;
     //    private boolean abhaCard;
     public static final String BEARER_AUTH = "Bearer ";
     private CustomProgressDialog cpd;
@@ -141,9 +144,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     if (!binding.otpBox.getText().toString().isEmpty()) {
                         String mobileNo;
 
-                        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION) || optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+                        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {
                             // via. mobile login
                             callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
+                        } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+                            callOTPForABHALoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                         } else {
                             mobileNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim();
                             callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
@@ -160,7 +165,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         binding.otpBox.setText("");
 
         binding.layoutHaveABHANumber.buttonUsername.setOnClickListener(v -> {
-            optionSelected = AADHAR_CARD_SELECTION;
+            optionSelected = AADHAAR_CARD_SELECTION;
             binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
@@ -217,12 +222,19 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(TokenResponse tokenResponse) {
                                 accessToken = BEARER_AUTH + tokenResponse.getAccessToken();
-
-                                if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(AADHAR_CARD_SELECTION)) {
-                                    callAadharMobileVerificationApi(accessToken);   // via. aadharEnroll api
-                                } else if (!optionSelected.isEmpty() && (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION) || optionSelected.equalsIgnoreCase(ABHA_SELECTION))) {
+                                if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(AADHAAR_CARD_SELECTION)) {
+                                    callAadhaarVerificationApi(accessToken);   // via. aadharEnroll api
+                                } else if (!optionSelected.isEmpty() && (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION))) {
                                     // call mobile api.
                                     callMobileNumberVerificationApi(accessToken);
+                                } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+                                    cpd.dismiss();
+                                    AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                                    dialog.openAuthSelectionDialogDialog(authType -> {
+                                        abhaAuthType = authType;
+                                        callAbhaVerificationApi(accessToken, abhaAuthType);
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
                                 }
 
                             }
@@ -261,19 +273,13 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         return result.toString();
     }
 
-    private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
-
+    private void callAbhaVerificationApi(String accessToken, String authType) {  // mobile: Step 2
+        cpd.show(getString(R.string.otp_sending));
         MobileLoginApiBody mobileLoginApiBody = new MobileLoginApiBody();
-        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
-            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
-            String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
-            mobileLoginApiBody.setValue(value); // mobile value.
-        } else {
-            SCOPE = SCOPE_MOBILE;
-            mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim()); // mobile value.
-        }
-
-        mobileLoginApiBody.setScope(SCOPE);
+        String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
+        mobileLoginApiBody.setValue(value); // mobile value.
+        mobileLoginApiBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER);
+        mobileLoginApiBody.setAuthMethod(authType);
         String url = UrlModifiers.getMobileLoginVerificationUrl();
         // payload - end
 
@@ -290,7 +296,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
                                     StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
 
-                            Log.d(TAG, "onSuccess: callMobileNumberVerificationApi: " + otpResponse.toString());
+                            Timber.tag(TAG).d("onSuccess: callMobileNumberVerificationApi: %s", otpResponse.toString());
                             // here, we will receive: txtID and otp will be received via SMS.
                             // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
@@ -320,13 +326,72 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void callAadharMobileVerificationApi(String accessToken) {
+    private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
+
+        MobileLoginApiBody mobileLoginApiBody = new MobileLoginApiBody();
+        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
+            String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
+            mobileLoginApiBody.setValue(value); // mobile value.
+        } else {
+            SCOPE = SCOPE_MOBILE;
+            mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim()); // mobile value.
+        }
+
+        mobileLoginApiBody.setScope(SCOPE);
+        String url = UrlModifiers.getMobileLoginVerificationUrl();
+        // payload - end
+
+        Single<OTPResponse> mobileResponseSingle = AppConstants.apiInterface.GET_OTP_FOR_MOBILE(url, accessToken, mobileLoginApiBody);
+        new Thread(() -> {
+            // api - start
+            mobileResponseSingle
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<OTPResponse>() {
+                        @Override
+                        public void onSuccess(OTPResponse otpResponse) {
+                            cpd.dismiss();
+                            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                    StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+
+                            Timber.tag(TAG).d("onSuccess: callMobileNumberVerificationApi: %s", otpResponse.toString());
+                            // here, we will receive: txtID and otp will be received via SMS.
+                            // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
+
+                            if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
+                                binding.flOtpBox.setVisibility(View.VISIBLE);
+                                binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                            }
+
+                            binding.sendOtpBtn.setTag(otpResponse.getTxnId());
+                            binding.sendOtpBtn.setText(getString(R.string.verify));
+                            binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            binding.sendOtpBtn.setEnabled(true);
+                            binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                            binding.otpBox.setText("");
+                            Timber.tag(TAG).e("onError: callMobileNumberVerificationApi: %s", e.getMessage());
+                            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            cancelResendAndHideView();
+                            cpd.dismiss();
+                        }
+                    });
+            // api - end
+        }).start();
+    }
+
+    private void callAadhaarVerificationApi(String accessToken) {
         // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
         String aadharNo;
         aadharNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim();
 
-        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAR);
+        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAAR);
         aadharApiBody.setValue(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
@@ -373,6 +438,75 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
+    private void callOTPForABHALoginVerificationApi(String txnId, String otp) {   // Mobile: Step 3
+        cpd = new CustomProgressDialog(context);
+        cpd.show(getString(R.string.verifying_otp));
+        Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + otp);
+        binding.sendOtpBtn.setEnabled(false);    // btn disabled.
+        binding.sendOtpBtn.setTag(null);    // resetting...
+
+        // payload
+        String url = UrlModifiers.getOTPForMobileLoginVerificationUrl();
+        OTPVerificationRequestBody requestBody = new OTPVerificationRequestBody();
+        requestBody.setTxnId(txnId);
+        requestBody.setOtp(otp);
+        requestBody.setAuthMethod(abhaAuthType);
+        requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER);
+
+        Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
+                AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
+        new Thread(() -> mobileLoginOnOTPVerifiedResponseSingle
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<MobileLoginOnOTPVerifiedResponse>() {
+                    @Override
+                    public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                        cpd.dismiss();
+
+                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
+                        if (SCOPE.equalsIgnoreCase("abha-address")) {
+                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                            callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                            return;
+                        }
+                        if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
+                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
+
+                                if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
+                                    // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
+                                    Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
+                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+
+                                    intent.putExtra("X_TOKEN", X_TOKEN);
+                                    intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
+                                    intent.putExtra("accessToken", accessToken);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
+                                    String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
+                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                    callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                }
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
+                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        binding.sendOtpBtn.setEnabled(true);
+                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                        binding.otpBox.setText("");
+                        cancelResendAndHideView();
+                    }
+                })).start();
+    }
+
+
     /**
      * Here, this function will only be called if user has ABHA number and he wants to use the login via. Mobile login flow.
      *
@@ -391,12 +525,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         OTPVerificationRequestBody requestBody = new OTPVerificationRequestBody();
         requestBody.setTxnId(txnId);
         requestBody.setOtp(otp);
-
-
-        if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
-            SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
-        }
-
         requestBody.setScope(SCOPE);
         Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
@@ -453,7 +581,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     /**
      * This api is used to call the GET Abha card api which returns a base64 encoded image.
-     *
      */
     private void callGETAbhaCardApi(String xToken, String accessToken, MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
@@ -774,7 +901,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     private boolean areInputFieldsValid_HasABHA() {
         boolean isvalid = true;
-        if (!optionSelected.isEmpty() && optionSelected.equals(AADHAR_CARD_SELECTION)) {
+        if (!optionSelected.isEmpty() && optionSelected.equals(AADHAAR_CARD_SELECTION)) {
 
             // aadhar validation - start
             String aadharNo = binding.layoutHaveABHANumber.edittextUsername.getText().toString().replace(" ", "").trim();

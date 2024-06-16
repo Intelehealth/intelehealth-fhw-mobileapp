@@ -799,6 +799,9 @@
     <string name="please_enter_valid_otp">Please enter valid otp</string>
     <string name="_6_digit_otp_sent_on_your_registered_number_nplease_check_and_enter_the_otp">6-digit OTP sent on your registered number.\nPlease check and enter the OTP.</string>
     <string name="resend">Resend</string>
+    <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
+    <string name="abha">ABHA</string>
+    <string name="aadhaar">Aadhaar</string>
 
 </resources>
 

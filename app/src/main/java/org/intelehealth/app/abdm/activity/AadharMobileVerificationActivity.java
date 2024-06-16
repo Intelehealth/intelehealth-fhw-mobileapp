@@ -1,12 +1,8 @@
 package org.intelehealth.app.abdm.activity;
 
-import static org.intelehealth.app.abdm.ABDMConstant.BUNDLE_KEY;
-import static org.intelehealth.app.abdm.ABDMConstant.INTENT_PATIENT_UUID;
-import static org.intelehealth.app.abdm.ABDMConstant.PERSONAL_EDIT;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -398,7 +394,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         else
             aadharNo = binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().trim();
 
-        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAR);
+        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAAR);
         aadharApiBody.setValue(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
@@ -468,7 +464,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         requestBody.setOtp(otp);
 
         if (abhaCard)
-            SCOPE = ABDMConstant.SCOPE_AADHAR;
+            SCOPE = ABDMConstant.SCOPE_AADHAAR;
 
         if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
             SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? ABDMConstant.SCOPE_ABHA_ADDRESS : ABDMConstant.SCOPE_ABHA_NUMBER;
