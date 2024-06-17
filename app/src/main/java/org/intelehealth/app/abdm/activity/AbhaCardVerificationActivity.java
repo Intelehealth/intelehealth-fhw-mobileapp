@@ -117,13 +117,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         setClickListener();
 
         binding.resendBtn.setOnClickListener(v -> {
-            if (resendCounter != 0)
+            if (resendCounter != 0) {
                 resendCounter--;
 
-            resendCounterAttemptsTextDisplay();
-            resendOtp();
-            binding.otpBox.setText("");
-            callGenerateTokenApi();
+                resendCounterAttemptsTextDisplay();
+                resendOtp();
+                binding.otpBox.setText("");
+                callGenerateTokenApi();
+            }
+            else
+                resendCounterAttemptsTextDisplay();
         });
 
         binding.sendOtpBtn.setOnClickListener(v -> {
@@ -1054,9 +1057,12 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                binding.resendBtn.setEnabled(true);
+                if (resendCounter != 0) {
+                    binding.resendBtn.setEnabled(true);
+                    binding.resendBtn.setTextColor(getColor(R.color.colorPrimary));
+                }
+
                 binding.resendBtn.setText(getResources().getString(R.string.resend_otp));
-                binding.resendBtn.setTextColor(getColor(R.color.colorPrimary));
                 if (cpd != null && cpd.isShowing())
                     cpd.dismiss();
             }

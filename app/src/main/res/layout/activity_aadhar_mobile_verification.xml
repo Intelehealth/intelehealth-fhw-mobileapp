@@ -137,7 +137,7 @@
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:orientation="horizontal"
-                android:layout_alignStart="@id/sendOtpBtn"
+                android:layout_alignStart="@id/fl_otpBox"
                 android:layout_below="@+id/fl_otpBox">
 
                 <TextView
@@ -164,8 +164,11 @@
                 android:id="@+id/ll_resend_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_below="@+id/rl_resendOTP"
-                android:layout_alignStart="@id/sendOtpBtn"
+                android:layout_alignStart="@id/fl_otpBox"
+                android:layout_alignEnd="@id/fl_otpBox"
                 android:layout_marginTop="@dimen/margin_10"
                 >
 
@@ -173,10 +176,9 @@
                     android:id="@+id/tv_resend_counter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@color/red"
-                    android:textSize="@null"
-                    android:text="@string/number_of_retries_left"
+                    android:textColor="@color/lite_red"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
+                    android:text="@string/maximum_number_of_retries_exceeded_please_try_again_after_10_mins"
                     />
 
             </LinearLayout>

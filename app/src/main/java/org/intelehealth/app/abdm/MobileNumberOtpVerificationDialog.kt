@@ -1,6 +1,7 @@
 package org.intelehealth.app.abdm
 
 import android.app.Dialog
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.UrlModifiers
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog
 
+
 class MobileNumberOtpVerificationDialog : DialogFragment() {
     private lateinit var binding: DialogMobileNumberOtpVerificationBinding
     private val cpd: CustomProgressDialog? = null
@@ -33,7 +35,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private var accessToken: String? = null
     private var txnId: String? = null
     private var onMobileEnrollCompleted: OnMobileEnrollCompleted? = null
-    private val resendCounter = 2;
+    private var resendCounter = 2;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,16 +54,24 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
             container,
             false
         )
-        binding.sendOtpBtn.setOnClickListener {
 
+        binding.sendOtpBtn.setOnClickListener {
             if (binding.otpBox.text.isNullOrEmpty() || binding.otpBox.text!!.length < 6) {
                 binding.otpBox.error = getString(R.string.please_enter_valid_otp)
             } else {
                 callEnrollABDMWithMobileApi(binding.otpBox.text.toString(), txnId)
             }
         }
+        
         binding.resendBtn.setOnClickListener {
-            callMobileVerificationApi()
+            if (resendCounter != 0) {
+                resendCounter--;
+
+                resendCounterAttemptsTextDisplay();
+                callMobileVerificationApi()
+            }
+            else
+                resendCounterAttemptsTextDisplay();
         }
         return binding.root
     }
@@ -71,6 +81,15 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         return super.onCreateDialog(savedInstanceState)
     }
 
+    private fun resendCounterAttemptsTextDisplay() {
+        if (resendCounter != 0) binding.tvResendCounter.setText(resources.getString(R.string.number_of_retries_left, resendCounter))
+        else {
+            binding.tvResendCounter.setText(getString(R.string.maximum_number_of_retries_exceeded_please_try_again_after_10_mins))
+            binding.resendBtn.isEnabled = false
+            binding.resendBtn.setTextColor(resources.getColor(R.color.medium_gray))
+            binding.resendBtn.paintFlags = binding.resendBtn.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        }
+    }
 
     private fun callMobileVerificationApi() {
         // payload
