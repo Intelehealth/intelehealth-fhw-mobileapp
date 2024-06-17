@@ -118,4 +118,6 @@
     <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
     <string name="abha">ABHA</string>
     <string name="aadhaar">Aadhaar</string>
+    <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 10 mins.</string>
 </resources>

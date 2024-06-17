@@ -160,6 +160,27 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_resend_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_resendOTP"
+                android:layout_alignStart="@id/sendOtpBtn"
+                android:layout_marginTop="@dimen/margin_10"
+                >
+
+                <TextView
+                    android:id="@+id/tv_resend_counter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:text="@string/number_of_retries_left"
+                    />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/sendOtpBtn"
@@ -169,7 +190,7 @@
                 android:background="@drawable/ui2_common_primary_bg_with_state"
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:drawableTint="@color/iconTintWhite"
-                android:layout_below="@+id/rl_resendOTP"
+                android:layout_below="@+id/ll_resend_counter"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:layout_centerHorizontal="true"

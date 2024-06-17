@@ -78,6 +78,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
     private CountDownTimer countDownTimer;
+    private static int resendCounter = 2;
 
 
     @Override
@@ -132,6 +133,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         }
 
         binding.resendBtn.setOnClickListener(v -> {
+            if (resendCounter != 0)
+                resendCounter--;
+
+            resendCounterAttemptsTextDisplay();
             resendOtp();
             binding.otpBox.setText("");
             callGenerateTokenApi();
@@ -142,6 +147,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
                     binding.flOtpBox.setVisibility(View.VISIBLE);
                     binding.rlResendOTP.setVisibility(View.VISIBLE);
+                    binding.llResendCounter.setVisibility(View.VISIBLE);
+                    resendCounterAttemptsTextDisplay();
                     binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 }
 
@@ -182,6 +189,21 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         });
 
         //  resendOtp();
+    }
+
+    /**
+     * This function is used to handle the resend counter and the necessary text to be displayed.
+     */
+    private void resendCounterAttemptsTextDisplay() {
+        if (resendCounter != 0)
+            binding.tvResendCounter.setText(getResources().getString(R.string.number_of_retries_left, resendCounter));
+        else {
+            binding.tvResendCounter.setText(getString(R.string.maximum_number_of_retries_exceeded_please_try_again_after_10_mins));
+            binding.resendBtn.setEnabled(false);
+            binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
+            binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        }
     }
 
     private void clickListenerFor_HasABHA() {
@@ -346,6 +368,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
                                     binding.flOtpBox.setVisibility(View.VISIBLE);
                                     binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                    binding.llResendCounter.setVisibility(View.VISIBLE);
                                     binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                                 }
 
@@ -404,6 +427,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
                                     binding.flOtpBox.setVisibility(View.VISIBLE);
                                     binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                    binding.llResendCounter.setVisibility(View.VISIBLE);
                                     binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                                 }
 
@@ -1018,8 +1042,12 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         if (countDownTimer != null)
             countDownTimer.cancel();    // reset any existing countdown.
 
-        if (binding.rlResendOTP.getVisibility() == View.VISIBLE)    // hide resend view
+        if (binding.rlResendOTP.getVisibility() == View.VISIBLE) {   // hide resend view
             binding.rlResendOTP.setVisibility(View.GONE);
+            binding.llResendCounter.setVisibility(View.GONE);
+            if (resendCounter != 2)
+                resendCounter++;
+        }
 
         if (binding.flOtpBox.getVisibility() == View.VISIBLE) { // hide otp view
             binding.flOtpBox.setVisibility(View.GONE);

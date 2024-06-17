@@ -33,6 +33,8 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private var accessToken: String? = null
     private var txnId: String? = null
     private var onMobileEnrollCompleted: OnMobileEnrollCompleted? = null
+    private val resendCounter = 2;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         snackBarUtils = SnackbarUtils()
