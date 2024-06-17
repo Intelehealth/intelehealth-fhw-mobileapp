@@ -39,7 +39,9 @@ public class NCDNodeValidationLogic {
             }
 
         if (validationRules != null) {
-            if (validationRules.getType().equalsIgnoreCase("NAVIGATE")) {
+            if (validationRules.getType().equalsIgnoreCase("WIGHT_SUM_NAVIGATE")) {
+                return checkForWightSumType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isFromNextClick);
+            } else if (validationRules.getType().equalsIgnoreCase("NAVIGATE")) {
                 return checkForNavigationType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isFromNextClick);
             } else if (validationRules.getType().equalsIgnoreCase("RANGE_TEXT")) {
                 return checkForRangeTextType(context, patientUUID, mmRootNode, selectedRootIndex, selectedNode, validationRules, isInboundRequest, previousActionResult);
@@ -73,7 +75,7 @@ public class NCDNodeValidationLogic {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(false);
                 for (int i = 0; i < mmRootNode.getOptionsList().size(); i++) {
-                    if (i >= selectedRootIndex)
+                    if (i >= selectedRootIndex && !mmRootNode.getOptionsList().get(i).getHidden())
                         mmRootNode.getOptionsList().get(i).setHidden(false);
                 }
                 ncdValidationResult.setUpdatedNode(mmRootNode);
@@ -148,6 +150,32 @@ public class NCDNodeValidationLogic {
         return ncdValidationResult;
     }
 
+    private static NCDValidationResult checkForWightSumType(Context context, String patientUUID, Node mmRootNode, int selectedRootIndex, Node selectedNode, ValidationRules validationRules, boolean isFromNextClick) {
+        NCDValidationResult ncdValidationResult = new NCDValidationResult();
+        String rulesType = validationRules.getType();
+        String sourceDataType = validationRules.getSourceDataType();
+        String sourceDataNameType = validationRules.getSourceData();
+        // get the values
+        String[] sourceName = sourceDataNameType.split(",");
+        int total = 0;
+        for (int i = 0; i < sourceName.length; i++) {
+            int val = Integer.parseInt(DataSourceManager.getValuesForDataSourceFromTargetNode(sourceName[i], mmRootNode));
+            total += val;
+        }
+        mmRootNode.getOptionsList().get(selectedRootIndex).setLanguage(String.valueOf(total));
+        ncdValidationResult.setTargetNodeID(null);
+        ncdValidationResult.setReadyToEndTheScreening(false);
+        ncdValidationResult.setMoveToNextQuestion(true);
+        ncdValidationResult.setUpdatedNode(mmRootNode);
+
+        if(total<30){
+            mmRootNode.getOptionsList().get(selectedRootIndex+1).setHidden(true);
+            mmRootNode.getOptionsList().get(selectedRootIndex+2).setHidden(true);
+        }
+
+        return ncdValidationResult;
+    }
+
     /**
      * @param mmRootNode
      * @param selectedRootIndex
@@ -173,6 +201,14 @@ public class NCDNodeValidationLogic {
 
             //if (sourceDataInfoList.size() == 1)
             sourceDataInfoValueList.add(DataSourceManager.getValuesForDataSourceFromTargetNode(sourceData, mmRootNode));
+        }else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT)) {
+            //List<SourceData> sourceDataInfoList = new ArrayList<>();
+            SourceData sourceData = new SourceData();
+            sourceData.setDataType(ValidationConstants.INTEGER);
+            sourceData.setDataName(sourceDataNameType);
+
+            //if (sourceDataInfoList.size() == 1)
+            sourceDataInfoValueList.add(DataSourceManager.getValuesForDataSourceFromTargetNode(sourceData, mmRootNode));
         } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT_SET)) {
             // Nested node separator '#=>>'
             // target data and type separator '->'
@@ -193,7 +229,7 @@ public class NCDNodeValidationLogic {
             ncdValidationResult.setUpdatedNode(mmRootNode);
         } else {
             if (validationRules.isSelfCheck()) {
-                if (validationRules.getActionType().equals(ValidationConstants.THEN_CONST_HIDE_THE_NODE)) {
+                if (validationRules.getActionType().equals(ValidationConstants.THEN_CONST_HIDE_THE_NODE) && actionResult.getTarget() != null && actionResult.getTarget().equals(ValidationConstants.THEN_CONST_HIDE_THE_NODE)) {
                     mmRootNode.getOptionsList().get(selectedRootIndex).setHidden(true);
                     ncdValidationResult.setMoveToNextQuestion(true);
                 } else {

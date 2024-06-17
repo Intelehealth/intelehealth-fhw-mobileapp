@@ -155,6 +155,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     forwardButton.setVisibility(View.INVISIBLE);
                     mTimerLinearLayout.setVisibility(View.VISIBLE);
                     mTimerTitleTextView.setText("Waiting for " + nodeText + " - " + currentStep);
+                    mTimerTextView.setTag(nodeText);
                     mCountDownTimer = new CountDownTimer(waitTime * 60 * 1000, 1000) {
                         public void onTick(long millisUntilFinished) {
                             // Used for formatting digit to be in 2 digits only
@@ -291,7 +292,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         mTimerLinearLayout = findViewById(R.id.ll_timer);
         mTimerTitleTextView = findViewById(R.id.tv_timer_title);
         mTimerTextView = findViewById(R.id.tv_timer);
+        mTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                /*mTimerTextView.setText("00:00");
+                mTimerLinearLayout.setVisibility(View.GONE);
+                // Get instance of Vibrator from current Context
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+                // Vibrate for 400 milliseconds
+                v.vibrate(400);
+                Toast.makeText(context, "Please take the reading for " + mTimerTextView.getTag().toString(), Toast.LENGTH_SHORT).show();
+
+                // TODO:directly open the input box
+                mQuestionListingadapter.manualClickActionOnRecurringInput();*/
+                if (mCountDownTimer != null) {
+                    mCountDownTimer.onFinish();
+                    mCountDownTimer.cancel();
+                }
+                return false;
+            }
+        });
         navButtonRelativeLayout = findViewById(R.id.rl_nav_btn);
         forwardButton = findViewById(R.id.btn_forward);
         backButton = findViewById(R.id.btn_back);
@@ -816,6 +837,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                             if (autoFillResult.isMoveToNextQuestion()) {
                                                 mCurrentNodeIndex += 1;
                                             } else {
+                                                scrollToPosition = true;
+                                            }
+                                        }else{
+                                            if(mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()){
+                                                mCurrentNodeIndex += 1;
+                                            }else {
                                                 scrollToPosition = true;
                                             }
                                         }

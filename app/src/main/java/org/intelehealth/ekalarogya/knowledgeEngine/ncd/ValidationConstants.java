@@ -9,6 +9,7 @@ public class ValidationConstants {
     public static final String TYPE_RANGE_TEXT = "RANGE_TEXT";
     public static final String TYPE_TEXT_DATE = "TEXT_DATE";
     public static final String RECURRING_NUMBER_SET = "RECURRING_NUMBER_SET";
+    public static final String TYPE_WIGHT_SUM = "WIGHT_SUM";
 
     //source data types
     public static final String SOURCE_DATA_TYPE_PATIENT_ATTRIBUTE = "PATIENT_ATTRIBUTE";

@@ -1269,5 +1269,7 @@
     <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
     <string name="side_effect_related_to_medication">Side effect related to medication.</string>
     <string name="unknown_other">Unknown / Other</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 
 </resources>

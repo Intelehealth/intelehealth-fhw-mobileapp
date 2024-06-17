@@ -226,6 +226,7 @@ public class Node implements Serializable {
             this.text = jsonNode.getString("text");
             this.isRecurring = jsonNode.optBoolean("is-recurring");
             this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
+            this.isHidden = jsonNode.optBoolean("is-hidden");
             this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
             this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
@@ -383,6 +384,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.isRecurring = source.isRecurring;
         this.isLazyPopuShow = source.isLazyPopuShow;
+        this.isHidden = source.isHidden;
         this.recurringMaxCount = source.recurringMaxCount;
         this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
 
@@ -1986,7 +1988,7 @@ public class Node implements Serializable {
                 if (!value.equalsIgnoreCase("")) {
                     double valueDouble = Double.parseDouble(value);
 
-                    if ((finalMin != 0 && finalMax != 0) && valueDouble < finalMin || valueDouble > finalMax) {
+                    if ((finalMin != 0d && finalMax != 0d) && valueDouble < finalMin || valueDouble > finalMax) {
                         Toast.makeText(context, context.getString(R.string.hemoglobin_error, String.valueOf(finalMin), String.valueOf(finalMax)), Toast.LENGTH_SHORT).show();
                         node.setSelected(false);
                         node.setDataCapture(false);
@@ -2122,6 +2124,16 @@ public class Node implements Serializable {
                     Toast.makeText(context, context.getString(R.string.node_input_empty_error, node2.findDisplay()), Toast.LENGTH_SHORT).show();
                 } else if ((finalMin2 != 0 && finalMax2 != 0) && valueDouble2 < finalMin2 || valueDouble2 > finalMax2) {
                     Toast.makeText(context, context.getString(R.string.node_input_range_error, node2.findDisplay(), String.valueOf(finalMin2), String.valueOf(finalMax2)), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
+                } else if (node.getValidation()!=null && node.getValidation().equals(">") && valueDouble1<valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_gtr_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
+                }else if (node.getValidation()!=null && node.getValidation().equals("<") && valueDouble1>valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_less_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
                     node.setSelected(false);
                     node.setDataCapture(false);
 
