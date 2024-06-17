@@ -133,7 +133,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     resendOtp();
                     callGenerateTokenApi();
                 } else {
-                    // ie. otp received and making call to enrollAadhar api.
+                    // ie. otp received and making call to enrollAadhaar api.
                     if (Objects.requireNonNull(binding.otpBox.getText()).toString().isEmpty()) {    // ie. OTP not entered in box.
                         snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
                                 StringUtils.getMessageTranslated(getString(R.string.please_enter_otp_received), sessionManager.getAppLanguage()), false);
@@ -236,7 +236,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         public void onSuccess(TokenResponse tokenResponse1) {
                             accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
                             if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase(AADHAAR_CARD_SELECTION)) {
-                                callAadhaarVerificationApi(accessToken);   // via. aadharEnroll api
+                                callAadhaarVerificationApi(accessToken);   // via. aadhaarEnroll api
                             } else if (!optionSelected.isEmpty() && (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION))) {
                                 // call mobile api.
                                 callMobileNumberVerificationApi(accessToken);
@@ -383,11 +383,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void callAadhaarVerificationApi(String accessToken) {
         // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
-        String aadharNo;
-        aadharNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim();
+        String aadhaarNo;
+        aadhaarNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim();
 
         aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAAR);
-        aadharApiBody.setValue(aadharNo);
+        aadharApiBody.setValue(aadhaarNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
         Single<OTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
@@ -402,7 +402,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
                                     StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
 
-                            Timber.tag(TAG).d("onSuccess: AadharResponse: %s", otpResponse.toString());
+                            Timber.tag(TAG).d("onSuccess: AadhaarResponse: %s", otpResponse.toString());
                             // here, we will receive: txtID, otp
                             // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
@@ -419,7 +419,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            Timber.tag(TAG).e("onError: AadharResponse: %s", e.getMessage());
+                            Timber.tag(TAG).e("onError: AadhaarResponse: %s", e.getMessage());
                             Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             binding.sendOtpBtn.setEnabled(true);
                             binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
@@ -465,7 +465,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             return;
                         }
                         if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
+                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is at least one (1) account.
 
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                     // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
@@ -538,7 +538,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             return;
                         }
                         if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
+                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is at least one (1) account.
 
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                     // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
@@ -743,12 +743,12 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
 
     /**
-     * Here, this function is used to call the EnrollByAadhar api which takes @BODY: txtId, mobileNo, otp and will return us
+     * Here, this function is used to call the EnrollByAadhaar api which takes @BODY: txtId, mobileNo, otp and will return us
      * patient's details.
      *
-     * @param txnId    get from aadhar card verification api
+     * @param txnId    get from aadhaar card verification api
      * @param mobileNo user which enter
-     * @param otp      get from aadhar card verification api
+     * @param otp      get from aadhaar card verification api
      */
     private void callOTPForVerificationApi(String txnId, String mobileNo, String otp) {
         cpd = new CustomProgressDialog(context);
@@ -836,7 +836,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         Timber.tag(TAG).d("onSuccess: suggestion: %s", enrollSuggestionResponse);
                         if (enrollSuggestionResponse.getAbhaAddressList() != null) {
 
-                            // auto-generated abha preferred address from abdm end.
+                            // auto-generated abha preferred address from ABDM end.
                             addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
@@ -860,13 +860,13 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    public static boolean validateAadharNumber(String aadharNumber) {
+    public static boolean validateAadhaarNumber(String aadhaarNumber) {
         Pattern aadharPattern = Pattern.compile("\\d{12}");
-        boolean isValidAadhar = aadharPattern.matcher(aadharNumber).matches();
-        if (isValidAadhar) {
-            isValidAadhar = VerhoeffAlgorithm.validateVerhoeff(aadharNumber);
+        boolean isValidAadhaar = aadharPattern.matcher(aadhaarNumber).matches();
+        if (isValidAadhaar) {
+            isValidAadhaar = VerhoeffAlgorithm.validateVerhoeff(aadhaarNumber);
         }
-        return isValidAadhar;
+        return isValidAadhaar;
     }
 
     private boolean checkValidation() {
@@ -888,70 +888,70 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     }
 
     private boolean areInputFieldsValid_HasABHA() {
-        boolean isvalid = true;
+        boolean isValid = true;
         if (!optionSelected.isEmpty() && optionSelected.equals(AADHAAR_CARD_SELECTION)) {
 
-            // aadhar validation - start
-            String aadharNo = binding.layoutHaveABHANumber.edittextUsername.getText().toString().replace(" ", "").trim();
-            if (aadharNo.isEmpty()) {
+            // aadhaar validation - start
+            String aadhaarNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().replace(" ", "").trim();
+            if (aadhaarNo.isEmpty()) {
                 binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                isvalid = false;
+                isValid = false;
             } else {
-                if (aadharNo.length() != 12) {
+                if (aadhaarNo.length() != 12) {
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
-                    isvalid = false;
-                } else if (!validateAadharNumber(binding.layoutHaveABHANumber.edittextUsername.getText().toString())) {   // Verhoeff algo. check
+                    isValid = false;
+                } else if (!validateAadhaarNumber(binding.layoutHaveABHANumber.edittextUsername.getText().toString())) {
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.aadharError.setText(R.string.aadhar_number_is_not_valid);
                     binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                    isvalid = false;
+                    isValid = false;
                 } else {
                     binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.aadharError.setVisibility(View.GONE);
                 }
-            }   // aadhar validaiton - end
+            }   // aadhaar validation - end
 
 
-            // mobile for aadhar - start
-            String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
+            // mobile for aadhaar - start
+            String mobile = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().replace(" ", "").trim();
 
             if (mobile.isEmpty()) {
                 binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                isvalid = false;
+                isValid = false;
             } else {
                 if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                    isvalid = false;
+                    isValid = false;
                 } else {
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
                 }
             }
 
-            // mobile for aadhar - end
+            // mobile for aadhaar - end
         } else if (!optionSelected.isEmpty() && optionSelected.equals(MOBILE_NUMBER_SELECTION)) {  // Phone number field
 
-            String mobile = binding.layoutHaveABHANumber.edittextMobileNumber.getText().toString().replace(" ", "").trim();
+            String mobile = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().replace(" ", "").trim();
             Timber.tag(TAG).v(mobile);
 
             if (mobile.isEmpty()) {
                 binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
                 binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                isvalid = false;
+                isValid = false;
             } else {
                 if (/*code.equalsIgnoreCase("91") &&*/ mobile.length() != 10) {
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
                     binding.layoutHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                    isvalid = false;
+                    isValid = false;
                 } else {
                     binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                     binding.layoutHaveABHANumber.mobileError.setVisibility(View.GONE);
@@ -963,11 +963,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()) && TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText())) {
                 binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.abhaDetails.tvAbhaAddressError.setVisibility(View.VISIBLE);
-                isvalid = false;
+                isValid = false;
             }
         }
 
-        return isvalid;
+        return isValid;
     }
 
     @Override
