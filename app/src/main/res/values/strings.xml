@@ -1915,4 +1915,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
     <string name="abha">ABHA</string>
     <string name="aadhaar">Aadhaar</string>
+    <string name="please_select_the_abha_account">Please select the ABHA account</string>
 </resources>
