@@ -492,18 +492,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             return;
                         }
                         if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is at least one (1) account.
+                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
 
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
-                                    // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
-                                    Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
-                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-
-                                    intent.putExtra("X_TOKEN", X_TOKEN);
-                                    intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
-                                    intent.putExtra("accessToken", accessToken);
-                                    startActivity(intent);
-                                    finish();
+                                    AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
+                                    dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
+                                        String ABHA_NUMBER = account.getABHANumber();
+                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                        callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
                                 } else {
                                     // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
                                     String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
@@ -513,6 +511,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                             }
                         }
+
                     }
 
                     @Override
