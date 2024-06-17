@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.intelehealth.app.R
-import org.intelehealth.app.abdm.ABDMConstant.ABHA_OTP_AADHAAR
-import org.intelehealth.app.abdm.ABDMConstant.ABHA_OTP_MOBILE
+import org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_AADHAAR
+import org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_MOBILE
 import org.intelehealth.app.databinding.FragmentAbhaOtpTypeDialogBinding
 
 

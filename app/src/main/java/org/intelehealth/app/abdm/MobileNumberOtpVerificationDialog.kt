@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
@@ -16,6 +15,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.abdm.model.AadharApiBody
 import org.intelehealth.app.abdm.model.EnrollNumberWithABDMRequest
 import org.intelehealth.app.abdm.model.OTPResponse
+import org.intelehealth.app.abdm.utils.ABDMConstant
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.DialogMobileNumberOtpVerificationBinding
 import org.intelehealth.app.utilities.SessionManager

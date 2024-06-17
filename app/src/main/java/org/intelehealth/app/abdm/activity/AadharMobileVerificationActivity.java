@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.ABDMConstant;
+import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
@@ -39,6 +39,7 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAadharMobileVerificationBinding;
@@ -301,23 +302,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
-    public static String formatIntoAbhaString(String input) {
-        StringBuilder result = new StringBuilder();
-        int length = input.length();
-        int[] groupSizes = {2, 4, 4, 4}; // The size of each group
 
-        int startIndex = 0;
-        for (int groupSize : groupSizes) {
-            int endIndex = startIndex + groupSize;
-            result.append(input.substring(startIndex, endIndex));
-            if (endIndex < length) {
-                result.append("-");
-            }
-            startIndex = endIndex;
-        }
-
-        return result.toString();
-    }
 
     private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
         // payload - start
@@ -327,7 +312,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             mobileLoginApiBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextUsername.getText()).toString().trim()); // aadhar value.
         } else if (!optionSelected.isEmpty() && optionSelected.equalsIgnoreCase("abha")) {
             SCOPE = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? ABDMConstant.SCOPE_ABHA_ADDRESS : ABDMConstant.SCOPE_ABHA_NUMBER;
-            String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
+            String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : ABDMUtils.INSTANCE.formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
             mobileLoginApiBody.setValue(value); // mobile value.
 
         } else {

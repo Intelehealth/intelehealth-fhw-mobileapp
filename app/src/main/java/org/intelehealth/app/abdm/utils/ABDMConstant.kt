@@ -1,4 +1,4 @@
-package org.intelehealth.app.abdm
+package org.intelehealth.app.abdm.utils
 
 object ABDMConstant{
     const val SCOPE_AADHAAR = "aadhar"
