@@ -3,11 +3,9 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
-import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeActivity
 import org.intelehealth.app.app.IntelehealthApplication
@@ -21,11 +19,8 @@ import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
-import org.intelehealth.klivekit.chat.model.ChatMessageModel
-import org.intelehealth.klivekit.chat.utils.MySharedPreferences
 import org.intelehealth.klivekit.model.ChatMessage
 import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.extensions.fromJson
 
 /**
