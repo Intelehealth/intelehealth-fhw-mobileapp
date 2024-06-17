@@ -147,14 +147,22 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private CardView snackbar_cv;
     private TextView snackbar_text;
 
+    private enum ProfileAttr {
+        PHONE, DOB, EMAIL, COUNTRY
+    }
+
+    private interface ProfileAttributesUpdateListener {
+        void onUpdate(boolean status, ProfileAttr attr);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_profile_ui2);
-        context = MyProfileActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
+        setContentView(R.layout.activity_my_profile_ui2);
+        context = MyProfileActivity.this;
         networkUtils = new NetworkUtils(MyProfileActivity.this, this);
     }
 
@@ -563,43 +571,106 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         return context;
     }
 
-    private void updateDetails() {
+    private void updatePhoneAttribute(ProfileAttributesUpdateListener listener) {
+        if (etMobileNo.getText() != null && etMobileNo.getText().length() > 0) {
+            String updatedPhoneNum = etMobileNo.getText().toString();
+            if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+                createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum, listener, ProfileAttr.PHONE);
+            } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+                updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum, listener, ProfileAttr.PHONE);
+            } else listener.onUpdate(true, ProfileAttr.PHONE);
+        } else listener.onUpdate(true, ProfileAttr.PHONE);
+    }
 
-        Integer updatedAge = Integer.parseInt(tvAge.getText().toString());
-        String updatedDOB = tvDob.getText().toString();
-        String formattedDOB = dobToDb + "T00:00:00.000+0530";
-        String updatedPhoneNum = etMobileNo.getText().toString();
-        String updatedEmailID = etEmail.getText().toString();
-        String updatedCountryCode = countryCodePicker.getSelectedCountryCode();
-        boolean profileUpdated = false;
-        if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
-            updateDOB(updatedAge, formattedDOB, gender);
-        }
-        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
-            createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
-        } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
-            updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
-        }
+    private void updateEmailAttribute(ProfileAttributesUpdateListener listener) {
+        if (etEmail.getText() != null && etEmail.getText().length() > 0) {
+            String updatedEmailID = etEmail.getText().toString();
+            if (prevEmail == null && emailAttributeUuid == null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
+                createProfileAttribute("226c0494-d67e-47b4-b7ec-b368064844bd", updatedEmailID, listener, ProfileAttr.EMAIL);
+            } else if (emailAttributeUuid != null && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
+                updateProfileAttribute(emailAttributeUuid, updatedEmailID, listener, ProfileAttr.EMAIL);
+            } else listener.onUpdate(true, ProfileAttr.EMAIL);
+        } else listener.onUpdate(true, ProfileAttr.EMAIL);
+    }
 
-        if (prevEmail == null && emailAttributeUuid == null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
-            createProfileAttribute("226c0494-d67e-47b4-b7ec-b368064844bd", updatedEmailID);
-        } else if (emailAttributeUuid != null && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
-            updateProfileAttribute(emailAttributeUuid, updatedEmailID);
-        }
+    private void updateCountryAttribute(ProfileAttributesUpdateListener listener) {
+        if (etEmail.getText() != null && etEmail.getText().length() > 0) {
+            String updatedCountryCode = countryCodePicker.getSelectedCountryCode();
+            if (prevCountryCode == null && countryCodeAttributeUuid == null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
+                createProfileAttribute("2d4d8e6d-21c4-4710-a3ad-4daf5c0dfbbb", updatedCountryCode, listener, ProfileAttr.COUNTRY);
+            } else if (countryCodeAttributeUuid != null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
+                updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode, listener, ProfileAttr.COUNTRY);
+            } else listener.onUpdate(true, ProfileAttr.COUNTRY);
+        } else listener.onUpdate(true, ProfileAttr.COUNTRY);
+    }
 
-        if (prevCountryCode == null && countryCodeAttributeUuid == null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
-            createProfileAttribute("2d4d8e6d-21c4-4710-a3ad-4daf5c0dfbbb", updatedCountryCode);
-        } else if (countryCodeAttributeUuid != null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
-            updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
+    private void updateAttributes(ProfileAttributesUpdateListener listener, ProfileAttr attr) {
+        switch (attr) {
+            case DOB -> updatePhoneAttribute(listener);
+            case PHONE -> updateEmailAttribute(listener);
+            case EMAIL -> updateCountryAttribute(listener);
+            case COUNTRY -> onUpdateSuccess();
         }
+    }
 
+    private void onUpdateSuccess() {
         Intent i = new Intent(this, HomeScreenActivity_New.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("intentTag", "profile updated");
         startActivity(i);
     }
 
-    private void createProfileAttribute(String attributeTypeUuid, String newValue) {
+    private void updateDetails() {
+
+        Integer updatedAge = Integer.parseInt(tvAge.getText().toString());
+        String updatedDOB = tvDob.getText().toString();
+        String formattedDOB = dobToDb + "T00:00:00.000+0530";
+        if (dobToDb != null && !updatedDOB.equalsIgnoreCase(prevDOB)) {
+            updateDOB(updatedAge, formattedDOB, gender, new ProfileAttributesUpdateListener() {
+                @Override
+                public void onUpdate(boolean status, ProfileAttr attr) {
+                    if (status) updateAttributes(this, attr);
+                    else {
+                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+            });
+        } else updatePhoneAttribute(new ProfileAttributesUpdateListener() {
+            @Override
+            public void onUpdate(boolean status, ProfileAttr attr) {
+                if (status) updateAttributes(this, attr);
+                else {
+                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+//        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+//            createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
+//        } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
+//            updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
+//        }
+//
+//        if (prevEmail == null && emailAttributeUuid == null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
+//            createProfileAttribute("226c0494-d67e-47b4-b7ec-b368064844bd", updatedEmailID);
+//        } else if (emailAttributeUuid != null && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
+//            updateProfileAttribute(emailAttributeUuid, updatedEmailID);
+//        }
+//
+//        if (prevCountryCode == null && countryCodeAttributeUuid == null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
+//            createProfileAttribute("2d4d8e6d-21c4-4710-a3ad-4daf5c0dfbbb", updatedCountryCode);
+//        } else if (countryCodeAttributeUuid != null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
+//            updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
+//        }
+
+//        Intent i = new Intent(this, HomeScreenActivity_New.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        i.putExtra("intentTag", "profile updated");
+//        startActivity(i);
+    }
+
+    private void createProfileAttribute(String attributeTypeUuid, String newValue, ProfileAttributesUpdateListener listener, ProfileAttr attr) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -618,16 +689,18 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.logD(TAG, e.getMessage());
+                listener.onUpdate(false, attr);
             }
 
             @Override
             public void onComplete() {
                 Logger.logD(TAG, "completed");
+                listener.onUpdate(true, attr);
             }
         });
     }
 
-    private void updateProfileAttribute(String attributeTypeUuid, String newValue) {
+    private void updateProfileAttribute(String attributeTypeUuid, String newValue, ProfileAttributesUpdateListener listener, ProfileAttr attr) {
         Timber.tag(TAG).d("Mobile:%s", newValue);
         Timber.tag(TAG).d("Attributes:%s", attributeTypeUuid);
         String serverUrl = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/provider/" + sessionManager.getProviderID() + "/"; //${target_provider_uuid}/attribute/${target_provider_attribute_uuid}
@@ -649,16 +722,18 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.logD(TAG, e.getMessage());
+                listener.onUpdate(false, attr);
             }
 
             @Override
             public void onComplete() {
                 Logger.logD(TAG, "completed");
+                listener.onUpdate(true, attr);
             }
         });
     }
 
-    private void updateDOB(Integer updatedAge, String updatedDOB, String gender) {
+    private void updateDOB(Integer updatedAge, String updatedDOB, String gender, ProfileAttributesUpdateListener listener) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -671,17 +746,21 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             @Override
             public void onNext(ResponseBody responseBody) {
                 Logger.logD(TAG, responseBody.toString());
+                Logger.logD(TAG, "onNext");
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Logger.logD(TAG, e.getMessage());
+                Logger.logD(TAG, "onError");
+                listener.onUpdate(false, ProfileAttr.DOB);
             }
 
             @Override
             public void onComplete() {
                 Logger.logD(TAG, "completed");
+                listener.onUpdate(true, ProfileAttr.DOB);
             }
         });
     }
@@ -911,7 +990,19 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             ProviderDAO providerDAO = new ProviderDAO();
             ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
             if (providerDTO != null) {
-                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(), providerDTO.getUseruuid(), etEmail.getText().toString().trim(), etMobileNo.getText().toString().trim(), providerDTO.getProviderId(), etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(), providerDTO.getVoided(), selectedGender, dobToDb, providerDTO.getUuid(), providerDTO.getIdentifier(), selectedCode, etMiddleName.getText().toString().trim());
+                ProviderDTO inputDTO = new ProviderDTO(providerDTO.getRole(),
+                        providerDTO.getUseruuid(),
+                        etEmail.getText().toString().trim(),
+                        etMobileNo.getText().toString().trim(),
+                        providerDTO.getProviderId(),
+                        etFirstName.getText().toString().trim(),
+                        etLastName.getText().toString().trim(),
+                        providerDTO.getVoided(),
+                        selectedGender, dobToDb,
+                        providerDTO.getUuid(),
+                        providerDTO.getIdentifier(),
+                        selectedCode,
+                        etMiddleName.getText().toString().trim());
 
                 String imagePath = "";
                 if (profileImagePAth != null && !profileImagePAth.isEmpty()) {
@@ -1123,10 +1214,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

@@ -1939,6 +1939,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="facility_to_visit">Facility to visit</string>
     <string name="severity_of_case">Severity of case</string>
     <string name="follow_up_date">Follow up date</string>
+    <string name="close_case">Close case</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="preview">Preview</string>
     <string name="visit_preview">Visit Preview</string>

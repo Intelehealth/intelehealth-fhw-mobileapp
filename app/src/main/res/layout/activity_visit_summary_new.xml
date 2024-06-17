@@ -116,8 +116,8 @@
             android:layout_above="@+id/bottom_btn_relative"
             android:layout_below="@+id/relativeCardview"
             android:layout_marginBottom="@dimen/std_16dp"
-            android:paddingBottom="@dimen/margin_16"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/margin_16">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -1025,13 +1025,14 @@
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cvFollowup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/flSeverity"
                         android:layout_marginHorizontal="@dimen/margin_24"
                         android:layout_marginTop="@dimen/margin_5"
+                        android:layout_marginBottom="@dimen/margin_16"
                         android:elevation="16dp"
                         app:cardCornerRadius="@dimen/margin_5"
                         app:cardElevation="@dimen/margin_5">
@@ -1116,8 +1117,142 @@
                             </LinearLayout>
 
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
+                    <!--Close case To Visit-->
+                    <FrameLayout
+                        android:id="@+id/flCloseCaseToVisit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cvFollowup">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvCloseCaseVisitDoc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/toolbar_margin_left"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:elevation="16dp"
+                            app:cardCornerRadius="@dimen/margin_5"
+                            app:cardElevation="@dimen/margin_5">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RelativeLayout
+                                    android:id="@+id/rlCloseCaseToVisitHeader"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                                    <ImageView
+                                        android:id="@+id/ivCloseCaseToVisit"
+                                        android:layout_width="@dimen/edittext_height_44dp"
+                                        android:layout_height="@dimen/edittext_height_44dp"
+                                        android:src="@drawable/speciality_red_icon" />
+
+                                    <TextView
+                                        style="@style/text_title_style"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="@dimen/margin_8"
+                                        android:layout_toEndOf="@+id/ivCloseCaseToVisit"
+                                        android:text="@string/close_case" />
+
+                                    <ImageButton
+                                        android:id="@+id/ibCloseCaseToVisitHeader"
+                                        android:layout_width="@dimen/fu_icon_width"
+                                        android:layout_height="@dimen/fu_icon_height"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:background="@null"
+                                        android:src="@drawable/ui2_ic_chevron_down" />
+                                </RelativeLayout>
+
+                                <!--Expanded Vitals-->
+                                <RelativeLayout
+                                    android:id="@+id/rlCloseCaseToVisitHeaderExpandView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/rlCloseCaseToVisitHeader"
+                                    android:visibility="gone"
+                                    tools:visibility="visible">
+
+                                    <View
+                                        android:id="@+id/dividerCloseCaseToVisit"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginStart="@dimen/fu_margin_start"
+                                        android:layout_marginEnd="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                                        android:background="@color/notifi_divider_color" />
+
+
+                                    <TextView
+                                        android:id="@+id/tvCloseCaseToVisitValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/dividerCloseCaseToVisit"
+                                        android:layout_marginStart="@dimen/fu_margin_start"
+                                        android:layout_marginEnd="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        android:text="@string/no_information" />
+
+                                </RelativeLayout>
+
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvCloseCaseToVisit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/toolbar_margin_left"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:elevation="16dp"
+                            app:cardCornerRadius="@dimen/margin_5"
+                            app:cardElevation="@dimen/margin_5">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/fu_card_margin_sides">
+
+                                <TextView
+                                    android:id="@+id/tvCloseCaseToVisitTitle"
+                                    style="@style/vs_title_head_14sp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/close_case"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textStyle="bold" />
+
+                                <Spinner
+                                    android:id="@+id/spinnerCloseCaseToVisit"
+                                    style="@style/AppTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_below="@+id/tvCloseCaseToVisitTitle"
+                                    android:layout_marginTop="@dimen/fu_margin_start"
+                                    android:layout_marginBottom="@dimen/margin_16dp"
+                                    android:entries="@array/speciality_values"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/select_speciality"
+                                    android:paddingStart="@dimen/fu_margin_start"
+                                    android:paddingTop="@dimen/margin_10"
+                                    android:paddingBottom="@dimen/margin_10" />
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+                    </FrameLayout>
                 </RelativeLayout>
 
                 <!--            Priority Visit-->
@@ -1291,24 +1426,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-<!--                <Button-->
-<!--                    android:id="@+id/preview_bt_with_save_visit_lay"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="@dimen/fu_btn_size"-->
-<!--                    android:layout_marginStart="@dimen/margin_24"-->
-<!--                    android:layout_marginEnd="@dimen/margin_8"-->
-<!--                    android:layout_marginBottom="@dimen/margin_5"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/ui2_common_primary_bg"-->
-<!--                    android:padding="@dimen/margin_12"-->
-<!--                    android:text="@string/visit_left_action_btn_label"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textSize="@dimen/common_button_text_size"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:visibility="visible"-->
-<!--                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+                <!--                <Button-->
+                <!--                    android:id="@+id/preview_bt_with_save_visit_lay"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="@dimen/fu_btn_size"-->
+                <!--                    android:layout_marginStart="@dimen/margin_24"-->
+                <!--                    android:layout_marginEnd="@dimen/margin_8"-->
+                <!--                    android:layout_marginBottom="@dimen/margin_5"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/ui2_common_primary_bg"-->
+                <!--                    android:padding="@dimen/margin_12"-->
+                <!--                    android:text="@string/visit_left_action_btn_label"-->
+                <!--                    android:textColor="@color/white"-->
+                <!--                    android:textSize="@dimen/common_button_text_size"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:visibility="visible"-->
+                <!--                    app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
 
                 <Button
