@@ -1952,4 +1952,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="visit_left_action_btn_label">@string/appointment</string>
     <string name="visit_right_action_btn_label">@string/send_visit_button</string>
     <string name="action_btn_send">Send</string>
+    <string name="confirm_close_case">Close Case?</string>
+    <string name="confirm_close_case_visit_reason_message">Are you sure you want to close case and share visit summery?</string>
 </resources>

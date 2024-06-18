@@ -13,6 +13,7 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.CLOSE_CASE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -168,6 +169,7 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.Serializable;
@@ -658,6 +660,18 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
             }
         }
+
+        bindCloseCaseReason();
+    }
+
+    private void bindCloseCaseReason() {
+        String closeReason = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CLOSE_CASE);
+        if (!TextUtils.isEmpty(closeReason)) {
+            visitSummaryPdfData.setCloseCaseReason(closeReason);
+            TextView tvCloseCaseReason = findViewById(R.id.tvCloseCaseToVisitValue);
+            tvCloseCaseReason.setText(" " + Node.bullet + "  " + closeReason);
+            findViewById(R.id.flCloseCaseToVisit).setVisibility(View.VISIBLE);
+        } else findViewById(R.id.flCloseCaseToVisit).setVisibility(View.GONE);
     }
 
     private int mOpenCount = 0;

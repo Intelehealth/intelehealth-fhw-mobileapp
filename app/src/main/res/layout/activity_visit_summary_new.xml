@@ -1155,7 +1155,7 @@
                                         android:id="@+id/ivCloseCaseToVisit"
                                         android:layout_width="@dimen/edittext_height_44dp"
                                         android:layout_height="@dimen/edittext_height_44dp"
-                                        android:src="@drawable/speciality_red_icon" />
+                                        android:src="@drawable/dialog_close_visit_icon" />
 
                                     <TextView
                                         style="@style/text_title_style"

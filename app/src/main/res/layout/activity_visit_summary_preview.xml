@@ -949,6 +949,75 @@
                     </LinearLayout>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/flCloseCaseToVisit"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_below="@+id/cvFollowup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/rlCloseCaseToVisitHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fu_card_margin_sides"
+                        android:layout_marginTop="@dimen/fu_card_margin_sides"
+                        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                        android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                        <ImageView
+                            android:id="@+id/ivCloseCaseToVisit"
+                            android:layout_width="@dimen/edittext_height_44dp"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:src="@drawable/dialog_close_visit_icon" />
+
+                        <TextView
+                            style="@style/text_title_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/margin_8"
+                            android:layout_toEndOf="@+id/ivCloseCaseToVisit"
+                            android:text="@string/close_case" />
+
+                    </RelativeLayout>
+
+                    <!--Expanded Vitals-->
+                    <RelativeLayout
+                        android:id="@+id/rlCloseCaseToVisitHeaderExpandView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlCloseCaseToVisitHeader"
+                        android:visibility="visible"
+                        tools:visibility="visible">
+
+                        <View
+                            android:id="@+id/dividerCloseCaseToVisit"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                            android:background="@color/notifi_divider_color" />
+
+
+                        <TextView
+                            android:id="@+id/tvCloseCaseToVisitValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dividerCloseCaseToVisit"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_marginEnd="@dimen/fu_margin_start"
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:text="@string/no_information" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
             </RelativeLayout>
 
             <!--            Priority Visit-->

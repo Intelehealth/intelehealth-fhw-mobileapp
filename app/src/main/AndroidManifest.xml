@@ -152,7 +152,7 @@
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"

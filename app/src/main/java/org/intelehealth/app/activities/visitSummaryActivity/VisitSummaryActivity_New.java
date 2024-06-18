@@ -14,7 +14,7 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
+import static org.intelehealth.app.utilities.UuidDictionary.CLOSE_CASE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
@@ -71,6 +71,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -126,7 +127,6 @@ import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
 import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
-import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -139,7 +139,6 @@ import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.FollowUpNotificationScheduleDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -167,12 +166,10 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.NotificationSchedulerUtils;
-import org.intelehealth.app.utilities.PdfGenerationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -193,7 +190,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -567,6 +563,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
             setSeveritySpinner();
+            setCloseCaseSpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
@@ -851,6 +848,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
             mBinding.cvSeverity.setVisibility(View.GONE);
 
+            mBinding.cvCloseCaseVisitDoc.setVisibility(View.VISIBLE);
+            mBinding.cvCloseCaseToVisit.setVisibility(View.GONE);
+
             mBinding.tvViewFollowUpDateTime.setVisibility(View.VISIBLE);
             mBinding.llDateTime.setVisibility(View.GONE);
 
@@ -859,15 +859,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
+
+            mBinding.flCloseCaseToVisit.setVisibility(View.VISIBLE);
         } else {
             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
             int visibility = isVisitSpecialityExists ? View.GONE : View.VISIBLE;
+            int closeCaseVisibility = isVisitSpecialityExists ? View.VISIBLE : View.GONE;
             add_additional_doc.setVisibility(visibility);
             editAddDocs.setVisibility(visibility);
             uploadButton.setVisibility(visibility);
+            mBinding.flCloseCaseToVisit.setVisibility(closeCaseVisibility);
             if (recyclerViewAdapter != null) {
                 recyclerViewAdapter.hideCancelBtnAddDoc(visibility == View.GONE);
             }
+        }
+
+        String closeReason = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CLOSE_CASE);
+        if (!TextUtils.isEmpty(closeReason)) {
+            mBinding.tvCloseCaseToVisitValue.setText(" " + Node.bullet + "  " + closeReason);
+            mBinding.cvCloseCaseVisitDoc.setVisibility(View.VISIBLE);
+            mBinding.cvCloseCaseToVisit.setVisibility(View.GONE);
         }
     }
 
@@ -1033,6 +1044,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 mOpenCount++;
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        mBinding.rlCloseCaseToVisitHeader.setOnClickListener(v -> {
+            if (mBinding.rlCloseCaseToVisitHeaderExpandView.getVisibility() == View.VISIBLE) {
+                mBinding.rlCloseCaseToVisitHeaderExpandView.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.rlCloseCaseToVisitHeaderExpandView.setVisibility(View.VISIBLE);
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
@@ -2093,6 +2120,61 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
         });
+    }
+
+    private void setCloseCaseSpinner() {
+        String[] closeCaseReasons = getResources().getStringArray(R.array.close_case_reason);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, closeCaseReasons);
+        adapter.setNotifyOnChange(true);
+
+        mBinding.spinnerCloseCaseToVisit.setAdapter(adapter);
+        mBinding.spinnerCloseCaseToVisit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    mBinding.tvCloseCaseToVisitValue.setText(" " + Node.bullet + "  " + closeCaseReasons[i]);
+                    Timber.tag(TAG).d("case reason=>%s", closeCaseReasons[i]);
+                    mBinding.tvCloseCaseToVisitValue.setTag(closeCaseReasons[i]);
+                    showCaseCloseConfirmationDialog(closeCaseReasons[i]);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void showCaseCloseConfirmationDialog(String reason) {
+        Timber.tag(TAG).d("case reason=>%s", reason);
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon,
+                context.getResources().getString(R.string.confirm_close_case),
+                context.getResources().getString(R.string.confirm_close_case_visit_reason_message),
+                false, context.getResources().getString(R.string.yes), context.getResources().getString(R.string.cancel), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        saveCloseCaseReason(reason);
+                    }
+                });
+    }
+
+    private void saveCloseCaseReason(String reason) {
+        Timber.tag(TAG).d("case reason=>%s", reason);
+        if (reason != null && !reason.equalsIgnoreCase("")) {
+            try {
+                boolean status = visitAttributeListDAO.insertVisitAttributes(visitUuid, reason, CLOSE_CASE);
+                Timber.tag(TAG).d("case reason status=>%s", status);
+                if (status) {
+//                    mBinding.tvCloseCaseToVisitValue.setVisibility(View.VISIBLE);
+                    mBinding.cvCloseCaseVisitDoc.setVisibility(View.VISIBLE);
+                    mBinding.cvCloseCaseToVisit.setVisibility(View.GONE);
+//                    mBinding.spinnerCloseCaseToVisit.setVisibility(View.GONE);
+                }
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void showEndVisitConfirmationDialog() {

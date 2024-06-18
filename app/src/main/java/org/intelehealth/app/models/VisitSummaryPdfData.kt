@@ -28,6 +28,7 @@ data class VisitSummaryPdfData(
     var severity: String,
     var facility: String,
     var followUpDate: String,
+    var closeCaseReason: String,
 
     var chiefComplain: String,
     var associateSymptoms: String,
@@ -42,15 +43,16 @@ data class VisitSummaryPdfData(
     var activeStatus: FeatureActiveStatus?
 ) {
 
-    constructor() : this("","","",
+    constructor() : this(
+        "", "", "",
         "",
-        "","","",
-        "","","",
-        "","","",
+        "", "", "",
         "", "", "",
         "", "", "",
         "", "", "",
         "", "", "", "",
-        mutableListOf(), mutableListOf(), mutableListOf(),null
+        "", "", "",
+        "", "", "", "",
+        mutableListOf(), mutableListOf(), mutableListOf(), null
     )
 }
