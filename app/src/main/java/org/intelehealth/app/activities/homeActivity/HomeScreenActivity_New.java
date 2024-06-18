@@ -914,7 +914,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             i.putExtra("hasABHA", true);
             i.putExtra("abhaCard", true);
             startActivity(i);
-        } else if (itemId == R.id.menu_logout) {
+        }
+        else if (itemId == R.id.menu_logout) {
             wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 

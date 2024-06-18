@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity.BEARER_AUTH;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
@@ -90,7 +91,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
+import org.intelehealth.app.abdm.activity.AbhaCardActivity;
+import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -141,10 +146,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import timber.log.Timber;
 
 public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
@@ -168,7 +176,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     LinearLayout personal_edit, address_edit, others_edit;
     Myreceiver reMyreceive;
     IntentFilter filter;
-    Button startVisitBtn;
+    Button startVisitBtn, btnViewAbhaCard;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -189,6 +197,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private TableRow trAddress2;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
+    private String accessToken;
+
 
     @Override
     public void onBackPressed() {
@@ -237,9 +247,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+                accessToken = args.getString("accessToken");
             } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
+                accessToken = intent.getStringExtra("accessToken");
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
@@ -320,6 +332,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         cancelbtn.setOnClickListener(v -> {
             goToHomeScreen();
+        });
+
+        btnViewAbhaCard.setOnClickListener(v -> {
+            viewDownloadABHACard();
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -411,6 +427,71 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         });
     }
+
+    private void viewDownloadABHACard() {
+
+        if (otpVerificationResponse != null && patientAbhaNumber != null) {
+            String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
+            if (!patientAbhaNumber.getText().toString().isEmpty())
+                callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
+
+            Timber.tag("viewDownloadABHACard").d("Values: %s", X_TOKEN + " and " + patientAbhaNumber);
+        }
+        else {  // ie. if token if expired or not available than go through the verification flow.
+            Intent i = new Intent(context, AadharMobileVerificationActivity.class);
+            i.putExtra("hasABHA", true);
+            i.putExtra("abhaCard", true);
+            startActivity(i);
+        }
+    }
+
+    private void callGETAbhaCardApi(String xToken, String accessToken, String patientAbhaNumber) {
+        Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
+        String url = UrlModifiers.getABHACardUrl();
+        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                responseBodySingle
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<AbhaCardResponseBody>() {
+                            @Override
+                            public void onSuccess(AbhaCardResponseBody abhaCardResponseBody) {
+                                if (abhaCardResponseBody != null) {
+                                    Log.d("callGETAbhaCardApi", "onSuccess: " + abhaCardResponseBody.toString());
+
+                                    // TODO: here it will return base64 encoded image.
+                                    Intent intent = new Intent(context, AbhaCardActivity.class);
+                                    intent.putExtra("payload", abhaCardResponseBody);
+                                    intent.putExtra("patientAbhaNumber", patientAbhaNumber);
+                                    startActivity(intent);
+                                  //  finish();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("callGETAbhaCardApi", "onError: " + e.toString());
+
+                                Toast.makeText(PatientDetailActivity2.this, getString(R.string.session_expired_please_try_again), Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(context, AadharMobileVerificationActivity.class);
+                                i.putExtra("hasABHA", true);
+                                i.putExtra("abhaCard", true);
+                                startActivity(i);
+
+                               /* cpd.dismiss();
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                binding.otpBox.setText("");
+                                cancelResendAndHideView();*/    // todo: uncomment
+                            }
+                        });
+            }
+        }).start();
+    }
+
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
@@ -579,6 +660,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
+        btnViewAbhaCard = findViewById(R.id.btnViewAbhaCard);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

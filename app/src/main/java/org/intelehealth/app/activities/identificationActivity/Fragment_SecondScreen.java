@@ -102,6 +102,8 @@ public class Fragment_SecondScreen extends Fragment {
     private EditText mStateEditText;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
+    private String accessToken;
+
     
     @Nullable
     @Override
@@ -194,6 +196,9 @@ public class Fragment_SecondScreen extends Fragment {
                 if (abhaProfileResponse != null)
                     setAutoFillValuesViaMobile(abhaProfileResponse);
             }
+            if (getArguments().containsKey("accessToken"))
+                accessToken = getArguments().getString("accessToken");
+
             // abdm - end
         }
     }
@@ -746,6 +751,7 @@ public class Fragment_SecondScreen extends Fragment {
             bundle.putSerializable(PAYLOAD, otpVerificationResponse);
         // abha - end
 
+        bundle.putString("accessToken", accessToken);
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -920,6 +926,7 @@ public class Fragment_SecondScreen extends Fragment {
                     bundle.putSerializable(PAYLOAD, otpVerificationResponse);
                 // abha - end
 
+                bundle.putString("accessToken", accessToken);
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
                 getActivity().getSupportFragmentManager()
@@ -950,6 +957,8 @@ public class Fragment_SecondScreen extends Fragment {
                 if (otpVerificationResponse != null)
                     args.putSerializable(PAYLOAD, otpVerificationResponse);
                 // abha - end
+
+                args.putString("accessToken", accessToken);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

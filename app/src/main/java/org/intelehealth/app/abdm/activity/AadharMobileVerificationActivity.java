@@ -664,18 +664,22 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
                         Intent intent;
-                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                        if (response != null && response.getData() != null &&
+                                !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                             abhaProfileResponse.setUuID(response.getData().getUuid());
+
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra(PAYLOAD, abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("patient_detail", true);
+                       //     intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra(PAYLOAD, abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                      //      intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         }
                         finish();
@@ -715,11 +719,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("patient_detail", true);
+                         //   intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                        //    intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         }
                         finish();
@@ -783,7 +789,8 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                                 } else {
                                     // Already user exist -> than take to Patient Registration screen.
 
-                                    if (otpVerificationResponse.getABHAProfile().getMobile() != null && otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
+                                    if (otpVerificationResponse.getABHAProfile().getMobile() != null &&
+                                            otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
                                         checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0),otpVerificationResponse);
                                     } else {
                                         MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();

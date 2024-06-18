@@ -43,10 +43,10 @@ import java.io.File;
 import java.util.UUID;
 
 public class AbhaCardActivity extends AppCompatActivity {
-    private Context context = AbhaCardActivity.this;
+    private final Context context = AbhaCardActivity.this;
     private ActivityAbhaCardBinding binding;
-    private String base64CardImage, mCurrentPhotoPath;
-    private AbhaCardResponseBody abhaCardResponseBody;
+    private String base64CardImage;
+    private String mCurrentPhotoPath;
     private MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse;
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
@@ -67,7 +67,8 @@ public class AbhaCardActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mobileLoginOnOTPVerifiedResponse = (MobileLoginOnOTPVerifiedResponse) intent.getSerializableExtra("data");
-        abhaCardResponseBody = (AbhaCardResponseBody) intent.getSerializableExtra("payload");
+        AbhaCardResponseBody abhaCardResponseBody = (AbhaCardResponseBody) intent.getSerializableExtra("payload");
+        String patientAbhaNumber = intent.getStringExtra("patientAbhaNumber");
 
        /* // testing - start
         AbhaCardResponseBody responseBody = new Gson().fromJson(FileUtils.encodeJSON(context, "card.json").toString(), AbhaCardResponseBody.class);
@@ -84,13 +85,24 @@ public class AbhaCardActivity extends AppCompatActivity {
 
         if (abhaCardResponseBody != null && mobileLoginOnOTPVerifiedResponse != null) {
             base64CardImage = abhaCardResponseBody.getImage();
-            if (base64CardImage != null || !base64CardImage.isEmpty()) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        displayAbhaCardPhotoAndStoreInFile(base64CardImage);
-                    }
-                }).start();
+            if (base64CardImage != null && !base64CardImage.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayAbhaCardPhotoAndStoreInFile(base64CardImage);
+                        }
+                    }).start();
+            }
+        }
+        else if (patientAbhaNumber != null && abhaCardResponseBody != null && !patientAbhaNumber.isEmpty()) {
+            base64CardImage = abhaCardResponseBody.getImage();
+            if (base64CardImage != null && !base64CardImage.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayAbhaCardPhotoAndStoreInFile(base64CardImage);
+                        }
+                    }).start();
             }
         }
 

@@ -112,6 +112,7 @@
             android:layout_marginTop="@dimen/margin_8">
 
             <TableLayout
+                android:id="@+id/tableLayoutOther"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:shrinkColumns="1">
@@ -357,6 +358,19 @@
                 </TableRow>
 
             </TableLayout>
+
+            <Button
+                android:id="@+id/btnViewAbhaCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tableLayoutOther"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:layout_marginHorizontal="@dimen/margin_20dp"
+                android:gravity="center"
+                android:text="@string/view_download_abha_card"
+                android:textSize="@dimen/txtsize_patdetail_14sp" />
+
 
         </RelativeLayout>
 
