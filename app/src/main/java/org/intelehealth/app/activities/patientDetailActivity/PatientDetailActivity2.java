@@ -197,7 +197,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private TableRow trAddress2;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken;
+    private String accessToken, xToken;
 
 
     @Override
@@ -248,10 +248,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
                 accessToken = args.getString("accessToken");
+                xToken = args.getString("xToken");
             } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
                 accessToken = intent.getStringExtra("accessToken");
+                xToken = intent.getStringExtra("xToken");
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
@@ -430,12 +432,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     private void viewDownloadABHACard() {
 
-        if (otpVerificationResponse != null && patientAbhaNumber != null) {
+        if (otpVerificationResponse != null && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
             String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
-            if (!patientAbhaNumber.getText().toString().isEmpty())
-                callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
-
+            callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
             Timber.tag("viewDownloadABHACard").d("Values: %s", X_TOKEN + " and " + patientAbhaNumber);
+        }
+        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
+            callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
+            Timber.tag("viewDownloadABHACard").d("Values: %s", xToken + " and " + patientAbhaNumber);
         }
         else {  // ie. if token if expired or not available than go through the verification flow.
             Intent i = new Intent(context, AadharMobileVerificationActivity.class);

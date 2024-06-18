@@ -120,7 +120,7 @@ public class Fragment_ThirdScreen extends Fragment {
     boolean patient_detail = false;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken;
+    private String accessToken, xToken;
 
 
     @Nullable
@@ -219,6 +219,8 @@ public class Fragment_ThirdScreen extends Fragment {
             }
             if (getArguments().containsKey("accessToken"))
                 accessToken = getArguments().getString("accessToken");
+            if (getArguments().containsKey("xToken"))
+                xToken = getArguments().getString("xToken");
 
             // abdm - end
         }
@@ -578,6 +580,7 @@ public class Fragment_ThirdScreen extends Fragment {
         // abha - end
 
         bundle.putString("accessToken", accessToken);
+        bundle.putString("xToken", xToken);
         secondScreen.setArguments(bundle); // passing data to Fragment
 
         getActivity().getSupportFragmentManager()
@@ -745,6 +748,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 // abha - end
 
                 args.putString("accessToken", accessToken);
+                args.putString("xToken", xToken);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

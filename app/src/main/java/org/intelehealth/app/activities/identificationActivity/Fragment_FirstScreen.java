@@ -123,7 +123,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken;
+    private String accessToken, xToken;
 
 
     @Nullable
@@ -204,6 +204,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 patient_detail = getArguments().getBoolean("patient_detail");
             if (getArguments().containsKey("accessToken"))
                 accessToken = getArguments().getString("accessToken");
+            if (getArguments().containsKey("xToken"))
+                xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("fromSecondScreen"))
                 fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
 
@@ -1026,6 +1028,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
 
                 bundle.putString("accessToken", accessToken);
+                bundle.putString("xToken", xToken);
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
                 Log.d(TAG, "onPatientCreateClicked: " + patientdto.toString());
@@ -1059,6 +1062,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 // abha - end
 
                 args.putString("accessToken", accessToken);
+                args.putString("xToken", xToken);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

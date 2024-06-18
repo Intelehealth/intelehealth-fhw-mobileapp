@@ -81,7 +81,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     public static final String MOBILE_PAYLOAD = "mobile_payload";
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken;
+    private String accessToken, xToken;
     private ObjectAnimator syncAnimator;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -128,6 +128,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         intentRx = this.getIntent(); // The intent was passed to the activity
         if (intentRx != null) {
             accessToken = intentRx.getStringExtra("accessToken");
+            xToken = intentRx.getStringExtra("xToken");
 
             if (intentRx.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
@@ -195,6 +196,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     private void abdmAutoFillScreensWithValues(Fragment fragment, Intent intent) {
         Bundle bundle = new Bundle();
         bundle.putString("accessToken", accessToken);
+        bundle.putString("xToken", xToken);
 
         if (intent.hasExtra(PAYLOAD)) {
             otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra(PAYLOAD);
@@ -226,6 +228,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", true);
         bundle.putString("accessToken", accessToken);
+        bundle.putString("xToken", xToken);
 
         if (otpVerificationResponse != null) {
             bundle.putSerializable(PAYLOAD, otpVerificationResponse);

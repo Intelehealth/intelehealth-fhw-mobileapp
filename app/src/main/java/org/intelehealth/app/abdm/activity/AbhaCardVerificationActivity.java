@@ -665,7 +665,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                         cpd.dismiss();
                         Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                        checkIsUserExist(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse);
+                        checkIsUserExist(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse, xToken);
                     }
 
                     @Override
@@ -695,7 +695,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
                         Intent intent;
-                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                        if (response != null && response.getData() != null &&
+                                !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                             abhaProfileResponse.setUuID(response.getData().getUuid());
                             intent = new Intent(context, IdentificationActivity_New.class);
@@ -721,7 +722,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void checkIsUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse) {
+    private void checkIsUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse, String xToken) {
 
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
@@ -745,12 +746,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("xToken", xToken);
                             intent.putExtra("patient_detail", true);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("xToken", xToken);
                             startActivity(intent);
                         }
                         finish();

@@ -632,7 +632,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                                 cpd.dismiss();
                                 Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                                checkUserExist(abhaProfileResponse.getPreferredAbhaAddress(),abhaProfileResponse);
+                                checkUserExist(abhaProfileResponse.getPreferredAbhaAddress(),abhaProfileResponse, xToken);
                             }
 
                             @Override
@@ -694,7 +694,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void checkUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse) {
+    private void checkUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse, String xToken) {
 
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
@@ -718,6 +718,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("xToken", xToken);
                             intent.putExtra("patient_detail", true);
                          //   intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
@@ -725,6 +726,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("xToken", xToken);
                         //    intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         }
