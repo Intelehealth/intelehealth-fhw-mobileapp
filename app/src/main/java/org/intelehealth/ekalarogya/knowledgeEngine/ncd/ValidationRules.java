@@ -111,11 +111,13 @@ class Action {
     private String ifCondition;
     private String thenCondition;
     private String data;
+    private String popUpMessage;
 
     public Action(JSONObject jsonObject) {
         this.ifCondition = jsonObject.optString("IF");
         this.thenCondition = jsonObject.optString("THEN");
         this.data = jsonObject.optString("DATA");
+        this.popUpMessage = jsonObject.optString("pop-up");
     }
 
     public String getIfCondition() {
@@ -140,5 +142,13 @@ class Action {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getPopUpMessage() {
+        return popUpMessage;
+    }
+
+    public void setPopUpMessage(String popUpMessage) {
+        this.popUpMessage = popUpMessage;
     }
 }

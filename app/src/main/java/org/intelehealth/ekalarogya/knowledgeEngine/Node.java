@@ -188,6 +188,9 @@ public class Node implements Serializable {
     private Boolean isHidden = false;
 
 
+    private Boolean isSupportNode = false;
+
+
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
 
     private String imagePath;
@@ -226,7 +229,7 @@ public class Node implements Serializable {
             this.text = jsonNode.getString("text");
             this.isRecurring = jsonNode.optBoolean("is-recurring");
             this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
-            this.isHidden = jsonNode.optBoolean("is-hidden");
+            this.isSupportNode = jsonNode.optBoolean("is-support-node");
             this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
             this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
@@ -384,7 +387,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.isRecurring = source.isRecurring;
         this.isLazyPopuShow = source.isLazyPopuShow;
-        this.isHidden = source.isHidden;
+        this.isSupportNode = source.isSupportNode;
         this.recurringMaxCount = source.recurringMaxCount;
         this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
 
@@ -4820,6 +4823,14 @@ public class Node implements Serializable {
 
     public void setRecurringMaxCount(int recurringMaxCount) {
         this.recurringMaxCount = recurringMaxCount;
+    }
+
+    public Boolean isSupportNode() {
+        return isSupportNode;
+    }
+
+    public void setSupportNode(Boolean supportNode) {
+        isSupportNode = supportNode;
     }
 
 }

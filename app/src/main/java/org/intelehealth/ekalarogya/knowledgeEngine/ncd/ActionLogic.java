@@ -152,6 +152,7 @@ public class ActionLogic {
                     actionResult.setTarget(action.getThenCondition());
                     actionResult.setTargetData(action.getData());
                     actionResult.setInsideNodeDataUpdate(action.getData() == null);
+                    actionResult.setPopupMessage(action.getPopUpMessage());
                     return actionResult;
                 }
 

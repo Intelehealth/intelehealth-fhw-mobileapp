@@ -11,7 +11,9 @@ import org.intelehealth.ekalarogya.knowledgeEngine.Node;
  * Contact me: lincon@intelehealth.org
  */
 public class NCDValidationResult implements Parcelable {
+    private int moveToIndex;
     private String targetNodeID;
+    private String popupMessage;
     private boolean isReadyToEndTheScreening;
     private boolean moveToNextQuestion;
     private Node updatedNode;
@@ -24,7 +26,9 @@ public class NCDValidationResult implements Parcelable {
     }
 
     protected NCDValidationResult(Parcel in) {
+        moveToIndex = in.readInt();
         targetNodeID = in.readString();
+        popupMessage = in.readString();
         isReadyToEndTheScreening = in.readByte() != 0;
         moveToNextQuestion = in.readByte() != 0;
         actionResult = in.readParcelable(ActionResult.class.getClassLoader());
@@ -32,7 +36,9 @@ public class NCDValidationResult implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(moveToIndex);
         dest.writeString(targetNodeID);
+        dest.writeString(popupMessage);
         dest.writeByte((byte) (isReadyToEndTheScreening ? 1 : 0));
         dest.writeByte((byte) (moveToNextQuestion ? 1 : 0));
         dest.writeParcelable(actionResult, flags);
@@ -95,5 +101,21 @@ public class NCDValidationResult implements Parcelable {
 
     public void setMoveToNextQuestion(boolean moveToNextQuestion) {
         this.moveToNextQuestion = moveToNextQuestion;
+    }
+
+    public int getMoveToIndex() {
+        return moveToIndex;
+    }
+
+    public void setMoveToIndex(int moveToIndex) {
+        this.moveToIndex = moveToIndex;
+    }
+
+    public String getPopupMessage() {
+        return popupMessage;
+    }
+
+    public void setPopupMessage(String popupMessage) {
+        this.popupMessage = popupMessage;
     }
 }

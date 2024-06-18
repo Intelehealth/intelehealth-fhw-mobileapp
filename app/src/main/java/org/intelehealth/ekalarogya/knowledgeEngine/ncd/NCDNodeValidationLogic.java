@@ -75,7 +75,7 @@ public class NCDNodeValidationLogic {
                 ncdValidationResult.setTargetNodeID(null);
                 ncdValidationResult.setReadyToEndTheScreening(false);
                 for (int i = 0; i < mmRootNode.getOptionsList().size(); i++) {
-                    if (i >= selectedRootIndex && !mmRootNode.getOptionsList().get(i).getHidden())
+                    if (i >= selectedRootIndex /*&& !mmRootNode.getOptionsList().get(i).getHidden()*/)
                         mmRootNode.getOptionsList().get(i).setHidden(false);
                 }
                 ncdValidationResult.setUpdatedNode(mmRootNode);
@@ -163,15 +163,62 @@ public class NCDNodeValidationLogic {
             total += val;
         }
         mmRootNode.getOptionsList().get(selectedRootIndex).setLanguage(String.valueOf(total));
+        List<SourceData> sourceDataInfoValueList = new ArrayList<>();
+        SourceData sourceData = new SourceData();
+        sourceData.setDataType(ValidationConstants.INTEGER);
+        sourceData.setDataName("");
+        sourceData.setValue(String.valueOf(total));
+        sourceDataInfoValueList.add(sourceData);
+
+        List<CheckInfoData> checkInfoDataList = ValidationRulesParser.getCheckInfoList(validationRules.getCheck());
+        ActionResult actionResult = ActionLogic.foundActionResult(sourceDataInfoValueList, checkInfoDataList, validationRules.getActionList());
+
         ncdValidationResult.setTargetNodeID(null);
         ncdValidationResult.setReadyToEndTheScreening(false);
-        ncdValidationResult.setMoveToNextQuestion(true);
+
+        if (actionResult != null) {
+            ncdValidationResult.setPopupMessage(actionResult.getPopupMessage());
+
+            for (int i = selectedRootIndex; i < mmRootNode.getOptionsList().size(); i++) {
+                Node tempNode = mmRootNode.getOptionsList().get(i);
+                //if (i != selectedRootIndex) {
+                if (actionResult.getTarget().equalsIgnoreCase(tempNode.getText())) {
+                    // found the target node
+                    mmRootNode.getOptionsList().get(i).setHidden(false);
+                    ncdValidationResult.setTargetNodeID(mmRootNode.getOptionsList().get(i).getId());
+                    // check if it required the autofill for target node
+                    // "is-auto-fill": true,
+                    if (tempNode.getAutoFill()) {
+                        // need to again parse the
+                        NCDValidationResult targetNcdValidationResult = validateAndFindNextPath(context, patientUUID, mmRootNode, i, tempNode, true, actionResult, isFromNextClick);
+                        mmRootNode = targetNcdValidationResult.getUpdatedNode();
+                    }
+                    ncdValidationResult.setMoveToIndex(i);
+                    break;
+                } else {
+                    mmRootNode.getOptionsList().get(i).setHidden(true);
+                    mmRootNode.getOptionsList().get(i).setSelected(false);
+                    mmRootNode.getOptionsList().get(i).setDataCapture(false);
+                    mmRootNode.getOptionsList().get(i).unselectAllNestedNode();
+                }
+                //} else {
+                //    mmRootNode.getOptionsList().get(i).setHidden(false);
+                //}
+
+            }
+        }
+
+
         ncdValidationResult.setUpdatedNode(mmRootNode);
 
-        if(total<30){
+        if (mmRootNode.getOptionsList().get(selectedRootIndex).isSupportNode()) {
+            ncdValidationResult.setMoveToNextQuestion(true);
+            mmRootNode.getOptionsList().get(selectedRootIndex).setHidden(true);
+        }
+        /*if(total<30){
             mmRootNode.getOptionsList().get(selectedRootIndex+1).setHidden(true);
             mmRootNode.getOptionsList().get(selectedRootIndex+2).setHidden(true);
-        }
+        }*/
 
         return ncdValidationResult;
     }
@@ -201,7 +248,7 @@ public class NCDNodeValidationLogic {
 
             //if (sourceDataInfoList.size() == 1)
             sourceDataInfoValueList.add(DataSourceManager.getValuesForDataSourceFromTargetNode(sourceData, mmRootNode));
-        }else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT)) {
+        } else if (sourceDataType.equals(ValidationConstants.SOURCE_DATA_TYPE_NODE_VAL_INT)) {
             //List<SourceData> sourceDataInfoList = new ArrayList<>();
             SourceData sourceData = new SourceData();
             sourceData.setDataType(ValidationConstants.INTEGER);
