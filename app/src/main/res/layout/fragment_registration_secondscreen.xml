@@ -145,7 +145,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/identification_screen_prompt_state"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <Spinner
@@ -196,7 +195,7 @@
 
             </LinearLayout>
 
-            <!--District & City-->
+            <!--District & Block-->
             <LinearLayout
                 android:id="@+id/linear_distr_city"
                 android:layout_width="match_parent"
@@ -271,25 +270,26 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/vill_town_city_lay"
+                    android:id="@+id/block_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/std_16dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:visibility="visible">
 
                     <TextView
-                        android:id="@+id/vill_town_city_tv"
+                        android:id="@+id/block_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@string/identification_screen_prompt_city"
+                        android:text="@string/identification_screen_prompt_block"
                         android:textAppearance="@style/blur_txtview"
-
                         android:textSize="@null" />
 
                     <Spinner
+                        android:id="@+id/spBlock"
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -300,23 +300,114 @@
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
                         android:paddingBottom="@dimen/margin_10"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
-                    <EditText
-                        android:id="@+id/city_village_edittext"
-                        style="@style/edittext_textcolor"
+                    <TextView
+                        android:id="@+id/block_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Gram Panchayat & Village -->
+            <LinearLayout
+                android:id="@+id/linear_gram_panchayat_village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_distr_city"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/gram_panchayat_lay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/gram_panchayat_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/identification_screen_prompt_gram_panchayat"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null" />
+
+                    <Spinner
+                        android:id="@+id/gram_panchayat_spinner"
+                        style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
-                        android:background="@drawable/input_edittext_border"
-                        android:textAllCaps="true"
-                        android:hint="@string/enter_village_town_city"
-                        android:inputType="textCapWords"
-                        android:maxLines="1"
+                        android:background="@drawable/ui2_spinner_background_new"
+                        android:dropDownVerticalOffset="56dp"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
+                        android:paddingBottom="@dimen/margin_10" />
+
+                    <TextView
+                        android:id="@+id/gram_panchayat_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vill_town_city_lay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/std_16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/vill_town_city_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/identification_screen_prompt_village"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null" />
+
+                    <Spinner
+                        android:id="@+id/spVillage"
+                        style="@style/AppTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:background="@drawable/ui2_spinner_background_new"
+                        android:entries="@array/navi_mumbai_city"
+                        android:paddingStart="@dimen/fu_margin_start"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingEnd="@dimen/margin_16dp"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textColorHint="@color/edittext_hint_color" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/city_error"
@@ -340,7 +431,7 @@
                 android:id="@+id/linear_address1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_distr_city"
+                android:layout_below="@+id/linear_gram_panchayat_village"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical"
                 android:visibility="gone"
@@ -472,8 +563,8 @@
                 android:id="@+id/frag2_btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginEnd="@dimen/margin_24"
                 android:layout_marginStart="@dimen/space_12dp"
+                android:layout_marginEnd="@dimen/margin_24"
                 android:layout_toEndOf="@+id/btn_back_firstscreen"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"

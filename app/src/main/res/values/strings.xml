@@ -118,6 +118,9 @@
     <string name="identification_screen_text_months"> months</string>
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_prompt_block">Block</string>
+    <string name="identification_screen_prompt_gram_panchayat">Gram Panchayat</string>
+    <string name="identification_screen_prompt_village">Village</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">Active Visits</string>
