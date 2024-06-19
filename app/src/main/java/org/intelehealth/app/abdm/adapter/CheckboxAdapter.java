@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -27,6 +28,7 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
     private List<CheckBoxRecyclerModel> modelList;
     private Context context;
     private CheckboxAdapter.OnCheckboxChecked onCheckboxChecked;
+    public static final int LEFT_MARGIN = 50;
 
     public CheckboxAdapter(Context context, List<CheckBoxRecyclerModel> modelList, CheckboxAdapter.OnCheckboxChecked onCheckboxChecked) {
         this.context = context;
@@ -46,6 +48,11 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
         CheckBoxRecyclerModel model = modelList.get(position);
         holder.chkBox.setText(Html.fromHtml(model.getCheckboxText()));
         holder.chkBox.setChecked(model.isChecked());
+        if (position == (modelList.size()-1) || position == (modelList.size()-2)) {
+            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(LEFT_MARGIN, 0, 0, 0);
+            holder.chkBox.setLayoutParams(layoutParams);
+        }
 
         holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
