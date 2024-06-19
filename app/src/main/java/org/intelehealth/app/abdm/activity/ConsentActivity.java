@@ -23,17 +23,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.adapter.CheckboxAdapter;
 import org.intelehealth.app.abdm.model.CheckBoxRecyclerModel;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +93,7 @@ public class ConsentActivity extends AppCompatActivity {
         modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line3) + NEW_LINE, false));
         modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line4) + NEW_LINE, false));
         modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line5) + NEW_LINE, false));
-        if (!sessionManager.getChwname().isEmpty())
-            modelList.add(new CheckBoxRecyclerModel(String.format(getString(R.string.abha_consent_line6), sessionManager.getChwname()) + NEW_LINE, false));
-        else
-            modelList.add(new CheckBoxRecyclerModel(String.format(getString(R.string.abha_consent_line6), "(health worker)") + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(String.format(getString(R.string.abha_consent_line6), fetchHwFullName()) + NEW_LINE, false));
         modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line7) + NEW_LINE, false));
         checkboxAdapter = new CheckboxAdapter(context, modelList, new CheckboxAdapter.OnCheckboxChecked() {
             @Override
@@ -122,6 +125,37 @@ public class ConsentActivity extends AppCompatActivity {
         });
 
     }
+
+    public boolean isValidField(String fieldName) {
+        if (fieldName != null && !fieldName.isEmpty() && !fieldName.equals("null")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private String fetchHwFullName() {
+        try {
+            ProviderDAO providerDAO = new ProviderDAO();
+            ProviderDTO providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+            if (providerDTO != null) {
+                boolean firstname = isValidField(providerDTO.getFamilyName());
+                boolean lastname = isValidField(providerDTO.getGivenName());
+                String userFullName = "";
+                if (firstname && lastname) {
+                    userFullName = providerDTO.getGivenName() + " " + providerDTO.getFamilyName();
+                } else if (firstname) {
+                    userFullName = providerDTO.getGivenName();
+                } else if (lastname) {
+                    userFullName = providerDTO.getFamilyName();
+                }
+                return userFullName;
+                }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return "(health worker)";
+    }
+
 
     public void declinePP(View view) {  // DECLINE BTN
       //  setResult(AppConstants.CONSENT_DECLINE);
