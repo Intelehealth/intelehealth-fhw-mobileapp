@@ -58,7 +58,7 @@
             android:paddingTop="@dimen/options_button_padding_top"
             android:paddingEnd="@dimen/options_button_padding_end"
             android:paddingBottom="@dimen/options_button_padding_bottom"
-            android:text="@string/abhanumber"
+            android:text="@string/abha"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/btn_options_text_Size" />
 

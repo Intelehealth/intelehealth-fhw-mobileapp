@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
@@ -36,7 +35,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private var accessToken: String? = null
     private var txnId: String? = null
     private var onMobileEnrollCompleted: OnMobileEnrollCompleted? = null
-    private var resendCounter = 2;
+    private var resendCounter = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +65,13 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         
         binding.resendBtn.setOnClickListener {
             if (resendCounter != 0) {
-                resendCounter--;
+                resendCounter--
 
-                resendCounterAttemptsTextDisplay();
+                resendCounterAttemptsTextDisplay()
                 callMobileVerificationApi()
             }
             else
-                resendCounterAttemptsTextDisplay();
+                resendCounterAttemptsTextDisplay()
         }
         return binding.root
     }
@@ -83,9 +82,10 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     }
 
     private fun resendCounterAttemptsTextDisplay() {
-        if (resendCounter != 0) binding.tvResendCounter.setText(resources.getString(R.string.number_of_retries_left, resendCounter))
+        if (resendCounter != 0) binding.tvResendCounter.text =
+            resources.getString(R.string.number_of_retries_left, resendCounter)
         else {
-            binding.tvResendCounter.setText(getString(R.string.maximum_number_of_retries_exceeded_please_try_again_after_10_mins))
+            binding.tvResendCounter.text = getString(R.string.maximum_number_of_retries_exceeded_please_try_again_after_10_mins)
             binding.resendBtn.isEnabled = false
             binding.resendBtn.setTextColor(resources.getColor(R.color.medium_gray))
             binding.resendBtn.paintFlags = binding.resendBtn.paintFlags or Paint.UNDERLINE_TEXT_FLAG
