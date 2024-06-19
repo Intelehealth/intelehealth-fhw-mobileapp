@@ -36,6 +36,8 @@
     <!--toolbar end-->
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="gone"
+        android:id="@+id/nsvAbhaConsent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
@@ -52,9 +54,29 @@
             android:justificationMode="inter_word"
             android:text="@string/abdm_consent"
             android:textSize="@dimen/info_options_text_size" />
-
     </androidx.core.widget.NestedScrollView>
 
+    <TextView
+        android:id="@+id/tvAbhaContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_action_bar"
+        android:text="I hereby declare that:"
+        android:fontFamily="@font/lato_regular"
+        android:justificationMode="inter_word"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_marginHorizontal="@dimen/margin_12"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAbhaConsent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_button_privacy"
+        android:layout_below="@+id/tvAbhaContent"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/layout_checkbox_recycler"
+        />
 
     <LinearLayout
         android:id="@+id/layout_button_privacy"
@@ -91,7 +113,8 @@
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
-            android:background="@drawable/ui2_common_primary_bg"
+            android:background="@drawable/ui2_bg_disabled_time_slot"
+            android:enabled="false"
             android:lineHeight="@dimen/button_line_height"
             android:padding="@dimen/hamburger_margin_top"
             android:text="@string/accept_new"

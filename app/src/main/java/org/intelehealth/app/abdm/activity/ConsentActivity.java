@@ -4,6 +4,9 @@ import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDial
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +16,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+
+import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.adapter.CheckboxAdapter;
+import org.intelehealth.app.abdm.model.CheckBoxRecyclerModel;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -26,6 +35,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ConsentActivity extends AppCompatActivity {
@@ -33,6 +44,13 @@ public class ConsentActivity extends AppCompatActivity {
     private Context context = ConsentActivity.this;
     public static final String ABHA_CONSENT = "ABHA_CONSENT";
     public static final String hasABHA = "hasABHA";
+    private NestedScrollView nsvAbhaConsent;
+    private RecyclerView rvAbhaConsent;
+    private CheckboxAdapter checkboxAdapter;
+    private List<CheckBoxRecyclerModel> modelList;
+    public static final String NEW_LINE = "<br>";
+    private SessionManager sessionManager;
+    private boolean allCheckboxesChecked = true;
 
 
     @Override
@@ -43,6 +61,9 @@ public class ConsentActivity extends AppCompatActivity {
 
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy); // ACCEPT BTN
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
+        nsvAbhaConsent = findViewById(R.id.nsvAbhaConsent);
+        rvAbhaConsent = findViewById(R.id.rvAbhaConsent);
+        sessionManager = new SessionManager(context);
 
         // check internet - start
         if (!NetworkConnection.isOnline(ConsentActivity.this)) {    // no internet.
@@ -59,6 +80,36 @@ public class ConsentActivity extends AppCompatActivity {
                     });
         }
         // check internet - end
+
+        modelList = new ArrayList<>();
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line1) + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line2) + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line3) + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line4) + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line5) + NEW_LINE, false));
+        if (!sessionManager.getChwname().isEmpty())
+            modelList.add(new CheckBoxRecyclerModel(String.format(getString(R.string.abha_consent_line6), sessionManager.getChwname()) + NEW_LINE, false));
+        else
+            modelList.add(new CheckBoxRecyclerModel(String.format(getString(R.string.abha_consent_line6), "(health worker)") + NEW_LINE, false));
+        modelList.add(new CheckBoxRecyclerModel(getString(R.string.abha_consent_line7) + NEW_LINE, false));
+        checkboxAdapter = new CheckboxAdapter(context, modelList, new CheckboxAdapter.OnCheckboxChecked() {
+            @Override
+            public void onOptionChecked(CheckBoxRecyclerModel model) {
+                if (checkboxAdapter != null) {
+                    boolean allChecked = ((CheckboxAdapter) rvAbhaConsent.getAdapter()).areAllItemsChecked();
+                    if (allChecked) {
+                        btn_accept_privacy.setEnabled(true);
+                        btn_accept_privacy.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
+                    }
+                    else {
+                        btn_accept_privacy.setEnabled(false);
+                        btn_accept_privacy.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
+                    }
+                }
+            }
+        });
+        rvAbhaConsent.setLayoutManager(new LinearLayoutManager(context));
+        rvAbhaConsent.setAdapter(checkboxAdapter);
 
         ivBack.setOnClickListener(v -> {
             finish();
