@@ -1392,7 +1392,7 @@ public class Node implements Serializable {
                                 if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
-                                    if (language.equalsIgnoreCase("hi")) {
+                                    /*if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
@@ -1408,7 +1408,11 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                    }
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
                                     //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
@@ -1419,7 +1423,7 @@ public class Node implements Serializable {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
-                                    if (language.equalsIgnoreCase("hi")) {
+                                    /*if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
@@ -1435,7 +1439,11 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                    }
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
                                     //  stringsList.add(mOptions.get(i).getLanguage());
 
                                 }
@@ -2150,8 +2158,8 @@ public class Node implements Serializable {
                             node.addLanguage(et_enter_value.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }*/
-                    node1.setLanguage(node1.getText()+"-"+value1);
-                    node2.setLanguage(node2.getText()+"-"+value2);
+                    node1.setLanguage(node1.getText()+":"+value1);
+                    node2.setLanguage(node2.getText()+":"+value2);
                     node1.setSelected(true);
                     node2.setSelected(true);
                     node.getRecurringCapturedDataList().add(value1 + "/" + value2);
