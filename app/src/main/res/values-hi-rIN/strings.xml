@@ -1467,7 +1467,7 @@
     <string name ="abdm_consent">मैं, एतद्द्वारा घोषणा करता हूं कि मैं स्वेच्छा से आभा नंबर के निर्माण के एकमात्र उद्देश्य के लिए अपना आधार नंबर और UIDAI द्वारा जारी जनसांख्यिकीय जानकारी राष्ट्रीय स्वास्थ्य प्राधिकरण (NHA) के साथ साझा कर रहा हूं। \n\n मैं समझता हूं कि मेरे एबीएचए नंबर का उपयोग स्वास्थ्य सेवाओं के प्रावधान सहित एबीडीएम द्वारा समय-समय पर अधिसूचित उद्देश्यों के लिए किया और साझा किया जा सकता है। इसके अलावा, मुझे पता है कि मेरी व्यक्तिगत पहचान योग्य जानकारी (नाम, पता, उम्र, जन्म तिथि, लिंग और फोटो) राष्ट्रीय डिजिटल स्वास्थ्य पारिस्थितिकी तंत्र (एनडीएचई) में काम करने वाली संस्थाओं को उपलब्ध कराई जा सकती है, जिसमें अन्य बातों के अलावा हितधारक और संस्थाएं शामिल हैं। स्वास्थ्य देखभाल पेशेवरों (जैसे डॉक्टर), सुविधाओं (जैसे अस्पताल, प्रयोगशालाएं) और डेटा फ़िड्यूशरीज़ (जैसे स्वास्थ्य कार्यक्रम) के रूप में, जो आयुष्मान भारत डिजिटल मिशन (एबीडीएम) और उसके तहत विभिन्न प्रक्रियाओं के साथ पंजीकृत या जुड़े हुए हैं। \n\n मैं उपरोक्त उद्देश्य के लिए आधार (वित्तीय और अन्य सब्सिडी, लाभ और सेवाओं का लक्षित वितरण) अधिनियम, 2016 के प्रावधानों के अनुसार यूआईडीएआई के साथ आधार आधारित प्रमाणीकरण करने के लिए अपने आधार नंबर का उपयोग करने के लिए एनएचए को अधिकृत करता हूं। \n\n मैं समझता हूं कि सफल प्रमाणीकरण पर यूआईडीएआई मेरे ई-केवाईसी विवरण, या "हां" की प्रतिक्रिया एनएचए के साथ साझा करेगा। मुझे आधार के अलावा अन्य आईडी का उपयोग करने के विकल्प के बारे में विधिवत सूचित किया गया है; हालाँकि, मैं जानबूझकर एनडीएचई में लाभ प्राप्त करने के उद्देश्य से आधार संख्या का उपयोग करना चुनता हूँ। मुझे पता है कि आधार नंबर/वीआईडी नंबर को छोड़कर मेरी व्यक्तिगत पहचान योग्य जानकारी का उपयोग ऊपर बताए गए उद्देश्यों के लिए किया और साझा किया जा सकता है। \n\n मैं आधार अधिनियम और विनियमों के प्रावधानों के अनुसार किसी भी समय दी गई सहमति को रद्द करने का अधिकार सुरक्षित रखता हूं।</string>
     <string name="abha_consent">आभा सहमति</string>
     <string name="abha_number">आभा नंबर?</string>
-    <string name="do_you_have_your_abha_number">क्या आपके पास अपना आभा नंबर है?</string>
+    <string name="do_you_have_your_abha_number">क्या आपके पास अपना आभा है?</string>
     <string name="please_click_on_submit_button_to_proceed">कृपया आगे बढ़ने के लिए सबमिट बटन पर क्लिक करें।</string>
     <string name="abha_account_selection">*कृपया उस आभा पते का चयन करें जिसके माध्यम से आप लॉगिन करना चाहते हैं।</string>
     <string name="send_otp">ओटीपी भेजें</string>
@@ -1498,13 +1498,13 @@
     <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
     <string name="please_enter_abha_number_or_abha_address">Please enter ABHA number or ABHA address</string>
     <string name="or">Or</string>
-    <string name="aadhar_number_is_not_valid">Aadhar number is not valid</string>
+    <string name="aadhar_number_is_not_valid">AADHAAR number is not valid</string>
     <string name="please_enter_valid_otp">Please enter valid otp</string>
-    <string name="_6_digit_otp_sent_on_your_registered_number_nplease_check_and_enter_the_otp">6-digit OTP sent on your registered number.\nPlease check and enter the OTP.</string>
+    <string name="_6_digit_otp_sent_on_your_registered_number_nplease_check_and_enter_the_otp">6-digit OTP sent on your mobile number.\nPlease check and enter the OTP.</string>
     <string name="resend">Resend</string>
     <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
     <string name="abha">ABHA</string>
-    <string name="aadhaar">Aadhaar</string>
+    <string name="aadhaar">AADHAAR</string>
     <string name="please_select_the_abha_account">Please select the ABHA account</string>
     <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
     <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 10 mins.</string>

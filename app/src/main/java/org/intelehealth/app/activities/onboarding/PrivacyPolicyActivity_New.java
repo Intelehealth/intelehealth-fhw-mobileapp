@@ -78,7 +78,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 finish();
             }else {
                 patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
-                        getString(R.string.abha_number), getString(R.string.do_you_have_your_abha_number),
+                        getString(R.string.abha), getString(R.string.do_you_have_your_abha_number),
                         getResources().getString(R.string.yes), getResources().getString(R.string.no),
                         new DialogUtils.CustomDialogListener() {
                             @Override

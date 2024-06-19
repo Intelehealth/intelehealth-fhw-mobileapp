@@ -25,7 +25,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -33,13 +32,10 @@ import androidx.core.content.ContextCompat;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.AccountSelectDialogFragment;
-import org.intelehealth.app.abdm.model.Account;
-import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.AbhaOtpTypeDialogFragment;
+import org.intelehealth.app.abdm.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
-import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
@@ -51,6 +47,7 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -127,8 +124,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 resendOtp();
                 binding.otpBox.setText("");
                 callGenerateTokenApi();
-            }
-            else
+            } else
                 resendCounterAttemptsTextDisplay();
         });
 
@@ -154,7 +150,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     }
 
                     if (!binding.otpBox.getText().toString().isEmpty()) {
-                        String mobileNo;
+
 
                         if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {
                             // via. mobile login
@@ -162,8 +158,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
                             callOTPForABHALoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                         } else {
-                            mobileNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim();
-                            callOTPForVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
+                            String mobileNo = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim();
+                            callOTPForAadhaarVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
                         }
                     }
                 }
@@ -594,44 +590,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     }
 
     /**
-     * This api is used to call the GET Abha card api which returns a base64 encoded image.
-     */
-    private void callGETAbhaCardApi(String xToken, String accessToken, MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
-        Timber.tag(TAG).d("callGETAbhaCardApi: " + accessToken + " : " + xToken);
-        String url = UrlModifiers.getABHACardUrl();
-        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
-        new Thread(() -> responseBodySingle
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<>() {
-                    @Override
-                    public void onSuccess(AbhaCardResponseBody abhaCardResponseBody) {
-                        if (abhaCardResponseBody != null) {
-                            Timber.tag("callGETAbhaCardApi").d("onSuccess: %s", abhaCardResponseBody.toString());
-
-                            // TODO: here it will return base64 encoded image.
-                            Intent intent = new Intent(context, AbhaCardActivity.class);
-                            intent.putExtra("payload", abhaCardResponseBody);
-                            intent.putExtra("data", mobileLoginOnOTPVerifiedResponse);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.tag("callGETAbhaCardApi").e("onError: %s", e.toString());
-                        cpd.dismiss();
-                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        binding.sendOtpBtn.setEnabled(true);
-                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                        binding.otpBox.setText("");
-                        cancelResendAndHideView();
-                    }
-                })).start();
-    }
-
-    /**
      * This will call the Fetch Profile Details api to fetch the details related to this user.
      */
     private void callFetchUserProfileAPI(String abhaNumber, String txnId, String xToken) {
@@ -772,7 +730,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      * @param mobileNo user which enter
      * @param otp      get from aadhaar card verification api
      */
-    private void callOTPForVerificationApi(String txnId, String mobileNo, String otp) {
+    private void callOTPForAadhaarVerificationApi(String txnId, String mobileNo, String otp) {
         cpd = new CustomProgressDialog(context);
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + mobileNo + ", " + otp);
