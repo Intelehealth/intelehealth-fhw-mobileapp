@@ -218,8 +218,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
-            binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
-            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
             binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
@@ -234,7 +233,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
-            binding.layoutHaveABHANumber.tvMobileError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));

@@ -248,18 +248,7 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_mobile_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/enter_mobile_no"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@color/red"
-                    android:textSize="@null"
-                    android:visibility="gone" />
+
             </LinearLayout>
 
             <FrameLayout
