@@ -1455,10 +1455,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 //            patientdistrict.setText(getResources().getString(R.string.no_district_added));
 //        }
 
-        if (city_village != null) {
-            patientdistrict.setText(city_village);
+        if (district != null) {
+            patientdistrict.setText(district);
         } else {
-            patientdistrict.setText(getResources().getString(R.string.no_city_added));
+            patientdistrict.setText(getResources().getString(R.string.no_district_added));
         }
 
         if (patientDTO.getAddress3() != null) {

@@ -372,11 +372,11 @@ class VisitSummaryPdfGenerator {
         ): Any {
             return if (visitSummaryPdfData.closeCaseReason.isEmpty()) ""
             else "        <div class=\"section\">\n" +
-                    "            <h2>\n" + VisitSummarySvgUtils.getDoctorSpeciality() +
+                    "            <h2>\n" + VisitSummarySvgUtils.getCaseIcon() +
                     "                ${
                         ContextCompat.getString(
                             context,
-                            R.string.severity_of_case
+                            R.string.close_case
                         )
                     }\n" +
                     "            </h2>\n" +

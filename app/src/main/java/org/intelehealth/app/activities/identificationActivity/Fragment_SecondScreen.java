@@ -95,7 +95,7 @@ public class Fragment_SecondScreen extends Fragment {
             mVillageSpinner/*, mCityNameSpinner*/; // now city always an input field not spinner
     Context context;
     private String country1, state;
-    ArrayAdapter<String> districtAdapter, stateAdapter, blockAdapter, gpAdapter, villageAdapter;
+    ArrayAdapter<String> districtAdapter, stateAdapter;
     ArrayAdapter<CharSequence> countryAdapter;
     EditText mDistrictET;
     //            mCityVillageET;
@@ -405,7 +405,8 @@ public class Fragment_SecondScreen extends Fragment {
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != 0 && mVillageSpinner.getTag() != null) {
                 List<String> villages = (List<String>) mVillageSpinner.getTag();
-                mCityVillageName = villages.get(i - 1);
+                Timber.tag(TAG).d("Village size => [%1s], %2s", i, new Gson().toJson(villages));
+                mCityVillageName = villages.get(i);
             }
         }
     };
@@ -420,7 +421,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
 
-        blockAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> blockAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, blockList);
         blockAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
@@ -460,7 +461,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
 
-        gpAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> gpAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, gpList);
         gpAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
@@ -502,14 +503,14 @@ public class Fragment_SecondScreen extends Fragment {
 //        }
 
 
-        villageAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> villageAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, villages);
         villageAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mVillageSpinner.setEnabled(true);
         mVillageSpinner.setAdapter(villageAdapter);
         mVillageSpinner.setTag(villages);
-        mGramPanchayatSpinner.setOnItemSelectedListener(villageSelectedListener);
+        mVillageSpinner.setOnItemSelectedListener(villageSelectedListener);
         mVillageSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress5() != null && !patientDTO.getAddress5().isEmpty())
             mVillageSpinner.setSelection(villageAdapter.getPosition(patientDTO.getAddress5()));
