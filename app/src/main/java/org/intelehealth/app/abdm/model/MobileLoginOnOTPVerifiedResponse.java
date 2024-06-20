@@ -24,6 +24,10 @@ public class MobileLoginOnOTPVerifiedResponse implements Serializable {
     @SerializedName("token")
     @Expose
     private String token;
+
+    @SerializedName("refreshToken")
+    @Expose
+    private String refreshToken;
     @SerializedName("expiresIn")
     @Expose
     private Integer expiresIn;
