@@ -118,9 +118,9 @@
     <string name="identification_screen_text_months"> months</string>
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
-    <string name="identification_screen_prompt_block">Block</string>
-    <string name="identification_screen_prompt_gram_panchayat">Gram Panchayat</string>
-    <string name="identification_screen_prompt_village">Village</string>
+    <string name="identification_screen_prompt_block">Block *</string>
+    <string name="identification_screen_prompt_gram_panchayat">Gram Panchayat *</string>
+    <string name="identification_screen_prompt_village">Village *</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">Active Visits</string>
@@ -1662,6 +1662,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_state_added">No state added</string>
     <string name="no_district_added">No district added</string>
     <string name="no_city_added">No city added</string>
+    <string name="no_block_added">No block added</string>
+    <string name="no_gram_panchayat_added">No Gram Panchayat added</string>
     <string name="no_postal_code_added">No postal code added</string>
     <string name="no_mobile_number_added">No phone number added</string>
     <string name="remarks">Remarks:</string>
@@ -1957,4 +1959,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="action_btn_send">Send</string>
     <string name="confirm_close_case">Close Case?</string>
     <string name="confirm_close_case_visit_reason_message">Are you sure you want to close case and share visit summery?</string>
+    <string name="lbl_block">Block</string>
+    <string name="lbl_gram_panchayat">Gram Panchayat</string>
 </resources>

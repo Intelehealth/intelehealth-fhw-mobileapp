@@ -90,6 +90,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -163,7 +164,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, tvBlock, tvGramPanchayat;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
@@ -577,6 +578,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
+        tvBlock = findViewById(R.id.tvBlockValue);
+        tvGramPanchayat = findViewById(R.id.tvGramPanchayatValue);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -1055,7 +1058,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "date_of_birth", "address1", "address2", "address3", "address4", "address5", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
@@ -1070,6 +1073,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                 patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                patientDTO.setAddress4(idCursor.getString(idCursor.getColumnIndexOrThrow("address4")));
+                patientDTO.setAddress5(idCursor.getString(idCursor.getColumnIndexOrThrow("address5")));
                 patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
@@ -1433,6 +1439,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         String district = null;
         String city_village = patientDTO.getCityvillage();
+        Timber.tag(TAG).d("Village =>%s", city_village);
         if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
             String[] district_city = patientDTO.getCityvillage().trim().split(":");
             if (district_city.length == 2) {
@@ -1442,14 +1449,38 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
 
-        if (district != null) {
-            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-        } else {
-            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-        }
+//        if (district != null) {
+//            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
+//        } else {
+//            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+//        }
 
         if (city_village != null) {
-            village.setText(city_village);
+            patientdistrict.setText(city_village);
+        } else {
+            patientdistrict.setText(getResources().getString(R.string.no_city_added));
+        }
+
+        if (patientDTO.getAddress3() != null) {
+            tvBlock.setText(patientDTO.getAddress3());
+        } else {
+            tvBlock.setText(getResources().getString(R.string.no_block_added));
+        }
+
+        if (patientDTO.getAddress4() != null) {
+            tvGramPanchayat.setText(patientDTO.getAddress4());
+        } else {
+            tvGramPanchayat.setText(getResources().getString(R.string.no_gram_panchayat_added));
+        }
+
+//        if (city_village != null) {
+//            village.setText(city_village);
+//        } else {
+//            village.setText(getResources().getString(R.string.no_city_added));
+//        }
+
+        if (patientDTO.getAddress5() != null) {
+            village.setText(patientDTO.getAddress5());
         } else {
             village.setText(getResources().getString(R.string.no_city_added));
         }

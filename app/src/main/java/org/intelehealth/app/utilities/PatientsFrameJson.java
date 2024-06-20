@@ -87,6 +87,9 @@ public class PatientsFrameJson {
                 Address address = new Address();
                 address.setAddress1(patientDTOList.get(i).getAddress1());
                 address.setAddress2(patientDTOList.get(i).getAddress2());
+                address.setAddress3(patientDTOList.get(i).getAddress3());
+                address.setAddress4(patientDTOList.get(i).getAddress4());
+                address.setAddress5(patientDTOList.get(i).getAddress5());
                 address.setCityVillage(patientDTOList.get(i).getCityvillage());
                 address.setCountry(patientDTOList.get(i).getCountry());
                 address.setPostalCode(patientDTOList.get(i).getPostalcode());

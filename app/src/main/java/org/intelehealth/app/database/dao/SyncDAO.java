@@ -95,7 +95,7 @@ public class SyncDAO {
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+//            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
 

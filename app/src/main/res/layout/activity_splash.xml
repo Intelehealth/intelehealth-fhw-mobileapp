@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/iv_intele_logo_height"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/iv_intele_logo_margin_start"
                 android:layout_marginTop="@dimen/iv_intele_logo_margin_top"

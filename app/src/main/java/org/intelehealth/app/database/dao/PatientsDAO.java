@@ -10,7 +10,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,9 @@ public class PatientsDAO {
 
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
+        Timber.tag("Patient").d("*****************************************START PATIENT***********************************************");
+        Timber.tag("Patient").d("pulled patient => %s", new Gson().toJson(patient));
+        Timber.tag("Patient").d("*****************************************END PATIENT***********************************************");
         ContentValues values = new ContentValues();
         try {
             values.put("uuid", patient.getUuid());
@@ -68,6 +73,9 @@ public class PatientsDAO {
             values.put("last_name", patient.getLastname());
             values.put("address1", patient.getAddress1());
             values.put("address2", patient.getAddress2());
+            values.put("address3", patient.getAddress3());
+            values.put("address4", patient.getAddress4());
+            values.put("address5", patient.getAddress5());
             values.put("country", patient.getCountry());
             values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
@@ -111,6 +119,9 @@ public class PatientsDAO {
             values.put("phone_number", patientDTO.getPhonenumber());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
+            values.put("address3", patientDTO.getAddress3());
+            values.put("address4", patientDTO.getAddress4());
+            values.put("address5", patientDTO.getAddress5());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDateofbirth());
             values.put("gender", patientDTO.getGender());
@@ -163,6 +174,9 @@ public class PatientsDAO {
             values.put("phone_number", patientDTO.getPhonenumber());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
+            values.put("address3", patientDTO.getAddress3());
+            values.put("address4", patientDTO.getAddress4());
+            values.put("address5", patientDTO.getAddress5());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDateofbirth());
             values.put("gender", patientDTO.getGender());
@@ -215,6 +229,9 @@ public class PatientsDAO {
             values.put("phone_number", patientDTO.getPhone_number());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
+            values.put("address3", patientDTO.getAddress3());
+            values.put("address4", patientDTO.getAddress4());
+            values.put("address5", patientDTO.getAddress5());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDate_of_birth());
             values.put("gender", patientDTO.getGender());
@@ -514,6 +531,9 @@ public class PatientsDAO {
                     patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                     patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                    patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                    patientDTO.setAddress4(idCursor.getString(idCursor.getColumnIndexOrThrow("address4")));
+                    patientDTO.setAddress5(idCursor.getString(idCursor.getColumnIndexOrThrow("address5")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                     patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
                     patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
@@ -856,6 +876,9 @@ public class PatientsDAO {
                 patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 patientDTO.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
                 patientDTO.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow("address3")));
+                patientDTO.setAddress4(cursor.getString(cursor.getColumnIndexOrThrow("address4")));
+                patientDTO.setAddress5(cursor.getString(cursor.getColumnIndexOrThrow("address5")));
                 patientDTO.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
                 patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
@@ -882,7 +905,7 @@ public class PatientsDAO {
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "date_of_birth", "address1", "address2", "address3", "address4", "address5", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
@@ -898,6 +921,9 @@ public class PatientsDAO {
                 patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                 patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                patientDTO.setAddress4(idCursor.getString(idCursor.getColumnIndexOrThrow("address4")));
+                patientDTO.setAddress5(idCursor.getString(idCursor.getColumnIndexOrThrow("address5")));
                 patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
@@ -956,7 +982,7 @@ public class PatientsDAO {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        return  patientDTO;
+        return patientDTO;
     }
 
 }

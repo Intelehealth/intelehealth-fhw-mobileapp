@@ -124,6 +124,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "phone_number TEXT," +
             "address1 TEXT," +
             "address2 TEXT," +
+            "address3 TEXT," +
+            "address4 TEXT," +
+            "address5 TEXT," +
             "city_village TEXT," +
             "state_province TEXT," +
             "postal_code TEXT," +

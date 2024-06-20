@@ -36,6 +36,15 @@ public class PatientDTO implements Serializable {
     @SerializedName("address1")
     @Expose
     private String address1;
+    @SerializedName("address3")
+    @Expose
+    private String address3;
+    @SerializedName("address4")
+    @Expose
+    private String address4;
+    @SerializedName("address5")
+    @Expose
+    private String address5;
     @SerializedName("cityvillage")
     @Expose
     private String cityvillage;
@@ -157,6 +166,30 @@ public class PatientDTO implements Serializable {
         this.address1 = address1;
     }
 
+    public String getAddress3() {
+        return address3;
+    }
+
+    public void setAddress3(String address3) {
+        this.address3 = address3;
+    }
+
+    public String getAddress4() {
+        return address4;
+    }
+
+    public void setAddress4(String address4) {
+        this.address4 = address4;
+    }
+
+    public String getAddress5() {
+        return address5;
+    }
+
+    public void setAddress5(String address5) {
+        this.address5 = address5;
+    }
+
     public String getCityvillage() {
         return cityvillage;
     }
@@ -270,7 +303,7 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
-    public String  getSon_dau_wife() {
+    public String getSon_dau_wife() {
         return son_dau_wife;
     }
 
@@ -376,8 +409,11 @@ public class PatientDTO implements Serializable {
                 ", lastname='" + lastname + '\'' +
                 ", dateofbirth='" + dateofbirth + '\'' +
                 ", phonenumber='" + phonenumber + '\'' +
-                ", address2='" + address2 + '\'' +
                 ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", address3='" + address3 + '\'' +
+                ", address4='" + address4 + '\'' +
+                ", address5='" + address5 + '\'' +
                 ", cityvillage='" + cityvillage + '\'' +
                 ", stateprovince='" + stateprovince + '\'' +
                 ", postalcode='" + postalcode + '\'' +
