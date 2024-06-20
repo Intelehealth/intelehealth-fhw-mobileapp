@@ -128,9 +128,7 @@
     <string name="abha">ABHA</string>
     <string name="aadhaar">AADHAAR</string>
     <string name="please_select_the_abha_account">Please select the ABHA account</string>
-    <string name="aadhaar">Aadhaar</string>
-    <string name="please_select_the_abha_account">Please select the ABHA account</string>
-    <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
+     <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
     <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 10 mins.</string>
     <string name="view_download_abha_card">View/Download ABHA card</string>
     <string name="session_expired_please_try_again">Session Expired. Please try again.</string>
