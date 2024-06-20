@@ -69,8 +69,6 @@ import io.reactivex.schedulers.Schedulers;
 public class AbhaCardVerificationActivity extends AppCompatActivity {
     private final Context context = AbhaCardVerificationActivity.this;
     private static final String TAG = AbhaCardVerificationActivity.class.getSimpleName();
-    private static String SCOPE = SCOPE_MOBILE;
-
     private ActivityAbhaCardVerificationBinding binding;
     private String accessToken = "";
     private String abhaAuthType = ABHA_OTP_AADHAAR;
@@ -181,6 +179,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             // via. mobile login
                             callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                         } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+
                             callOTPForABHALoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                         } else {
                             callOTPForAadhaarVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
@@ -382,7 +381,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
 
                         Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
-                        if (SCOPE.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
+                        String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
+                        if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
                             String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                             callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
                             return;
@@ -441,7 +441,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         OTPVerificationRequestBody requestBody = new OTPVerificationRequestBody();
         requestBody.setTxnId(txnId);
         requestBody.setOtp(otp);
-        requestBody.setScope(SCOPE);
+        requestBody.setScope(SCOPE_MOBILE);
         Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
         new Thread(() -> mobileLoginOnOTPVerifiedResponseSingle
