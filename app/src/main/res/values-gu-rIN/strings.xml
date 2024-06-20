@@ -1226,5 +1226,7 @@
     <string name="i_dont_think_i_need_it">મને નથી લાગતું કે મારે તેની જરૂર છે</string>
     <string name="side_effect_related_to_medication">દવા સંબંધિત આડઅસર</string>
     <string name="unknown_other">અજ્ઞાત/અન્ય</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 
 </resources>

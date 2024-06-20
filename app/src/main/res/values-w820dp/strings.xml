@@ -1169,4 +1169,6 @@
     <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
     <string name="node_input_empty_error">%1$s  should not be empty !</string>
     <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 </resources>

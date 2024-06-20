@@ -1274,5 +1274,7 @@
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
     <string name="yes_move_ahead">"Yes, move ahead."</string>
     <string name="no_go_back">No, go back.</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 
 </resources>

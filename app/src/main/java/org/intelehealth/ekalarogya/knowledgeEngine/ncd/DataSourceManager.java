@@ -101,6 +101,39 @@ public class DataSourceManager {
         return sourceDataInfo;
     }
 
+    public static String getValuesForDataSourceFromTargetNode(String targetNodeText, Node rootNode) {
+        List<Node> questionsNode = rootNode.getOptionsList();
+        for (int i = 0; i < questionsNode.size(); i++) {
+            Node tempNode = questionsNode.get(i);
+            if (tempNode.getText().equals(targetNodeText)) {
+
+                if (tempNode.isTerminal()) {
+                    return tempNode.getLanguage();
+                } else {
+                    if (tempNode.getOptionsList().size() == 1) {
+                        // expected here values are in language key
+                        return tempNode.getOptionsList().get(0).getLanguage();
+
+                    } else {
+                        // expected the selected option is the final value
+                        // expected only single choice
+                        String result = "";
+                        for (int j = 0; j < tempNode.getOptionsList().size(); j++) {
+                            if (tempNode.getOptionsList().get(j).isSelected()) {
+                                result = tempNode.getOptionsList().get(j).getLanguage();
+                                break;
+                            }
+                        }
+                        return result;
+                    }
+                }
+
+
+            }
+        }
+        return "0";
+    }
+
     public static List<SourceData> getValuesForDataSourceFromTargetNestedNode(String rulesType, String sourceDataType, String sourceDataNameType, Node mmRootNode) {
         List<SourceData> resultSourceDataList = new ArrayList<>();
         String[] tempNodeNames = sourceDataNameType.split("#=>>"); // node & node separator

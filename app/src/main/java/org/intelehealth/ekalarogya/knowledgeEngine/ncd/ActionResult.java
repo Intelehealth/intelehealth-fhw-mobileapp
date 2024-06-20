@@ -6,11 +6,13 @@ import android.os.Parcelable;
 public class ActionResult implements Parcelable {
     private String target;
     private String targetData;
+    private String popupMessage;
     private boolean isInsideNodeDataUpdate;
 
     protected ActionResult(Parcel in) {
         target = in.readString();
         targetData = in.readString();
+        popupMessage = in.readString();
         isInsideNodeDataUpdate = in.readByte() != 0;
     }
 
@@ -22,6 +24,7 @@ public class ActionResult implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(target);
         dest.writeString(targetData);
+        dest.writeString(popupMessage);
         dest.writeByte((byte) (isInsideNodeDataUpdate ? 1 : 0));
     }
 
@@ -67,4 +70,11 @@ public class ActionResult implements Parcelable {
     }
 
 
+    public String getPopupMessage() {
+        return popupMessage;
+    }
+
+    public void setPopupMessage(String popupMessage) {
+        this.popupMessage = popupMessage;
+    }
 }

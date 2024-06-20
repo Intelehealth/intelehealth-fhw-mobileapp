@@ -37,8 +37,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -47,6 +45,7 @@ import com.google.gson.Gson;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
@@ -157,6 +156,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     forwardButton.setVisibility(View.INVISIBLE);
                     mTimerLinearLayout.setVisibility(View.VISIBLE);
                     mTimerTitleTextView.setText("Waiting for " + nodeText + " - " + currentStep);
+                    mTimerTextView.setTag(nodeText);
                     mCountDownTimer = new CountDownTimer(waitTime * 60 * 1000, 1000) {
                         public void onTick(long millisUntilFinished) {
                             // Used for formatting digit to be in 2 digits only
@@ -293,7 +293,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         mTimerLinearLayout = findViewById(R.id.ll_timer);
         mTimerTitleTextView = findViewById(R.id.tv_timer_title);
         mTimerTextView = findViewById(R.id.tv_timer);
+        mTimerTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                /*mTimerTextView.setText("00:00");
+                mTimerLinearLayout.setVisibility(View.GONE);
+                // Get instance of Vibrator from current Context
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+                // Vibrate for 400 milliseconds
+                v.vibrate(400);
+                Toast.makeText(context, "Please take the reading for " + mTimerTextView.getTag().toString(), Toast.LENGTH_SHORT).show();
+
+                // TODO:directly open the input box
+                mQuestionListingadapter.manualClickActionOnRecurringInput();*/
+                if (mCountDownTimer != null) {
+                    mCountDownTimer.onFinish();
+                    mCountDownTimer.cancel();
+                }
+                return false;
+            }
+        });
         navButtonRelativeLayout = findViewById(R.id.rl_nav_btn);
         forwardButton = findViewById(R.id.btn_forward);
         backButton = findViewById(R.id.btn_back);
@@ -782,22 +802,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             }
 
                             if (pastActionNode.isLazyPopuShow() && !popupMessage.isEmpty()) {
-                                MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(QuestionNodeActivity.this);
-                                alertdialogBuilder.setMessage(popupMessage);
-                                alertdialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    }
-                                });
-                                //alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-                                AlertDialog alertDialog = alertdialogBuilder.create();
-                                alertDialog.show();
-                                Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                                //Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-                                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                //negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                IntelehealthApplication.setAlertDialogCustomTheme(QuestionNodeActivity.this, alertDialog);
+                                showPopuMessage(popupMessage);
                             }
 
                             NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
@@ -809,10 +814,49 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             } else {
                                 if (ncdValidationResult.getTargetNodeID() == null && !ncdValidationResult.isReadyToEndTheScreening()) {
                                     mCurrentNodeIndex += 1;
-                                    // need to check the autofill node
-                                    if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
-                                        NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
-                                        mCurrentNode = autoFillResult.getUpdatedNode();
+                                    boolean scrollToPosition = false;
+                                    while (!scrollToPosition) {
+                                        if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()) {
+                                            mCurrentNodeIndex += 1;
+                                        } else {
+
+                                            if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                                                NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
+                                                mCurrentNode = autoFillResult.getUpdatedNode();
+                                                if(autoFillResult.getMoveToIndex()!=0){
+                                                    mCurrentNodeIndex = autoFillResult.getMoveToIndex();
+                                                    scrollToPosition = true;
+
+                                                }else {
+                                                    if (autoFillResult.isMoveToNextQuestion()) {
+                                                        mCurrentNodeIndex += 1;
+                                                    } else {
+                                                        scrollToPosition = true;
+                                                    }
+                                                }
+                                                if(autoFillResult.getPopupMessage()!=null && !autoFillResult.getPopupMessage().isEmpty()){
+                                                    showPopuMessage(autoFillResult.getPopupMessage());
+                                                }
+                                            } else {
+                                                scrollToPosition = true;
+                                            }
+                                        }
+                                        // need to check the autofill node
+                                        /*if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
+                                            NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
+                                            mCurrentNode = autoFillResult.getUpdatedNode();
+                                            if (autoFillResult.isMoveToNextQuestion()) {
+                                                mCurrentNodeIndex += 1;
+                                            } else {
+                                                scrollToPosition = true;
+                                            }
+                                        }else{
+                                            if(mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()){
+                                                mCurrentNodeIndex += 1;
+                                            }else {
+                                                scrollToPosition = true;
+                                            }
+                                        }*/
                                     }
                                     question_recyclerView.getLayoutManager().scrollToPosition(mCurrentNodeIndex);
 
@@ -852,6 +896,25 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 navButtonRelativeLayout.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void showPopuMessage(String popupMessage) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(QuestionNodeActivity.this);
+        alertdialogBuilder.setMessage(popupMessage);
+        alertdialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        //alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        //Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(QuestionNodeActivity.this, alertDialog);
     }
 
    /* private void postSubmitCheckLogic(Node rootNode, Node pastActionNode){

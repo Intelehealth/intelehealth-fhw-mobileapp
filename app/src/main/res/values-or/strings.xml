@@ -1117,5 +1117,7 @@
     <string name="i_dont_think_i_need_it">ମୁଁ ଭାବୁନାହିଁ ଯେ ଏହା ମୋର ଦରକାର ବୋଲି </string>
     <string name="side_effect_related_to_medication">ଔଷଧ ସମ୍ବନ୍ଧୀୟ ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା |</string>
     <string name="unknown_other">ଅଜ୍ଞାତ / ଅନ୍ୟ</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 
 </resources>

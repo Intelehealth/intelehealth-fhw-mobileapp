@@ -1238,5 +1238,7 @@
     <string name="i_dont_think_i_need_it">मुझे नहीं लगता कि मुझे इसकी जरूरत है</string>
     <string name="side_effect_related_to_medication">दवा से संबंधित दुष्प्रभाव</string>
     <string name="unknown_other">अज्ञात / अन्य</string>
+    <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 
 </resources>

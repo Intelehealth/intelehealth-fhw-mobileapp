@@ -188,6 +188,9 @@ public class Node implements Serializable {
     private Boolean isHidden = false;
 
 
+    private Boolean isSupportNode = false;
+
+
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
 
     private String imagePath;
@@ -226,6 +229,7 @@ public class Node implements Serializable {
             this.text = jsonNode.getString("text");
             this.isRecurring = jsonNode.optBoolean("is-recurring");
             this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
+            this.isSupportNode = jsonNode.optBoolean("is-support-node");
             this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
             this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
@@ -383,6 +387,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.isRecurring = source.isRecurring;
         this.isLazyPopuShow = source.isLazyPopuShow;
+        this.isSupportNode = source.isSupportNode;
         this.recurringMaxCount = source.recurringMaxCount;
         this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
 
@@ -1387,7 +1392,7 @@ public class Node implements Serializable {
                                 if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
-                                    if (language.equalsIgnoreCase("hi")) {
+                                    /*if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
@@ -1403,7 +1408,11 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                    }
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
                                     //   stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).getLanguage());
@@ -1414,7 +1423,7 @@ public class Node implements Serializable {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
-                                    if (language.equalsIgnoreCase("hi")) {
+                                    /*if (language.equalsIgnoreCase("hi")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else if (language.equalsIgnoreCase("or")) {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
@@ -1430,7 +1439,11 @@ public class Node implements Serializable {
                                         stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
                                     } else {
                                         stringsList.add(mOptions.get(i).findDisplay());
-                                    }
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
                                     //  stringsList.add(mOptions.get(i).getLanguage());
 
                                 }
@@ -1986,7 +1999,7 @@ public class Node implements Serializable {
                 if (!value.equalsIgnoreCase("")) {
                     double valueDouble = Double.parseDouble(value);
 
-                    if ((finalMin != 0 && finalMax != 0) && valueDouble < finalMin || valueDouble > finalMax) {
+                    if ((finalMin != 0d && finalMax != 0d) && valueDouble < finalMin || valueDouble > finalMax) {
                         Toast.makeText(context, context.getString(R.string.hemoglobin_error, String.valueOf(finalMin), String.valueOf(finalMax)), Toast.LENGTH_SHORT).show();
                         node.setSelected(false);
                         node.setDataCapture(false);
@@ -2125,6 +2138,16 @@ public class Node implements Serializable {
                     node.setSelected(false);
                     node.setDataCapture(false);
 
+                } else if (node.getValidation()!=null && node.getValidation().equals(">") && valueDouble1<valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_gtr_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
+                }else if (node.getValidation()!=null && node.getValidation().equals("<") && valueDouble1>valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_less_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+
                 } else {
                     //valueDouble1 = Double.parseDouble(value1);
                     //valueDouble2 = Double.parseDouble(value2);
@@ -2135,8 +2158,8 @@ public class Node implements Serializable {
                             node.addLanguage(et_enter_value.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }*/
-                    node1.setLanguage(node1.getText()+"-"+value1);
-                    node2.setLanguage(node2.getText()+"-"+value2);
+                    node1.setLanguage(node1.getText()+":"+value1);
+                    node2.setLanguage(node2.getText()+":"+value2);
                     node1.setSelected(true);
                     node2.setSelected(true);
                     node.getRecurringCapturedDataList().add(value1 + "/" + value2);
@@ -4808,6 +4831,14 @@ public class Node implements Serializable {
 
     public void setRecurringMaxCount(int recurringMaxCount) {
         this.recurringMaxCount = recurringMaxCount;
+    }
+
+    public Boolean isSupportNode() {
+        return isSupportNode;
+    }
+
+    public void setSupportNode(Boolean supportNode) {
+        isSupportNode = supportNode;
     }
 
 }

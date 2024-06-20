@@ -27,6 +27,8 @@ public class ValidationRulesParser {
 
         } else if (type.equals(ValidationConstants.RECURRING_NUMBER_SET)) {
             return parseDataNameTypeByUnderscore(data);
+        } else if (type.equals(ValidationConstants.TYPE_WIGHT_SUM)) {
+            return parseDataNameTypeForMultipleNodes(data);
         }
         return null;
     }
@@ -36,6 +38,25 @@ public class ValidationRulesParser {
      * @return
      */
     public static List<SourceData> parseDataNameTypeByUnderscore(String data) {
+        List<SourceData> sourceDataList = new ArrayList<>();
+        String[] tempLevel1 = data.split("_");
+        for (String tempItem : tempLevel1) {
+            SourceData sourceData = new SourceData();
+            if (tempItem.contains("[") && tempItem.contains("]")) {
+                //"source-data": "AGE[INT]_GENDER[STR]",
+                String[] temp1 = tempItem.split("\\[");
+                String dataName = temp1[0];
+                String dataType = temp1[1].substring(0, temp1[1].length() - 1);
+                sourceData.setDataName(dataName);
+                sourceData.setDataType(dataType);
+            } else {
+                sourceData.setDataName(tempItem);
+            }
+            sourceDataList.add(sourceData);
+        }
+        return sourceDataList; // 1st :
+    }
+    public static List<SourceData> parseDataNameTypeForMultipleNodes(String data) {
         List<SourceData> sourceDataList = new ArrayList<>();
         String[] tempLevel1 = data.split("_");
         for (String tempItem : tempLevel1) {
