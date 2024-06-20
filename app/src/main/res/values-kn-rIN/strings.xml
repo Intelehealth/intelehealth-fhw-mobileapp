@@ -890,7 +890,7 @@
     <string name="enter_your_aadhar_card_number">Enter your AADHAAR card number</string>
     <string name="aadhar_number">AADHAAR number</string>
     <string name="verifying_otp">Verifying OTP...</string>
-    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card and phone number for data security and privacy.</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card or Phone number or ABHA for data security and privacy.</string>
     <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you one time OTP on your AADHAAR registered mobile number.</string>
     <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
     <string name="select_an_abha_address">Select an ABHA Address</string>
