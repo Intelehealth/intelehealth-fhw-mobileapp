@@ -16,11 +16,15 @@ import org.intelehealth.ncd.model.PatientWithAttribute
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class SearchRecyclerViewAdapter(
-    private val patientList: List<PatientWithAttribute>,
+    private val patientList: MutableList<PatientWithAttribute>,
     private val resources: Resources,
     private val context: Context,
     private val listener: PatientClickedListener
 ) : RecyclerView.Adapter<SearchRecyclerViewAdapter.SearchViewHolder>() {
+
+    companion object {
+        const val LIST_STARTING_INDEX = 0
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding: ListItemSearchWithCategoryBinding = ListItemSearchWithCategoryBinding.inflate(
@@ -35,6 +39,12 @@ class SearchRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.setData(patientList[position], resources, context, listener)
+    }
+
+    fun clearData() {
+        val tempSize = patientList.size
+        patientList.clear()
+        notifyItemRangeRemoved(LIST_STARTING_INDEX, tempSize)
     }
 
     class SearchViewHolder(

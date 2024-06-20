@@ -32,6 +32,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -196,7 +197,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         super.onResume();
         // Register the receiver
         IntentFilter filter = new IntentFilter(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
-        registerReceiver(mQuestionActionBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this, mQuestionActionBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -1094,6 +1095,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String currentNodeVal = node_fetch_local_language(context, sessionManager, mCurrentNode);
+        alertDialogBuilder.setTitle(getString(R.string.please_confirm_your_details));
         alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
 
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {

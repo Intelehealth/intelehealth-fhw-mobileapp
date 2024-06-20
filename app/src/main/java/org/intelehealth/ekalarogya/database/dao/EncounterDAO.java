@@ -60,7 +60,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:","VALUES: "+values);
+            Log.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -243,7 +243,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO","DTOdao: "+ encounterDTO.getProvideruuid());
+            Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 
@@ -305,10 +305,9 @@ public class EncounterDAO {
             db.endTransaction();
         }
 */
-        Log.d("uuid", "uuid: "+uuid);
+        Log.d("uuid", "uuid: " + uuid);
         return uuid;
     }
-
 
 
     public boolean updateEncounterModifiedDate(String encounterUuid) throws DAOException {
@@ -361,6 +360,7 @@ public class EncounterDAO {
         db.endTransaction();
         return encounterDTO;
     }
+
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
@@ -409,5 +409,13 @@ public class EncounterDAO {
         }
 
         return map;
+    }
+
+    public static int deleteEncounterUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_encounter";
+        String whereClause = "visituuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
     }
 }

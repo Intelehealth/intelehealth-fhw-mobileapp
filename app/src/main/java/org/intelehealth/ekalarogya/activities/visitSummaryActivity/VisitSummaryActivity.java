@@ -257,6 +257,10 @@ public class VisitSummaryActivity extends BaseActivity {
     int patientAge = 0;
     String visitStartDate = "";
 
+    private boolean isNcdVisit;
+    private CardView vitalsCardView, physicalExamCardView, patientHistoryCardView, familyHistoryCardView;
+    private TextView tvSpecialty;
+
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
         DatabaseReference chatDatabaseReference = database.getReference(AppConstants.getFirebaseRTDBRootRefForTextChatConnInfo() + "/" + visitUuid);
@@ -554,6 +558,11 @@ public class VisitSummaryActivity extends BaseActivity {
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
+        vitalsCardView = findViewById(R.id.cardView_vitals);
+        physicalExamCardView = findViewById(R.id.cardView_physexam);
+        patientHistoryCardView = findViewById(R.id.cardView_pathist);
+        familyHistoryCardView = findViewById(R.id.cardView_famhist);
+        tvSpecialty = findViewById(R.id.tv_specialty);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -873,7 +882,11 @@ public class VisitSummaryActivity extends BaseActivity {
                 boolean isUpdateVisitDone = false;
                 try {
                     if (!isVisitSpecialityExists) {
-                        isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "General Physician");
+                        if (isNcdVisit) {
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "NCD Consultation");
+                        } else {
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, "General Physician");
+                        }
                     }
                 } catch (DAOException e) {
                     e.printStackTrace();
@@ -1052,20 +1065,19 @@ public class VisitSummaryActivity extends BaseActivity {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 showVisitID();
                                 Log.d("visitUUID", "showVisitID: " + visitUUID);
-
                             } else {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
-
                             }
                             uploaded = true;
                             uploadButton.setEnabled(true);
 //                            editComplaint.setVisibility(View.GONE);
+                            endSevikaVisitOnUpload();
                         }
                     }, 4000);
                 } else {
                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                    endSevikaVisitOnUpload();
                 }
-
             }
         });
 
@@ -1522,7 +1534,6 @@ public class VisitSummaryActivity extends BaseActivity {
                             }
                         }
 
-                        boolean isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
@@ -1901,6 +1912,45 @@ public class VisitSummaryActivity extends BaseActivity {
             }
         });
         getAppointmentDetails(visitUuid);
+
+        isNcdVisit = VisitAttributeListDAO.isNcdVisit(visitUuid);
+        setSpecialtyBasedOnVisitType(isNcdVisit);
+        if (isNcdVisit) {
+            hideSectionsForSevikaVisit();
+        }
+    }
+
+    private void endSevikaVisitOnUpload() {
+        if (!isNcdVisit) return;
+
+        String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endDateTime);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        new SyncUtils().syncForeground("", null);
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void setSpecialtyBasedOnVisitType(boolean isNcdVisit) {
+        if (isNcdVisit) {
+            tvSpecialty.setText(getString(R.string.specialty_ncd_consultation));
+        } else {
+            tvSpecialty.setText(getString(R.string.dr_specility_generalphysician));
+        }
+    }
+
+    private void hideSectionsForSevikaVisit() {
+        vitalsCardView.setVisibility(View.GONE);
+        physicalExamCardView.setVisibility(View.GONE);
+        patientHistoryCardView.setVisibility(View.GONE);
+        familyHistoryCardView.setVisibility(View.GONE);
     }
 
     private void buildAndSavePrescription(String fileName) {

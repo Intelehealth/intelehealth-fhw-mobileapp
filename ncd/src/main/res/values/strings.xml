@@ -24,5 +24,9 @@
     <string name="sample_disease_category">Sample Disease</string>
 
     <string name="search_text_filed_hint">Find patient by name, ID or mobile</string>
+    <string name="no_data_found">No data found</string>
+    <string name="patient_not_found">Patient not found!</string>
+    <string name="correct_search_string_message">Use correct patient name, or ID, or mobile number to search or you can register a new patient.</string>
+    <string name="add_new_patient">Add New Patient</string>
 
 </resources>

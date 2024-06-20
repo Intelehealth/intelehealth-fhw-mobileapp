@@ -1142,6 +1142,7 @@
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
     <string name="dr_specility_generalphysician">General Physician</string>
+    <string name="specialty_ncd_consultation">NCD Consultation</string>
     <string name="update_hw_profile">Updated Succussfully</string>
     <string name="enter_valid_email">Enter valid email address</string>
     <string name="enter_valid_gender">Enter gender male or female</string>
@@ -1269,6 +1270,10 @@
     <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
     <string name="side_effect_related_to_medication">Side effect related to medication.</string>
     <string name="unknown_other">Unknown / Other</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
+    <string name="yes_move_ahead">"Yes, move ahead."</string>
+    <string name="no_go_back">No, go back.</string>
     <string name="node_input_range_gtr_error">%1$s  can\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\'t be greater than %2$s</string>
 

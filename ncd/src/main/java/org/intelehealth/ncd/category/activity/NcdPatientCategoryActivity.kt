@@ -16,6 +16,7 @@ import org.intelehealth.ncd.category.tabs.DiabetesScreeningFragment
 import org.intelehealth.ncd.category.tabs.GeneralFragment
 import org.intelehealth.ncd.category.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.category.tabs.HypertensionScreeningFragment
+import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.databinding.ActivityNcdPatientCategoryBinding
 import org.intelehealth.ncd.search.activity.NcdSearchActivity
 
@@ -28,14 +29,21 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         }
     }
 
+    private var isPrivacyNotice: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNcdPatientCategoryBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        fetchData()
         setToolbar()
         setListeners()
         setViewPager()
+    }
+
+    private fun fetchData() {
+        isPrivacyNotice = intent.getBooleanExtra(Constants.IS_PRIVACY_NOTICE, false)
     }
 
     private fun setToolbar() {
@@ -55,6 +63,7 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
 
         binding?.toolbarSearch?.setOnClickListener {
             val intent = Intent(this@NcdPatientCategoryActivity, NcdSearchActivity::class.java)
+            intent.putExtra(Constants.IS_PRIVACY_NOTICE, isPrivacyNotice)
             startActivity(intent)
         }
     }

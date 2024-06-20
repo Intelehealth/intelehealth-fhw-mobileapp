@@ -14,4 +14,6 @@
     <color name="search_results_chips_text">#2E1E91</color>
     <color name="chips_border">#E5E4E2</color>
 
+    <color name="colorPrimaryLightCard"></color>
+
 </resources>

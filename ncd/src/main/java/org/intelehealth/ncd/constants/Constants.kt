@@ -23,4 +23,7 @@ object Constants {
     const val HYPERTENSION_FOLLOW_UP = "hypertension_follow_up"
     const val GENERAL = "general"
 
+    // intents
+    const val IS_PRIVACY_NOTICE = "isPrivacyNotice"
+
 }
