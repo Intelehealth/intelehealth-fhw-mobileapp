@@ -119,8 +119,7 @@ public class ConsentActivity extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AadharMobileVerificationActivity.class);
-            intent.putExtra(hasABHA, false);
+            Intent intent = new Intent(context, CreateAbhaActivity.class);
             startActivity(intent);
         });
 
