@@ -6,13 +6,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New
-import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.notification.NotificationDAO
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
@@ -35,60 +33,25 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
         val title = inputData.getString(BundleKeys.TITLE)
         val description = inputData.getString(BundleKeys.DESCRIPTION)
         val channelId = inputData.getString(BundleKeys.CHANNEL_ID)
-        val patientUuid = inputData.getString(BundleKeys.PATIENT_UUID) ?: ""
-        val patientId = inputData.getString(BundleKeys.PATIENT_ID) ?: ""
-        val visitUuid = inputData.getString(BundleKeys.VISIT_UUI) ?: ""
-        val gender = inputData.getString(BundleKeys.GENDER) ?: ""
-        val name = inputData.getString(BundleKeys.NAME) ?: ""
-        val encounterTypeUid = inputData.getString(BundleKeys.ENCOUNTER_TYPE_UUID) ?: ""
-        val conceptUuid = inputData.getString(BundleKeys.CONCEPT_UUID) ?: ""
-        val encounterUuid = inputData.getString(BundleKeys.ENCOUNTER_UUID) ?: ""
-        val encounterUuidVitals = inputData.getString(BundleKeys.ENCOUNTER_UUID_VITALS) ?: ""
-        val value = inputData.getString(BundleKeys.VALUE) ?: ""
-        val float_ageYear_Month = inputData.getString(BundleKeys.FLOAT_AGE_YEAR_MONTH) ?: ""
-
+        val visitUUid = inputData.getString(BundleKeys.VISIT_UUI)
+        val name = inputData.getString(BundleKeys.NAME)
 
         sendNotification(
-                title, description, channelId,
-                patientUuid,
-                name,
-                gender,
-                encounterTypeUid,
-                visitUuid,
-                conceptUuid,
-                encounterUuid,
-                encounterUuidVitals,
-                value,
+                title, description, channelId,visitUUid,name
         )
         return Result.success()
     }
 
     private fun sendNotification(
-            title: String?,
-            description: String?,
-            channelId: String?,
-            patientUuid: String = "",
-            name: String = "",
-            gender: String = "",
-            encounterTypeUid: String = "",
-            visitUuid: String = "",
-            conceptUuid: String = "",
-            encounterUuid: String = "",
-            encounterUuidVitals: String = "",
-            value: String = "",
+        title: String?,
+        description: String?,
+        channelId: String?,
+        visitUUid: String?,
+        name: String?
     ) {
         val id = System.currentTimeMillis().toInt()
 
-        val intent = Intent(IntelehealthApplication.getAppContext(), VisitSummaryActivity_New::class.java).apply {
-            putExtra("patientUuid", patientUuid)
-            putExtra("visitUuid", visitUuid)
-            putExtra("gender", gender)
-            putExtra("name", name)
-            putExtra("encounterUuidVitals", encounterUuidVitals)
-            putExtra("encounterUuidAdultIntial", encounterUuid)
-            putExtra("float_ageYear_Month", 0)
-            putExtra("tag", "Notification")
-        }
+        val intent = Intent(IntelehealthApplication.getAppContext(), FollowUpPatientActivity_New::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(
                 IntelehealthApplication.getAppContext(), System.currentTimeMillis().toInt(), intent,
@@ -118,13 +81,9 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
 
         val list = mutableListOf<NotificationModel>()
         val notificationModel = NotificationModel()
-        notificationModel.uuid = visitUuid +" "+ System.currentTimeMillis()
-        notificationModel.patientuuid = patientUuid
-        notificationModel.gender = gender
+        notificationModel.uuid = visitUUid +" "+ System.currentTimeMillis()
         notificationModel.first_name = name
         notificationModel.description = description
-        notificationModel.encounterUuidAdultIntial = encounterUuid
-        notificationModel.encounterUuidVitals = encounterUuidVitals
         notificationModel.notification_type = NotificationDbConstants.FOLLOW_UP_NOTIFICATION
         notificationModel.obs_server_modified_date = getFormatDateFromTimestamp()
 

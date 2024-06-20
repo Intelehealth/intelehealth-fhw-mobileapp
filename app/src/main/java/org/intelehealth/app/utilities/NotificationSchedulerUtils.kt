@@ -42,13 +42,7 @@ class NotificationSchedulerUtils {
                                 followUpTime,
                                 AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
                                 TimeUnit.HOURS,
-                                FollowUpNotificationData(
-                                    "20-06-2024, Time:02:33 PM, Remark: Follow-up",
-                                    "Name",
-                                    "121212",
-                                    "",
-                                    ""
-                                )
+                                followUpNotificationData
                             )
                             Log.d("CCCCCFoll2h",""+followUpTime)
                         }
@@ -56,13 +50,7 @@ class NotificationSchedulerUtils {
                             System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(2),
                             0,
                             TimeUnit.HOURS,
-                            FollowUpNotificationData(
-                                "20-06-2024, Time:02:33 PM, Remark: Follow-up",
-                                "Name",
-                                "121212",
-                                "",
-                                ""
-                            )
+                            followUpNotificationData
                         )
                         Log.d("CCCCCFollLes24",""+followUpTime)
                     } else {
@@ -70,25 +58,13 @@ class NotificationSchedulerUtils {
                             followUpTime,
                             AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION,
                             TimeUnit.HOURS,
-                            FollowUpNotificationData(
-                                "20-06-2024, Time:02:33 PM, Remark: Follow-up",
-                                "Name",
-                                "121212",
-                                "",
-                                ""
-                            )
+                            followUpNotificationData
                         )
                         scheduleNotification(
                             followUpTime,
                             AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION,
                             TimeUnit.HOURS,
-                            FollowUpNotificationData(
-                                "20-06-2024, Time:02:33 PM, Remark: Follow-up",
-                                "Name",
-                                "121212",
-                                "",
-                                ""
-                            )
+                            followUpNotificationData
                         )
                         Log.d("CCCCCFollElse",""+followUpTime)
                     }
@@ -179,19 +155,8 @@ class NotificationSchedulerUtils {
                     BundleKeys.CHANNEL_ID,
                     "" + dateTime + "" + notificationData.patientUid
                 )
-                .putString(BundleKeys.PATIENT_UUID, notificationData.patientUid)
-                .putString(BundleKeys.PATIENT_ID, notificationData.openMrsId)
-                .putString(BundleKeys.VISIT_UUI, notificationData.visitUuid)
-                .putString(BundleKeys.GENDER, notificationData.gender)
-                .putString(BundleKeys.NAME, notificationData.name)
-                .putString(
-                    BundleKeys.ENCOUNTER_TYPE_UUID,
-                    notificationData.encounterTypeUid
-                )
-                .putString(BundleKeys.CONCEPT_UUID, notificationData.conceptUuid)
-                .putString(BundleKeys.ENCOUNTER_UUID, notificationData.encounterUuid)
-                .putString(BundleKeys.ENCOUNTER_UUID_VITALS, notificationData.encounterUuidVitals)
-                .putString(BundleKeys.VALUE, notificationData.value)
+                .putString(BundleKeys.VISIT_UUI,notificationData.visitUuid)
+                .putString(BundleKeys.NAME,notificationData.name)
                 .build()
 
             val delay = (dateTime - System.currentTimeMillis()) - durationType.toMillis(duration)
