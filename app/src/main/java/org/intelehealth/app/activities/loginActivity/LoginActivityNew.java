@@ -123,9 +123,11 @@ public class LoginActivityNew extends AppCompatActivity {
         forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
+               /* Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
                 intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
-                startActivity(intent);
+                startActivity(intent);*/
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(LoginActivityNew.this, getString(R.string.forgot_your_username), getString(R.string.contact_your_admin), getString(R.string.generic_ok));
             }
         });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
