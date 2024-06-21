@@ -98,7 +98,9 @@ public class SyncUtils {
 
     }
 
-
+//4c04ae53-19c1-441d-b666-b9fa84489564
+//    bbf3f7e9-83ce-42f5-88b5-bd652d5c46be
+//    57ffb7a1-7881-41e6-9d18-257d8281bbd6
     public boolean syncForeground(String fromActivity) {
         boolean isSynced = false;
         SyncDAO syncDAO = new SyncDAO();

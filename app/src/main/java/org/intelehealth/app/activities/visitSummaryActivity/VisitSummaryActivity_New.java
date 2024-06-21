@@ -144,6 +144,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -2169,6 +2170,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                    mBinding.tvCloseCaseToVisitValue.setVisibility(View.VISIBLE);
                     mBinding.cvCloseCaseVisitDoc.setVisibility(View.VISIBLE);
                     mBinding.cvCloseCaseToVisit.setVisibility(View.GONE);
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        new VisitsDAO().updateVisitSync(visitUuid, "0");
+                        new SyncUtils().syncForeground("visitSummary");
+                    }
 //                    mBinding.spinnerCloseCaseToVisit.setVisibility(View.GONE);
                 }
             } catch (DAOException e) {
