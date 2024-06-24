@@ -12,15 +12,12 @@ import org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_MOBILE
 import org.intelehealth.app.databinding.FragmentAbhaOtpTypeDialogBinding
 
 
-class AbhaOtpTypeDialogFragment() : BottomSheetDialogFragment() {
+class AbhaOtpTypeDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAbhaOtpTypeDialogBinding
     private var onAuthTypeSelection: OnAuthTypeSelection? = null
     private var authType = ABHA_OTP_AADHAAR
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
 
     override fun onCreateView(
