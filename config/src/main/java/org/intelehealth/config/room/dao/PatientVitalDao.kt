@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.ConfigDictionary
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.config.room.entity.PatientVital
 
 /**
@@ -16,17 +17,8 @@ import org.intelehealth.config.room.entity.PatientVital
  **/
 @Dao
 interface PatientVitalDao : CoreDao<PatientVital> {
-
+    //@Query("SELECT * FROM tbl_patient_vital WHERE isEnabled = 1")
     @Query("SELECT * FROM tbl_patient_vital")
-    suspend fun getAllRecord(): List<PatientVital>
-
-    @Query("SELECT * FROM tbl_patient_vital where vitalKey = :key")
-    suspend fun getRecord(key: String): PatientVital
-
-    @Query("SELECT * FROM tbl_patient_vital")
-    fun getAllLiveRecord(): LiveData<List<PatientVital>>
-
-    @Query("SELECT * FROM tbl_patient_vital where vitalKey = :key")
-    fun getLiveRecord(key: String): LiveData<PatientVital>
+    fun getAllEnabledLiveFields(): LiveData<List<PatientVital>>
 
 }

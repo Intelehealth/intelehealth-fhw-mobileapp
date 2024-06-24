@@ -21,14 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.adapter.DialogSimpleListAdapter;
@@ -49,11 +52,18 @@ import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
+import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientVital;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -279,6 +289,29 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         });
 
         return view;
+    }
+
+    private List<PatientVital> mPatientVitalList;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //config viewmodel initialization
+        PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
+        PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
+        PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
+        requireActivity();
+        patientVitalViewModel.getAllEnabledLiveFields()
+                .observe(requireActivity(), it -> {
+                            mPatientVitalList = it;
+                            Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            updateUI();
+                        }
+                );
+    }
+
+    private void updateUI() {
+
     }
 
     class MyTextWatcher implements TextWatcher {
