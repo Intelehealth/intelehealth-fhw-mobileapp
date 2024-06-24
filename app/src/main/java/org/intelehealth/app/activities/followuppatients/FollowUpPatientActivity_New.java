@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.followuppatients;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,7 +15,12 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,10 +30,13 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -35,6 +44,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -42,11 +52,13 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.ToastUtil;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -59,8 +71,8 @@ import java.util.concurrent.Executors;
  */
 public class FollowUpPatientActivity_New extends BaseActivity {
     public static final String TAG = FollowUpPatientActivity_New.class.getName();
-    RecyclerView rv_today, rv_week, rv_month;
-    FollowUpPatientAdapter_New adapter_new;
+    RecyclerView rv_today, rv_tomorrow, rv_month;
+    FollowUpPatientAdapter_New todaysAdapter,tomorrowsAdapter,othersAdapter;
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
     private int offset = 0;
@@ -68,13 +80,26 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     TextView toolbar_title, today_nodata, week_nodata, month_nodata;
     ImageButton refresh;
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
-    private androidx.appcompat.widget.SearchView searchview_received;
+    private SearchView searchview_received;
     private ImageView closeButton;
     private Context context = FollowUpPatientActivity_New.this;
     private RelativeLayout no_patient_found_block;
     private LinearLayout main_block;
     List<FollowUpModel> todays_modelList, weeks_modelList, months_modelList;
-    private List<FollowUpModel> todaysFollowUpDates, weeksFollowUpDates, finalMonthsFollowUpDates;
+    private List<FollowUpModel> todaysFollowUpDates = new ArrayList<>();
+    private List<FollowUpModel> tomorrowssFollowUpDates = new ArrayList<>();
+    private List<FollowUpModel> finalMonthsFollowUpDates = new ArrayList<>();
+    ImageView filterIm,sortIm;
+    FrameLayout filterFrameLay;
+    TextView filterDateTv, filterStartDateTv, filterEndDateTv, tvResultsFor, othersTitle;
+    Button applyBtDate, applyBtRange, dateBt, rangeBt;
+    LinearLayout dateLayout, rangeLayout;
+    HorizontalScrollView scrollChips;
+    private List<FilterOptionsModel> filtersList;
+    private boolean isChipInit = false;
+    private int LIMIT = 15;
+    private FollowupFilterTypeEnum filterType = FollowupFilterTypeEnum.NONE;
+    private boolean sortStatus = true;//true= ascheding, false = descending
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,9 +177,97 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         week_nodata = findViewById(R.id.week_nodata);
         month_nodata = findViewById(R.id.month_nodata);
         rv_today = findViewById(R.id.recycler_today);
-        rv_week = findViewById(R.id.rv_thisweek);
+        rv_tomorrow = findViewById(R.id.rv_tomorrow);
         rv_month = findViewById(R.id.rv_thismonth);
         refresh = findViewById(R.id.refresh);
+
+        filterIm = findViewById(R.id.filter_im);
+        sortIm = findViewById(R.id.sort_im);
+        filterFrameLay = findViewById(R.id.filter_frame);
+
+        tvResultsFor = findViewById(R.id.tv_results_for);
+        othersTitle = findViewById(R.id.others_title);
+
+        filterDateTv = filterFrameLay.findViewById(R.id.tv_date);
+        filterStartDateTv = filterFrameLay.findViewById(R.id.tv_start_date);
+        filterEndDateTv = filterFrameLay.findViewById(R.id.tv_end_date);
+
+        applyBtDate = filterFrameLay.findViewById(R.id.apply_date_bt);
+        applyBtRange = filterFrameLay.findViewById(R.id.apply_range_bt);
+
+        dateBt = filterFrameLay.findViewById(R.id.button_date);
+        rangeBt = filterFrameLay.findViewById(R.id.button_range);
+
+        dateLayout = filterFrameLay.findViewById(R.id.layout_date);
+        rangeLayout = filterFrameLay.findViewById(R.id.layout_range);
+
+        scrollChips = findViewById(R.id.scroll_chips);
+
+        if (isChipInit) {
+            tvResultsFor.setVisibility(View.VISIBLE);
+            scrollChips.setVisibility(View.VISIBLE);
+        } else {
+            tvResultsFor.setVisibility(View.GONE);
+            scrollChips.setVisibility(View.GONE);
+        }
+
+        dateBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateLayout.setVisibility(View.VISIBLE);
+                rangeLayout.setVisibility(View.GONE);
+                dateBt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_ui2));
+                rangeBt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_disabled_ui2));
+            }
+        });
+
+        rangeBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateLayout.setVisibility(View.GONE);
+                rangeLayout.setVisibility(View.VISIBLE);
+                dateBt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_disabled_ui2));
+                rangeBt.setBackground(ContextCompat.getDrawable(context, R.drawable.button_bg_forgot_pass_ui2));
+            }
+        });
+
+        applyBtRange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateRange()) {
+                    resetList(true);
+                    resetData();
+                    filterFrameLay.setVisibility(View.GONE);
+                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+                    filterType = FollowupFilterTypeEnum.RANGE;
+                    setFiltersToTheGroup(new FilterOptionsModel("range", filterStartDateTv.getText().toString() + " - " + filterEndDateTv.getText().toString()));
+                } else {
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this, getString(R.string.select_date_to_apply_filter));
+                }
+            }
+        });
+
+        applyBtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateDate()) {
+                    resetList(true);
+                    resetData();
+                    filterFrameLay.setVisibility(View.GONE);
+                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+                    filterType = FollowupFilterTypeEnum.DATE;
+                    setFiltersToTheGroup(new FilterOptionsModel("date", filterDateTv.getText().toString()));
+                } else {
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this, getString(R.string.select_date_to_apply_filter));
+                }
+            }
+        });
+
+        filterStartDateTv.setOnClickListener(v -> selectDate(filterStartDateTv, "startDate"));
+        filterEndDateTv.setOnClickListener(v -> selectDate(filterEndDateTv, "endDate"));
+        filterDateTv.setOnClickListener(v -> selectDate(filterDateTv, ""));
+
+
         ImageButton ibButtonBack = findViewById(R.id.vector);
 
         searchview_received = findViewById(R.id.searchview_received);
@@ -174,16 +287,29 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             }
         });
 
+        mBodyNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                View view = v.getChildAt(v.getChildCount() - 1);
+                int bottom = view.getBottom() - (v.getHeight() + v.getScrollY());
+                if (bottom == 0) {
+                    fetchAndSegregateData();
+                }
+            }
+        });
+
+
         ibButtonBack.setOnClickListener(v -> {
             Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);
         });
 
         // Search - start
-        searchview_received.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        searchview_received.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchOperation(query);
+                resetList(false);
+                fetchAndSegregateData();
                 return false;   // setting to false will close the keyboard when clicked on search btn.
             }
 
@@ -203,25 +329,153 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             main_block.setVisibility(View.VISIBLE);
             resetData();
             searchview_received.setQuery("", false);
+            resetList(false);
+            fetchAndSegregateData();
         });
+
+        filterIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (filterFrameLay.getVisibility() == View.VISIBLE) {
+                    filterFrameLay.setVisibility(View.GONE);
+                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+                } else {
+                    filterFrameLay.setVisibility(View.VISIBLE);
+                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_border_bg));
+                }
+            }
+        });
+
+        sortIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                resetList(false);
+                resetData();
+               sortStatus = !sortStatus;
+               fetchAndSegregateData();
+               if(sortStatus){
+                   ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_ascending_order));
+               }else {
+                   ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_descending_order));
+               }
+            }
+        });
+
+
+
         // Search - end
 
         //handleBackPress();
 
     }
 
+    private void resetList(boolean resetFilterRequired) {
+        if (resetFilterRequired) {
+            filterType = FollowupFilterTypeEnum.NONE;
+        }
+        todaysFollowUpDates.clear();
+        tomorrowssFollowUpDates.clear();
+        finalMonthsFollowUpDates.clear();
+    }
+
+    private boolean validateDate() {
+        return !filterDateTv.getText().toString().isEmpty();
+    }
+
+    private boolean validateRange() {
+        return !filterStartDateTv.getText().toString().isEmpty() && !filterEndDateTv.getText().toString().isEmpty();
+    }
+
+    private void setFiltersToTheGroup(FilterOptionsModel inputModel) {
+        filtersList = new ArrayList<>();
+        filtersList.add(inputModel);
+
+        if (filtersList.size() > 0) {
+            scrollChips.setVisibility(View.VISIBLE);
+            if (tvResultsFor != null) {
+                tvResultsFor.setVisibility(View.VISIBLE);
+            }
+        }
+
+        fetchAndSegregateData();
+
+        ChipGroup chipGroup = findViewById(R.id.chipgroup_filter);
+        isChipInit = true;
+        chipGroup.removeAllViews();
+        for (int index = 0; index < filtersList.size(); index++) {
+            Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_custom_ui2, chipGroup, false);
+            FilterOptionsModel filterOptionsModel = filtersList.get(index);
+            String tagName = filterOptionsModel.getFilterValue();
+            String tagName1 = filterOptionsModel.getFilterValue();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                tagName1 = StringUtils.en_hi_dob_updated(tagName);
+            }
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10f, getResources().getDisplayMetrics());
+            chip.setText(tagName1);
+            chip.setCloseIconVisible(true);
+            chip.setBackground(ContextCompat.getDrawable(this, R.drawable.ui2_ic_selcted_chip_bg));
+            chipGroup.addView(chip);
+            chip.setOnCloseIconClickListener(view -> {
+                filtersList.remove(filterOptionsModel);
+                chipGroup.removeView(chip);
+                if (filtersList != null && filtersList.size() == 0) {
+                    scrollChips.setVisibility(View.GONE);
+                    if (tvResultsFor != null) {
+                        tvResultsFor.setVisibility(View.GONE);
+                    }
+                }
+                resetList(true);
+                resetData();
+                fetchAndSegregateData();
+            });
+        }
+    }
+
+
+    private void selectDate(TextView textView, String value) {
+        String date = textView.getText().toString();
+        Calendar calendar = DateAndTimeUtils.convertStringToCalendarObject(date, "dd MMM, yyyy", sessionManager.getAppLanguage());
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.datepicker, (datePicker, year, month, day) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(Calendar.YEAR, year);
+            newDate.set(Calendar.MONTH, month);
+            newDate.set(Calendar.DAY_OF_MONTH, day);
+
+            Date selectedDate = newDate.getTime();
+            textView.setText(DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy"));
+            //fetchAndSetUIData();
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        if (value.equalsIgnoreCase("startDate")) {
+            if (!filterEndDateTv.getText().toString().isEmpty()) {
+                Calendar maxDateforStartCal = DateAndTimeUtils.convertStringToCalendarObject(filterEndDateTv.getText().toString(), "dd MMM, yyyy", sessionManager.getAppLanguage());
+                datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
+            }
+        } else if (value.equalsIgnoreCase("endDate")) {
+            if (!filterStartDateTv.getText().toString().isEmpty()) {
+                Calendar minDateForEndCal = DateAndTimeUtils.convertStringToCalendarObject(filterStartDateTv.getText().toString(), "dd MMM, yyyy", sessionManager.getAppLanguage());
+                datePicker.setMinDate(minDateForEndCal.getTimeInMillis());
+            }
+        }
+        datePickerDialog.show();
+    }
+
     private void resetData() {
-        adapter_new = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
+        todaysAdapter = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
         rv_today.setNestedScrollingEnabled(false);
-        rv_today.setAdapter(adapter_new);
+        rv_today.setAdapter(todaysAdapter);
 
-        adapter_new = new FollowUpPatientAdapter_New(weeksFollowUpDates, this);
-        rv_week.setNestedScrollingEnabled(false);
-        rv_week.setAdapter(adapter_new);
+        tomorrowsAdapter = new FollowUpPatientAdapter_New(tomorrowssFollowUpDates, this);
+        rv_tomorrow.setNestedScrollingEnabled(false);
+        rv_tomorrow.setAdapter(tomorrowsAdapter);
 
-        adapter_new = new FollowUpPatientAdapter_New(finalMonthsFollowUpDates, this);
+        othersAdapter = new FollowUpPatientAdapter_New(finalMonthsFollowUpDates, this);
         rv_month.setNestedScrollingEnabled(false);
-        rv_month.setAdapter(adapter_new);
+        rv_month.setAdapter(othersAdapter);
     }
 
     private void allCountVisibility(int allCount) {
@@ -250,7 +504,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             public void run() {
 
                 List<FollowUpModel> finalTodayList = todaysFollowUpDates;
-                List<FollowUpModel> finalWeekList = weeksFollowUpDates;
+                List<FollowUpModel> finalWeekList = tomorrowssFollowUpDates;
                 List<FollowUpModel> finalMonthList = finalMonthsFollowUpDates;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -352,8 +606,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             rv_today.setAdapter(adapter_new);
 
                             adapter_new = new FollowUpPatientAdapter_New(weeks, context);
-                            rv_week.setNestedScrollingEnabled(false);
-                            rv_week.setAdapter(adapter_new);
+                            rv_tomorrow.setNestedScrollingEnabled(false);
+                            rv_tomorrow.setAdapter(adapter_new);
 
                             adapter_new = new FollowUpPatientAdapter_New(months, context);
                             rv_month.setNestedScrollingEnabled(false);
@@ -383,25 +637,42 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         commonLoadingDialog.show();
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth();
+            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth(LIMIT);
             if (initialFollowUpPatients.isEmpty()) {
                 commonLoadingDialog.dismiss();
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
             } else {
-                finalMonthsFollowUpDates = initialFollowUpPatients;
-                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
-                getChiefComplaint(initialFollowUpPatients);
-                todaysFollowUpDates = getTodaysVisitsFromList(initialFollowUpPatients);
-                initialFollowUpPatients.removeAll(todaysFollowUpDates);
-                weeksFollowUpDates = getWeeksVisitsFromList(initialFollowUpPatients);
-                finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
-                finalMonthsFollowUpDates.removeAll(weeksFollowUpDates);
-                runOnUiThread(() -> {
-                    setTodaysDatesInRecyclerView(todaysFollowUpDates);
-                    setWeeksDatesInRecyclerView(weeksFollowUpDates);
-                    setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                    commonLoadingDialog.dismiss();
-                });
+                if (filterType != FollowupFilterTypeEnum.NONE) {
+                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                    runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
+                    runOnUiThread(() -> {
+                        mTodayRelativeLayout.setVisibility(View.GONE);
+                        mWeekRelativeLayout.setVisibility(View.GONE);
+                        othersTitle.setVisibility(View.GONE);
+                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                        commonLoadingDialog.dismiss();
+                    });
+                } else {
+                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                    runOnUiThread(() -> {
+                        mTodayRelativeLayout.setVisibility(View.VISIBLE);
+                        mWeekRelativeLayout.setVisibility(View.VISIBLE);
+                        othersTitle.setVisibility(View.VISIBLE);
+                        shouldShowNoDataTextViewForAllRecyclerViews(false);
+                    });
+                    getChiefComplaint(initialFollowUpPatients);
+                    todaysFollowUpDates.addAll(getTodaysVisitsFromList(initialFollowUpPatients));
+                    initialFollowUpPatients.removeAll(todaysFollowUpDates);
+                    tomorrowssFollowUpDates.addAll(getTomorrowsVisitsFromList(initialFollowUpPatients));
+                    finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
+                    finalMonthsFollowUpDates.removeAll(tomorrowssFollowUpDates);
+                    runOnUiThread(() -> {
+                        setTodaysDatesInRecyclerView(todaysFollowUpDates);
+                        setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
+                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                        commonLoadingDialog.dismiss();
+                    });
+                }
             }
         });
     }
@@ -411,20 +682,20 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             today_nodata.setVisibility(View.VISIBLE);
         } else {
             today_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
+            todaysAdapter = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
             rv_today.setNestedScrollingEnabled(false);
-            rv_today.setAdapter(adapter_new);
+            rv_today.setAdapter(todaysAdapter);
         }
     }
 
-    private void setWeeksDatesInRecyclerView(List<FollowUpModel> weeksFollowUpDates) {
-        if (weeksFollowUpDates.isEmpty()) {
+    private void setTomorrowsDatesInRecyclerView(List<FollowUpModel> tomorrowssFollowUpDates) {
+        if (tomorrowssFollowUpDates.isEmpty()) {
             week_nodata.setVisibility(View.VISIBLE);
         } else {
             week_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(weeksFollowUpDates, this);
-            rv_week.setNestedScrollingEnabled(false);
-            rv_week.setAdapter(adapter_new);
+            tomorrowsAdapter = new FollowUpPatientAdapter_New(tomorrowssFollowUpDates, this);
+            rv_tomorrow.setNestedScrollingEnabled(false);
+            rv_tomorrow.setAdapter(tomorrowsAdapter);
         }
     }
 
@@ -433,9 +704,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             month_nodata.setVisibility(View.VISIBLE);
         } else {
             month_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(monthFollowUpDates, this);
+            othersAdapter = new FollowUpPatientAdapter_New(monthFollowUpDates, this);
             rv_month.setNestedScrollingEnabled(false);
-            rv_month.setAdapter(adapter_new);
+            rv_month.setAdapter(othersAdapter);
         }
     }
 
@@ -449,6 +720,24 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             }
         }
         return weekFollowUpList;
+    }
+
+    private List<FollowUpModel> getTomorrowsVisitsFromList(List<FollowUpModel> followUpList) {
+        List<FollowUpModel> tomorrowsFollowUpList = new ArrayList<>();
+        Date todayssDate = DateAndTimeUtils.getCurrentDateWithoutTime();
+        Calendar c = Calendar.getInstance();
+        c.setTime(todayssDate);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrowsDate = c.getTime();
+
+        for (FollowUpModel followUpModel : followUpList) {
+            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
+            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            if (tomorrowsDate.compareTo(followUpDateObject) == 0) {
+                tomorrowsFollowUpList.add(followUpModel);
+            }
+        }
+        return tomorrowsFollowUpList;
     }
 
     private List<FollowUpModel> getTodaysVisitsFromList(List<FollowUpModel> followUpList) {
@@ -465,39 +754,30 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     }
 
     private void shouldShowNoDataTextViewForAllRecyclerViews(boolean isVisible) {
-        if (isVisible) {
+        if (todaysFollowUpDates.isEmpty()) {
             today_nodata.setVisibility(View.VISIBLE);
-            week_nodata.setVisibility(View.VISIBLE);
-            month_nodata.setVisibility(View.VISIBLE);
+            rv_today.setVisibility(View.GONE);
         } else {
             today_nodata.setVisibility(View.GONE);
+            rv_today.setVisibility(View.VISIBLE);
+        }
+        if (tomorrowssFollowUpDates.isEmpty()) {
+            week_nodata.setVisibility(View.VISIBLE);
+            rv_tomorrow.setVisibility(View.GONE);
+        } else {
             week_nodata.setVisibility(View.GONE);
+            rv_tomorrow.setVisibility(View.VISIBLE);
+        }
+        if (finalMonthsFollowUpDates.isEmpty()) {
+            month_nodata.setVisibility(View.VISIBLE);
+            rv_month.setVisibility(View.GONE);
+        } else {
             month_nodata.setVisibility(View.GONE);
+            rv_month.setVisibility(View.VISIBLE);
         }
+
     }
 
-    private void todays_FollowupVisits() {
-        try {
-            Date cDate = new Date();
-            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-            todays_modelList = getAllPatientsFromDB_Today();
-            todays_modelList = getChiefComplaint(todays_modelList);
-
-            totalCounts_today = todays_modelList.size();
-            if (totalCounts_today == 0 || totalCounts_today < 0) {
-                today_nodata.setVisibility(View.VISIBLE);
-            } else {
-                today_nodata.setVisibility(View.GONE);
-            }
-
-            adapter_new = new FollowUpPatientAdapter_New(todays_modelList, this);
-            rv_today.setNestedScrollingEnabled(false);
-            rv_today.setAdapter(adapter_new);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("todays_followupvisits", "exception: ", e);
-        }
-    }
 
     private List<FollowUpModel> getChiefComplaint(List<FollowUpModel> followUpModels) {
         for (int i = 0; i < followUpModels.size(); i++) {
@@ -525,208 +805,47 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         return followUpModels;
     }
 
-    private void thisWeeks_FollowupVisits() {
-        try {
-            weeks_modelList = getAllPatientsFromDB_thisWeek();
-            weeks_modelList = getChiefComplaint(weeks_modelList);
-
-            totalCounts_week = weeks_modelList.size();
-            if (totalCounts_week == 0 || totalCounts_week < 0)
-                week_nodata.setVisibility(View.VISIBLE);
-            else week_nodata.setVisibility(View.GONE);
-
-            adapter_new = new FollowUpPatientAdapter_New(weeks_modelList, this);
-            rv_week.setNestedScrollingEnabled(false);
-            rv_week.setAdapter(adapter_new);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("todays_followupvisits", "exception: ", e);
-        }
-    }
-
-    private void thisMonths_FollowupVisits() {
-        try {
-            months_modelList = getAllPatientsFromDB_thisMonth();
-            months_modelList = getChiefComplaint(months_modelList);
-
-            totalCounts_month = months_modelList.size();
-            if (totalCounts_month == 0 || totalCounts_month < 0)
-                month_nodata.setVisibility(View.VISIBLE);
-            else month_nodata.setVisibility(View.GONE);
-
-            adapter_new = new FollowUpPatientAdapter_New(months_modelList, this);
-            rv_month.setNestedScrollingEnabled(false);
-            rv_month.setAdapter(adapter_new);
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            Logger.logE("todays_followupvisits", "exception: ", e);
-        }
-    }
-
-
-    public List<FollowUpModel> getAllPatientsFromDB_Today() {
+    public List<FollowUpModel> getAllPatientsFromDB_thisMonth(int limit) {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
-        String table = "tbl_patient";
-
-/*
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, substr(o.value, 1, 10) as value1 " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
-                "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " +
-                "value1 like '%"+ currentDate +"%' AND " +
-                "value1 is NOT NULL GROUP BY a.patientuuid";
-*/
-
-        // TODO: encounter is not null -- statement is removed | Add this later... " a.enddate is NOT NULL " --> Added...
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate,  "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, "
-                + "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND  " +
-                //"a.enddate is NOT NULL AND " +
-                "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND " +
-                "d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                + "date(substr(o.value, 1, 10)) = DATE('now') AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
-        Log.v(TAG, "query - " + query);
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
-                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                        //if (isCompletedExitedSurvey) {
-                        // Fetch encounters who have emergency set and udpate modelist.
-
-                        Log.v("Followup::", "::" + visitUuid);
-                        String emergencyUuid = "";
-                        encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
-
-                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                            modelList.add(new FollowUpModel(visitUuid, cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), // ie. visit is emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
-                        } else {
-                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (cursor.moveToNext());
+        String filterQuery = "";
+        if (filterType == FollowupFilterTypeEnum.DATE) {
+            String date = DateAndTimeUtils.date_formatter(filterDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+            filterQuery = "followup_date = '" + date + "' and ";
+        } else if (filterType == FollowupFilterTypeEnum.RANGE) {
+            String startDate = DateAndTimeUtils.date_formatter(filterStartDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+            String endDate = DateAndTimeUtils.date_formatter(filterEndDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+            filterQuery = "(followup_date >= '" + startDate + "' and followup_date <= '" + endDate + "' ) and ";
         }
-        cursor.close();
+        String middleName = "CASE WHEN b.middle_name IS NOT NULL THEN ' ' || b.middle_name || ' ' ELSE ' ' END";
 
-        return modelList;
-    }
-
-    public List<FollowUpModel> getAllPatientsFromDB_thisWeek() {
-        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
-
-/*
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
-                "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND " +
-                "o.obsservermodifieddate >= date(date('now', 'weekday 0', '-7 days'), 'weekday 0') AND " +
-                "o.value is NOT NULL GROUP BY a.patientuuid";
-*/
-        // TODO: end date is removed later add it again. --> Added... Only ended visits will show up for follow up.
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, " +
-                "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                //"a.enddate is NOT NULL AND " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) "
-                + "AND STRFTIME('%W',date(substr(o.value, 1, 10))) = STRFTIME('%W',DATE('now')) AND "
-                + "o.value is NOT NULL GROUP BY a.patientuuid";
-
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    // Fetch encounters who have emergency set and udpate modelist.
-                    String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
-                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                        //if (isCompletedExitedSurvey) {
-                        String patientID = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
-                        Log.v("Followup::", "::" + visitUuid + "\n" + patientID);
-                        String emergencyUuid = "";
-                        encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
-
-                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                            modelList.add(new FollowUpModel(visitUuid, cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
-                        } else {
-                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-//                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            } while (cursor.moveToNext());
+        String searchQuery = "";
+        CharSequence sQuery = searchview_received.getQuery();
+        if (searchview_received.getQuery() != null && !searchview_received.getQuery().toString().isEmpty()) {
+            searchQuery = " ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) and ";
         }
-        cursor.close();
 
-        return modelList;
-    }
+        String sortQuery = "";
+        if(sortStatus){
+            sortQuery = " order by followup_date asc ";
+        }else {
+            sortQuery = " order by followup_date desc ";
+        }
 
-    public List<FollowUpModel> getAllPatientsFromDB_thisMonth() {
-        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
-        String table = "tbl_patient";
-
-//        String query = "SELECT * FROM " + table +" as p where p.uuid in (select v.patientuuid from tbl_visit as v " +
-//                "where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in " +
-//                "(select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and " +
-//                "o.obsservermodifieddate >= date(date('now', 'weekday 0', '-7 days'), 'weekday 0'))))";
-
-/*
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
-                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " +
-                "a.uuid = c.visit_uuid AND a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " +
-                "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND " +
-                "o.obsservermodifieddate >= date(date('now', 'weekday 0', '-7 days'), 'weekday 0') AND " +
-                "o.value is NOT NULL GROUP BY a.patientuuid";
-*/
-        // TODO: end date is removed later add it again. --> Added...
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+        String query = "SELECT a.uuid as visituuid,b.first_name || " + middleName + " || b.last_name as patient_name_new, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
                 + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
                 + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
                 + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
                 + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
-                //"a.enddate is NOT NULL AND " +
                 "a.patientuuid = b.uuid AND "
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                //+ "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                //+ "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
-                + "o.value is NOT NULL GROUP BY a.patientuuid";
+                + filterQuery
+                + searchQuery
+                + "o.value is NOT NULL AND followup_date is NOT NULL GROUP BY a.patientuuid"
+                +sortQuery
+                +" LIMIT " + limit + " OFFSET " + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size());
+        Log.d("DDDDD", "" + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size()));
+        Log.d("DDDDD", "" + query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -778,4 +897,31 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             }
         });
     }
+
+    public class FilterOptionsModel {
+        private String filterType;
+        private String filterValue;
+
+        public FilterOptionsModel(String filterType, String filterValue) {
+            this.filterType = filterType;
+            this.filterValue = filterValue;
+        }
+
+        public String getFilterType() {
+            return filterType;
+        }
+
+        public void setFilterType(String filterType) {
+            this.filterType = filterType;
+        }
+
+        public String getFilterValue() {
+            return filterValue;
+        }
+
+        public void setFilterValue(String filterValue) {
+            this.filterValue = filterValue;
+        }
+    }
+
 }
