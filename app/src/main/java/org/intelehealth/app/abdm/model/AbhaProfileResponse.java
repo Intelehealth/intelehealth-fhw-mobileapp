@@ -16,6 +16,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class AbhaProfileResponse implements Serializable {
 
+    @SerializedName("token")
+    @Expose
+    private String token;
     @SerializedName("ABHANumber")
     @Expose
     private String aBHANumber;
@@ -132,7 +135,13 @@ public class AbhaProfileResponse implements Serializable {
     private String uuiD;
     private String openMrsId;
 
+    public String getToken() {
+        return token;
+    }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getABHANumber() {
         return TextUtils.isEmpty(aBHANumber) ? healthIdNumber : aBHANumber;

@@ -123,7 +123,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken, xToken;
+    private String accessToken, xToken, txnId;
 
 
     @Nullable
@@ -206,6 +206,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 accessToken = getArguments().getString("accessToken");
             if (getArguments().containsKey("xToken"))
                 xToken = getArguments().getString("xToken");
+            if (getArguments().containsKey("txnId"))
+                txnId = getArguments().getString("txnId");
             if (getArguments().containsKey("fromSecondScreen"))
                 fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
 
@@ -1029,6 +1031,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
                 bundle.putString("accessToken", accessToken);
                 bundle.putString("xToken", xToken);
+                bundle.putString("txnId", txnId);
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
                 Log.d(TAG, "onPatientCreateClicked: " + patientdto.toString());
@@ -1063,6 +1066,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
                 args.putString("accessToken", accessToken);
                 args.putString("xToken", xToken);
+                args.putString("txnId", txnId);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

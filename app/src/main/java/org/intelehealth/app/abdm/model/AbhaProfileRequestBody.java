@@ -44,4 +44,12 @@ public class AbhaProfileRequestBody {
         this.abhaNumber = abhaNumber;
     }
 
+    @Override
+    public String toString() {
+        return "AbhaProfileRequestBody{" +
+                "txnId='" + txnId + '\'' +
+                ", abhaNumber='" + abhaNumber + '\'' +
+                ", scope='" + scope + '\'' +
+                '}';
+    }
 }

@@ -523,7 +523,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                         cpd.dismiss();
                         Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                        checkIsUserExist(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse, xToken);
+                        checkIsUserExist(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse, xToken, requestBody);
                     }
 
                     @Override
@@ -535,7 +535,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void checkIsUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse, String xToken) {
+    private void checkIsUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse, String xToken, AbhaProfileRequestBody abhaProfileRequestBody) {
 
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
@@ -553,13 +553,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
                         Intent intent;
-                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                        if (response != null && response.getData() != null &&
+                                !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                             abhaProfileResponse.setUuiD(response.getData().getUuid());
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
-                            intent.putExtra("xToken", xToken);
+                            intent.putExtra("xToken", abhaProfileResponse.getToken());
+                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
                             intent.putExtra("patient_detail", true);
                             startActivity(intent);
                         } else {
@@ -567,6 +569,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("xToken", xToken);
+                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
                             startActivity(intent);
                         }
                         finish();

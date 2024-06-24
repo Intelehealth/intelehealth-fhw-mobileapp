@@ -102,7 +102,7 @@ public class Fragment_SecondScreen extends Fragment {
     private EditText mStateEditText;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken, xToken;
+    private String accessToken, xToken, txnId;
 
     
     @Nullable
@@ -200,6 +200,8 @@ public class Fragment_SecondScreen extends Fragment {
                 accessToken = getArguments().getString("accessToken");
             if (getArguments().containsKey("xToken"))
                 xToken = getArguments().getString("xToken");
+            if (getArguments().containsKey("txnId"))
+                txnId = getArguments().getString("txnId");
 
             // abdm - end
         }
@@ -755,6 +757,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         bundle.putString("accessToken", accessToken);
         bundle.putString("xToken", xToken);
+        bundle.putString("txnId", txnId);
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -931,6 +934,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                 bundle.putString("accessToken", accessToken);
                 bundle.putString("xToken", xToken);
+                bundle.putString("txnId", txnId);
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
                 getActivity().getSupportFragmentManager()
@@ -964,6 +968,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                 args.putString("accessToken", accessToken);
                 args.putString("xToken", xToken);
+                args.putString("txnId", txnId);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();
