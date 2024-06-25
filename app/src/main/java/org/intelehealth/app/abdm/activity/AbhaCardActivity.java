@@ -45,8 +45,7 @@ import java.util.UUID;
 public class AbhaCardActivity extends AppCompatActivity {
     private final Context context = AbhaCardActivity.this;
     private ActivityAbhaCardBinding binding;
-    private String base64CardImage;
-    private String mCurrentPhotoPath;
+    private String base64CardImage, mCurrentPhotoPath, patientAbhaNumber;
     private MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse;
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
@@ -68,7 +67,7 @@ public class AbhaCardActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mobileLoginOnOTPVerifiedResponse = (MobileLoginOnOTPVerifiedResponse) intent.getSerializableExtra("data");
         AbhaCardResponseBody abhaCardResponseBody = (AbhaCardResponseBody) intent.getSerializableExtra("payload");
-        String patientAbhaNumber = intent.getStringExtra("patientAbhaNumber");
+        patientAbhaNumber = intent.getStringExtra("patientAbhaNumber");
 
        /* // testing - start
         AbhaCardResponseBody responseBody = new Gson().fromJson(FileUtils.encodeJSON(context, "card.json").toString(), AbhaCardResponseBody.class);
@@ -133,8 +132,14 @@ public class AbhaCardActivity extends AppCompatActivity {
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
         String filename = "";
-        if (mobileLoginOnOTPVerifiedResponse != null) {
+        if (mobileLoginOnOTPVerifiedResponse != null &&
+                mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0 &&
+                mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber() != null &&
+                !mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber().isEmpty()) {
             filename = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
+        }
+        else if (patientAbhaNumber != null && !patientAbhaNumber.isEmpty()) {
+            filename = patientAbhaNumber;
         }
         else
             filename = UUID.randomUUID().toString();
