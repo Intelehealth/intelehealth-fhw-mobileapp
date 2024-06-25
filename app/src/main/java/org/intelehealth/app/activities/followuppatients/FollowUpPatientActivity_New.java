@@ -13,12 +13,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -30,7 +36,6 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,19 +49,18 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.enums.DataLoadingType;
 import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.ToastUtil;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,7 +84,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     TextView toolbar_title, today_nodata, week_nodata, month_nodata;
     ImageButton refresh;
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
-    private SearchView searchview_received;
+    private EditText searchview_received;
     private ImageView closeButton;
     private Context context = FollowUpPatientActivity_New.this;
     private RelativeLayout no_patient_found_block;
@@ -99,7 +103,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private boolean isChipInit = false;
     private int LIMIT = 15;
     private FollowupFilterTypeEnum filterType = FollowupFilterTypeEnum.NONE;
-    private boolean sortStatus = true;//true= ascheding, false = descending
+    private boolean sortStatus = true;//true= ascending, false = descending
+    private RelativeLayout parentLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +205,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
         dateLayout = filterFrameLay.findViewById(R.id.layout_date);
         rangeLayout = filterFrameLay.findViewById(R.id.layout_range);
+        parentLay = findViewById(R.id.parent_lay);
 
         scrollChips = findViewById(R.id.scroll_chips);
 
@@ -210,6 +216,55 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             tvResultsFor.setVisibility(View.GONE);
             scrollChips.setVisibility(View.GONE);
         }
+
+        ImageButton ibButtonBack = findViewById(R.id.vector);
+
+        searchview_received = findViewById(R.id.searchview_received);
+        closeButton = findViewById(R.id.iv_clear);
+        no_patient_found_block = findViewById(R.id.no_patient_found_block);
+        main_block = findViewById(R.id.main_block);
+        ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        LinearLayout addPatientTV = findViewById(R.id.add_new_patientTV);
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PrivacyPolicyActivity_New.class);
+                intent.putExtra("intentType", "navigateFurther");
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        ibButtonBack.setOnClickListener(v -> {
+            Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
+            startActivity(intent);
+        });
+
+        clickListeners();
+
+    }
+
+    void clickListeners(){
+
+        parentLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismissFilterLayout();
+            }
+        });
+
+        parentLay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    dismissFilterLayout();
+                    view.performClick();
+                    return false;
+                }
+                return false;
+            }
+        });
 
         dateBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,8 +292,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 if (validateRange()) {
                     resetList(true);
                     resetData();
-                    filterFrameLay.setVisibility(View.GONE);
-                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+                    dismissFilterLayout();
                     filterType = FollowupFilterTypeEnum.RANGE;
                     setFiltersToTheGroup(new FilterOptionsModel("range", filterStartDateTv.getText().toString() + " - " + filterEndDateTv.getText().toString()));
                 } else {
@@ -253,8 +307,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 if (validateDate()) {
                     resetList(true);
                     resetData();
-                    filterFrameLay.setVisibility(View.GONE);
-                    filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+                    dismissFilterLayout();
                     filterType = FollowupFilterTypeEnum.DATE;
                     setFiltersToTheGroup(new FilterOptionsModel("date", filterDateTv.getText().toString()));
                 } else {
@@ -267,70 +320,87 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         filterEndDateTv.setOnClickListener(v -> selectDate(filterEndDateTv, "endDate"));
         filterDateTv.setOnClickListener(v -> selectDate(filterDateTv, ""));
 
-
-        ImageButton ibButtonBack = findViewById(R.id.vector);
-
-        searchview_received = findViewById(R.id.searchview_received);
-        closeButton = searchview_received.findViewById(androidx.appcompat.R.id.search_close_btn);
-        no_patient_found_block = findViewById(R.id.no_patient_found_block);
-        main_block = findViewById(R.id.main_block);
-        ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
-        LinearLayout addPatientTV = findViewById(R.id.add_new_patientTV);
-        addPatientTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PrivacyPolicyActivity_New.class);
-                intent.putExtra("intentType", "navigateFurther");
-                intent.putExtra("add_patient", "add_patient");
-                startActivity(intent);
-                finish();
-            }
-        });
-
         mBodyNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 View view = v.getChildAt(v.getChildCount() - 1);
                 int bottom = view.getBottom() - (v.getHeight() + v.getScrollY());
+                Log.d("ssssss",""+scrollY);
                 if (bottom == 0) {
-                    fetchAndSegregateData();
+                    fetchAndSegregateData(DataLoadingType.PAGINATION);
                 }
             }
         });
 
-
-        ibButtonBack.setOnClickListener(v -> {
-            Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);
-        });
-
-        // Search - start
-        searchview_received.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mBodyNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                resetList(false);
-                fetchAndSegregateData();
-                return false;   // setting to false will close the keyboard when clicked on search btn.
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blue_border_bg));
-                } else {
-                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_common_input_bg));
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    dismissFilterLayout();
+                    return false;
                 }
                 return false;
             }
         });
 
+
+        searchview_received.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!charSequence.toString().equalsIgnoreCase("")) {
+                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.blue_border_bg));
+                } else {
+                    searchview_received.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_common_input_bg));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().isEmpty()) {
+                    closeButton.setVisibility(View.VISIBLE);
+                }else{
+                    closeButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        searchview_received.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_SEARCH){
+                    dismissFilterLayout();
+                    resetList(false);
+                    fetchAndSegregateData(DataLoadingType.INITIAL);
+                }
+                return false;
+            }
+        });
+
+        searchview_received.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    dismissFilterLayout();
+                    view.performClick();
+                    return false;
+                }
+                return  false;
+            }
+        });
+
         closeButton.setOnClickListener(v -> {
+            dismissFilterLayout();
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
             resetData();
-            searchview_received.setQuery("", false);
+            searchview_received.setText("");
             resetList(false);
-            fetchAndSegregateData();
+            fetchAndSegregateData(DataLoadingType.INITIAL);
         });
 
         filterIm.setOnClickListener(new View.OnClickListener() {
@@ -349,25 +419,27 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         sortIm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                filterFrameLay.setVisibility(View.GONE);
+                filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
                 resetList(false);
-                resetData();
-               sortStatus = !sortStatus;
-               fetchAndSegregateData();
-               if(sortStatus){
-                   ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_ascending_order));
-               }else {
-                   ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_descending_order));
-               }
+                //resetData();
+                sortStatus = !sortStatus;
+                fetchAndSegregateData(DataLoadingType.INITIAL);
+                if(sortStatus){
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_ascending_order));
+                }else {
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_descending_order));
+                }
             }
         });
+    }
 
 
-
-        // Search - end
-
-        //handleBackPress();
-
+    private void dismissFilterLayout() {
+        if(filterFrameLay.getVisibility() == View.VISIBLE){
+            filterFrameLay.setVisibility(View.GONE);
+            filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
+        }
     }
 
     private void resetList(boolean resetFilterRequired) {
@@ -398,7 +470,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             }
         }
 
-        fetchAndSegregateData();
+        fetchAndSegregateData(DataLoadingType.INITIAL);
 
         ChipGroup chipGroup = findViewById(R.id.chipgroup_filter);
         isChipInit = true;
@@ -428,7 +500,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 }
                 resetList(true);
                 resetData();
-                fetchAndSegregateData();
+                fetchAndSegregateData(DataLoadingType.INITIAL);
             });
         }
     }
@@ -488,158 +560,26 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         }
     }
 
-    private void searchOperation(String query) {
-        Log.v("Search", "Search Word: " + query);
-        query = query.toLowerCase().trim();
-        query = query.replaceAll(" {2}", " ");
-        Log.d("TAG", "searchOperation: " + query);
-
-        List<FollowUpModel> todays = new ArrayList<>();
-        List<FollowUpModel> weeks = new ArrayList<>();
-        List<FollowUpModel> months = new ArrayList<>();
-
-        String finalQuery = query;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                List<FollowUpModel> finalTodayList = todaysFollowUpDates;
-                List<FollowUpModel> finalWeekList = tomorrowssFollowUpDates;
-                List<FollowUpModel> finalMonthList = finalMonthsFollowUpDates;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!finalQuery.isEmpty()) {
-
-                            if (finalTodayList.size() > 0) {
-                                for (FollowUpModel model : finalTodayList) {
-                                    //
-                                    if (model.getMiddle_name() != null) {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String middleName = model.getMiddle_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullPartName = firstName + " " + lastName;
-                                        String fullName = firstName + " " + middleName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            todays.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    } else {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullName = firstName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            todays.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    }
-                                    //
-                                }
-                            }
-
-                            if (finalWeekList.size() > 0) {
-                                for (FollowUpModel model : finalWeekList) {
-                                    //
-                                    if (model.getMiddle_name() != null) {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String middleName = model.getMiddle_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullPartName = firstName + " " + lastName;
-                                        String fullName = firstName + " " + middleName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            weeks.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    } else {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullName = firstName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            weeks.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    }
-                                    //
-                                }
-                            }
-
-                            if (finalMonthList.size() > 0) {
-                                for (FollowUpModel model : finalMonthList) {
-                                    //
-                                    if (model.getMiddle_name() != null) {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String middleName = model.getMiddle_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullPartName = firstName + " " + lastName;
-                                        String fullName = firstName + " " + middleName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            months.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    } else {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullName = firstName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            months.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    }
-                                    //
-                                }
-                            }
-
-                            adapter_new = new FollowUpPatientAdapter_New(todays, context);
-                            rv_today.setNestedScrollingEnabled(false);
-                            rv_today.setAdapter(adapter_new);
-
-                            adapter_new = new FollowUpPatientAdapter_New(weeks, context);
-                            rv_tomorrow.setNestedScrollingEnabled(false);
-                            rv_tomorrow.setAdapter(adapter_new);
-
-                            adapter_new = new FollowUpPatientAdapter_New(months, context);
-                            rv_month.setNestedScrollingEnabled(false);
-                            rv_month.setAdapter(adapter_new);
-
-                            /**
-                             * Checking here the query that is entered and it is not empty so check the size of all of these
-                             * arraylists; if there size is 0 than show the no patient found view.
-                             */
-                            int allCount = todays.size() + weeks.size() + months.size();
-                            allCountVisibility(allCount);
-                            //   recent_older_visibility(recent, older);
-                        }
-                    }
-                });
-            }
-        }).start();
-
-    }
-
     private void followup_data() {
-        fetchAndSegregateData();
+        fetchAndSegregateData(DataLoadingType.INITIAL);
     }
 
-    private void fetchAndSegregateData() {
-        AlertDialog commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
-        commonLoadingDialog.show();
+    private void fetchAndSegregateData(DataLoadingType dataLoadingType) {
+        AlertDialog commonLoadingDialog;
+        if(dataLoadingType == DataLoadingType.INITIAL){
+            commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+            commonLoadingDialog.show();
+        }else {
+            commonLoadingDialog = null;
+            ToastUtil.showShortToast(this,getString(R.string.loading));
+        }
 
         Executors.newSingleThreadExecutor().execute(() -> {
             List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth(LIMIT);
             if (initialFollowUpPatients.isEmpty()) {
-                commonLoadingDialog.dismiss();
+                if(dataLoadingType == DataLoadingType.INITIAL){
+                    commonLoadingDialog.dismiss();
+                }
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
             } else {
                 if (filterType != FollowupFilterTypeEnum.NONE) {
@@ -650,7 +590,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         mWeekRelativeLayout.setVisibility(View.GONE);
                         othersTitle.setVisibility(View.GONE);
                         setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                        commonLoadingDialog.dismiss();
+                        if(dataLoadingType == DataLoadingType.INITIAL){
+                            commonLoadingDialog.dismiss();
+                        }
                     });
                 } else {
                     finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
@@ -670,7 +612,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         setTodaysDatesInRecyclerView(todaysFollowUpDates);
                         setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
                         setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                        commonLoadingDialog.dismiss();
+                        if(dataLoadingType == DataLoadingType.INITIAL){
+                            commonLoadingDialog.dismiss();
+                        }
                     });
                 }
             }
@@ -682,6 +626,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             today_nodata.setVisibility(View.VISIBLE);
         } else {
             today_nodata.setVisibility(View.GONE);
+            if(rv_today.getVisibility() == View.GONE){
+                rv_today.setVisibility(View.VISIBLE);
+            }
             todaysAdapter = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
             rv_today.setNestedScrollingEnabled(false);
             rv_today.setAdapter(todaysAdapter);
@@ -693,6 +640,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             week_nodata.setVisibility(View.VISIBLE);
         } else {
             week_nodata.setVisibility(View.GONE);
+            if(rv_tomorrow.getVisibility() == View.GONE){
+                rv_tomorrow.setVisibility(View.VISIBLE);
+            }
             tomorrowsAdapter = new FollowUpPatientAdapter_New(tomorrowssFollowUpDates, this);
             rv_tomorrow.setNestedScrollingEnabled(false);
             rv_tomorrow.setAdapter(tomorrowsAdapter);
@@ -704,22 +654,13 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             month_nodata.setVisibility(View.VISIBLE);
         } else {
             month_nodata.setVisibility(View.GONE);
+            if(rv_month.getVisibility() == View.GONE){
+                rv_month.setVisibility(View.VISIBLE);
+            }
             othersAdapter = new FollowUpPatientAdapter_New(monthFollowUpDates, this);
             rv_month.setNestedScrollingEnabled(false);
             rv_month.setAdapter(othersAdapter);
         }
-    }
-
-    private List<FollowUpModel> getWeeksVisitsFromList(List<FollowUpModel> followUpList) {
-        List<FollowUpModel> weekFollowUpList = new ArrayList<>();
-        for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
-            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
-            if (DateAndTimeUtils.isDateInCurrentWeek(followUpDateObject)) {
-                weekFollowUpList.add(followUpModel);
-            }
-        }
-        return weekFollowUpList;
     }
 
     private List<FollowUpModel> getTomorrowsVisitsFromList(List<FollowUpModel> followUpList) {
@@ -806,7 +747,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     }
 
     public List<FollowUpModel> getAllPatientsFromDB_thisMonth(int limit) {
-        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
+        List<FollowUpModel> modelList = new ArrayList<>();
         String filterQuery = "";
         if (filterType == FollowupFilterTypeEnum.DATE) {
             String date = DateAndTimeUtils.date_formatter(filterDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
@@ -819,8 +760,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         String middleName = "CASE WHEN b.middle_name IS NOT NULL THEN ' ' || b.middle_name || ' ' ELSE ' ' END";
 
         String searchQuery = "";
-        CharSequence sQuery = searchview_received.getQuery();
-        if (searchview_received.getQuery() != null && !searchview_received.getQuery().toString().isEmpty()) {
+        CharSequence sQuery = searchview_received.getText();
+        if (searchview_received.getText() != null && !searchview_received.getText().toString().isEmpty()) {
             searchQuery = " ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) and ";
         }
 
@@ -844,8 +785,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "o.value is NOT NULL AND followup_date is NOT NULL GROUP BY a.patientuuid"
                 +sortQuery
                 +" LIMIT " + limit + " OFFSET " + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size());
-        Log.d("DDDDD", "" + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size()));
-        Log.d("DDDDD", "" + query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -867,10 +806,40 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         }
 
                         if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                            modelList.add(new FollowUpModel(visitUuid, cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is emergency visit.
+                            modelList.add(new FollowUpModel(visitUuid,
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                                    ))); // ie. visit is emergency visit.
                         } else {
                             modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")), cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")), cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")), cursor.getString(cursor.getColumnIndexOrThrow("first_name")), cursor.getString(cursor.getColumnIndexOrThrow("middle_name")), cursor.getString(cursor.getColumnIndexOrThrow("last_name")), cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")), StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))), cursor.getString(cursor.getColumnIndexOrThrow("gender")), cursor.getString(cursor.getColumnIndexOrThrow("startdate")), cursor.getString(cursor.getColumnIndexOrThrow("speciality")), cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")), cursor.getString(cursor.getColumnIndexOrThrow("sync")), false, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")), cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
+                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    false,
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
                     }
                 } catch (Exception e) {

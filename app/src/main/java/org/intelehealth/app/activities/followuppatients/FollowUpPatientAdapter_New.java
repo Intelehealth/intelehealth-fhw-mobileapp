@@ -89,6 +89,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     @Override
     public void onBindViewHolder(@NonNull FollowUpPatientAdapter_New.Myholder holder, int position) {
         if (patients != null) {
+            if (position >= patients.size()) return;
             final FollowUpModel model = patients.get(position);
             holder.setIsRecyclable(false);
 
@@ -121,14 +122,14 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             .asDrawable().sizeMultiplier(0.3f);
                     Glide.with(context).load(model.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
                 } else {
-                    holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                    holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
                 }
                 // photo - end
 
                 // Patient Name section
                 Log.v("Followup", new Gson().toJson(model));
                 String fullName = model.getFirst_name() + " " + model.getLast_name();
-//                String displayName = fullName.length() > 10 ? fullName.substring(0, 10) : fullName;
+
                 holder.fu_patname_txtview.setText(fullName);
 
                 // Followup Date section
@@ -146,6 +147,24 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         Log.v("getFollowup_date", followupDateTimeRaw + "OK");
                         String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
                         Log.v("getFollowup_date", "final followupDate " + followupDateTime);
+
+                        String todaysDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                        String formatedFollowupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "yyyy-MM-dd");
+
+                        if (todaysDate.equals(formatedFollowupDate)) {
+                            String getTimeDiff = getTimeDiff(followupDateTime);
+                            if (!getTimeDiff.isEmpty()) {
+                                holder.tv_time_diff.setVisibility(View.VISIBLE);
+                                holder.tv_time_diff.setText(getTimeDiff);
+                            } else {
+                                holder.tv_time_diff.setVisibility(View.GONE);
+                            }
+
+                            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorGreenLightCard));
+                        } else {
+                            holder.tv_time_diff.setVisibility(View.GONE);
+                            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                        }
 
                         Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
                         Date nowDate = new Date();
@@ -172,36 +191,97 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
 
             holder.cardView.setOnClickListener(v -> {
-                /*Intent i = new Intent(context, VisitDetailsActivity.class);
-                i.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1) + "."); // Eg. Prajwal W.
-                i.putExtra("gender", model.getGender());
-                i.putExtra("patientUuid", model.getPatientuuid());
-                i.putExtra("age", age);
-                i.putExtra("openmrsID", model.getOpenmrs_id());
-                i.putExtra("priority_tag", model.isEmergency());
-                i.putExtra("visit_ID", model.getUuid());
-                i.putExtra("visit_startDate", model.getVisit_start_date());
-                i.putExtra("visit_speciality", model.getVisit_speciality());
-                i.putExtra("followup_date", model.getFollowup_date());
-                i.putExtra("patient_photo", model.getPatient_photo());
-                i.putExtra("chief_complaint", model.getChiefComplaint());
-                i.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
-                i.putExtra("hasPrescription", true);    // True since without presc there cannot be No Follow up Given so...
-                context.startActivity(i);*/
-
-
                 Intent intent = new Intent(context, PatientDetailActivity2.class);
                 intent.putExtra("patientUuid", model.getPatientuuid());
                 intent.putExtra("patientName", model.getFirst_name() + " " + model.getLast_name());
                 intent.putExtra("tag", "newPatient");
                 intent.putExtra("hasPrescription", "false");
-                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-                //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
                 context.startActivity(intent);
             });
         }
+    }
+
+    private String getTimeDiff(String followupDateTimeRaw) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+        String currentDateTime = dateFormat.format(new Date());
+        long diff = 0;
+        try {
+            diff = dateFormat.parse(followupDateTimeRaw).getTime() - dateFormat.parse(currentDateTime).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long second = diff / 1000;
+        long minutes = second / 60;
+        Log.v("AppointmentInfo", "Diff minutes - " + minutes + " " + diff + " " + currentDateTime + " " + second + " " + followupDateTimeRaw);
+        String timeText = "";
+// check for appointment but prescription not given and visit not completed
+        if (minutes > 0) {
+            if (minutes >= 60) {
+                long hours = minutes / 60;
+                long mins = minutes % 60;
+                if (hours < 24) {
+                    if (hours > 1) {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                            return context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                    mins + " " + context.getString(R.string.minutes_txt) + " ";
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " ";
+                        }
+                    } else {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                            return context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                    mins + " " + context.getString(R.string.minutes_txt);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " " +
+                                    context.getString(R.string.in);
+
+                        }
+                    }
+                }
+            }
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                    return context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    return minutes + " " + context.getString(R.string.minutes_txt) + " " +
+                            context.getString(R.string.in);
+                }
+            }
+        } else {
+            minutes = Math.abs(minutes);
+            if (minutes >= 60) {
+                long hours = minutes / 60;
+                long mins = minutes % 60;
+                if (hours < 24) {
+                    if (hours > 1) {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                            return hours + " " + context.getString(R.string.hours) + " " +
+                                    mins + " " + context.getString(R.string.minutes_txt) + " "+context.getString(R.string.over);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "+context.getString(R.string.over);
+                        }
+                    } else {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                            return hours + " " + context.getString(R.string.hour) + " " +
+                                    mins + " " + context.getString(R.string.minutes_txt)+" "+context.getString(R.string.over);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " " +
+                                    context.getString(R.string.over);
+
+                        }
+                    }
+                }
+            }
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                    return minutes + " " + context.getString(R.string.minutes_txt)+" "+context.getString(R.string.over);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    return minutes + " " + context.getString(R.string.minutes_txt) + " " +
+                            context.getString(R.string.over);
+                }
+            }
+        }
+        return "";
     }
 
     @Override
@@ -213,7 +293,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     class Myholder extends RecyclerView.ViewHolder {
         CardView cardView;
         private View rootView;
-        TextView fu_patname_txtview, fu_date_txtview, search_gender;
+        TextView fu_patname_txtview, fu_date_txtview, search_gender, tv_time_diff;
         ImageView profile_image;
         LinearLayout fu_priority_tag;
 
@@ -223,6 +303,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             cardView = itemView.findViewById(R.id.fu_cardview_item);
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
+            tv_time_diff = itemView.findViewById(R.id.tv_time_diff);
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem1);
             profile_image = itemView.findViewById(R.id.profile_image);
             search_gender = itemView.findViewById(R.id.search_gender);

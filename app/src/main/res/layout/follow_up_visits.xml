@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_lay"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/follow_up_v">
@@ -79,8 +80,44 @@
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/fu_margin_start">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/filter_lay"
+            android:background="@drawable/ui2_background_input_field_new">
+            <EditText
+                android:id="@+id/searchview_received"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                android:drawablePadding="@dimen/find_patient_icon_padding"
+                android:drawableTint="@color/iconTintGrayBottomNav"
+                android:hint="@string/find_patient"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:paddingStart="@dimen/common_edittext_padding_left"
+                android:paddingTop="@dimen/common_edittext_padding_top"
+                android:paddingEnd="@dimen/common_edittext_padding_right"
+                android:paddingBottom="@dimen/common_edittext_padding_bottom1"
+                android:singleLine="true"
+                android:textSize="@dimen/common_hint_text_size" />
 
-        <androidx.appcompat.widget.SearchView
+            <ImageView
+                android:id="@+id/iv_clear"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ui2_ic_close_drawer"
+                android:visibility="gone"
+                app:tint="@color/colorPrimary"
+                tools:visibility="visible" />
+        </RelativeLayout>
+
+       <!-- <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview_received"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +129,8 @@
             android:textColorHint="@color/textColorLightGary"
             android:textSize="@dimen/txtsize_patdetail_14sp"
             app:iconifiedByDefault="false"
-            app:queryHint="@string/find_patients_hint" />
+            app:queryHint="@string/find_patients_hint" />-->
+
 
 
         <LinearLayout
