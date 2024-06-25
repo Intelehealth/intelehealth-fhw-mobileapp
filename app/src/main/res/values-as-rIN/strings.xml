@@ -986,5 +986,6 @@
     <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my government health records for public health purposes.</string>
     <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
     <string name="abha_consent_line7">I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
 
 </resources>

@@ -37,7 +37,7 @@ public class SnackbarUtils {
 
         snackbar.show();
     }
-    public void showSnackConstraintLayoutParentSuccess(Context context, ConstraintLayout layoutParent, String message, boolean success) {
+    public void showSnackConstraintLayoutParentSuccess(Context context, View layoutParent, String message, boolean success) {
         Snackbar snackbar = Snackbar
                 .make(layoutParent, message, Snackbar.LENGTH_SHORT);
         View view = snackbar.getView();

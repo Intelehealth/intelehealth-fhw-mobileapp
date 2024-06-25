@@ -1,141 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/layoutParent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".abdm.activity.AbhaAddressSuggestionsActivity">
 
-            <!--toolbar-->
-            <LinearLayout
-                android:id="@+id/ll_action_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/back_arrow_margin_start"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+    <!--toolbar-->
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/iv_back_arrow_terms"
-                    android:layout_width="@dimen/back_arrow_width"
-                    android:layout_height="@dimen/back_arrow_height"
-                    android:visibility="gone"
-                    android:src="@drawable/ui2_ic_arrow_back_new" />
+        <ImageView
+            android:id="@+id/iv_back_arrow_terms"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
+            android:src="@drawable/ui2_ic_arrow_back_new"
+            android:visibility="gone" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/title_margin_start"
-                    android:text="@string/select_an_abha_address"
-                    android:textColor="@color/textColorBlack"
-                    android:textSize="@dimen/setup_privacy_screen_info"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <!--toolbar end-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+            android:text="@string/select_an_abha_address"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/setup_privacy_screen_info"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <!--toolbar end-->
 
-    <ScrollView
-        android:id="@+id/scrollViewAddress"
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
+        android:textAppearance="@style/sub_title"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGrp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/ll_action_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/submitABHAAddressBtn"
-        android:fillViewport="true"
-        android:layout_marginTop="@dimen/margin_10">
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/margin_10"
+        app:chipSpacingHorizontal="@dimen/margin_14"
+        app:singleSelection="true"/>
 
-        <RelativeLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAbhaAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_outline"
+            android:hint="@string/abha_address"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="16"
+            android:padding="14dp"
+            android:singleLine="true"
+            android:textAppearance="@style/type_mobile_no"
+            android:textColor="@null"
+            android:textColorHint="@color/hint_color"
+            android:textSize="@null" />
 
-            <TextView
-                android:id="@+id/sub_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="26dp"
-                android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
-                android:textAppearance="@style/sub_title"
-                android:textColor="@null"
-                android:textSize="@null"
-                android:gravity="top"
-                />
-            
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGrp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginHorizontal="@dimen/margin_14"
-                android:layout_below="@+id/sub_title"
-                android:paddingHorizontal="@dimen/margin_10"
-                android:layout_marginTop="@dimen/margin_16"
-                app:chipSpacingHorizontal="@dimen/margin_14"
-                app:singleSelection="true">
+        <TextView
+            android:id="@+id/aadhar_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/hamburger_margin_start"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/this_field_is_mandatory"
+            android:textAppearance="@style/registr_error_msg"
+            android:textColor="@color/red"
+            android:textSize="@null"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-<!--              Todo: Just for testing. Comment this chips later as we are creating dynamically...-->
-              <!--  <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="prajwalw@sbx"
-                    android:checked="true"
-                    app:checkedIconVisible="true"
-                    style="@style/ChipStyle"/>
 
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="prajuuu@sbx"
-                    style="@style/ChipStyle" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="aparna@sbx"
-                    style="@style/ChipStyle" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="kavita@sbx"
-                    style="@style/ChipStyle" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="hello@sbx"
-                    style="@style/ChipStyle" />
--->
-            </com.google.android.material.chip.ChipGroup>
-
-        </RelativeLayout>
-    </ScrollView>
 
     <Button
         android:id="@+id/submitABHAAddressBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollViewAddress"
         android:layout_marginHorizontal="50dp"
+         android:layout_marginBottom="30dp"
         android:background="@drawable/ui2_common_primary_bg_with_state"
         android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
         android:drawableTint="@color/iconTintWhite"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_centerHorizontal="true"
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:text="@string/submit" />
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollViewAddress" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -205,8 +205,6 @@ public class CreateAbhaActivity extends AppCompatActivity {
     }
 
 
-
-
     private void callAadhaarMobileVerificationApi(String accessToken) {
         // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
@@ -262,8 +260,6 @@ public class CreateAbhaActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * Here, this function is used to call the EnrollByAadhaar api which takes @BODY: txtId, mobileNo, otp and will return us
      * patient's details.
@@ -307,7 +303,10 @@ public class CreateAbhaActivity extends AppCompatActivity {
 
                             if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
                                 MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
-                                dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> handleUserFlow(otpVerificationResponse, accessToken, isNewUser));
+                                dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                                    otpVerificationResponse.getABHAProfile().setMobile(mobileNo);
+                                    handleUserFlow(otpVerificationResponse, accessToken, isNewUser);
+                                });
                                 dialog.show(getSupportFragmentManager(), "");
                             } else {
                                 handleUserFlow(otpVerificationResponse, accessToken, isNewUser);
