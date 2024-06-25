@@ -112,6 +112,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     TooltipWindow tipWindow;
     Button btnSetup;
     NetworkUtils networkUtils;
+    CustomProgressDialog cpd;
 
 
     @Override
@@ -120,6 +121,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         setContentView(R.layout.activity_setup_new_ui2);
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
+        cpd = new CustomProgressDialog(context);
         networkUtils = new NetworkUtils(context, this);
         questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
@@ -400,6 +402,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             public void onNext(LoginModel loginModel) {
                 if (loginModel != null) {
                     Boolean authencated = loginModel.getAuthenticated();
+                    if (authencated) {
                     Gson gson = new Gson();
                     sessionManager.setChwname(loginModel.getUser().getDisplay());
                     sessionManager.setCreatorID(loginModel.getUser().getUuid());
@@ -407,7 +410,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
                     UrlModifiers urlModifiers = new UrlModifiers();
                     String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
-                    if (authencated) {
+
                         Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                         loginProviderModelObservable
                                 .subscribeOn(Schedulers.io())
@@ -521,6 +524,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                     public void onError(Throwable e) {
                                         Logger.logD(TAG, "handle provider error" + e.getMessage());
                                         e.printStackTrace();
+                                        cpd.dismiss();
                                         ////   progress.dismiss();
                                         // dismissLoggingInDialog();
                                     }
@@ -530,27 +534,22 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                                     }
                                 });
-                    } else {
+                        cpd.dismiss();
+                    }
+                    else {
                         Log.d(TAG, "onNext: loginmodel is null");
+                        cpd.dismiss();
+                        showErrorDialog();
                     }
                 }
-
             }
 
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                // progress.dismiss();
-                ///  dismissLoggingInDialog();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showCommonDialog(SetupActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-
-                    }
-                });
-
+                cpd.dismiss();
+                showErrorDialog();
             }
 
             @Override
@@ -911,5 +910,18 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         super.onResume();
         //temporary added
         sessionManager.setIsLoggedIn(false);
+    }
+
+    /**
+     * error dialog for incorrect credentials
+     */
+    private void showErrorDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(SetupActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
     }
 }
