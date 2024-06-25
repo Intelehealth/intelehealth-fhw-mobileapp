@@ -123,6 +123,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CameraUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -442,15 +443,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
             Timber.tag(TAG).d("viewDownloadABHACard: %s", X_TOKEN + " and " + patientAbhaNumber);
         }
-        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
-            if (SCOPE != null && !SCOPE.isEmpty() && txnId != null && !txnId.isEmpty()) {
-                callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
-            }
-            else {
+        else if (abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
+                patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
+            callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
+        }
+        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()){
                 callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
                 Timber.tag(TAG).d("viewDownloadABHACard: %s", xToken + " and " + patientAbhaNumber);
             }
-        }
         else {  // ie. if token if expired or not available than go through the verification flow.
             Intent i = new Intent(context, AadharMobileVerificationActivity.class);
             i.putExtra("hasABHA", true);

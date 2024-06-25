@@ -157,8 +157,7 @@ public class AbhaCardActivity extends AppCompatActivity {
     }
 
     private void storeAndShowImageInGallery(String message) {
-        MediaScannerConnection.scanFile(context,
-                new String[] { mCurrentPhotoPath }, null,
+        MediaScannerConnection.scanFile(context, new String[] { mCurrentPhotoPath }, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
                     public void onScanCompleted(String path, Uri uri) {
                         // add button here to open image in gallery...

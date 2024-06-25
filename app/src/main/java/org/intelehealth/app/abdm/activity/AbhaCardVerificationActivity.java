@@ -179,13 +179,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                     if (!binding.otpBox.getText().toString().isEmpty()) {
 
-                        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {
-                            // via. mobile login
+                        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {   // via. mobile login
                             callOTPForMobileLoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
-                        } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
-
+                        } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {   // via. abha login
                             callOTPForABHALoginVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
-                        } else {
+                        } else {    // via. aadhar card
                             callOTPForAadhaarVerificationApi((String) binding.sendOtpBtn.getTag(), binding.otpBox.getText().toString());
                         }
                     }
@@ -560,7 +558,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
-                            intent.putExtra("xToken", abhaProfileResponse.getToken());
+                            intent.putExtra("xToken", xToken);
                             intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
                             intent.putExtra("patient_detail", true);
                             startActivity(intent);
