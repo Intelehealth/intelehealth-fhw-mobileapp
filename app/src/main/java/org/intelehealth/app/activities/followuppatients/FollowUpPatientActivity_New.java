@@ -49,6 +49,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.enums.DataLoadingType;
 import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FollowUpModel;
@@ -61,6 +62,7 @@ import org.intelehealth.app.utilities.ToastUtil;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -137,6 +139,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         followup_data();
 
         refresh.setOnClickListener(v -> {
+            resetList(false);
             followup_data();
             Toast.makeText(this, getResources().getString(R.string.refreshed_successfully), Toast.LENGTH_SHORT).show();
         });
@@ -216,6 +219,12 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             tvResultsFor.setVisibility(View.GONE);
             scrollChips.setVisibility(View.GONE);
         }
+
+        toolbar_title.setText(new StringBuilder()
+                .append(getString(R.string.label))
+                .append(" (")
+                .append(PatientsDAO.getAllFollowupPatientCount())
+                .append(")"));
 
         ImageButton ibButtonBack = findViewById(R.id.vector);
 
@@ -550,15 +559,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         rv_month.setAdapter(othersAdapter);
     }
 
-    private void allCountVisibility(int allCount) {
-        if (allCount == 0 || allCount < 0) {
-            no_patient_found_block.setVisibility(View.VISIBLE);
-            main_block.setVisibility(View.GONE);
-        } else {
-            no_patient_found_block.setVisibility(View.GONE);
-            main_block.setVisibility(View.VISIBLE);
-        }
-    }
 
     private void followup_data() {
         fetchAndSegregateData(DataLoadingType.INITIAL);
@@ -672,9 +672,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         Date tomorrowsDate = c.getTime();
 
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
-            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
-            if (tomorrowsDate.compareTo(followUpDateObject) == 0) {
+            String followUpDate = followUpModel.getFollowup_date().substring(0,10);
+            String tomorrowsDateStr = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
+            if (tomorrowsDateStr.equals(followUpDate)) {
                 tomorrowsFollowUpList.add(followUpModel);
             }
         }
@@ -683,11 +683,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     private List<FollowUpModel> getTodaysVisitsFromList(List<FollowUpModel> followUpList) {
         List<FollowUpModel> todaysFollowUpList = new ArrayList<>();
-        Date todaysDate = DateAndTimeUtils.getCurrentDateWithoutTime();
+        String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
-            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
-            if (todaysDate.compareTo(followUpDateObject) == 0) {
+            String followUpDate =  followUpModel.getFollowup_date().substring(0,10);
+            if (todaysDate.equals(followUpDate)) {
                 todaysFollowUpList.add(followUpModel);
             }
         }

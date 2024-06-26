@@ -100,9 +100,8 @@ class NotificationSchedulerUtils {
 
         fun parseDateTimeToTimestamp(input: String): Long {
             return try {
-                val datetimeRelevantPart = input.substringBefore(", Remark:")
-                val formatter = SimpleDateFormat("dd-MM-yyyy, 'Time:'hh:mm a", Locale.getDefault())
-                val date = formatter.parse(datetimeRelevantPart)
+                val formatter = SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a", Locale.getDefault())
+                val date = formatter.parse(input)
                 date?.time ?: 0
             } catch (e: Exception) {
                 Log.e("ERRRR", e?.message ?: "")
@@ -112,13 +111,11 @@ class NotificationSchedulerUtils {
 
         fun parseDateTimeToDateTime(input: String): String {
 
-            val datetimeRelevantPart = input.substringBefore(", Remark:")
-
-            val inputFormat = SimpleDateFormat("dd-MM-yyyy, 'Time:'hh:mm a", Locale.ENGLISH)
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a", Locale.ENGLISH)
             val outputFormat = SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH)
 
             try {
-                val date = inputFormat.parse(datetimeRelevantPart)
+                val date = inputFormat.parse(input)
 
                 return outputFormat.format(date)
 

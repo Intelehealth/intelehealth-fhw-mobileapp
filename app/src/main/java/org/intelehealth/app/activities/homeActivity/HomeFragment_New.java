@@ -484,15 +484,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         filterQuery = "(followup_date >= '" + todaysDateStr + "' and followup_date <= '" + tomorrowsDateStr + "' ) and ";
 
         // TODO: end date is removed later add it again. --> Added...
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, " + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, "
-                + "SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
+                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0'  "
-                + " and o.value is NOT NULL and "
-                + filterQuery+
-                "followup_date is NOT NULL "
-                +" GROUP BY a.patientuuid";
+                "a.patientuuid = b.uuid AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
+                + filterQuery
+                + "o.value is NOT NULL AND followup_date is NOT NULL GROUP BY a.patientuuid";
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -533,10 +534,10 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         int tomorrowsCount = 0;
 
         for(FollowUpModel model : modelList){
-            String formatedFollowupDate = DateAndTimeUtils.date_formatter(model.getFollowup_date().substring(0, 26).trim().replace(", Time:", ""), "yyyy-MM-dd hh:mm a", "yyyy-MM-dd");
-            if(formatedFollowupDate.equals(todaysDateStr)){
+            String formatedFollowupDate = model.getFollowup_date().substring(0, 10).trim();
+            if(formatedFollowupDate.equals(todaysDateStr.trim())){
                 todaysCount++;
-            }else if(formatedFollowupDate.equals(tomorrowsDateStr)){
+            }else if(formatedFollowupDate.equals(tomorrowsDateStr.trim())){
                 tomorrowsCount++;
             }
         }

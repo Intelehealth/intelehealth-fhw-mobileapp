@@ -15,7 +15,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -28,6 +30,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class PatientsDAO {
@@ -957,6 +960,31 @@ public class PatientsDAO {
         }
         idCursor1.close();
         return  patientDTO;
+    }
+
+    //getting followup patient count here
+    public static int getAllFollowupPatientCount() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        String query = "SELECT COUNT(*) "
+                + "FROM (SELECT b.first_name FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+                + "a.uuid = c.visit_uuid AND   " +
+                "a.patientuuid = b.uuid AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
+                + "o.value is NOT NULL AND date(substr(o.value, 1, 10)) is NOT NULL GROUP BY a.patientuuid)";
+
+        Log.d("QQQQ",""+query);
+
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (cursor.moveToFirst()) {
+            do {
+                return  cursor.getInt(0);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return 0;
     }
 
 }

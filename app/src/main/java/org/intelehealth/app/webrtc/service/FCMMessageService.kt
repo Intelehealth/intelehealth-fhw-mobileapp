@@ -33,11 +33,11 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
         super.onMessageReceived(message)
         Timber.d { "Remote message ${Gson().toJson(message)}" }
         NotificationSchedulerUtils.scheduleFollowUpNotification(FollowUpNotificationData(
-            value = "20-06-2024, Time:02:33 PM, Remark: Follow-up",
-            name = "Name",
-            openMrsId = "121212",
-            patientUid = "",
-            visitUuid = ""
+            value = message.data["followupDatetime"] ?:"",
+            name = message.data["patientFirstName"] +" "+ message.data["patientLastName"],
+            openMrsId = message.data["followupDatetime"] ?:"",
+            patientUid = message.data["patientUuid"] ?:"",
+            visitUuid = message.data["patientOpenMrsId"] ?:"",
         ))
     }
 }

@@ -128,9 +128,15 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
                 // Patient Name section
                 Log.v("Followup", new Gson().toJson(model));
-                String fullName = model.getFirst_name() + " " + model.getLast_name();
+                String fullName = "";
+                if (model.getMiddle_name() == null || model.getMiddle_name().isEmpty()) {
+                    fullName = model.getFirst_name() + " " + model.getLast_name();
+                } else {
+                    fullName = model.getFirst_name() + " " + model.getMiddle_name() + " " + model.getLast_name();
+                }
 
                 holder.fu_patname_txtview.setText(fullName);
+                holder.openmrs_id_tv.setText(model.getOpenmrs_id());
 
                 // Followup Date section
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
@@ -212,74 +218,31 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         }
         long second = diff / 1000;
         long minutes = second / 60;
-        Log.v("AppointmentInfo", "Diff minutes - " + minutes + " " + diff + " " + currentDateTime + " " + second + " " + followupDateTimeRaw);
-        String timeText = "";
-// check for appointment but prescription not given and visit not completed
+        // check for appointment but prescription not given and visit not completed
         if (minutes > 0) {
-            if (minutes >= 60) {
-                long hours = minutes / 60;
-                long mins = minutes % 60;
-                if (hours < 24) {
-                    if (hours > 1) {
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                            return context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
-                                    mins + " " + context.getString(R.string.minutes_txt) + " ";
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " ";
-                        }
-                    } else {
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                            return context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
-                                    mins + " " + context.getString(R.string.minutes_txt);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " " +
-                                    context.getString(R.string.in);
-
-                        }
-                    }
-                }
-            }
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                    return context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    return minutes + " " + context.getString(R.string.minutes_txt) + " " +
-                            context.getString(R.string.in);
-                }
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                return context.getString(R.string.in) + " " + getTimeDuration(minutes);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                return getTimeDuration(minutes) +
+                        context.getString(R.string.in);
             }
         } else {
             minutes = Math.abs(minutes);
-            if (minutes >= 60) {
-                long hours = minutes / 60;
-                long mins = minutes % 60;
-                if (hours < 24) {
-                    if (hours > 1) {
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                            return hours + " " + context.getString(R.string.hours) + " " +
-                                    mins + " " + context.getString(R.string.minutes_txt) + " "+context.getString(R.string.over);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "+context.getString(R.string.over);
-                        }
-                    } else {
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                            return hours + " " + context.getString(R.string.hour) + " " +
-                                    mins + " " + context.getString(R.string.minutes_txt)+" "+context.getString(R.string.over);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            return hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " " +
-                                    context.getString(R.string.over);
+            return getTimeDuration(minutes) + " " + context.getString(R.string.over);
+        }
+        return "";
+    }
 
-                        }
-                    }
-                }
+    private String getTimeDuration(long minutes) {
+        if (minutes >= 60) {
+            long hours = minutes / 60;
+            long mins = minutes % 60;
+            if (hours < 24) {
+                return hours + " " + context.getString(R.string.hours) + " " +
+                        mins + " " + context.getString(R.string.minutes_txt);
             }
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                    return minutes + " " + context.getString(R.string.minutes_txt)+" "+context.getString(R.string.over);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    return minutes + " " + context.getString(R.string.minutes_txt) + " " +
-                            context.getString(R.string.over);
-                }
-            }
+        } else {
+            return minutes + " " + context.getString(R.string.minutes_txt);
         }
         return "";
     }
@@ -293,7 +256,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     class Myholder extends RecyclerView.ViewHolder {
         CardView cardView;
         private View rootView;
-        TextView fu_patname_txtview, fu_date_txtview, search_gender, tv_time_diff;
+        TextView fu_patname_txtview, fu_date_txtview, search_gender, tv_time_diff, openmrs_id_tv;
         ImageView profile_image;
         LinearLayout fu_priority_tag;
 
@@ -303,6 +266,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             cardView = itemView.findViewById(R.id.fu_cardview_item);
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
+            openmrs_id_tv = itemView.findViewById(R.id.openmrs_id_tv);
             tv_time_diff = itemView.findViewById(R.id.tv_time_diff);
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem1);
             profile_image = itemView.findViewById(R.id.profile_image);
