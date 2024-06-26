@@ -2454,10 +2454,31 @@
     </string-array>
 
     <string-array name="close_case_reason">
-        <item>Select</item>
+        <item>Select reason</item>
         <item>Successful</item>
         <item>Un successful \\ lost to follow up</item>
         <item>Refer to higher facility</item>
         <item>Long term treatment</item>
+    </string-array>
+
+    <string-array name="visit_facilities">
+        <item>Select Facility</item>
+        <item>Asha</item>
+        <item>AWW</item>
+        <item>HWC/AAM</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>Medical</item>
+        <item>Collage AB - PVT</item>
+        <item>Hospital Other</item>
+    </string-array>
+
+    <string-array name="visit_severity">
+        <item>Select Severity</item>
+        <item>Low</item>
+        <item>Normal</item>
+        <item>Moderate</item>
+        <item>High</item>
+        <item>Critical</item>
     </string-array>
 </resources>

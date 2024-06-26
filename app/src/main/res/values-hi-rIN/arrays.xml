@@ -267,4 +267,33 @@
         <item>स्वयं</item>
         <item>परिवार</item>
     </string-array>
+
+    <string-array name="close_case_reason">
+        <item>कारण चुनें</item>
+        <item>सफल</item>
+        <item>असफल \\ अनुवर्ती कार्रवाई करने में विफल</item>
+        <item>उच्च सुविधा के लिए रेफर करें</item>
+        <item>दीर्घकालिक उपचार</item>
+    </string-array>
+
+    <string-array name="visit_facilities">
+        <item>सुविधा चुनें</item>
+        <item>आशा</item>
+        <item>AWW</item>
+        <item>HWC/AAM</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>मेडिकल</item>
+        <item>कॉलेज AB - PVT</item>
+        <item>अस्पताल अन्य</item>
+    </string-array>
+
+    <string-array name="visit_severity">
+        <item>गंभीरता चुनें</item>
+        <item>कम</item>
+        <item>सामान्य</item>
+        <item>मध्यम</item>
+        <item>उच्च</item>
+        <item>गंभीर</item>
+    </string-array>
 </resources>

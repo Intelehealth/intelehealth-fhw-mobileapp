@@ -2040,26 +2040,30 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private List<FacilityToVisitModel> getFacilityList() {
         facilityList = new ArrayList<FacilityToVisitModel>();
-        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
-        facilityList.add(new FacilityToVisitModel("1", "Asha"));
-        facilityList.add(new FacilityToVisitModel("2", "AWW"));
-        facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
-        facilityList.add(new FacilityToVisitModel("4", "CHC"));
-        facilityList.add(new FacilityToVisitModel("5", "DH"));
-        facilityList.add(new FacilityToVisitModel("6", "Medical"));
-        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
-        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
+        String[] facilities = getResources().getStringArray(R.array.visit_severity);
+        for (int i = 0; i < facilities.length; i++) {
+            facilityList.add(new FacilityToVisitModel("" + i, facilities[i]));
+        }
+//        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
+//        facilityList.add(new FacilityToVisitModel("1", "Asha"));
+//        facilityList.add(new FacilityToVisitModel("2", "AWW"));
+//        facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
+//        facilityList.add(new FacilityToVisitModel("4", "CHC"));
+//        facilityList.add(new FacilityToVisitModel("5", "DH"));
+//        facilityList.add(new FacilityToVisitModel("6", "Medical"));
+//        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
+//        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
         return facilityList;
     }
 
     private List<String> getSeverityList() {
-        severityList = new ArrayList<String>();
-        severityList.add("Select Severity");
-        severityList.add("Low");
-        severityList.add("Normal");
-        severityList.add("Moderate");
-        severityList.add("High");
-        severityList.add("Critical");
+        severityList = Arrays.asList(getResources().getStringArray(R.array.visit_severity));
+//        severityList.add("Select Severity");
+//        severityList.add("Low");
+//        severityList.add("Normal");
+//        severityList.add("Moderate");
+//        severityList.add("High");
+//        severityList.add("Critical");
         return severityList;
     }
 

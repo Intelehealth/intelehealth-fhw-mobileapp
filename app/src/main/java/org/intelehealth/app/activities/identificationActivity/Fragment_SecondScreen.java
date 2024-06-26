@@ -44,6 +44,7 @@ import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
 import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
+import org.intelehealth.app.activities.identificationActivity.model.Village;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
@@ -90,9 +91,7 @@ public class Fragment_SecondScreen extends Fragment {
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag2_btn_back, frag2_btn_next;
     private EditText mPostalCodeEditText, mAddress1EditText, mAddress2EditText;
-    private Spinner mCountryNameSpinner, mStateNameSpinner, mDistrictNameSpinner,
-            mBlockSpinner, mGramPanchayatSpinner,
-            mVillageSpinner/*, mCityNameSpinner*/; // now city always an input field not spinner
+    private Spinner mCountryNameSpinner, mStateNameSpinner, mDistrictNameSpinner, mBlockSpinner, mGramPanchayatSpinner, mVillageSpinner/*, mCityNameSpinner*/; // now city always an input field not spinner
     Context context;
     private String country1, state;
     ArrayAdapter<String> districtAdapter, stateAdapter;
@@ -102,9 +101,7 @@ public class Fragment_SecondScreen extends Fragment {
     private PatientDTO patientDTO;
     private Fragment_ThirdScreen fragment_thirdScreen;
     private Fragment_FirstScreen firstScreen;
-    private TextView mPostalCodeErrorTextView, mCountryNameErrorTextView, mStateNameErrorTextView,
-            mDistrictNameErrorTextView, mCityNameErrorTextView, mAddress1ErrorTextView, mAddress2ErrorTextView,
-            postalCodeTv, countryTv, stateTv, districtTv, villTownCityTv, address1Tv, address2Tv, blockError, gramPanchatError;
+    private TextView mPostalCodeErrorTextView, mCountryNameErrorTextView, mStateNameErrorTextView, mDistrictNameErrorTextView, mCityNameErrorTextView, mAddress1ErrorTextView, mAddress2ErrorTextView, postalCodeTv, countryTv, stateTv, districtTv, villTownCityTv, address1Tv, address2Tv, blockError, gramPanchatError;
 
     LinearLayout postalCodeLay, countryLay, stateLay, districtLay, villTownCityLay, address1Lay, address2Lay;
     boolean fromThirdScreen = false, fromFirstScreen = false;
@@ -187,16 +184,13 @@ public class Fragment_SecondScreen extends Fragment {
 //        other_icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.other_icon_unselected));
 
 
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(getActivity(), AppConstants.CONFIG_FILE_NAME)));
             }
@@ -225,8 +219,7 @@ public class Fragment_SecondScreen extends Fragment {
 //            String countriesLanguage = "countries_" + sessionManager.getAppLanguage();
 //            int countries = res.getIdentifier(countriesLanguage, "array", getActivity().getApplicationContext().getPackageName());
 //            if (countries != 0) {
-            countryAdapter = ArrayAdapter.createFromResource(getActivity(),
-                    R.array.countries, R.layout.simple_spinner_item_1);
+            countryAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.countries, R.layout.simple_spinner_item_1);
             countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 //            }
             mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
@@ -384,8 +377,10 @@ public class Fragment_SecondScreen extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != 0 && mBlockSpinner.getTag() != null) {
-                List<Block> blocks = (List<Block>) mBlockSpinner.getTag();
-                setGramPanchayatAdapter(blocks.get(i - 1).getGramPanchayats());
+                Block block = (Block) adapterView.getSelectedItem();
+                Timber.tag(TAG).e("Block index =>%s", i);
+                Timber.tag(TAG).e("Block onItemSelected =>%s", new Gson().toJson(block));
+                setGramPanchayatAdapter(block.getGramPanchayats());
             }
         }
     };
@@ -394,8 +389,8 @@ public class Fragment_SecondScreen extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != 0 && mGramPanchayatSpinner.getTag() != null) {
-                List<GramPanchayat> gramPanchayats = (List<GramPanchayat>) mGramPanchayatSpinner.getTag();
-                setVillageAdapter(gramPanchayats.get(i - 1).getVillages());
+                GramPanchayat gramPanchayat = (GramPanchayat) adapterView.getSelectedItem();
+                setVillageAdapter(gramPanchayat.getVillages());
             }
         }
     };
@@ -404,33 +399,36 @@ public class Fragment_SecondScreen extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != 0 && mVillageSpinner.getTag() != null) {
-                List<String> villages = (List<String>) mVillageSpinner.getTag();
-                Timber.tag(TAG).d("Village size => [%1s], %2s", i, new Gson().toJson(villages));
-                mCityVillageName = villages.get(i);
+                Village village = (Village) adapterView.getSelectedItem();
+                Timber.tag(TAG).d("Village size => [%1s], %2s", i, new Gson().toJson(village));
+                mCityVillageName = village.getName();
             }
         }
     };
 
     private void setBlockAdapter(List<Block> blocks) {
         Log.v(TAG, "setBlockAdapter =>" + new Gson().toJson(blocks));
-        String[] blockList = new String[blocks.size() + 1];
-        blockList[0] = getResources().getString(R.string.select_spinner);
-        for (int i = 1; i <= blocks.size(); i++) {
-            Timber.tag(TAG).d("blocks =>%s", blocks.get(i - 1).getName());
-            blockList[i] = blocks.get(i - 1).getName();
-        }
+        Block defaultBlock = new Block(getResources().getString(R.string.select_spinner), null, null);
+        blocks.add(0, defaultBlock);
+//        String[] blockList = new String[blocks.size() + 1];
+//        blockList[0] = getResources().getString(R.string.select_spinner);
+//        for (int i = 1; i <= blocks.size(); i++) {
+//            Timber.tag(TAG).d("blocks =>%s", blocks.get(i - 1).getName());
+//            blockList[i] = blocks.get(i - 1).getName();
+//        }
 
 
-        ArrayAdapter<String> blockAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, blockList);
+        ArrayAdapter<Block> blockAdapter = new ArrayAdapter<Block>(getActivity(), R.layout.simple_spinner_item_1, blocks);
         blockAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mBlockSpinner.setAdapter(blockAdapter);
         mBlockSpinner.setTag(blocks);
         mBlockSpinner.setOnItemSelectedListener(blockSelectedListener);
         mBlockSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
-        if (patientDTO.getAddress3() != null && !patientDTO.getAddress3().isEmpty())
-            mBlockSpinner.setSelection(blockAdapter.getPosition(patientDTO.getAddress3()));
+        if (patientDTO.getAddress3() != null && !patientDTO.getAddress3().isEmpty()) {
+            Block selected = new Block(patientDTO.getAddress3(), null, null);
+            mBlockSpinner.setSelection(blockAdapter.getPosition(selected));
+        }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));
 //        Timber.tag(TAG).d("Default State index=>%s", index);
@@ -453,16 +451,17 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setGramPanchayatAdapter(List<GramPanchayat> gramPanchayats) {
         Log.v(TAG, "setGramPanchayatAdapter =>" + new Gson().toJson(gramPanchayats));
-        String[] gpList = new String[gramPanchayats.size() + 1];
-        gpList[0] = getResources().getString(R.string.select_spinner);
-        for (int i = 1; i <= gramPanchayats.size(); i++) {
-            Timber.tag(TAG).d("GramPanchayat =>%s", gramPanchayats.get(i - 1).getName());
-            gpList[i] = gramPanchayats.get(i - 1).getName();
-        }
+        GramPanchayat defaultGP = new GramPanchayat(getResources().getString(R.string.select_spinner), null, null);
+        gramPanchayats.add(0, defaultGP);
+//        String[] gpList = new String[gramPanchayats.size() + 1];
+//        gpList[0] = getResources().getString(R.string.select_spinner);
+//        for (int i = 1; i <= gramPanchayats.size(); i++) {
+//            Timber.tag(TAG).d("GramPanchayat =>%s", gramPanchayats.get(i - 1).getName());
+//            gpList[i] = gramPanchayats.get(i - 1).getName();
+//        }
 
 
-        ArrayAdapter<String> gpAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, gpList);
+        ArrayAdapter<GramPanchayat> gpAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_spinner_item_1, gramPanchayats);
         gpAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mGramPanchayatSpinner.setEnabled(true);
@@ -470,8 +469,10 @@ public class Fragment_SecondScreen extends Fragment {
         mGramPanchayatSpinner.setTag(gramPanchayats);
         mGramPanchayatSpinner.setOnItemSelectedListener(gpSelectedListener);
         mGramPanchayatSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
-        if (patientDTO.getAddress4() != null && !patientDTO.getAddress4().isEmpty())
-            mGramPanchayatSpinner.setSelection(gpAdapter.getPosition(patientDTO.getAddress4()));
+        if (patientDTO.getAddress4() != null && !patientDTO.getAddress4().isEmpty()) {
+            GramPanchayat selected = new GramPanchayat(patientDTO.getAddress4(), null, null);
+            mGramPanchayatSpinner.setSelection(gpAdapter.getPosition(selected));
+        }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));
 //        Timber.tag(TAG).d("Default State index=>%s", index);
@@ -492,9 +493,9 @@ public class Fragment_SecondScreen extends Fragment {
 //        mBlockSpinner.setEnabled(false);
     }
 
-    private void setVillageAdapter(List<String> villages) {
+    private void setVillageAdapter(List<Village> villages) {
         Log.v(TAG, "setVillageAdapter =>" + new Gson().toJson(villages));
-        villages.add(0, getResources().getString(R.string.select_spinner));
+        villages.add(0, new Village(getResources().getString(R.string.select_spinner), null));
 //        String[] gpList = new String[villages.size() + 1];
 //        gpList[0] = getResources().getString(R.string.select_spinner);
 //        for (int i = 1; i <= villages.size(); i++) {
@@ -503,8 +504,7 @@ public class Fragment_SecondScreen extends Fragment {
 //        }
 
 
-        ArrayAdapter<String> villageAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, villages);
+        ArrayAdapter<Village> villageAdapter = new ArrayAdapter<Village>(getActivity(), R.layout.simple_spinner_item_1, villages);
         villageAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mVillageSpinner.setEnabled(true);
@@ -512,8 +512,10 @@ public class Fragment_SecondScreen extends Fragment {
         mVillageSpinner.setTag(villages);
         mVillageSpinner.setOnItemSelectedListener(villageSelectedListener);
         mVillageSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
-        if (patientDTO.getAddress5() != null && !patientDTO.getAddress5().isEmpty())
-            mVillageSpinner.setSelection(villageAdapter.getPosition(patientDTO.getAddress5()));
+        if (patientDTO.getAddress5() != null && !patientDTO.getAddress5().isEmpty()) {
+            Village village = new Village(patientDTO.getAddress5(), null);
+            mVillageSpinner.setSelection(villageAdapter.getPosition(village));
+        }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));
 //        Timber.tag(TAG).d("Default State index=>%s", index);
@@ -552,8 +554,7 @@ public class Fragment_SecondScreen extends Fragment {
                     List<DistData> districts = (List<DistData>) mDistrictNameSpinner.getTag();
                     Timber.tag(TAG).d("District => %s", districts.get(i - 1).getName());
                     List<Block> blocks = districts.get(i - 1).getBlocks();
-                    if (blocks != null && !blocks.isEmpty())
-                        setBlockAdapter(blocks);
+                    if (blocks != null && !blocks.isEmpty()) setBlockAdapter(blocks);
                     else Timber.tag(TAG).d("Empty blocks");
                 } else Timber.tag(TAG).d("Tag is null");
 //                    mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -587,6 +588,12 @@ public class Fragment_SecondScreen extends Fragment {
 
         }
     };
+
+    private List<Block> getRegionBlocks(List<DistData> districts, int i) {
+        if (sessionManager.getAppLanguage().equals("en")) return districts.get(i - 1).getBlocks();
+        else return districts.get(i - 1).getBlocksHindi();
+    }
+
     private final AdapterView.OnItemSelectedListener countryListener = new DefaultOnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -642,11 +649,10 @@ public class Fragment_SecondScreen extends Fragment {
      */
     private void fetchRegConfig() {
         regFieldViewModel.fetchAddressRegFields().observe(getViewLifecycleOwner(), it -> {
-                    patientRegistrationFields = it;
-                    configAllFields();
-                    updateUiFromFirstAndSecondFrag();
-                }
-        );
+            patientRegistrationFields = it;
+            configAllFields();
+            updateUiFromFirstAndSecondFrag();
+        });
     }
 
     /**
@@ -722,43 +728,18 @@ public class Fragment_SecondScreen extends Fragment {
     private void configAllFields() {
         for (PatientRegistrationFields fields : patientRegistrationFields) {
             switch (fields.getIdKey()) {
-                case PatientRegConfigKeys.POSTAL_CODE -> PatientRegFieldsUtils.configField(
-                        isEditMode,
-                        fields,
-                        postalCodeLay,
-                        mPostalCodeEditText,
-                        null,
-                        postalCodeTv
-                );
+                case PatientRegConfigKeys.POSTAL_CODE ->
+                        PatientRegFieldsUtils.configField(isEditMode, fields, postalCodeLay, mPostalCodeEditText, null, postalCodeTv);
                 case PatientRegConfigKeys.COUNTRY -> {
-                    PatientRegFieldsUtils.configField(
-                            isEditMode,
-                            fields,
-                            countryLay,
-                            mCountryNameSpinner,
-                            null,
-                            countryTv
-                    );
+                    PatientRegFieldsUtils.configField(isEditMode, fields, countryLay, mCountryNameSpinner, null, countryTv);
                     if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
                         setMarginToLayout(countryLay);
                     }
                 }
-                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.configField(
-                        isEditMode,
-                        fields,
-                        stateLay,
-                        mStateNameSpinner,
-                        null,
-                        stateTv
-                );
-                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.configField(
-                        isEditMode,
-                        fields,
-                        districtLay,
-                        mDistrictNameSpinner,
-                        null,
-                        districtTv
-                );
+                case PatientRegConfigKeys.STATE ->
+                        PatientRegFieldsUtils.configField(isEditMode, fields, stateLay, mStateNameSpinner, null, stateTv);
+                case PatientRegConfigKeys.DISTRICT ->
+                        PatientRegFieldsUtils.configField(isEditMode, fields, districtLay, mDistrictNameSpinner, null, districtTv);
 //                case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
 //                    PatientRegFieldsUtils.configField(
 //                            isEditMode,
@@ -772,22 +753,10 @@ public class Fragment_SecondScreen extends Fragment {
 //                        setMarginToLayout(villTownCityLay);
 //                    }
 //                }
-                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.configField(
-                        isEditMode,
-                        fields,
-                        address1Lay,
-                        mAddress1EditText,
-                        null,
-                        address1Tv
-                );
-                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.configField(
-                        isEditMode,
-                        fields,
-                        address2Lay,
-                        mAddress2EditText,
-                        null,
-                        address2Tv
-                );
+                case PatientRegConfigKeys.ADDRESS_1 ->
+                        PatientRegFieldsUtils.configField(isEditMode, fields, address1Lay, mAddress1EditText, null, address1Tv);
+                case PatientRegConfigKeys.ADDRESS_2 ->
+                        PatientRegFieldsUtils.configField(isEditMode, fields, address2Lay, mAddress2EditText, null, address2Tv);
             }
         }
     }
@@ -974,8 +943,7 @@ public class Fragment_SecondScreen extends Fragment {
             stateList[i] = sessionManager.getAppLanguage().equals("en") ? mStateDistMaster.getStateDataList().get(i - 1).getState() : mStateDistMaster.getStateDataList().get(i - 1).getStateHindi();
         }
 
-        stateAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, stateList);
+        stateAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, stateList);
         stateAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mStateNameSpinner.setAdapter(stateAdapter);
@@ -1022,8 +990,7 @@ public class Fragment_SecondScreen extends Fragment {
             //Log.v(TAG, "distList[i] - " + distList[i]);
         }
 
-        districtAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, distList);
+        districtAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, distList);
         districtAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mDistrictNameSpinner.setAdapter(districtAdapter);
@@ -1079,10 +1046,7 @@ public class Fragment_SecondScreen extends Fragment {
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
         firstScreen.setArguments(bundle); // passing data to Fragment
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, firstScreen)
-                .commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, firstScreen).commit();
     }
 
     private void onPatientCreateClicked() {
@@ -1091,8 +1055,7 @@ public class Fragment_SecondScreen extends Fragment {
         View focusView = null;
 
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
-            if (mPostalCodeEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
+            if (mPostalCodeEditText.getText().toString().equals("") && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.POSTAL_CODE)) {
                 if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.default_country)) && mPostalCodeEditText.getText().toString().trim().length() != 6) {
                     mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                     mPostalCodeErrorTextView.setText(getString(R.string.postal_code_6_dig_invalid_txt));
@@ -1110,8 +1073,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
-            if (mCountryNameSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
+            if (mCountryNameSpinner.getSelectedItemPosition() == 0 && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.COUNTRY)) {
                 mCountryNameErrorTextView.setVisibility(View.VISIBLE);
                 mCountryNameErrorTextView.setText(getString(R.string.error_field_required));
                 mCountryNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1124,8 +1086,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
-            if (mStateNameSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
+            if (mStateNameSpinner.getSelectedItemPosition() == 0 && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.STATE)) {
                 mStateNameErrorTextView.setVisibility(View.VISIBLE);
                 mStateNameErrorTextView.setText(getString(R.string.error_field_required));
                 mStateNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1138,10 +1099,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
-            if (mDistrictNameSpinner.getVisibility() == View.VISIBLE &&
-                    (mDistrictNameSpinner.getSelectedItemPosition() == 0 ||
-                            mDistrictNameSpinner.getChildCount() == 0) &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+            if (mDistrictNameSpinner.getVisibility() == View.VISIBLE && (mDistrictNameSpinner.getSelectedItemPosition() == 0 || mDistrictNameSpinner.getChildCount() == 0) && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                 mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                 mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
                 mDistrictNameSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1154,9 +1112,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
-            if (mDistrictET.getVisibility() == View.VISIBLE
-                    && mDistrictET.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
+            if (mDistrictET.getVisibility() == View.VISIBLE && mDistrictET.getText().toString().equals("") && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
                 mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                 mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
                 mDistrictET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1169,8 +1125,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
 //        if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.DISTRICT)) {
-        if (mBlockSpinner.getVisibility() == View.VISIBLE &&
-                (mBlockSpinner.getSelectedItemPosition() == 0 || mBlockSpinner.getChildCount() == 0)) {
+        if (mBlockSpinner.getVisibility() == View.VISIBLE && (mBlockSpinner.getSelectedItemPosition() == 0 || mBlockSpinner.getChildCount() == 0)) {
             blockError.setVisibility(View.VISIBLE);
             blockError.setText(getString(R.string.error_field_required));
             mBlockSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1181,8 +1136,7 @@ public class Fragment_SecondScreen extends Fragment {
             mBlockSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (mGramPanchayatSpinner.getVisibility() == View.VISIBLE &&
-                (mGramPanchayatSpinner.getSelectedItemPosition() == 0 || mGramPanchayatSpinner.getChildCount() == 0)) {
+        if (mGramPanchayatSpinner.getVisibility() == View.VISIBLE && (mGramPanchayatSpinner.getSelectedItemPosition() == 0 || mGramPanchayatSpinner.getChildCount() == 0)) {
             gramPanchatError.setVisibility(View.VISIBLE);
             gramPanchatError.setText(getString(R.string.error_field_required));
             mGramPanchayatSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1193,8 +1147,7 @@ public class Fragment_SecondScreen extends Fragment {
             mGramPanchayatSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
         }
 
-        if (mVillageSpinner.getVisibility() == View.VISIBLE &&
-                (mVillageSpinner.getSelectedItemPosition() == 0 || mVillageSpinner.getChildCount() == 0)) {
+        if (mVillageSpinner.getVisibility() == View.VISIBLE && (mVillageSpinner.getSelectedItemPosition() == 0 || mVillageSpinner.getChildCount() == 0)) {
             mCityNameErrorTextView.setVisibility(View.VISIBLE);
             mCityNameErrorTextView.setText(getString(R.string.error_field_required));
             mVillageSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1231,8 +1184,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         //address 1
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
-            if (mAddress1EditText.getText().toString().isEmpty() &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
+            if (mAddress1EditText.getText().toString().isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_1)) {
                 mAddress1ErrorTextView.setVisibility(View.VISIBLE);
                 mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
                 mAddress1EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1246,8 +1198,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         //address 2
         if (PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
-            if (mAddress2EditText.getText().toString().isEmpty() &&
-                    PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
+            if (mAddress2EditText.getText().toString().isEmpty() && PatientRegFieldsUtils.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ADDRESS_2)) {
                 mAddress2ErrorTextView.setVisibility(View.VISIBLE);
                 mAddress2ErrorTextView.setText(getString(R.string.error_field_required));
                 mAddress2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -1287,9 +1238,9 @@ public class Fragment_SecondScreen extends Fragment {
             }
             patientDTO.setAddress1(mAddress1EditText.getText().toString());
             patientDTO.setAddress2(mAddress2EditText.getText().toString());
-            patientDTO.setAddress3(mBlockSpinner.getSelectedItem().toString());
-            patientDTO.setAddress4(mGramPanchayatSpinner.getSelectedItem().toString());
-            patientDTO.setAddress5(mVillageSpinner.getSelectedItem().toString());
+            patientDTO.setAddress3(((Block) mBlockSpinner.getSelectedItem()).getName());
+            patientDTO.setAddress4(((GramPanchayat) mBlockSpinner.getSelectedItem()).getName());
+            patientDTO.setAddress5(((Village) mBlockSpinner.getSelectedItem()).getName());
         }
 
 
@@ -1314,10 +1265,7 @@ public class Fragment_SecondScreen extends Fragment {
                 bundle.putBoolean("patient_detail", patient_detail);
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frame_firstscreen, fragment_thirdScreen)
-                        .commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment_thirdScreen).commit();
             }
 
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
@@ -1363,13 +1311,10 @@ public class Fragment_SecondScreen extends Fragment {
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else if (c == '.' || c == '&' || c == '(' || c == ')')
-                    sb.append(c);
-                else
-                    keepOriginal = false;
+                else if (c == '.' || c == '&' || c == '(' || c == ')') sb.append(c);
+                else keepOriginal = false;
             }
-            if (keepOriginal)
-                return null;
+            if (keepOriginal) return null;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);

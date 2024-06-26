@@ -23,6 +23,10 @@ public class DistData implements Serializable {
     @SerializedName("block")
     private List<Block> blocks;
 
+    @Expose
+    @SerializedName("block-hi")
+    private List<Block> blocksHindi;
+
     public List<String> getTahasilList() {
         return tahasilList;
     }
@@ -53,5 +57,13 @@ public class DistData implements Serializable {
 
     public void setBlocks(List<Block> blocks) {
         this.blocks = blocks;
+    }
+
+    public List<Block> getBlocksHindi() {
+        return blocksHindi;
+    }
+
+    public void setBlocksHindi(List<Block> blocksHindi) {
+        this.blocksHindi = blocksHindi;
     }
 }
