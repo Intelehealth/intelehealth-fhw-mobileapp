@@ -134,7 +134,7 @@
     <string name="title_activity_question_node">استبيان</string>
     <string name="complaint_change_selected">تعديل</string>
     <string name="question_answer_all">هل أنت متأكد من أنك أجبت على جميع الأسئلة.</string>
-    <string name="question_answer_all_phy_exam">الرجاء الإجابة على جميع أسئلة الامتحانات العامة.</string>
+    <string name="question_answer_all_phy_exam">الرجاء الإجابة على جميع أسئلة الفحص السريري</string>
     <string name="question_duration_picker">الرجاء إدخال المدة</string>
     <string name="question_text_input">الرجاء إدخال النص</string>
     <string name="question_date_picker">الرجاء تحديد التاريخ</string>
