@@ -98,8 +98,12 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.identificationActivity.model.Block;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
+import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
+import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
+import org.intelehealth.app.activities.identificationActivity.model.Village;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
@@ -125,6 +129,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -1417,83 +1422,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             addr2View.setText(patientDTO.getAddress2());
         }
 
-        // setting country
-        String country;
-        if (patientDTO.getCountry() != null) {
-            country = patientDTO.getCountry().trim();
-        } else {
-            country = getResources().getString(R.string.no_country_added);
-        }
-        patientcountry.setText(StringUtils.switch_hi_en_country(country, sessionManager.getAppLanguage()));
+        bindUserAddressData(patientDTO);
 
-        // setting state
-        String state;
-        if (patientDTO.getStateprovince() != null) {
-            state = patientDTO.getStateprovince().trim();
-        } else {
-            state = getResources().getString(R.string.no_state_added);
-        }
-        patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
-
-        // setting district and city
-
-        String district = null;
-        String city_village = patientDTO.getCityvillage();
-        Timber.tag(TAG).d("Village =>%s", city_village);
-        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
-            String[] district_city = patientDTO.getCityvillage().trim().split(":");
-            if (district_city.length == 2) {
-                district = district_city[0];
-                city_village = district_city[1];
-            }
-        }
-
-
-//        if (district != null) {
-//            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
-//        } else {
-//            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-//        }
-
-        if (district != null) {
-            patientdistrict.setText(district);
-        } else {
-            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-        }
-
-        if (patientDTO.getAddress3() != null) {
-            tvBlock.setText(patientDTO.getAddress3());
-        } else {
-            tvBlock.setText(getResources().getString(R.string.no_block_added));
-        }
-
-        if (patientDTO.getAddress4() != null) {
-            tvGramPanchayat.setText(patientDTO.getAddress4());
-        } else {
-            tvGramPanchayat.setText(getResources().getString(R.string.no_gram_panchayat_added));
-        }
-
-//        if (city_village != null) {
-//            village.setText(city_village);
-//        } else {
-//            village.setText(getResources().getString(R.string.no_city_added));
-//        }
-
-        if (patientDTO.getAddress5() != null) {
-            village.setText(patientDTO.getAddress5());
-        } else {
-            village.setText(getResources().getString(R.string.no_city_added));
-        }
-
-
-        // end - city and district
-
-        // setting postal code
-        if (patientDTO.getPostalcode() != null) {
-            postalcode.setText(patientDTO.getPostalcode());
-        } else {
-            postalcode.setText(getResources().getString(R.string.no_postal_code_added));
-        }
 
         // setting phone number
         if (patientDTO.getPhonenumber() != null && !patientDTO.getPhonenumber().isEmpty()) {
@@ -1814,6 +1744,97 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
+        }
+    }
+
+    private void bindUserAddressData(PatientDTO patientDTO) {
+        StateData stateData = LanguageUtils.getState(patientDTO.getStateprovince().trim());
+        // setting country
+        String country;
+        if (patientDTO.getCountry() != null) {
+            country = patientDTO.getCountry().trim();
+        } else {
+            country = getResources().getString(R.string.no_country_added);
+        }
+        patientcountry.setText(StringUtils.switch_hi_en_country(country, sessionManager.getAppLanguage()));
+
+        // setting state
+        String state;
+        if (patientDTO.getStateprovince() != null) {
+            stateData = LanguageUtils.getState(patientDTO.getStateprovince().trim());
+            if (stateData != null)
+                state = LanguageUtils.getStateLocal(stateData);
+            else state = getResources().getString(R.string.no_state_added);
+        } else {
+            state = getResources().getString(R.string.no_state_added);
+        }
+        patientstate.setText(state);
+
+        // setting district and city
+        String district = null;
+        String city_village = patientDTO.getCityvillage();
+        Timber.tag(TAG).d("Village =>%s", city_village);
+        if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
+            String[] district_city = patientDTO.getCityvillage().trim().split(":");
+            if (district_city.length == 2) {
+                district = district_city[0];
+                city_village = district_city[1];
+            }
+        }
+
+        DistData distData = LanguageUtils.getDistrict(stateData, district);
+        if (distData != null) {
+            String dis = LanguageUtils.getDistrictLocal(distData);
+            patientdistrict.setText(dis);
+        } else {
+            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+        }
+
+//        if (district != null) {
+//            patientdistrict.setText(district);
+//        } else {
+//            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+//        }
+
+        Block block = LanguageUtils.getBlock(distData, patientDTO.getAddress3());
+        if (patientDTO.getAddress3() != null) {
+            if (block != null) tvBlock.setText(LanguageUtils.getBlockLocal(block));
+            else tvBlock.setText(getResources().getString(R.string.no_block_added));
+        } else {
+            tvBlock.setText(getResources().getString(R.string.no_block_added));
+        }
+
+        GramPanchayat gramPanchayat = LanguageUtils.getGramPanchayat(block, patientDTO.getAddress4());
+        if (patientDTO.getAddress4() != null) {
+            if (gramPanchayat != null)
+                tvGramPanchayat.setText(LanguageUtils.getGramPanchayatLocal(gramPanchayat));
+            else
+                tvGramPanchayat.setText(getResources().getString(R.string.no_gram_panchayat_added));
+        } else {
+            tvGramPanchayat.setText(getResources().getString(R.string.no_gram_panchayat_added));
+        }
+
+//        if (city_village != null) {
+//            village.setText(city_village);
+//        } else {
+//            village.setText(getResources().getString(R.string.no_city_added));
+//        }
+        Village v = LanguageUtils.getVillage(gramPanchayat, patientDTO.getAddress5());
+        if (patientDTO.getAddress5() != null) {
+            if (v != null) village.setText(LanguageUtils.getVillageLocal(v));
+            else village.setText(getResources().getString(R.string.no_city_added));
+        } else {
+            village.setText(getResources().getString(R.string.no_city_added));
+        }
+
+
+        // end - city and district
+
+        // setting postal code
+        if (patientDTO.getPostalcode() != null) {
+            postalcode.setText(patientDTO.getPostalcode());
+        } else {
+            postalcode.setText(getResources().getString(R.string.no_postal_code_added));
         }
     }
 

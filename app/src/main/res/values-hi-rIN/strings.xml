@@ -1517,6 +1517,7 @@
     <string name="sorted_by_ascending_order">आरोही क्रम में क्रमबद्ध</string>
     <string name="over">" Over"</string>
     <string name="facility_to_visit">यात्रा की सुविधा</string>
+    <string name="severity_of_case">मामले की गंभीरता</string>
     <string name="follow_up_date">आगे की कार्यवाही की तारीख</string>
     <string name="please_select_valid_followup_date">कृपया वैध अनुवर्ती तिथि चुनें</string>
     <string name="preview">पूर्व दर्शन</string>
@@ -1530,4 +1531,6 @@
     <string name="confirm_close_case_visit_reason_message">क्या आप वाकई मामला बंद करना चाहते हैं और यात्रा सारांश साझा करना चाहते हैं?</string>
     <string name="lbl_block">ब्लॉक</string>
     <string name="lbl_gram_panchayat">ग्राम पंचायत</string>
+    <string name="save_visit_button">विज़िट सहेजें</string>
+    <string name="close_case">मामला बंद</string>
 </resources>

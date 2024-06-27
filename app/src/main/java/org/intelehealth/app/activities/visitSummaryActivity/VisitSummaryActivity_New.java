@@ -2040,7 +2040,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private List<FacilityToVisitModel> getFacilityList() {
         facilityList = new ArrayList<FacilityToVisitModel>();
-        String[] facilities = getResources().getStringArray(R.array.visit_severity);
+        String[] facilities = getResources().getStringArray(R.array.visit_facilities);
         for (int i = 0; i < facilities.length; i++) {
             facilityList.add(new FacilityToVisitModel("" + i, facilities[i]));
         }

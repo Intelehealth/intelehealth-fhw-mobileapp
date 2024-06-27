@@ -1239,8 +1239,8 @@ public class Fragment_SecondScreen extends Fragment {
             patientDTO.setAddress1(mAddress1EditText.getText().toString());
             patientDTO.setAddress2(mAddress2EditText.getText().toString());
             patientDTO.setAddress3(((Block) mBlockSpinner.getSelectedItem()).getName());
-            patientDTO.setAddress4(((GramPanchayat) mBlockSpinner.getSelectedItem()).getName());
-            patientDTO.setAddress5(((Village) mBlockSpinner.getSelectedItem()).getName());
+            patientDTO.setAddress4(((GramPanchayat) mGramPanchayatSpinner.getSelectedItem()).getName());
+            patientDTO.setAddress5(((Village) mVillageSpinner.getSelectedItem()).getName());
         }
 
 
