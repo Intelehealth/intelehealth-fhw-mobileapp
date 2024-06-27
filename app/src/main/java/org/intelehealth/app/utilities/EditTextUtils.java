@@ -2,6 +2,9 @@ package org.intelehealth.app.utilities;
 
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -11,6 +14,9 @@ import java.util.regex.Pattern;
 public class EditTextUtils {
 
     private static String SPECIAL_CHARACTERS = "[0-9.,:;?/{}()% ]";
+    private static String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
+    private static String BlockCharacterSet_Name = "\\/_[]#@%&{}()-:;,?$!=><&^*+\"\'€¥£`~";
+
     /**
      * @param length
      * @param editText
@@ -53,5 +59,42 @@ public class EditTextUtils {
             public void afterTextChanged(Editable s) { }
         });
     }
+
+    /**
+     * This inputfilter will allow only alphabets and full stop (.) as per requirement -> SYR-616.
+     */
+    public static InputFilter inputFilter = new InputFilter() { // allows only alphabets...
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned spanned, int dstart, int dend) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = source.charAt(i);
+                if (isCharAllowed(c) || String.valueOf(c).equalsIgnoreCase(".")) // to allow alphabet and full stop.
+                    sb.append(c);
+                else
+                    keepOriginal = false;
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (source instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) source, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+    };
+
+    private static boolean isCharAllowed(char c) {
+        Pattern ps = Pattern.compile("^[a-zA-Z ]+$");
+        Matcher ms = ps.matcher(String.valueOf(c));
+        return ms.matches();
+    }
+
+
 
 }
