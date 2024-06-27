@@ -202,30 +202,7 @@
                 android:paddingBottom="@dimen/common_button_padding_bottom"
                 android:text="@string/send_otp" />
 
-            <!--
-                        <RelativeLayout
-                            android:id="@+id/sendOtpBtn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="50dp"
-                            android:background="@drawable/send_otp_svg"
-                            android:layout_below="@+id/fl_otpBox"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="30dp"
-                            android:layout_centerHorizontal="true" >
 
-                            <TextView
-                                android:id="@+id/txt_otpbtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Send OTP"
-                                android:textColor="@null"
-                                android:textSize="@null"
-                                android:gravity="center"
-                                android:textAppearance="@style/send_otp"
-                                android:layout_centerInParent="true" />
-                        </RelativeLayout>
-            -->
 
         </RelativeLayout>
     </ScrollView>

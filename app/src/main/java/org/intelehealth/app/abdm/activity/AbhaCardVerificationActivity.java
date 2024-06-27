@@ -25,7 +25,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -33,9 +32,6 @@ import androidx.core.content.ContextCompat;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.AccountSelectDialogFragment;
-import org.intelehealth.app.abdm.model.Account;
-import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
@@ -295,8 +291,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 requestBody.setValue(Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().trim());
             }
             case ABHA_SELECTION -> {
-                String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString() : ABDMUtils.INSTANCE.formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString());
-                requestBody.setValue(value); // mobile value.
+                String value = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString().trim() : ABDMUtils.INSTANCE.formatIntoAbhaString(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().toString().trim());
+                requestBody.setValue(Objects.requireNonNull(value).trim()); // mobile value.
                 requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER);
                 requestBody.setAuthMethod(abhaAuthType);
             }
@@ -387,13 +383,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
                         String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
                         if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
-                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                            callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                            if (!TextUtils.isEmpty(mobileLoginOnOTPVerifiedResponse.getToken())) {
+                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                            } else {
+                                Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                             return;
                         }
                         if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
                             if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
-
                                 if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                     AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
                                     dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {

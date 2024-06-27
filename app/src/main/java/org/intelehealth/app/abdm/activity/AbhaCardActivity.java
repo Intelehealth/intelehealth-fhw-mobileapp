@@ -70,19 +70,6 @@ public class AbhaCardActivity extends AppCompatActivity {
         AbhaCardResponseBody abhaCardResponseBody = (AbhaCardResponseBody) intent.getSerializableExtra("payload");
         String patientAbhaNumber = intent.getStringExtra("patientAbhaNumber");
 
-       /* // testing - start
-        AbhaCardResponseBody responseBody = new Gson().fromJson(FileUtils.encodeJSON(context, "card.json").toString(), AbhaCardResponseBody.class);
-        base64CardImage = responseBody.getImage();
-        if (base64CardImage != null || !base64CardImage.isEmpty()) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    displayAbhaCardPhotoAndStoreInFile(base64CardImage);
-                }
-            }).start();
-        }
-        // testing - end*/
-
         if (abhaCardResponseBody != null && mobileLoginOnOTPVerifiedResponse != null) {
             base64CardImage = abhaCardResponseBody.getImage();
             if (base64CardImage != null && !base64CardImage.isEmpty()) {

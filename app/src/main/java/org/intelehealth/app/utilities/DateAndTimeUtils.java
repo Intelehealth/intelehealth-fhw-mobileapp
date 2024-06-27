@@ -481,65 +481,94 @@ public class DateAndTimeUtils {
     }
 
 
-    public static String getDisplayDateForApp(String date) {
-        String finalDate = "";
-        if (date != null && !date.isEmpty()) {
+//    public static String getDisplayDateForApp(String date) {
+//        String finalDate = "";
+//        if (date != null && !date.isEmpty()) {
+//
+//            String[] dateSplit = date.split("-");
+//            String year = dateSplit[0];
+//            String month = dateSplit[1];
+//            String day = dateSplit[2];
+//
+//
+//            String monthString = "";
+//            switch (month) {
+//                case "01":
+//                    monthString = "Jan";
+//                    break;
+//                case "02":
+//                    monthString = "Feb";
+//                    break;
+//                case "03":
+//                    monthString = "March";
+//                    break;
+//                case "04":
+//                    monthString = "April";
+//                    break;
+//                case "05":
+//                    monthString = "May";
+//                    break;
+//                case "06":
+//                    monthString = "June";
+//                    break;
+//                case "07":
+//                    monthString = "July";
+//                    break;
+//                case "08":
+//                    monthString = "Aug";
+//                    break;
+//                case "09":
+//                    monthString = "Sept";
+//                    break;
+//                case "10":
+//                    monthString = "Oct";
+//                    break;
+//                case "11":
+//                    monthString = "Nov";
+//                    break;
+//                case "12":
+//                    monthString = "Dec";
+//                    break;
+//
+//            }
+//
+//            // finalDate = day + " " + monthString + " " + year;
+//            finalDate = monthString + " " + day + ", " + year;
+//            Log.d(TAG, "getDisplayDateForApp: " + finalDate);
+//
+//        }
+//        return finalDate;
+//
+//
+//    }
 
-            String[] dateSplit = date.split("-");
-            String year = dateSplit[0];
-            String month = dateSplit[1];
-            String day = dateSplit[2];
+    public static String getDisplayDateForApp(String dateStr) {
 
+        try {
+            // Normalize the input date string to "yyyy-MM-dd"
+            String normalizedDateStr = normalizeDateString(dateStr);
+            // Parse the normalized date string to a Date object
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date date = inputFormat.parse(normalizedDateStr);
 
-            String monthString = "";
-            switch (month) {
-                case "01":
-                    monthString = "Jan";
-                    break;
-                case "02":
-                    monthString = "Feb";
-                    break;
-                case "03":
-                    monthString = "March";
-                    break;
-                case "04":
-                    monthString = "April";
-                    break;
-                case "05":
-                    monthString = "May";
-                    break;
-                case "06":
-                    monthString = "June";
-                    break;
-                case "07":
-                    monthString = "July";
-                    break;
-                case "08":
-                    monthString = "Aug";
-                    break;
-                case "09":
-                    monthString = "Sept";
-                    break;
-                case "10":
-                    monthString = "Oct";
-                    break;
-                case "11":
-                    monthString = "Nov";
-                    break;
-                case "12":
-                    monthString = "Dec";
-                    break;
+            // Format the Date object to the desired format
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+            String formattedDate = outputFormat.format(date);
+            return formattedDate;
 
-            }
-
-            // finalDate = day + " " + monthString + " " + year;
-            finalDate = monthString + " " + day + ", " + year;
-            Log.d(TAG, "getDisplayDateForApp: " + finalDate);
-
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return dateStr;
         }
-        return finalDate;
+    }
 
-
+    // Method to normalize the date string
+    private static String normalizeDateString(String dateStr) {
+        String[] parts = dateStr.split("-");
+        String year = parts[0];
+        String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+        String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
+        return year + "-" + month + "-" + day;
     }
 
     public static String getCurrentDateNew() {
