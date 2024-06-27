@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -84,6 +85,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -300,6 +302,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
+    NestedScrollView nscrollview;
 
     RelativeLayout uploadButton, rl_med_aid;
     private TextView tvDispense_1, tvDispense_2, tvAdminister_1, tvAdminister_2, tvCollectedBy, tvReceivedBy;
@@ -344,7 +347,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     CheckBox flag;
     EndVisitEncounterPrescription endVisitEncounterPrescription;
     String visitnoteencounteruuid = "";
-    Button btnSignSubmit;
+    Button btnSignSubmit, saveBtn;
     Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false, isVisitSecondSpecialityExists = false;
@@ -718,7 +721,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+        saveBtn = findViewById(R.id.saveBtn);
         tie_add_remarks = findViewById(R.id.tie_add_remarks);
+        nscrollview = findViewById(R.id.nscrollview);
         tie_add_remarks.setHint(getString(R.string.enter_details_here));
         tie_add_remarks.addTextChangedListener(new TextWatcher() {
             @Override
@@ -729,6 +734,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tie_add_remarks.setHint("");
+                tie_add_remarks.setBackground(getResources().getDrawable(R.drawable.edittext_border));
+                tie_add_remarks.setHintTextColor(getResources().getColor(R.color.edittext_hint_color));
+
             }
 
             @Override
@@ -1031,6 +1039,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
+            saveBtn.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -1089,10 +1098,41 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         });
 */
 
+        saveBtn.setOnClickListener(v -> {
+            // Additional remarks - start
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                saveBtn.setForeground(getResources().getDrawable(R.drawable.button_bg_rounded_stroke));
+
+            String addRemarks = tie_add_remarks.getText().toString().trim();
+            if (addRemarks != null) {
+                if (!addRemarks.isEmpty()) {    // ie. not empty.
+                    createAdditionalRemarksOBSandPush(addRemarks);
+                }
+                else {  // ie. empty
+                    tie_add_remarks.requestFocus();
+                    tie_add_remarks.setBackground(getResources().getDrawable(R.drawable.edittext_error_border));
+                    tie_add_remarks.setHintTextColor(getResources().getColor(R.color.design_default_color_error));
+                  //  additionalRemarkValidaiton(tie_add_remarks);
+                }
+            }
+            // Additional remarks - end
+        });
+
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("visitUUID", "upload_click: " + visitUUID);
+
+                // Additional Remarks - start
+                if(!tie_add_remarks.getText().toString().trim().isEmpty()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        tie_add_remarks.requestFocus();
+                        saveBtn.setForeground(getResources().getDrawable(R.drawable.edittext_error_border));
+                        Toast.makeText(context, getString(R.string.click_on_save_button_to_save_the_changes), Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+                // Additional Remarks - end
 
                 // The below condition has been added keeping in mind that no HW will be able to upload empty complaints: (Ticket SYR-171): Nishita Goyal
                 if (complaint.getValue() == null || complaintView.getText().equals("") || complaintView.getText().equals(" ")) {
@@ -1138,13 +1178,6 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
                     if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
                 }
-
-                // Additional remarks - start
-                String addRemarks = tie_add_remarks.getText().toString().trim();
-                if (!addRemarks.isEmpty()) {    // ie. not empty.
-                    createAdditionalRemarksOBSandPush(addRemarks);
-                }
-                // Additional remarks - end
 
                 if (flag.isChecked()) {
                     try {
@@ -1903,6 +1936,10 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         getAppointmentDetails(visitUuid);
     }
 
+    /**
+     * This function is used to save the entered Additional Remarks into the Obs table and set sync = false to be pushed to the backend.
+     * @param addRemarks - the information that is entered by the HW.
+     */
     private void createAdditionalRemarksOBSandPush(String addRemarks) {
         EncounterDAO encounterDAO = new EncounterDAO(); // 1. update sync of encounter.
         try {
@@ -1931,8 +1968,10 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
 
         try {
             boolean isInserted = obsDAO.insertObs(obsDTO);  // 2. create new obs.
-            if (isInserted)
+            if (isInserted) {
                 tie_add_remarks.setText("");
+                Toast.makeText(context, getString(R.string.additional_remark_is_saved_successfully), Toast.LENGTH_SHORT).show();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -2159,6 +2198,11 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         return isInList;
     }
 */
+
+    private boolean additionalRemarkValidaiton(View view) {
+
+        return true;
+    }
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.

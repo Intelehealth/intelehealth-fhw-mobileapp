@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
+    android:id="@+id/nscrollview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -1199,10 +1200,30 @@
                         tools:hint="@string/enter_details_here" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/saveBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:paddingVertical="12dp"
+                    android:gravity="center"
+                    android:layout_below="@+id/til_additional_remarks"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginBottom="@dimen/std_20sp"
+                    android:foreground="@drawable/button_bg_rounded_stroke"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="@string/save_button"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimary"
+                    />
+
                 <TextView
                     android:id="@+id/tv_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="gone"
                     android:layout_below="@+id/til_additional_remarks"
                     android:textAlignment="viewStart"
                     android:fontFamily="@font/lato_regular"
