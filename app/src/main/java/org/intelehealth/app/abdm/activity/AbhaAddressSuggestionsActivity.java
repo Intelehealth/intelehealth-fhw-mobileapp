@@ -35,6 +35,8 @@ import org.intelehealth.app.utilities.WindowsUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -88,15 +90,16 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         }
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(binding.etAbhaAddress.getText()) && isValidAbhaAddress(binding.etAbhaAddress.getText())) {
-                callSetPreferredABHAAddressAPI(binding.etAbhaAddress.getText().toString());
-            }
-           else if (selectedChip.isEmpty()) {
+            if (!TextUtils.isEmpty(binding.etAbhaAddress.getText())) {
+                if (isValidAbhaAddress(binding.etAbhaAddress.getText())) {
+                    callSetPreferredABHAAddressAPI(binding.etAbhaAddress.getText().toString());
+                }
+            } else if (selectedChip.isEmpty()) {
                 Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getChildAt(0).getId());
                 chip.setChecked(true);
                 selectedChip = chip.getText().toString().trim();
                 callSetPreferredABHAAddressAPI(selectedChip);
-            }else {
+            } else {
                 callSetPreferredABHAAddressAPI(selectedChip);
             }
 
@@ -104,12 +107,22 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     }
 
     private boolean isValidAbhaAddress(Editable text) {
-        if (ABDMUtils.INSTANCE.isValidAbhaAddress(text.toString())) {
-            Toast.makeText(context, context.getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
+        if (text.length() < 8) {
+            Toast.makeText(context, context.getString(R.string.abha_address_must_be_at_least_8_characters_long), Toast.LENGTH_SHORT).show();
             return false;
+        } else if (!isValidAbhaAddress(text.toString())) {
+            Toast.makeText(context, context.getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
         }
+    }
+
+    public boolean isValidAbhaAddress(String input) {
+        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
     }
 
     private void callSetPreferredABHAAddressAPI(String selectedChip) {
@@ -143,15 +156,19 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ResponseBody responseBody) {
                         // ie. setting this new abha address is done.
-                        Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
-                        Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " +
-                                otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
+                        try {
+                            Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
+                            Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " +
+                                    otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
 
-                        Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                        dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-                        dataIntent.putExtra("accessToken", accessToken);
-                        startActivity(dataIntent);
-                        finish();
+                            Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                            dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                            dataIntent.putExtra("accessToken", accessToken);
+                            startActivity(dataIntent);
+                            finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

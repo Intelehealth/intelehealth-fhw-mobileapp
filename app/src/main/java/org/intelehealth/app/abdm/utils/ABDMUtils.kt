@@ -17,8 +17,9 @@ object ABDMUtils{
         return result.toString()
     }
 
+    @JvmStatic
     fun isValidAbhaAddress(input: String): Boolean {
         val regex = "^[A-Za-z0-9]([A-Za-z0-9]*[._]?[A-Za-z0-9]*){6,16}[A-Za-z0-9]$".toRegex()
-        return input.length in 8..18 && regex.matches(input)
+        return regex.matches(input)
     }
 }
