@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.EditTextUtils.inputFilter;
-import static org.intelehealth.app.utilities.EditTextUtils.inputFilter_Name;
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
