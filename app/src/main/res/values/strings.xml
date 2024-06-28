@@ -1939,4 +1939,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="address_to_other_info">Address to Other info</string>
+    <string name="personal_to_address_info">Personal to address info</string>
 </resources>
