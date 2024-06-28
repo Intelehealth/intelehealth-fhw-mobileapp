@@ -379,11 +379,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void showResetConfirmationDialog() {
-        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
-            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                checkNetworkConnectionAndPerformSync();
-            }
-        });
+        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet),
+                getString(R.string.reset_app_new_title),
+                getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        checkNetworkConnectionAndPerformSync();
+                    }
+                });
     }
 
     private void checkNetworkConnectionAndPerformSync() {
@@ -587,10 +589,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mSyncProgressDialog.setIndeterminate(false);
             mSyncProgressDialog.show();
-
+            sessionManager.setFirstTimeLaunched(false);
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
-            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home",this));
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -934,6 +936,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     @Override
     protected void onResume() {
+        Timber.tag(TAG).d("onResume");
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
@@ -956,7 +959,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             showLoggingInDialog();
 
         }
-        checkAppVer();  //auto-update feature.
+//        checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         super.onResume();
     }
@@ -1041,11 +1044,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
                 if (flagType == AppConstants.SYNC_FAILED) {
-                    if (sessionManager.isFirstTimeLaunched()) {
-                        hideSyncProgressBar(false);
-                        showRefreshFailedDialog();
-                        //finish();
-                    }
+//                    if (sessionManager.isFirstTimeLaunched()) {
+                    hideSyncProgressBar(false);
+                    showRefreshFailedDialog();
+                    //finish();
+//                    }
                 }
 
                 Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));

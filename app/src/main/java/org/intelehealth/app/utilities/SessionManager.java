@@ -369,7 +369,7 @@ public class SessionManager {
         return pref.getBoolean(FIRST_TIME_LAUNCHED, true);
     }
 
-    public void setFirstTimeLaunched(Boolean firstTimeLaunched) {
+    public void setFirstTimeLaunched(boolean firstTimeLaunched) {
         editor.putBoolean(FIRST_TIME_LAUNCHED, firstTimeLaunched);
         editor.commit();
     }
