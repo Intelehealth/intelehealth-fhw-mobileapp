@@ -269,23 +269,22 @@
     </string-array>
 
     <string-array name="close_case_reason">
-        <item>कारण चुनें</item>
-        <item>सफल</item>
-        <item>असफल \\ अनुवर्ती कार्रवाई करने में विफल</item>
-        <item>उच्च सुविधा के लिए रेफर करें</item>
-        <item>दीर्घकालिक उपचार</item>
+        <item>केस बंद करने का कारण चुने</item>
+        <item>उपचार सफल रहा</item>
+        <item>असफल उपचार/ अधूरा उपचार छोड़ा</item>
+        <item>उच्च चिकित्सा सुविधा के लिए रेफर किया</item>
+        <item>दीर्घकालीन उपचार चल रहा है</item>
     </string-array>
 
     <string-array name="visit_facilities">
-        <item>सुविधा चुनें</item>
-        <item>आशा</item>
-        <item>AWW</item>
-        <item>HWC/AAM</item>
-        <item>CHC</item>
-        <item>DH</item>
-        <item>मेडिकल</item>
-        <item>कॉलेज AB - PVT</item>
-        <item>अस्पताल अन्य</item>
+        <item>स्वास्थ्य फेसिलिटी चुने</item>
+        <item>साहिया/ आशा</item>
+        <item>आंगनबाड़ी केंद्र</item>
+        <item>आयुष्मान आरोग्य मंदिर (एच.डबल्यू. सी.)</item>
+        <item>सामुदायिक स्वास्थ्य केंद्र</item>
+        <item>जिला अस्पताल</item>
+        <item>मेडिकल कॉलेज/ आयुष्मान अस्पताल</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="visit_severity">
@@ -293,7 +292,7 @@
         <item>कम</item>
         <item>सामान्य</item>
         <item>मध्यम</item>
-        <item>उच्च</item>
-        <item>गंभीर</item>
+        <item>अधिक</item>
+        <item>विकट</item>
     </string-array>
 </resources>
