@@ -3,6 +3,7 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -14,6 +15,8 @@ import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.models.FollowUpNotificationData
+import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
@@ -67,6 +70,15 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     }
                 }
             } else {
+                NotificationSchedulerUtils.scheduleFollowUpNotification(
+                    FollowUpNotificationData(
+                        value = data["followupDatetime"] ?: "",
+                        name = data["patientFirstName"] + " " + data["patientLastName"],
+                        openMrsId = data["patientOpenMrsId"] ?: "",
+                        patientUid = data["patientUuid"] ?: "",
+                        visitUuid = data["visitUuid"] ?: "",
+                    )
+                )
                 parseMessage(notification, context)
             }
         }

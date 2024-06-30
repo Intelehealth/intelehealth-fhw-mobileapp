@@ -3,6 +3,7 @@ package org.intelehealth.app.webrtc.service
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.SessionManager
@@ -32,12 +33,5 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         Timber.d { "Remote message ${Gson().toJson(message)}" }
-        NotificationSchedulerUtils.scheduleFollowUpNotification(FollowUpNotificationData(
-            value = message.data["followupDatetime"] ?:"",
-            name = message.data["patientFirstName"] +" "+ message.data["patientLastName"],
-            openMrsId = message.data["followupDatetime"] ?:"",
-            patientUid = message.data["patientUuid"] ?:"",
-            visitUuid = message.data["patientOpenMrsId"] ?:"",
-        ))
     }
 }

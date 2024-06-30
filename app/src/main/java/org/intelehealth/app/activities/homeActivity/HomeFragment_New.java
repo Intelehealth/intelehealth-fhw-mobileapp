@@ -541,8 +541,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 tomorrowsCount++;
             }
         }
-
-        return todaysCount+" "+getString(R.string.today)+"\n"+tomorrowsCount+" "+getString(R.string.tomorrow);
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            return todaysCount+" "+getActivity().getString(R.string.today)+"\n"+tomorrowsCount+" "+getActivity().getString(R.string.tomorrow);
+        }
+        return "";
     }
 
     @Override
