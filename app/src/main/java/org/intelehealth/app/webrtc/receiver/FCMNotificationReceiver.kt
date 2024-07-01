@@ -10,7 +10,9 @@ import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeActivity
+import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.appointment.AppointmentListingActivity
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -104,7 +106,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     private fun sendNotification(notification: RemoteMessage.Notification?, context: Context) {
         val messageTitle = notification!!.title
         val messageBody = notification.body
-        val notificationIntent = Intent(context, HomeActivity::class.java)
+        val clickAction = notification.clickAction
+        //val notificationIntent = Intent(context, HomeActivity::class.java)
+        var notificationIntent: Intent;
+        if (clickAction!!.isNotEmpty() && clickAction == AppConstants.NAVIGATE_TO_APPOINTMENT)
+            notificationIntent = Intent(context, AppointmentListingActivity::class.java)
+        else
+            notificationIntent = Intent(context, HomeActivity::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
                 context,
