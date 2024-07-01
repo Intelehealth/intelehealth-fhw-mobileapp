@@ -5008,7 +5008,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance(baseurl).getApi().getAppointmentDetails(visitUUID).enqueue(new Callback<AppointmentDetailsResponse>() {
+        ApiClientAppointment.getInstance(baseurl).getApi().getAppointmentDetails(visitUUID, sessionManager.getJwtAuthToken()).enqueue(new Callback<AppointmentDetailsResponse>() {
             @Override
             public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                 if (response == null || response.body() == null) return;
@@ -5078,7 +5078,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         request.setHwUUID(mAppointmentDetailsResponse.getData().getUserUuid());
                         Log.d(TAG, "onClick: CancelRequest : " + new Gson().toJson(request));
                         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-                        ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
+                        ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request, sessionManager.getJwtAuthToken()).enqueue(new Callback<CancelResponse>() {
                             @Override
                             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
                                 if (response.body() == null) return;

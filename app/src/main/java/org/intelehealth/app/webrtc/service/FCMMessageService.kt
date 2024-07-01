@@ -23,7 +23,8 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
             this,
             sessionManager.providerID,
             token,
-            sessionManager.appLanguage
+            sessionManager.appLanguage,
+                sessionManager.jwtAuthToken
         )
     }
 

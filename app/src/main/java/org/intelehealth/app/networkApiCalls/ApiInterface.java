@@ -19,6 +19,9 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.State;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTBody;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTResponse;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -101,7 +104,8 @@ public interface ApiInterface {
 
 
     @GET("/api/mindmap/download")
-    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey,
+                                                                    @Header("Authorization") String authHeader);
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
@@ -130,5 +134,12 @@ public interface ApiInterface {
     Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
             @Url String url,
             @Header("Authorization") String authHeader);
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<AuthJWTResponse> getJWTToken(
+            @Url String url,
+            @Body AuthJWTBody authJWTBody
+    );
 
 }
