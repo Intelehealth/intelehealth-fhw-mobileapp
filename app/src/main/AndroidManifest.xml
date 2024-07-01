@@ -432,6 +432,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".worker.ScheduleNotificationBroadcasterReceiver"/>
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />

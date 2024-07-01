@@ -70,16 +70,24 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     }
                 }
             } else {
-                NotificationSchedulerUtils.scheduleFollowUpNotification(
-                    FollowUpNotificationData(
-                        value = data["followupDatetime"] ?: "",
-                        name = data["patientFirstName"] + " " + data["patientLastName"],
-                        openMrsId = data["patientOpenMrsId"] ?: "",
-                        patientUid = data["patientUuid"] ?: "",
-                        visitUuid = data["visitUuid"] ?: "",
-                    )
-                )
-                parseMessage(notification, context)
+                if(data.isNotEmpty() && notification == null){
+                    sendNotificationFromBody(data,context)
+                    if((data["title"]?:"").lowercase().contains("prescription")){
+                        NotificationSchedulerUtils.scheduleFollowUpNotification(
+                                FollowUpNotificationData(
+                                        value = data["followupDatetime"] ?: "",
+                                        name = data["patientFirstName"] + " " + data["patientLastName"],
+                                        openMrsId = data["patientOpenMrsId"] ?: "",
+                                        patientUid = data["patientUuid"] ?: "",
+                                        visitUuid = data["visitUuid"] ?: "",
+                                )
+                        )
+                    }
+
+                }else{
+                    parseMessage(notification, context)
+                }
+
             }
         }
     }
@@ -164,6 +172,26 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 //        }
 //        notificationManager.notify(1, notificationBuilder.build())
     }
+
+    private fun sendNotificationFromBody(data: HashMap<String, String>?, context: Context) {
+        val messageTitle = data?.get("title")
+        val messageBody = data?.get("body")
+        val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                NotificationUtils.getPendingIntentFlag()
+        )
+
+        FcmNotification.Builder(context)
+                .channelName("IDA4")
+                .title(messageTitle ?: "Intelehealth")
+                .content(messageBody ?: "")
+                .smallIcon(R.mipmap.ic_launcher)
+                .contentIntent(pendingIntent)
+                .build().startNotify() }
 
     companion object {
         const val TAG = "FCMNotificationReceiver"

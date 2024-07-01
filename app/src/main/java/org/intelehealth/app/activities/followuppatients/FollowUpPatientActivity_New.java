@@ -766,9 +766,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
         String sortQuery = "";
         if(sortStatus){
-            sortQuery = " order by followup_date asc ";
+            sortQuery = " order by o.value asc ";
         }else {
-            sortQuery = " order by followup_date desc ";
+            sortQuery = " order by o.value desc ";
         }
 
         String query = "SELECT a.uuid as visituuid,b.first_name || " + middleName + " || b.last_name as patient_name_new, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "

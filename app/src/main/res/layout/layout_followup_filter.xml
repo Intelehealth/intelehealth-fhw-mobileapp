@@ -29,14 +29,12 @@
             <Button
                 android:id="@+id/button_date"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/btn_username_margin_end"
                 android:layout_weight="1"
                 android:background="@drawable/button_bg_forgot_pass_ui2"
                 android:paddingStart="@dimen/options_button_padding_start"
-                android:paddingTop="@dimen/options_button_padding_top"
                 android:paddingEnd="@dimen/options_button_padding_end"
-                android:paddingBottom="@dimen/options_button_padding_bottom"
                 android:text="@string/date"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/btn_options_text_Size" />
@@ -44,13 +42,11 @@
             <Button
                 android:id="@+id/button_range"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/button_bg_forgot_pass_disabled_ui2"
                 android:paddingStart="@dimen/options_button_padding_start"
-                android:paddingTop="@dimen/options_button_padding_top"
                 android:paddingEnd="@dimen/options_button_padding_end"
-                android:paddingBottom="@dimen/options_button_padding_bottom"
                 android:text="@string/range"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/btn_options_text_Size" />
