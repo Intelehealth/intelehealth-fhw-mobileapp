@@ -167,6 +167,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -376,9 +377,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private SpecializationViewModel viewModel;
     private ActivityVisitSummaryNewBinding mBinding;
-    private List<FacilityToVisitModel> facilityList = null;
-    private List<String> severityList = null;
-    private FacilityToVisitModel selectedFacilityToVisit = null;
+    //    private List<FacilityToVisitModel> facilityList = null;
+//    private List<String> severityList = null;
+    private String selectedFacilityToVisit = null;
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     boolean isSynced = false;
@@ -568,14 +569,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             String followupValue = fetchValueFromLocalDb(visitUUID);
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        String formattedDate = getFormattedDateTime(followupValue);
-                        if (TextUtils.isEmpty(formattedDate)) {
-                            mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
-                        } else {
-                            mBinding.tvViewFollowUpDateTime.setText(formattedDate);
-                        }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    String formattedDate = getFormattedDateTime(followupValue);
+                    Timber.tag(TAG).d("Follow up date formatte =>%s", formattedDate);
+                    if (TextUtils.isEmpty(formattedDate)) {
+                        mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
+                    } else {
+                        Timber.tag(TAG).d("Follow up date set =>%s", formattedDate);
+                        mBinding.tvViewFollowUpDateTime.setText(formattedDate);
                     }
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -585,17 +588,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
+        Timber.tag(TAG).d("Follow up date =>%s", followupValue);
         // Extract the date and time part
         String datePart = followupValue.split(", Time:")[0];
         String timePart = followupValue.split(", Time:")[1].split(", Remark:")[0];
 
         // Parse the date and time parts
-        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
+//        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
 
         // Format the date and time into the desired format
-        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
+//        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
+
+        return datePart + " " + timePart;
 
     }
 
@@ -876,6 +881,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         String closeReason = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CLOSE_CASE);
+        closeReason = LanguageUtils.getLocalValueFromArray(this, closeReason, R.array.close_case_reason);
         if (!TextUtils.isEmpty(closeReason)) {
             mBinding.tvCloseCaseToVisitValue.setText(" " + Node.bullet + "  " + closeReason);
             mBinding.cvCloseCaseVisitDoc.setVisibility(View.VISIBLE);
@@ -2038,12 +2044,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    private List<FacilityToVisitModel> getFacilityList() {
-        facilityList = new ArrayList<FacilityToVisitModel>();
-        String[] facilities = getResources().getStringArray(R.array.visit_facilities);
-        for (int i = 0; i < facilities.length; i++) {
-            facilityList.add(new FacilityToVisitModel("" + i, facilities[i]));
-        }
+//    private String[] getFacilityList() {
+//        facilityList = new ArrayList<FacilityToVisitModel>();
+    //        for (int i = 0; i < facilities.length; i++) {
+//            facilityList.add(new FacilityToVisitModel("" + i, facilities[i]));
+//        }
 //        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
 //        facilityList.add(new FacilityToVisitModel("1", "Asha"));
 //        facilityList.add(new FacilityToVisitModel("2", "AWW"));
@@ -2053,37 +2058,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        facilityList.add(new FacilityToVisitModel("6", "Medical"));
 //        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
 //        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
-        return facilityList;
-    }
+//        return getResources().getStringArray(R.array.visit_facilities);
+//    }
 
-    private List<String> getSeverityList() {
-        severityList = Arrays.asList(getResources().getStringArray(R.array.visit_severity));
+//    private List<String> getSeverityList() {
+//        severityList = Arrays.asList(getResources().getStringArray(R.array.visit_severity));
 //        severityList.add("Select Severity");
 //        severityList.add("Low");
 //        severityList.add("Normal");
 //        severityList.add("Moderate");
 //        severityList.add("High");
 //        severityList.add("Critical");
-        return severityList;
-    }
+//        return Arrays.asList(getResources().getStringArray(R.array.visit_severity));
+//    }
 
     private void setFacilityToVisitSpinner() {
-        if (facilityList == null || facilityList.isEmpty()) {
-            facilityList = getFacilityList();
-        }
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        facility = LanguageUtils.getLocalValueFromArray(this, facility, R.array.visit_facilities);
         if (!TextUtils.isEmpty(facility)) {
             mBinding.tvFacilityToVisitValue.setText(" " + Node.bullet + "  " + facility);
         }
 
-        FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
-        mBinding.spinnerFacilityToVisit.setAdapter(arrayAdapter);
+//        FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
+        ArrayAdapter<CharSequence> facilityAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.visit_facilities,
+                android.R.layout.simple_spinner_dropdown_item
+        );
+        mBinding.spinnerFacilityToVisit.setAdapter(facilityAdapter);
         mBinding.spinnerFacilityToVisit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
 //                    Timber.tag("SPINNER").d("SPINNER_Selected: %s", adapterView.getItemAtPosition(i).toString());
-                    selectedFacilityToVisit = facilityList.get(i);
+                    Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
+                    selectedFacilityToVisit = resources.getStringArray(R.array.visit_facilities)[i];
                 } else {
                     selectedFacilityToVisit = null;
                 }
@@ -2097,13 +2106,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void setSeveritySpinner() {
-        if (severityList == null || severityList.isEmpty()) {
-            severityList = getSeverityList();
-        }
-
-        SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
+//        if (severityList == null || severityList.isEmpty()) {
+//            severityList = getSeverityList();
+//        }
+        List<String> severities = Arrays.asList(getResources().getStringArray(R.array.visit_severity));
+        SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severities);
 
         String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
+        severity = LanguageUtils.getLocalValueFromArray(this, severity, R.array.visit_severity);
         if (!TextUtils.isEmpty(severity)) {
             mBinding.tvSavertyValue.setText(" " + Node.bullet + "  " + severity);
         }
@@ -2114,7 +2124,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    selectedSeverity = severityList.get(i);
+                    Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
+                    selectedSeverity = resources.getStringArray(R.array.visit_severity)[i];
                 } else {
                     selectedSeverity = null;
                 }
@@ -2140,7 +2151,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     mBinding.tvCloseCaseToVisitValue.setText(" " + Node.bullet + "  " + closeCaseReasons[i]);
                     Timber.tag(TAG).d("case reason=>%s", closeCaseReasons[i]);
                     mBinding.tvCloseCaseToVisitValue.setTag(closeCaseReasons[i]);
-                    showCaseCloseConfirmationDialog(closeCaseReasons[i]);
+                    Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
+                    showCaseCloseConfirmationDialog(resources.getStringArray(R.array.close_case_reason)[i]);
                 }
             }
 
@@ -3065,7 +3077,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
             }
             if (selectedFacilityToVisit != null) {
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit, FACILITY);
             }
             if (selectedSeverity != null) {
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);

@@ -426,8 +426,11 @@ public class Fragment_SecondScreen extends Fragment {
         mBlockSpinner.setOnItemSelectedListener(blockSelectedListener);
         mBlockSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress3() != null && !patientDTO.getAddress3().isEmpty()) {
-            Block selected = new Block(patientDTO.getAddress3(), null, null);
-            mBlockSpinner.setSelection(blockAdapter.getPosition(selected));
+            for (Block b : blocks) {
+                if (b.getName().equalsIgnoreCase(patientDTO.getAddress3())) {
+                    mBlockSpinner.setSelection(blockAdapter.getPosition(b));
+                }
+            }
         }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));
@@ -470,8 +473,11 @@ public class Fragment_SecondScreen extends Fragment {
         mGramPanchayatSpinner.setOnItemSelectedListener(gpSelectedListener);
         mGramPanchayatSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress4() != null && !patientDTO.getAddress4().isEmpty()) {
-            GramPanchayat selected = new GramPanchayat(patientDTO.getAddress4(), null, null);
-            mGramPanchayatSpinner.setSelection(gpAdapter.getPosition(selected));
+            for (GramPanchayat gp : gramPanchayats) {
+                if (gp.getName().equalsIgnoreCase(patientDTO.getAddress4())) {
+                    mGramPanchayatSpinner.setSelection(gpAdapter.getPosition(gp));
+                }
+            }
         }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));
@@ -513,8 +519,11 @@ public class Fragment_SecondScreen extends Fragment {
         mVillageSpinner.setOnItemSelectedListener(villageSelectedListener);
         mVillageSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress5() != null && !patientDTO.getAddress5().isEmpty()) {
-            Village village = new Village(patientDTO.getAddress5(), null);
-            mVillageSpinner.setSelection(villageAdapter.getPosition(village));
+            for (Village v : villages) {
+                if (v.getName().equalsIgnoreCase(patientDTO.getAddress5())) {
+                    mVillageSpinner.setSelection(villageAdapter.getPosition(v));
+                }
+            }
         }
 //        mStateNameSpinner.setSelection(1);
 //        int index = blockAdapter.getPosition(getString(R.string.default_state));

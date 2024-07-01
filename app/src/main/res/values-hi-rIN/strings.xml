@@ -1,344 +1,348 @@
 <resources>
-    <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
+    <string name="app_name" >इंटेलेहेल्थ</string>
     <string name="notification_title">इंटेलेहेल्थ</string>
     //Generic
-    <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
-    <string name="hint_required" translatable="false">अपेक्षित</string>
-    <string name="hint_optional" translatable="false">ऐच्छिक</string>
-    <string name="tag_optional" translatable="false">ऐच्छिक</string>
+    <string name="generic_the_flipping_word_next" >आगे</string>
+    <string name="hint_required" >अपेक्षित</string>
+    <string name="hint_optional" >ऐच्छिक</string>
+    <string name="tag_optional" >ऐच्छिक</string>
     <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
-    <string name="generic_back" translatable="false">वापस</string>
-    <string name="generic_coming_soon" translatable="false">जल्द आ रहा है .....</string>
-    <string name="action_print" translatable="false">छाप</string>
-    <string name="action_sms" translatable="false">एसएमएस/सन्देश </string>
-    <string name="action_home" translatable="false">घर</string>
-    <string name="action_settings" translatable="false">समायोजन</string>
-    <string name="generic_warning" translatable="false">चेतावनी!!</string>
-    <string name="generic_update" translatable="false">अपडेट करें</string>
-    <string name="generic_deleted" translatable="false">हटाए गए</string>
+    <string name="generic_back" >वापस</string>
+    <string name="generic_coming_soon" >जल्द आ रहा है .....</string>
+    <string name="action_print" >छाप</string>
+    <string name="action_sms" >एसएमएस/सन्देश </string>
+    <string name="action_home" >घर</string>
+    <string name="action_settings" >समायोजन</string>
+    <string name="generic_warning" >चेतावनी!!</string>
+    <string name="generic_update" >अपडेट करें</string>
+    <string name="generic_deleted" >हटाए गए</string>
 
 
     //Database Schema Names
-    <string name="db_first_name" translatable="false">प्रथम नाम</string>
-    <string name="db_middle_name" translatable="false">मध्य नाम</string>
-    <string name="db_last_name" translatable="false">आखिरी नाम</string>
-    <string name="db_dob" translatable="false">जन्म तिथि</string>
-    <string name="db_phone_number" translatable="false">फोन</string>
-    <string name="db_address_line1" translatable="false">पता पंक्ति 1</string>
-    <string name="db_address_line2" translatable="false">पता पंक्ति 2</string>
-    <string name="db_city" translatable="false">गांव/ कस्बा / शहर</string>
-    <string name="db_state" translatable="false">राज्य प्रान्त</string>
-    <string name="db_postal_code" translatable="false">डाक कोड</string>
-    <string name="db_country" translatable="false">देश</string>
-    <string name="db_gender" translatable="false">लिंग</string>
-    <string name="db_patient_id1" translatable="false">patient_identifier1</string>
-    <string name="db_patient_id2" translatable="false">patient_identifier2</string>
-    <string name="db_patient_id3" translatable="false">patient_identifier3</string>
+    <string name="db_first_name" >प्रथम नाम</string>
+    <string name="db_middle_name" >मध्य नाम</string>
+    <string name="db_last_name" >आखिरी नाम</string>
+    <string name="db_dob" >जन्म तिथि</string>
+    <string name="db_phone_number" >फोन</string>
+    <string name="db_address_line1" >पता पंक्ति 1</string>
+    <string name="db_address_line2" >पता पंक्ति 2</string>
+    <string name="db_city" >गांव/ कस्बा / शहर</string>
+    <string name="db_state" >राज्य प्रान्त</string>
+    <string name="db_postal_code" >डाक कोड</string>
+    <string name="db_country" >देश</string>
+    <string name="db_gender" >लिंग</string>
+    <string name="db_patient_id1" >patient_identifier1</string>
+    <string name="db_patient_id2" >patient_identifier2</string>
+    <string name="db_patient_id3" >patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">इंटेलीहेल्थ</string>
-    <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
-    <string name="prompt_password" translatable="false">कुंजिका</string>
-    <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
-    <string name="action_sign_in" translatable="false">लॉग इन करें</string>
-    <string name="action_sign_in_short" translatable="false">शाइन ईन करें</string>
-    <string name="url_invalid" translatable="false">अपना यूआरएल चेक करें</string>
-    <string name="prefix_invalid" translatable="false">विभिन्न उपसर्ग चुनते है!</string>
-    <string name="error_invalid_username" translatable="false">यह उपयोगकर्ता अवैध हैं</string>
+    <string name="title_activity_login" >इंटेलीहेल्थ</string>
+    <string name="prompt_email" >उपयोगकर्ता नाम</string>
+    <string name="prompt_password" >कुंजिका</string>
+    <string name="prompt_admin_password" >व्यवस्थापक कुंजी</string>
+    <string name="action_sign_in" >लॉग इन करें</string>
+    <string name="action_sign_in_short" >शाइन ईन करें</string>
+    <string name="url_invalid" >अपना यूआरएल चेक करें</string>
+    <string name="prefix_invalid" >विभिन्न उपसर्ग चुनते है!</string>
+    <string name="error_invalid_username" >यह उपयोगकर्ता अवैध हैं</string>
     <string name="error_invalid_email">यह ईमेल पता अमान्य है</string>
     <string name="error_password_not_exist">यह पासवर्ड मौजूद नहीं है</string>
-    <string name="error_invalid_password" translatable="false">यह पासवर्ड बहुत छोटा है</string>
-    <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
-    <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
-    <string name="error_field_required_non_adult" translatable="false">यह कमरा 18 वर्ष से कम उम्र के लोगों के लिए आवश्यक है</string>
-    <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
-    <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन से मान का चयन करें</string>
-    <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>
-    <string name="permission_rationale" translatable="false">ईमेल पूर्णता प्रदान करने के लिए संपर्क अनुमतियों की आवश्यकता होती है।
+    <string name="error_invalid_password" >यह पासवर्ड बहुत छोटा है</string>
+    <string name="error_incorrect_password" >कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
+    <string name="error_field_required" >यह फ़ील्ड आवश्यक है</string>
+    <string name="error_field_required_non_adult" >यह कमरा 18 वर्ष से कम उम्र के लोगों के लिए आवश्यक है</string>
+    <string name="error_network" >नेटवर्क त्रुटि</string>
+    <string name="error_location_not_selected" >कृपया स्थान ड्रॉपडाउन से मान का चयन करें</string>
+    <string name="error_location_not_fetched" >स्थानों को लाने में असमर्थ</string>
+    <string name="permission_rationale" >ईमेल पूर्णता प्रदान करने के लिए संपर्क अनुमतियों की आवश्यकता होती है।
     </string>
-    <string name="device_id" translatable="false">डिवाइस आईडी:</string>
+    <string name="device_id" >डिवाइस आईडी:</string>
 
 
-    <string name="cant_login_user" translatable="false">लॉग इन नहीं कर सकते?</string>
-    <string name="email_link" translatable="false">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
+    <string name="cant_login_user" >लॉग इन नहीं कर सकते?</string>
+    <string name="email_link" >कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें या support@intelehealth.io पर ईमेल भेजें</string>
     <string name="contact_whatsapp">कृपया अपना पासवर्ड रीसेट करने के लिए अपने सिस्टम एडमिनिस्ट्रेटर से संपर्क करें</string>
 
     //Home Screen (after login)
-    <string name="title_home_screen" translatable="false">घर</string>
+    <string name="title_home_screen" >घर</string>
     <string name="button_new_pt">नया पेशेंट</string>
-    <string name="button_find_pt" translatable="false">पेशेंट का पता लगाएं</string>
-    <string name="button_diagnostic_tests" translatable="false">नैदानिक ​​परीक्षण</string>
-    <string name="button_active_pt" translatable="false">आक्टिव पेशेंट</string>
-    <string name="menu_option_sync" translatable="false">सिंक डेटा</string>
-    <string name="menu_option_settings" translatable="false">सेट्टिंग्स</string>
-    <string name="menu_option_end_of_day" translatable="false">दिन के अंत मे</string>
-    <string name="menu_option_logout" translatable="false">लॉग आउट</string>
+    <string name="button_find_pt" >पेशेंट का पता लगाएं</string>
+    <string name="button_diagnostic_tests" >नैदानिक ​​परीक्षण</string>
+    <string name="button_active_pt" >आक्टिव पेशेंट</string>
+    <string name="menu_option_sync" >सिंक डेटा</string>
+    <string name="menu_option_settings" >सेट्टिंग्स</string>
+    <string name="menu_option_end_of_day" >दिन के अंत मे</string>
+    <string name="menu_option_logout" >लॉग आउट</string>
 
 
     //Identification Screen
-    <string name="title_activity_identification" translatable="false">नया पेशेंट जोड़ें</string>
-    <string name="identification_screen_prompt_first_name">पहला नाम *</string>
+    <string name="title_activity_identification" >नया पेशेंट जोड़ें</string>
+    <string name="identification_screen_prompt_first_name">पहला नाम</string>
     <string name="identification_screen_prompt_middle_name">मध्य नाम</string>
-    <string name="identification_screen_prompt_last_name">उपनाम *</string>
+    <string name="identification_screen_prompt_last_name">उपनाम</string>
     <string name="identification_screen_prompt_address">पता पंक्ति 1</string>
     <string name="identification_screen_prompt_address2">पता पंक्ति 2</string>
     <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>
-    <string name="admin_password_dialog_heading" translatable="false">व्यवस्थापक पासवर्ड दर्ज करें</string>
-    <string name="identification_screen_prompt_gender" translatable="false">लिंग *</string>
+    <string name="admin_password_dialog_heading" >व्यवस्थापक पासवर्ड दर्ज करें</string>
+    <string name="identification_screen_prompt_gender" >लिंग</string>
     <string name="identification_screen_checkbox_male">पुरुष</string>
     <string name="identification_screen_checkbox_female">महिला</string>
     <string name="identification_screen_checkbox_other">अन्य</string>
-    <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>
+    <string name="identification_screen_prompt_birthday">जन्म की तारीख</string>
     <string name="identification_screen_prompt_age">उम्र:</string>
-    <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
-    <string name="identification_screen_prompt_state">राज्य *</string>
-    <string name="identification_screen_prompt_caste" translatable="false">जाति</string>
-    <string name="identification_screen_prompt_economic_status" translatable="false">आर्थिक स्थिति</string>
-    <string name="identification_screen_prompt_education" translatable="false">शिक्षा का स्तर</string>
-    <string name="identification_screen_prompt_country" translatable="false">देश *</string>
-    <string name="identification_screen_prompt_postal_code" translatable="false">डाक कोड</string>
-    <string name="identification_screen_prompt_relationship" translatable="false">बेटा / बेटी / की पत्नी</string>
-    <string name="identification_screen_prompt_occupation" translatable="false">व्यवसाय</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">पेशेंट बनाया! सर्वर पर अपलोड हो रहा है।</string>
-    <string name="identification_screen_error_data_fields" translatable="false"> त्रुटि: डाटा मैदान सही ढंग से स्वरूपित नहीं कर रहे है</string>
-    <string name="identification_screen_dialog_age" translatable="false">कृपया वर्ष में उम्र दर्ज करें</string>
-    <string name="identification_screen_dialog_error_dob" translatable="false">आज के बाद जन्म की तारीख निर्धारित की जाती है</string>
-    <string name="identification_screen_dialog_error_gender" translatable="false">लिंग का चयन नहीं किया गया है</string>
-    <string name="identification_screen_required_fields" translatable="false">कृपया आवश्यक फ़ील्ड दर्ज करें</string>
-    <string name="identification_screen_error_dob" translatable="false">एक वैध जन्मतिथि दर्ज करें</string>
-    <string name="identification_screen_error_age" translatable="false">एक मान्य आयु दर्ज करें</string>
-    <string name="identification_screen_text_years" translatable="false"> वर्ष </string>
-    <string name="identification_screen_text_months" translatable="false"> महीने</string>
-    <string name="identification_screen_picker_years" translatable="false">वर्ष</string>
-    <string name="identification_screen_picker_months" translatable="false">महीने</string>
+    <string name="identification_screen_prompt_city">गांव / कस्बा / शहर</string>
+    <string name="identification_screen_prompt_state">राज्य</string>
+    <string name="identification_screen_prompt_caste" >जाति</string>
+    <string name="identification_screen_prompt_economic_status" >आर्थिक स्थिति</string>
+    <string name="identification_screen_prompt_education" >शिक्षा का स्तर</string>
+    <string name="identification_screen_prompt_country" >देश</string>
+    <string name="identification_screen_prompt_postal_code" >डाक कोड</string>
+    <string name="identification_screen_prompt_relationship" >बेटा / बेटी / की पत्नी</string>
+    <string name="identification_screen_prompt_occupation" >व्यवसाय</string>
+    <string name="identification_screen_snack_patient_created" >पेशेंट बनाया! सर्वर पर अपलोड हो रहा है।</string>
+    <string name="identification_screen_error_data_fields" > त्रुटि: डाटा मैदान सही ढंग से स्वरूपित नहीं कर रहे है</string>
+    <string name="identification_screen_dialog_age" >कृपया वर्ष में उम्र दर्ज करें</string>
+    <string name="identification_screen_dialog_error_dob" >आज के बाद जन्म की तारीख निर्धारित की जाती है</string>
+    <string name="identification_screen_dialog_error_gender" >लिंग का चयन नहीं किया गया है</string>
+    <string name="identification_screen_required_fields" >कृपया आवश्यक फ़ील्ड दर्ज करें</string>
+    <string name="identification_screen_error_dob" >एक वैध जन्मतिथि दर्ज करें</string>
+    <string name="identification_screen_error_age" >एक मान्य आयु दर्ज करें</string>
+    <string name="identification_screen_text_years" > वर्ष </string>
+    <string name="identification_screen_text_months" > महीने</string>
+    <string name="identification_screen_picker_years" >वर्ष</string>
+    <string name="identification_screen_picker_months" >महीने</string>
+
+    <string name="identification_screen_prompt_block">प्रखण्ड *</string>
+    <string name="identification_screen_prompt_gram_panchayat">ग्राम पंचायत *</string>
+    <string name="identification_screen_prompt_village">गांव *</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>
 
     //Patient History Screen
-    <string name="title_activity_get_patient_history" translatable="false">पेशेंट का इतिहास</string>
-    <string name="title_activity_search_patient" translatable="false">पेशेंट को देखो</string>
+    <string name="title_activity_get_patient_history" >पेशेंट का इतिहास</string>
+    <string name="title_activity_search_patient" >पेशेंट को देखो</string>
 
     //Complaint Node Screen
-    <string name="title_activity_complaint_select" translatable="false">शिकायतों का चयन करें</string>
-    <string name="title_activity_complaint_questions" translatable="false">सभी प्रश्नों के उत्तर दें</string>
+    <string name="title_activity_complaint_select" >शिकायतों का चयन करें</string>
+    <string name="title_activity_complaint_questions" >सभी प्रश्नों के उत्तर दें</string>
     <string name="title_activity_complaint_node">शिकायतों का चयन करें</string>
-    <string name="complaint_category_selected" translatable="false">चयनित श्रेणियाँ:</string>
-    <string name="complaint_complaint_selected" translatable="false">चयनित शिकायतें:</string>
+    <string name="complaint_category_selected" >चयनित श्रेणियाँ:</string>
+    <string name="complaint_complaint_selected" >चयनित शिकायतें:</string>
     <string name="complaint_dialog_title">आने का कारण</string>
-    <string name="complaint_required" translatable="false">शिकायत का चयन करना होगा!</string>
+    <string name="complaint_required" >शिकायत का चयन करना होगा!</string>
 
     //Question Node Screen
-    <string name="title_activity_question_node" translatable="false"> सवाल गांठ कार्यकलाप</string>
-    <string name="complaint_change_selected" translatable="false">संशोधित</string>
-    <string name="question_answer_all" translatable="false">क्या आप सुनिश्चित हैं कि आपने सभी प्रश्नों का उत्तर दिया है।</string>
-    <string name="question_answer_all_phy_exam" translatable="false">कृपया सभी सामान्य परीक्षा के प्रश्नों के उत्तर दें।</string>
-    <string name="question_duration_picker" translatable="false">कृपया अवधि दर्ज करें</string>
-    <string name="question_text_input" translatable="false">कृपया अवधि दर्ज करें</string>
-    <string name="question_date_picker" translatable="false">कृपया तारीख का चयन करें</string>
-    <string name="question_location_picker" translatable="false">कृपया स्थानों का चयन करें</string>
-    <string name="question_number_picker" translatable="false">कृपया नंबर दर्ज करें</string>
-    <string name="question_area_picker" translatable="false">कृपया क्षेत्र (चौड़ाई X लंबाई) दर्ज करें</string>
-    <string name="question_range_picker" translatable="false">कृपया एक सीमा दर्ज करें</string>
-    <string name="question_frequency_picker" translatable="false">कृपया कितनी बार दर्ज करें</string>
+    <string name="title_activity_question_node" > सवाल गांठ कार्यकलाप</string>
+    <string name="complaint_change_selected" >संशोधित</string>
+    <string name="question_answer_all" >क्या आप सुनिश्चित हैं कि आपने सभी प्रश्नों का उत्तर दिया है।</string>
+    <string name="question_answer_all_phy_exam" >कृपया सभी सामान्य परीक्षा के प्रश्नों के उत्तर दें।</string>
+    <string name="question_duration_picker" >कृपया अवधि दर्ज करें</string>
+    <string name="question_text_input" >कृपया अवधि दर्ज करें</string>
+    <string name="question_date_picker" >कृपया तारीख का चयन करें</string>
+    <string name="question_location_picker" >कृपया स्थानों का चयन करें</string>
+    <string name="question_number_picker" >कृपया नंबर दर्ज करें</string>
+    <string name="question_area_picker" >कृपया क्षेत्र (चौड़ाई X लंबाई) दर्ज करें</string>
+    <string name="question_range_picker" >कृपया एक सीमा दर्ज करें</string>
+    <string name="question_frequency_picker" >कृपया कितनी बार दर्ज करें</string>
 
 
     //Table Exam Screen
-    <string name="title_activity_vitals" translatable="false">नब्ज</string>
-    <string name="table_hw" translatable="false">शरीर के माप</string>
-    <string name="table_height" translatable="false">ऊंचाई (सेंटिमीटर)</string>
-    <string name="table_weight" translatable="false">वजन (किग्रा)</string>
-    <string name="table_bmi" translatable="false">बीएमआई </string>
-    <string name="table_pulse" translatable="false">पल्स/धड़कन (धड़कन प्रति मिनट)</string>
-    <string name="table_bp" translatable="false">महत्वपूर्ण संकेत</string>
-    <string name="table_bpsys" translatable="false">बीपी सिस्टोलिक </string>
-    <string name="table_bpdia" translatable="false">बीपी डायास्टोलिक </string>
-    <string name="table_temp" translatable="false">तापमान (सेल्सियस)</string>
-    <string name="table_spo2" translatable="false">SpO2 (%) ऑक्सीजन </string>
+    <string name="title_activity_vitals" >नब्ज</string>
+    <string name="table_hw" >शरीर के माप</string>
+    <string name="table_height" >ऊंचाई (सेंटिमीटर)</string>
+    <string name="table_weight" >वजन (किग्रा)</string>
+    <string name="table_bmi" >बीएमआई </string>
+    <string name="table_pulse" >पल्स/धड़कन (धड़कन प्रति मिनट)</string>
+    <string name="table_bp" >महत्वपूर्ण संकेत</string>
+    <string name="table_bpsys" >बीपी सिस्टोलिक </string>
+    <string name="table_bpdia" >बीपी डायास्टोलिक </string>
+    <string name="table_temp" >तापमान (सेल्सियस)</string>
+    <string name="table_spo2" >SpO2 (%) ऑक्सीजन </string>
 
     //Patient Search Screen
-    <string name="search_hint" translatable="false">नाम द्वारा मरीज की खोज</string>
-    <string name="action_search" translatable="false">खोज</string>
-    <string name="alert_none_found" translatable="false">कृपया प्रोयोक्ता नाम और पासवर्ड दर्ज करे</string>
+    <string name="search_hint" >नाम द्वारा मरीज की खोज</string>
+    <string name="action_search" >खोज</string>
+    <string name="alert_none_found" >कृपया प्रोयोक्ता नाम और पासवर्ड दर्ज करे</string>
 
     //Past Medical History Screen
-    <string name="title_activity_patient_history" translatable="false">पिछला चिकित्सक इतिहास</string>
+    <string name="title_activity_patient_history" >पिछला चिकित्सक इतिहास</string>
 
     //Visit Summary Screen
-    <string name="title_activity_family_history" translatable="false">परिवार इतिहास</string>
-    <string name="title_activity_physical_exam" translatable="false">  शारीरिक परीक्षा</string>
-    <string name="title_activity_patient_summary" translatable="false">संछेप यात्रा</string>
-    <string name="visit_summary_temperature" translatable="false">तापमान(सेल्सियस)</string>
-    <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
-    <string name="visit_summary_hw_on_duty" translatable="false">समुदाय स्वास्थ्यकर्मी ड्यूटी पर</string>
-    <string name="visit_summary_vitals_heading" translatable="false"> नब्ज</string>
-    <string name="visit_summary_height_heading" translatable="false">कद(सेंटीमीटर)</string>
-    <string name="visit_summary_weight" translatable="false">वजन(किलोग्राम)</string>
-    <string name="visit_summary_bmi" translatable="false">बी ऍम आई</string>
-    <string name="visit_summary_bp" translatable="false">ब्लड प्रेशर</string>
-    <string name="visit_summary_pulse" translatable="false">नाड़ी</string>
-    <string name="visit_summary_previous_reports" translatable="false">पिछला रिपोर्ट</string>
+    <string name="title_activity_family_history" >परिवार इतिहास</string>
+    <string name="title_activity_physical_exam" >  शारीरिक परीक्षा</string>
+    <string name="title_activity_patient_summary" >संछेप यात्रा</string>
+    <string name="visit_summary_temperature" >तापमान(सेल्सियस)</string>
+    <string name="visit_summary_pulseox" >SpO2 (%)</string>
+    <string name="visit_summary_hw_on_duty" >समुदाय स्वास्थ्यकर्मी ड्यूटी पर</string>
+    <string name="visit_summary_vitals_heading" > नब्ज</string>
+    <string name="visit_summary_height_heading" >कद(सेंटीमीटर)</string>
+    <string name="visit_summary_weight" >वजन(किलोग्राम)</string>
+    <string name="visit_summary_bmi" >बी ऍम आई</string>
+    <string name="visit_summary_bp" >ब्लड प्रेशर</string>
+    <string name="visit_summary_pulse" >नाड़ी</string>
+    <string name="visit_summary_previous_reports" >पिछला रिपोर्ट</string>
     <string name="visit_summary_medical_history">चिकित्सक इतिहास</string>
-    <string name="visit_summary_family_history" translatable="false">परिवार इतिहास</string>
-    <string name="visit_summary_on_examination" translatable="false">निरिक्षण करने पर</string>
-    <string name="visit_summary_complaint" translatable="false">यात्रा का कारण</string>
-    <string name="visit_summary_vitals" translatable="false">नब्ज</string>
-    <string name="visit_summary_doctor_details" translatable="false">चिकित्सक विवरण</string>
-    <string name="visit_summary_rx" translatable="false">निर्धारित दवाईयाँ</string>
-    <string name="visit_summary_diagnosis" translatable="false">मूल्यांकन</string>
-    <string name="visit_summary_advice" translatable="false">चिकित्सक सलाह</string>
-    <string name="visit_summary_tests_prescribed" translatable="false">जांच/संप्रेषण</string>
-    <string name="visit_summary_additional_comments" translatable="false"> अतिरिक्त टिप्पणी</string>
-    <string name="visit_summary_heading_name" translatable="false">नाम</string>
-    <string name="visit_summary_heading_id" translatable="false">पहचान</string>
-    <string name="visit_summary_button_download" translatable="false">डाउनलोड</string>
-    <string name="visit_summary_button_upload" translatable="false">अपलोड</string>
-    <string name="name_button_download" translatable="false"> बटन डाउनलोड</string>
-    <string name="visit_summary_follow_up_date" translatable="false">फॉलो-अप तारीख</string>
-    <string name="visit_summary_follow_up_reminder" translatable="false">कृप्या मरीज को उसके फॉलो-अप की तारीख याद दिलाये:</string>
-    <string name="visit_summary_upload_reminder" translatable="false">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>
+    <string name="visit_summary_family_history" >परिवार इतिहास</string>
+    <string name="visit_summary_on_examination" >निरिक्षण करने पर</string>
+    <string name="visit_summary_complaint" >यात्रा का कारण</string>
+    <string name="visit_summary_vitals" >नब्ज</string>
+    <string name="visit_summary_doctor_details" >चिकित्सक विवरण</string>
+    <string name="visit_summary_rx" >निर्धारित दवाईयाँ</string>
+    <string name="visit_summary_diagnosis" >मूल्यांकन</string>
+    <string name="visit_summary_advice" >चिकित्सक सलाह</string>
+    <string name="visit_summary_tests_prescribed" >जांच/संप्रेषण</string>
+    <string name="visit_summary_additional_comments" > अतिरिक्त टिप्पणी</string>
+    <string name="visit_summary_heading_name" >नाम</string>
+    <string name="visit_summary_heading_id" >पहचान</string>
+    <string name="visit_summary_button_download" >डाउनलोड</string>
+    <string name="visit_summary_button_upload" >अपलोड</string>
+    <string name="name_button_download" > बटन डाउनलोड</string>
+    <string name="visit_summary_follow_up_date" >फॉलो-अप तारीख</string>
+    <string name="visit_summary_follow_up_reminder" >कृप्या मरीज को उसके फॉलो-अप की तारीख याद दिलाये:</string>
+    <string name="visit_summary_upload_reminder" >कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>
 
 
     //Diagnostic Tests Screen
-    <string name="title_activity_diagnostic_tests_list" translatable="false">निदान जांच चुने</string>
+    <string name="title_activity_diagnostic_tests_list" >निदान जांच चुने</string>
 
     //Physical Exam Dialog
     <string name="wash_hands">याद से अपना हाथ धोएं</string>
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail" translatable="false">मरीज की जानकारी</string>
-    <string name="button_history" translatable="false">मरीज का इतिहास</string>
-    <string name="title_activity_patient_detail" translatable="false">मरीज का विस्तार</string>
-    <string name="header_medical_history" translatable="false">इतिहास</string>
-    <string name="button_new_visit" translatable="false">नया यात्रा शुरु करो</string>
-    <string name="header_previous_visits" translatable="false">पिछली यात्रा</string>
-    <string name="header_patient_history" translatable="false">चिकित्सक इतिहास</string>
-    <string name="header_family_history" translatable="false">परिवार इतिहास</string>
-    <string name="string_no_hist" translatable="false">बीमारी का इतिहास नहीं है</string>
-    <string name="row_patient_id" translatable="false">मरीज की पहचान</string>
-    <string name="row_dob" translatable="false">जन्म तिथि</string>
-    <string name="row_age" translatable="false">उम्र</string>
+    <string name="header_patient_detail" >मरीज की जानकारी</string>
+    <string name="button_history" >मरीज का इतिहास</string>
+    <string name="title_activity_patient_detail" >मरीज का विस्तार</string>
+    <string name="header_medical_history" >इतिहास</string>
+    <string name="button_new_visit" >नया यात्रा शुरु करो</string>
+    <string name="header_previous_visits" >पिछली यात्रा</string>
+    <string name="header_patient_history" >चिकित्सक इतिहास</string>
+    <string name="header_family_history" >परिवार इतिहास</string>
+    <string name="string_no_hist" >बीमारी का इतिहास नहीं है</string>
+    <string name="row_patient_id" >मरीज की पहचान</string>
+    <string name="row_dob" >जन्म तिथि</string>
+    <string name="row_age" >उम्र</string>
     <string name="row_gender">लिंग</string>
     <string name="row_address">पता</string>
-    <string name="row_phone_number" translatable="false">फ़ोन</string>
-    <string name="row_open_visit" translatable="false">यात्रा खोलने के लिए क्लिक करे</string>
-    <string name="title_activity_settings" translatable="false">सेटिंग</string>
+    <string name="row_phone_number" >फ़ोन</string>
+    <string name="row_open_visit" >यात्रा खोलने के लिए क्लिक करे</string>
+    <string name="title_activity_settings" >सेटिंग</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general" translatable="false">सामान्य</string>
+    <string name="pref_header_general" >सामान्य</string>
 
-    <string name="pref_title_social_recommendations" translatable="false"> सामजिक सिफारिशें शुरू करे</string>
-    <string name="pref_description_social_recommendations" translatable="false">तुम्हारी सन्देश इतिहास पर आधारित सिफारिश के लिए लोग संपर्क करें</string>
+    <string name="pref_title_social_recommendations" > सामजिक सिफारिशें शुरू करे</string>
+    <string name="pref_description_social_recommendations" >तुम्हारी सन्देश इतिहास पर आधारित सिफारिश के लिए लोग संपर्क करें</string>
 
-    <string name="pref_title_display_name" translatable="false">नाम को प्रदर्शित करे</string>
-    <string name="pref_default_display_name" translatable="false">जॉन स्मिथ</string>
+    <string name="pref_title_display_name" >नाम को प्रदर्शित करे</string>
+    <string name="pref_default_display_name" >जॉन स्मिथ</string>
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">डेटा-सिंक</string>
+    <string name="pref_header_data_sync" >डेटा-सिंक</string>
 
-    <string name="pref_title_server_url" translatable="false">सर्वर यूआरएल</string>
-    <string name="pref_title_id_prefix" translatable="false">स्थान उपसर्ग</string>
+    <string name="pref_title_server_url" >सर्वर यूआरएल</string>
+    <string name="pref_title_id_prefix" >स्थान उपसर्ग</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications" translatable="false">सूचनाएं</string>
-    <string name="pref_title_new_message_notifications" translatable="false">नया सन्देश अधिसूचना</string>
-    <string name="pref_title_ringtone" translatable="false">रिंगटोन</string>
-    <string name="pref_ringtone_silent" translatable="false">मूक</string>
-    <string name="pref_title_vibrate" translatable="false">कांपना</string>
-    <string name="toast_crash" translatable="false">एप्लिकेशन त्रुटि का सामना करना पड़ा; सूचना भेजी गई</string>
+    <string name="pref_header_notifications" >सूचनाएं</string>
+    <string name="pref_title_new_message_notifications" >नया सन्देश अधिसूचना</string>
+    <string name="pref_title_ringtone" >रिंगटोन</string>
+    <string name="pref_ringtone_silent" >मूक</string>
+    <string name="pref_title_vibrate" >कांपना</string>
+    <string name="toast_crash" >एप्लिकेशन त्रुटि का सामना करना पड़ा; सूचना भेजी गई</string>
 
 
-    <string name="title_activity_setup" translatable="false">सेट अप</string>
+    <string name="title_activity_setup" >सेट अप</string>
 
-    <string name="title_activity_camera" translatable="false">कैमरा</string>
+    <string name="title_activity_camera" >कैमरा</string>
     <string name="title_activity_today_patient">आज की विज़िट्स</string>
     <string name="title_activity_additional_documents">अतिरिक्त दस्तावेज़</string>
-    <string name="title_activity_video_library" translatable="false">वीडियो लाइब्रेरी</string>
-    <string name="visit_summary_patient_details" translatable="false">विवरण पर जाएँ</string>
+    <string name="title_activity_video_library" >वीडियो लाइब्रेरी</string>
+    <string name="visit_summary_patient_details" >विवरण पर जाएँ</string>
 
     <!--Setup Activity-->
-    <string name="setup_internet" translatable="false">सेटअप के लिए एक मजबूत इंटरनेट कनेक्शन की आवश्यकता है।</string>
-    <string name="generic_manual_entry" translatable="false">स्वयं भरे </string>
-    <string name="generic_erase_redo" translatable="false">मिटाओ और फिर से करो</string>
-    <string name="visit_summary_edit_vitals" translatable="false">आप इन विटल्स को फिर से इन विटल्स स्क्रीन से कर सकते हैं</string>
+    <string name="setup_internet" >सेटअप के लिए एक मजबूत इंटरनेट कनेक्शन की आवश्यकता है।</string>
+    <string name="generic_manual_entry" >स्वयं भरे </string>
+    <string name="generic_erase_redo" >मिटाओ और फिर से करो</string>
+    <string name="visit_summary_edit_vitals" >आप इन विटल्स को फिर से इन विटल्स स्क्रीन से कर सकते हैं</string>
 
     //Camera Permissions
-    <string name="permission_camera_rationale" translatable="false">कैमरा प्रीव्यू दिखाने के लिए कैमरा की अनुमति की आवश्यकता होती है</string>
-    <string name="permission_camera_denied" translatable="false">कैमरा अनुमति देने से इंकार कर दिया गया था| कृपया कैमरे तक पहुचने के लिए इस देने का विचार करें!</string>
-    <string name="permission_camera_never_askagain" translatable="false">कैमरा की अनुमति से इंकार कर दिया था फिर कभी नहीं पूछे</string>
-    <string name="button_allow" translatable="false">अनुमति</string>
-    <string name="button_deny" translatable="false">मना</string>
-    <string name="button_ok" translatable="false">ठीक</string>
-    <string name="button_cancel" translatable="false">रद्द करना</string>
-    <string name="picture_taken" translatable="false">तस्वीर ली</string>
-    <string name="switch_flash" translatable="false">फ़्लैश स्विच करें</string>
-    <string name="switch_camera" translatable="false">कैमरा स्विच करें</string>
-    <string name="flash_auto" translatable="false">फ्लैश ऑटो</string>
-    <string name="flash_off" translatable="false">फ्लैश बंद</string>
-    <string name="flash_on" translatable="false">फ्लैश शुरू</string>
+    <string name="permission_camera_rationale" >कैमरा प्रीव्यू दिखाने के लिए कैमरा की अनुमति की आवश्यकता होती है</string>
+    <string name="permission_camera_denied" >कैमरा अनुमति देने से इंकार कर दिया गया था| कृपया कैमरे तक पहुचने के लिए इस देने का विचार करें!</string>
+    <string name="permission_camera_never_askagain" >कैमरा की अनुमति से इंकार कर दिया था फिर कभी नहीं पूछे</string>
+    <string name="button_allow" >अनुमति</string>
+    <string name="button_deny" >मना</string>
+    <string name="button_ok" >ठीक</string>
+    <string name="button_cancel" >रद्द करना</string>
+    <string name="picture_taken" >तस्वीर ली</string>
+    <string name="switch_flash" >फ़्लैश स्विच करें</string>
+    <string name="switch_camera" >कैमरा स्विच करें</string>
+    <string name="flash_auto" >फ्लैश ऑटो</string>
+    <string name="flash_off" >फ्लैश बंद</string>
+    <string name="flash_on" >फ्लैश शुरू</string>
 
     //SEND SMS Permissions
-    <string name="permission_sms_rationale" translatable="false">एसएमएस भेजने के लिए एसएमएस की अनुमति की जरूरत होती है।</string>
-    <string name="permission_sms_denied" translatable="false">एसएमएस की अनुमति से इनकार कर दिया गया था। कृपया आवेदन से एसएमएस भेजने के लिए इसे देने पर विचार करें!</string>
-    <string name="permission_sms_never_askagain" translatable="false">एसएमएस की अनुमति से इनकार कर दिया गया था फिर कभी नहीं पूछें।</string>
+    <string name="permission_sms_rationale" >एसएमएस भेजने के लिए एसएमएस की अनुमति की जरूरत होती है।</string>
+    <string name="permission_sms_denied" >एसएमएस की अनुमति से इनकार कर दिया गया था। कृपया आवेदन से एसएमएस भेजने के लिए इसे देने पर विचार करें!</string>
+    <string name="permission_sms_never_askagain" >एसएमएस की अनुमति से इनकार कर दिया गया था फिर कभी नहीं पूछें।</string>
 
-    <string name="button_save" translatable="false">सहेजें</string>
-    <string name="button_delete" translatable="false">हटाएं</string>
+    <string name="button_save" >सहेजें</string>
+    <string name="button_delete" >हटाएं</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default" translatable="false">कृपया अच्छी रोशनी की स्थिति में दस्तावेज़ फोटो पर क्लिक करें। यदि दस्तावेज़ फ़ोटो स्पष्ट नहीं है, तो कृपया दस्तावेज़ फ़ोटो को फिर से लें।</string>
+    <string name="camera_dialog_default" >कृपया अच्छी रोशनी की स्थिति में दस्तावेज़ फोटो पर क्लिक करें। यदि दस्तावेज़ फ़ोटो स्पष्ट नहीं है, तो कृपया दस्तावेज़ फ़ोटो को फिर से लें।</string>
 
     <!--Offline Login Errors-->
-    <string name="offline_credentials_unavailable" translatable="false">ऑफ़लाइन लॉगिन उपलब्ध नहीं है।</string>
-    <string name="offline_user_does_not_match" translatable="false">उपयोगकर्ता मेल नहीं खाता।</string>
-    <string name="offline_authentication_not_possible" translatable="false">ऑफ़लाइन प्रमाणित करने में असमर्थ।</string>
-    <string name="admin_authentication_not_possible" translatable="false">प्रमाणित करने में असमर्थ।</string>
+    <string name="offline_credentials_unavailable" >ऑफ़लाइन लॉगिन उपलब्ध नहीं है।</string>
+    <string name="offline_user_does_not_match" >उपयोगकर्ता मेल नहीं खाता।</string>
+    <string name="offline_authentication_not_possible" >ऑफ़लाइन प्रमाणित करने में असमर्थ।</string>
+    <string name="admin_authentication_not_possible" >प्रमाणित करने में असमर्थ।</string>
 
-    <string name="login_location_select" translatable="false">स्थान चुनें</string>
-    <string name="prompt_licensekey" translatable="false">लाइसेंस कुंजी</string>
-    <string name="setup_use_demo_mindmap" translatable="false">डेमो प्रोटोकॉल का उपयोग करें</string>
-    <string name="setup_download_mindmap" translatable="false">प्रोटोकॉल डाउनलोड करें</string>
+    <string name="login_location_select" >स्थान चुनें</string>
+    <string name="prompt_licensekey" >लाइसेंस कुंजी</string>
+    <string name="setup_use_demo_mindmap" >डेमो प्रोटोकॉल का उपयोग करें</string>
+    <string name="setup_download_mindmap" >प्रोटोकॉल डाउनलोड करें</string>
 
-    <string name="please_wait_progress" translatable="false">कृपया प्रतीक्षा कीजिये</string>
-    <string name="downloading_protocols" translatable="false">प्रोटोकॉल डाउनलोड हो रहा हैं</string>
-    <string name="logging_in" translatable="false">प्रवेश किया</string>
-    <string name="error_downloading_protocols" translatable="false">माइंड मैप डाउनलोड करने में त्रुटि</string>
+    <string name="please_wait_progress" >कृपया प्रतीक्षा कीजिये</string>
+    <string name="downloading_protocols" >प्रोटोकॉल डाउनलोड हो रहा हैं</string>
+    <string name="logging_in" >प्रवेश किया</string>
+    <string name="error_downloading_protocols" >माइंड मैप डाउनलोड करने में त्रुटि</string>
 
     //Sync strings
-    <string name="sync_stopped" translatable="false">रोका हुआ</string>
-    <string name="sync_in_progress" translatable="false">चालू</string>
-    <string name="sync_complete" translatable="false">पूर्ण</string>
-    <string name="sync_error" translatable="false">त्रुटि: ऐसी कोई स्थिति नहीं है</string>
+    <string name="sync_stopped" >रोका हुआ</string>
+    <string name="sync_in_progress" >चालू</string>
+    <string name="sync_complete" >पूर्ण</string>
+    <string name="sync_error" >त्रुटि: ऐसी कोई स्थिति नहीं है</string>
 
-    <string name="id_number" translatable="false">आईडी नंबर</string>
-    <string name="uploading" translatable="false">अपलोड हो रहा है ...</string>
-    <string name="downloading" translatable="false">डाउनलोड हो रहा है ...</string>
+    <string name="id_number" >आईडी नंबर</string>
+    <string name="uploading" >अपलोड हो रहा है ...</string>
+    <string name="downloading" >डाउनलोड हो रहा है ...</string>
 
-    <string name="visit" translatable="false">पर जाएँ</string>
-    <string name="visit_update" translatable="false">अपडेट पर जाएँ</string>
+    <string name="visit" >पर जाएँ</string>
+    <string name="visit_update" >अपडेट पर जाएँ</string>
     <string name="patient">पेशेंट</string>
-    <string name="patient_update" translatable="false">पेशेंट अपडेट </string>
-    <string name="patient_images" translatable="false">पेशेंट प्रोफ़ाइल छवि</string>
-    <string name="visit_images" translatable="false">छवियों पर जाएँ</string>
-    <string name="prescription" translatable="false">पर्चे</string>
+    <string name="patient_update" >पेशेंट अपडेट </string>
+    <string name="patient_images" >पेशेंट प्रोफ़ाइल छवि</string>
+    <string name="visit_images" >छवियों पर जाएँ</string>
+    <string name="prescription" >पर्चे</string>
 
-    <string name="error_no_data" translatable="false">यात्रा समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>
-    <string name="error_phone_number" translatable="false">फ़ोन नंबर खाली नहीं हो सकता</string>
-    <string name="action_end_visit" translatable="false">विजिट समाप्त </string>
+    <string name="error_no_data" >यात्रा समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>
+    <string name="error_phone_number" >फ़ोन नंबर खाली नहीं हो सकता</string>
+    <string name="action_end_visit" >विजिट समाप्त </string>
 
-    <string name="error_sms" translatable="false">एसएमएस/सन्देश  विफल, कृपया बाद में पुन: प्रयास करें!</string>
-    <string name="sms_success" translatable="false">एसएमएस भेजा गया!</string>
+    <string name="error_sms" >एसएमएस/सन्देश  विफल, कृपया बाद में पुन: प्रयास करें!</string>
+    <string name="sms_success" >एसएमएस भेजा गया!</string>
 
-    <string name="question_update_details" translatable="false">क्या आप विवरण अपडेट करना चाहते हैं?</string>
+    <string name="question_update_details" >क्या आप विवरण अपडेट करना चाहते हैं?</string>
 
-    <string name="backup_completed" translatable="false">बैकअप पूर्ण!</string>
+    <string name="backup_completed" >बैकअप पूर्ण!</string>
 
     <string name="hide_text">छिपाना</string>
     <string name="show_text">प्रदर्शन</string>
@@ -347,19 +351,19 @@
     <string name="find_patient">पेशेंट खोजे</string>
     <string name="video_library">वीडियो लाइब्रेरी</string>
 
-    <string name="error_no_sd" translatable="false">यह सुविधा केवल एसडी कार्ड वाले उपकरणों के लिए उपलब्ध है।</string>
-    <string name="error_admin_password" translatable="false">व्यवस्थापक पासवर्ड गलत</string>
-    <string name="error_no_file" translatable="false">इस निर्देशिका में कोई फ़ाइलें नहीं</string>
-    <string name="error_no_camera" translatable="false">कोई कैमरा नहीं लगाया गया।</string>
-    <string name="error_delete" translatable="false">हटाने में त्रुटि</string>
-    <string name="error_offline_login" translatable="false">ऑफ़लाइन लॉगिन असफल</string>
-    <string name="success_offline_login" translatable="false">ऑफलाइन लॉगिन सफल</string>
-    <string name="invalidate_offline_login" translatable="false">ऑफ़लाइन लॉगिन अमान्य है|</string>
+    <string name="error_no_sd" >यह सुविधा केवल एसडी कार्ड वाले उपकरणों के लिए उपलब्ध है।</string>
+    <string name="error_admin_password" >व्यवस्थापक पासवर्ड गलत</string>
+    <string name="error_no_file" >इस निर्देशिका में कोई फ़ाइलें नहीं</string>
+    <string name="error_no_camera" >कोई कैमरा नहीं लगाया गया।</string>
+    <string name="error_delete" >हटाने में त्रुटि</string>
+    <string name="error_offline_login" >ऑफ़लाइन लॉगिन असफल</string>
+    <string name="success_offline_login" >ऑफलाइन लॉगिन सफल</string>
+    <string name="invalidate_offline_login" >ऑफ़लाइन लॉगिन अमान्य है|</string>
 
-    <string name="patient_upload_error" translatable="false">पेशेंट को अपलोड नहीं किया गया है</string>
-    <string name="patient_not_registered" translatable="false">पेशेंट पंजीकृत नहीं है</string>
+    <string name="patient_upload_error" >पेशेंट को अपलोड नहीं किया गया है</string>
+    <string name="patient_not_registered" >पेशेंट पंजीकृत नहीं है</string>
 
-    <string name="action_sync_all" translatable="false">सिंक डेटा</string>
+    <string name="action_sync_all" >सिंक डेटा</string>
 
     <!-- Vitals Screen Error-->
 
@@ -375,70 +379,70 @@
     <string name="not_provided">नहीं दिया गया</string>
 
     <!-- Patient Exit Survey -->
-    <string name="exit_survey_label" translatable="false">आपका अनुभव कैसा रहा?</string>
-    <string name="exit_survey_prompt" translatable="false">यहाँ अपनी टिप्पणी दर्ज करें</string>
-    <string name="exit_survey_skip" translatable="false">छोड़ें</string>
-    <string name="exit_survey_submit" translatable="false">जमा</string>
+    <string name="exit_survey_label" >आपका अनुभव कैसा रहा?</string>
+    <string name="exit_survey_prompt" >यहाँ अपनी टिप्पणी दर्ज करें</string>
+    <string name="exit_survey_skip" >छोड़ें</string>
+    <string name="exit_survey_submit" >जमा</string>
     <string name="exit_survey_toast">कृपया सबमिट करने से पहले एक स्माइली चुनें</string>
 
 
     <!--DB Backup-->
 
-    <string name="db_backup_complete" translatable="false">डेटाबेस बैकअप पूरा!</string>
-    <string name="db_restore_complete" translatable="false">डेटाबेस रिस्टोर पूरा!</string>
+    <string name="db_backup_complete" >डेटाबेस बैकअप पूरा!</string>
+    <string name="db_restore_complete" >डेटाबेस रिस्टोर पूरा!</string>
 
     <!--Cloud Backup-->
 
-    <string name="cloud_upload_header" translatable="false">क्लाउड पर डेटाबेस अपलोड करना</string>
-    <string name="no_network" translatable="false">इन्टरनेट कनेक्शन उपलब्ध नहीं है</string>
-    <string name="no_data" translatable="false">डेटा बैकअप नही है !</string>
-    <string name="local_backup_failed" translatable="false"> स्थानीय बैकअप उपलब्ध नही है</string>
-    <string name="local_backup_restore" translatable="false">स्थानीय बैकअप पुनर्स्थापित करना</string>
+    <string name="cloud_upload_header" >क्लाउड पर डेटाबेस अपलोड करना</string>
+    <string name="no_network" >इन्टरनेट कनेक्शन उपलब्ध नहीं है</string>
+    <string name="no_data" >डेटा बैकअप नही है !</string>
+    <string name="local_backup_failed" > स्थानीय बैकअप उपलब्ध नही है</string>
+    <string name="local_backup_restore" >स्थानीय बैकअप पुनर्स्थापित करना</string>
 
-    <string name="cloud_restore_header" translatable="false">क्लाउड से पुनर्स्थापित करना</string>
-    <string name="restore_data" translatable="false">पुनर्स्थापित डेटा</string>
-    <string name="error_existing_data" translatable="false">डेटाबेस में डेटा सामिल है पुनर्स्थापित नहीं किया जा सकता!</string>
-    <string name="cloud_download_data" translatable="false">क्लाउड से डेटाबेस डाउनलोड करना</string>
+    <string name="cloud_restore_header" >क्लाउड से पुनर्स्थापित करना</string>
+    <string name="restore_data" >पुनर्स्थापित डेटा</string>
+    <string name="error_existing_data" >डेटाबेस में डेटा सामिल है पुनर्स्थापित नहीं किया जा सकता!</string>
+    <string name="cloud_download_data" >क्लाउड से डेटाबेस डाउनलोड करना</string>
 
-    <string name="force_restore_header" translatable="false">क्लाउड से डेटा पुनार्स्तापिथ करना</string>
+    <string name="force_restore_header" >क्लाउड से डेटा पुनार्स्तापिथ करना</string>
 
-    <string name="database_upload" translatable="false">डेटाबेस डालना</string>
-    <string name="database_uploading" translatable="false">अप्लोअडिंग डेटाबेस</string>
-    <string name="database_upload_complete" translatable="false">डेटाबेस पूरा डालना</string>
-    <string name="database_upload_failed" translatable="false">डेटाबेस डालना असफल</string>
+    <string name="database_upload" >डेटाबेस डालना</string>
+    <string name="database_uploading" >अप्लोअडिंग डेटाबेस</string>
+    <string name="database_upload_complete" >डेटाबेस पूरा डालना</string>
+    <string name="database_upload_failed" >डेटाबेस डालना असफल</string>
 
-    <string name="db_backup_unavailable" translatable="false">डेटाबेस बैकअप उपस्थित नही है</string>
-    <string name="db_file_write_error" translatable="false">बैकअप फाइल डालने में भूल</string>
+    <string name="db_backup_unavailable" >डेटाबेस बैकअप उपस्थित नही है</string>
+    <string name="db_file_write_error" >बैकअप फाइल डालने में भूल</string>
 
-    <string name="local_restore_alert_title" translatable="false">बैकअप बाहाल</string>
-    <string name="local_restore_alert_message" translatable="false">एक अस्थायी बैकअप मिला है क्या आप पूर्वस्थापित करना चाहते है?</string>
+    <string name="local_restore_alert_title" >बैकअप बाहाल</string>
+    <string name="local_restore_alert_message" >एक अस्थायी बैकअप मिला है क्या आप पूर्वस्थापित करना चाहते है?</string>
 
 
     <!--Image Download Service-->
-    <string name="image_downloading_service_title" translatable="false">दोव्न्लोअदिन्ग</string>
-    <string name="image_downloading_service_message" translatable="false">दोव्न्लोअदिन्ग  छवी डेटा</string>
-    <string name="image_downloading_service_complete_title" translatable="false">छवी डेटा डाउनलोड सफल</string>
-    <string name="image_downloading_service_complete_message" translatable="false">सभी छवी फाइल्स डाउनलोड हो चुकी है</string>
-    <string name="image_downloading_service_process_message" translatable="false">डाउनलोड हो चूका</string>
-    <string name="error_img_unavailable" translatable="false">छवी उपलब्ध नहीं है</string>
-    <string name="error_img_download_failed" translatable="false">छवी डाउनलोड असफल</string>
+    <string name="image_downloading_service_title" >दोव्न्लोअदिन्ग</string>
+    <string name="image_downloading_service_message" >दोव्न्लोअदिन्ग  छवी डेटा</string>
+    <string name="image_downloading_service_complete_title" >छवी डेटा डाउनलोड सफल</string>
+    <string name="image_downloading_service_complete_message" >सभी छवी फाइल्स डाउनलोड हो चुकी है</string>
+    <string name="image_downloading_service_process_message" >डाउनलोड हो चूका</string>
+    <string name="error_img_unavailable" >छवी उपलब्ध नहीं है</string>
+    <string name="error_img_download_failed" >छवी डाउनलोड असफल</string>
 
     <!--Parse Validation User login-->
 
-    <string name="user_logged_in" translatable="false">पहले से लोग्ड इन है!</string>
-    <string name="user_logged_in_other_device" translatable="false">पहले से लोग्ड  इन है| कृपया दुशरे यन्त्र से लॉगआउट करें</string>
-    <string name="user_logged_out" translatable="false">सर्वर से लोग्ड आउट</string>
-    <string name="user_login_check_success" translatable="false">लॉग इन सफल!</string>
-    <string name="user_login_error" translatable="false">एक अन्य उपयोगकर्ता इस स्थान में लॉग इन है कृपया ब्योस्थापक से संपर्क करें</string>
-    <string name="user_server_unreachable" translatable="false">डिवाइस ऑफलाइन! लॉग इन सत्यापन के लिए सर्वर की जाँच नही कर सकते</string>
+    <string name="user_logged_in" >पहले से लोग्ड इन है!</string>
+    <string name="user_logged_in_other_device" >पहले से लोग्ड  इन है| कृपया दुशरे यन्त्र से लॉगआउट करें</string>
+    <string name="user_logged_out" >सर्वर से लोग्ड आउट</string>
+    <string name="user_login_check_success" >लॉग इन सफल!</string>
+    <string name="user_login_error" >एक अन्य उपयोगकर्ता इस स्थान में लॉग इन है कृपया ब्योस्थापक से संपर्क करें</string>
+    <string name="user_server_unreachable" >डिवाइस ऑफलाइन! लॉग इन सत्यापन के लिए सर्वर की जाँच नही कर सकते</string>
 
-    <string name="title_activity_splash_acticity" translatable="false">स्प्लैश क्रियाकलाप</string>
-    <string name="title_activity_home" translatable="false"> घर का क्रियाकलाप</string>
-    <string name="title_activity_sync" translatable="false">क्रियाकलाप सिंक</string>
-    <string name="title_activity_privacy_notice" translatable="false">गोपनीयता सुचना</string>
-    <string name="title_activity_visit_summary" translatable="false">यात्रा सारांश क्रियाकलाप</string>
-    <string name="title_activity_past_medical_history" translatable="false">अतीत चिकित्सक  इतिहास क्रियाकलाप</string>
-    <string name="title_activity_patient_survey" translatable="false">मरीज सर्वे क्रियाकलाप</string>
+    <string name="title_activity_splash_acticity" >स्प्लैश क्रियाकलाप</string>
+    <string name="title_activity_home" > घर का क्रियाकलाप</string>
+    <string name="title_activity_sync" >क्रियाकलाप सिंक</string>
+    <string name="title_activity_privacy_notice" >गोपनीयता सुचना</string>
+    <string name="title_activity_visit_summary" >यात्रा सारांश क्रियाकलाप</string>
+    <string name="title_activity_past_medical_history" >अतीत चिकित्सक  इतिहास क्रियाकलाप</string>
+    <string name="title_activity_patient_survey" >मरीज सर्वे क्रियाकलाप</string>
 
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">कृपया एक विकल्प चुनें</string>
@@ -812,7 +816,7 @@
     <!--    <string name = "route_Optional">रूट (वैकल्पिक)</string>-->
     <string name="choose_a_date">एक तारीख चुनें</string>
     <string name="follow_up_remark">अनुवर्ती टिप्पणी</string>
-    <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया नुस्खे देने का प्रयास करने से पहले पहले अपलोड करें।</string>
+    <string name="visit_summary_upload_reminder_prescription" >कृपया नुस्खे देने का प्रयास करने से पहले पहले अपलोड करें।</string>
     <string name="visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
 
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें -"</string>
@@ -965,9 +969,9 @@
     <string name="intro_title_2">रोगी विज़िट करें</string>
     <string name="sync_successful">सिंक सफल हुआ</string>
     <string name="notification_title_1">ऐप्लिकेशन सक्रिय है!</string>
-    <string name="identification_screen_picker_hours" translatable="false">घंटा</string>
-    <string name="identification_screen_picker_minute" translatable="false">मिनट</string>
-    <string name="identification_screen_prompt_district">जिला*</string>
+    <string name="identification_screen_picker_hours" >घंटा</string>
+    <string name="identification_screen_picker_minute" >मिनट</string>
+    <string name="identification_screen_prompt_district">जिला</string>
     <string name="hello_my_name_is1">नमस्ते, मेरा नाम ... है ”</string>
     <string name="i_need_assistance1">नमस्ते, मेरा नाम ... है ”</string>
     <string name="please_help">“ और मुझे कुछ सहायता की जरूरत है, ये रहे मेरे विवरण ”</string>
@@ -1155,13 +1159,13 @@
     <string name="from">से</string>
     <string name="appointments">अपॉइंटमेंट्स</string>
     <string name="follow_up_visits">फॉलो-अप विज़िट</string>
-    <string name="first_name_mandatory">पहला नाम*</string>
+    <string name="first_name_mandatory">पहला नाम</string>
     <string name="middle_name_registration">मध्य नाम</string>
-    <string name="last_name_mandatory">उपनाम*</string>
-    <string name="gender_mandatory">लिंग*</string>
-    <string name="date_of_birth_mandatory">जन्म तिथि*</string>
-    <string name="age_mandatory">आयु*</string>
-    <string name="phone_number_mandatory">फ़ोन नंबर*</string>
+    <string name="last_name_mandatory">उपनाम</string>
+    <string name="gender_mandatory">लिंग</string>
+    <string name="date_of_birth_mandatory">जन्म तिथि</string>
+    <string name="age_mandatory">आयु</string>
+    <string name="phone_number_mandatory">फ़ोन नंबर</string>
     <string name="add_a_picture">फोटो जोड़े</string>
     <string name="enable_permission_for_time_tracking">टाइम ट्रैकिंग फीचर डिस्प्ले करने के लिए कृपया जरूरी परमिशन सक्षम करें।</string>
     <string name="permissions_required">परमिशन आवश्यक</string>
@@ -1489,17 +1493,17 @@
     <string name="are_you_sure_you_want_to_delete_all_notifications">क्या आप वाकई सभी सूचनाएं हटाना चाहते हैं?</string>
 
 
-    <string name='guardian_name_required'>अभिभावक का नाम*</string>
+    <string name='guardian_name_required'>अभिभावक का नाम</string>
     <string name='guardian_name_non_required'>अभिभावक का नाम</string>
     <string name='enter_guardian_name'>अभिभावक का नाम दर्ज करें</string>
-    <string name='guardian_type_required'>अभिभावक प्रकार*</string>
+    <string name='guardian_type_required'>अभिभावक प्रकार</string>
     <string name='guardian_type_non_required'>अभिभावक प्रकार</string>
     <string name='select_guardian_type'>अभिभावक प्रकार चुनें</string>
-    <string name='contact_type_required'>संपर्क प्रकार*</string>
+    <string name='contact_type_required'>संपर्क प्रकार</string>
     <string name='contact_type_non_required'>संपर्क प्रकार</string>
-    <string name='emergency_contact_number_required'>आपातकालीन संपर्क नंबर*</string>
+    <string name='emergency_contact_number_required'>आपातकालीन संपर्क नंबर</string>
     <string name='emergency_contact_number_non_required'>आपातकालीन संपर्क नंबर</string>
-    <string name="emergency_contact_name_required"> आपातकालीन संपर्क नाम*</string>
+    <string name="emergency_contact_name_required"> आपातकालीन संपर्क नाम</string>
     <string name="emergency_contact_name_non_required"> आपातकालीन संपर्क नाम</string>
     <string name='enter_emergency_contact_name'>आपातकालीन संपर्क नाम दर्ज करें</string>
     <string name='phone_number_and_emergency_number_can_not_be_the_same'>फोन नंबर और आपातकालीन नंबर एक जैसे नहीं हो सकते</string>
@@ -1529,7 +1533,7 @@
     <string name="please_attach_the_patient_visit_details_pdf">कृपया मरीज के विजिट विवरण का pdf संलग्न करें</string>
     <string name="confirm_close_case">केस बंद करे?</string>
     <string name="confirm_close_case_visit_reason_message">क्या वाकई आप केस को बंद कर मुलाकात का सारांश साझा करना चाहते हैं?</string>
-    <string name="lbl_block">ब्लॉक/प्रखण्ड</string>
+    <string name="lbl_block">प्रखण्ड</string>
     <string name="lbl_gram_panchayat">ग्रामपंचायत</string>
     <string name="save_visit_button">विज़िट सहेजें</string>
     <string name="close_case">केस बंद करे</string>

@@ -83,18 +83,18 @@
 
     //Identification Screen
     <string name="title_activity_identification">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First name *</string>
+    <string name="identification_screen_prompt_first_name">First name</string>
     <string name="identification_screen_prompt_middle_name">Middle name</string>
-    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_last_name">Last name</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
     <string name="identification_screen_prompt_phone_number">Phone number</string>
     <string name="admin_password_dialog_heading">Enter Admin Password</string>
-    <string name="identification_screen_prompt_gender">Gender *</string>
+    <string name="identification_screen_prompt_gender">Gender</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_checkbox_other">Other</string>
-    <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_birthday">Date of birth</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City</string>
     <string name="identification_screen_prompt_state">State</string>
@@ -1915,16 +1915,16 @@ The disclosure of personal information to third parties shall be only for identi
 
 
     <string name="guardian_name_non_required">Guardian Name</string>
-    <string name="guardian_name_required">Guardian Name*</string>
+    <string name="guardian_name_required">Guardian Name</string>
     <string name="enter_guardian_name">Enter Guardian Name</string>
-    <string name="guardian_type_required">Guardian Type*</string>
+    <string name="guardian_type_required">Guardian Type</string>
     <string name="guardian_type_non_required">Guardian Type</string>
     <string name="select_guardian_type">Select Guardian Type</string>
-    <string name="contact_type_required">Contact Type*</string>
+    <string name="contact_type_required">Contact Type</string>
     <string name="contact_type_non_required">Contact Type</string>
-    <string name="emergency_contact_number_required">Emergency Contact Number*</string>
+    <string name="emergency_contact_number_required">Emergency Contact Number</string>
     <string name="emergency_contact_number_non_required">Emergency Contact number</string>
-    <string name="emergency_contact_name_required">Emergency Contact Name*</string>
+    <string name="emergency_contact_name_required">Emergency Contact Name</string>
     <string name="emergency_contact_name_non_required">Emergency Contact Name</string>
     <string name="enter_emergency_contact_name">Enter Emergency Contact name</string>
     <string name="phone_number_and_emergency_number_can_not_be_the_same">Phone Number and Emergency Number cannot be the same</string>

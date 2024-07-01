@@ -1,5 +1,10 @@
 package org.intelehealth.app.utilities
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -8,6 +13,7 @@ import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster
 import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.app.IntelehealthApplication
+import java.util.Locale
 
 /**
  * Created by Vaghela Mithun R. on 26-06-2024 - 20:19.
@@ -83,5 +89,27 @@ object LanguageUtils {
     fun getVillageLocal(village: Village): String {
         if (getLocalLang().equals("hi")) return village.nameHindi ?: village.name ?: ""
         return village.name ?: ""
+    }
+
+    @JvmStatic
+    fun getSpecificLocalResource(context: Context, locale: String): Resources {
+        val configuration = Configuration(context.resources.configuration)
+        configuration.setLocale(Locale(locale))
+        return context.createConfigurationContext(configuration).resources
+    }
+
+    @JvmStatic
+    fun getLocalValueFromArray(
+        context: Context,
+        dbString: String,
+        @ArrayRes arrayResId: Int
+    ): String {
+        return if (SessionManager(context).appLanguage.equals("en").not()) {
+            val array = context.resources.getStringArray(arrayResId)
+            val index = getSpecificLocalResource(context, "en")
+                .getStringArray(arrayResId).indexOf(dbString)
+            return if (index > 0) array[index]
+            else ""
+        } else dbString
     }
 }

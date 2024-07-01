@@ -35,10 +35,12 @@ class PatientRegFieldsUtils {
 //                }
 //            }
             //setting asterisk for mandatory fields
+            var title = titleTv?.text ?: field.name
+            if (title.contains("*")) title = title.toString().replace("*", "")
             if (field.isMandatory) {
-                titleTv?.text = StringBuilder().append(field.name).append(" *")
+                titleTv?.text = StringBuilder().append(title.trim()).append(" *")
             } else {
-                titleTv?.text = field.name
+                titleTv?.text = title
             }
 
             //view updating while edit mode is false
