@@ -22,7 +22,6 @@ import com.google.android.material.chip.Chip;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
-import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaAddressSuggestionsBinding;
@@ -119,7 +118,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     }
 
     public boolean isValidAbhaAddress(String input) {
-        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
+        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*(?:@sbx)?$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
