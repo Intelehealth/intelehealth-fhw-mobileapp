@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.cameraActivity;
 
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
 
 import android.Manifest;
@@ -18,6 +19,7 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -155,6 +157,7 @@ public class CameraActivity extends BaseActivity {
         dialog.setContentView(R.layout.dialog_input_entry);
 
         TextInputEditText textInputEditText = dialog.findViewById(R.id.dialog_editText);
+        textInputEditText.setFilters(new InputFilter[]{emojiFilter});
         Button save_button = dialog.findViewById(R.id.save_button);
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override

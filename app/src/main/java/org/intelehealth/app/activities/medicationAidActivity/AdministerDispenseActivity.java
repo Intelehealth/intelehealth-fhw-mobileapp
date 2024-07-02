@@ -4,6 +4,7 @@ import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryA
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.COLLECTED;
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.DISPENSE;
 import static org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity.RECEIVED;
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_AID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_ADMINISTER_MEDICATION;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_DISPENSE_AID;
@@ -27,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -180,7 +182,9 @@ public class AdministerDispenseActivity extends BaseActivity {
 
         sessionManager = new SessionManager(context);
         tie_medNotes = findViewById(R.id.tie_medNotes);
+        tie_medNotes.setFilters(new InputFilter[]{emojiFilter});
         tie_aidNotes = findViewById(R.id.tie_aidNotes);
+        tie_aidNotes.setFilters(new InputFilter[]{emojiFilter});
 
         tie_totalCost = findViewById(R.id.tie_totalCost);
         tie_vendorDiscount = findViewById(R.id.tie_vendorDiscount);

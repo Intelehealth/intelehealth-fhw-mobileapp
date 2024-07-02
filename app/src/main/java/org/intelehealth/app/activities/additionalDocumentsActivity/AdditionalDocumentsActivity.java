@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.additionalDocumentsActivity;
 import static org.intelehealth.app.activities.cameraActivity.CameraActivity.IS_DISPENSE_ADMINISTER;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIMIT;
 import static org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity.IMAGE_LIST_INTENT;
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.klivekit.utils.DateTimeUtils.ADD_DOC_IMAGE_FORMAT;
 
 import android.app.Dialog;
@@ -32,6 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -368,6 +370,7 @@ public class AdditionalDocumentsActivity extends BaseActivity {
         dialog.setContentView(R.layout.dialog_input_entry);
 
         TextInputEditText textInputEditText = dialog.findViewById(R.id.dialog_editText);
+        textInputEditText.setFilters(new InputFilter[]{emojiFilter});
         Button save_button = dialog.findViewById(R.id.save_button);
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
