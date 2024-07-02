@@ -258,6 +258,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            int fullScreenIntent = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT);
+            if (fullScreenIntent != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT);
+            }
+        }
         int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
 
 

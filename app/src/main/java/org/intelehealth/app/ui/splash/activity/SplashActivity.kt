@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -32,7 +31,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
-import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageAdapterNew
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew
 import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New
@@ -51,8 +49,6 @@ import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
 import org.intelehealth.klivekit.utils.extensions.showToast
-import org.json.JSONException
-import org.json.JSONObject
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -227,6 +223,13 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val fullScreenIntent =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT)
+            if (fullScreenIntent != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT)
             }
         }
         val phoneStatePermission =
