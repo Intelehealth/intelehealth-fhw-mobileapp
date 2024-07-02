@@ -544,11 +544,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
-            if (which == DatePickerDialog.BUTTON_NEGATIVE) {
-                dialog.dismiss();
-            }
-        });
+//        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
+//            if (which == DatePickerDialog.BUTTON_NEGATIVE) {
+//                dialog.dismiss();
+//            }
+//        });
 
         datePickerDialog.show();
 

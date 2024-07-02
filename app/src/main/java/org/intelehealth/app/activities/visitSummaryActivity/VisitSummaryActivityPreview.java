@@ -147,6 +147,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -666,8 +667,9 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private void bindCloseCaseReason() {
         String closeReason = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CLOSE_CASE);
+        closeReason = LanguageUtils.getLocalValueFromArray(this, closeReason, R.array.close_case_reason);
         if (!TextUtils.isEmpty(closeReason)) {
-            visitSummaryPdfData.setCloseCaseReason(closeReason);
+            visitSummaryPdfData.setCloseCaseReason(" " + Node.bullet + "  " + closeReason);
             TextView tvCloseCaseReason = findViewById(R.id.tvCloseCaseToVisitValue);
             tvCloseCaseReason.setText(" " + Node.bullet + "  " + closeReason);
             findViewById(R.id.flCloseCaseToVisit).setVisibility(View.VISIBLE);
@@ -729,31 +731,6 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         }
     }
 
-    private List<FacilityToVisitModel> getFacilityList() {
-        facilityList = new ArrayList<FacilityToVisitModel>();
-        facilityList.add(new FacilityToVisitModel("0", "Select Facility"));
-        facilityList.add(new FacilityToVisitModel("1", "Asha"));
-        facilityList.add(new FacilityToVisitModel("2", "AWW"));
-        facilityList.add(new FacilityToVisitModel("3", "HWC/AAM"));
-        facilityList.add(new FacilityToVisitModel("4", "CHC"));
-        facilityList.add(new FacilityToVisitModel("5", "DH"));
-        facilityList.add(new FacilityToVisitModel("6", "Medical"));
-        facilityList.add(new FacilityToVisitModel("7", "Collage AB - PVT"));
-        facilityList.add(new FacilityToVisitModel("8", "Hospital Other"));
-        return facilityList;
-    }
-
-    private List<String> getSeverityList() {
-        severityList = new ArrayList<String>();
-        severityList.add("Select Severity");
-        severityList.add("Low");
-        severityList.add("Normal");
-        severityList.add("Moderate");
-        severityList.add("High");
-        severityList.add("Critical");
-        return severityList;
-    }
-
     private void setupSpecialization() {
         ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
         SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
@@ -767,10 +744,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             Timber.tag(TAG).d("follow up=>%s", followupValue);
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
                         visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
-                    }
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -782,25 +759,24 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
         // Extract the date and time part
         String datePart = followupValue.split(", Time:")[0];
         String timePart = followupValue.split(", Time:")[1].split(", Remark:")[0];
 
         // Parse the date and time parts
-        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
-
-        // Format the date and time into the desired format
-        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
+//        LocalDateTime dateTime = LocalDateTime.parse(datePart + " " + timePart, DateTimeFormatter.ofPattern("dd-MM-yyyy h:mm a"));
+//
+//        // Format the date and time into the desired format
+//        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy, h:mm a"));
+        return datePart + " " + timePart;
 
     }
 
     private void setFacilityToVisitSpinner() {
-        if (facilityList == null || facilityList.isEmpty()) {
-            facilityList = getFacilityList();
-        }
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        facility = LanguageUtils.getLocalValueFromArray(this, facility, R.array.visit_facilities);
         Timber.tag(TAG).d("facility=>%s", facility);
         if (!TextUtils.isEmpty(facility)) {
             ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(" " + Node.bullet + "  " + facility);
@@ -813,12 +789,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void setSeveritySpinner() {
-        if (severityList == null || severityList.isEmpty()) {
-            severityList = getSeverityList();
-        }
-        SeverityArrayAdapter arrayAdapter = new SeverityArrayAdapter(this, severityList);
-
         String severity = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SEVERITY);
+        severity = LanguageUtils.getLocalValueFromArray(this, severity, R.array.visit_severity);
         Timber.tag(TAG).d("severity=>%s", severity);
         if (!TextUtils.isEmpty(severity)) {
             ((TextView) findViewById(R.id.tvSavertyValue)).setText(" " + Node.bullet + "  " + severity);

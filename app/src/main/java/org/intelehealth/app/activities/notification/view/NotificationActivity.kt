@@ -49,6 +49,13 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         initialization()
         setListeners()
 
+        mBinding.simpleAppBar.toolbar.title = getString(R.string.notifi_title)
+        setSupportActionBar(mBinding.simpleAppBar.toolbar)
+        supportActionBar?.let {
+            it.setHomeButtonEnabled(true)
+            it.setDisplayHomeAsUpEnabled(true)
+            mBinding.simpleAppBar.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
     }
 
     private fun initialization() {
@@ -70,10 +77,10 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     setNotificationAdapter()
                     if (!notificationList.isNullOrEmpty()) {
                         mBinding.notifiHeaderTitle.text = String.format(
-                                getString(
-                                        R.string.five_presc_received,
-                                        mViewModel.getPrescriptionCount().toString()
-                                )
+                            getString(
+                                R.string.five_presc_received,
+                                mViewModel.getPrescriptionCount().toString()
+                            )
                         )
 
                     } else {
@@ -87,13 +94,13 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
 
     private fun setListeners() {
         mBinding.apply {
-            ivBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-            }
+//            ivBack.setOnClickListener {
+//                onBackPressedDispatcher.onBackPressed()
+//            }
             ibClearAll.setOnClickListener {
                 DeleteNotificationDialog.newInstance(
-                        supportFragmentManager,
-                        this@NotificationActivity
+                    supportFragmentManager,
+                    this@NotificationActivity
                 )
             }
         }
@@ -110,7 +117,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 notificationAdapter = NotificationAdapter(notificationList, clickListener)
                 adapter = notificationAdapter
                 layoutManager =
-                        LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
+                    LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
             }
         }
     }
@@ -129,12 +136,15 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 }
                 if (visitUUID.isNullOrBlank()) {
                     ToastUtil.showLongToast(
-                            this@NotificationActivity,
-                            getString(R.string.this_visit_is_completed)
+                        this@NotificationActivity,
+                        getString(R.string.this_visit_is_completed)
                     )
                 } else {
                     if (notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION) {
-                        val intent = Intent(IntelehealthApplication.getAppContext(), VisitSummaryActivity_New::class.java).apply {
+                        val intent = Intent(
+                            IntelehealthApplication.getAppContext(),
+                            VisitSummaryActivity_New::class.java
+                        ).apply {
                             putExtra("patientUuid", patientuuid)
                             putExtra("visitUuid", visitUUID)
                             putExtra("gender", gender)
@@ -146,21 +156,26 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                         }
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
+                        val intent =
+                            Intent(this@NotificationActivity, PrescriptionActivity::class.java)
                         intent.putExtra("patientname", "$first_name $last_name")
                         intent.putExtra("patientUuid", patientuuid)
                         intent.putExtra("patient_photo", patient_photo)
                         intent.putExtra("visit_ID", visitUUID)
                         intent.putExtra("visit_startDate", visit_startDate)
                         intent.putExtra("gender", gender)
-                        val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
+                        val vitalsUUID =
+                            EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
                         val adultInitialUUID =
-                                EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
+                            EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
                         intent.putExtra("encounterUuidVitals", vitalsUUID)
                         intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
                         intent.putExtra(
-                                "age",
-                                DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
+                            "age",
+                            DateAndTimeUtils.getAge_FollowUp(
+                                date_of_birth,
+                                this@NotificationActivity
+                            )
                         )
                         intent.putExtra("tag", "VisitDetailsActivity")
                         intent.putExtra("followupDate", followupDate)
