@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.app.utilities.EditTextUtils.inputFilter;
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
@@ -4096,11 +4097,12 @@ public class IdentificationActivity extends BaseActivity /*implements SurveyCall
         phone_checkbox = findViewById(R.id.phone_checkbox);
         earthquakeVictimCheckbox = findViewById(R.id.earthquake_victim_checkbox);
         mAge = findViewById(R.id.identification_age);
-        mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
 
+        mAddress1 = findViewById(R.id.identification_address1);
+        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), emojiFilter}); //maxlength 50
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
+        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), emojiFilter}); //maxlength 50
+
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
         mVillage = findViewById(R.id.spinner_village);
