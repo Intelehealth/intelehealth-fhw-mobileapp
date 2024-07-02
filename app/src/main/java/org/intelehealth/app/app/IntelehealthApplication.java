@@ -37,6 +37,7 @@ import org.intelehealth.klivekit.utils.Manager;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
+
 import com.rt.printerlibrary.printer.RTPrinter;
 
 //Extend Application class with MultiDexApplication for multidex support
@@ -65,9 +66,11 @@ public class IntelehealthApplication extends MultiDexApplication implements
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+
     private final SocketManager socketManager = SocketManager.getInstance();
 
 
@@ -88,7 +91,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
         // keeping the base url in one singleton object for using in apprtc module
 
         // Initialize
-      //  EzdxBT.initialize(getApplicationContext());
+        //  EzdxBT.initialize(getApplicationContext());
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
@@ -122,6 +125,9 @@ public class IntelehealthApplication extends MultiDexApplication implements
         }
         initSocketConnection();
         registerActivityLifecycleCallbacks(this);
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
+        }
     }
 
     private void configureCrashReporting() {

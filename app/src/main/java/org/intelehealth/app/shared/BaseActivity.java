@@ -1,6 +1,9 @@
 package org.intelehealth.app.shared;
 
+import static org.intelehealth.app.utilities.NotificationUtils.saveChatInfoLog;
+
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +14,7 @@ import com.github.ajalt.timberkt.Timber;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.NASChatActivity;
 import org.intelehealth.app.webrtc.notification.AppNotification;
@@ -36,7 +40,8 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
 
     @Override
     public void showNotification(@NonNull ChatMessage chatMessage) {
-        RtcArgs args = new RtcArgs();
+        NotificationUtils.sendChatNotification(this, chatMessage);
+       /* RtcArgs args = new RtcArgs();
         args.setPatientName(chatMessage.getPatientName());
         args.setPatientId(chatMessage.getPatientId());
         args.setVisitId(chatMessage.getVisitId());
@@ -53,16 +58,16 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
             saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
         } catch (DAOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
-    private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
+   /* private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
         RTCConnectionDTO rtcDto = new RTCConnectionDTO();
         rtcDto.setUuid(UUID.randomUUID().toString());
         rtcDto.setVisitUUID(visitId);
         rtcDto.setConnectionInfo(doctorId);
         new RTCConnectionDAO().insert(rtcDto);
-    }
+    }*/
 
     @Override
     public void saveTheDoctor(@NonNull ChatMessage chatMessage) {

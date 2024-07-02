@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -81,15 +82,17 @@ public class VisitAttributeListDAO {
         return isCreated;
     }
 
-    public String getVisitAttributesList_specificVisit(String VISITUUID) {
+    public String getVisitAttributesList_specificVisit(String VISITUUID, String visit_attribute_type_uuid) {
         String isValue = "";
         Log.d("specc", "spec_fun: " + VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{VISITUUID});
-
+      /*  Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
+                new String[]{VISITUUID});*/
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
+                        "visit_attribute_type_uuid = ? and voided = 0",
+                new String[]{VISITUUID, visit_attribute_type_uuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
@@ -157,5 +160,36 @@ public class VisitAttributeListDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
         return visit_id;
+    }
+
+    public boolean insertVisitAttributesUploadTime(String visitUuid, String uploadTime) throws DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", uploadTime);
+            values.put("visit_attribute_type_uuid", UuidDictionary.ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (count != -1) {
+                isInserted = true;
+            }
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: " + isInserted);
+        return isInserted;
     }
 }

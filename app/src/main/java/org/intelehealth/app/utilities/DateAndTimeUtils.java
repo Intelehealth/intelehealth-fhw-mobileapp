@@ -414,6 +414,8 @@ public class DateAndTimeUtils {
 
         return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
     }
-
-
+    public String getVisitUploadDateTime() {
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+        return date.format(new Date());
+    }
 }
