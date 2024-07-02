@@ -1819,7 +1819,9 @@ public class Node implements Serializable {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }*/
         String validation = node.getValidation();
-        if (validation.contains("TODAY")) {
+        if (validation == null || validation.isEmpty()) {
+            datePickerDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        } else if (validation.contains("TODAY")) {
             if (validation.equalsIgnoreCase("MIN_TODAY")) {
                 datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() - 10000);
             } else if (validation.equalsIgnoreCase("MAX_TODAY")) {
@@ -2138,12 +2140,12 @@ public class Node implements Serializable {
                     node.setSelected(false);
                     node.setDataCapture(false);
 
-                } else if (node.getValidation()!=null && node.getValidation().equals(">") && valueDouble1<valueDouble2) {
+                } else if (node.getValidation() != null && node.getValidation().equals(">") && valueDouble1 < valueDouble2) {
                     Toast.makeText(context, context.getString(R.string.node_input_range_gtr_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
                     node.setSelected(false);
                     node.setDataCapture(false);
 
-                }else if (node.getValidation()!=null && node.getValidation().equals("<") && valueDouble1>valueDouble2) {
+                } else if (node.getValidation() != null && node.getValidation().equals("<") && valueDouble1 > valueDouble2) {
                     Toast.makeText(context, context.getString(R.string.node_input_range_less_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
                     node.setSelected(false);
                     node.setDataCapture(false);
@@ -2158,8 +2160,8 @@ public class Node implements Serializable {
                             node.addLanguage(et_enter_value.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }*/
-                    node1.setLanguage(node1.getText()+":"+value1);
-                    node2.setLanguage(node2.getText()+":"+value2);
+                    node1.setLanguage(node1.getText() + ":" + value1);
+                    node2.setLanguage(node2.getText() + ":" + value2);
                     node1.setSelected(true);
                     node2.setSelected(true);
                     node.getRecurringCapturedDataList().add(value1 + "/" + value2);
@@ -2170,11 +2172,11 @@ public class Node implements Serializable {
                         String target = ncdValidationResult.getActionResult().getTarget();
                         if (target.equals("[ALT]")) {
                             node.setRecurringCurrentCount(node.getRecurringCurrentCount() + 1);
-                            if(node.getRecurringCurrentCount()>node.getRecurringMaxCount()){
+                            if (node.getRecurringCurrentCount() > node.getRecurringMaxCount()) {
                                 Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                                 intent.putExtra("move_next", true);
                                 context.sendBroadcast(intent);
-                            }else {
+                            } else {
                                 Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
                                 // count limit if it exceeded then move to next question
                                 // show countdown timer
@@ -2867,7 +2869,9 @@ public class Node implements Serializable {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }*/
         String validation = node.getValidation();
-        if (validation.contains("TODAY")) {
+        if (validation == null || validation.isEmpty()) {
+            datePickerDialog.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis() - 10000);
+        } else if (validation.contains("TODAY")) {
             if (validation.equalsIgnoreCase("MIN_TODAY")) {
                 datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() - 10000);
             } else if (validation.equalsIgnoreCase("MAX_TODAY")) {
@@ -4842,4 +4846,3 @@ public class Node implements Serializable {
     }
 
 }
-
