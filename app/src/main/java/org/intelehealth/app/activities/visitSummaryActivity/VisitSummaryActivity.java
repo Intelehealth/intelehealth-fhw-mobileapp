@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
 import static org.intelehealth.app.database.dao.EncounterDAO.getEncounterListByVisitUUID;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
@@ -45,6 +46,7 @@ import android.print.PrintManager;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -723,6 +725,7 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
         saveBtn = findViewById(R.id.saveBtn);
         tie_add_remarks = findViewById(R.id.tie_add_remarks);
+        tie_add_remarks.setFilters(new InputFilter[]{emojiFilter});
         nscrollview = findViewById(R.id.nscrollview);
         tie_add_remarks.setHint(getString(R.string.enter_details_here));
         tie_add_remarks.addTextChangedListener(new TextWatcher() {
