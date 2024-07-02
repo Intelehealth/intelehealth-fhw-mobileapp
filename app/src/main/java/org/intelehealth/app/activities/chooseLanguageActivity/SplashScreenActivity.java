@@ -300,7 +300,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[0]), GROUP_PERMISSION_REQUEST);
             return false;
         }
 
