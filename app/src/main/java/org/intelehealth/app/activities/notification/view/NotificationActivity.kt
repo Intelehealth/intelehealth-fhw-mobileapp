@@ -133,7 +133,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     )
                 } else {
                     if (notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION) {
-                        val intent = Intent(this@NotificationActivity, FollowUpPatientActivity_New::class.java)
+                        val intent = Intent(this@NotificationActivity, FollowUpPatientActivity_New::class.java).apply {
+                            putExtra("uuid",notificationModel.uuid)
+                        }
                         startActivity(intent)
                     } else {
                         val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)

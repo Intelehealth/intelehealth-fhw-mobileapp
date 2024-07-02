@@ -1,14 +1,14 @@
-package org.intelehealth.app.worker
+package org.intelehealth.app.notificationScheduler
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.work.ListenableWorker
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New
 import org.intelehealth.app.app.IntelehealthApplication
@@ -17,27 +17,37 @@ import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.fcm.utils.NotificationBroadCast
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
-class ScheduleNotificationBroadcasterReceiver: BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val inputData = intent.extras;
-            val title = inputData?.getString(BundleKeys.TITLE)
-            val description = inputData?.getString(BundleKeys.DESCRIPTION)
-            val channelId = inputData?.getString(BundleKeys.CHANNEL_ID)
-            val visitUUid = inputData?.getString(BundleKeys.VISIT_UUI)
-            val name = inputData?.getString(BundleKeys.NAME)
 
-            sendNotification(
-                    title, description, channelId,visitUUid,name
-            )
-        }
+/**
+ * Created by Tanvir Hasan on 26-05-2024 : 11-53.
+ * Email: mhasan@intelehealth.org
+ */
+class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters) :
+        Worker(context, parameters) {
+    override fun doWork(): Result {
+        val title = inputData.getString(BundleKeys.TITLE)
+        val description = inputData.getString(BundleKeys.DESCRIPTION)
+        val channelId = inputData.getString(BundleKeys.CHANNEL_ID)
+        val visitUUid = inputData.getString(BundleKeys.VISIT_UUI)
+        val name = inputData.getString(BundleKeys.NAME)
+
+        sendNotification(
+                title, description, channelId,visitUUid,name
+        )
+        return Result.success()
+    }
 
     private fun sendNotification(
-            title: String?,
-            description: String?,
-            channelId: String?,
-            visitUUid: String?,
-            name: String?
+        title: String?,
+        description: String?,
+        channelId: String?,
+        visitUUid: String?,
+        name: String?
     ) {
         val id = System.currentTimeMillis().toInt()
 
@@ -75,7 +85,7 @@ class ScheduleNotificationBroadcasterReceiver: BroadcastReceiver() {
         notificationModel.first_name = name
         notificationModel.description = description
         notificationModel.notification_type = NotificationDbConstants.FOLLOW_UP_NOTIFICATION
-        notificationModel.obs_server_modified_date = ScheduleNotificationWorker.getFormatDateFromTimestamp()
+        notificationModel.obs_server_modified_date = getFormatDateFromTimestamp()
 
         list.add(notificationModel)
 
@@ -85,11 +95,22 @@ class ScheduleNotificationBroadcasterReceiver: BroadcastReceiver() {
         notificationManager.notify(id, builder.build())
     }
 
+    companion object{
+        fun getFormatDateFromTimestamp(): String {
+            val timestampMillis = System.currentTimeMillis()
+
+            val date = Date(timestampMillis)
+
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+            return sdf.format(date)
+        }
+    }
+
     private fun getPendingIntentFlag(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         else PendingIntent.FLAG_UPDATE_CURRENT
     }
-
-
 }

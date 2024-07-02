@@ -245,10 +245,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT," +
                     "sync TEXT)";
 
-
     public static final String FOLLOW_UP_NOTIFICATION_SCHEDULE = "CREATE TABLE IF NOT EXISTS tbl_follow_up_notification_schedule (" +
             "id TEXT," +
-            "schedule_date_time TEXT" +
+            "date_time TEXT," +
+            "duration TEXT," +
+            "value TEXT," +
+            "name TEXT," +
+            "openmrs_id TEXT," +
+            "patient_uuid TEXT," +
+            "visit_uuid TEXT," +
+            "request_code TEXT" +
             ")";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {

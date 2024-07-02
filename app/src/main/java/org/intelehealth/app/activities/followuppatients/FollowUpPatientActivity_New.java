@@ -46,6 +46,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.notification.usecase.DeleteNotificationUseCase;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -137,12 +138,25 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
         initViews();
         followup_data();
+        getIntentData();
 
         refresh.setOnClickListener(v -> {
             resetList(false);
             followup_data();
             Toast.makeText(this, getResources().getString(R.string.refreshed_successfully), Toast.LENGTH_SHORT).show();
         });
+    }
+
+    /**
+     * deleting followup notification after click on the item
+     */
+    private void getIntentData() {
+        try {
+            String uuid = getIntent().getStringExtra("uuid");
+            if(uuid!=null){
+                new DeleteNotificationUseCase().deleteNotification(uuid);
+            }
+        }catch (Exception e){}
     }
 
     @Override
