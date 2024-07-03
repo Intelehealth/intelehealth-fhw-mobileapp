@@ -376,7 +376,7 @@ public class Fragment_SecondScreen extends Fragment {
     private final DefaultOnItemSelectedListener blockSelectedListener = new DefaultOnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i != 0 && mBlockSpinner.getTag() != null) {
+            if (i > 1 && mBlockSpinner.getTag() != null) {
                 Block block = (Block) adapterView.getSelectedItem();
                 Timber.tag(TAG).e("Block index =>%s", i);
                 Timber.tag(TAG).e("Block onItemSelected =>%s", new Gson().toJson(block));

@@ -1543,4 +1543,26 @@
     <string name="lbl_clear_all">सभी साफ़ करें</string>
     <string name="visit_saving">सहेज रहा है…</string>
     <string name="action_btn_send">भेजें</string>
+    <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
+    <string name="ticker_text">नए कार्य की तलाश है</string>
+    <string name="identification_screen_prompt_citizen_id">नागरिक आईडी(*)</string>
+    <string name="citizen_id_validation_message">कृपया 14 अंकों की नागरिक आईडी दर्ज करें</string>
+    <string name="country_matching_String_forIndia">भारत</string>
+    <string name="country_matching_String_forPhilippines">फिलीपींस</string>
+    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
+    <string name="prescription_systolic_blood_pressure">सिस्टोलिक रक्तचाप</string>
+    <string name="prescription_diastolic_blood_pressure">डायस्टोलिक रक्तचाप</string>
+    <string name="fu_item_title">एंथनी गोंसाल्वेस</string>
+    <string name="fu_visit_name">एंथनी जी.</string>
+    <string name="fu_card_item_date">12 जून को फ़ॉलो अप करें</string>
+    <string name="fu_detiails_date">21 मई 2022</string>
+    <string name="followup_date_txtv">12 जून को फ़ॉलो अप करें</string>
+    <string name="search_date_txt">24 मई, दोपहर 3:15 बजे</string>
+    <string name="search_gender">M 22</string>
+    <string name="search_stopwatch_text">2 मिनट में</string>
+    <string name="prescription_not_received_because_the_visit_has_been_ended">पर्चे प्राप्त नहीं हुए हैं यात्रा समाप्त हो गई है।</string>
+    <string name="loading">लोड हो रहा है…</string>
+    <string name="general_exam_title">" सामान्य जाँच:"</string>
+    <string name="unable_to_load_data_please_try_again">डेटा लोड करने में असमर्थ। कृपया बाद में पुनः प्रयास करें!</string>
+    <string name="the_to_date_cannot_be_less_than_the_from_date">\'को\' तिथि \'से\' तिथि से कम नहीं हो सकती</string>
 </resources>
