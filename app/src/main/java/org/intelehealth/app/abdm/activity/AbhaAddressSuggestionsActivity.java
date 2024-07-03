@@ -18,10 +18,12 @@ import androidx.core.view.ViewCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaAddressSuggestionsBinding;
@@ -41,7 +43,8 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private final Context context = AbhaAddressSuggestionsActivity.this;
@@ -118,7 +121,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     }
 
     public boolean isValidAbhaAddress(String input) {
-        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*(?:@sbx)?$";
+        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
@@ -146,38 +149,48 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         body.setTxnId(otpVerificationResponse.getTxnId());
         body.setAbhaAddress(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
 
-        Single<ResponseBody> setPhrAddressResponse =
+        Single<Response<SetAbhaAddressResponse>> setPhrAddressResponse =
                 AppConstants.apiInterface.PUSH_SET_PREFERRED_ABHA_ADDRESS(url, accessToken, body);
+
+
         new Thread(() -> setPhrAddressResponse
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(ResponseBody responseBody) {
-                        // ie. setting this new abha address is done.
-                        try {
-                            Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
-                            Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " +
-                                    otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
-
-                            Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                            dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-                            dataIntent.putExtra("accessToken", accessToken);
-                            startActivity(dataIntent);
-                            finish();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    public void onSuccess(Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
+                        handleSuccess(setAbhaAddressResponseResponse);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.tag(TAG).e("onError: onSuccess: callSetPreferredABHAAddressAPI%s", e.toString());
+                        Timber.tag(TAG).e("onError: onSuccess: callSetPreferredABHAAddressAPI%s", e.getMessage());
                     }
                 })).start();
-        // api - end
-
     }
+
+    private void handleSuccess(Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
+        if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
+            try {
+                Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
+                Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " +
+                        otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
+                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                dataIntent.putExtra("accessToken", accessToken);
+                startActivity(dataIntent);
+                finish();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (setAbhaAddressResponseResponse.code() == 409) {
+            Toast.makeText(context, "This ABHA address already exists, please use a different one", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "This ABHA address already exists, please use a different one", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void createDynamicChips(String chipTitle) {
         Chip chip = new Chip(context);

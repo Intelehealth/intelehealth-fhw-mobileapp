@@ -89,12 +89,10 @@
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/hamburger_margin_start"
             android:lineSpacingExtra="0sp"
-            android:text="@string/this_field_is_mandatory"
+            android:text="@string/the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end"
             android:textAppearance="@style/registr_error_msg"
-            android:textColor="@color/red"
-            android:textSize="@null"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:textColor="@color/black"
+            android:textSize="@null" />
 
 
     </com.google.android.material.textfield.TextInputLayout>

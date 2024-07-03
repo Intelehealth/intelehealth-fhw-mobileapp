@@ -14,6 +14,7 @@ import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
@@ -241,9 +242,9 @@ public interface ApiInterface {
                                                                @Header("Authorization") String accessToken,
                                                                @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
     @POST
-    Single<ResponseBody> PUSH_SET_PREFERRED_ABHA_ADDRESS(@Url String url,
-                                                               @Header("Authorization") String accessToken,
-                                                               @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+    Single<Response<SetAbhaAddressResponse>> PUSH_SET_PREFERRED_ABHA_ADDRESS(@Url String url,
+                                                             @Header("Authorization") String accessToken,
+                                                             @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
     @POST
     Single<AbhaProfileResponse> PUSH_ABHA_PROFILE(@Url String url,
                                                                     @Header("Authorization") String accessToken,
