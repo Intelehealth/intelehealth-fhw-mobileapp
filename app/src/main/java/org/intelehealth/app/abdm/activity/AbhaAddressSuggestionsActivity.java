@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import androidx.core.view.ViewCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
@@ -36,6 +34,7 @@ import org.intelehealth.app.utilities.WindowsUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +42,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 import retrofit2.Response;
 
 public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
@@ -51,7 +49,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     public static final String TAG = AbhaAddressSuggestionsActivity.class.getSimpleName();
     ActivityAbhaAddressSuggestionsBinding binding;
     private String accessToken;
-    private String selectedChip = "";
+
     private OTPVerificationResponse otpVerificationResponse;
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
@@ -67,7 +65,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         accessToken = intent.getStringExtra("accessToken");
-
         otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra("payload");
 
         if (intent.hasExtra("addressList")) {
@@ -79,40 +76,27 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             }
         }
 
-        if (binding.chipGrp.getChildCount() > 0) {
-            for (int i = 0; i < binding.chipGrp.getChildCount(); i++) {
-                int finalI = i;
-                binding.chipGrp.getChildAt(i).setOnClickListener(v -> {
-                    Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getChildAt(finalI).getId());
-                    chip.setChecked(true);
-                    selectedChip = chip.getText().toString().trim();
-                    Timber.tag(TAG).d("ischecked: %s", selectedChip);
-                });
-            }
-        }
-
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(binding.etAbhaAddress.getText())) {
-                if (isValidAbhaAddress(binding.etAbhaAddress.getText())) {
-                    callSetPreferredABHAAddressAPI(binding.etAbhaAddress.getText().toString());
-                }
-            } else if (selectedChip.isEmpty()) {
-                Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getChildAt(0).getId());
-                chip.setChecked(true);
-                selectedChip = chip.getText().toString().trim();
+            Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getCheckedChipId());
+            String selectedChip = chip != null ? chip.getText().toString() : "";
+            String abhaAddress = Objects.requireNonNull(binding.etAbhaAddress.getText()).toString();
+
+            if (TextUtils.isEmpty(selectedChip) && TextUtils.isEmpty(abhaAddress)) {
+                Toast.makeText(context, getString(R.string.please_select_abha_address), Toast.LENGTH_SHORT).show();
+            } else if (!TextUtils.isEmpty(selectedChip)) {
                 callSetPreferredABHAAddressAPI(selectedChip);
-            } else {
-                callSetPreferredABHAAddressAPI(selectedChip);
+            } else if (isValidAbhaAddress(abhaAddress)) {
+                callSetPreferredABHAAddressAPI(abhaAddress);
             }
 
         });
     }
 
-    private boolean isValidAbhaAddress(Editable text) {
+    private boolean isValidAbhaAddress(String text) {
         if (text.length() < 8) {
             Toast.makeText(context, context.getString(R.string.abha_address_must_be_at_least_8_characters_long), Toast.LENGTH_SHORT).show();
             return false;
-        } else if (!isValidAbhaAddress(text.toString())) {
+        } else if (!isValidAbhaRegex(text)) {
             Toast.makeText(context, context.getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
             return false;
         } else {
@@ -120,7 +104,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isValidAbhaAddress(String input) {
+    public boolean isValidAbhaRegex(String input) {
         String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
@@ -203,9 +187,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         chip.setTextColor(getColor(R.color.colorPrimary));
         chip.isCloseIconVisible();
         chip.setCheckedIconTintResource(R.color.colorPrimary);
-
-        if (binding.chipGrp.getChildCount() == 0) // ie. by default the auto-generated address will be selected.
-            chip.setChecked(true);
         binding.chipGrp.addView(chip);
     }
 

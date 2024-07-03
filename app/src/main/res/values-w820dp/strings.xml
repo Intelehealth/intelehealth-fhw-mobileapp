@@ -134,4 +134,5 @@
     <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
     <string name="abha_address_must_be_at_least_8_characters_long">ABHA address must be at least 8 characters long.</string>
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">The ABHA address can contain alphanumeric, with a single dot (.) and underscore (_) allowed in the middle, but not at the beginning or end.</string>
+    <string name="please_select_abha_address">Please select ABHA address.</string>
 </resources>
