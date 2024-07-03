@@ -327,11 +327,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
-        requireActivity();
+        //requireActivity();
         patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(requireActivity(), it -> {
                             mPatientVitalList = it;
-                            Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
                 );
@@ -843,7 +843,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             boolean isValid = isValidaForm();
             setDisabledSubmit(!isValid);
             if (isValid) {
-                iDataReadyForSaving();
+                isDataReadyForSaving();
                 mActionListener.onProgress(100);
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
             }
@@ -1143,7 +1143,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public boolean iDataReadyForSaving() {
+    public boolean isDataReadyForSaving() {
         /*boolean cancel = false;
         View focusView = null;
 

@@ -534,7 +534,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
                 mBMILinearLayout.setVisibility(View.VISIBLE);
 
-            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
                 mBPLinearLayout.setVisibility(View.VISIBLE);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
                 mPulseLinearLayout.setVisibility(View.VISIBLE);

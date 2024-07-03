@@ -19,8 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.gson.Gson;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -88,11 +86,11 @@ public class VitalCollectionSummaryFragment extends Fragment {
         PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
-        requireActivity();
+        //requireActivity();
         patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(requireActivity(), it -> {
                             mPatientVitalList = it;
-                            Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
                 );
@@ -121,7 +119,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
                 mBMILinearLayout.setVisibility(View.VISIBLE);
 
-            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
                 mBPLinearLayout.setVisibility(View.VISIBLE);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
                 mPulseLinearLayout.setVisibility(View.VISIBLE);
