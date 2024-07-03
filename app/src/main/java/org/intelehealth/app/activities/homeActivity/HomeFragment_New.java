@@ -85,6 +85,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     ImageView ivInternet;
     private TextView mUpcomingAppointmentCountTextView, mCountPendingFollowupVisitsTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
+    private int todaysCount = 0;
+    private int tomorrowsCount = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -331,12 +333,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
-            String countStr = countStrPendingFollowupVisits();
+            countStrPendingFollowupVisits();
 
             if (isAdded()) {
                 activity.runOnUiThread(() -> {
+                    StringBuilder followupCount = new StringBuilder()
+                            .append(todaysCount)
+                            .append(" ")
+                            .append(getActivity().getString(R.string.today))
+                            .append("\n")
+                            .append(tomorrowsCount)
+                            .append(" ")
+                            .append(getActivity().getString(R.string.tomorrow));
 
-                    mCountPendingFollowupVisitsTextView.setText(countStr);
+                    mCountPendingFollowupVisitsTextView.setText(
+                            followupCount
+                    );
                 });
             }
         });
@@ -470,7 +482,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         });
     }
 
-    public String countStrPendingFollowupVisits() {
+    public void countStrPendingFollowupVisits() {
         List<FollowUpModel> modelList = new ArrayList<>();
 
         Date todayssDate = DateAndTimeUtils.getCurrentDateWithoutTime();
@@ -479,11 +491,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         c.add(Calendar.DAY_OF_MONTH, 1);
         Date tomorrowsDate = c.getTime();
 
-        String filterQuery;
         String tomorrowsDateStr = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
         String todaysDateStr = new SimpleDateFormat("yyyy-MM-dd").format(todayssDate);
-
-        filterQuery = "(followup_date >= '" + todaysDateStr + "' and followup_date <= '" + tomorrowsDateStr + "' ) and ";
 
         // TODO: end date is removed later add it again. --> Added...
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
@@ -494,8 +503,9 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                + filterQuery
-                + "o.value is NOT NULL AND followup_date is NOT NULL GROUP BY a.patientuuid";
+                + "o.value is NOT NULL GROUP BY a.patientuuid";
+
+        Log.d("COUNT_QUERY",query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -507,22 +517,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     Log.v(TAG, "value_text - " + value_text);
                     Log.v(TAG, "visitUuid - " + visitUuid);
                     if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no"))
-                    modelList.add(new FollowUpModel(visitUuid,
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                            cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                            true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                            ))); // ie. visit is emergency visit.
+                        modelList.add(new FollowUpModel(visitUuid,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                                ))); // ie. visit is emergency visit.
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -532,22 +542,18 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         }
         cursor.close();
 
-        int todaysCount = 0;
-        int tomorrowsCount = 0;
+        todaysCount = 0;
+        tomorrowsCount = 0;
 
-        for(FollowUpModel model : modelList){
+        for (FollowUpModel model : modelList) {
             String formatedFollowupDate = model.getFollowup_date().substring(0, 10).trim();
-            if(formatedFollowupDate.equals(todaysDateStr.trim())){
+            if (formatedFollowupDate.equals(todaysDateStr.trim())) {
                 todaysCount++;
-            }else if(formatedFollowupDate.equals(tomorrowsDateStr.trim())){
+            } else if (formatedFollowupDate.equals(tomorrowsDateStr.trim())) {
                 tomorrowsCount++;
             }
         }
-        Activity activity = getActivity();
-        if (isAdded() && activity != null) {
-            return todaysCount+" "+getActivity().getString(R.string.today)+"\n"+tomorrowsCount+" "+getActivity().getString(R.string.tomorrow);
-        }
-        return "";
+
     }
 
     @Override

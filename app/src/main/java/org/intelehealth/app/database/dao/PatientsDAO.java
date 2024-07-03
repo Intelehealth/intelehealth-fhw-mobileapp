@@ -964,27 +964,39 @@ public class PatientsDAO {
 
     //getting followup patient count here
     public static int getAllFollowupPatientCount() {
+        int count = 0;
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) "
-                + "FROM (SELECT b.first_name FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
+                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
-                + "o.value is NOT NULL AND date(substr(o.value, 1, 10)) is NOT NULL GROUP BY a.patientuuid)";
+                + "o.value is NOT NULL GROUP BY a.patientuuid";
 
-        Log.d("QQQQ",""+query);
+        Log.d("QUERY_COUNT",""+query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
             do {
-                return  cursor.getInt(0);
+                try {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
+                        count++;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             while (cursor.moveToNext());
         }
         cursor.close();
 
-        return 0;
+        return count;
     }
 
 }

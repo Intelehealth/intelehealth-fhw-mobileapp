@@ -795,7 +795,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
                 + filterQuery
                 + searchQuery
-                + "o.value is NOT NULL AND followup_date is NOT NULL GROUP BY a.patientuuid"
+                + "o.value is NOT NULL GROUP BY a.patientuuid"
                 +sortQuery
                 +" LIMIT " + limit + " OFFSET " + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size());
 
