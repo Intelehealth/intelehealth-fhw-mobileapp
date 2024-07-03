@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import static org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity.BEARER_AUTH;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.*;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
@@ -94,9 +95,11 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardActivity;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
+import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
@@ -120,6 +123,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CameraUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -197,7 +201,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private TableRow trAddress2;
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken, xToken;
+    private String accessToken, xToken, txnId, SCOPE;
 
 
     @Override
@@ -249,11 +253,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
                 accessToken = args.getString("accessToken");
                 xToken = args.getString("xToken");
+                txnId = args.getString("txnId");
             } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
                 accessToken = intent.getStringExtra("accessToken");
                 xToken = intent.getStringExtra("xToken");
+                txnId = intent.getStringExtra("txnId");
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
@@ -266,6 +272,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         //  setAutoFillValuesViaAadhar(otpVerificationResponse);
                     }
                 } else if (args.containsKey(MOBILE_PAYLOAD)) {
+                    SCOPE = SCOPE_MOBILE;
                     abhaProfileResponse = (AbhaProfileResponse) args.getSerializable(MOBILE_PAYLOAD);
                     if (abhaProfileResponse != null) {
                         //  setAutoFillValuesViaMobile(abhaProfileResponse);
@@ -431,16 +438,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void viewDownloadABHACard() {
-
         if (otpVerificationResponse != null && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
             String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
             callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
-            Timber.tag("viewDownloadABHACard").d("Values: %s", X_TOKEN + " and " + patientAbhaNumber);
+            Timber.tag(TAG).d("viewDownloadABHACard: %s", X_TOKEN + " and " + patientAbhaNumber);
         }
-        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
-            callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
-            Timber.tag("viewDownloadABHACard").d("Values: %s", xToken + " and " + patientAbhaNumber);
+        else if (abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
+                patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
+            callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
         }
+        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()){
+                callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
+                Timber.tag(TAG).d("viewDownloadABHACard: %s", xToken + " and " + patientAbhaNumber);
+            }
         else {  // ie. if token if expired or not available than go through the verification flow.
             Intent i = new Intent(context, AadharMobileVerificationActivity.class);
             i.putExtra("hasABHA", true);
@@ -452,7 +462,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private void callGETAbhaCardApi(String xToken, String accessToken, String patientAbhaNumber) {
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
         String url = UrlModifiers.getABHACardUrl();
-        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+        Single<AbhaCardResponseBody> responseBodySingle;
+        responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+
         new Thread(new Runnable() {
             @Override
             public void run() {

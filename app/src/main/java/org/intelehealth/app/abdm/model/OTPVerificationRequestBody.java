@@ -67,4 +67,15 @@ public class OTPVerificationRequestBody {
     public void setAuthMethod(String authMethod) {
         this.authMethod = authMethod;
     }
+
+    @Override
+    public String toString() {
+        return "OTPVerificationRequestBody{" +
+                "otp='" + otp + '\'' +
+                ", txnId='" + txnId + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", scope='" + scope + '\'' +
+                ", authMethod='" + authMethod + '\'' +
+                '}';
+    }
 }

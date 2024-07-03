@@ -81,7 +81,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
     public static final String MOBILE_PAYLOAD = "mobile_payload";
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
-    private String accessToken, xToken;
+    private String accessToken, xToken, txnId;
     private ObjectAnimator syncAnimator;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -129,6 +129,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         if (intentRx != null) {
             accessToken = intentRx.getStringExtra("accessToken");
             xToken = intentRx.getStringExtra("xToken");
+            txnId = intentRx.getStringExtra("txnId");
 
             if (intentRx.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
@@ -197,6 +198,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         Bundle bundle = new Bundle();
         bundle.putString("accessToken", accessToken);
         bundle.putString("xToken", xToken);
+        bundle.putString("txnId", txnId);
 
         if (intent.hasExtra(PAYLOAD)) {
             otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra(PAYLOAD);
@@ -229,6 +231,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putBoolean("patient_detail", true);
         bundle.putString("accessToken", accessToken);
         bundle.putString("xToken", xToken);
+        bundle.putString("txnId", txnId);
 
         if (otpVerificationResponse != null) {
             bundle.putSerializable(PAYLOAD, otpVerificationResponse);
