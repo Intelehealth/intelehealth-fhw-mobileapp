@@ -21,4 +21,7 @@ interface PatientVitalDao : CoreDao<PatientVital> {
     @Query("SELECT * FROM tbl_patient_vital")
     fun getAllEnabledLiveFields(): LiveData<List<PatientVital>>
 
+    @Query("SELECT * FROM tbl_patient_vital")
+    suspend fun getAllEnabledFields(): List<PatientVital>
+
 }

@@ -10,6 +10,7 @@ import org.intelehealth.config.room.dao.PatientVitalDao
 class PatientVitalRepository(private val patientVitalDao: PatientVitalDao) {
 
     fun getAllEnabledLiveFields() = patientVitalDao.getAllEnabledLiveFields()
+    suspend fun getAllEnabledFields() = patientVitalDao.getAllEnabledFields()
 
 
 }

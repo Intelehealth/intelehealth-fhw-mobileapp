@@ -18,6 +18,6 @@ class PatientVitalConfigKeys {
         const val TEMPERATURE = "temprature_f"
         const val SPO2 = "spo2"
         const val RESPIRATORY_RATE = "respiratory_rate"
-        const val BLOOD_TYPE = "blood_typing"
+        const val BLOOD_TYPE = "blood_group"
     }
 }

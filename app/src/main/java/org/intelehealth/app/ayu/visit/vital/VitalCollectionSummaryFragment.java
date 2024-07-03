@@ -11,10 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
@@ -24,6 +29,16 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
+import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientVital;
+import org.intelehealth.config.utility.PatientVitalConfigKeys;
+
+import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +52,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
     SessionManager sessionManager;
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
+    private List<PatientVital> mPatientVitalList;
+    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
 
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
@@ -65,10 +82,84 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //config viewmodel initialization
+        PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
+        PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
+        PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
+        requireActivity();
+        patientVitalViewModel.getAllEnabledLiveFields()
+                .observe(requireActivity(), it -> {
+                            mPatientVitalList = it;
+                            Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            updateUI();
+                        }
+                );
+    }
+
+    private void updateUI() {
+        mHeightLinearLayout.setVisibility(View.GONE);
+        mWeightLinearLayout.setVisibility(View.GONE);
+        mBMILinearLayout.setVisibility(View.GONE);
+        mBPLinearLayout.setVisibility(View.GONE);
+        mPulseLinearLayout.setVisibility(View.GONE);
+        mTemperatureLinearLayout.setVisibility(View.GONE);
+        mSpo2LinearLayout.setVisibility(View.GONE);
+        mRespiratoryRateLinearLayout.setVisibility(View.GONE);
+
+        mBloodGroupLinearLayout.setVisibility(View.GONE);
+        for (PatientVital patientVital : mPatientVitalList) {
+            Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
+
+            if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
+                mHeightLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
+                mWeightLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
+                mBMILinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
+                mBPLinearLayout.setVisibility(View.VISIBLE);
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
+                mPulseLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
+                mTemperatureLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
+                mSpo2LinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.RESPIRATORY_RATE)) {
+                mRespiratoryRateLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BLOOD_TYPE)) {
+                mBloodGroupLinearLayout.setVisibility(View.VISIBLE);
+
+            }
+        }
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection_summary, container, false);
+
+        mHeightLinearLayout = view.findViewById(R.id.ll_height_container);
+        mWeightLinearLayout = view.findViewById(R.id.ll_weight_container);
+        mBMILinearLayout = view.findViewById(R.id.ll_bmi);
+        mBPLinearLayout = view.findViewById(R.id.ll_bp_container);
+        mPulseLinearLayout = view.findViewById(R.id.ll_pulse_container);
+        mTemperatureLinearLayout = view.findViewById(R.id.ll_temperature_container);
+        mSpo2LinearLayout = view.findViewById(R.id.ll_spo2_container);
+        mRespiratoryRateLinearLayout = view.findViewById(R.id.ll_respiratory_rate_container);
+        mBloodGroupLinearLayout = view.findViewById(R.id.ll_blood_group_container);
+
+
         if (mVitalsObject != null) {
             if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
                 ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));

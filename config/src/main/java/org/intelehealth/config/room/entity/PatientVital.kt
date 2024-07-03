@@ -23,6 +23,6 @@ data class PatientVital(
     @SerializedName("is_mandatory")
     val isMandatory: Boolean,
 
-    @SerializedName("is_enabled")
-    val isEnabled: Boolean
+    /*@SerializedName("is_enabled")
+    val isEnabled: Boolean*/
 )

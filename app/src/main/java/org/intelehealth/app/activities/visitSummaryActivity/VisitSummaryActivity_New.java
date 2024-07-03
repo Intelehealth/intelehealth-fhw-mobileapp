@@ -174,12 +174,17 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
+import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
 import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.room.entity.Specialization;
+import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -476,6 +481,78 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         });
 
+        setupVitalConfig();
+
+    }
+
+    private List<PatientVital> mPatientVitalList;
+    private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+
+    private void setupVitalConfig() {
+        mHeightLinearLayout = findViewById(R.id.ll_height_container);
+        mWeightLinearLayout = findViewById(R.id.ll_weight_container);
+        mBMILinearLayout = findViewById(R.id.ll_bmi);
+        mBPLinearLayout = findViewById(R.id.ll_bp_container);
+        mPulseLinearLayout = findViewById(R.id.ll_pulse_container);
+        mTemperatureLinearLayout = findViewById(R.id.ll_temperature_container);
+        mSpo2LinearLayout = findViewById(R.id.ll_spo2_container);
+        mRespiratoryRateLinearLayout = findViewById(R.id.ll_respiratory_rate_container);
+        mBloodGroupLinearLayout = findViewById(R.id.ll_blood_group_container);
+
+        PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(this).patientVitalDao());
+        PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
+        PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
+        patientVitalViewModel.getAllEnabledLiveFields()
+                .observe(this, it -> {
+                            mPatientVitalList = it;
+                            timber.log.Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            updateUI();
+                        }
+                );
+    }
+
+    private void updateUI() {
+        mHeightLinearLayout.setVisibility(View.GONE);
+        mWeightLinearLayout.setVisibility(View.GONE);
+        mBMILinearLayout.setVisibility(View.GONE);
+        mBPLinearLayout.setVisibility(View.GONE);
+        mPulseLinearLayout.setVisibility(View.GONE);
+        mTemperatureLinearLayout.setVisibility(View.GONE);
+        mSpo2LinearLayout.setVisibility(View.GONE);
+        mRespiratoryRateLinearLayout.setVisibility(View.GONE);
+
+        mBloodGroupLinearLayout.setVisibility(View.GONE);
+        for (PatientVital patientVital : mPatientVitalList) {
+            timber.log.Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
+
+            if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
+                mHeightLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
+                mWeightLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
+                mBMILinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP) || patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
+                mBPLinearLayout.setVisibility(View.VISIBLE);
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
+                mPulseLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
+                mTemperatureLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
+                mSpo2LinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.RESPIRATORY_RATE)) {
+                mRespiratoryRateLinearLayout.setVisibility(View.VISIBLE);
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BLOOD_TYPE)) {
+                mBloodGroupLinearLayout.setVisibility(View.VISIBLE);
+
+            }
+        }
     }
 
     private void showTimePickerDialog() {
@@ -535,8 +612,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setFacilityToVisitSpinner();
             setSeveritySpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
-            if (!TextUtils.isEmpty(followupValue))
-            {
+            if (!TextUtils.isEmpty(followupValue)) {
                 mBinding.tvViewFollowUpDateTime.setText(followupValue);
             }
         });
@@ -2913,7 +2989,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
                     obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
                     obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
-                    obsDTO.setValue(selectedFollowupDate + ", Time:" +selectedFollowupTime+ ", Remark: Follow-up");
+                    obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
                     obsDTO.setCreator(sessionManager.getCreatorID());
 
 //                    Step - 3 create observation dao and call insertObs method

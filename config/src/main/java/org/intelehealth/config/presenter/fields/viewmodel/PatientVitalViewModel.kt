@@ -13,4 +13,5 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
 class PatientVitalViewModel(private val repository: PatientVitalRepository) : BaseViewModel() {
 
     fun getAllEnabledLiveFields() = repository.getAllEnabledLiveFields()
+    suspend fun getAllEnabledFields() = repository.getAllEnabledFields()
 }
