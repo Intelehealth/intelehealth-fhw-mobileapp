@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidF
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
@@ -29,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -45,6 +47,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +94,13 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
+import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
+import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.config.room.entity.Specialization;
+import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -527,7 +536,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);
         visit_speciality = fetchSpecialityValue(visitID);
-        visit_speciality_txt.setText(visit_speciality);
+        setupSepecialization(visit_speciality);
+//        visit_speciality_txt.setText(visit_speciality);
 
        /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
@@ -626,6 +636,19 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
     }
+
+    private void setupSepecialization(String visitSpeciality) {
+        ConfigDatabase db = ConfigDatabase.getInstance(getApplicationContext());
+        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
+        SpecializationViewModel viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
+        viewModel.fetchSpecialization().observe(this, specializations -> {
+            Timber.tag(TAG).d(new Gson().toJson(specializations));
+            Specialization sp = Specialization.findSpecialization(visitSpeciality, specializations);
+            String displayValue = ResUtils.getStringResourceByName(this, sp.getSKey());
+            visit_speciality_txt.setText(displayValue);
+        });
+    }
+
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;

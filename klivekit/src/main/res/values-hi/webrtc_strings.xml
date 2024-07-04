@@ -38,4 +38,6 @@
     <string name="decline">गिरावट</string>
     <string name="accept">स्वीकार करें</string>
     <string name="hang_up">रख दो</string>
+    <string name="call_swipe_up">ऊपर स्वाइप करें</string>
+    <string name="release_now">अभी रिलीज़ करें</string>
 </resources>

@@ -418,13 +418,13 @@ public class Fragment_SecondScreen extends Fragment {
 //        }
 
 
-        ArrayAdapter<Block> blockAdapter = new ArrayAdapter<Block>(getActivity(), R.layout.simple_spinner_item_1, blocks);
+        ArrayAdapter<Block> blockAdapter = new ArrayAdapter<Block>(requireContext(), R.layout.simple_spinner_item_1, blocks);
         blockAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mBlockSpinner.setAdapter(blockAdapter);
         mBlockSpinner.setTag(blocks);
         mBlockSpinner.setOnItemSelectedListener(blockSelectedListener);
-        mBlockSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
+        mBlockSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress3() != null && !patientDTO.getAddress3().isEmpty()) {
             for (Block b : blocks) {
                 if (b.getName().equalsIgnoreCase(patientDTO.getAddress3())) {

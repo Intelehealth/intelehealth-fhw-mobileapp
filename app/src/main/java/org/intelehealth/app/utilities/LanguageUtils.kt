@@ -47,18 +47,18 @@ object LanguageUtils {
     }
 
     @JvmStatic
-    fun getBlock(district: DistData?, block: String): Block? {
-        return district?.blocks?.find { it.name == block }
+    fun getBlock(district: DistData?, block: String?): Block? {
+        return block?.let { return@let district?.blocks?.find { it.name == block } }
     }
 
     @JvmStatic
-    fun getGramPanchayat(block: Block?, gramPanchayat: String): GramPanchayat? {
-        return block?.gramPanchayats?.find { it.name == gramPanchayat }
+    fun getGramPanchayat(block: Block?, gramPanchayat: String?): GramPanchayat? {
+        return gramPanchayat?.let { return@let block?.gramPanchayats?.find { it.name == gramPanchayat } }
     }
 
     @JvmStatic
-    fun getVillage(gramPanchayat: GramPanchayat?, village: String): Village? {
-        return gramPanchayat?.villages?.find { it.name == village }
+    fun getVillage(gramPanchayat: GramPanchayat?, village: String?): Village? {
+        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village } }
     }
 
     @JvmStatic

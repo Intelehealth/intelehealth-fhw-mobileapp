@@ -16,4 +16,17 @@ data class Specialization(
     val sKey: String,
     @SerializedName("name")
     val name: String
-)
+) {
+    companion object {
+        @JvmStatic
+        fun findSpecialization(
+            value: String,
+            specializations: List<Specialization>
+        ): Specialization {
+            return specializations.find { it.name == value } ?: Specialization(
+                "general_physician",
+                "General Physician"
+            )
+        }
+    }
+}

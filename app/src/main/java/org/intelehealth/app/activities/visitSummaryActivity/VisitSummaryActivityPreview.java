@@ -1609,7 +1609,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
                 // Create a print job with name and adapter instance
 
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/" + getString(R.string.app_name);
+                String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/" + getString(R.string.app_name);
                 String fileName = patientName.replace(" ", "_") + "_" + System.currentTimeMillis() + ".pdf";
                 File dir = new File(path);
                 if (!dir.exists()) dir.mkdirs();
