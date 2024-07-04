@@ -612,6 +612,11 @@ public class VitalsActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (mBpDia.getText().toString().isEmpty()) {
+                    mBpSys.setText("");
+                    return;
+                }
+
                 bpDiaColorCode(mBpDia.getText().toString().trim());
             }
         });
@@ -1134,12 +1139,14 @@ public class VitalsActivity extends AppCompatActivity {
             String diaValue = "";
             if (mBpDia != null)
                 diaValue = mBpDia.getText().toString();
-            if ((Double.parseDouble(bp_sys_value) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS)) ||
-                    (Double.parseDouble(bp_sys_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS))) {
+
+            if ((Double.parseDouble(bp_sys_value) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS)) || (Double.parseDouble(bp_sys_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS))) {
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                 return;
-            } else if (!diaValue.trim().isEmpty() && Double.valueOf(bp_sys_value) <= Double.valueOf(diaValue)) {
+            }
+
+            if (!diaValue.trim().isEmpty() && Double.valueOf(bp_sys_value) <= Double.valueOf(diaValue)) {
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.bpsys_not_less_error));
                 return;
@@ -1153,12 +1160,14 @@ public class VitalsActivity extends AppCompatActivity {
             String sysValue = "";
             if (mBpSys != null)
                 sysValue = mBpSys.getText().toString();
-            if ((Double.parseDouble(bp_dia_value) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS)) ||
-                    (Double.parseDouble(bp_dia_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS))) {
+
+            if ((Double.parseDouble(bp_dia_value) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS)) || (Double.parseDouble(bp_dia_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS))) {
                 mBpDia.requestFocus();
                 mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                 return;
-            } else if (!sysValue.trim().isEmpty() && Double.valueOf(bp_dia_value) >= Double.valueOf(sysValue)) {
+            }
+
+            if (!sysValue.trim().isEmpty() && Double.valueOf(bp_dia_value) >= Double.valueOf(sysValue)) {
                 mBpDia.requestFocus();
                 mBpDia.setError(getString(R.string.bpdia_not_more_error));
                 return;
@@ -1170,8 +1179,7 @@ public class VitalsActivity extends AppCompatActivity {
         // *. spo2
         String spo2_value = mSpo2.getText().toString().trim();
         if (spo2_value != null && !spo2_value.isEmpty()) {
-            if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) ||
-                    (Double.parseDouble(spo2_value) > Double.parseDouble(AppConstants.MAXIMUM_SPO2))) {
+            if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) || (Double.parseDouble(spo2_value) > Double.parseDouble(AppConstants.MAXIMUM_SPO2))) {
                 mSpo2.requestFocus();
                 mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                 return;
@@ -1182,8 +1190,7 @@ public class VitalsActivity extends AppCompatActivity {
         // pulse - start
         String p_value = mPulse.getText().toString().trim();
         if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
-            if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                    (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+            if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) || (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
                 mPulse.requestFocus();
                 mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
                 return;
@@ -1262,8 +1269,7 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         // AEAT- 646 (Temp, BP, Pulse validaton) - START
-        if (mBpSys.getText().toString().trim().isEmpty() || mBpDia.getText().toString().trim().isEmpty() ||
-                mPulse.getText().toString().trim().isEmpty() || mTemperature.getText().toString().trim().isEmpty()) {
+        if (mBpSys.getText().toString().trim().isEmpty() || mBpDia.getText().toString().trim().isEmpty() || mPulse.getText().toString().trim().isEmpty() || mTemperature.getText().toString().trim().isEmpty()) {
 
             String bpSysEmpty = "", bpDiaEmpty = "", pulseEmpty = "", tempEmpty = "";
             String emptyList = "";
