@@ -601,6 +601,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putExtra("advicefrom", intentAdviceFrom);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     startActivity(intent);
                 } else {
                     Intent intent;
