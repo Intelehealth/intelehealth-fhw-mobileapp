@@ -129,6 +129,11 @@ import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 /**
  * Home Screen
  */
@@ -174,6 +179,19 @@ public class HomeActivity extends BaseActivity {
     private MaterialAlertDialogBuilder dialog;
     private AlertDialog alertDialog;
     MenuItem bluetoothCheck = null;
+
+ /*   ActivityResultLauncher<Intent> result = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            if (o.getResultCode() == Constants.JWT_TOKEN_EXPIRED) {
+                sessionManager.setJwtAuthToken(null);
+                NavigationUtils navigationUtils = new NavigationUtils();
+                navigationUtils.triggerSignOutOn401Response(context);
+            }
+        }
+    });*/
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);

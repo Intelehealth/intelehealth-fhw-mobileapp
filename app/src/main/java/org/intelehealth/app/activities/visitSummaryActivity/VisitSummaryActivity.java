@@ -135,6 +135,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.auth.ResponseChecker;
 import org.intelehealth.app.models.dispenseAdministerModel.AidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationAidModel;
 import org.intelehealth.app.models.dispenseAdministerModel.MedicationModel;
@@ -6075,17 +6076,27 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     private TextView mDoctorAppointmentBookingTextView;
     private TextView mCancelAppointmentBookingTextView;
     private TextView mInfoAppointmentBookingTextView;
-
     private static final int SCHEDULE_LISTING_INTENT = 2001;
 
     private void getAppointmentDetails(String visitUUID) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = BuildConfig.SERVER_URL + ":3004";
-        ApiClientAppointment.getInstance(baseurl).getApi().getAppointmentDetails(visitUUID).enqueue(new Callback<AppointmentDetailsResponse>() {
+
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getAppointmentDetails(visitUUID, authHeader)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
             @Override
             public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
+                if (responseChecker.isNotAuthorized()) {
+                    //TODO: redirect to login screen
+                    return;
+                }
+
                 if (response == null || response.body() == null) return;
                 mAppointmentDetailsResponse = response.body();
                 if (!mAppointmentDetailsResponse.isStatus()) {
@@ -6142,6 +6153,8 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void cancelAppointment() {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         AlertDialog alertDialog = new AlertDialog.Builder(this).setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
                 //set positive button
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -6153,9 +6166,17 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                         request.setHwUuid((new SessionManager(VisitSummaryActivity.this).getProviderID()));
                         request.setReason("Patient not available");
                         String baseurl = BuildConfig.SERVER_URL + ":3004";
-                        ApiClientAppointment.getInstance(baseurl).getApi().cancelAppointment(request).enqueue(new Callback<CancelResponse>() {
+                        ApiClientAppointment.getInstance(baseurl).getApi()
+                                .cancelAppointment(request, authHeader)
+                                .enqueue(new Callback<CancelResponse>() {
                             @Override
                             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                                ResponseChecker<CancelResponse> responseChecker = new ResponseChecker<>(response);
+                                if (responseChecker.isNotAuthorized()) {
+                                    //TODO: redirect to login screen
+                                    return;
+                                }
+
                                 if (response.body() == null) return;
                                 CancelResponse cancelResponse = response.body();
                                 if (cancelResponse.isStatus()) {

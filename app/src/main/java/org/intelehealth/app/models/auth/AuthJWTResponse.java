@@ -1,4 +1,4 @@
-package org.intelehealth.app.utilities.auth;
+package org.intelehealth.app.models.auth;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -20,8 +20,8 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.models.statewise_location.State;
-import org.intelehealth.app.utilities.auth.AuthJWTBody;
-import org.intelehealth.app.utilities.auth.AuthJWTResponse;
+import org.intelehealth.app.models.auth.AuthJWTBody;
+import org.intelehealth.app.models.auth.AuthJWTResponse;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;

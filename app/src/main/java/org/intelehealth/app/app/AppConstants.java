@@ -82,7 +82,6 @@ public class AppConstants {
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();
 
-
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
 

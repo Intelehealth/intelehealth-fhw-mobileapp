@@ -28,6 +28,7 @@ import org.intelehealth.app.appointment.model.BookAppointmentRequest;
 import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.utils.MyDatePicker;
+import org.intelehealth.app.models.auth.ResponseChecker;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.webrtc.activity.BaseActivity;
@@ -39,6 +40,7 @@ import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScheduleListingActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -145,7 +147,14 @@ public class ScheduleListingActivity extends BaseActivity implements DatePickerD
         return context;
     }
 
+    private boolean isAuthorised(Response<AppointmentDetailsResponse> response) {
+        int responseCode = response.code();
+        return responseCode != 401;
+    }
+
     private void bookAppointment(SlotInfo slotInfo) {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
+
         BookAppointmentRequest request = new BookAppointmentRequest();
         if (appointmentId != 0) {
             request.setAppointmentId(appointmentId);
@@ -175,10 +184,16 @@ public class ScheduleListingActivity extends BaseActivity implements DatePickerD
         String baseurl = BuildConfig.SERVER_URL + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .bookAppointment(url, request)
+                .bookAppointment(url, request, authHeader)
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
 
                         if (appointmentDetailsResponse == null || !appointmentDetailsResponse.isStatus()) {
@@ -203,13 +218,20 @@ public class ScheduleListingActivity extends BaseActivity implements DatePickerD
     }
 
     private void getSlots() {
+        String authHeader = "Bearer " + sessionManager.getJwtAuthToken();
 
         String baseurl = BuildConfig.SERVER_URL + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
+                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality, authHeader)
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
+                        ResponseChecker<SlotInfoResponse> responseChecker = new ResponseChecker<>(response);
+                        if (responseChecker.isNotAuthorized()) {
+                            //TODO: redirect to login screen
+                            return;
+                        }
+
                         SlotInfoResponse slotInfoResponse = response.body();
                         if (slotInfoResponse == null) {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
