@@ -90,6 +90,8 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.auth.AuthJWTBody;
+import org.intelehealth.app.utilities.auth.AuthJWTResponse;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
@@ -1258,7 +1260,7 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-
+        getJWTToken(CLEAN_URL, USERNAME, PASSWORD);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -1698,5 +1700,36 @@ public class SetupActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
+
+
+    private void getJWTToken(String urlString, String username, String password) {
+        String finalURL = urlString.concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+        authJWTResponseObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 
 }
