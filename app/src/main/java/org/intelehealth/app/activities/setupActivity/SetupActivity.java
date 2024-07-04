@@ -679,7 +679,8 @@ public class SetupActivity extends AppCompatActivity {
 //                String urlString = mUrlField.getText().toString();
                 mLoginButton.setText(getString(R.string.please_wait_progress));
                 mLoginButton.setEnabled(false);
-                TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+              //  TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+                getJWTToken(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1249,7 +1250,6 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-        getJWTToken(CLEAN_URL, USERNAME, PASSWORD);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

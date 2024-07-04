@@ -1682,6 +1682,7 @@
     <string name="click_on_upload_button_to_save_the_changes">اضغط على زر التحميل لحفظ التغييرات</string>
     <string name="click_on_save_button_to_save_the_changes">Click on Save button to save the changes*</string>
     <string name="additional_remark_is_saved_successfully">Additional remark is saved successfully!</string>
+    <string name="your_session_has_expired_please_log_in_again">Your session has expired. Please log in again.</string>
 
 
 </resources>

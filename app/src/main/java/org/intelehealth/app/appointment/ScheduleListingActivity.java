@@ -29,6 +29,7 @@ import org.intelehealth.app.appointment.model.SlotInfo;
 import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import org.intelehealth.app.appointment.utils.MyDatePicker;
 import org.intelehealth.app.models.auth.ResponseChecker;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.webrtc.activity.BaseActivity;
@@ -190,7 +191,9 @@ public class ScheduleListingActivity extends BaseActivity implements DatePickerD
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(ScheduleListingActivity.this);
                             return;
                         }
 
@@ -228,7 +231,9 @@ public class ScheduleListingActivity extends BaseActivity implements DatePickerD
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         ResponseChecker<SlotInfoResponse> responseChecker = new ResponseChecker<>(response);
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(ScheduleListingActivity.this);
                             return;
                         }
 
