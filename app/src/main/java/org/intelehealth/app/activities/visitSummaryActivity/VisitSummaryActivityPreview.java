@@ -21,6 +21,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -202,6 +203,7 @@ import okhttp3.ResponseBody;
 /**
  * Created by: Tanvir 0n 27-05-24 : 2:18 PM
  */
+@SuppressLint("Range")
 public class VisitSummaryActivityPreview extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface, PdfConverter.Companion.OnComplete {
     private static final String TAG = VisitSummaryActivityPreview.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
@@ -2124,6 +2126,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
      * @param dataString variable of type String
      * @return void
      */
+
     public void queryData(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String patientSelection = "uuid = ?";
@@ -3415,7 +3418,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
@@ -3471,7 +3474,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
 
             File dir = new File(path);
@@ -3513,7 +3516,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
@@ -3555,7 +3558,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();

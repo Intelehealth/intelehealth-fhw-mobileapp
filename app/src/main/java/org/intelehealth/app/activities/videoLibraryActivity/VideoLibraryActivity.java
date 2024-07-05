@@ -101,7 +101,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
 
     public File getExtVideoStorageDir(Context context, String folderName) {
         // Get the directory for the org's private pictures directory.
-        File file = new File(Environment.getExternalStoragePublicDirectory(
+        File file = new File(getExternalFilesDir(
                 Environment.DIRECTORY_MOVIES), folderName);
         Logger.logD(TAG, file.getAbsolutePath());
         if (!file.mkdirs()) {

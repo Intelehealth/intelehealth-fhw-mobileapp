@@ -64,7 +64,7 @@ public class AwsS3Utils {
                     String sourceFileName = filePath.substring(filePath.lastIndexOf("/") + 1);//new UuidGenerator().UuidGenerator() + "jpg";
                     String fileName = UUID.randomUUID().toString() + "." + filePath.substring(filePath.lastIndexOf(".") + 1);// + "jpg";
                     File sourceFile = new File(filePath);
-                    File tempFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" + fileName);
+                    File tempFile = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" + fileName);
 
                     Log.e("AwsS3Utils", "filePath  = " + filePath);
                     Log.e("AwsS3Utils", "sourceFileName  = " + sourceFileName);
@@ -108,7 +108,7 @@ public class AwsS3Utils {
                     AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials, Region.getRegion(Regions.DEFAULT_REGION));
 
                     PutObjectRequest por = new PutObjectRequest(propertyReader.getAwsS3BucketName(), fileName, tempFile);
-                    //new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));
+                    //new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/"+PICTURE_NAME));
                     PutObjectResult putObjectResult = amazonS3Client.putObject(por);
 
                     //Log.v("AmazonS3", amazonS3Client.getBucketLocation(AppConstants.S3_BUCKET_NAME));

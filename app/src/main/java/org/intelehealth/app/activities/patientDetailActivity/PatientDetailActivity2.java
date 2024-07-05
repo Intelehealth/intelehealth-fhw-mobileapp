@@ -1838,53 +1838,53 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-    private String getStateTranslated(String state, String language) {
-        String desiredVal = state;
-        JSONObject jsonObject = FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json");
-        if (jsonObject != null) {
-            StateDistMaster mStateDistMaster = new Gson().fromJson(jsonObject.toString(), StateDistMaster.
-                    class);
-            for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
-                String sName = mStateDistMaster.getStateDataList().get(i).getState();
-                if (sName.equalsIgnoreCase(state)) {
-                    if (language.equalsIgnoreCase("hi"))
-                        desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
-                    else if (language.equalsIgnoreCase("en"))
-                        desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
-                    break;
-                }
-            }
-        }
-
-        return desiredVal;
-    }
-
-    private String getDistrictTranslated(String state, String district, String language) {
-        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
-        List<DistData> distDataList = new ArrayList<>();
-        String desiredVal = district;
-
-        for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
-            String sName = mStateDistMaster.getStateDataList().get(i).getState();
-            if (sName.equalsIgnoreCase(state)) {
-                distDataList = mStateDistMaster.getStateDataList().get(i).getDistDataList();
-                break;
-            }
-        }
-
-        if (distDataList != null && !distDataList.isEmpty())
-            for (int i = 0; i < distDataList.size(); i++) {
-                if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
-                    if (language.equalsIgnoreCase("hi"))
-                        desiredVal = distDataList.get(i).getNameHindi();
-                    else if (language.equalsIgnoreCase("en"))
-                        desiredVal = distDataList.get(i).getName();
-                    break;
-                }
-            }
-
-        return desiredVal;
-    }
+//    private String getStateTranslated(String state, String language) {
+//        String desiredVal = state;
+//        JSONObject jsonObject = FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json");
+//        if (jsonObject != null) {
+//            StateDistMaster mStateDistMaster = new Gson().fromJson(jsonObject.toString(), StateDistMaster.
+//                    class);
+//            for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
+//                String sName = mStateDistMaster.getStateDataList().get(i).getState();
+//                if (sName.equalsIgnoreCase(state)) {
+//                    if (language.equalsIgnoreCase("hi"))
+//                        desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
+//                    else if (language.equalsIgnoreCase("en"))
+//                        desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return desiredVal;
+//    }
+//
+//    private String getDistrictTranslated(String state, String district, String language) {
+//        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
+//        List<DistData> distDataList = new ArrayList<>();
+//        String desiredVal = district;
+//
+//        for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
+//            String sName = mStateDistMaster.getStateDataList().get(i).getState();
+//            if (sName.equalsIgnoreCase(state)) {
+//                distDataList = mStateDistMaster.getStateDataList().get(i).getDistDataList();
+//                break;
+//            }
+//        }
+//
+//        if (distDataList != null && !distDataList.isEmpty())
+//            for (int i = 0; i < distDataList.size(); i++) {
+//                if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
+//                    if (language.equalsIgnoreCase("hi"))
+//                        desiredVal = distDataList.get(i).getNameHindi();
+//                    else if (language.equalsIgnoreCase("en"))
+//                        desiredVal = distDataList.get(i).getName();
+//                    break;
+//                }
+//            }
+//
+//        return desiredVal;
+//    }
 
     // profile pic download
     public void profilePicDownloaded() {

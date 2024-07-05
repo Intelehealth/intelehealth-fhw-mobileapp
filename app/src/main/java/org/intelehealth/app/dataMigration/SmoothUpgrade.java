@@ -428,7 +428,7 @@ public class SmoothUpgrade {
         if (new File(AppConstants.dbfilepath).exists())
             myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
         else {
-            mypath = Environment.getExternalStoragePublicDirectory("InteleHealth_DB") + "Intelehealth.db";
+            mypath = context.getExternalFilesDir("InteleHealth_DB") + "Intelehealth.db";
             if (new File(mypath).exists())
                 myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
         }

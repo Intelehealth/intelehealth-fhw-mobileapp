@@ -886,7 +886,7 @@ public class ChatActivity extends AppCompatActivity {
                                 //Below code is to test the above fileBytesArray is correct or not.
                                 //Below we are creating a MainTest file in your internal storage (For that You need write Storage permission) and checking the content same as original file
                                 //In-case of file type change .pdf to .txt or whatever type of file you are choosing
-                                File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" +
+                                File mFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" +
                                         UUID.randomUUID().toString() + ".pdf");
                                 OutputStream fileOutputStream = new FileOutputStream(mFile);
                                 fileOutputStream.write(fileBytesArray);

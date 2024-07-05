@@ -637,7 +637,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
@@ -694,7 +694,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
@@ -735,7 +735,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
@@ -777,7 +777,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             String fileName = patientName + "_" + showVisitID() + ".pdf";*/
-            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
+            String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
