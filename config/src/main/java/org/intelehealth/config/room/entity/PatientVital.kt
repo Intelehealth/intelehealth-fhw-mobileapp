@@ -11,11 +11,18 @@ import com.google.gson.annotations.SerializedName
  **/
 @Entity(tableName = "tbl_patient_vital")
 data class PatientVital(
-    val name:String,
+    val name: String,
+
     @SerializedName("key")
+
     @PrimaryKey
     val vitalKey: String,
+
     val uuid: String,
+
     @SerializedName("is_mandatory")
-    val isMandatory: Boolean
+    val isMandatory: Boolean,
+
+    /*@SerializedName("is_enabled")
+    val isEnabled: Boolean*/
 )
