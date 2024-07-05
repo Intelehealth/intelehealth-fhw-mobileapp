@@ -612,11 +612,6 @@ public class VitalsActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (mBpDia.getText().toString().isEmpty()) {
-                    mBpSys.setText("");
-                    return;
-                }
-
                 bpDiaColorCode(mBpDia.getText().toString().trim());
             }
         });
