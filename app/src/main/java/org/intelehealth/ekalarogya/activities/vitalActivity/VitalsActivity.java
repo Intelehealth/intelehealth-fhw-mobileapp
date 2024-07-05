@@ -551,13 +551,13 @@ public class VitalsActivity extends AppCompatActivity {
                     String diaValue = "";
                     if (mBpDia != null)
                         diaValue = mBpDia.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) || Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
                         mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                     } else if (!diaValue.trim().isEmpty() && Double.valueOf(s.toString()) <= Double.valueOf(diaValue)) {
                         mBpSys.setError(getString(R.string.bpsys_not_less_error));
                     } else {
                         mBpSys.setError(null);
+                        mBpDia.setError(null);
                     }
                 }
             }
@@ -572,6 +572,7 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (mBpSys.getText().toString().isEmpty()) {
                     mBpDia.setText("");
+                    mBpDia.setError(null);
                     return;
                 }
 
@@ -599,6 +600,7 @@ public class VitalsActivity extends AppCompatActivity {
                     } else if (!sysValue.trim().isEmpty() && Double.valueOf(s.toString()) >= Double.valueOf(sysValue)) {
                         mBpDia.setError(getString(R.string.bpdia_not_more_error));
                     } else {
+                        mBpSys.setError(null);
                         mBpDia.setError(null);
                     }
                 }
