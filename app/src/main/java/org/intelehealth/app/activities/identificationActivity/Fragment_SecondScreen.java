@@ -376,7 +376,7 @@ public class Fragment_SecondScreen extends Fragment {
     private final DefaultOnItemSelectedListener blockSelectedListener = new DefaultOnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            if (i > 1 && mBlockSpinner.getTag() != null) {
+            if (i > 0 && mBlockSpinner.getTag() != null) {
                 Block block = (Block) adapterView.getSelectedItem();
                 Timber.tag(TAG).e("Block index =>%s", i);
                 Timber.tag(TAG).e("Block onItemSelected =>%s", new Gson().toJson(block));
@@ -407,49 +407,32 @@ public class Fragment_SecondScreen extends Fragment {
     };
 
     private void setBlockAdapter(List<Block> blocks) {
-        Log.v(TAG, "setBlockAdapter =>" + new Gson().toJson(blocks));
+//        Log.v(TAG, "setBlockAdapter =>" + new Gson().toJson(blocks));
+        // To avoid the duplication of list used temp array
+        List<Block> temp = new ArrayList<>(blocks);
         Block defaultBlock = new Block(getResources().getString(R.string.select_spinner), null, null);
-        blocks.add(0, defaultBlock);
+        temp.add(0, defaultBlock);
 //        String[] blockList = new String[blocks.size() + 1];
 //        blockList[0] = getResources().getString(R.string.select_spinner);
-//        for (int i = 1; i <= blocks.size(); i++) {
-//            Timber.tag(TAG).d("blocks =>%s", blocks.get(i - 1).getName());
-//            blockList[i] = blocks.get(i - 1).getName();
-//        }
+        for (int i = 0; i < temp.size(); i++) {
+            Timber.tag(TAG).d("blocks =>%s", temp.get(i).getName());
+        }
 
 
-        ArrayAdapter<Block> blockAdapter = new ArrayAdapter<Block>(requireContext(), R.layout.simple_spinner_item_1, blocks);
+        ArrayAdapter<Block> blockAdapter = new ArrayAdapter<Block>(requireContext(), R.layout.simple_spinner_item_1, temp);
         blockAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mBlockSpinner.setAdapter(blockAdapter);
-        mBlockSpinner.setTag(blocks);
+        mBlockSpinner.setTag(temp);
         mBlockSpinner.setOnItemSelectedListener(blockSelectedListener);
         mBlockSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress3() != null && !patientDTO.getAddress3().isEmpty()) {
-            for (Block b : blocks) {
+            for (Block b : temp) {
                 if (b.getName().equalsIgnoreCase(patientDTO.getAddress3())) {
                     mBlockSpinner.setSelection(blockAdapter.getPosition(b));
                 }
             }
         }
-//        mStateNameSpinner.setSelection(1);
-//        int index = blockAdapter.getPosition(getString(R.string.default_state));
-//        Timber.tag(TAG).d("Default State index=>%s", index);
-//        mStateNameSpinner.setSelection(index);
-
-//        if (fromThirdScreen || fromFirstScreen) {
-//            int itemPosition = stateAdapter.getPosition(getString(R.string.default_state));
-//            for (int k = 0; k < mLastSelectedStateList.size(); k++) {
-//
-//                if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
-//                    itemPosition = k + 1;
-//                    break;
-//                }
-//            }
-//            mBlockSpinner.setSelection(itemPosition);
-//        }
-////        boolean enable = PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE);
-//        mBlockSpinner.setEnabled(false);
     }
 
     private void setGramPanchayatAdapter(List<GramPanchayat> gramPanchayats) {
@@ -464,14 +447,14 @@ public class Fragment_SecondScreen extends Fragment {
 //        }
 
 
-        ArrayAdapter<GramPanchayat> gpAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_spinner_item_1, gramPanchayats);
+        ArrayAdapter<GramPanchayat> gpAdapter = new ArrayAdapter<>(requireActivity(), R.layout.simple_spinner_item_1, gramPanchayats);
         gpAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         mGramPanchayatSpinner.setEnabled(true);
         mGramPanchayatSpinner.setAdapter(gpAdapter);
         mGramPanchayatSpinner.setTag(gramPanchayats);
         mGramPanchayatSpinner.setOnItemSelectedListener(gpSelectedListener);
-        mGramPanchayatSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
+        mGramPanchayatSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.popup_menu_background));
         if (patientDTO.getAddress4() != null && !patientDTO.getAddress4().isEmpty()) {
             for (GramPanchayat gp : gramPanchayats) {
                 if (gp.getName().equalsIgnoreCase(patientDTO.getAddress4())) {
@@ -479,24 +462,6 @@ public class Fragment_SecondScreen extends Fragment {
                 }
             }
         }
-//        mStateNameSpinner.setSelection(1);
-//        int index = blockAdapter.getPosition(getString(R.string.default_state));
-//        Timber.tag(TAG).d("Default State index=>%s", index);
-//        mStateNameSpinner.setSelection(index);
-
-//        if (fromThirdScreen || fromFirstScreen) {
-//            int itemPosition = stateAdapter.getPosition(getString(R.string.default_state));
-//            for (int k = 0; k < mLastSelectedStateList.size(); k++) {
-//
-//                if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
-//                    itemPosition = k + 1;
-//                    break;
-//                }
-//            }
-//            mBlockSpinner.setSelection(itemPosition);
-//        }
-////        boolean enable = PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE);
-//        mBlockSpinner.setEnabled(false);
     }
 
     private void setVillageAdapter(List<Village> villages) {
@@ -525,24 +490,6 @@ public class Fragment_SecondScreen extends Fragment {
                 }
             }
         }
-//        mStateNameSpinner.setSelection(1);
-//        int index = blockAdapter.getPosition(getString(R.string.default_state));
-//        Timber.tag(TAG).d("Default State index=>%s", index);
-//        mStateNameSpinner.setSelection(index);
-
-//        if (fromThirdScreen || fromFirstScreen) {
-//            int itemPosition = stateAdapter.getPosition(getString(R.string.default_state));
-//            for (int k = 0; k < mLastSelectedStateList.size(); k++) {
-//
-//                if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
-//                    itemPosition = k + 1;
-//                    break;
-//                }
-//            }
-//            mBlockSpinner.setSelection(itemPosition);
-//        }
-////        boolean enable = PatientRegFieldsUtils.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.STATE);
-//        mBlockSpinner.setEnabled(false);
     }
 
     private final DefaultOnItemSelectedListener distListener = new DefaultOnItemSelectedListener() {
@@ -621,21 +568,6 @@ public class Fragment_SecondScreen extends Fragment {
 
                     mDistrictET.setVisibility(View.GONE);
                     mDistrictNameSpinner.setVisibility(View.VISIBLE);
-
-//                    if (fromThirdScreen || fromFirstScreen) {
-//                        int itemPosition = 0;
-//                        for (int k = 0; k < mLastSelectedStateList.size(); k++) {
-//
-//                            if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
-//                                itemPosition = k + 1;
-//                                break;
-//                            }
-//                        }
-//                        mStateNameSpinner.setSelection(itemPosition);
-//                    }
-//                    else
-//                        mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
-
 
                 } else {
                     mIsIndiaSelected = false;
@@ -957,10 +889,8 @@ public class Fragment_SecondScreen extends Fragment {
 
         mStateNameSpinner.setAdapter(stateAdapter);
         mStateNameSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.popup_menu_background));
-//        mStateNameSpinner.setSelection(1);
         int index = stateAdapter.getPosition(getString(R.string.default_state));
         Timber.tag(TAG).d("Default State index=>%s", index);
-//        mStateNameSpinner.setSelection(index);
 
         if (fromThirdScreen || fromFirstScreen) {
             int itemPosition = stateAdapter.getPosition(getString(R.string.default_state));

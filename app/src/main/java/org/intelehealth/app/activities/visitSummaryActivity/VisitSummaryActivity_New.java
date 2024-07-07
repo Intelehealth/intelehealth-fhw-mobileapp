@@ -232,7 +232,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private RelativeLayout add_additional_doc;
-    private LinearLayout btn_bottom_printshare;
+    private ConstraintLayout btn_bottom_printshare;
     private ConstraintLayout btn_bottom_vs;
     private Button preview_with_prescription_lay;
     //    preview_with_save_visit_lay;
@@ -1794,101 +1794,99 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         // family history
-        editFamHist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
-                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                famHistDialog.setView(convertView);
+        editFamHist.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+            //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
+            famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
+            final LayoutInflater inflater = getLayoutInflater();
+            View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+            famHistDialog.setView(convertView);
 
-                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
-                if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
-                famHistText.setEnabled(false);
+            final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+            if (famHistory.getValue() != null)
+                famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
+            famHistText.setEnabled(false);
 
-                /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
-                        //  textInput.setTitle(R.string.question_text_input);
-                        final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
-                        View convertView = inflater.inflate(R.layout.dialog_edittext, null);
-                        textInput.setView(convertView);
+            /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                    // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
+                    //  textInput.setTitle(R.string.question_text_input);
+                    final LayoutInflater inflater = LayoutInflater.from(VisitSummaryActivity_New.this);
+                    View convertView = inflater.inflate(R.layout.dialog_edittext, null);
+                    textInput.setView(convertView);
 
-                        //  final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
-                        EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
-                        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-                        sharebtn.setVisibility(View.GONE);
+                    //  final EditText dialogEditText = new EditText(VisitSummaryActivity_New.this);
+                    EditText dialogEditText = convertView.findViewById(R.id.editText_mobileno);
+                    Button sharebtn = convertView.findViewById(R.id.sharebtn);
+                    sharebtn.setVisibility(View.GONE);
 
-                        if (famHistory.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
-                        else
-                            dialogEditText.setText("");
-                        //    textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                    if (famHistory.getValue() != null)
+                        dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
+                    else
+                        dialogEditText.setText("");
+                    //    textInput.setView(dialogEditText);
+                    textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //famHistory.setValue(dialogEditText.getText().toString());
+                            famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
 
-                                if (famHistory.getValue() != null) {
-                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
-                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
-                                }
-                                updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-                                dialog.dismiss();
+                            if (famHistory.getValue() != null) {
+                                famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                                famHistView.setText(Html.fromHtml(famHistory.getValue()));
                             }
-                        });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                      *//*  AlertDialog alertDialog = textInput.show();
-                        dialogInterface.dismiss();
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+                            updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                            dialog.dismiss();
+                        }
+                    });
+                    textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                  *//*  AlertDialog alertDialog = textInput.show();
+                    dialogInterface.dismiss();
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
 *//*
-                        AlertDialog alertDialog = textInput.create();
-                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                        int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                        alertDialog.show();
+                    AlertDialog alertDialog = textInput.create();
+                    alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+                    alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                    int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                    alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+                    alertDialog.show();
 
-                        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                        Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                        nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                        Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                        neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                        neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+                    Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                    neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                    neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
 
-                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-                        dialogInterface.dismiss();
-                    }
-                });*/
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
+                    dialogInterface.dismiss();
+                }
+            });*/
 
-                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+            famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
 
-                famHistDialog.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+            famHistDialog.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                    Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
 //                        intent1.putExtra("patientUuid", patientUuid);
 //                        intent1.putExtra("visitUuid", visitUuid);
 //                        intent1.putExtra("gender", patientGender);
@@ -1899,37 +1897,36 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
 
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-                        mCommonVisitData.setIntentTag("edit");
-                        intent1.putExtra("CommonVisitData", mCommonVisitData);
+                    mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                    mCommonVisitData.setIntentTag("edit");
+                    intent1.putExtra("CommonVisitData", mCommonVisitData);
 
-                        //startActivity(intent1);
-                        mStartForEditVisit.launch(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
+                    //startActivity(intent1);
+                    mStartForEditVisit.launch(intent1);
+                    dialogInterface.dismiss();
+                }
+            });
 
 //                famHistDialog.show();
-                AlertDialog alertDialog = famHistDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-                int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
+            AlertDialog alertDialog = famHistDialog.create();
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+            int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+            alertDialog.show();
 
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
+            // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            nb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
+            //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
-                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
-                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-            }
+            Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            neutralb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
+            neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity_New.this, R.font.lato_bold));
+            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
         });
         // edit listeners - end
 
@@ -2716,6 +2713,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         /*btn_vs_print = findViewById(R.id.btn_vs_print);   // print
         btn_vs_share = findViewById(R.id.btn_vs_share);   // share*/
         mViewPrescriptionButton = findViewById(R.id.btnPrescriptionView);   // share*/
+        mViewPrescriptionButton.setVisibility(View.GONE);
 
         btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
         uploadButton = findViewById(R.id.btn_vs_sendvisit);

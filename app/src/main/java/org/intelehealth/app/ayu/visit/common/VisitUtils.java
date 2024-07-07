@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
+
 import java.text.DecimalFormat;
 
 public class VisitUtils {
@@ -69,20 +71,21 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if(nodeGender==null || nodeGender.isEmpty()){
-            return true;
-        }
         float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
         float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
-        boolean isValidByGender = true;
-        if (patientGender.equalsIgnoreCase("M") &&
-                nodeGender.equalsIgnoreCase("0")) {
 
-            isValidByGender = false;
-        } else if (patientGender.equalsIgnoreCase("F") &&
-                nodeGender.equalsIgnoreCase("1")) {
-            isValidByGender = false;
+        Timber.tag(VisitUtils.class.getSimpleName()).d("Age calculation Min:%1s, Max:%2s", minAge, maxAge);
+        boolean isValidByGender = true;
+        if (nodeGender != null && !nodeGender.isEmpty()) {
+            if (patientGender.equalsIgnoreCase("M") &&
+                    nodeGender.equalsIgnoreCase("0")) {
+                isValidByGender = false;
+            } else if (patientGender.equalsIgnoreCase("F") &&
+                    nodeGender.equalsIgnoreCase("1")) {
+                isValidByGender = false;
+            }
         }
+
 
         if (isValidByGender) {
             if (minAgeF != 0f && maxAgeF != 0f) {

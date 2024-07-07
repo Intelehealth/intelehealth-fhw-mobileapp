@@ -750,6 +750,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private Node loadFileToNode(String fileName, boolean isForRootFile) {
+        Timber.tag(TAG).d("loadFileToNode: ");
         JSONObject currentFile = null;
         if (!sessionManager.getLicenseKey().isEmpty()) {
             if (isForRootFile) {
@@ -765,7 +766,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
 
         Node mainNode = new Node(currentFile);
-        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+//        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+        List<Node> updated = new ArrayList<>(mainNode.getOptionsList());
+        for (Node option : mainNode.getOptionsList()) {
+            Timber.tag(TAG).d("AGE TEST Node:%s", option.getText());
+            Timber.tag(TAG).d("AGE TEST GENDER:%s", option.getGender());
+            Timber.tag(TAG).d("AGE TEST MIN:%s", option.getMin_age());
+            Timber.tag(TAG).d("AGE TEST MAX:%s", option.getMax_age());
+            boolean validNode = VisitUtils.checkNodeValidByGenderAndAge(
+                    patientGender,
+                    float_ageYear_Month,
+                    option.getGender(),
+                    option.getMin_age(),
+                    option.getMax_age());
+            if (!validNode) updated.remove(option);
+        }
+        mainNode.setOptionsList(updated);
         return mainNode;
     }
 
