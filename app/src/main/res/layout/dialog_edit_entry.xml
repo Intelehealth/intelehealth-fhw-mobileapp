@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/fu_margin_start">
 
-   <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_marginLeft="@dimen/fu_margin_start"
-       android:paddingVertical="15dp"
-       android:fillViewport="true"
-       android:fadeScrollbars="false"
-        android:layout_marginRight="@dimen/fu_margin_start">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginLeft="@dimen/fu_margin_start"
+            android:layout_marginRight="@dimen/fu_margin_start"
+            android:fadeScrollbars="false"
+            android:fillViewport="true"
+            android:paddingVertical="15dp">
 
-    <TextView
-        android:id="@+id/textView_entry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_5"
-        android:scrollbars="vertical" />
+            <TextView
+                android:id="@+id/textView_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:scrollbars="vertical"
+                android:textColor="@color/black" />
 
-    </ScrollView>
+        </ScrollView>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

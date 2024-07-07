@@ -1489,8 +1489,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 //complaintDialog.show();
                 AlertDialog alertDialog = complaintDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+//                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+//                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
@@ -1634,8 +1634,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 });
 
                 AlertDialog alertDialog = physicalDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+//                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+//                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
@@ -1770,8 +1770,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 //                historyDialog.show();
                 AlertDialog alertDialog = historyDialog.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+//                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+//                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
                 alertDialog.show();
@@ -1907,10 +1907,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             });
 
-//                famHistDialog.show();
+//            famHistDialog.show();
+//            famHistDialog.setBackground(ContextCompat.getDrawable(this, R.drawable.ui2_rounded_corners_dialog_bg));
             AlertDialog alertDialog = famHistDialog.create();
-            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+//            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+//            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
             int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
             alertDialog.show();
