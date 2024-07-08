@@ -24,7 +24,7 @@ class PatientPersonalInfoFragment : Fragment(R.layout.fragment_patient_personal_
         binding = FragmentPatientPersonalInfoBinding.bind(view)
         setupGuardianType()
         setupEmContactType()
-        setupErroMessageForInputType()
+//        setupErroMessageForInputType()
     }
 
     private fun setupErroMessageForInputType() {

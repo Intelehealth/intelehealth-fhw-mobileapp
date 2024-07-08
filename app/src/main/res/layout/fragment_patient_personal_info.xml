@@ -99,7 +99,6 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETFirstName"
-                        style="@style/AppTheme.InputBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
@@ -269,44 +268,26 @@
                         android:minHeight="@dimen/std_48dp" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
-                <LinearLayout
-                    android:id="@+id/llPatientPersonalPhoneNumber"
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayPhoneNumber"
+                    style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_8dp"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:hint="@string/phone_number"
+                    app:expandedHintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayGuardianType">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayGuardianType"
+                    app:prefixText="+91 | "
+                    app:startIconDrawable="@drawable/img"
+                    app:startIconTint="@null">
 
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/countrycode_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/std_48dp"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/input_edittext_border"
-                        android:gravity="center_vertical"
-                        app:ccp_countryPreference="us,in"
-                        app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
-
-                    <EditText
-                        android:id="@+id/etPersonalPhone"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/std_48dp"
-                        android:layout_marginStart="@dimen/std_8dp"
-                        android:layout_weight="1.3"
-                        android:background="@drawable/input_edittext_border"
-                        android:digits="1234567890"
-                        android:hint="@string/phone_number"
-                        android:inputType="number"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/fu_card_margin_updown"
-                        android:paddingBottom="@dimen/margin_10"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
-
-                </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayEmContactType"
@@ -316,7 +297,7 @@
                     android:hint="@string/contact_type_non_required"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llPatientPersonalPhoneNumber">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayPhoneNumber">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoCompleteEmContactType"
@@ -342,44 +323,26 @@
                         android:layout_height="wrap_content" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
-                <LinearLayout
-                    android:id="@+id/llPatientPersonalEMPhoneNumber"
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayEMPhoneNumber"
+                    style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_8dp"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:hint="@string/emergency_contact_number_non_required"
+                    app:expandedHintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayEmContactName">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayEmContactName"
+                    app:prefixText="+91 | "
+                    app:startIconDrawable="@drawable/img"
+                    app:startIconTint="@null">
 
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/countrycodeEmSpinner"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/std_48dp"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/input_edittext_border"
-                        android:gravity="center_vertical"
-                        app:ccp_countryPreference="us,in"
-                        app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
-
-                    <EditText
-                        android:id="@+id/etPersonalEmPhone"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/std_48dp"
-                        android:layout_marginStart="@dimen/std_8dp"
-                        android:layout_weight="1.3"
-                        android:background="@drawable/input_edittext_border"
-                        android:digits="1234567890"
-                        android:hint="@string/emergency_contact_number_non_required"
-                        android:inputType="number"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/fu_card_margin_updown"
-                        android:paddingBottom="@dimen/margin_10"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
-
-                </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETEMPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

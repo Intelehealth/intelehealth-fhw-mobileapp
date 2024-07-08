@@ -8,5 +8,6 @@
     <dimen name="std_12dp">12dp</dimen>
     <dimen name="date_header_text_siz">16sp</dimen>
     <dimen name="call_status_icon_size">16dp</dimen>
+    <dimen name="flag_icon_size">24dp</dimen>
     <dimen name="fabDefaultSize">48dp</dimen>
 </resources>
