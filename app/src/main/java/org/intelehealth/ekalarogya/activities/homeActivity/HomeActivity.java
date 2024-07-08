@@ -313,7 +313,6 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                     ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
                 } else {
                     UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
-                    Toast.makeText(HomeActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 UnUploadedVisitsNotificationWorker.schedule(getApplicationContext());
