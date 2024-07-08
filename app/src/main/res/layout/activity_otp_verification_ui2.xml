@@ -1,112 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_parent_otp"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:orientation="vertical"
     android:weightSum="2"
     tools:context=".activities.forgotPasswordNew.ForgotPasswordActivity_New">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout_parent_otp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="?attr/colorPrimary"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageview_back_otp_verify"
-            android:layout_width="@dimen/back_arrow_demo1_width"
-            android:layout_height="@dimen/back_arrow_demo1_width"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/back_arrow_forgot_margin_start"
-            android:layout_marginTop="@dimen/back_arrow_demo1_width"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="@color/white" />
-
-        <LinearLayout
-            android:id="@+id/rv_help_info"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/back_arrow_demo1_width"
-            android:layout_marginEnd="@dimen/tv_help_on_otp_margin_end"
-            android:orientation="horizontal">
+            android:background="?attr/colorPrimary"
+            android:orientation="vertical">
 
-            <TextView
+            <ImageView
+                android:id="@+id/imageview_back_otp_verify"
+                android:layout_width="@dimen/back_arrow_demo1_width"
+                android:layout_height="@dimen/back_arrow_demo1_width"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/back_arrow_forgot_margin_start"
+                android:layout_marginTop="@dimen/back_arrow_demo1_width"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/rv_help_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/help"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/back_arrow_demo1_width"
+                android:layout_marginEnd="@dimen/tv_help_on_otp_margin_end"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_hint_text_size" />
+
+                <ImageView
+                    android:id="@+id/iv_help_info_otp"
+                    android:layout_width="@dimen/back_arrow_demo1_width"
+                    android:layout_height="@dimen/back_arrow_demo1_width"
+                    android:layout_marginStart="@dimen/iv_help_info_margin_start"
+                    android:src="@drawable/info_svg"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageview_back_otp_verify"
+                android:layout_marginTop="@dimen/forgot_password_top_margin"
+                android:gravity="center_horizontal"
+                android:text="@string/forgot_password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_please_continue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_forgot_password"
+                android:layout_marginTop="@dimen/margin_10"
+                android:gravity="center_horizontal"
+                android:text="@string/forgot_password_instruction"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_hint_text_size" />
 
             <ImageView
-                android:id="@+id/iv_help_info_otp"
-                android:layout_width="@dimen/back_arrow_demo1_width"
-                android:layout_height="@dimen/back_arrow_demo1_width"
-                android:layout_marginStart="@dimen/iv_help_info_margin_start"
-                android:src="@drawable/info_svg"
-                app:tint="@color/white" />
+                android:layout_width="@dimen/image_intelehealth_login_width"
+                android:layout_height="@dimen/image_intelehealth_login_height"
+                android:layout_below="@+id/tv_please_continue"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/iv_main_icon_otp_margin_top"
+                android:layout_marginBottom="85dp"
+                android:src="@drawable/ui2_ic_forgot_password_icon" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_forgot_password"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageview_back_otp_verify"
-            android:layout_marginTop="@dimen/forgot_password_top_margin"
-            android:gravity="center_horizontal"
-            android:text="@string/forgot_password"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_text_size"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-20dp"
+            android:background="@drawable/top_rounded_whitebg"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/padding_25"
+            android:paddingTop="@dimen/padding_30"
+            android:paddingEnd="@dimen/padding_25">
 
-        <TextView
-            android:id="@+id/tv_please_continue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_forgot_password"
-            android:layout_marginTop="@dimen/margin_10"
-            android:gravity="center_horizontal"
-            android:text="@string/forgot_password_instruction"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_hint_text_size" />
-
-        <ImageView
-            android:layout_width="@dimen/image_intelehealth_login_width"
-            android:layout_height="@dimen/image_intelehealth_login_height"
-            android:layout_below="@+id/tv_please_continue"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/iv_main_icon_otp_margin_top"
-            android:src="@drawable/ui2_ic_forgot_password_icon" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/login_scroll_margin_top"
-        android:layout_weight="1"
-        android:background="@drawable/top_rounded_whitebg"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/padding_25"
-        android:paddingTop="@dimen/padding_30"
-        android:paddingEnd="@dimen/padding_25">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_above="@+id/button_verify_otp"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="25dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -187,20 +195,27 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
 
-        <Button
-            android:id="@+id/button_verify_otp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-            android:drawableTint="@color/iconTintWhite"
-            android:paddingStart="@dimen/common_button_padding_left"
-            android:paddingTop="@dimen/common_button_padding_top"
-            android:paddingEnd="@dimen/common_button_padding_right"
-            android:paddingBottom="@dimen/common_button_padding_bottom"
-            android:text="@string/button_continue" />
-    </RelativeLayout>
-</LinearLayout>
+
+            <Button
+                android:id="@+id/button_verify_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:drawableTint="@color/iconTintWhite"
+                android:paddingStart="@dimen/common_button_padding_left"
+                android:paddingTop="@dimen/common_button_padding_top"
+                android:paddingEnd="@dimen/common_button_padding_right"
+                android:paddingBottom="@dimen/margin_20"
+                android:text="@string/button_continue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="1.0"
+                tools:layout_editor_absoluteX="25dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

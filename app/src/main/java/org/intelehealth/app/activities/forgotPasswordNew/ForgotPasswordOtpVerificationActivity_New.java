@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,10 +18,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,7 +57,9 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     String userUuid = "", userPhoneNum, userName;
     TextView tvOtpError, tvResendOtp;
     EditText etPin1, etPin2, etPin3, etPin4, etPin5, etPin6;
-    LinearLayout layoutParent, rvHelpInfo;
+    LinearLayout  rvHelpInfo;
+    ScrollView scrollView;
+    LinearLayout layoutParent;
     SnackbarUtils snackbarUtils;
     Button buttonVerifyOtp;
     SessionManager sessionManager = null;
@@ -88,6 +93,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         snackbarUtils = new SnackbarUtils();
         layoutParent = findViewById(R.id.layout_parent_otp);
+        scrollView = findViewById(R.id.scroll_view);
         rvHelpInfo = findViewById(R.id.rv_help_info);
         etPin1.requestFocus();
 
@@ -153,6 +159,18 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         handleEditextFocus();
         resendOtp();
 
+        //scrolling bottom to the layout to handle keyboard overlapping
+        final View rootView = findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
+            rootView.getWindowVisibleDisplayFrame(r);
+            int screenHeight = rootView.getRootView().getHeight();
+            int keypadHeight = screenHeight - r.bottom;
+
+            if (keypadHeight > screenHeight * 0.15) {
+                scrollView.scrollTo(0,buttonVerifyOtp.getBottom());
+            }
+        });
     }
 
     private void setUIForForgotUserName() {
