@@ -291,6 +291,14 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
 
+        // Change added to accommodate full screen intent permission in Android 14
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            int useFullScreenIntent = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT);
+            if (useFullScreenIntent != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT);
+            }
+        }
+
         if (accessNetworkState != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_NETWORK_STATE);
         }
@@ -316,6 +324,7 @@ public class SplashActivity extends AppCompatActivity {
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
         }
+
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
