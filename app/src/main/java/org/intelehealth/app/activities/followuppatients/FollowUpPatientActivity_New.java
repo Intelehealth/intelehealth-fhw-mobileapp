@@ -442,11 +442,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         sortIm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sortStatus = !sortStatus;
                 filterFrameLay.setVisibility(View.GONE);
                 filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
                 resetList(false);
-                //resetData();
-                sortStatus = !sortStatus;
                 fetchAndSegregateData(DataLoadingType.INITIAL);
                 if(sortStatus){
                     ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_ascending_order));
@@ -778,7 +777,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             searchQuery = " ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) and ";
         }
 
-        String sortQuery = "";
+        String sortQuery;
         if(sortStatus){
             sortQuery = " order by o.value asc ";
         }else {
@@ -792,7 +791,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.voided='0' and "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                +"(value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' )"
+                +" AND o.voided='0' and "
                 + filterQuery
                 + searchQuery
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
