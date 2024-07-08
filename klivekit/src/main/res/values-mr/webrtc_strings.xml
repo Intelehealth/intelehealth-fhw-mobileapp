@@ -38,4 +38,6 @@
     <string name="decline">घट</string>
     <string name="accept">स्वीकार करा</string>
     <string name="hang_up">हँग अप</string>
+    <string name="call_swipe_up">वर स्वाइप करा</string>
+    <string name="release_now">आता रिलीझ करा</string>
 </resources>
