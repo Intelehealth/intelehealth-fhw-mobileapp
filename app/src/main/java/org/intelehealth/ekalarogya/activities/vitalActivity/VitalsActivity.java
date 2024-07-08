@@ -562,6 +562,7 @@ public class VitalsActivity extends AppCompatActivity {
                         mBpSys.setError(getString(R.string.bpsys_not_less_error));
                     } else {
                         mBpSys.setError(null);
+                        mBpDia.setError(null);
                     }
                 }
             }
@@ -576,6 +577,7 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (mBpSys.getText().toString().isEmpty()) {
                     mBpDia.setText("");
+                    mBpDia.setError(null);
                     return;
                 }
 
@@ -604,6 +606,7 @@ public class VitalsActivity extends AppCompatActivity {
                         mBpDia.setError(getString(R.string.bpdia_not_more_error));
                     } else {
                         mBpDia.setError(null);
+                        mBpSys.setError(null);
                     }
                 }
             }
