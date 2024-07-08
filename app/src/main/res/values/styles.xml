@@ -47,15 +47,7 @@
         <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
     </style>
 
-    <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/colorPrimary</item>
-    </style>
-
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
@@ -67,15 +59,6 @@
 <!--        <item name="android:windowBackground">@drawable/background_splash</item>-->
 <!--    </style>-->
 
-    <style name="SelectableItemTheme">
-        <item name="colorControlHighlight">#5677FC</item>
-    </style>
-
-    <style name="SelectableItemBackground">
-        <item name="android:theme">@style/SelectableItemTheme</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-    </style>
-
     <style name="Theme.Transparent" parent="android:Theme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -83,12 +66,6 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
-    <style name="MyEditTextTheme">
-        <item name="colorControlNormal">#FFFFFF</item>
-        <item name="colorControlActivated">#FFFFFF</item>
-        <item name="colorControlHighlight">#FFFFFF</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -178,12 +155,6 @@
 
     </style>
 
-    <style name="ExposedDropdownGrayBorder" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
-        <item name="boxStrokeWidth">2dp</item>
-        <item name="android:textColorHint">@color/mtrl_textinput_default_box_stroke_color</item>
-    </style>
-
     <style name="TextviewInputTitleStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:lineSpacingExtra">@dimen/common_title_line_spacing</item>
@@ -229,11 +200,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="label_misc_txt_14sp_primary">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
     <style name="label_misc_txt_12sp_primary">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">12sp</item>
@@ -242,12 +208,6 @@
     <style name="label_16sp">
         <item name="android:textColor">
             #1B163A
-        </item>
-    </style>
-
-    <style name="search_txt_enter">
-        <item name="android:textColorHint">
-            #EFE8FF
         </item>
     </style>
 
@@ -275,15 +235,6 @@
         </item>
     </style>
 
-
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
-    </style>
-
-    <style name="DialogCorners">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
-    </style>
 
     <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeWidth">0dp</item>
@@ -355,15 +306,6 @@
         </item>
     </style>
 
-    <style name="success_text_color">
-        <item name="android:textSize">
-            @dimen/card_content_normal_text_size
-        </item>
-        <item name="android:textColor">
-            @color/ui2_green
-        </item>
-    </style>
-
     <style name="registr_error_msg">
         <item name="android:textSize">
             @dimen/find_patient_hint_size
@@ -425,25 +367,10 @@
           <item name="background">@color/colorPrimaryDark</item>
           <item name="backgroundColor">@color/colorPrimary</item>
       </style>-->
-    <style name="ChipTheme" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="chipBackgroundColor">@color/colorPrimary</item>
-        <item name="chipStrokeColor">@color/colorPrimary</item>
-        <item name="chipStrokeWidth">1dp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
 
     <style name="RadioButtonStyleSelection" parent="Theme.AppCompat.Light">
         <!--        <item name="colorControlNormal">@color/indigo</item>-->
         <item name="colorControlActivated">@color/colorPrimary</item>
-    </style>
-
-    <style name="SpinnerTheme1" parent="Theme.AppCompat.Light">
-        <item name="android:colorBackground">@color/red</item>
-        <item name="android:paddingHorizontal">10dip</item>
-
-    </style>
-    <style name="myListPopupWindow" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/popup_menu_background</item>
     </style>
 
     <style name="SpinnerTheme" parent="android:Widget.Spinner">

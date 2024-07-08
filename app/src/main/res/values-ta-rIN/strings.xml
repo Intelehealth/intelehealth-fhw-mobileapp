@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">இன்டெலிஹெல்த்</string>
-    <string name="generic_the_flipping_word_next" translatable="false">அடுத்தது</string>
-    <string name="hint_required" translatable="false">தேவை</string>
-    <string name="hint_optional" translatable="false">விரும்பினால்</string>
     <string name="tag_optional" translatable="false">விரும்பினால்</string>
     <string name="generic_ok">சரி</string>
     <string name="generic_cancel">ரத்துசெய்</string>
@@ -12,89 +9,35 @@
     <string name="generic_back" translatable="false">பின் செல்</string>
     <string name="generic_coming_soon" translatable="false">விரைவில் வருகிறது .....</string>
     <string name="action_print" translatable="false">அச்சிடுக</string>
-    <string name="action_sms" translatable="false">எஸ்.எம்.எஸ்</string>
     <string name="action_home" translatable="false">முகப்பு</string>
-    <string name="action_settings" translatable="false">அமைப்புகள்</string>
-    <string name="generic_warning" translatable="false">எச்சரிக்கை!</string>
-    <string name="generic_update" translatable="false">புதுப்பிப்பு</string>
-    <string name="generic_deleted" translatable="false">நீக்கப்பட்டது</string>
     <string name="title_activity_login" translatable="false">ஏகல் ஆரோக்கியம்</string>
-    <string name="prompt_email" translatable="false">பயனர்பெயர்</string>
-    <string name="prompt_password" translatable="false">கடவுச்சொல்</string>
     <string name="prompt_admin_password" translatable="false">நிர்வாகி கடவுச்சொல்</string>
-    <string name="action_sign_in" translatable="false">உள்நுழைய</string>
     <string name="action_sign_in_short" translatable="false">உள்நுழைக</string>
     <string name="url_invalid" translatable="false">உங்கள் உர்ல் ஐச் சரிபார்க்கவும்.</string>
-    <string name="prefix_invalid" translatable="false">வேறு முன்னொட்டைத் தேர்ந்தெடுக்கவும்!</string>
-    <string name="error_invalid_username" translatable="false">"இந்தப் பயனர்பெயர் தவறானது</string>
     <string name="error_invalid_email">இந்த மின்னஞ்சல் முகவரி தவறானது</string>
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
     <string name="error_incorrect_password" translatable="false">உள்ளிடப்பட்ட பயனர்பெயர் மற்றும் கடவுச்சொல்லைச் சரிபார்க்கவும்</string>
     <string name="error_field_required" translatable="false">இந்தப் புலம் தேவை</string>
-    <string name="error_field_required_non_adult" translatable="false">18 வயதுக்குட்பட்டவர்களுக்கு மட்டுமே அறை தேவை</string>
     <string name="error_network" translatable="false">பிணைய பிழை</string>
     <string name="error_location_not_selected" translatable="false">இருப்பிட கீழ்தோன்றலில் இருந்து ஒரு இடத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="error_location_not_fetched" translatable="false">இருப்பிடங்களைப் பெற முடியவில்லை</string>
-    <string name="permission_rationale" translatable="false">"மின்னஞ்சல் நிறைவு வழங்கத் தொடர்புகள் அனுமதி தேவை.</string>
-    <string name="device_id" translatable="false">சாதன ஐடி:</string>
-    <string name="cant_login_user" translatable="false">உள்நுழைய முடியவில்லையா?</string>
-    <string name="email_link" translatable="false">உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும் அல்லது support@intelehealth.io க்கு மின்னஞ்சல் அனுப்பவும்</string>
-    <string name="contact_whatsapp">உங்கள் கடவுச்சொல்லை மீட்டமைக்க, தயவுசெய்து முறைமை நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="title_home_screen" translatable="false">முகப்பு</string>
-    <string name="button_new_pt">புதிய நோயாளி</string>
-    <string name="button_find_pt" translatable="false">நோயாளியைக் கண்டுபிடி</string>
-    <string name="button_diagnostic_tests" translatable="false">கண்டறியும் சோதனைகள்</string>
-    <string name="button_active_pt" translatable="false">செயலில் உள்ள நோயாளிகள்</string>
-    <string name="menu_option_sync" translatable="false">தரவைப் புதுப்பிக்கவும்</string>
-    <string name="menu_option_settings" translatable="false">அமைப்புகள்</string>
-    <string name="menu_option_end_of_day" translatable="false">நாள் முடிவு</string>
     <string name="menu_option_logout" translatable="false">வெளியேறு</string>
     <string name="title_activity_identification" translatable="false">புதிய நோயாளியைச் சேர்க்கவும்</string>
-    <string name="identification_screen_prompt_first_name">முதல் பெயர்*</string>
-    <string name="identification_screen_prompt_middle_name">நடுத்தரப் பெயர்</string>
-    <string name="identification_screen_prompt_last_name">கடைசி பெயர்*</string>
-    <string name="identification_screen_prompt_address">முகவரி வரி 1</string>
-    <string name="identification_screen_prompt_address2">முகவரி வரி 2</string>
-    <string name="identification_screen_prompt_phone_number">தொலைபேசி எண்</string>
-    <string name="admin_password_dialog_heading" translatable="false">நிர்வாகி கடவுச்சொல்லை உள்ளிடவும்</string>
-    <string name="identification_screen_prompt_gender" translatable="false">பாலினம்*</string>
     <string name="identification_screen_checkbox_male">ஆண்</string>
     <string name="identification_screen_checkbox_female">பெண்</string>
     <string name="identification_screen_checkbox_other">மற்றவை</string>
-    <string name="identification_screen_prompt_birthday">பிறந்த தேதி*</string>
     <string name="identification_screen_prompt_age">வயது:</string>
-    <string name="identification_screen_prompt_time">நேரம்:</string>
     <string name="identification_screen_prompt_city">கிராமம் / நகரம் / நகரம்*</string>
     <string name="identification_screen_prompt_state">மாநிலம்*</string>
-    <string name="identification_screen_prompt_caste" translatable="false">சாதி</string>
-    <string name="identification_screen_prompt_economic_status" translatable="false">பொருளாதார நிலை</string>
-    <string name="identification_screen_prompt_education" translatable="false">கல்வி நிலை</string>
     <string name="identification_screen_prompt_country" translatable="false">நாடு*</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">அஞ்சல் குறியீடு</string>
-    <string name="identification_screen_prompt_relationship" translatable="false">மகன் / மகள் / மனைவி</string>
-    <string name="identification_screen_prompt_occupation" translatable="false">தொழில்</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">நோயாளி உருவாக்கப்பட்டுவிட்டார்! சேவையகத்தில் பதிவேற்றுகிறது.</string>
-    <string name="identification_screen_error_data_fields" translatable="false">பிழை: தரவு புலங்கள் சரியாக வடிவமைக்கப்படவில்லை</string>
-    <string name="identification_screen_dialog_age" translatable="false">ஆண்டுகளில் வயதை உள்ளிடவும்</string>
-    <string name="identification_screen_dialog_error_dob" translatable="false">பிறந்த தேதி இன்றுக்குப் பிறகு தேதிக்கு நிர்ணயிக்கப்பட்டுள்ளது</string>
-    <string name="identification_screen_dialog_error_gender" translatable="false">பாலினம் தேர்ந்தெடுக்கப்படவில்லை</string>
-    <string name="identification_screen_required_fields" translatable="false">தேவையான புலங்களை உள்ளிடவும்</string>
-    <string name="identification_screen_error_dob" translatable="false">சரியான பிறந்த தேதியை உள்ளிடவும்</string>
-    <string name="identification_screen_error_age" translatable="false">சரியான வயதை உள்ளிடவும்</string>
     <string name="identification_screen_text_years" translatable="false">ஆண்டுகள்</string>
     <string name="identification_screen_text_months" translatable="false">மாதங்கள்</string>
     <string name="identification_screen_picker_years" translatable="false">ஆண்டுகள்</string>
     <string name="identification_screen_picker_months" translatable="false">மாதங்கள்</string>
-    <string name="identification_screen_picker_hours" translatable="false">மணி</string>
-    <string name="identification_screen_picker_minute" translatable="false">நிமிடம்</string>
-    <string name="title_activity_active_patient" translatable="false">செயலில் உள்ள வருகைகள்</string>
     <string name="title_activity_get_patient_history" translatable="false">நோயாளி வரலாறு</string>
-    <string name="title_activity_search_patient" translatable="false">நோயாளி பார்வை</string>
-    <string name="title_activity_complaint_select" translatable="false">புகார்களைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="title_activity_complaint_questions" translatable="false">அனைத்து கேள்விகளுக்கும் பதிலளிக்கவும்</string>
     <string name="title_activity_complaint_node">புகார்களைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="complaint_category_selected" translatable="false">தேர்ந்தெடுக்கப்பட்ட வகைகள்:</string>
-    <string name="complaint_complaint_selected" translatable="false">தேர்ந்தெடுக்கப்பட்ட புகார்கள்:</string>
     <string name="complaint_dialog_title">வருகைக்கான காரணம்</string>
     <string name="complaint_required" translatable="false">புகார் தேர்ந்தெடுக்கப்பட வேண்டும்!</string>
     <string name="complaint_change_selected" translatable="false">மாற்றவும்</string>
@@ -120,149 +63,53 @@
     <string name="table_spo2" translatable="false">ஆக்ஸிஜன் செறிவு (%)</string>
     <string name="search_hint" translatable="false">நோயாளியின் பெயரைத் தேட தட்டச்சு செய்க…</string>
     <string name="action_search" translatable="false">தேடல்</string>
-    <string name="alert_none_found" translatable="false">உள்ளிடப்பட்ட பயனர்பெயர் மற்றும் கடவுச்சொல்லை சரிபார்க்கவும்</string>
     <string name="title_activity_patient_history" translatable="false">கடந்த மருத்துவ வரலாறு</string>
     <string name="title_activity_family_history" translatable="false">குடும்ப வரலாறு</string>
     <string name="title_activity_physical_exam" translatable="false">உடல் தேர்வு</string>
-    <string name="title_activity_patient_summary" translatable="false">வருகை சுருக்கம்</string>
     <string name="visit_summary_temperature" translatable="false">வெப்பநிலை (C)</string>
-    <string name="visit_summary_pulseox" translatable="false">ஆக்ஸிஜன் செறிவு (%)</string>
-    <string name="visit_summary_hw_on_duty" translatable="false">கடமையில் சமூக சுகாதார பணியாளர்</string>
-    <string name="visit_summary_vitals_heading" translatable="false">உயிர்புத்திறன்</string>
-    <string name="visit_summary_height_heading" translatable="false">உயரம் (செ.மீ)</string>
-    <string name="visit_summary_weight" translatable="false">எடை (கிகி)</string>
     <string name="visit_summary_bmi" translatable="false">உடல் நிறை குறியீட்டெண்</string>
     <string name="visit_summary_bp" translatable="false">இரத்த அழுத்தம்</string>
     <string name="visit_summary_pulse" translatable="false">துடிப்பு</string>
-    <string name="visit_summary_previous_reports" translatable="false">முந்தைய அறிக்கைகள்</string>
     <string name="visit_summary_medical_history">மருத்துவ வரலாறு</string>
     <string name="visit_summary_family_history" translatable="false">குடும்ப வரலாறு</string>
     <string name="visit_summary_on_examination" translatable="false">தேர்வில்</string>
     <string name="visit_summary_complaint" translatable="false">வருகைக்கான காரணம்</string>
     <string name="visit_summary_vitals" translatable="false">உயிர்ப்புத்திறன்</string>
-    <string name="visit_summary_doctor_details" translatable="false">மருத்துவர் விவரங்கள்</string>
     <string name="visit_summary_rx" translatable="false">பரிந்துரைக்கப்பட்ட மருந்துகள்</string>
-    <string name="visit_summary_diagnosis" translatable="false">நோய் கண்டறிதல்</string>
-    <string name="visit_summary_advice" translatable="false">மருத்துவ ஆலோசனை</string>
-    <string name="visit_summary_tests_prescribed" translatable="false">சோதனைகள் / பரிந்துரைகள்</string>
-    <string name="visit_summary_additional_comments" translatable="false">கூடுதல் கருத்துரைகள்</string>
-    <string name="visit_summary_heading_name" translatable="false">பெயர்</string>
-    <string name="visit_summary_heading_id" translatable="false">அடையாள ஆவணங்கள்</string>
-    <string name="visit_summary_button_download" translatable="false">பதிவிறக்கம்</string>
     <string name="visit_summary_button_upload" translatable="false">பதிவேற்றவும்</string>
-    <string name="name_button_download" translatable="false">பதிவிறக்க</string>
-    <string name="visit_summary_follow_up_date" translatable="false">பின்தொடர்தல் தேதி</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">நோயாளியின் பின்தொடர்தல் தேதியை நினைவூட்டுங்கள்:</string>
     <string name="visit_summary_upload_reminder" translatable="false">வருகையை முடிக்க முயற்சிக்கும் முன் முதலில் பதிவேற்றவும்.</string>
-    <string name="title_activity_diagnostic_tests_list" translatable="false">கண்டறியும் சோதனையைத் தேர்வுசெய்க</string>
     <string name="wash_hands">கைகளைக் கழுவ நினைவில் கொள்ளுங்கள்</string>
-    <string name="header_patient_detail" translatable="false">நோயாளியின் தகவல்</string>
     <string name="button_history" translatable="false">நோயாளி வரலாறு</string>
     <string name="title_activity_patient_detail" translatable="false">நோயாளி விவரம்</string>
-    <string name="header_medical_history" translatable="false">வரலாறு</string>
-    <string name="button_new_visit" translatable="false">புதிய வருகையைத் தொடங்குங்கள்</string>
-    <string name="header_previous_visits" translatable="false">முந்தைய வருகைகள்</string>
-    <string name="header_patient_history" translatable="false">மருத்துவ வரலாறு</string>
-    <string name="header_family_history" translatable="false">குடும்ப வரலாறு</string>
-    <string name="string_no_hist" translatable="false">நோயின் வரலாறு இல்லை</string>
-    <string name="row_patient_id" translatable="false">நோயாளி அடையாள ஆவணம்</string>
-    <string name="row_dob" translatable="false">பிறந்த தேதி</string>
-    <string name="row_age" translatable="false">வயது</string>
-    <string name="row_address">முகவரி</string>
-    <string name="row_phone_number" translatable="false">தொலைபேசி எண்</string>
-    <string name="row_open_visit" translatable="false">வருகையைத் திறக்கக் க்ளிக் செய்க</string>
-    <string name="title_activity_settings" translatable="false">அமைப்புகள்</string>
-    <string name="pref_header_general" translatable="false">பொது</string>
-    <string name="pref_title_social_recommendations" translatable="false">சமூகப் பரிந்துரைகளை இயக்கு</string>
-    <string name="pref_description_social_recommendations" translatable="false">\"உங்கள் செய்தியின் அடிப்படையில் மக்கள் தொடர்பு கொள்ளப் பரிந்துரைகள்</string>
-    <string name="pref_title_display_name" translatable="false">காட்சி பெயர்</string>
-    <string name="pref_default_display_name">ஜான் ஸ்மித்</string>
-    <string name="pref_header_data_sync">தரவு &amp; புதுப்பிக்கவும்</string>
-    <string name="pref_title_server_url" translatable="false">சேவையக உர்ல்</string>
-    <string name="pref_title_id_prefix" translatable="false">இருப்பிட முன்னொட்டு</string>
-    <string name="pref_header_notifications" translatable="false">அறிவிப்புகள்</string>
-    <string name="pref_title_new_message_notifications" translatable="false">புதிய செய்தி அறிவிப்புகள்</string>
-    <string name="pref_title_ringtone">ரிங்டோன்</string>
-    <string name="pref_title_vibrate">அதிர்வு</string>
-    <string name="toast_crash" translatable="false">பயன்பாட்டு பிழை ஏற்பட்டது</string>
-    <string name="title_activity_setup" translatable="false">அமைவு</string>
-    <string name="title_activity_camera" translatable="false">புகைப்பட கருவி</string>
-    <string name="title_activity_today_patient" translatable="false">இன்றைய வருகைகள்</string>
     <string name="title_activity_additional_documents">கூடுதல் ஆவணங்கள்</string>
     <string name="title_activity_video_library" translatable="false">வீடியோ நூலகம்</string>
     <string name="visit_summary_patient_details" translatable="false">விவரங்களைப் பார்வையிடவும்</string>
-    <string name="setup_internet" translatable="false">அமைப்பதற்கு வலுவான இணைய இணைப்பு தேவை.</string>
-    <string name="generic_manual_entry" translatable="false">கையேடு நுழைவு</string>
-    <string name="generic_erase_redo" translatable="false">அழித்து மீண்டும் செய்யுங்கள்</string>
-    <string name="visit_summary_edit_vitals" translatable="false">உயிர்ப்புத்திறன் திரையில் இருந்து உயிரணுக்களை மீண்டும் செய்யலாம்</string>
-    <string name="permission_camera_rationale" translatable="false">கேமரா மாதிரிக்காட்சியைக் காட்டக் கேமரா அனுமதி தேவை.</string>
-    <string name="permission_camera_denied" translatable="false">கேமரா அனுமதி மறுக்கப்பட்டது. கேமராவை அணுகத் தயவுசெய்து அதை வழங்குவதைக் கருத்தில் கொள்ளுங்கள்!</string>
-    <string name="permission_camera_never_askagain" translatable="false">மீண்டும் கேட்காததால் கேமரா அனுமதி மறுக்கப்பட்டது.</string>
-    <string name="button_allow" translatable="false">அனுமதி</string>
-    <string name="button_deny" translatable="false">மறு</string>
     <string name="button_ok" translatable="false">சரி</string>
     <string name="button_cancel" translatable="false">ரத்துசெய்</string>
     <string name="picture_taken" translatable="false">படம் எடுக்கப்பட்டது</string>
-    <string name="switch_flash" translatable="false">ஃபிளாஷ் மாறவும்</string>
-    <string name="switch_camera" translatable="false">கேமராவை மாற்றவும்</string>
-    <string name="flash_auto" translatable="false">ஃபிளாஷ் ஆட்டோ</string>
-    <string name="flash_off" translatable="false">ஃபிளாஷ் முடக்கு</string>
-    <string name="flash_on" translatable="false">ஃபிளாஷ் ஆன்</string>
-    <string name="permission_sms_rationale" translatable="false">எஸ்எம்எஸ் அனுப்ப எஸ்எம்எஸ் அனுமதி தேவை.</string>
-    <string name="permission_sms_denied" translatable="false">எஸ்எம்எஸ் அனுமதி மறுக்கப்பட்டது. விண்ணப்பத்திலிருந்து எஸ்எம்எஸ் அனுப்ப தயவுசெய்து அதை வழங்குவதைக் கருத்தில் கொள்ளுங்கள்!</string>
-    <string name="permission_sms_never_askagain" translatable="false">மீண்டும் ஒருபோதும் கேட்காததால் எஸ்எம்எஸ் அனுமதி மறுக்கப்பட்டது.</string>
     <string name="button_save" translatable="false">சேமி</string>
     <string name="button_delete" translatable="false">அழி</string>
-    <string name="camera_dialog_default" translatable="false">நல்ல லைட்டிங் நிலைகளில் மட்டுமே ஆவணப் புகைப்படத்தைக் க்ளிக்க்ளிக் செய்க. ஆவணப் புகைப்படம் தெளிவாக இல்லை என்றால், ஆவண ஆவணத்தை மீண்டும் எடுக்கவும்.</string>
-    <string name="offline_credentials_unavailable" translatable="false">ஆஃப்லைன் உள்நுழைவு கிடைக்கவில்லை.</string>
-    <string name="offline_user_does_not_match" translatable="false">பயனர் பொருந்தவில்லை.</string>
-    <string name="offline_authentication_not_possible" translatable="false">ஆஃப்லைனில் அங்கீகரிக்க முடியவில்லை.</string>
     <string name="admin_authentication_not_possible" translatable="false">அங்கீகரிக்க முடியவில்லை.</string>
-    <string name="login_location_select" translatable="false">இருப்பிடத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="prompt_licensekey" translatable="false">உரிம விசை</string>
     <string name="setup_use_demo_mindmap" translatable="false">டெமோ நெறிமுறைகளைப் பயன்படுத்தவும்</string>
     <string name="setup_download_mindmap" translatable="false">நெறிமுறைகளைப் பதிவிறக்குக</string>
     <string name="please_wait_progress" translatable="false">தயவுசெய்து காத்திருங்கள்</string>
-    <string name="downloading_protocols" translatable="false">நெறிமுறைகளைப் பதிவிறக்குகிறது</string>
     <string name="logging_in" translatable="false">உள்நுழைதல்</string>
     <string name="error_downloading_protocols" translatable="false">மன வரைபடங்களைப் பதிவிறக்குவதில் பிழை</string>
-    <string name="sync_stopped" translatable="false">நிறுத்தப்பட்டது</string>
-    <string name="sync_in_progress" translatable="false">நடந்து கொண்டிருக்கிறது</string>
-    <string name="sync_complete" translatable="false">முழுமை</string>
-    <string name="sync_error" translatable="false">பிழை: அத்தகைய நிலை இல்லை</string>
-    <string name="id_number" translatable="false">அடையாள எண்</string>
-    <string name="uploading" translatable="false">பதிவேற்றுகிறது</string>
     <string name="downloading" translatable="false">பதிவிறக்குகிறது ...</string>
     <string name="visit" translatable="false">வருகை</string>
-    <string name="visit_update" translatable="false">புதுப்பிப்பைப் பார்வையிடவும்</string>
     <string name="patient">நோயாளி</string>
-    <string name="patient_update" translatable="false">நோயாளி புதுப்பிப்பு</string>
-    <string name="patient_images" translatable="false">நோயாளி சுயவிவர படம்</string>
-    <string name="visit_images" translatable="false">படங்களைப் பார்வையிடவும்</string>
     <string name="prescription" translatable="false">மருந்து</string>
-    <string name="error_no_data" translatable="false">வருகையை முடிக்க முயற்சிக்கும் முன் முதலில் பதிவிறக்கவும்.</string>
-    <string name="error_phone_number" translatable="false">தொலைபேசி எண் காலியாக இருக்க முடியாது</string>
     <string name="action_end_visit" translatable="false">வருகையை முடி</string>
-    <string name="error_sms" translatable="false">எஸ்எம்எஸ் தோல்வியுற்றது, பின்னர் மீண்டும் முயற்சிக்கவும்!</string>
-    <string name="sms_success" translatable="false">எஸ்எம்எஸ் அனுப்பப்பட்டது!</string>
     <string name="question_update_details" translatable="false">விவரங்களைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
-    <string name="backup_completed" translatable="false">காப்புப்பிரதி முடிந்தது!</string>
-    <string name="hide_text">மறை</string>
-    <string name="show_text">காட்டு</string>
-    <string name="new_patient">புதிய நோயாளி</string>
     <string name="find_patient">நோயாளிகளைக் கண்டறியவும்</string>
-    <string name="video_library">வீடியோ நூலகம்</string>
     <string name="error_no_sd" translatable="false">இந்த அம்சம் SD கார்டுகள் உள்ள சாதனங்களுக்கு மட்டுமே கிடைக்கும்.</string>
     <string name="error_admin_password" translatable="false">நிர்வாகி கடவுச்சொல் தவறு</string>
     <string name="error_no_file" translatable="false">இந்தக் கோப்பகத்தில் கோப்புகள் இல்லை</string>
-    <string name="error_no_camera" translatable="false">கேமரா எதுவும் நிறுவப்படவில்லை.</string>
-    <string name="error_delete" translatable="false">நீக்குவதில் பிழை</string>
-    <string name="error_offline_login" translatable="false">ஆஃப்லைன் உள்நுழைவு தோல்வியுற்றது</string>
     <string name="success_offline_login" translatable="false">ஆஃப்லைன் உள்நுழைவு வெற்றிகரமாக</string>
     <string name="invalidate_offline_login" translatable="false">ஆஃப்லைன் உள்நுழைவு தவறானது</string>
-    <string name="patient_upload_error" translatable="false">நோயாளி பதிவேற்றப்படவில்லை</string>
     <string name="patient_not_registered" translatable="false">நோயாளி பதிவு செய்யப்படவில்லை</string>
-    <string name="action_sync_all" translatable="false">தரவைப் புதுப்பிக்கவும்</string>
     <string name="weight_error">எடை %1$s கிலோவுக்குக் குறைவாக இருக்க வேண்டும்</string>
     <string name="height_error">உயரம் 0 முதல் %1$s செ.மீ வரை இருக்க வேண்டும்</string>
     <string name="spo2_error">ஆக்ஸிஜன் செறிவு %1$s முதல் %2$s வரை இருக்க வேண்டும்</string>
@@ -272,55 +119,9 @@
     <string name="resp_error">சுவாச விகிதம் %1$s முதல் %2$s வரை இருக்க வேண்டும்</string>
     <string name="temp_error">வெப்பநிலை %1$s முதல் %2$s வரை இருக்க வேண்டும்</string>
     <string name="not_provided" translatable="false">வழங்கப்படவில்லை</string>
-    <string name="exit_survey_label" translatable="false">உங்கள் அனுபவம் எப்படி இருந்தது?</string>
-    <string name="exit_survey_prompt" translatable="false">உங்கள் கருத்துகளை இங்கே உள்ளிடவும்</string>
-    <string name="exit_survey_skip" translatable="false">ஸ்கிப்</string>
-    <string name="exit_survey_submit" translatable="false">சமர்ப்பிக்கவும்</string>
     <string name="exit_survey_toast">சமர்ப்பிக்கும் முன் ஒரு ஸ்மைலியைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="db_backup_complete" translatable="false">தரவுதள காப்புப்பிரதி முடிந்தது!</string>
-    <string name="db_restore_complete" translatable="false">தரவுதள மீட்டெடுப்பு முடிந்தது!</string>
-    <string name="cloud_upload_header">தரவுதளத்தை மேகக்கணிக்கு பதிவேற்றுகிறது</string>
     <string name="no_network" translatable="false">இணைய இணைப்பு கிடைக்கவில்லை</string>
-    <string name="no_data" translatable="false">காப்புப்பிரதி எடுக்கத் தரவு இல்லை!</string>
-    <string name="local_backup_failed" translatable="false">உள் காப்புப்பிரதி கிடைக்கவில்லை</string>
-    <string name="local_backup_restore">உள் காப்புப்பிரதியிலிருந்து மீட்டமைக்கிறது</string>
-    <string name="cloud_restore_header">மேகக்கணிலிருந்து மீட்டமை</string>
-    <string name="restore_data">தரவை மீட்டமைக்கிறது</string>
-    <string name="error_existing_data">தரவுதளத்தில் தரவு உள்ளது, மீட்டெடுக்க முடியாது!</string>
-    <string name="cloud_download_data">மேகக்கணிலிருந்து தரவுதளத்தைப் பதிவிறக்குகிறது</string>
-    <string name="force_restore_header">மேகக்கணிலிருந்து தரவை மீட்டமைத்தல் (கட்டாயப்படுத்தப்பட்டது)</string>
-    <string name="database_upload">தரவுதள பதிவேற்றம்</string>
-    <string name="database_uploading">தரவுத்தளம் பதிவேற்றுகிறது</string>
-    <string name="database_upload_complete">தரவுதள பதிவேற்றம் முடிந்தது</string>
-    <string name="database_upload_failed">தரவுதள பதிவேற்றம் தோல்வியுற்றது</string>
-    <string name="db_backup_unavailable">தரவுதள காப்புப்பிரதி கிடைக்கவில்லை</string>
-    <string name="db_file_write_error">காப்பு கோப்பை எழுதுவதில் பிழை</string>
-    <string name="local_restore_alert_title">காப்புப்பிரதியை மீட்டமை</string>
-    <string name="local_restore_alert_message">உள் காப்புப்பிரதி கண்டறியப்பட்டுள்ளது. மீட்டெடுக்க விரும்புகிறீர்களா?</string>
-    <string name="image_downloading_service_title" translatable="false">பதிவிறக்குகிறது</string>
-    <string name="image_downloading_service_message" translatable="false">படத் தரவைப் பதிவிறக்குகிறது</string>
-    <string name="image_downloading_service_complete_title" translatable="false">படத் தரவு பதிவிறக்கம் முடிந்தது</string>
-    <string name="image_downloading_service_complete_message" translatable="false">அனைத்துப் படக் கோப்புகளும் பதிவிறக்கம் செய்யப்பட்டுள்ளன</string>
-    <string name="image_downloading_service_process_message" translatable="false">பதிவிறக்கம் செய்யப்பட்டது</string>
-    <string name="error_img_unavailable" translatable="false">படம் கிடைக்கவில்லை</string>
-    <string name="error_img_download_failed" translatable="false">படப் பதிவிறக்கம் தோல்வியடைந்தது</string>
-    <string name="user_logged_in" translatable="false">ஏற்கனவே உள்நுழைந்துள்ளீர்கள்!</string>
-    <string name="user_logged_in_other_device" translatable="false">ஏற்கனவே உள்நுழைந்துள்ளது. பிற சாதனத்திலிருந்து வெளியேறவும்.</string>
-    <string name="user_logged_out" translatable="false">சேவையகத்திலிருந்து வெளியேறியது</string>
-    <string name="user_login_check_success" translatable="false">உள்நுழைவு வெற்றிகரமாக!</string>
-    <string name="user_login_error" translatable="false">மற்றொரு பயனர் இந்த இடத்தில் உள்நுழைந்துள்ளார். நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
-    <string name="user_server_unreachable" translatable="false">சாதனம் ஆஃப்லைனில். உள்நுழைவு சரிபார்ப்புக்குச் சேவையகத்தைச் சரிபார்க்க முடியாது</string>
-    <string name="title_activity_splash_acticity" translatable="false">ஸ்பிளாஸ்ஆக்டிசிட்டி</string>
-    <string name="title_activity_home" translatable="false">முகப்பு செயல்பாடு</string>
-    <string name="title_activity_sync" translatable="false">செயல்பாடு புதுப்பித்தல்</string>
-    <string name="title_activity_privacy_notice" translatable="false">தனியுரிமை அறிவிப்பு</string>
-    <string name="title_activity_visit_summary" translatable="false">வருகை சுருக்கம் செயல்பாடு</string>
-    <string name="title_activity_past_medical_history" translatable="false">கடந்த மருத்துவ வரலாறு செயல்பாடு</string>
-    <string name="title_activity_patient_survey" translatable="false">நோயாளி சர்வே செயல்பாடு</string>
-    <string name="privacy_toast">ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="temperature_f">வெப்பநிலை (எஃப்)</string>
-    <string name="sync_now">இப்போது புதுப்பிக்கவும்</string>
-    <string name="lastsync">கடைசி ஒத்திசைவு</string>
     <string name="enter_password">உங்கள் கடவுச்சொல்லை உள்ளிடவும்</string>
     <string name="enter_username">உங்கள் பயனர்பெயரை உள்ளிடவும்</string>
     <string name="patient_denies" translatable="false">நோயாளி மறுக்கிறார்</string>
@@ -330,168 +131,65 @@
     <string name="invalid_url">தவறான வலைதள முகவரி</string>
     <string name="years">ஆண்டுகள்</string>
     <string name="months">மாதங்கள்</string>
-    <string name="please_wait_till_sync_is_completed">புதுப்பிப்பு முடியும் வரை காத்திருக்கவும்</string>
-    <string name="patient_name">நோயாளியின் பெயர்</string>
     <string name="son_daughter_wife_of">மகன் / மகள் / மனைவி</string>
     <string name="occupation">தொழில்</string>
-    <string name="economic_status">பொருளாதார நிலை</string>
-    <string name="education_level">கல்வி நிலை</string>
-    <string name="caste">சாதி</string>
-    <string name="previous_visits">முந்தைய வருகைகள்</string>
     <string name="accept">ஏற்றுக்கொள்</string>
-    <string name="reject">நிராகரி</string>
     <string name="next">அடுத்தது</string>
-    <string name="which_server_would_you_like_to_connect_to">எந்தச் சேவையகத்துடன் இணைக்க விரும்புகிறீர்கள்?</string>
-    <string name="enter_url">உர்ல் ஐ உள்ளிடவும்</string>
-    <string name="choose_a_location_to_login">உள்நுழைய இருப்பிடத்தைத் தேர்வுசெய்க</string>
     <string name="choose_an_option_for_protocols">நெறிமுறைகளுக்கு ஒரு விருப்பத்தைத் தேர்வுசெய்க</string>
-    <string name="please_enter_your_username_and_password">உங்கள் பயனர்பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்</string>
-    <string name="android_id">Android ஐடி:</string>
     <string name="respiratory_rate">சுவாச விகிதம்</string>
     <string name="click_to_download_the_images">படங்களைப் பதிவிறக்கக் க்ளிக்க்ளிக் செய்க</string>
     <string name="doctor">மருத்துவர் விவரங்கள்</string>
-    <string name="health_worker">சுகாதாரப் பணியாளர்</string>
     <string name="priority">முன்னுரிமை</string>
     <string name="server_url">சேவையக உர்ல்</string>
-    <string name="sync">புதுப்பிப்பு</string>
-    <string name="update_protocols">நெறிமுறைகளைப் புதுப்பிக்கவும்</string>
-    <string name="end_all_visit">அனைத்து வருகையும் முடிவுக்கு</string>
-    <string name="filter_by_creator">படைப்பாளரால் வடிகட்டவும்</string>
     <string name="planet_name">கிரகத்தின் பெயர்</string>
     <string name="ok">சரி</string>
     <string name="cancel">ரத்துசெய்</string>
-    <string name="unable_to_end">முடிக்க முடியவில்லை</string>
-    <string name="upload_before_end_visit_active">வருகைகள். வருகையை முடிக்க முயற்சிக்கும் முன் பதிவேற்றத்தைப் பார்வையிடவும்.</string>
-    <string name="active">செயலில்</string>
-    <string name="closed">முடிவுற்றது</string>
     <string name="syncInProgress">புதுப்பித்தல் செயலில் உள்ளது</string>
     <string name="please_wait">தயவுசெய்து காத்திருங்கள் ...</string>
-    <string name="sync_notif_title">புதுப்பிப்பு</string>
-    <string name="sync_background_completed">refreshBackground முடிந்தது</string>
-    <string name="sync_not_available">புதுப்பிப்பு கிடைக்கவில்லை</string>
-    <string name="please_connect_to_internet">இணைய இணைப்புடன் இணைக்கவும்!</string>
-    <string name="image_upload">படப் பதிவேற்றம்</string>
-    <string name="image_upload_failed">படப் பதிவேற்றம் தோல்வியுற்றது</string>
     <string name="sure_to_exit">நிச்சயமாக நீங்கள் வெளியேற வேண்டுமா?</string>
     <string name="sure_to_logout">நீங்கள் நிச்சயமாக வெளியேற விரும்புகிறீர்களா?</string>
-    <string name="lastsync_normal">கடைசியாகப் புதுப்பிக்கப்பட்ட நேரம்</string>
     <string name="update_patient_identification">நோயாளியைப் புதுப்பிக்கவும்</string>
-    <string name="are_you_want_go_back">நீங்கள் திரும்பிச் செல்ல விரும்புகிறீர்களா?</string>
     <string name="error">பிழை</string>
-    <string name="patient_data_upload">நோயாளி தரவு பதிவேற்றம்</string>
-    <string name="patient_image_download_notifi">நோயாளி படப் பதிவிறக்கம்</string>
-    <string name="image_download_complete_notifi">பட பதிவிறக்கம் முடிந்தது.</string>
-    <string name="no_prior_visits">முன் வருகைகள் இல்லை.</string>
-    <string name="end_visit_notif">வருகை முடிவு</string>
-    <string name="visit_ended_notif">வருகை முடிந்தது</string>
     <string name="this_question_only_one_answer">இந்தக் கேள்விக்கு ஒரே ஒரு பதில் மட்டுமே இருக்க முடியும்.</string>
-    <string name="uploading_to_doctor_notif">மருத்துவரிடம் பதிவேற்றுகிறது.</string>
-    <string name="visit_data_upload">தரவு பதிவேற்றத்தைப் பார்வையிடவும்</string>
-    <string name="uploading_visit_data_notif">வருகை தரவைப் பதிவேற்றுகிறது</string>
-    <string name="uploaded_visit_data_notif">பதிவேற்றப்பட்ட வருகை தரவு</string>
-    <string name="failed_to_upload">பதிவேற்றத் தவறிவிட்டது</string>
-    <string name="upload_completed">பதிவேற்றம் முடிந்தது</string>
-    <string name="check_your_connectivity">உங்கள் இணைப்பைச் சரிபார்க்கவும்</string>
-    <string name="download_from_doctor">மருத்துவரிடமிருந்து பதிவிறக்குங்கள்</string>
-    <string name="prescription_downloaded">மருந்து பதிவிறக்கம் செய்யப்பட்டது</string>
-    <string name="downloading_prescription">மருந்து பதிவிறக்குகிறது</string>
     <string name="visit_data_failed">தரவைப் பார்வையிட முடியவில்லை</string>
-    <string name="patient_data_failed">நோயாளியின் தரவு தோல்வியுற்றது</string>
-    <string name="privacy_notice_title">தனியுரிமை அறிவிப்பு</string>
-    <string name="no_data_active_patients">இந்தச் சுகாதாரப் பணியாளருக்கான நோயாளி பதிவுகள் எதுவும் கிடைக்கவில்லை.</string>
-    <string name="syncing_visitDialog">புத்துணர்ச்சி</string>
-    <string name="successfully_synced_notif">வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது</string>
-    <string name="languages">மொழிகள்</string>
-    <string name="current_language">தற்போதைய மொழி</string>
     <string name="protocols_downloaded_successfully">வெற்றிகரமாக நெறிமுறைகள் பதிவிறக்கம் செய்யப்பட்டது</string>
     <string name="no_protocols_found">நெறிமுறைகள் எதுவும் கிடைக்கவில்லை</string>
     <string name="unable_to_get_proper_response">நெறிமுறைகளைப் பதிவிறக்குவதில் சிக்கல் ஏற்பட்டது, தயவுசெய்து கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="last_synced">கடைசியாகப் புதுப்பிக்கப்பட்டது -</string>
-    <string name="today_visits">இன்றைய வருகைகள்</string>
-    <string name="active_visits">செயலில் உள்ள வருகைகள்</string>
     <string name="day">நாள்</string>
     <string name="hour">மணி</string>
     <string name="minute">நிமிடம்</string>
     <string name="s">விநாடிகள்</string>
     <string name="ago">முன்பு</string>
-    <string name="successfully_synced">வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது</string>
     <string name="visit_not_uploaded">வருகை பதிவேற்றப்படவில்லை</string>
     <string name="upload_started">பதிவேற்றுகிறது ...</string>
-    <string name="visit_uploaded_successfully">வருகை வெற்றிகரமாக பதிவேற்றப்பட்டது</string>
     <string name="visit_uploaded_failed">இணையம் கிடைக்கும்போது பதிவேற்றப்படும்</string>
     <string name="visitID">ஐடியைப் பார்வையிடவும்</string>
-    <string name="end_visit_msg">வருகையை முடிக்க விரும்புகிறீர்களா?</string>
-    <string name="privacy_reject_toast">நீங்கள் அனுமதியின்றி ஒரு நோயாளியைப் பதிவு செய்ய முடியாது</string>
-    <string name="not_answered">பதிலளிக்கப்படவில்லை</string>
     <string name="new_update_available">புதிய புதுப்பிப்பு கிடைக்கிறது</string>
     <string name="update_app_note">புதிய அம்சங்களுடன் புதிய பதிப்பு கிடைக்கிறது தயவுசெய்து பயன்பாட்டைப் புதுப்பிக்கவும்</string>
     <string name="update">புதுப்பிப்பு</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ஹலோ, இன்டெலிஹெல்த் பயன்படுத்தியதற்கு நன்றி. உங்கள் மருந்துகளைப் பதிவிறக்க இங்கே க்ளிக்க்ளிக் செய்க "</string>
     <string name="and_enter_your_patient_id">" உங்கள் நோயாளி ஐடியை உள்ளிடவும் - "</string>
     <string name="what_is_the_reason_for_your_visit">உங்கள் வருகைக்கான காரணம் என்ன?</string>
-    <string name="swipe_down_to_return">முந்தைய / அதற்கு அடுத்ததாக ஸ்வைப் செய்யவும்</string>
-    <string name="swipe_up">அடுத்துக்கு மேலே ஸ்வைப் செய்யவும்</string>
-    <string name="swipe_down">முந்தையவற்றுக்குக் கீழே ஸ்வைப் செய்யவும்</string>
     <string name="have_symptom">உங்களுக்கு இந்த அறிகுறி இருக்கிறதா?</string>
-    <string name="personal_information">தனிப்பட்ட தகவல்</string>
-    <string name="address_details">முகவரி விவரங்கள்</string>
-    <string name="txt_others">மற்றவைகள்</string>
-    <string name="do_you_need_help_please_contact_us">உங்களுக்கு உதவி வேண்டுமா? தயவு செய்து எங்களைத் தொடர்பு கொள்ளவும்!</string>
-    <string name="whatsapp_helpline">வாட்ஸ்அப் ஹெல்ப்லைன்</string>
     <string name="prescription_not_downloaded_check_internet">மருந்து பதிவிறக்கம் செய்யப்படவில்லை, இணைய இணைப்பைச் சரிபார்க்கவும்</string>
-    <string name="Whatsapp_Help_Cardview">உதவி</string>
-    <string name="skip">தவிர்</string>
-    <string name="start">தொடங்கு</string>
-    <string name="who_is_this_napplication_for">இது யாருக்கான விண்ணப்பம்?</string>
-    <string name="custom_setup">அமைவு</string>
-    <string name="demo_version">டெமோ பதிப்பு</string>
-    <string name="sample_text">மாதிரி உரை</string>
-    <string name="test_2_vibha_onplus_6t_10fke_7">டெஸ்ட் 2 விபா ஒன்ப்ளஸ் 6 டி, 10 எஃப்.கே.இ -7</string>
-    <string name="age_11_years_5_months">வயது: 11 வயது, 5 மாதங்கள்</string>
-    <string name="active_defaultTag">செயலில்</string>
     <string name="since_when_have_you_had_this_symptom">இந்த அறிகுறி உங்களுக்கு எப்போது ஏற்பட்டது?</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">வணக்கம் \\ n \\ n நான் டிஜிட்டல் சுகாதார உதவியாளரான ஆயு. தொடங்குவோம்!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">வணக்கம் \\ n \\ n நான் டிஜிட்டல் சுகாதார உதவியாளரான ஆயு. தொடங்குவோம்!</string>
-    <string name="hello_my_name_is">\"வணக்கம் என் பெயர் \"</string>
-    <string name="i_need_assistance">\"எனக்குச் சில உதவி தேவை.\"</string>
-    <string name="economic_values_missing">பொருளாதார மதிப்புகள் இல்லை</string>
-    <string name="education_values_missing">கல்வி மதிப்புகள் இல்லை</string>
-    <string name="intelehealth_a_telemedicine_platform">இன்டெலிஹெல்த் என்பது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களை தொலைதூர மருத்துவர்களுடன் இணைக்கும் ஒரு டெலிமெடிசின் பயன்பாடாகும், இதனால் அவர்கள் தங்கள் நோயாளிகளுக்கு உயர்தர சுகாதார சேவைகளை வழங்க முடியும்.</string>
-    <string name="close_button">மூடவும்</string>
-    <string name="device_ID">சாதன ஐடி:</string>
-    <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம உர்ல் ஐ உள்ளிடவும்</string>
     <string name="please_enter_url_and_key">உர்ல் மற்றும் விசையை உள்ளிடவும்</string>
-    <string name="please_enter_valid_license_key">செல்லுபடியாகும் உரிம விசையை உள்ளிடவும்</string>
     <string name="permission_denied">அனுமதி மறுக்கப்பட்டது \\ n</string>
-    <string name="temperature_C">\"வெப்பநிலை (சி):\"</string>
-    <string name="temperature_F">\"வெப்பநிலை (எஃப்):\"</string>
     <string name="no_history_family_found">குடும்பத்தில் நோயின் வரலாறு எதுவும் வழங்கப்படவில்லை.</string>
     <string name="no_history_patient_illness_found">நோயாளியின் நோயின் வரலாறு எதுவும் வழங்கப்படவில்லை.</string>
     <string name="dr_registration_no">பதிவு எண்:</string>
-    <string name="dr_phone_number">தொலைபேசி எண்:</string>
     <string name="dr_email">மின்னஞ்சல்:</string>
     <string name="_visit_summary">சுருக்கத்தைப் பார்வையிடவும்</string>
-    <string name="patient_id_">நோயாளி ஐடி:</string>
-    <string name="patient_name_title">நோயாளியின் பெயர்:</string>
-    <string name="patient_DOB">நோயாளி DOB:</string>
     <string name="error_non_decimal_no_added">பிழை: தசம அல்லாத எண் உள்ளிடப்பட்டது.</string>
-    <string name="download_protocols">நெறிமுறைகளைப் பதிவிறக்குகிறது</string>
     <string name="mindmap_internect_connection">மைண்ட்மேப்களைப் பதிவிறக்க உங்களுக்கு இணைய இணைப்பு தேவை, தயவுசெய்து உங்கள் இணையத்தை இயக்கவும்</string>
     <string name="days">நாட்கள்</string>
-    <string name="contact">தொடர்பு கொள்ளுங்கள்</string>
     <string name="has_a_new_prescription">ஒரு புதிய மருந்து உள்ளது</string>
-    <string name="whatsapp_presc_toast">கோப்பு எக்ஸ்புளோரரிடமிருந்து பரிந்துரைக்கப்பட்ட PDF ஐத் தேர்ந்தெடுக்கவும் - உள் சேமிப்பு / EkalArogya_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">நீங்கள் மருந்து பகிர்ந்து கொள்ள விரும்பும் மொபைல் எண்ணை உள்ளிடவும்.</string>
     <string name="share">பகிர்</string>
     <string name="please_enter_mobile_number">மொபைல் எண்ணை உள்ளிடவும்</string>
     <string name="download_prescription_first_before_sharing">பகிர்வதற்கு முன் முதலில் மருந்து பதிவிறக்கவும்</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* நான் (செவிகா) நோயாளியின் தனியுரிமை அறிவிப்பையும் சம்மதத்தையும் படித்தேன் என்பதை உறுதிப்படுத்துகிறேன்.</string>
     <string name="enter_10_digits">10 இலக்கங்களை உள்ளிடவும்</string>
-    <string name="please_read_out_privacy_consent_first">முதலில் தனியுரிமை ஒப்புதலைப் படிக்கவும்.</string>
-    <string name="view_print">காண்க / அச்சிடு</string>
-    <string name="refresh">புதுப்பிப்பு</string>
-    <string name="family_member">குடும்ப உறுப்பினர்</string>
-    <string name="no_family_member_registered">குடும்ப உறுப்பினர் யாரும் பதிவு செய்யப்படவில்லை</string>
     <string name="document_">ஆவணம்-</string>
 <!--    <string name="gender">பாலினம்</string>-->
 <!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->
@@ -526,75 +224,43 @@
     <string name="per_Week">வாரத்திற்கு</string>
     <string name="per_Month">ஒரு மாதத்திற்கு</string>
     <string name="per_Year">வருடத்திற்கு</string>
-    <string name="failed_initial_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும். பயன்பாட்டை மறுதொடக்கம் செய்யுங்கள்.</string>
-<!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
+    <!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
     <string name="title_activity_question_node" translatable="false">Question node activity</string>
     <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
-    <string name="intelehealth_name">ஏகல் ஆரோக்ய ஹெல்ப்லைன்</string>
-    <string name="Ayu_name">ஆயு</string>
-    <string name="active_tag_patientDetail"> செயலில் </string>
-    <string name="associated_symptoms_patientDetail">தொடர்புடைய அறிகுறிகள்</string>
-<!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
+    <!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
 <!--    <string name="speciality">சிறப்பு</string>-->
 <!--    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>-->
-    <string name="setup_internet_available">அமைப்பதற்கு வலுவான இணைய இணைப்பு தேவை.</string>
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
-    <string name="generic_info">தகவல்!</string>
 
-<!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
+    <!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
 <!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
 <!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
-    <string name="question_answer_all" translatable="false">அனைத்து கேள்விகளுக்கும் நீங்கள் நிச்சயமாக பதிலளித்திருக்கிறீர்களா?</string>
-    <string name="row_gender">பாலினம்</string>
-    <string name="pref_ringtone_silent" translatable="false">ஓசையற்ற</string>
     <string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
     <string name="reject_permission_results">நீங்கள் அனுமதியை நிராகரித்தால், இந்த சேவையைப் பயன்படுத்த முடியாது. தயவுசெய்து [அமைத்தல்] > [அனுமதி] அனுமதிகளை இயக்கவும்</string>
     <string name="current_time">\"நடப்பு நேரம் => \"</string>
-    <string name="question_not_answered">கேள்விக்கு பதில் அளிக்கப்படவில்லை</string>
-    <string name="version_settings">பதிப்பு 1.3</string>
     <string name="gender_male">ஆண்</string>
     <string name="gender_female">பெண்</string>
     <string name="retry_again">மீண்டும் முயற்சிக்கவும்!</string>
     <string name="ok_close_now">சரி, அதை மூடவும்</string>
-    <string name="speciality_cardview_title">தனிக்கூறு</string>
     <string name="select_specialization_text">தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
     <string name="visit_closed">வருகை மூடப்பட்டது</string>
     <string name="title_follow_up">பின்தொடரவும்</string>
 
-    <string name="change_languages">மொழிகளை மாற்றவும்</string>
-    <string name="location_setup">இருப்பிட அமைப்பு - </string>
     //----------reset app strings-------------
-    <string name="reset_app">பயன்பாட்டை மீட்டமைக்கவும்</string>
-    <string name="app_reset_toast">பயன்பாட்டு மீட்டமைப்பு முடிந்தது!</string>
     <string name="resetting_app_dialog">ஆப்ஸை மீட்டமைக்கிறது</string>
     <string name="sure_to_reset_app">நிச்சயமாக ஆப்ஸை மீட்டமைக்க விரும்புகிறீர்களா?</string>
 
 
     <string name="book_appointment">புத்தக நியமனம்</string>
-    <string name="reschedule_appointment">அப்பயிண்ட்மெண்ட்டை மறுஅட்டவணை செய்</string>
     <string name="appointment_booking_confirmation_txt">நிச்சயமாக இந்த ஸ்லாட்டை முன்பதிவு செய்கிறீர்களா?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">நிச்சயமாக அப்பாயிண்ட்மெண்ட்டை ரத்து செய்கிறீர்களா?</string>
-    <string name="cancel_appointment">அப்பாயிண்ட்மெண்ட்டை ரத்துசெய்</string>
     <string name="slot_empty_message">தேர்ந்தெடுக்கப்பட்ட தேதி மற்றும் சிறப்புக்கு அப்பாயிண்ட்மெண்ட் ஸ்லாட் கிடைக்கவில்லை!</string>
-    <string name="appointment_empty_message">உங்களுக்கு எந்த சந்திப்பும் இல்லை!</string>
-    <string name="appointment_listing_title">அப்பயிண்ட்மெண்ட் பட்டியல்</string>
-    <string name="appointment_booking_title">அப்பயிண்ட்மெண்ட் முன்பதிவு</string>
-    <string name="appointment_for">இதற்கான நியமனம்</string>
-    <string name="please_select_appointment_slot">தயவுசெய்து அப்பாயிண்ட்மெண்ட் ஸ்லாட்டைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="please_select_speciality">தயவுசெய்து நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்!</string>
 
-    <string name="doctor_appointments">டாக்டர் நியமனங்கள்</string>
     <string name="slot_info">ஸ்லாட் தகவல்</string>
-    <string name="appointment_booked">அபாயின்ட்மெண்ட் முன்பதிவு செய்யப்பட்டது</string>
     <string name="minutes_txt">நிமிடங்கள்</string>
-    <string name="booked_txt">முன்பதிவு செய்யப்பட்டது</string>
-    <string name="cancelled_txt">ரத்துசெய்யப்பட்டது</string>
     <string name="please_upload_visit">அப்பயிண்ட்மெண்ட் முன்பதிவு செய்வதற்கு முன் முதலில் வருகையைப் பதிவேற்றவும்.</string>
     <string name="appointment_booked_successfully">அப்பாயிண்ட்மெண்ட் வெற்றிகரமாக பதிவு செய்யப்பட்டது!</string>
-    <string name="appointment_booked_failed">முன்பதிவு செய்த நியமனம் தோல்வியடைந்தது!</string>
-    <string name="postal_code_invalid_txt">சரியான அஞ்சல் குறியீட்டை உள்ளிடவும்</string>
     <string name="failed_to_cancel_appointment">அப்பயிண்ட்மெண்ட்டை ரத்து செய்ய முடியவில்லை!</string>
     <string name="appointment_cancelled_success_txt">அப்பயிண்ட்மெண்ட் வெற்றிகரமாக ரத்து செய்யப்பட்டது!</string>
 
@@ -604,68 +270,19 @@
     <string name="patient_is_not_available">Patient is not available</string>
     <string name="others">Others</string>
     <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
 
 
     <string name="diagnosis">நோயறிதல்</string>
-    <string name="primary">முதன்மை</string>
-    <string name="secondary">இரண்டாம் நிலை</string>
-    <string name="provisiona">தற்காலிக</string>
-    <string name="confirmed">உறுதிப்படுத்தப்பட்டது</string>
-    <string name="recommended_medication">பரிந்துரைக்கப்பட்ட மருந்து</string>
-    <string name="medication">மருந்து</string>
     <string name="strength">வலிமை</string>
-    <string name="units">அலகுகள் (எ.கா: mg)</string>
-    <string name="units_tab">அலகுகள் (எ.கா: Tab/Syrup)</string>
-    <string name="for_duration">காலத்திற்கு</string>
-    <string name="units_eg_days_weeks_etc">அலகுகள் (எ.கா: நாட்கள்/வாரங்கள்/முதலியன.)</string>
     <string name="additional_instruction">கூடுதல் அறிவுறுத்தல்</string>
-    <string name="recommended_tests">பரிந்துரைக்கப்பட்ட சோதனைகள்</string>
-    <string name="test">சோதனை</string>
-    <string name="advice_or_refer_patient">ஆலோசனை அல்லது நோயாளியைப் பரிந்துரைக்கவும்</string>
-    <string name="notes">குறிப்புகள்</string>
-    <string name="notes_not_shared_with_the_patient">குறிப்புகள் (நோயாளியுடன் பகிரப்படவில்லை)</string>
     <string name="follow_up">Follow Up</string>
-    <string name="sign_and_submit">கையொப்பமிட்டு சமர்ப்பிக்கவும்</string>
-    <string name="add_test">சோதனையைச் சேர்</string>
-    <string name="add_advice">அறிவுரையைச் சேர்</string>
-    <string name="add_note">குறிப்பைச் சேர்</string>
-    <string name="schedule_a_follow_up">ஒரு பின்தொடர்தலை திட்டமிடு</string>
     <string name="submit">சமர்ப்பி</string>
-    <string name="add_meds">மருந்துகளைச் சேர்</string>
-    <string name="add_diagnosis">கண்டறிதலைச் சேர்</string>
-    <string name="startVisitNote">வருகைக் குறிப்பைத் தொடங்கு</string>
-    <string name="prescGivenSuccessfully">நன்றி! மருந்துச் சீட்டு வெற்றிகரமாக வழங்கப்பட்டது</string>
-    <string name="morethanonefollowupnotallowed">தயவுசெய்து ஒரு நேரத்தில் ஒரு பின்தொடர்தலை மட்டும் வழங்கவும்.</string>
-    <string name="amount">தொகை</string>
-    <string name="frequency">அதிர்வெண்</string>
-    <string name="route_optional">பாதை (விரும்பினால்)</string>
-    <string name="reason_optional">காரணம் (விரும்பினால்)</string>
-    <string name="choose_a_date">தேதியைத் தேர்வுசெய்க</string>
-    <string name="follow_up_remark">பின்தொடர்தல் கருத்து</string>
-    <string name="visit_summary_upload_reminder_prescription" translatable="false">மருந்து கொடுக்க முயற்சிக்கும் முன் முதலில் பதிவேற்றவும்.</string>
-    <string name="visit_summary_prescription_already_given">மருந்து ஏற்கனவே வழங்கப்பட்டுள்ளது. மருந்துச் சீட்டைப் பதிவிறக்கவும்.</string>
 
-    <string name="prescription_age">வயது</string>
-    <string name="prescription_gender">பாலினம்</string>
-    <string name="prescription_address_contact">முகவரி மற்றும் தொடர்பு</string>
-    <string name="prescription_patient_id">நோயாளி ஐடி</string>
-    <string name="prescription_date_of_visit">பார்வையின் தேதி</string>
-    <string name="prescription_vitals">வைட்டல்ஸ்</string>
-    <string name="prescription_rr">சுவாச விகிதம்</string>
     <string name="prescription_pulse">Pulse(bpm)</string>
-    <string name="prescription_bp">இரத்த அழுத்தம்</string>
-    <string name="prescription_bmi">BMI</string>
 
     <string name="prescription_wt">எடை(கிலோ)</string>
     <string name="prescription_ht">உயரம்(செமீ)</string>
-    <string name="prescription_pre_comp">புகார்(களை) வழங்குதல்</string>
-    <string name="prescription_diagnosis">கண்டறிதல்</string>
-    <string name="prescription_med_plan">மருந்து(கள்) திட்டம்</string>
-    <string name="prescription_rec_investigation">பரிந்துரைக்கப்பட்ட விசாரணை(கள்)</string>
-    <string name="prescription_general_advice">பொது ஆலோசனை</string>
-    <string name="prescription_follow_up_date">பின்தொடரும் தேதி</string>
     <string name="prescription_temp_c">வெப்பநிலை (C) : </string>
     <string name="prescription_temp_f">வெப்பநிலை (F) : </string>
 
@@ -677,15 +294,10 @@
     <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்!</string>
     <string name="something_went_wrong">ஏதோ தவறாகிவிட்டது. ஆதரவைத் தொடர்பு கொள்ளவும்</string>
     <string name="sync_failed">ஒத்திசைவு தோல்வி! பிறகு முயற்சிக்கவும்.</string>
-    <string name="no_network_sync">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை. பிறகு முயற்சிக்கவும்.</string>
     <string name="app_sync">ஆப்ஸை ஒத்திசைக்கிறது..</string>
 
-    <string name="type_to_search">தேட தட்டச்சு செய்யவும்..</string>
-
     //----download protocol failed alert dialog-----------
-    <string name="protocol_download_failed_alertdialog">நெறிமுறை பின்னர் பதிவிறக்கம் செய்யப்படுகிறது । நெறிமுறை பதிவிறக்கத்தை மறுஉண்மைசெய்ய \'ஆம்\' அழுத்தவும் । டெமோ நெறிமுறையுடன் தொடர்ச்சிக்கு \'இல்லை\' அழுத்தவும் ।</string>
     <string name="app_version_string">App Version - %1$s</string>
-    <string name="no_visit_created">No visit created</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
     <string name="weight_kg">Weight (kg)</string>
@@ -700,10 +312,8 @@
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
-    <string name="sync_strated">"Sync started! "</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
-    <string name="sync_completed">Sync done!</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -713,14 +323,12 @@
     <string name="ui2_no_information">No information</string>
     <string name="confirm_visit_reason">Confirm visit reason?</string>
     <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
-    <string name="check_up_reason">Check-up reason</string>
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
     <string name="enter_occupation_txt">Enter Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
-    <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
     <string name="confirm_end_visit_reason">End this visit?</string>
     <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
@@ -739,7 +347,6 @@
     <string name="duration_type_validation_txt">Please select the duration type</string>
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
-    <string name="describe_lbl">Describe</string>
     <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
     <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
@@ -753,7 +360,6 @@
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
     <string name="select_image_hdr">Select Image</string>
-    <string name="no_additional_data">No Data</string>
     <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
@@ -771,8 +377,6 @@
     <string name="username_sent_title">Username Sent</string>
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
-    <string name="no_of_days">No. of days</string>
-    <string name="timings">Timings</string>
     <string name="u2022_strength">• Strength</string>
     <string name="u2022_no_of_days">• No. of days</string>
     <string name="u2022_timings">• Timings</string>
@@ -792,7 +396,6 @@
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="facility_to_visit">Facility to visit</string>
     <string name="follow_up_date">Follow up date</string>
-    <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
 </resources>
