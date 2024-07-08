@@ -16,12 +16,23 @@
         android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
 
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"
+        android:minSdkVersion="34" />
+
+    <uses-permission
+        android:name="android.permission.MANAGE_OWN_CALLS"
+        android:minSdkVersion="34" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
         <service android:name=".service.ForegroundService" />
 
-        <service android:name=".call.notification.HeadsUpNotificationService"  />
+        <service
+            android:name=".call.notification.HeadsUpNotificationService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
 
         <receiver
             android:name=".call.notification.CallReceiver"
