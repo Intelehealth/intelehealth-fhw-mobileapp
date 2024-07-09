@@ -47,7 +47,9 @@ import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity {
@@ -197,7 +199,10 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.VERFIY_OTP_OBSERVABLE(inputModel);
-        loginModelObservable.subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
+        loginModelObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ForgotPasswordApiResponseModel_New>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -405,7 +410,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     private void resendOtp() {
         tvResendOtp.setEnabled(false);
         String resendTime = getResources().getString(R.string.resend_otp_in);
-        new CountDownTimer(30000, 1000) {
+        new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);

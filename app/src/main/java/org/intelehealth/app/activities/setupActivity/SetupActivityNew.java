@@ -179,8 +179,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetupActivityNew.this, ResetPasswordActivity_New.class);
-                //intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
                 startActivity(intent);
             }
         });
