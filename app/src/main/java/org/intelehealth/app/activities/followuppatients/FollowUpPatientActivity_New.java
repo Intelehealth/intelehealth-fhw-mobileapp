@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -71,6 +72,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
+import timber.log.Timber;
+
 /**
  * Created by Prajwal Waingankar on 21/08/22.
  * Github : @prajwalmw
@@ -79,7 +82,7 @@ import java.util.concurrent.Executors;
 public class FollowUpPatientActivity_New extends BaseActivity {
     public static final String TAG = FollowUpPatientActivity_New.class.getName();
     RecyclerView rv_today, rv_tomorrow, rv_month;
-    FollowUpPatientAdapter_New todaysAdapter,tomorrowsAdapter,othersAdapter;
+    FollowUpPatientAdapter_New todaysAdapter, tomorrowsAdapter, othersAdapter;
     SessionManager sessionManager = null;
     private SQLiteDatabase db;
     private int offset = 0;
@@ -96,7 +99,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private List<FollowUpModel> todaysFollowUpDates = new ArrayList<>();
     private List<FollowUpModel> tomorrowssFollowUpDates = new ArrayList<>();
     private List<FollowUpModel> finalMonthsFollowUpDates = new ArrayList<>();
-    ImageView filterIm,sortIm;
+    ImageView filterIm, sortIm;
     FrameLayout filterFrameLay;
     TextView filterDateTv, filterStartDateTv, filterEndDateTv, tvResultsFor, othersTitle;
     Button applyBtDate, applyBtRange, dateBt, rangeBt;
@@ -104,7 +107,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     HorizontalScrollView scrollChips;
     private List<FilterOptionsModel> filtersList;
     private boolean isChipInit = false;
-    private int LIMIT = 15;
     private FollowupFilterTypeEnum filterType = FollowupFilterTypeEnum.NONE;
     private boolean sortStatus = true;//true= ascending, false = descending
     private RelativeLayout parentLay;
@@ -153,10 +155,11 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private void getIntentData() {
         try {
             String uuid = getIntent().getStringExtra("uuid");
-            if(uuid!=null){
+            if (uuid != null) {
                 new DeleteNotificationUseCase().deleteNotification(uuid);
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -268,7 +271,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     }
 
-    void clickListeners(){
+    void clickListeners() {
 
         parentLay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,18 +346,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         filterEndDateTv.setOnClickListener(v -> selectDate(filterEndDateTv, "endDate"));
         filterDateTv.setOnClickListener(v -> selectDate(filterDateTv, ""));
 
-        mBodyNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                View view = v.getChildAt(v.getChildCount() - 1);
-                int bottom = view.getBottom() - (v.getHeight() + v.getScrollY());
-                Log.d("ssssss",""+scrollY);
-                if (bottom == 0) {
-                    fetchAndSegregateData(DataLoadingType.PAGINATION);
-                }
-            }
-        });
-
         mBodyNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -386,7 +377,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (!editable.toString().isEmpty()) {
                     closeButton.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     closeButton.setVisibility(View.GONE);
                 }
             }
@@ -395,7 +386,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         searchview_received.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_SEARCH){
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
                     dismissFilterLayout();
                     resetList(false);
                     fetchAndSegregateData(DataLoadingType.INITIAL);
@@ -412,7 +403,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     view.performClick();
                     return false;
                 }
-                return  false;
+                return false;
             }
         });
 
@@ -442,23 +433,32 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         sortIm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sortIm.setEnabled(false);
                 sortStatus = !sortStatus;
                 filterFrameLay.setVisibility(View.GONE);
                 filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
                 resetList(false);
                 fetchAndSegregateData(DataLoadingType.INITIAL);
-                if(sortStatus){
-                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_ascending_order));
-                }else {
-                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this,ContextCompat.getString(FollowUpPatientActivity_New.this,R.string.sorted_by_descending_order));
+                if (sortStatus) {
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this, ContextCompat.getString(FollowUpPatientActivity_New.this, R.string.sorted_by_ascending_order));
+                } else {
+                    ToastUtil.showShortToast(FollowUpPatientActivity_New.this, ContextCompat.getString(FollowUpPatientActivity_New.this, R.string.sorted_by_descending_order));
                 }
+
+                //protecting multiple click at a time
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sortIm.setEnabled(true);
+                    }
+                }, 500);
             }
         });
     }
 
 
     private void dismissFilterLayout() {
-        if(filterFrameLay.getVisibility() == View.VISIBLE){
+        if (filterFrameLay.getVisibility() == View.VISIBLE) {
             filterFrameLay.setVisibility(View.GONE);
             filterIm.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ui2_ic_filter_bg));
         }
@@ -471,6 +471,11 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         todaysFollowUpDates.clear();
         tomorrowssFollowUpDates.clear();
         finalMonthsFollowUpDates.clear();
+        try {
+            todaysAdapter.notifyDataSetChanged();
+            tomorrowsAdapter.notifyDataSetChanged();
+            othersAdapter.notifyDataSetChanged();
+        }catch (Exception e){}
     }
 
     private boolean validateDate() {
@@ -588,7 +593,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth(LIMIT);
+            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB();
             if (initialFollowUpPatients.isEmpty()) {
                 if(dataLoadingType == DataLoadingType.INITIAL){
                     commonLoadingDialog.dismiss();
@@ -639,7 +644,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             today_nodata.setVisibility(View.VISIBLE);
         } else {
             today_nodata.setVisibility(View.GONE);
-            if(rv_today.getVisibility() == View.GONE){
+            if (rv_today.getVisibility() == View.GONE) {
                 rv_today.setVisibility(View.VISIBLE);
             }
             todaysAdapter = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
@@ -653,7 +658,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             week_nodata.setVisibility(View.VISIBLE);
         } else {
             week_nodata.setVisibility(View.GONE);
-            if(rv_tomorrow.getVisibility() == View.GONE){
+            if (rv_tomorrow.getVisibility() == View.GONE) {
                 rv_tomorrow.setVisibility(View.VISIBLE);
             }
             tomorrowsAdapter = new FollowUpPatientAdapter_New(tomorrowssFollowUpDates, this);
@@ -667,7 +672,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             month_nodata.setVisibility(View.VISIBLE);
         } else {
             month_nodata.setVisibility(View.GONE);
-            if(rv_month.getVisibility() == View.GONE){
+            if (rv_month.getVisibility() == View.GONE) {
                 rv_month.setVisibility(View.VISIBLE);
             }
             othersAdapter = new FollowUpPatientAdapter_New(monthFollowUpDates, this);
@@ -685,7 +690,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         Date tomorrowsDate = c.getTime();
 
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate = followUpModel.getFollowup_date().substring(0,10);
+            String followUpDate = followUpModel.getFollowup_date().substring(0, 10);
             String tomorrowsDateStr = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
             if (tomorrowsDateStr.equals(followUpDate)) {
                 tomorrowsFollowUpList.add(followUpModel);
@@ -698,7 +703,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         List<FollowUpModel> todaysFollowUpList = new ArrayList<>();
         String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         for (FollowUpModel followUpModel : followUpList) {
-            String followUpDate =  followUpModel.getFollowup_date().substring(0,10);
+            String followUpDate = followUpModel.getFollowup_date().substring(0, 10);
             if (todaysDate.equals(followUpDate)) {
                 todaysFollowUpList.add(followUpModel);
             }
@@ -758,29 +763,29 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         return followUpModels;
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB_thisMonth(int limit) {
+    public List<FollowUpModel> getAllPatientsFromDB() {
         List<FollowUpModel> modelList = new ArrayList<>();
         String filterQuery = "";
         if (filterType == FollowupFilterTypeEnum.DATE) {
             String date = DateAndTimeUtils.date_formatter(filterDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
-            filterQuery = "followup_date = '" + date + "' and ";
+            filterQuery = " and followup_date = '" + date + "' ";
         } else if (filterType == FollowupFilterTypeEnum.RANGE) {
             String startDate = DateAndTimeUtils.date_formatter(filterStartDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
             String endDate = DateAndTimeUtils.date_formatter(filterEndDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
-            filterQuery = "(followup_date >= '" + startDate + "' and followup_date <= '" + endDate + "' ) and ";
+            filterQuery = " and (followup_date >= '" + startDate + "' and followup_date <= '" + endDate + "' ) ";
         }
         String middleName = "CASE WHEN b.middle_name IS NOT NULL THEN ' ' || b.middle_name || ' ' ELSE ' ' END";
 
         String searchQuery = "";
         CharSequence sQuery = searchview_received.getText();
         if (searchview_received.getText() != null && !searchview_received.getText().toString().isEmpty()) {
-            searchQuery = " ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) and ";
+            searchQuery = "and ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) ";
         }
 
         String sortQuery;
-        if(sortStatus){
+        if (sortStatus) {
             sortQuery = " order by o.value asc ";
-        }else {
+        } else {
             sortQuery = " order by o.value desc ";
         }
 
@@ -791,14 +796,15 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
-                +"(value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' )"
-                +" AND o.voided='0' and "
-                + filterQuery
-                + searchQuery
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
+                + " AND o.voided='0' and "
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
-                +sortQuery
-                +" LIMIT " + limit + " OFFSET " + (todaysFollowUpDates.size() + tomorrowssFollowUpDates.size() + finalMonthsFollowUpDates.size());
+                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
+                +filterQuery
+                +searchQuery
+                + sortQuery;
+
+        Timber.tag("FOLLOWUP_QUERY").d(query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -807,7 +813,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
                         //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
                         //if (isCompletedExitedSurvey) {
                         String emergencyUuid = "";
@@ -855,7 +860,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

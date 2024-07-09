@@ -975,10 +975,10 @@ public class PatientsDAO {
                 + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND"
-                +"(value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '')"
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?"
                 +"AND o.voided='0' and "
-                + "o.value is NOT NULL GROUP BY a.patientuuid";
+                + "o.value is NOT NULL GROUP BY a.patientuuid"
+                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
         Log.d("QUERY_COUNT",""+query);
 
@@ -987,9 +987,7 @@ public class PatientsDAO {
             do {
                 try {
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    if (value_text != null && !value_text.isEmpty() && !value_text.equalsIgnoreCase("no")) {
                         count++;
-                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
