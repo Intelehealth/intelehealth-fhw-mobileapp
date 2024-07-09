@@ -347,7 +347,7 @@ public class VisitSummaryActivity extends BaseActivity {
     protected void onDestroy() {
         unregisterReceiver(broadcastReceiverForIamgeDownlaod);
         if (downloadPrescriptionService != null) {
-            context.unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
         super.onDestroy();
 
@@ -3682,11 +3682,11 @@ public class VisitSummaryActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         if (receiver != null) {
-            context.unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
             receiver = null;
         }
         if (downloadPrescriptionService != null) {
-            context.unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
             downloadPrescriptionService = null;
         }
         isReceiverRegistered = false;
@@ -3949,16 +3949,15 @@ public class VisitSummaryActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         if (downloadPrescriptionService != null) {
-            context.unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
 
         //In onStop() it will check and unregister the receiver...
         if (receiver != null) {
-            context.unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
             receiver = null;
         }
-        context.unregisterReceiver(mMessageReceiver);
-
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mMessageReceiver);
         isReceiverRegistered = false;
     }
 
