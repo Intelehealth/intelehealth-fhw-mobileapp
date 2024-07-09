@@ -275,7 +275,12 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
-        registerReceiver(mCallEndBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(
+                this,
+                mCallEndBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         mImageUrlFormatBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -290,7 +295,12 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        registerReceiver(mImageUrlFormatBroadcastReceiver, intentFilter);
+        ContextCompat.registerReceiver(
+                this,
+                mImageUrlFormatBroadcastReceiver,
+                intentFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
 
         mRequestQueue = Volley.newRequestQueue(this);
@@ -489,11 +499,20 @@ public class CompleteActivity extends AppCompatActivity {
             }
         };
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        registerReceiver(broadcastReceiver, receiverFilter);
-
+        ContextCompat.registerReceiver(
+                this,
+                broadcastReceiver,
+                receiverFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
-        registerReceiver(mPhoneStateBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(
+                this,
+                mPhoneStateBroadcastReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         start();
         if (mIsInComingRequest) {
             binding.callingLayout.setVisibility(View.VISIBLE);
@@ -1370,7 +1389,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                 } else if (item == 1) {
                     if (mPDFCount >= 2) {
-                        Toast.makeText(CompleteActivity.this,  getResources().getString(R.string.max_2_image), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CompleteActivity.this, getResources().getString(R.string.max_2_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     browseStartForPdf();
@@ -1417,7 +1436,7 @@ public class CompleteActivity extends AppCompatActivity {
 //                cameraStart();
                 selectImage();
             } else {
-                Toast.makeText(this, getResources().getString(R.string.camera_permission_denied) , Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.camera_permission_denied), Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.text.Html;
@@ -430,7 +431,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(
+                this,
+                reMyreceive,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
         super.onStart();
     }
 
@@ -694,7 +700,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -704,7 +710,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -714,7 +720,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -724,7 +730,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -736,7 +742,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -744,7 +750,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -756,7 +762,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
@@ -764,9 +770,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }  else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -774,7 +780,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -784,7 +790,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -796,7 +802,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else {
