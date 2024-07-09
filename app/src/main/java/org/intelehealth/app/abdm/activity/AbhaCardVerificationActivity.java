@@ -194,6 +194,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      */
     private void setAbhaCardVisibility() {
         optionSelected = ABHA_SELECTION;
+        sessionManager.setAbhaLoginType(SessionManager.ABHA_LOGIN);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_ui2);
@@ -206,6 +207,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      */
     private void setMobileVisibility() {
         optionSelected = MOBILE_NUMBER_SELECTION;
+        sessionManager.setAbhaLoginType(SessionManager.MOBILE_LOGIN);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
@@ -223,6 +225,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      */
     private void setAadhaarCardVisibility() {
         optionSelected = AADHAAR_CARD_SELECTION;
+        sessionManager.setAbhaLoginType(SessionManager.AADHAAR_LOGIN);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);

@@ -256,6 +256,7 @@ public interface ApiInterface {
     @GET
     Single<AbhaCardResponseBody> GET_ABHA_CARD(@Url String url,
                                                @Header("Authorization") String accessToken,
+                                               @Query("scope") String scope,
                                                @Header("X-TOKEN") String xToken);
 
 }

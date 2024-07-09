@@ -60,6 +60,9 @@ public class SessionManager {
     public static final String PHY_EXAM = "PHY_EXAM_";
     public static final String PATIENT_HISTORY = "PATIENT_HISTORY_";
     public static final String FAMILY_HISTORY = "FAMILY_HISTORY_";
+    public static final String ABHA_LOGIN = "abha_login";
+    public static final String AADHAAR_LOGIN = "aadhaar_login";
+    public static final String MOBILE_LOGIN = "mobile_login";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -504,6 +507,14 @@ public class SessionManager {
     }
 
     public String getFirstProviderLoginTime() {
+        return pref.getString(FIRST_PROVIDER_LOGIN_TIME, "");
+    }
+    public void setAbhaLoginType(String time) {
+        editor.putString(FIRST_PROVIDER_LOGIN_TIME, time);
+        editor.commit();
+    }
+
+    public String getAbhaLoginType() {
         return pref.getString(FIRST_PROVIDER_LOGIN_TIME, "");
     }
 

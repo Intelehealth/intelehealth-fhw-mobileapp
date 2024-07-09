@@ -100,6 +100,7 @@ import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
+import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
@@ -442,16 +443,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
             callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
             Timber.tag(TAG).d("viewDownloadABHACard: %s", X_TOKEN + " and " + patientAbhaNumber);
-        }
-        else if (abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
+        } else if (abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
                 patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
             callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
-        }
-        else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()){
-                callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
-                Timber.tag(TAG).d("viewDownloadABHACard: %s", xToken + " and " + patientAbhaNumber);
-            }
-        else {  // ie. if token if expired or not available than go through the verification flow.
+        } else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
+            callGETAbhaCardApi(xToken, accessToken, patientAbhaNumber.getText().toString());
+            Timber.tag(TAG).d("viewDownloadABHACard: %s", xToken + " and " + patientAbhaNumber);
+        } else {  // ie. if token if expired or not available than go through the verification flow.
             Intent i = new Intent(context, AadharMobileVerificationActivity.class);
             i.putExtra("hasABHA", true);
             i.putExtra("abhaCard", true);
@@ -463,7 +461,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
         String url = UrlModifiers.getABHACardUrl();
         Single<AbhaCardResponseBody> responseBodySingle;
-        responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+
+        if (sessionManager.getAbhaLoginType().equalsIgnoreCase(SessionManager.MOBILE_LOGIN)) {
+            responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken,SCOPE_MOBILE, xToken);
+        } else if (sessionManager.getAbhaLoginType().equalsIgnoreCase(SessionManager.ABHA_LOGIN)) {
+            responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, SCOPE_ABHA_ADDRESS, xToken);
+        } else {
+            responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, null, xToken);
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -476,20 +481,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             public void onSuccess(AbhaCardResponseBody abhaCardResponseBody) {
                                 if (abhaCardResponseBody != null) {
                                     Log.d("callGETAbhaCardApi", "onSuccess: " + abhaCardResponseBody.toString());
-
                                     // TODO: here it will return base64 encoded image.
                                     Intent intent = new Intent(context, AbhaCardActivity.class);
                                     intent.putExtra("payload", abhaCardResponseBody);
                                     intent.putExtra("patientAbhaNumber", patientAbhaNumber);
                                     startActivity(intent);
-                                  //  finish();
+                                    //  finish();
                                 }
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 Log.e("callGETAbhaCardApi", "onError: " + e.toString());
-
                                 Toast.makeText(PatientDetailActivity2.this, getString(R.string.session_expired_please_try_again), Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(context, AadharMobileVerificationActivity.class);
                                 i.putExtra("hasABHA", true);
@@ -1282,11 +1285,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting district and city
         String[] district_city = null;
-        if (!TextUtils.isEmpty(patientDTO.getCityvillage()))
-        {
-            district_city=  patientDTO.getCityvillage().trim().split(":");
+        if (!TextUtils.isEmpty(patientDTO.getCityvillage())) {
+            district_city = patientDTO.getCityvillage().trim().split(":");
         }
-            String district = null;
+        String district = null;
         String city_village = null;
         if (district_city != null && district_city.length == 2) {
             district = district_city[0];

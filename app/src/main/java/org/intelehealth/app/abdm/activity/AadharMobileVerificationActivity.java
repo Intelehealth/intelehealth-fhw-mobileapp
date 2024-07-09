@@ -557,7 +557,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     private void callGETAbhaCardApi(String xToken, String accessToken, MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
         String url = UrlModifiers.getABHACardUrl();
-        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, xToken);
+        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url ,accessToken, null,xToken);
         new Thread(new Runnable() {
             @Override
             public void run() {
