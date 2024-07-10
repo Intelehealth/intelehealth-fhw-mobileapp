@@ -63,7 +63,7 @@ class ScheduleNotificationReceiver: BroadcastReceiver() {
             val channel = NotificationChannel(
                     channelId,
                     description,
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
         }

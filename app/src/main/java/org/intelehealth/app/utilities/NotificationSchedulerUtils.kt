@@ -203,7 +203,7 @@ class NotificationSchedulerUtils {
             }
 
             Log.d("TRIGGER_TIME", "" + triggerTime+" "+Gson().toJson(notificationData)+"  "+Gson().toJson(notification))
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
         }
 
         /**

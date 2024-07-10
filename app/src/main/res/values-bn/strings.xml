@@ -1946,4 +1946,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="range">Range</string>
     <string name="apply">Apply</string>
     <string name="select_date_to_apply_filter">Select date to apply filter.</string>
+    <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
 </resources>
