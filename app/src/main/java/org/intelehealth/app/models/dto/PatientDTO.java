@@ -85,6 +85,8 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
+    private String profileTimestamp;
+
     public String getUuid() {
         return uuid;
     }
@@ -364,6 +366,14 @@ public class PatientDTO implements Serializable {
 
     public void setEmContactNumber(String emContactNumber) {
         this.emContactNumber = emContactNumber;
+    }
+
+    public String getProfileTimestamp() {
+        return profileTimestamp;
+    }
+
+    public void setProfileTimestamp(String profileTimestamp) {
+        this.profileTimestamp = profileTimestamp;
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.intelehealth.app.utilities.SessionManager
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class PatientPersonalInfoFragment : Fragment(R.layout.fragment_patient_personal_info) {
+class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patient_personal_info) {
     private lateinit var binding: FragmentPatientPersonalInfoBinding
     private val sessionManager: SessionManager by lazy {
         SessionManager(requireContext())

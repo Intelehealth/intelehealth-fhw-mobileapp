@@ -5,7 +5,8 @@ package org.intelehealth.app.utilities
  * Email: mhasan@intelehealth.org
  */
 class BundleKeys {
-    companion object{
+    companion object {
         const val FROM_EDIT = "from_edit"
+        const val PATIENT_UUID = "patient_uuid"
     }
 }

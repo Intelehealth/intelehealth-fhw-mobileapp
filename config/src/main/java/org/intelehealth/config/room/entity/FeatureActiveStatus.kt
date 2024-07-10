@@ -16,20 +16,30 @@ data class FeatureActiveStatus(
     @SerializedName("notes_section")
     val visitSummeryNote: Boolean,
     @SerializedName("attachment_section")
-    val visitSummeryAttachment:Boolean,
+    val visitSummeryAttachment: Boolean,
     @SerializedName("doctor_specialty_section")
     val visitSummeryDoctorSpeciality: Boolean,
     @SerializedName("priority_visit_section")
     val visitSummeryPriorityVisit: Boolean,
     @SerializedName("appointment_button")
-    val visitSummeryAppointment:Boolean,
+    val visitSummeryAppointment: Boolean,
     @SerializedName("severity_of_case_section")
-    val visitSummerySeverityOfCase:Boolean,
+    val visitSummerySeverityOfCase: Boolean,
     @SerializedName("facility_to_visit_section")
     val visitSummeryFacilityToVisit: Boolean
-){
+) {
     var videoSection: Boolean = true
     var chatSection: Boolean = true
+
     @SerializedName("patient_vitals_section")
     var vitalSection: Boolean = true
+
+    @SerializedName("patient_reg_address")
+    var activeStatusPatientAddress: Boolean = true
+
+    @SerializedName("patient_reg_other")
+    var activeStatusPatientOther: Boolean = true
+
+    @SerializedName("abha_section")
+    var activeStatusAbha: Boolean = true
 }

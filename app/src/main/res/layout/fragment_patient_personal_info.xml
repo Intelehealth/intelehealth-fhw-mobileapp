@@ -285,6 +285,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETPhoneNumber"
+                        style="@style/AppTheme.InputBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>

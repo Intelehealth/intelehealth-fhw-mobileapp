@@ -87,6 +87,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
 import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
@@ -196,7 +197,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         sessionManager = new SessionManager(getActivity());
 
         //config viewmodel initialization
-        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(getActivity()).patientRegFieldDao());
+        RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(requireContext()).patientRegFieldDao());
         RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
         regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
 
