@@ -1,7 +1,6 @@
 package org.intelehealth.app.appointment.api;
 
 
-
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.appointment.model.BookAppointmentRequest;
@@ -12,6 +11,7 @@ import org.intelehealth.app.appointment.model.SlotInfoResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -22,22 +22,27 @@ public interface Api {
     /*Appointment Module*/
     //https://uniceftraining.intelehealth.org:3004/api/appointment/getAppointment/5d1ce60a-763f-4754-b410-7733e77d59ea
     @GET("api/appointment/getAppointment/{visitUuid}")
-    Call<AppointmentDetailsResponse> getAppointmentDetails(@Path("visitUuid") String visitUuid);
+    Call<AppointmentDetailsResponse> getAppointmentDetails(@Path("visitUuid") String visitUuid,
+                                                           @Header("Authorization") String authHeader);
 
     @POST("api/appointment/cancelAppointment")
-    Call<CancelResponse> cancelAppointment(@Body CancelRequest request);
+    Call<CancelResponse> cancelAppointment(@Body CancelRequest request,
+                                           @Header("Authorization") String authHeader);
 
     // https://uniceftraining.intelehealth.org:3004/api/appointment/getAppointmentSlots?fromDate=16/12/2021&toDate=31/12/2021&speciality=Neurologist
     @GET("api/appointment/getAppointmentSlots?")
-    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate")String mSelectedEndDate, @Query("speciality")String speciality);
+    Call<SlotInfoResponse> getSlots(@Query("fromDate") String mSelectedStartDate, @Query("toDate") String mSelectedEndDate,
+                                    @Query("speciality") String speciality,
+                                    @Header("Authorization") String authHeader);
 
     @GET("api/appointment/getSlots?")
     Call<AppointmentListingResponse> getSlotsAll(@Query("fromDate") String mSelectedStartDate,
-                                                 @Query("toDate")String mSelectedEndDate,
-                                                 @Query("locationUuid")String locationUuid
-    );
+                                                 @Query("toDate") String mSelectedEndDate,
+                                                 @Query("locationUuid") String locationUuid,
+                                                 @Header("Authorization") String authHeader);
 
     @POST
-    Call<AppointmentDetailsResponse> bookAppointment(@Url String url,  @Body BookAppointmentRequest request);
+    Call<AppointmentDetailsResponse> bookAppointment(@Url String url, @Body BookAppointmentRequest request,
+                                                     @Header("Authorization") String authHeader);
 
 }

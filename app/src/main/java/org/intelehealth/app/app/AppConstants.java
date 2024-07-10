@@ -157,5 +157,7 @@ public class AppConstants {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl()
                 .replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
     }
+    public static final String NAVIGATE_TO_APPOINTMENT = "FCM_PLUGIN_APPOINTMENT_ACTIVITY";
+
 }
 

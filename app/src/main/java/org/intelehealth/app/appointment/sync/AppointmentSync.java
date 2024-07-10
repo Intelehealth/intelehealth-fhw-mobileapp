@@ -22,13 +22,14 @@ public class AppointmentSync {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
-        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
-
+        SessionManager sessionManager = new SessionManager(context);
+        //String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         if (Patterns.WEB_URL.matcher(baseurl).matches()) {
             ApiClientAppointment
                     .getInstance(baseurl)
                     .getApi()
-                    .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
+                    .getSlotsAll(selectedStartDate, selectedEndDate, sessionManager.getLocationUuid(),sessionManager.getJwtAuthToken())
                     .enqueue(new Callback<AppointmentListingResponse>() {
                         @Override
                         public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {

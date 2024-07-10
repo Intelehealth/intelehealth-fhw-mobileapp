@@ -1,6 +1,7 @@
 package org.intelehealth.app.appointment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.appointment.adapter.AppointmentListingAdapter;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -71,6 +73,13 @@ public class AppointmentListingActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -83,10 +92,12 @@ public class AppointmentListingActivity extends AppCompatActivity {
     }
 
     private void getSlots() {
+        SessionManager sessionManager = new SessionManager(this);
 
-        String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        //String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, new SessionManager(this).getLocationUuid())
+                .getSlotsAll(mSelectedStartDate, mSelectedEndDate, sessionManager.getLocationUuid(), sessionManager.getJwtAuthToken())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override

@@ -81,9 +81,12 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTBody;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -715,7 +718,8 @@ public class SetupActivity extends AppCompatActivity {
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
-                TestSetup(urlString, email, password, admin_password, location);
+                //TestSetup(urlString, email, password, admin_password, location);
+                getJWTToken(urlString, email, password, admin_password, location);
                 Log.d(TAG, "attempting setup");
             }
 
@@ -1082,11 +1086,11 @@ public class SetupActivity extends AppCompatActivity {
     public void onRadioClick(View v) {
 
         boolean checked = ((RadioButton) v).isChecked();
-        if(v.getId() == R.id.demoMindmap){
+        if (v.getId() == R.id.demoMindmap) {
             if (checked) {
                 r2.setChecked(false);
             }
-        }else if(v.getId() == R.id.downloadMindmap){
+        } else if (v.getId() == R.id.downloadMindmap) {
             if (NetworkConnection.isOnline(this)) {
                 if (checked) {
                     r1.setChecked(false);
@@ -1488,20 +1492,19 @@ public class SetupActivity extends AppCompatActivity {
 //
 //
 //    }
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-
-        ProgressDialog progress;
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD,
+                          Location location, ProgressDialog progress) {
 
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+      /*  progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
         ;//SetupActivity.this);
         progress.setTitle(getString(R.string.please_wait_progress));
         progress.setMessage(getString(R.string.logging_in));
-        progress.show();
+        progress.show();*/
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -1575,7 +1578,8 @@ public class SetupActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 
@@ -1684,7 +1688,8 @@ public class SetupActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key
+                    , sessionManager.getJwtAuthToken());
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -1796,4 +1801,77 @@ public class SetupActivity extends AppCompatActivity {
         return context;
     }
 
+    private void getJWTToken(String urlString, String username, String password, String ADMIN_PASSWORD, Location location) {
+        ProgressDialog progress;
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+
+        progress.show();
+        //String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        Log.d(TAG, "getJWTToken: urlString : " + urlString);
+        Log.d(TAG, "getJWTToken: finalURL  : " + finalURL);
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.getJWTToken(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            //temp   triggerIncorrectPasswordFlow(progress);
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        Log.d(TAG, "onNext:token : "+authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
+                        TestSetup(urlString, username, password, ADMIN_PASSWORD, location, progress);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "kk20onError: e : " + e.getLocalizedMessage());
+                        progress.dismiss();
+                        resetViews();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /* private void triggerIncorrectPasswordFlow(ProgressDialog progress) {
+         progress.dismiss();
+         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                 .title(R.string.error_login_str)
+                 .positiveButtonLabel(R.string.ok)
+                 .hideNegativeButton(true)
+                 .content(getString(R.string.error_incorrect_password))
+                 .build();
+
+         dialog.setListener(() -> dialog.dismiss());
+         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+         //DialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
+         resetViews();
+     }*/
+    private void resetViews() {
+        mEmailView.requestFocus();
+        mPasswordView.requestFocus();
+        mLoginButton.setText(getString(R.string.action_sign_in));
+        mLoginButton.setEnabled(true);
+    }
 }

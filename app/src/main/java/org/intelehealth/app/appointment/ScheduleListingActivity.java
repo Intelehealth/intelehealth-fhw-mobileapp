@@ -182,7 +182,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .bookAppointment(url, request)
+                .bookAppointment(url, request, sessionManager.getJwtAuthToken())
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
@@ -213,34 +213,34 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality)
+                .getSlots(mSelectedStartDate, mSelectedEndDate, speciality, sessionManager.getJwtAuthToken())
                 .enqueue(new Callback<SlotInfoResponse>() {
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
-                        if(slotInfoResponse ==null){
-                            findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
-                        }else{
-                            findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
-                                ScheduleListingActivity.this,
-                                slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
-                            @Override
-                            public void onSelect(SlotInfo slotInfo) {
-                                //------before reschedule need to cancel appointment----
-                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                bookAppointment(slotInfo);
-
-                            }
-                        });
-                        rvSlots.setAdapter(slotListingAdapter);
-
-                        if (slotListingAdapter.getItemCount() == 0) {
+                        if (slotInfoResponse == null) {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
                         } else {
                             findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }
+                            SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
+                                    ScheduleListingActivity.this,
+                                    slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
+                                @Override
+                                public void onSelect(SlotInfo slotInfo) {
+                                    //------before reschedule need to cancel appointment----
+                                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                    bookAppointment(slotInfo);
+
+                                }
+                            });
+                            rvSlots.setAdapter(slotListingAdapter);
+
+                            if (slotListingAdapter.getItemCount() == 0) {
+                                findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
+                            } else {
+                                findViewById(R.id.llEmptyView).setVisibility(View.GONE);
+                            }
                         }
                     }
 

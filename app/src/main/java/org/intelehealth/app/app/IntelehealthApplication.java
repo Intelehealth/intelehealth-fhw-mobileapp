@@ -221,6 +221,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
      * so when app create open it and close on app terminate
      */
     public void initSocketConnection() {
+        DateTimeResource.build(this);
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
             Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
