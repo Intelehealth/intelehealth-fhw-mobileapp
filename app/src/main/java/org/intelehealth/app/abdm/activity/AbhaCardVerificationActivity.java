@@ -523,7 +523,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                         cpd.dismiss();
                         Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                        checkIsUserExist(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse, xToken, requestBody);
+                        checkIsUserExist(abhaProfileResponse.getABHANumber(), abhaProfileResponse, xToken, requestBody);
                     }
 
                     @Override

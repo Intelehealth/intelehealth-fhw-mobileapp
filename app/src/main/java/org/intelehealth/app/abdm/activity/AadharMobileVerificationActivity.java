@@ -630,7 +630,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                                 cpd.dismiss();
                                 Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                                checkUserExist(abhaProfileResponse.getPreferredAbhaAddress(),abhaProfileResponse, xToken);
+                                checkUserExist(abhaProfileResponse.getABHANumber(),abhaProfileResponse, xToken);
                             }
 
                             @Override
