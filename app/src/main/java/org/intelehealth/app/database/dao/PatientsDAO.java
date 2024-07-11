@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -961,6 +962,7 @@ public class PatientsDAO {
     }
 
     public PatientDTO retrievePatientDetails(Cursor cursor) {
+        Timber.tag("PatientDao").d("retrievePatientDetails");
         PatientDTO patientDTO = new PatientDTO();
         if (cursor.moveToFirst()) {
             do {

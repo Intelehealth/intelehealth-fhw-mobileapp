@@ -2158,6 +2158,14 @@
         <item>25</item>
     </array>
 
+    <string-array name="guardian_type">
+        <item>Select</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Grandparent</item>
+        <item>Spouse</item>
+    </string-array>
+
     <string-array name="guardian_type_en">
         <item>Select</item>
         <item>Mother</item>
@@ -2172,6 +2180,12 @@
         <item>पिता</item>
         <item>दादा-दादी</item>
         <item>पति/पत्नी</item>
+    </string-array>
+
+    <string-array name="contact_type">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Family</item>
     </string-array>
 
     <string-array name="contact_type_en">

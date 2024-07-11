@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
+import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.ui.patient.adapter.PatientInfoPagerAdapter
 import org.intelehealth.app.ui.patient.data.PatientRepository
@@ -23,6 +26,7 @@ import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 import java.util.LinkedList
+import java.util.UUID
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:41.
@@ -45,16 +49,23 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     private fun extractAndBindUI() {
+        Timber.d { "extractAndBindUI" }
         intent?.let {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
-            else null
+            else "623b0286-ddba-4ef5-9f40-0da37200465f"
 
-            patientId?.let { id -> fetchPatientDetails(id) }
+            patientId?.let { id -> fetchPatientDetails(id) } ?: generatePatientId()
         }
+    }
+
+    private fun generatePatientId() {
+        Timber.d { "generatePatientId" }
+        patientViewModel.updatedPatient(PatientDTO().apply { uuid = UUID.randomUUID().toString() })
     }
 
     private fun fetchPatientDetails(id: String) {
         patientViewModel.loadPatientDetails(id).observe(this) {
+            Timber.d { "Result => ${Gson().toJson(it)}" }
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
                 patientViewModel.updatedPatient(patient)

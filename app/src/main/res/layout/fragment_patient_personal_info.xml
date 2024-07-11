@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="patient"
+            type="org.intelehealth.app.models.dto.PatientDTO" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llPatientPersonalInfoRoot"
         android:layout_width="match_parent"
@@ -37,6 +44,7 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/patient_imgview"
+                        profileUrl="@{patient.patientPhoto}"
                         android:layout_width="@dimen/patregist_profileimg_icon"
                         android:layout_height="@dimen/patregist_profileimg_icon"
                         android:layout_centerHorizontal="true"
@@ -99,8 +107,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETFirstName"
+                        style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.firstname}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -115,9 +125,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETMiddleName"
-                        style="@style/AppTheme.InputBox"
+                        style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.middlename}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -132,16 +143,17 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETLastName"
-                        style="@style/AppTheme.InputBox"
+                        style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.lastname}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_8dp"
+                    android:layout_marginTop="@dimen/std_12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textInputLayLastName">
@@ -151,6 +163,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:weightSum="3"
+                        gender="@{patient.gender}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -203,6 +216,7 @@
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/date_of_birth_mandatory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -212,7 +226,12 @@
                         android:id="@+id/textInputETDob"
                         style="@style/AppTheme.InputBox"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="none" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -245,9 +264,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETGuardianName"
-                        style="@style/AppTheme.InputBox"
+                        style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.guardianName}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -285,9 +305,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETPhoneNumber"
-                        style="@style/AppTheme.InputBox"
+                        style="@style/AppTheme.InputBox.Phone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.phonenumber}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -319,9 +340,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETEmContactName"
-                        style="@style/AppTheme.InputBox"
+                        style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.emContactName}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -341,8 +363,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETEMPhoneNumber"
+                        style="@style/AppTheme.InputBox.Phone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.emContactNumber}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

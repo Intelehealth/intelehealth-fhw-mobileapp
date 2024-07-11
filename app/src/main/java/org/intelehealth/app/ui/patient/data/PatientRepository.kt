@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.patient.data
 
 import android.database.sqlite.SQLiteOpenHelper
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
@@ -20,7 +21,9 @@ class PatientRepository(
         patientsDao.createPatients(patient, sqlHelper.writableDatabase)
 
     fun fetchPatient(uuid: String): PatientDTO {
+        Timber.d { "uuid => $uuid" }
         PatientQueryBuilder().buildPatientDetailsQuery(uuid).apply {
+            Timber.d { "Query => $this" }
             val cursor = sqlHelper.readableDatabase.rawQuery(this, null)
             return patientsDao.retrievePatientDetails(cursor)
         }

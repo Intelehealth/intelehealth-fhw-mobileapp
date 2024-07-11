@@ -136,6 +136,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.PatientRegistrationFields;
@@ -220,7 +221,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         //config viewmodel initialization
         RegFieldRepository repository = new RegFieldRepository(ConfigDatabase.getInstance(this).patientRegFieldDao());
-        PatientViewModelFactory factory = new PatientViewModelFactory(repository);
+        RegFieldViewModelFactory factory = new RegFieldViewModelFactory(repository);
         regFieldViewModel = new ViewModelProvider(this, factory).get(RegFieldViewModel.class);
 
         //In case of crash still the org should hold the current lang fix.
