@@ -5,11 +5,11 @@ package org.intelehealth.app.utilities
  * Email: mhasan@intelehealth.org
  */
 class AgeUtils {
-    companion object{
+    companion object {
 
         // guardian required if age is below 18 or equal 18
         // guardian not require for above 18 patient ex: 18y 1m
-        fun isGuardianRequired(years:Int, months:Int, days:Int):Boolean{
+        fun isGuardianRequired(years: Int, months: Int, days: Int): Boolean {
             return ((years < 18) || (years == 18 && months == 0 && days == 0))
         }
     }

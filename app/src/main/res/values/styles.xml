@@ -29,7 +29,7 @@
     <style name="AppThemeMaterialNew" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item><!--status bar-->
-        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorError">@color/red</item>
         <item name="colorPrimaryVariant">@color/colorAccent</item>
@@ -37,7 +37,7 @@
         <item name="fontFamily">@font/lato_regular</item>
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+<!--        <item name="buttonStyle">@style/DefaultButtonStyle</item>-->
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">

@@ -22,6 +22,7 @@ import java.util.TimeZone
 class CalendarDialog private constructor() : AppCompatDialogFragment(), OnDateSetListener {
     private var maxDate: Long = 0
     private var minDate: Long = 0
+    private var selectedDate: Long = Calendar.getInstance().timeInMillis
     private var format: String = "MMM dd, yyyy"
     private lateinit var listener: OnDatePickListener
 
@@ -31,6 +32,7 @@ class CalendarDialog private constructor() : AppCompatDialogFragment(), OnDateSe
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
+        calendar.timeInMillis = selectedDate
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
@@ -84,6 +86,11 @@ class CalendarDialog private constructor() : AppCompatDialogFragment(), OnDateSe
 
         fun minDate(min: Long): Builder {
             calendarDialog.minDate = min
+            return this
+        }
+
+        fun selectedDate(selected: Long): Builder {
+            calendarDialog.selectedDate = selected
             return this
         }
 

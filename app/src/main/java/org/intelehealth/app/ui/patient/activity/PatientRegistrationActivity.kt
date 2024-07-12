@@ -44,7 +44,7 @@ class PatientRegistrationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        manageTitleVisibilityOnScrolling()
+//        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
     }
 
@@ -73,20 +73,20 @@ class PatientRegistrationActivity : BaseActivity() {
         }
     }
 
-    private fun manageTitleVisibilityOnScrolling() {
-        binding.appBarLayoutPatient.addOnOffsetChangedListener(object : OnOffsetChangedListener {
-            var scrollRange = -1;
-            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout?.totalScrollRange ?: -1
-                }
-
-                binding.collapsingToolbar.title = if (scrollRange + verticalOffset == 0) {
-                    resources.getString(R.string.add_new_patient)
-                } else ""
-            }
-        })
-    }
+//    private fun manageTitleVisibilityOnScrolling() {
+//        binding.appBarLayoutPatient.addOnOffsetChangedListener(object : OnOffsetChangedListener {
+//            var scrollRange = -1;
+//            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+//                if (scrollRange == -1) {
+//                    scrollRange = appBarLayout?.totalScrollRange ?: -1
+//                }
+//
+//                binding.collapsingToolbar.title = if (scrollRange + verticalOffset == 0) {
+//                    resources.getString(R.string.add_new_patient)
+//                } else ""
+//            }
+//        })
+//    }
 
     private fun bindPagerAdapter(fragments: LinkedList<Fragment>) {
         pagerAdapter = PatientInfoPagerAdapter(supportFragmentManager, lifecycle)

@@ -1,116 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<layout>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <NumberPicker
-            android:id="@+id/dialog_2_numbers_quantity"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:padding="@dimen/padding_card">
+            android:orientation="horizontal">
 
-        </NumberPicker>
+            <NumberPicker
+                android:id="@+id/dialog_2_numbers_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:padding="@dimen/padding_card">
 
-        <NumberPicker
-            android:id="@+id/dialog_2_numbers_unit"
-            android:layout_width="wrap_content"
+            </NumberPicker>
+
+            <NumberPicker
+                android:id="@+id/dialog_2_numbers_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:padding="@dimen/padding_card">
+
+            </NumberPicker>
+
+            <NumberPicker
+                android:id="@+id/dialog_3_numbers_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:padding="@dimen/padding_card"
+                android:visibility="gone">
+
+            </NumberPicker>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:padding="@dimen/padding_card">
+            android:orientation="horizontal">
 
-        </NumberPicker>
+            <TextView
+                android:id="@+id/dialog_2_numbers_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:padding="@dimen/padding_card"
+                android:text="@string/years" />
 
-        <NumberPicker
-            android:id="@+id/dialog_3_numbers_unit"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/dialog_2_numbers_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:padding="@dimen/padding_card"
+                android:text="@string/months" />
+
+            <TextView
+                android:id="@+id/dialog_2_numbers_text_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:padding="@dimen/padding_card"
+                android:text="@string/days" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:padding="@dimen/padding_card"
-            android:visibility="gone">
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        </NumberPicker>
+            <Button
+                android:id="@+id/btn_cancel_picker"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="16dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="16dp"
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/button_ok_picker"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/btn_cancel_picker"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="16dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="16dp"
+                android:text="@string/okay"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/dialog_2_numbers_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:fontFamily="@font/lato_regular"
-            android:gravity="center"
-            android:padding="@dimen/padding_card" />
-
-        <TextView
-            android:id="@+id/dialog_2_numbers_text_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:fontFamily="@font/lato_regular"
-            android:gravity="center"
-            android:padding="@dimen/padding_card" />
-
-        <TextView
-            android:id="@+id/dialog_2_numbers_text_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:fontFamily="@font/lato_regular"
-            android:gravity="center"
-            android:padding="@dimen/padding_card" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_cancel_picker"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/white_bg_button"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingTop="16dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="16dp"
-            android:text="@string/cancel"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/button_ok_picker"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/btn_cancel_picker"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingTop="16dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="16dp"
-            android:text="@string/okay"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</layout>

@@ -95,7 +95,7 @@
                 </RelativeLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                    android:id="@+id/textInputLayFirstName"
+                    android:id="@+id/textInputLayFName"
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                     app:layout_constraintTop_toBottomOf="@id/add_picture_lay">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputETFirstName"
+                        android:id="@+id/textInputETFName"
                         style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,17 +114,17 @@
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                    android:id="@+id/textInputLayMiddleName"
+                    android:id="@+id/textInputLayMName"
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/middle_name_registration"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayFirstName">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayFName">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputETMiddleName"
+                        android:id="@+id/textInputETMName"
                         style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,17 +132,17 @@
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                    android:id="@+id/textInputLayLastName"
+                    android:id="@+id/textInputLayLName"
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name_mandatory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayMiddleName">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayMName">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputETLastName"
+                        android:id="@+id/textInputETLName"
                         style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                     android:layout_marginTop="@dimen/std_12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayLastName">
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayLName">
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
@@ -249,7 +249,11 @@
                         style="@style/AppTheme.InputBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number" />
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="none" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -308,7 +312,7 @@
                         style="@style/AppTheme.InputBox.Phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{patient.phonenumber}" />
+                        android:text="@{patient.mobileNumber}" />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
@@ -329,7 +333,7 @@
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                    android:id="@+id/textInputLayEmContactName"
+                    android:id="@+id/textInputLayECName"
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -339,7 +343,7 @@
                     app:layout_constraintTop_toBottomOf="@id/textInputLayEmContactType">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputETEmContactName"
+                        android:id="@+id/textInputETECName"
                         style="@style/AppTheme.InputBox.Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -356,7 +360,7 @@
                     app:expandedHintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayEmContactName"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayECName"
                     app:prefixText="+91 | "
                     app:startIconDrawable="@drawable/img"
                     app:startIconTint="@null">

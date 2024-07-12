@@ -139,6 +139,20 @@ public class PatientDTO implements Serializable {
         return phonenumber;
     }
 
+    public String getMobileNumber() {
+        if (phonenumber != null && phonenumber.length() == 13) {
+            return phonenumber.substring(3);
+        }
+        return phonenumber;
+    }
+
+    public String getCountryCode() {
+        if (phonenumber != null && phonenumber.length() == 13) {
+            return phonenumber.substring(0, 3);
+        }
+        return phonenumber;
+    }
+
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
@@ -272,7 +286,7 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
-    public String  getSon_dau_wife() {
+    public String getSon_dau_wife() {
         return son_dau_wife;
     }
 
