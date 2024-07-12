@@ -2175,6 +2175,7 @@ public class Node implements Serializable {
                             if (node.getRecurringCurrentCount() > node.getRecurringMaxCount()) {
                                 Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                                 intent.putExtra("move_next", true);
+                                intent.setPackage(context.getPackageName());
                                 context.sendBroadcast(intent);
                             } else {
                                 Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
@@ -2186,6 +2187,7 @@ public class Node implements Serializable {
                                 intent.putExtra("recurring_current_step", node.getRecurringCurrentCount());
                                 intent.putExtra("move_next", false);
                                 intent.putExtra("node_text", node.getDisplay());
+                                intent.setPackage(context.getPackageName());
                                 context.sendBroadcast(intent);
                             }
 
@@ -2193,12 +2195,14 @@ public class Node implements Serializable {
                         } else {
                             Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                             intent.putExtra("move_next", true);
+                            intent.setPackage(context.getPackageName());
                             context.sendBroadcast(intent);
                         }
                     } else {
                         //// go to next question
                         Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                         intent.putExtra("move_next", true);
+                        intent.setPackage(context.getPackageName());
                         context.sendBroadcast(intent);
                     }
 
