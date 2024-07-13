@@ -484,7 +484,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getJWTToken(String username, String password) {
-        String finalURL = "https://" + sessionManager.getServerUrl().concat(":3030/auth/login");
+        String finalURL = BuildConfig.SERVER_URL.concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 

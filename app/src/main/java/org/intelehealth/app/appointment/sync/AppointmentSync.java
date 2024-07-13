@@ -9,6 +9,7 @@ import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
 import org.intelehealth.app.models.auth.ResponseChecker;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -38,7 +39,9 @@ public class AppointmentSync {
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                         ResponseChecker<AppointmentListingResponse> responseChecker = new ResponseChecker<>(response);
                         if (responseChecker.isNotAuthorized()) {
-                            //TODO: redirect to login screen
+                            sessionManager.setJwtAuthToken(null);
+                            NavigationUtils navigationUtils = new NavigationUtils();
+                            navigationUtils.triggerSignOutOn401Response(context);
                             return;
                         }
 

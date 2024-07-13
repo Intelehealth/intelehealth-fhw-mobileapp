@@ -679,7 +679,8 @@ public class SetupActivity extends AppCompatActivity {
 //                String urlString = mUrlField.getText().toString();
                 mLoginButton.setText(getString(R.string.please_wait_progress));
                 mLoginButton.setEnabled(false);
-                TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+              //  TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+                getJWTToken(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1249,7 +1250,6 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-        getJWTToken(CLEAN_URL, USERNAME, PASSWORD);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -1278,7 +1278,7 @@ public class SetupActivity extends AppCompatActivity {
                             .subscribe(new DisposableObserver<LoginProviderModel>() {
                                 @Override
                                 public void onNext(LoginProviderModel loginProviderModel) {
-                                    if (loginProviderModel.getResults().size() != 0) {
+                                      if (loginProviderModel.getResults().size() != 0) {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
@@ -1306,7 +1306,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                    .server(CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 
@@ -1697,7 +1697,7 @@ public class SetupActivity extends AppCompatActivity {
         progress.setMessage(getString(R.string.logging_in));
 
         progress.show();
-        String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        String finalURL = urlString.concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 

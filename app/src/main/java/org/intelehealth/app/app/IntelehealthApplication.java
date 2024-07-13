@@ -213,4 +213,5 @@ public class IntelehealthApplication extends MultiDexApplication {
     public void disconnectSocket() {
         socketManager.disconnect();
     }
+
 }

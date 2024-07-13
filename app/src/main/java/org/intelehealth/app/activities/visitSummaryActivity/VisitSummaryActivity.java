@@ -118,6 +118,7 @@ import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.appointment.ScheduleListingActivity;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -155,6 +156,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -6093,7 +6095,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
             public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                 ResponseChecker<AppointmentDetailsResponse> responseChecker = new ResponseChecker<>(response);
                 if (responseChecker.isNotAuthorized()) {
-                    //TODO: redirect to login screen
+                    sessionManager.setJwtAuthToken(null);
+                    NavigationUtils navigationUtils = new NavigationUtils();
+                    navigationUtils.triggerSignOutOn401Response(VisitSummaryActivity.this);
                     return;
                 }
 
@@ -6173,7 +6177,9 @@ public class VisitSummaryActivity extends BaseActivity implements View.OnClickLi
                             public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
                                 ResponseChecker<CancelResponse> responseChecker = new ResponseChecker<>(response);
                                 if (responseChecker.isNotAuthorized()) {
-                                    //TODO: redirect to login screen
+                                    sessionManager.setJwtAuthToken(null);
+                                    NavigationUtils navigationUtils = new NavigationUtils();
+                                    navigationUtils.triggerSignOutOn401Response(VisitSummaryActivity.this);
                                     return;
                                 }
 
