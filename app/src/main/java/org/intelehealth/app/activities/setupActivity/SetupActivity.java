@@ -1306,7 +1306,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                    .server(CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 
