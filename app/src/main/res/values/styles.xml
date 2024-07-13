@@ -37,7 +37,7 @@
         <item name="fontFamily">@font/lato_regular</item>
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
-<!--        <item name="buttonStyle">@style/DefaultButtonStyle</item>-->
+        <!--        <item name="buttonStyle">@style/DefaultButtonStyle</item>-->
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -548,6 +548,7 @@
         <item name="boxStrokeColor">@color/selector_color_inputbox</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="android:layout_marginTop">@dimen/std_8dp</item>
+        <item name="cursorColor">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.OutlineInputBox.DropDown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">

@@ -1,9 +1,11 @@
 package org.intelehealth.app.utilities.extensions
 
 import android.text.InputFilter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.widget.doOnTextChanged
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -28,19 +30,32 @@ fun TextInputLayout.hideErrorOnTextChang(input: TextInputEditText) {
 }
 
 fun TextInputLayout.hideDigitErrorOnTextChang(input: TextInputEditText, digit: Int) {
-    input.doOnTextChanged { _, _, _, count ->
-        if (count == digit) hideError()
+    input.doOnTextChanged { text, _, _, count ->
+        Timber.d { "phone validation $count == $digit" }
+        if (text?.length == digit) hideError()
     }
 }
 
 fun TextInputLayout.validate(input: TextInputEditText, @StringRes resId: Int): Boolean {
-    input.text?.let {
-        if (it.isNotEmpty()) return true
-        else {
-            showError(resId)
-            return false
-        }
-    } ?: return false
+//    input.text?.let {
+//        Timber.d { "Input data => ${it.isNotEmpty()} => $it" }
+//        if (it.toString().isNotEmpty()) return true
+//        else {
+//            showError(resId)
+//            return false
+//        }
+//    } ?: return false
+    return if (input.text.isNullOrEmpty()) {
+        showError(resId)
+        false
+    } else true
+}
+
+fun TextInputLayout.validateDropDowb(input: AutoCompleteTextView, @StringRes resId: Int): Boolean {
+    return if (input.text.isNullOrEmpty()) {
+        showError(resId)
+        false
+    } else true
 }
 
 fun TextInputLayout.validateDigit(
@@ -48,13 +63,10 @@ fun TextInputLayout.validateDigit(
     @StringRes resId: Int,
     minDigit: Int
 ): Boolean {
-    input.text?.let {
-        if (it.isNotEmpty() && it.length == minDigit) return true
-        else {
-            showError(resId)
-            return false
-        }
-    } ?: return false
+    return if (input.text.isNullOrEmpty() || input.text?.length!! < minDigit) {
+        showError(resId)
+        false
+    } else true
 }
 
 fun EditText.addFilter(filter: InputFilter) {

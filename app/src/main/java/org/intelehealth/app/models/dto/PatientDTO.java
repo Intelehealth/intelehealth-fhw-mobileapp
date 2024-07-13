@@ -382,6 +382,19 @@ public class PatientDTO implements Serializable {
         this.emContactNumber = emContactNumber;
     }
 
+    public String getEmMobileNumber() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(3);
+        }
+        return emContactNumber;
+    }
+
+    public String getEmCountryCode() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(0, 3);
+        }
+        return emContactNumber;
+    }
     public String getProfileTimestamp() {
         return profileTimestamp;
     }

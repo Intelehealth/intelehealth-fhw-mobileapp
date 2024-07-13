@@ -2159,7 +2159,6 @@
     </array>
 
     <string-array name="guardian_type">
-        <item>Select</item>
         <item>Mother</item>
         <item>Father</item>
         <item>Grandparent</item>
@@ -2183,7 +2182,6 @@
     </string-array>
 
     <string-array name="contact_type">
-        <item>Select</item>
         <item>Self</item>
         <item>Family</item>
     </string-array>

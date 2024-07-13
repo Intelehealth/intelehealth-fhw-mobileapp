@@ -21,12 +21,16 @@ import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
+import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
+import org.intelehealth.app.utilities.extensions.validateDropDowb
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -134,24 +138,45 @@ class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patien
         )
         val formattedDate = sdf.format(calendar.time)
         binding.textInputETDob.setText(formattedDate)
+        updateDob()
     }
 
     override fun onPatientDataLoaded(patient: PatientDTO) {
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
+        fetchPersonalInfoConfig()
         binding.patient = patient
-        setupGuardianType()
-        setupEmContactType()
-        setupDOB()
-        setupAge()
-        setupProfilePicture()
-        applyFilter()
-        setInputTextChangListener()
     }
 
-    private fun setupProfilePicture() {
+    private fun fetchPersonalInfoConfig() {
+        patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
+            binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
+            setupGuardianType()
+            setupEmContactType()
+            setupDOB()
+            setupAge()
+            applyFilter()
+            setInputTextChangListener()
+            setGender()
+            setClickListener()
+        }
+    }
+
+    private fun setClickListener() {
         binding.patientImgview.setOnClickListener { requestPermission() }
+        binding.btnPatientPersonalNext.setOnClickListener { validateForm() }
+    }
+
+    private fun setGender() {
+        binding.toggleGender.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            patient.gender = when (checkedId) {
+                R.id.btnMale -> "M"
+                R.id.btnFemale -> "F"
+                R.id.btnOther -> "O"
+                else -> "O"
+            }
+        }
     }
 
     private fun requestPermission() {
@@ -180,6 +205,7 @@ class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patien
         if (result.resultCode == Activity.RESULT_OK) {
             patient.patientPhoto = result.data!!.getStringExtra("RESULT")
             binding.patient = patient
+            if (!patient.patientPhoto.isNullOrEmpty()) binding.profileImageError.isVisible = false
             Timber.d { "Profile path => ${patient.patientPhoto}" }
         }
     }
@@ -236,7 +262,18 @@ class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patien
     private val dateListener = object : CalendarDialog.OnDatePickListener {
         override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
             value?.let { parseDob(it, DateTimeUtils.MMM_DD_YYYY_FORMAT) }
+            updateDob()
             binding.textInputETDob.setText(value)
+        }
+    }
+
+    private fun updateDob() {
+        Calendar.getInstance().apply {
+            timeInMillis = selectedDate
+        }.also {
+            DateTimeUtils.formatToLocalDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
+                patient.dateofbirth = this
+            }
         }
     }
 
@@ -267,29 +304,68 @@ class PatientPersonalInfoFragment : BasePatientFragment(R.layout.fragment_patien
     private fun setupGuardianType() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.guardian_type)
         binding.autoCompleteGuardianType.setAdapter(adapter)
+        if (patient.guardianType != null && patient.guardianType.isNotEmpty()) {
+            binding.autoCompleteGuardianType.setSelection(adapter.getPosition(patient.guardianType))
+        }
+        binding.autoCompleteGuardianType.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayGuardianType.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                patient.guardianType = this.getStringArray(R.array.guardian_type)[i]
+            }
+        }
     }
 
     private fun setupEmContactType() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.contact_type)
         binding.autoCompleteEmContactType.setAdapter(adapter)
+        if (patient.contactType != null && patient.contactType.isNotEmpty()) {
+            binding.autoCompleteEmContactType.setSelection(adapter.getPosition(patient.contactType))
+        }
+        binding.autoCompleteEmContactType.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayEmContactType.hideError()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                patient.contactType = this.getStringArray(R.array.contact_type)[i]
+            }
+        }
     }
 
     private fun validateForm() {
+        Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
-        val bFname = binding.textInputLayFName.validate(binding.textInputETFName, error)
-        val bMname = binding.textInputLayFName.validate(binding.textInputETMName, error)
-        val bLname = binding.textInputLayFName.validate(binding.textInputETLName, error)
-        val bGname = binding.textInputLayFName.validate(binding.textInputETGuardianName, error)
-        val bEmName = binding.textInputLayFName.validate(binding.textInputETECName, error)
-        val bPhone = binding.textInputLayPhoneNumber.validateDigit(
-            binding.textInputETPhoneNumber,
-            R.string.invalid_mobile_no,
-            10
-        )
-        val bEmPhone = binding.textInputLayEMPhoneNumber.validateDigit(
-            binding.textInputETEMPhoneNumber,
-            R.string.invalid_mobile_no,
-            10
-        )
+        binding.personalConfig?.let {
+            if (it.firstName!!.isEnabled && it.firstName!!.isMandatory) {
+                binding.textInputLayFName.validate(binding.textInputETFName, error)
+            }
+            val bFname = binding.textInputLayFName.validate(binding.textInputETFName, error)
+            val bMname = binding.textInputLayMName.validate(binding.textInputETMName, error)
+            val bLname = binding.textInputLayLName.validate(binding.textInputETLName, error)
+            val bGname = binding.textInputLayGuardianName.validate(
+                binding.textInputETGuardianName,
+                error
+            )
+            val bEmName = binding.textInputLayECName.validate(binding.textInputETECName, error)
+            val bPhone = binding.textInputLayPhoneNumber.validateDigit(
+                binding.textInputETPhoneNumber,
+                R.string.invalid_mobile_no,
+                10
+            )
+            val bEmPhone = binding.textInputLayEMPhoneNumber.validateDigit(
+                binding.textInputETEMPhoneNumber,
+                R.string.invalid_mobile_no,
+                10
+            )
+
+            val bGuardianType = binding.textInputLayGuardianType.validateDropDowb(
+                binding.autoCompleteGuardianType,
+                error
+            )
+            val bEmContactType = binding.textInputLayEmContactType.validateDropDowb(
+                binding.autoCompleteEmContactType,
+                error
+            )
+
+            if (patient.patientPhoto.isNullOrEmpty()) binding.profileImageError.isVisible = true
+            if (patient.gender.isNullOrEmpty()) binding.tvGenderError.isVisible = true
+        }
     }
 }
