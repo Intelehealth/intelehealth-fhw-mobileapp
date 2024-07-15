@@ -12,7 +12,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginBottom="@dimen/margin_8">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -48,17 +50,40 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
+                    android:layout_toStartOf="@+id/llPriorityTagFollowUpListItem1"
                     android:text="@string/fu_item_title"
                     android:textAppearance="@style/label"
                     android:textColor="@null"
                     android:textSize="@dimen/txtsize_patdetail_14sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/openmrs_id_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fu_patname_txtview"
+                    android:text="ysfryrr"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:textAppearance="@style/label_misc_txt_14sp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/txtsize_patdetail_14sp" />
+
+                <TextView
+                    android:id="@+id/search_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/openmrs_id_tv"
+                    android:text="@string/search_gender"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:textAppearance="@style/label_misc_txt_14sp"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_name_txt_size" />
+
                 <ImageView
                     android:id="@+id/fu_item_calendar"
                     android:layout_width="@dimen/cal_size"
                     android:layout_height="@dimen/cal_size"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/search_gender"
                     android:layout_marginTop="@dimen/cal_margin_top"
                     android:src="@drawable/followup_item_calendar" />
 
@@ -66,7 +91,7 @@
                     android:id="@+id/fu_date_txtview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/search_gender"
                     android:layout_marginStart="@dimen/cal_margnin_start"
                     android:layout_marginTop="@dimen/cal_margnin_start"
                     android:layout_toEndOf="@+id/fu_item_calendar"
@@ -78,12 +103,36 @@
                     android:textSize="@dimen/fu_male_textsize" />
 
                 <LinearLayout
+                    android:id="@+id/llAppointmentTimeTodayAppointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fu_date_txtview"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:contentDescription="Today's Appointment Time Linear Layout"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_time_diff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:gravity="center_vertical"
+                        android:lineHeight="@dimen/presc_rec_line_ht"
+                        android:lineSpacingExtra="@dimen/presc_rec_line_spacing"
+                        android:text="In 2 minutes"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/edittext_textsize_16sp"
+                        app:drawableStartCompat="@drawable/ui2_ic_time" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llPriorityTagFollowUpListItem1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:layout_marginEnd="@dimen/margin_5"
-                    android:layout_toStartOf="@id/search_gender"
+                    android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_frame_priority"
                     android:contentDescription="Follow Up List Item 1 Priority Tag Linear Layout"
                     android:visibility="gone"
@@ -104,19 +153,6 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/search_gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="@dimen/cal_margnin_start"
-                    android:lineSpacingExtra="3sp"
-                    android:paddingRight="5dp"
-                    android:text="@string/search_gender"
-                    android:textAppearance="@style/label_misc_txt_14sp"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_name_txt_size" />
 
             </RelativeLayout>
         </RelativeLayout>

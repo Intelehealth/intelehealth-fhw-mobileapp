@@ -7,6 +7,7 @@ import org.intelehealth.app.database.dao.notification.NotificationDAO
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -37,6 +38,7 @@ class NotificationRepository {
         notificationDao.insertNotifications(notificationList)
 
         val nonDeletedNotificationList = notificationDao.nonDeletedNotifications()
+        val notificationListWithOutExpiredFollowup = ArrayList<NotificationModel>()
 
         nonDeletedNotificationList.forEach { notificationModel ->
             allVisitList.find { visitItem ->
@@ -75,10 +77,24 @@ class NotificationRepository {
             }
         }
 
-// Sort the notificationList ArrayList using the defined Comparator
-        (nonDeletedNotificationList as ArrayList).sortWith(comparator)
+        /**
+         * deleting all expired followup notification here
+         * and creating new list
+         */
+       for (data in nonDeletedNotificationList){
+           if(data.notification_type == NotificationDbConstants.PRESCRIPTION_TYPE_NOTIFICATION){
+               notificationListWithOutExpiredFollowup.add(data)
+           }
+           else if (data.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION &&
+               DateAndTimeUtils.getTimeStampFromString( data.description.substring(data.description.length-21,data.description.length),"yyyy-MM-dd 'at' h:mm a") > System.currentTimeMillis()){
+               notificationListWithOutExpiredFollowup.add(data)
+           }
+       }
 
-        return nonDeletedNotificationList
+// Sort the notificationList ArrayList using the defined Comparator
+        (notificationListWithOutExpiredFollowup as ArrayList).sortWith(comparator)
+
+        return notificationListWithOutExpiredFollowup
     }
 
     fun fetchPrescriptionCount() = recentVisits(LIMIT, OFFSET).size

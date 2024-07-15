@@ -4,6 +4,8 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -431,6 +433,8 @@
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
