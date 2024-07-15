@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginStart="@dimen/margin_20"
+    android:layout_marginEnd="@dimen/margin_20"
+    android:layout_marginBottom="@dimen/margin_10"
+    android:padding="@dimen/padding_10"
+    android:elevation="5dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/button_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/btn_username_margin_end"
+                android:layout_weight="1"
+                android:background="@drawable/button_bg_forgot_pass_ui2"
+                android:paddingStart="@dimen/options_button_padding_start"
+                android:paddingEnd="@dimen/options_button_padding_end"
+                android:text="@string/date"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/btn_options_text_Size" />
+
+            <Button
+                android:id="@+id/button_range"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_bg_forgot_pass_disabled_ui2"
+                android:paddingStart="@dimen/options_button_padding_start"
+                android:paddingEnd="@dimen/options_button_padding_end"
+                android:text="@string/range"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/btn_options_text_Size" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_date"
+            tools:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_8"
+            android:visibility="visible">
+
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_10"
+                android:background="@drawable/ui2_date_picker_bg"
+                android:gravity="center|start"
+                android:letterSpacing="0.02"
+                android:paddingEnd="@dimen/date_frag_date_padding_end"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/date_frag_date_text_size"
+                app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                app:drawableTint="@color/iconTintGray" />
+
+
+            <Button
+                android:id="@+id/apply_date_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_gravity="end"
+                android:minWidth="@dimen/size_120dp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:text="@string/apply"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_range"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/margin_8"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/layout_start_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.02"
+                    android:text="@string/from"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/date_frag_date_margin_top"
+                    android:background="@drawable/ui2_date_picker_bg"
+                    android:gravity="center|start"
+                    tools:text="20 june,2024"
+                    android:letterSpacing="0.02"
+                    android:paddingEnd="@dimen/date_frag_date_padding_end"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/date_frag_date_text_size"
+                    app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                    app:drawableTint="@color/iconTintGray" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.02"
+                    android:text="@string/to"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/date_frag_layout_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_10"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ui2_date_picker_bg"
+                    tools:text="20 June, 2024"
+                    android:gravity="center|start"
+                    android:letterSpacing="0.02"
+                    android:paddingEnd="20dp"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="@dimen/date_frag_date_text_size"
+                    app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                    app:drawableTint="@color/iconTintGray" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/apply_range_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_gravity="end"
+                android:minWidth="@dimen/size_120dp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:text="@string/apply"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
