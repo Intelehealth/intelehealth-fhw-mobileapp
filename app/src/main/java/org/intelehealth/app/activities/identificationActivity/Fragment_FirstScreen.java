@@ -87,7 +87,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
-import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
 import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
@@ -546,15 +545,14 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         null,
                         firstNameTv
                 );
-                case PatientRegConfigKeys.MIDDLE_NAME ->
-                        PatientRegFieldsUtils.INSTANCE.configField(
-                                isEditMode,
-                                fields,
-                                middleNameLay,
-                                mMiddleNameEditText,
-                                null,
-                                middleNameTv
-                        );
+                case PatientRegConfigKeys.MIDDLE_NAME -> PatientRegFieldsUtils.INSTANCE.configField(
+                        isEditMode,
+                        fields,
+                        middleNameLay,
+                        mMiddleNameEditText,
+                        null,
+                        middleNameTv
+                );
                 case PatientRegConfigKeys.LAST_NAME -> PatientRegFieldsUtils.INSTANCE.configField(
                         isEditMode,
                         fields,
@@ -588,7 +586,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                         ageTv
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
+                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
                             !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 isEditMode,
@@ -601,7 +599,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
+                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() ||
                             !mAgeEditText.getText().toString().isEmpty())) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 isEditMode,
@@ -756,11 +754,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
      **/
     private void updateGuardianVisibility() {
         //guardian name view config
-        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
             String guardianName = guardianNameTv.getText().toString();
             if (PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
-                String name = guardianName.replace("*","");
+                String name = guardianName.replace("*", "");
                 guardianNameTv.setText(new StringBuilder().append(name).append("*"));
             }
             guardianNameLay.setVisibility(View.VISIBLE);
@@ -769,11 +767,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         //guardian type view config
-        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && (!mDOBEditText.getText().toString().isEmpty() || !mAgeEditText.getText().toString().isEmpty())
                 && PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
             String guardianType = guardianTypeTv.getText().toString();
             if (PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_TYPE)) {
-                String type = guardianType.replace("*","");
+                String type = guardianType.replace("*", "");
                 guardianTypeTv.setText(new StringBuilder().append(type).append("*"));
             }
             guardianTypeLay.setVisibility(View.VISIBLE);
@@ -1286,7 +1284,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
-        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
             //Guardian name edittext
             if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.GUARDIAN_NAME)) {
                 if (mGuardianNameEditText.getText().toString().equals("") &&
@@ -1352,9 +1350,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mPhoneNumberErrorTextView.setVisibility(View.GONE);
                     mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            }else {
+            } else {
                 String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
-                if(s.length()>0){
+                if (s.length() > 0) {
                     if (s.length() < mSelectedMobileNumberValidationLength) {
                         mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                         mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
@@ -1422,7 +1420,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //Emergency contact number country code picker
         if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-            Log.d("ppppp"," "+PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
+            Log.d("ppppp", " " + PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
             if (PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
                 if (s.length() < mSelectedMobileNumberValidationLength) {
@@ -1462,9 +1460,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mEmContactNumErrorTextView.setVisibility(View.GONE);
                     mEmContactNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            }else {
+            } else {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
-                if (s.length()>0){
+                if (s.length() > 0) {
                     if (s.length() < mSelectedMobileNumberValidationLength) {
                         mEmContactNumErrorTextView.setVisibility(View.VISIBLE);
                         mEmContactNumErrorTextView.setText(getString(R.string.enter_10_digits));
@@ -1524,15 +1522,15 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patientdto.setFirstname(mFirstNameEditText.getText().toString());
         patientdto.setMiddlename(mMiddleNameEditText.getText().toString());
         patientdto.setLastname(mLastNameEditText.getText().toString());
-        patientdto.setGender(mGender==null?"":StringUtils.getValue(mGender));
+        patientdto.setGender(mGender == null ? "" : StringUtils.getValue(mGender));
         if (!mPhoneNumberEditText.getText().toString().trim().equals(""))
-            patientdto.setPhonenumber(mCountryCodePicker.getFullNumberWithPlus()==null?"":StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+            patientdto.setPhonenumber(mCountryCodePicker.getFullNumberWithPlus() == null ? "" : StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
         else
             patientdto.setPhonenumber("");
 
         patientdto.setDateofbirth(dobToDb);
 
-        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears,mAgeMonths,mAgeDays)) {
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
             patientdto.setGuardianName(mGuardianNameEditText.getText().toString());
             patientdto.setGuardianType(StringUtils.getProvided(mGuardianTypeSpinner));
         } else {
@@ -1542,7 +1540,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         patientdto.setContactType(StringUtils.getProvided(mContactTypeSpinner));
         patientdto.setEmContactName(mEmContactNameEditText.getText().toString());
-        patientdto.setEmContactNumber(mEmContactNoCountryCodePicker.getFullNumberWithPlus()==null?"":StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
+        patientdto.setEmContactNumber(mEmContactNoCountryCodePicker.getFullNumberWithPlus() == null ? "" : StringUtils.getValue(mEmContactNoCountryCodePicker.getFullNumberWithPlus()));
 
 
         try {
@@ -1559,7 +1557,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(patientdto.getUuid());
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-                patientAttributesDTO.setValue(patientdto.getPhonenumber()==null?"":StringUtils.getValue(patientdto.getPhonenumber()));
+                patientAttributesDTO.setValue(patientdto.getPhonenumber() == null ? "" : StringUtils.getValue(patientdto.getPhonenumber()));
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
@@ -1569,7 +1567,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             ImagesDAO imagesDAO = new ImagesDAO();
 
             if (patient_detail) {
-                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientdto, patientdto.getUuid(), patientAttributesDTOList);
+                isPatientInserted = patientsDAO.updatePatientToDB(patientdto, patientdto.getUuid());
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientdto.getPatientPhoto(), patientdto.getUuid());
             } else {
                 Bundle bundle = new Bundle();

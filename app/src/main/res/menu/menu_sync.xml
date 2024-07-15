@@ -2,19 +2,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.intelehealth.client.SearchPatientsActivity">
+
+    <!-- Location Found -->
+    <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/cancel_btn_cross"
+        android:orderInCategory="2"
+        android:title="@string/cancel"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_sync"
-        android:icon="@drawable/ic_sync_now"
         android:orderInCategory="1"
         android:title="@string/sync"
+        app:actionLayout="@layout/menu_item_sync"
         app:showAsAction="always" />
-    <!-- Location Found -->
-    <!--<item-->
-    <!--android:id="@+id/action_filter"-->
-    <!--android:icon="@drawable/ic_sort_white_24dp"-->
-    <!--android:orderInCategory="2"-->
-    <!--android:title="Filter"-->
-    <!--org:showAsAction="ifRoom" />-->
     <!--<item-->
     <!--android:id="@+id/action_filter"-->
     <!--android:title="Filter by Creator"-->

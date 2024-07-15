@@ -132,7 +132,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/identification_screen_prompt_country"
+                                android:hint="@string/hint_drop_down_country"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </LinearLayout>
@@ -183,7 +183,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/identification_screen_prompt_state"
+                                android:hint="@string/hint_drop_down_state"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
@@ -246,7 +246,7 @@
                                 style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/identification_screen_prompt_district"
+                                android:hint="@string/hint_drop_down_district"
                                 android:inputType="none" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
@@ -310,7 +310,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_village_town_city"
-                            android:text="@{patient.cityvillage}" />
+                            android:text="@{patient.villageWithoutDistrict}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
 
@@ -404,12 +404,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/frag2_btn_back"
-            style="@style/AppTheme.OutlinedButton.Icon"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fu_btn_size"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/space_12dp"
+            style="@style/AppTheme.OutlinedButton.White"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/std_16dp"
+            android:layout_marginBottom="@dimen/std_16dp"
             android:text="@string/generic_back"
+            android:visibility="@{isEditMode ? View.GONE : View.VISIBLE}"
             android:textColor="@color/primary_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
@@ -417,14 +418,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/frag2_btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fu_btn_size"
-            android:layout_marginStart="@dimen/space_12dp"
-            android:layout_marginEnd="@dimen/margin_24"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-            android:paddingHorizontal="@dimen/margin_10"
+            style="@style/AppTheme.OutlinedButton.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/std_16dp"
+            android:layout_marginEnd="@dimen/std_16dp"
+            android:layout_marginBottom="@dimen/std_16dp"
             android:text="@string/next"
+            app:icon="@drawable/ui2_ic_baseline_arrow_forward_24"
+            app:iconGravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />

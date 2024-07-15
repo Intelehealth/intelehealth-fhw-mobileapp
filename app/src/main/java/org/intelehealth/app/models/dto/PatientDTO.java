@@ -397,6 +397,7 @@ public class PatientDTO implements Serializable {
         }
         return emContactNumber;
     }
+
     public String getProfileTimestamp() {
         return profileTimestamp;
     }
@@ -411,6 +412,13 @@ public class PatientDTO implements Serializable {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    public String getVillageWithoutDistrict() {
+        if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+            return cityvillage.split(":")[1];
+        }
+        return cityvillage;
     }
 
     @Override

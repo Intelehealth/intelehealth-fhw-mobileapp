@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.databinding.OnRebindCallback
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
@@ -16,6 +17,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
+import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -165,16 +167,24 @@ class PatientPersonalInfoFragment :
     private fun fetchPersonalInfoConfig() {
         patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
             binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
-            setupGuardianType()
-            setupEmContactType()
-            setupDOB()
-            setupAge()
-            applyFilter()
-            setInputTextChangListener()
-            setGender()
-            setClickListener()
+            binding.addOnRebindCallback(onRebindCallback)
         }
     }
+
+    private val onRebindCallback =
+        object : OnRebindCallback<FragmentPatientPersonalInfoOldDesignBinding>() {
+            override fun onBound(binding: FragmentPatientPersonalInfoOldDesignBinding?) {
+                super.onBound(binding)
+                setupGuardianType()
+                setupEmContactType()
+                setupDOB()
+                setupAge()
+                applyFilter()
+                setInputTextChangListener()
+                setGender()
+                setClickListener()
+            }
+        }
 
     private fun setClickListener() {
         binding.patientImgview.setOnClickListener { requestPermission() }
@@ -187,24 +197,41 @@ class PatientPersonalInfoFragment :
         patient.firstname = binding.textInputETFName.text?.toString()
         patient.middlename = binding.textInputETMName.text?.toString()
         patient.lastname = binding.textInputETLName.text?.toString()
-        binding.countrycodeSpinner.selectedCountryCode.apply {
-            patient.phonenumber = this + binding.textInputETPhoneNumber.text?.toString()
-        }
+        patient.phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
         patient.guardianName = binding.textInputETGuardianName.text?.toString()
         patient.emContactName = binding.textInputETECName.text?.toString()
-        binding.ccpEmContactPhone.selectedCountryCode.apply {
-            patient.emContactNumber = this + binding.textInputETEMPhoneNumber.text?.toString()
-        }
+        patient.emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
 
         patientViewModel.updatedPatient(patient)
-
-        var navDirections = PatientPersonalInfoFragmentDirections.navigationPersonalToDetails()
-        if (patientViewModel.activeStatusAddressSection) {
-            navDirections = PatientPersonalInfoFragmentDirections.navigationPersonalToAddress()
-        } else if (patientViewModel.activeStatusOtherSection) {
-            navDirections = PatientPersonalInfoFragmentDirections.navigationPersonalToOther()
+        if (patientViewModel.isEditMode) {
+            saveAndNavigateToDetails()
+        } else {
+            if (patientViewModel.activeStatusAddressSection) {
+                PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
+                    findNavController().navigate(this)
+                }
+            } else if (patientViewModel.activeStatusOtherSection) {
+                PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
+                    findNavController().navigate(this)
+                }
+            } else saveAndNavigateToDetails()
         }
-        findNavController().navigate(navDirections)
+    }
+
+    private fun saveAndNavigateToDetails() {
+        patientViewModel.savePatient().observe(viewLifecycleOwner) {
+            it ?: return@observe
+            patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+        }
+    }
+
+    private fun navigateToDetails() {
+        PatientPersonalInfoFragmentDirections.navigationPersonalToDetails(
+            patient.uuid, "searchPatient", "false"
+        ).apply {
+            findNavController().navigate(this)
+            requireActivity().finish()
+        }
     }
 
     private fun setGender() {
@@ -327,6 +354,10 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setInputTextChangListener() {
+        binding.countrycodeSpinner.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
+        binding.countrycodeSpinner.setNumberAutoFormattingEnabled(false)
+        binding.ccpEmContactPhone.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
+        binding.ccpEmContactPhone.setNumberAutoFormattingEnabled(false)
         binding.textInputLayFName.hideErrorOnTextChang(binding.textInputETFName)
         binding.textInputLayMName.hideErrorOnTextChang(binding.textInputETMName)
         binding.textInputLayLName.hideErrorOnTextChang(binding.textInputETLName)

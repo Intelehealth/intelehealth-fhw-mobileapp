@@ -1,12 +1,19 @@
 package org.intelehealth.app.ui.patient.activity
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -15,16 +22,18 @@ import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
-import org.intelehealth.app.ui.patient.adapter.PatientInfoPagerAdapter
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 import java.util.UUID
+
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:41.
@@ -33,10 +42,12 @@ import java.util.UUID
  **/
 class PatientRegistrationActivity : BaseActivity() {
     private lateinit var binding: ActivityPatientRegistrationBinding
-    private lateinit var pagerAdapter: PatientInfoPagerAdapter
     private val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
     }
+
+    private lateinit var syncAnimator: ObjectAnimator
+    private lateinit var actionRefresh: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,20 +65,23 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener {
-            handleBackPressed()
-        }
+//        binding.toolbar.setNavigationOnClickListener {
+//            handleBackPressed()
+//        }
     }
 
     private fun handleBackPressed() {
-        DialogUtils.patientRegistrationDialog(
-            this,
-            ContextCompat.getDrawable(this, R.drawable.close_patient_svg),
-            resources.getString(R.string.close_patient_registration),
-            resources.getString(R.string.sure_you_want_close_registration),
-            resources.getString(R.string.yes),
-            resources.getString(R.string.no)
-        ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK) finish() }
+        if (patientViewModel.isEditMode) finish()
+        else {
+            DialogUtils.patientRegistrationDialog(
+                this,
+                ContextCompat.getDrawable(this, R.drawable.close_patient_svg),
+                resources.getString(R.string.close_patient_registration),
+                resources.getString(R.string.sure_you_want_close_registration),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no)
+            ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK) finish() }
+        }
     }
 
     private fun extractAndBindUI() {
@@ -79,14 +93,13 @@ class PatientRegistrationActivity : BaseActivity() {
 
             patientId?.let { id ->
                 patientViewModel.isEditMode = true
+                binding.isEditMode = patientViewModel.isEditMode
                 fetchPatientDetails(id)
             } ?: generatePatientId()
 
             val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
                 IntentCompat.getSerializableExtra(
-                    it,
-                    PATIENT_CURRENT_STAGE,
-                    PatientRegStage::class.java
+                    it, PATIENT_CURRENT_STAGE, PatientRegStage::class.java
                 )
             } else PatientRegStage.PERSONAL
 
@@ -95,24 +108,28 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     private fun navigateToStage(stage: PatientRegStage) {
+        Timber.d { "Stage =>${stage.name}" }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostPatientReg) as NavHostFragment
         val navController = navHostFragment.navController
-        when (stage) {
-            PatientRegStage.PERSONAL -> return
-            PatientRegStage.ADDRESS -> navController.graph.apply {
-                setStartDestination(R.id.fragmentPatientAddressInfo)
-            }
-
-            PatientRegStage.OTHER -> navController.graph.apply {
-                setStartDestination(R.id.fragmentPatientOtherInfo)
-            }
+        val navGraph =
+            navController.navInflater.inflate(R.navigation.navigation_patient_registration)
+        val startDestination = when (stage) {
+            PatientRegStage.PERSONAL -> R.id.fragmentPatientPersonalInfo
+            PatientRegStage.ADDRESS -> R.id.fragmentPatientAddressInfo
+            PatientRegStage.OTHER -> R.id.fragmentPatientOtherInfo
         }
+        navGraph.setStartDestination(startDestination)
+        navController.graph = navGraph
     }
 
     private fun generatePatientId() {
         Timber.d { "generatePatientId" }
-        patientViewModel.updatedPatient(PatientDTO().apply { uuid = UUID.randomUUID().toString() })
+        PatientDTO().apply {
+            uuid = UUID.randomUUID().toString()
+            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+            providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
+        }.also { patientViewModel.updatedPatient(it) }
     }
 
     private fun fetchPatientDetails(id: String) {
@@ -120,31 +137,48 @@ class PatientRegistrationActivity : BaseActivity() {
             Timber.d { "Result => ${Gson().toJson(it)}" }
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
-                patientViewModel.updatedPatient(patient)
+                patientViewModel.updatedPatient(updatePatientDetails(patient))
             }
+        }
+    }
+
+    private fun updatePatientDetails(patient: PatientDTO) = patient.apply {
+        if (createdDate.isNullOrEmpty()) {
+            createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
+        }
+        if (providerUUID.isNullOrEmpty()) {
+            providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_sync, menu)
+        menu?.findItem(R.id.action_sync)?.actionView?.let {
+            actionRefresh = it.findViewById(R.id.refresh)
+            ObjectAnimator.ofFloat<View>(actionRefresh, View.ROTATION, 0f, 359f).apply {
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                duration = 1200
+            }.also { anim -> syncAnimator = anim }
+
+            actionRefresh.setOnClickListener { startRefreshing() }
+        }
+
         return true
     }
 
     private fun startRefreshing() {
-//        val syncAnimator =
-//            ObjectAnimator.ofFloat<View>(null, View.ROTATION, 0f, 359f).setDuration(1200)
-//        syncAnimator.repeatCount = ValueAnimator.INFINITE
-//        syncAnimator.interpolator = LinearInterpolator()
+
         if (NetworkConnection.isOnline(this)) {
             SyncUtils().syncBackground()
         }
-//        refresh.clearAnimation()
-//        syncAnimator.start()
+        actionRefresh.clearAnimation()
+        syncAnimator.start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_sync)
-            startRefreshing()
+        if (item.itemId == R.id.action_sync) startRefreshing()
+        else if (item.itemId == R.id.action_cancel) handleBackPressed()
         return true
     }
 
@@ -179,18 +213,37 @@ class PatientRegistrationActivity : BaseActivity() {
 
     override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
         super.onFeatureActiveStatusLoaded(activeStatus)
+        if (::syncAnimator.isInitialized) syncAnimator.cancel()
         activeStatus?.let {
             patientViewModel.activeStatusAddressSection = it.activeStatusPatientAddress
             patientViewModel.activeStatusOtherSection = it.activeStatusPatientOther
             binding.addressActiveStatus = it.activeStatusPatientAddress
             binding.otherActiveStatus = it.activeStatusPatientOther
+            if (it.activeStatusPatientOther.and(it.activeStatusPatientAddress).not()) {
+                binding.patientTab.root.isVisible = false
+            }
+        }
+    }
+
+    fun updateUIForInternetAvailability(isInternetAvailable: Boolean) {
+        Log.d("TAG", "updateUIForInternetAvailability: ")
+        if (isInternetAvailable) {
+//            refresh.setImageDrawable(
+//                ContextCompat.getDrawable(
+//                    this,
+//                    R.drawable.ui2_ic_internet_available
+//                )
+//            )
+        } else {
+//            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet))
         }
     }
 
     companion object {
+        @JvmStatic
         fun startPatientRegistration(
             context: Context,
-            patientId: String,
+            patientId: String? = null,
             stage: PatientRegStage = PatientRegStage.PERSONAL
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {

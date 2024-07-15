@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -60,7 +61,13 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun fetchPersonalInfoConfig() {
         patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
-            Timber.d { "Address Config => ${Gson().toJson(binding.otherInfoConfig)}" }
+            binding.addOnRebindCallback(onRebindCallback)
+        }
+    }
+
+    private val onRebindCallback = object : OnRebindCallback<FragmentPatientOtherInfoBinding>() {
+        override fun onBound(binding: FragmentPatientOtherInfoBinding?) {
+            super.onBound(binding)
             setupSocialCategory()
             setupEducations()
             setupEconomicCategory()
@@ -95,6 +102,19 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         patient.nationalID = binding.textInputNationalId.text?.toString()
         patient.occupation = binding.textInputOccupation.text?.toString()
         patientViewModel.updatedPatient(patient)
+        patientViewModel.savePatient().observe(viewLifecycleOwner) {
+            it ?: return@observe
+            patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+        }
+    }
+
+    private fun navigateToDetails() {
+        PatientOtherInfoFragmentDirections.navigationOtherToDetails(
+            patient.uuid, "searchPatient", "false"
+        ).also {
+            findNavController().navigate(it)
+            requireActivity().finish()
+        }
     }
 
     private fun applyFilter() {

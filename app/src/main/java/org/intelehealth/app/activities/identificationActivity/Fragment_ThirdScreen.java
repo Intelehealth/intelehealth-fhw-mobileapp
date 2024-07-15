@@ -90,7 +90,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
-import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
 import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
@@ -896,7 +895,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 /*isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientID_edit);
                 isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);*/
 
-                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
+                isPatientInserted = patientsDAO.updatePatientToDB(patientDTO, patientDTO.getUuid());
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
                 isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());

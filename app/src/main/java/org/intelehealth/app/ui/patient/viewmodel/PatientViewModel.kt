@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.PatientRegStage
@@ -47,10 +49,11 @@ class PatientViewModel(
         mutableLivePatientStage.postValue(stage)
     }
 
-    fun savePatient() {
-        patientData.value?.let {
-            repository.createNewPatient(it)
-        }
-    }
+    fun savePatient() = executeLocalInsertUpdateQuery {
+        return@executeLocalInsertUpdateQuery patientData.value?.let {
+            return@let if (isEditMode) repository.updatePatient(it)
+            else repository.createNewPatient(it)
+        } ?: false
+    }.asLiveData()
 
 }

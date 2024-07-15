@@ -1,6 +1,5 @@
 package org.intelehealth.core.shared.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import org.intelehealth.core.network.state.Result
+
 open class BaseViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val networkHelper: NetworkHelper? = null,
@@ -43,6 +43,16 @@ open class BaseViewModel(
         }
     }.onStart {
         emit(Result.Loading<L>("Please wait..."))
+    }.flowOn(dispatcher)
+
+    fun executeLocalInsertUpdateQuery(
+        queryCall: () -> Boolean
+    ) = flow {
+        val status = queryCall.invoke()
+        if (status) emit(Result.Success(true, ""))
+        else emit(Result.Error<Boolean>("Failed"))
+    }.onStart {
+        emit(Result.Loading<Boolean>("Please wait..."))
     }.flowOn(dispatcher)
 
     /**

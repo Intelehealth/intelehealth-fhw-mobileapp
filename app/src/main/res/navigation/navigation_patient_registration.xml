@@ -2,8 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_patient_registration"
-    app:startDestination="@id/fragmentPatientAddressInfo">
+    android:id="@+id/navigation_patient_registration">
 
     <fragment
         android:id="@+id/fragmentPatientPersonalInfo"
@@ -42,5 +41,21 @@
     <activity
         android:id="@+id/activityPatientDetails"
         android:name="org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2"
-        tools:layout="@layout/activity_patient_detail2" />
+        tools:layout="@layout/activity_patient_detail2">
+        <argument
+            android:name="patientUuid"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="privacy"
+            app:argType="string"
+            app:nullable="true" />
+
+    </activity>
 </navigation>

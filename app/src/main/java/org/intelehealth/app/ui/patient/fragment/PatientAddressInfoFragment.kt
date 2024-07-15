@@ -3,6 +3,8 @@ package org.intelehealth.app.ui.patient.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.databinding.OnRebindCallback
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -10,6 +12,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
+import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
@@ -51,6 +54,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             Timber.d { "default $defaultValue index[${adapter.getPosition(defaultValue)}]" }
 //            binding.autoCompleteCountry.setSelection(adapter.getPosition(defaultValue))
             binding.autoCompleteCountry.setText(defaultValue, false)
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                patient.country = this.getString(R.string.default_country)
+            }
         }
         binding.textInputLayCountry.isEnabled = false
         binding.autoCompleteCountry.setOnItemClickListener { _, _, i, _ ->
@@ -75,6 +81,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         patientViewModel.fetchAddressRegFields().observe(viewLifecycleOwner) {
             binding.addressInfoConfig = PatientRegFieldsUtils.buildPatientAddressInfoConfig(it)
             Timber.d { "Address Config => ${Gson().toJson(binding.addressInfoConfig)}" }
+            binding.addOnRebindCallback(onRebindCallback)
+        }
+    }
+
+    private val onRebindCallback = object : OnRebindCallback<FragmentPatientAddressInfoBinding>() {
+        override fun onBound(binding: FragmentPatientAddressInfoBinding?) {
+            super.onBound(binding)
             setupCountries()
             setupStates()
             applyFilter()
@@ -98,13 +111,35 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             else village
         patient.address1 = binding.textInputAddress1.text?.toString()
         patient.address2 = binding.textInputAddress2.text?.toString()
-
-        var navDirection = PatientAddressInfoFragmentDirections.navigationAddressToOther()
-        if (patientViewModel.activeStatusOtherSection.not()) {
-            navDirection = PatientAddressInfoFragmentDirections.navigationAddressToDetails()
-        }
-        findNavController().navigate(navDirection)
         patientViewModel.updatedPatient(patient)
+        if (patientViewModel.isEditMode) {
+            saveAndNavigateToDetails()
+        } else {
+            if (patientViewModel.activeStatusOtherSection.not()) {
+                saveAndNavigateToDetails()
+            } else {
+                PatientAddressInfoFragmentDirections.navigationAddressToOther().apply {
+                    findNavController().navigate(this)
+                }
+            }
+        }
+
+    }
+
+    private fun saveAndNavigateToDetails() {
+        patientViewModel.savePatient().observe(viewLifecycleOwner) {
+            it ?: return@observe
+            patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+        }
+    }
+
+    private fun navigateToDetails() {
+        PatientAddressInfoFragmentDirections.navigationAddressToDetails(
+            patient.uuid, "searchPatient", "false"
+        ).apply {
+            findNavController().navigate(this)
+            requireActivity().finish()
+        }
     }
 
     private fun applyFilter() {
@@ -129,9 +164,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             binding.autoCompleteState.setAdapter(adapter)
             if (patient.stateprovince != null && patient.stateprovince.isNotEmpty()) {
                 val state = LanguageUtils.getState(patient.stateprovince)
-                if (state != null && adapter.getPosition(state) > 0) {
+                if (state != null) {
                     binding.autoCompleteState.setText(state.toString(), false)
-                } else binding.autoCompleteState.setText("", false)
+                }
             }
 
             binding.autoCompleteState.setOnItemClickListener { adapterView, _, i, _ ->
