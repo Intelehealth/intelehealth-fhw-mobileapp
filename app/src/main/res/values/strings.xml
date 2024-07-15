@@ -1947,4 +1947,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="hint_drop_down_economic">Select Economic Category</string>
     <string name="hint_drop_down_education">Select Education</string>
     <string name="hint_drop_down_social_category">Select Social Category</string>
+    <string name="hint_drop_down_country">Select Country</string>
+    <string name="hint_drop_down_state">Select State</string>
+    <string name="hint_drop_down_district">Select District</string>
 </resources>
