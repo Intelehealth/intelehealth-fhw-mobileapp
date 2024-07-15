@@ -3,29 +3,27 @@ package org.intelehealth.app.ui.patient.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.view.Menu
+import android.view.MenuItem
+import androidx.core.content.ContextCompat
+import androidx.core.content.IntentCompat
+import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.gson.Gson
 import org.intelehealth.app.R
-import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
+import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.patient.adapter.PatientInfoPagerAdapter
-import org.intelehealth.app.ui.patient.data.PatientRepository
-import org.intelehealth.app.ui.patient.fragment.PatientAddressInfoFragment
-import org.intelehealth.app.ui.patient.fragment.PatientOtherInfoFragment
-import org.intelehealth.app.ui.patient.fragment.PatientPersonalInfoFragment
-import org.intelehealth.app.ui.patient.viewmodel.PatientViewModel
+import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
+import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
+import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
-import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.entity.FeatureActiveStatus
-import java.util.LinkedList
 import java.util.UUID
 
 /**
@@ -46,15 +44,69 @@ class PatientRegistrationActivity : BaseActivity() {
         setContentView(binding.root)
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
+        setupActionBar()
+        observeCurrentPatientStage()
+    }
+
+    private fun observeCurrentPatientStage() {
+        patientViewModel.patientStageData.observe(this) { changeIconStatus(it) }
+    }
+
+    private fun setupActionBar() {
+        setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationOnClickListener {
+            handleBackPressed()
+        }
+    }
+
+    private fun handleBackPressed() {
+        DialogUtils.patientRegistrationDialog(
+            this,
+            ContextCompat.getDrawable(this, R.drawable.close_patient_svg),
+            resources.getString(R.string.close_patient_registration),
+            resources.getString(R.string.sure_you_want_close_registration),
+            resources.getString(R.string.yes),
+            resources.getString(R.string.no)
+        ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK) finish() }
     }
 
     private fun extractAndBindUI() {
         Timber.d { "extractAndBindUI" }
+//        "623b0286-ddba-4ef5-9f40-0da37200465f"
         intent?.let {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
-            else "623b0286-ddba-4ef5-9f40-0da37200465f"
+            else null
 
-            patientId?.let { id -> fetchPatientDetails(id) } ?: generatePatientId()
+            patientId?.let { id ->
+                patientViewModel.isEditMode = true
+                fetchPatientDetails(id)
+            } ?: generatePatientId()
+
+            val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
+                IntentCompat.getSerializableExtra(
+                    it,
+                    PATIENT_CURRENT_STAGE,
+                    PatientRegStage::class.java
+                )
+            } else PatientRegStage.PERSONAL
+
+            stage?.let { it1 -> navigateToStage(it1) }
+        }
+    }
+
+    private fun navigateToStage(stage: PatientRegStage) {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostPatientReg) as NavHostFragment
+        val navController = navHostFragment.navController
+        when (stage) {
+            PatientRegStage.PERSONAL -> return
+            PatientRegStage.ADDRESS -> navController.graph.apply {
+                setStartDestination(R.id.fragmentPatientAddressInfo)
+            }
+
+            PatientRegStage.OTHER -> navController.graph.apply {
+                setStartDestination(R.id.fragmentPatientOtherInfo)
+            }
         }
     }
 
@@ -73,6 +125,29 @@ class PatientRegistrationActivity : BaseActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_sync, menu)
+        return true
+    }
+
+    private fun startRefreshing() {
+//        val syncAnimator =
+//            ObjectAnimator.ofFloat<View>(null, View.ROTATION, 0f, 359f).setDuration(1200)
+//        syncAnimator.repeatCount = ValueAnimator.INFINITE
+//        syncAnimator.interpolator = LinearInterpolator()
+        if (NetworkConnection.isOnline(this)) {
+            SyncUtils().syncBackground()
+        }
+//        refresh.clearAnimation()
+//        syncAnimator.start()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sync)
+            startRefreshing()
+        return true
+    }
+
 //    private fun manageTitleVisibilityOnScrolling() {
 //        binding.appBarLayoutPatient.addOnOffsetChangedListener(object : OnOffsetChangedListener {
 //            var scrollRange = -1;
@@ -88,10 +163,18 @@ class PatientRegistrationActivity : BaseActivity() {
 //        })
 //    }
 
-    private fun bindPagerAdapter(fragments: LinkedList<Fragment>) {
-        pagerAdapter = PatientInfoPagerAdapter(supportFragmentManager, lifecycle)
-        pagerAdapter.fragments = fragments
-        binding.pagerPatientInfo.adapter = pagerAdapter
+
+    private fun changeIconStatus(stage: PatientRegStage) {
+        if (stage == PatientRegStage.PERSONAL) {
+            binding.patientTab.tvIndicatorPatientPersonal.isSelected = true
+        } else if (stage == PatientRegStage.ADDRESS) {
+            binding.patientTab.tvIndicatorPatientPersonal.isActivated = true
+            binding.patientTab.tvIndicatorPatientAddress.isSelected = true
+        } else if (stage == PatientRegStage.OTHER) {
+            binding.patientTab.tvIndicatorPatientPersonal.isActivated = true
+            binding.patientTab.tvIndicatorPatientAddress.isActivated = true
+            binding.patientTab.tvIndicatorPatientOther.isSelected = true
+        }
     }
 
     override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
@@ -99,18 +182,20 @@ class PatientRegistrationActivity : BaseActivity() {
         activeStatus?.let {
             patientViewModel.activeStatusAddressSection = it.activeStatusPatientAddress
             patientViewModel.activeStatusOtherSection = it.activeStatusPatientOther
-            LinkedList<Fragment>().apply {
-                add(PatientPersonalInfoFragment())
-                if (it.activeStatusPatientAddress) add(PatientAddressInfoFragment())
-                if (it.activeStatusPatientOther) add(PatientOtherInfoFragment())
-            }.also { bindPagerAdapter(it) }
+            binding.addressActiveStatus = it.activeStatusPatientAddress
+            binding.otherActiveStatus = it.activeStatusPatientOther
         }
     }
 
     companion object {
-        fun startPatientRegistration(context: Context, patientId: String) {
+        fun startPatientRegistration(
+            context: Context,
+            patientId: String,
+            stage: PatientRegStage = PatientRegStage.PERSONAL
+        ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
+                putExtra(PATIENT_CURRENT_STAGE, stage)
             }.also { context.startActivity(it) }
         }
     }

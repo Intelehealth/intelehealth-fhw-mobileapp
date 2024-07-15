@@ -1,38 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayoutPatient"
-        style="@style/Theme.MaterialComponents.Light.DarkActionBar"
+    <data>
+
+        <variable
+            name="addressActiveStatus"
+            type="Boolean" />
+
+        <variable
+            name="otherActiveStatus"
+            type="Boolean" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        app:elevation="0dp">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/AppTheme.AppBarOverlay"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayoutPatient"
+            style="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:navigationIcon="@drawable/cancel_btn_cross"
-            app:title="@string/add_new_patient" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            app:elevation="0dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/AppTheme.AppBarOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/cancel_btn_cross"
+                app:title="@string/add_new_patient" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/view_patient_info_tab" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pagerPatientInfo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <include
+                android:id="@+id/patientTab"
+                layout="@layout/view_patient_info_tab"
+                bind:activeAddress="@{addressActiveStatus}"
+                bind:activeOther="@{otherActiveStatus}" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/navHostPatientReg"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                app:navGraph="@navigation/navigation_patient_registration" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

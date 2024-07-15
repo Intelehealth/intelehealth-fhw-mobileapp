@@ -56,6 +56,8 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/patient_imgview"
+                        config="@{personalConfig.profilePic}"
+                        editMode="@{isEditMode}"
                         profileUrl="@{patient.patientPhoto}"
                         android:layout_width="@dimen/patregist_profileimg_icon"
                         android:layout_height="@dimen/patregist_profileimg_icon"
@@ -109,6 +111,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayFName"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.firstName}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24"
@@ -130,6 +134,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayMName"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.middleName}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.middleName.mandatory ? @string/middle_name_registration + ` *` : @string/middle_name_registration}"
@@ -150,6 +156,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayLName"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.lastName}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
@@ -179,6 +187,8 @@
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
+                        config="@{personalConfig.gender}"
+                        editMode="@{isEditMode}"
                         gender="@{patient.gender}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -192,6 +202,8 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnMale"
                             style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -201,6 +213,8 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnFemale"
                             style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -210,6 +224,8 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnOther"
                             style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -233,6 +249,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayDob"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.dob}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -258,6 +276,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayAge"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.age}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
@@ -282,6 +302,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayGuardianName"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.guardianName}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.guardianName.mandatory ? @string/guardian_name_non_required + ` *` : @string/guardian_name_non_required}"
@@ -302,6 +324,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayGuardianType"
                     style="@style/AppTheme.OutlineInputBox.DropDown"
+                    config="@{personalConfig.guardianType}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.guardianType.mandatory ? @string/guardian_type_non_required + ` *` : @string/guardian_type_non_required}"
@@ -322,6 +346,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayPhoneNumber"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.phone}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24"
@@ -348,6 +374,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayEmContactType"
                     style="@style/AppTheme.OutlineInputBox.DropDown"
+                    config="@{personalConfig.emergencyContactType}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.emergencyContactType.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
@@ -367,6 +395,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayECName"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.emergencyContactName}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@{ personalConfig.emergencyContactName.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
@@ -387,6 +417,8 @@
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/textInputLayEMPhoneNumber"
                     style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.emergencyContactNumber}"
+                    editMode="@{isEditMode}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24"
@@ -422,7 +454,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:paddingHorizontal="@dimen/margin_10"
-            android:text="@string/next"
+            android:text="@{isEditMode ? @string/save : @string/next}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

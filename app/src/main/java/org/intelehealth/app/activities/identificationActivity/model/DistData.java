@@ -1,7 +1,12 @@
 package org.intelehealth.app.activities.identificationActivity.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.Serializable;
 import java.util.List;
@@ -65,5 +70,14 @@ public class DistData implements Serializable {
 
     public void setBlocksHindi(List<Block> blocksHindi) {
         this.blocksHindi = blocksHindi;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        SessionManager sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equals("hi")) {
+            return nameHindi;
+        } else return name;
     }
 }

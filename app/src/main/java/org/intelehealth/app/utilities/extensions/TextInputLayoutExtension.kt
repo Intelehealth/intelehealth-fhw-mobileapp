@@ -23,6 +23,10 @@ fun TextInputLayout.hideError() {
     isErrorEnabled = false
 }
 
+fun TextInputLayout.showError() {
+    isErrorEnabled = false
+}
+
 fun TextInputLayout.hideErrorOnTextChang(input: TextInputEditText) {
     input.doOnTextChanged { _, _, _, count ->
         if (count > 0) hideError()
@@ -32,7 +36,7 @@ fun TextInputLayout.hideErrorOnTextChang(input: TextInputEditText) {
 fun TextInputLayout.hideDigitErrorOnTextChang(input: TextInputEditText, digit: Int) {
     input.doOnTextChanged { text, _, _, count ->
         Timber.d { "phone validation $count == $digit" }
-        if (text?.length == digit) hideError()
+        if (text?.length == digit) hideError() else showError()
     }
 }
 

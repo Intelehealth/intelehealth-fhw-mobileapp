@@ -2,4 +2,5 @@
 <resources>
     <string name="validation_latter_only">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</string>
     <string name="validation_digit_only">1234567890</string>
+    <string name="validation_address">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.</string>
 </resources>

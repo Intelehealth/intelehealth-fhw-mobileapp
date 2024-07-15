@@ -1,3 +1,16 @@
+Ekal: Released with android 14 and full intent permission declaration
+Biocon: ABDM integration (should be a separate module, like config, livekit)
+IDA Demo app: Dr.Shaker's device issue exploring
+
+Published on play store, currently in review
+Share patient visit summary via whatsapp is pending
+Helpline
+Released on play store currently in review
+Ekal
+Regression testing
+
+
+
 24 May, 2024
 - PNG need to be convert into vector
 

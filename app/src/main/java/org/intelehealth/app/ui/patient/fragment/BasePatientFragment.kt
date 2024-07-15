@@ -27,7 +27,12 @@ abstract class BasePatientFragment(@LayoutRes layoutResId: Int) : Fragment(layou
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        patientViewModel.patientData.observe(viewLifecycleOwner) { onPatientDataLoaded(it) }
+        patientViewModel.patientData.observe(viewLifecycleOwner) {
+            if (it.cityvillage.isNullOrEmpty().not() && it.cityvillage.contains(":")) {
+                patient.district = it.cityvillage.split(":")[0].trim()
+            }
+            onPatientDataLoaded(it)
+        }
     }
 
     open fun onPatientDataLoaded(patient: PatientDTO) {

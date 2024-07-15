@@ -87,6 +87,8 @@ public class PatientDTO implements Serializable {
 
     private String profileTimestamp;
 
+    private String district;
+
     public String getUuid() {
         return uuid;
     }
@@ -401,6 +403,14 @@ public class PatientDTO implements Serializable {
 
     public void setProfileTimestamp(String profileTimestamp) {
         this.profileTimestamp = profileTimestamp;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     @Override

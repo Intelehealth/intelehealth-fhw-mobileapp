@@ -1,18 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="patient"
+            type="org.intelehealth.app.models.dto.PatientDTO" />
+
+        <variable
+            name="otherInfoConfig"
+            type="org.intelehealth.app.ui.patient.config.OtherInfoConfig" />
+
+        <variable
+            name="isEditMode"
+            type="Boolean" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/std_16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llNationalId"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/address_details"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:visibility="@{otherInfoConfig.nationalId.enabled ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lblNationalId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ otherInfoConfig.nationalId.mandatory ? @string/national_ID + ` *` : @string/national_ID}"
+                android:textAppearance="@style/blur_txtview"
+                android:textSize="@null"
+                tools:text="@string/national_ID" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/textInputLayNationalId"
+                style="@style/AppTheme.OutlineInputBox"
+                config="@{otherInfoConfig.nationalId}"
+                editMode="@{isEditMode}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputNationalId"
+                    style="@style/AppTheme.InputBox.Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/national_ID"
+                    android:text="@{patient.nationalID}" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llOccupation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_12dp"
+            android:orientation="vertical"
+            android:visibility="@{otherInfoConfig.occuptions.enabled ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llNationalId"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lblOccupation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ otherInfoConfig.occuptions.mandatory ? @string/occupation + ` *` : @string/occupation}"
+                android:textAppearance="@style/blur_txtview"
+                android:textSize="@null"
+                tools:text="@string/occupation" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/textInputLayOccupation"
+                style="@style/AppTheme.OutlineInputBox"
+                config="@{otherInfoConfig.occuptions}"
+                editMode="@{isEditMode}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputOccupation"
+                    style="@style/AppTheme.InputBox.Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/occupation"
+                    android:text="@{patient.occupation}" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llSocialCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_12dp"
+            android:orientation="vertical"
+            android:visibility="@{otherInfoConfig.socialCategory.enabled ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llOccupation"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lblSocialCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ otherInfoConfig.socialCategory.mandatory ? @string/social_category + ` *` : @string/social_category}"
+                android:textAppearance="@style/blur_txtview"
+                android:textSize="@null"
+                tools:text="@string/social_category" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/textInputLaySocialCategory"
+                style="@style/AppTheme.OutlineInputBox.DropDown"
+                config="@{otherInfoConfig.socialCategory}"
+                editMode="@{isEditMode}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteSocialCategory"
+                    style="@style/AppTheme.InputBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/social_category"
+                    android:inputType="none" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llEducation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_12dp"
+            android:orientation="vertical"
+            android:visibility="@{otherInfoConfig.education.enabled ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llSocialCategory"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lblEducation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ otherInfoConfig.education.mandatory ? @string/education + ` *` : @string/education}"
+                android:textAppearance="@style/blur_txtview"
+                android:textSize="@null"
+                tools:text="@string/education" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/textInputLayEducation"
+                style="@style/AppTheme.OutlineInputBox.DropDown"
+                config="@{otherInfoConfig.education}"
+                editMode="@{isEditMode}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteEducation"
+                    style="@style/AppTheme.InputBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/identification_screen_prompt_country"
+                    android:inputType="none" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llEconomicCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_12dp"
+            android:orientation="vertical"
+            android:visibility="@{otherInfoConfig.economicCategory.enabled ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llEducation"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/lblEconomicCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ otherInfoConfig.economicCategory.mandatory ? @string/economic_category + ` *` : @string/economic_category}"
+                android:textAppearance="@style/blur_txtview"
+                android:textSize="@null"
+                tools:text="@string/economic_category" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/textInputLayEconomicCategory"
+                style="@style/AppTheme.OutlineInputBox.DropDown"
+                config="@{otherInfoConfig.economicCategory}"
+                editMode="@{isEditMode}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteEconomicCategory"
+                    style="@style/AppTheme.InputBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/identification_screen_prompt_country"
+                    android:inputType="none" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/frag2_btn_back"
+            style="@style/AppTheme.OutlinedButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/space_12dp"
+            android:text="@string/generic_back"
+            android:textColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/frag2_btn_next"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/frag2_btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginStart="@dimen/space_12dp"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/frag2_btn_back" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.annotation.ArrayRes
-import androidx.annotation.StringRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -31,14 +30,23 @@ object LanguageUtils {
 
     @JvmStatic
     fun getState(state: String): StateData? {
+        return parseStatesJson().stateDataList.find { it.state == state }
+    }
+
+    @JvmStatic
+    fun getStateList(): List<StateData>? {
+        return parseStatesJson().stateDataList
+    }
+
+    @JvmStatic
+    fun parseStatesJson(): StateDistMaster {
         val context = IntelehealthApplication.getAppContext()
         val jsonObject = FileUtils.encodeJSON(context, STATE_DISTRICT_JSON)
-        val stateDistMaster = Gson().fromJson(
+
+        return Gson().fromJson(
             jsonObject.toString(),
             StateDistMaster::class.java
         )
-
-        return stateDistMaster.stateDataList.find { it.state == state }
     }
 
     @JvmStatic

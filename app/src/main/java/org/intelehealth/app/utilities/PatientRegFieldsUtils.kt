@@ -6,6 +6,8 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import com.hbb20.CountryCodePicker
+import org.intelehealth.app.ui.patient.config.AddressInfoConfig
+import org.intelehealth.app.ui.patient.config.OtherInfoConfig
 import org.intelehealth.app.ui.patient.config.PersonalInfoConfig
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 import java.lang.StringBuilder
@@ -121,6 +123,38 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.EM_CONTACT_NAME -> emergencyContactName = it
                     PatientRegConfigKeys.EM_CONTACT_NUMBER -> emergencyContactNumber = it
                     PatientRegConfigKeys.EM_CONTACT_TYPE -> emergencyContactType = it
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    fun buildPatientAddressInfoConfig(patientRegistrationFields: List<PatientRegistrationFields>): AddressInfoConfig {
+        return AddressInfoConfig().apply {
+            patientRegistrationFields.forEach {
+                when (it.idKey) {
+                    PatientRegConfigKeys.POSTAL_CODE -> postalCode = it
+                    PatientRegConfigKeys.COUNTRY -> country = it
+                    PatientRegConfigKeys.STATE -> state = it
+                    PatientRegConfigKeys.DISTRICT -> district = it
+                    PatientRegConfigKeys.VILLAGE_TOWN_CITY -> cityVillage = it
+                    PatientRegConfigKeys.ADDRESS_1 -> address1 = it
+                    PatientRegConfigKeys.ADDRESS_2 -> address2 = it
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    fun buildPatientOtherInfoConfig(patientRegistrationFields: List<PatientRegistrationFields>): OtherInfoConfig {
+        return OtherInfoConfig().apply {
+            patientRegistrationFields.forEach {
+                when (it.idKey) {
+                    PatientRegConfigKeys.NATIONAL_ID -> nationalId = it
+                    PatientRegConfigKeys.OCCUPATION -> occuptions = it
+                    PatientRegConfigKeys.SOCIAL_CATEGORY -> socialCategory = it
+                    PatientRegConfigKeys.EDUCATION -> education = it
+                    PatientRegConfigKeys.ECONOMIC_CATEGORY -> economicCategory = it
                 }
             }
         }

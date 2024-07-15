@@ -1941,4 +1941,10 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="contact_your_admin">Contact your admin</string>
     <string name="address_to_other_info">Address to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
+    <string name="emergency_contact_number">Emergency Contact Number</string>
+    <string name="hint_drop_down_guardian_type">Select Guardian Type</string>
+    <string name="hint_drop_down_contact_type">Select Contact Type</string>
+    <string name="hint_drop_down_economic">Select Economic Category</string>
+    <string name="hint_drop_down_education">Select Education</string>
+    <string name="hint_drop_down_social_category">Select Social Category</string>
 </resources>

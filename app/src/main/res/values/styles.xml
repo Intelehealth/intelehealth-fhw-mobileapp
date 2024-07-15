@@ -547,7 +547,7 @@
         <item name="boxBackgroundColor">@color/white</item>
         <item name="boxStrokeColor">@color/selector_color_inputbox</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="android:layout_marginTop">@dimen/std_8dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_4</item>
         <item name="cursorColor">@color/colorAccent</item>
     </style>
 
@@ -567,19 +567,25 @@
     </style>
 
     <style name="AppTheme.InputBox" parent="">
-        <!--        <item name="android:maxHeight">@dimen/std_48dp</item>-->
-        <!--        <item name="android:minHeight">@dimen/std_48dp</item>-->
-        <!--        <item name="background">@null</item>-->
-        <!--        <item name="android:padding">0dp</item>-->
+        <item name="android:maxHeight">@dimen/std_48dp</item>
+        <item name="android:minHeight">@dimen/std_48dp</item>
+        <item name="background">@null</item>
+        <item name="android:padding">0dp</item>
     </style>
 
-    <style name="AppTheme.InputBox.Name" parent="">
+    <style name="AppTheme.InputBox.Name" parent="AppTheme.InputBox">
         <item name="android:maxLength">25</item>
         <item name="android:digits">@string/validation_latter_only</item>
         <item name="android:inputType">textCapWords</item>
     </style>
 
-    <style name="AppTheme.InputBox.Phone" parent="">
+    <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
+        <!--        <item name="android:maxLength">25</item>-->
+        <item name="android:digits">@string/validation_address</item>
+        <item name="android:inputType">textPostalAddress</item>
+    </style>
+
+    <style name="AppTheme.InputBox.Phone" parent="AppTheme.InputBox">
         <item name="android:maxLength">10</item>
         <item name="android:digits">@string/validation_digit_only</item>
         <item name="android:inputType">phone</item>
