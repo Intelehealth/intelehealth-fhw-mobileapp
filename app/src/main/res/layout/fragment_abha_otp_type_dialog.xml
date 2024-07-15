@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/padding_40"
-        tools:context=".abdm.AbhaOtpTypeDialogFragment">
+        tools:context=".abdm.dialog.AbhaOtpTypeDialogFragment">
 
         <TextView
             android:id="@+id/tvHeader"
@@ -54,8 +54,9 @@
                 android:paddingStart="@dimen/options_button_padding_start"
                 android:paddingTop="@dimen/options_button_padding_top"
                 android:paddingEnd="@dimen/options_button_padding_end"
+                android:textAllCaps="true"
                 android:paddingBottom="@dimen/options_button_padding_bottom"
-                android:text="@string/abha"
+                android:text="@string/mobile"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/btn_options_text_Size" />
         </LinearLayout>

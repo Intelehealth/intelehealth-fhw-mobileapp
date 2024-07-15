@@ -233,7 +233,7 @@ public interface ApiInterface {
                                                                   @Header("Authorization") String accessToken,
                                                                   @Body OTPVerificationRequestBody otpVerificationRequestBody);
     @POST
-    Single<MobileLoginOnOTPVerifiedResponse> PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(@Url String url,
+    Single<Response<MobileLoginOnOTPVerifiedResponse>> PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(@Url String url,
                                                                                     @Header("Authorization") String accessToken,
                                                                                     @Body OTPVerificationRequestBody otpVerificationRequestBody);
 

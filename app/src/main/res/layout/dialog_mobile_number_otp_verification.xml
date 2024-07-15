@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="@dimen/space_20dp"
-    tools:context=".abdm.MobileNumberOtpVerificationDialog">
+    tools:context=".abdm.dialog.MobileNumberOtpVerificationDialog">
 
     <TextView
         android:layout_width="match_parent"

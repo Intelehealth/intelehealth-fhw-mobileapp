@@ -418,7 +418,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 Log.v(TAG, "Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();
-                recreate();
+
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -463,7 +463,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         Single<AbhaCardResponseBody> responseBodySingle;
 
         if (sessionManager.getAbhaLoginType().equalsIgnoreCase(SessionManager.MOBILE_LOGIN)) {
-            responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken,SCOPE_MOBILE, xToken);
+            responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, SCOPE_MOBILE, xToken);
         } else if (sessionManager.getAbhaLoginType().equalsIgnoreCase(SessionManager.ABHA_LOGIN)) {
             responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, SCOPE_ABHA_ADDRESS, xToken);
         } else {
@@ -1000,40 +1000,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             hasLicense = true;
         }
 
-        try {
-            JSONObject obj = null;
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-            }
-
-            //Display the fields on the Add Patient screen as per the config file
-            // todo: uncomment later and hadnle this case.
-         /*   if (obj.getBoolean("casteLayout")) {
-                casteRow.setVisibility(View.VISIBLE);
-            } else {
-                casteRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("educationLayout")) {
-                educationRow.setVisibility(View.VISIBLE);
-            } else {
-                educationRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("economicLayout")) {
-                economicRow.setVisibility(View.VISIBLE);
-            } else {
-                economicRow.setVisibility(View.GONE);
-            }
-*/
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-//            Issue #627
-//            added the catch exception to check the config and throwing back to setup activity
-            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
-        }
 
         //changing patient to patientDTO object
         if (patientDTO.getMiddlename() == null) {
@@ -1076,8 +1042,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setting openmrs id
         if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty()) {
             openmrsID_txt.setText(patientDTO.getOpenmrsId());
-        } else {
-            openmrsID_txt.setText(getString(R.string.patient_not_registered));
         }
 
         // setTitle(patientDTO.getOpenmrs_id());
@@ -1708,6 +1672,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (NetworkConnection.isOnline(this)) {
             refresh.clearAnimation();
             syncAnimator.start();
+            reMyreceive.clearAbortBroadcast();
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
@@ -1718,7 +1683,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
+                String openMrsId = patientsDAO.getOpenmrsId(patientDTO.getUuid());
+                if (!TextUtils.isEmpty(openMrsId)) {
+                    openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
+                }
 
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);

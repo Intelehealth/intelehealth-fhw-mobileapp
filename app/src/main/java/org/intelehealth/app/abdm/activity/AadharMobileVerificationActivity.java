@@ -25,7 +25,7 @@ import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
-import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
+import org.intelehealth.app.abdm.dialog.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
@@ -62,6 +62,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class AadharMobileVerificationActivity extends AppCompatActivity {
 
@@ -136,12 +137,11 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             if (resendCounter != 0) {
                 resendCounter--;
 
-            resendCounterAttemptsTextDisplay();
-            resendOtp();
-            binding.otpBox.setText("");
-            callGenerateTokenApi();
-            }
-            else
+                resendCounterAttemptsTextDisplay();
+                resendOtp();
+                binding.otpBox.setText("");
+                callGenerateTokenApi();
+            } else
                 resendCounterAttemptsTextDisplay();
         });
 
@@ -218,7 +218,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
-             binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
             binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
@@ -323,7 +323,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         }).start();
 
     }
-
 
 
     private void callMobileNumberVerificationApi(String accessToken) {  // mobile: Step 2
@@ -480,7 +479,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         }
 
         requestBody.setScope(SCOPE);
-        Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
+        Single<Response<MobileLoginOnOTPVerifiedResponse>> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
         new Thread(new Runnable() {
             @Override
@@ -488,48 +487,57 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 mobileLoginOnOTPVerifiedResponseSingle
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableSingleObserver<MobileLoginOnOTPVerifiedResponse>() {
+                        .subscribe(new DisposableSingleObserver<>() {
                             @Override
-                            public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                            public void onSuccess(Response<MobileLoginOnOTPVerifiedResponse> response) {
                                 cpd.dismiss();
-
-                                Log.d("callOTPForMobileLoginVerificationApi", "onSuccess: " + mobileLoginOnOTPVerifiedResponse.toString());
-                                if (mobileLoginOnOTPVerifiedResponse != null && SCOPE.equalsIgnoreCase("abha-address")) {
-                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                    callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                                    return;
-                                }
-                                if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-
-                                    // TODO: Handle abha card implementation here.... 16th Feb - start
-                                    if (abhaCard) {
-                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                        callGETAbhaCardApi(X_TOKEN, accessToken, mobileLoginOnOTPVerifiedResponse);
-                                    } else {
-                                        // TODO: Handle abha card implementation here.... 16th Feb - end
-
-                                        if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
-
-                                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
-                                                // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
-                                                Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
-                                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-
-                                                intent.putExtra("X_TOKEN", X_TOKEN);
-                                                intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
-                                                intent.putExtra("accessToken", accessToken);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
-                                                String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
-                                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                                callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                                            }
-
+                                if (response.code() == 200) {
+                                    if (response.body() != null) {
+                                        MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse = response.body();
+                                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
+                                        if (SCOPE.equalsIgnoreCase("abha-address")) {
+                                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                            callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                            return;
                                         }
+                                        if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
+
+                                            // TODO: Handle abha card implementation here.... 16th Feb - start
+                                            if (abhaCard) {
+                                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                                callGETAbhaCardApi(X_TOKEN, accessToken, mobileLoginOnOTPVerifiedResponse);
+                                            } else {
+                                                // TODO: Handle abha card implementation here.... 16th Feb - end
+
+                                                if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {    // ie. there is atleast one (1) account.
+
+                                                    if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
+                                                        // ie. there are more than 1 accounts for this mobile number than show -> Accounts selection screen.
+                                                        Intent intent = new Intent(context, AccountSelectionLoginActivity.class);
+                                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+
+                                                        intent.putExtra("X_TOKEN", X_TOKEN);
+                                                        intent.putExtra("payload", mobileLoginOnOTPVerifiedResponse);
+                                                        intent.putExtra("accessToken", accessToken);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else {
+                                                        // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
+                                                        String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
+                                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                                        callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                                     }
+                                } else {
+
                                 }
+
                             }
 
                             @Override
@@ -557,7 +565,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
     private void callGETAbhaCardApi(String xToken, String accessToken, MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
         Log.d(TAG, "callGETAbhaCardApi: " + accessToken + " : " + xToken);
         String url = UrlModifiers.getABHACardUrl();
-        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url ,accessToken, null,xToken);
+        Single<AbhaCardResponseBody> responseBodySingle = AppConstants.apiInterface.GET_ABHA_CARD(url, accessToken, null, xToken);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -630,7 +638,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             public void onSuccess(AbhaProfileResponse abhaProfileResponse) {
                                 cpd.dismiss();
                                 Timber.tag("callFetchUserProfileAPI").d("onSuccess: %s", abhaProfileResponse);
-                                checkUserExist(abhaProfileResponse.getABHANumber(),abhaProfileResponse, xToken);
+                                checkUserExist(abhaProfileResponse.getABHANumber(), abhaProfileResponse, xToken);
                             }
 
                             @Override
@@ -671,13 +679,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             intent.putExtra(PAYLOAD, abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("patient_detail", true);
-                       //     intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
+                            //     intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra(PAYLOAD, abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
-                      //      intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
+                            //      intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         }
                         finish();
@@ -718,14 +726,14 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("xToken", xToken);
                             intent.putExtra("patient_detail", true);
-                         //   intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
+                            //   intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);
                             intent.putExtra("mobile_payload", abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("xToken", xToken);
-                        //    intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
+                            //    intent.putExtra("patient_detail", mobileLoginOnOTPVerifiedResponse);
                             startActivity(intent);
                         }
                         finish();
@@ -791,11 +799,11 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                                     if (otpVerificationResponse.getABHAProfile().getMobile() != null &&
                                             otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
-                                        checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0),otpVerificationResponse);
+                                        checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
                                     } else {
                                         MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
                                         dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                            checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0),otpVerificationResponse);
+                                            checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
 
                                         });
                                         dialog.show(getSupportFragmentManager(), "");

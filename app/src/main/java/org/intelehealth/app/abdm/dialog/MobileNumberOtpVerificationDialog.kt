@@ -1,4 +1,4 @@
-package org.intelehealth.app.abdm
+package org.intelehealth.app.abdm.dialog
 
 import android.app.Dialog
 import android.graphics.Paint
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers

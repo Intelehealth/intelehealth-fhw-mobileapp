@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.MobileNumberOtpVerificationDialog;
+import org.intelehealth.app.abdm.dialog.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;

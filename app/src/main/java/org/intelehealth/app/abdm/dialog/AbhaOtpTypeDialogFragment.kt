@@ -1,4 +1,4 @@
-package org.intelehealth.app.abdm
+package org.intelehealth.app.abdm.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater

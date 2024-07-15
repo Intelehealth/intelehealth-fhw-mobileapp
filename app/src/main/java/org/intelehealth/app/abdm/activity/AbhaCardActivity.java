@@ -1,10 +1,5 @@
 package org.intelehealth.app.abdm.activity;
 
-import static androidx.core.content.ContextCompat.startActivity;
-import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,27 +8,19 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.JsonReader;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
-import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaCardBinding;
 import org.intelehealth.app.utilities.CameraUtils;
-import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;

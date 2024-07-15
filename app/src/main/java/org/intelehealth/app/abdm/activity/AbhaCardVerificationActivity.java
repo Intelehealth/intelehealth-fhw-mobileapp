@@ -32,8 +32,8 @@ import androidx.core.content.ContextCompat;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.AbhaOtpTypeDialogFragment;
-import org.intelehealth.app.abdm.AccountSelectDialogFragment;
+import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
+import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
@@ -64,6 +64,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 public class AbhaCardVerificationActivity extends AppCompatActivity {
@@ -371,60 +372,80 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         requestBody.setAuthMethod(abhaAuthType);
         requestBody.setScope(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER);
 
-        Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
+        Single<Response<MobileLoginOnOTPVerifiedResponse>> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
         new Thread(() -> mobileLoginOnOTPVerifiedResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                    public void onSuccess(Response<MobileLoginOnOTPVerifiedResponse> response) {
                         cpd.dismiss();
-
-                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
-                        String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
-                        if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
-                            if (!TextUtils.isEmpty(mobileLoginOnOTPVerifiedResponse.getToken())) {
-                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                callFetchUserProfileAPI(null, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                            } else {
-                                Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            return;
-                        }
-                        if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
-                                if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
-                                    AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
-                                    dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
-                                        String ABHA_NUMBER = account.getABHANumber();
-                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                        callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                                    });
-                                    dialog.show(getSupportFragmentManager(), "");
-                                } else {
-                                    // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
-                                    String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
-                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                    callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                                }
-
-                            }
-                        }
-
+                        handMobileOtpVerificationSuccess(response);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        cpd.dismiss();
-                        Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
+                        handleOnOtpError();
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        binding.sendOtpBtn.setEnabled(true);
-                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                        binding.otpBox.setText("");
-                        cancelResendAndHideView();
                     }
                 })).start();
+    }
+
+    private void handMobileOtpVerificationSuccess(Response<MobileLoginOnOTPVerifiedResponse> response) {
+        if (response.code() == 200) {
+            Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
+            String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
+            if (response.body() != null) {
+                MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse = response.body();
+                binding.sendOtpBtn.setTag(null);    // resetting...
+                if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
+                    if (!TextUtils.isEmpty(response.body().getToken())) {
+                        String X_TOKEN = BEARER_AUTH + response.body().getToken();
+                        callFetchUserProfileAPI(null, response.body().getTxnId(), X_TOKEN);
+                    } else {
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.sendOtpBtn.setEnabled(true);
+                    }
+                } else {
+                    if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
+                        if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
+                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
+                                AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
+                                dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
+                                    String ABHA_NUMBER = account.getABHANumber();
+                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                    callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                });
+                                dialog.show(getSupportFragmentManager(), "");
+                            } else {
+                                // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
+                                String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
+                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.sendOtpBtn.setEnabled(true);
+                    }
+                }
+
+            } else {
+                handleOnOtpError();
+                Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
+            }
+        } else if (response.code() == 422) {
+            binding.sendOtpBtn.setEnabled(true);
+            Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+        } else {
+            handleOnOtpError();
+            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
+        }
     }
 
     /**
@@ -438,7 +459,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + otp);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
-        binding.sendOtpBtn.setTag(null);    // resetting...
+        // resetting...
 
         // payload
         String url = UrlModifiers.getOTPForMobileLoginVerificationUrl();
@@ -446,48 +467,55 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         requestBody.setTxnId(txnId);
         requestBody.setOtp(otp);
         requestBody.setScope(SCOPE_MOBILE);
-        Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
+        Single<Response<MobileLoginOnOTPVerifiedResponse>> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
         new Thread(() -> mobileLoginOnOTPVerifiedResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                    public void onSuccess(Response<MobileLoginOnOTPVerifiedResponse> response) {
                         cpd.dismiss();
-                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
-
-                        if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
-
-                                if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
-                                    AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
-                                    dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
-                                        String ABHA_NUMBER = account.getABHANumber();
+                        if (response.code() == 200) {
+                            if (response.body() != null) {
+                                MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse = response.body();
+                                Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
+                                if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null && mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {
+                                    binding.sendOtpBtn.setTag(null);
+                                    if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
+                                        AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
+                                        dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
+                                            String ABHA_NUMBER = account.getABHANumber();
+                                            String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                            callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                        });
+                                        dialog.show(getSupportFragmentManager(), "");
+                                    } else {
+                                        // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
+                                        String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
                                         String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
                                         callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
-                                    });
-                                    dialog.show(getSupportFragmentManager(), "");
+                                    }
                                 } else {
-                                    // ie. Only 1 account for this mobile number than call -> fetch User Profile details api.
-                                    String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
-                                    String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                    callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    binding.sendOtpBtn.setEnabled(true);
                                 }
-
+                            } else {
+                                binding.sendOtpBtn.setEnabled(true);
+                                Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
+                        } else {
+                            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            handleOnOtpError();
                         }
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        cpd.dismiss();
                         Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
+                        handleOnOtpError();
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        binding.sendOtpBtn.setEnabled(true);
-                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                        binding.otpBox.setText("");
-                        cancelResendAndHideView();
                     }
                 })).start();
     }
@@ -606,38 +634,52 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         requestBody.setOtp(otp);
         requestBody.setScope(SCOPE_AADHAAR);
 
-        Single<MobileLoginOnOTPVerifiedResponse> mobileLoginOnOTPVerifiedResponseSingle =
+        Single<Response<MobileLoginOnOTPVerifiedResponse>> mobileLoginOnOTPVerifiedResponseSingle =
                 AppConstants.apiInterface.PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(url, accessToken, requestBody);
         new Thread(() -> mobileLoginOnOTPVerifiedResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse) {
+                    public void onSuccess(Response<MobileLoginOnOTPVerifiedResponse> response) {
                         cpd.dismiss();
-                        Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
 
-                        if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                            if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
-                                String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
-                                String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
-                                callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                        if (response.code() == 200) {
+                            if (response.body() != null) {
+                                MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse = response.body();
+                                Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", mobileLoginOnOTPVerifiedResponse.toString());
+                                if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
+                                    if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
+                                        String ABHA_NUMBER = mobileLoginOnOTPVerifiedResponse.getAccounts().get(0).getABHANumber();
+                                        String X_TOKEN = BEARER_AUTH + mobileLoginOnOTPVerifiedResponse.getToken();
+                                        callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
+                                    }
+                                }
+                            } else {
+                                handleOnOtpError();
+                                Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
+                        } else {
+                            handleOnOtpError();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        cpd.dismiss();
                         Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
+                        handleOnOtpError();
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        binding.sendOtpBtn.setEnabled(true);
-                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                        binding.otpBox.setText("");
-                        cancelResendAndHideView();
                     }
                 })).start();
 
+    }
+
+    private void handleOnOtpError() {
+        cpd.dismiss();
+        binding.sendOtpBtn.setEnabled(true);
+        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+        binding.otpBox.setText("");
+        cancelResendAndHideView();
     }
 
     public static boolean validateAadhaarNumber(String aadhaarNumber) {

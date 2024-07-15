@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_4"
                             android:gravity="center_vertical"
-                            android:text="@string/fu_openmrsID"
+                            android:text="@string/patient_not_registered"
                             android:textAppearance="@style/caption_fu_openmrsId"
                             android:textColor="@null"
                             android:textSize="@dimen/find_patient_hint_size" />
