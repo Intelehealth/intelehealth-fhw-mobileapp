@@ -122,7 +122,7 @@
 
                     </RelativeLayout>
 
-                    <TableLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/vitals_details_relative"
@@ -130,16 +130,18 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
+                        android:orientation="vertical"
                         android:shrinkColumns="1">
 
                         <!--height-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_height_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -153,24 +155,25 @@
 
                             <TextView
                                 android:id="@+id/textView_height_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--weight-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_weight_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -184,24 +187,25 @@
 
                             <TextView
                                 android:id="@+id/textView_weight_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--BMI-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_bmi"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -215,24 +219,25 @@
 
                             <TextView
                                 android:id="@+id/textView_bmi_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--BP-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_bp_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -246,24 +251,25 @@
 
                             <TextView
                                 android:id="@+id/textView_bp_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--Pulse-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_pulse_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -277,34 +283,34 @@
 
                             <TextView
                                 android:id="@+id/textView_pulse_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--Temperature(F)-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_temperature_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
 
                             <RelativeLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
                                 android:layout_weight="1">
 
                                 <TextView
                                     android:id="@+id/textView_temp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginEnd="@dimen/margin_5"
-                                    android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
                                     android:drawablePadding="5dp"
                                     android:text="@string/visit_summary_temperature"
@@ -316,9 +322,6 @@
                                     android:id="@+id/textView_temp_faren"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginEnd="@dimen/margin_5"
-                                    android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
                                     android:drawablePadding="5dp"
                                     android:text="@string/temperature_f"
@@ -330,25 +333,26 @@
 
                             <TextView
                                 android:id="@+id/textView_temp_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
 
                         <!--SpO2-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_spo2_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -362,26 +366,27 @@
 
                             <TextView
                                 android:id="@+id/textView_pulseox_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
 
                         <!--Respiratory Rate-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_respiratory_rate_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
                                 android:id="@+id/textView_respiratory"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -395,25 +400,26 @@
 
                             <TextView
                                 android:id="@+id/textView_respiratory_value"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
                         <!--Blood group-->
-                        <TableRow
+                        <LinearLayout android:id="@+id/ll_blood_group_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/margin_4"
-                            android:layout_weight="2">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <TextView
                                 android:id="@+id/textView_blood_group_lbl"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginEnd="@dimen/margin_5"
@@ -427,17 +433,17 @@
 
                             <TextView
                                 android:id="@+id/textView_blood_group"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dip"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/no_information"
                                 android:textAppearance="@style/caption"
                                 android:textColor="@color/textview_color"
                                 android:textSize="@dimen/find_patient_hint_size" />
-                        </TableRow>
+                        </LinearLayout>
 
 
-                    </TableLayout>
+                    </LinearLayout>
                 </RelativeLayout>
 
 
