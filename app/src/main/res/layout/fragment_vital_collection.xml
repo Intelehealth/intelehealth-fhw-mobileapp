@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,200 +52,234 @@
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_weight_height_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_height_container"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:visibility="visible"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_weight_container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_height_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/height_cm"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/hamburger_margin_start">
-
-                        <!--<androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/sp_height"
+                        <TextView
+                            android:id="@+id/tv_height_lbl"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
-                            android:background="@drawable/input_edittext_border"
-                            android:dropDownVerticalOffset="56dp"
-                            android:padding="@dimen/padding_10" />
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/height_cm"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
 
-                        <ImageView
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/hamburger_margin_start">
+
+                            <!--<androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/sp_height"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:background="@drawable/input_edittext_border"
+                                android:dropDownVerticalOffset="56dp"
+                                android:padding="@dimen/padding_10" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center_vertical"
+                                android:layout_marginEnd="@dimen/margin_12"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ui2_ic_dropdown"
+                                android:visibility="visible" />-->
+                            <EditText
+                                android:id="@+id/etv_height"
+                                style="@style/edittext_textcolor"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:background="@drawable/input_edittext_border"
+                                android:hint="@string/enter_value"
+                                android:inputType="numberDecimal"
+                                android:maxLength="3"
+                                android:padding="@dimen/padding_10"
+                                android:textColorHint="@color/edittext_hint_color"
+                                android:textSize="14sp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/tv_height_error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:layout_marginEnd="@dimen/margin_12"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ui2_ic_dropdown"
-                            android:visibility="visible" />-->
-                        <EditText
-                            android:id="@+id/etv_height"
-                            style="@style/edittext_textcolor"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_gravity="end"
                             android:layout_marginTop="@dimen/hamburger_margin_start"
-                            android:background="@drawable/input_edittext_border"
-                            android:hint="@string/enter_value"
-                            android:inputType="numberDecimal"
-                            android:maxLength="3"
-                            android:padding="@dimen/padding_10"
-                            android:textColorHint="@color/edittext_hint_color"
-                            android:textSize="14sp" />
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/tv_height_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_weight_container"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_16"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@+id/ll_height_container"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_wight_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/weight_kg"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/hamburger_margin_start">
-
-                        <!-- <androidx.appcompat.widget.AppCompatSpinner
-                             android:id="@+id/sp_weight"
-                             android:layout_width="match_parent"
-                             android:layout_height="@dimen/edittext_height_44dp"
-                             android:background="@drawable/input_edittext_border"
-                             android:dropDownVerticalOffset="56dp"
-                             android:padding="@dimen/padding_10" />
-
-                         <ImageView
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="end|center_vertical"
-                             android:layout_marginEnd="@dimen/margin_12"
-                             android:contentDescription="@null"
-                             android:src="@drawable/ui2_ic_dropdown"
-                             android:visibility="visible" />-->
-                        <EditText
-                            android:id="@+id/etv_weight"
-                            style="@style/edittext_textcolor"
+                        <TextView
+                            android:id="@+id/tv_wight_lbl"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/weight_kg"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/hamburger_margin_start">
+
+                            <!-- <androidx.appcompat.widget.AppCompatSpinner
+                                 android:id="@+id/sp_weight"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="@dimen/edittext_height_44dp"
+                                 android:background="@drawable/input_edittext_border"
+                                 android:dropDownVerticalOffset="56dp"
+                                 android:padding="@dimen/padding_10" />
+
+                             <ImageView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="end|center_vertical"
+                                 android:layout_marginEnd="@dimen/margin_12"
+                                 android:contentDescription="@null"
+                                 android:src="@drawable/ui2_ic_dropdown"
+                                 android:visibility="visible" />-->
+                            <EditText
+                                android:id="@+id/etv_weight"
+                                style="@style/edittext_textcolor"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:background="@drawable/input_edittext_border"
+                                android:hint="@string/enter_value"
+                                android:inputType="numberDecimal"
+                                android:maxLength="3"
+                                android:padding="@dimen/padding_10"
+                                android:textColorHint="@color/edittext_hint_color"
+                                android:textSize="14sp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/tv_weight_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
                             android:layout_marginTop="@dimen/hamburger_margin_start"
-                            android:background="@drawable/input_edittext_border"
-                            android:hint="@string/enter_value"
-                            android:inputType="numberDecimal"
-                            android:maxLength="3"
-                            android:padding="@dimen/padding_10"
-                            android:textColorHint="@color/edittext_hint_color"
-                            android:textSize="14sp" />
-                    </FrameLayout>
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="visible" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_weight_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
-            </LinearLayout>
 
-            <LinearLayout
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/ll_bmi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_bmi_lbl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:lineSpacingExtra="1sp"
-                    android:text="@string/bmi_index_auto_calculated"
-                    android:textColor="@color/gray_3"
-                    android:textSize="@dimen/common_label_text_size"
-                    android:textStyle="normal" />
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:background="@drawable/input_edittext_border"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/padding_10"
-                    android:weightSum="2">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_bmi_value"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_bmi_lbl"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/auto_calculate"
+                        android:layout_marginTop="@dimen/margin_16"
                         android:lineSpacingExtra="1sp"
-                        android:text=""
+                        android:text="@string/bmi_index_auto_calculated"
+                        android:textColor="@color/gray_3"
                         android:textSize="@dimen/common_label_text_size"
                         android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/tv_bmi_status"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_10"
-                        android:lineSpacingExtra="1sp"
-                        android:text=""
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:background="@drawable/input_edittext_border"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding_10"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/tv_bmi_value"
+                            style="@style/edittext_textcolor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/auto_calculate"
+                            android:lineSpacingExtra="1sp"
+                            android:text=""
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:id="@+id/tv_bmi_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_10"
+                            android:lineSpacingExtra="1sp"
+                            android:text=""
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:id="@+id/ll_patient_vital_block_container"
@@ -263,85 +298,161 @@
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ll_sbp_dbp_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/ll_sbp_container"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_dbp_container"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/tv_bp_sys_lbl"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="1sp"
-                            android:text="@string/bp_sys"
-                            android:textColor="@color/gray_3"
-                            android:textSize="@dimen/common_label_text_size"
-                            android:textStyle="normal" />
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/etv_bp_sys"
-                            style="@style/edittext_textcolor"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_height_44dp"
-                            android:layout_marginTop="@dimen/hamburger_margin_start"
-                            android:background="@drawable/input_edittext_border"
-                            android:hint="@string/enter_value"
-                            android:inputType="number"
-                            android:maxLength="3"
-                            android:padding="@dimen/padding_10"
-                            android:textColorHint="@color/edittext_hint_color"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/tv_bp_sys_lbl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="1sp"
+                                android:text="@string/bp_sys"
+                                android:textColor="@color/gray_3"
+                                android:textSize="@dimen/common_label_text_size"
+                                android:textStyle="normal" />
 
-                        <TextView
-                            android:id="@+id/etv_bp_sys_error"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="@dimen/hamburger_margin_start"
-                            android:lineSpacingExtra="0sp"
-                            android:text="@string/this_field_is_mandatory"
-                            android:textAppearance="@style/registr_error_msg"
-                            android:textColor="@color/red"
-                            android:textSize="@null"
-                            android:visibility="visible" />
-                    </LinearLayout>
+                            <EditText
+                                android:id="@+id/etv_bp_sys"
+                                style="@style/edittext_textcolor"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:background="@drawable/input_edittext_border"
+                                android:hint="@string/enter_value"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:padding="@dimen/padding_10"
+                                android:textColorHint="@color/edittext_hint_color"
+                                android:textSize="14sp" />
 
-                    <LinearLayout
+                            <TextView
+                                android:id="@+id/etv_bp_sys_error"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:lineSpacingExtra="0sp"
+                                android:text="@string/this_field_is_mandatory"
+                                android:textAppearance="@style/registr_error_msg"
+                                android:textColor="@color/red"
+                                android:textSize="@null"
+                                android:visibility="visible" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/ll_dbp_container"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_16"
-                        android:layout_weight="1"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toEndOf="@+id/ll_sbp_container"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_bp_dia_lbl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="1sp"
+                                android:text="@string/bp_dia"
+                                android:textColor="@color/gray_3"
+                                android:textSize="@dimen/common_label_text_size"
+                                android:textStyle="normal" />
+
+                            <EditText
+                                android:id="@+id/etv_bp_dia"
+                                style="@style/edittext_textcolor"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:background="@drawable/input_edittext_border"
+                                android:hint="@string/enter_value"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:padding="@dimen/padding_10"
+                                android:textColorHint="@color/edittext_hint_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/etv_bp_dia_error"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="@dimen/hamburger_margin_start"
+                                android:lineSpacingExtra="0sp"
+                                android:text="@string/this_field_is_mandatory"
+                                android:textAppearance="@style/registr_error_msg"
+                                android:textColor="@color/red"
+                                android:textSize="@null"
+                                android:visibility="visible" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ll_pulse_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_bp_dia_lbl"
+                            android:id="@+id/tv_pulse_lbl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
                             android:lineSpacingExtra="1sp"
-                            android:text="@string/bp_dia"
+                            android:text="@string/pulse_bpm"
                             android:textColor="@color/gray_3"
                             android:textSize="@dimen/common_label_text_size"
                             android:textStyle="normal" />
 
                         <EditText
-                            android:id="@+id/etv_bp_dia"
+                            android:id="@+id/etv_pulse"
                             style="@style/edittext_textcolor"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:layout_marginTop="@dimen/hamburger_margin_start"
                             android:background="@drawable/input_edittext_border"
-                            android:hint="@string/enter_value"
+                            android:hint="@string/bpm_eg"
                             android:inputType="number"
                             android:maxLength="3"
                             android:padding="@dimen/padding_10"
@@ -349,7 +460,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/etv_bp_dia_error"
+                            android:id="@+id/etv_pulse_error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -361,187 +472,166 @@
                             android:textSize="@null"
                             android:visibility="visible" />
                     </LinearLayout>
-                </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                <LinearLayout
-                    android:id="@+id/ll_pulse_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_pulse_lbl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/pulse_bpm"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
-
-                    <EditText
-                        android:id="@+id/etv_pulse"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/input_edittext_border"
-                        android:hint="@string/bpm_eg"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/etv_pulse_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_temperature_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:id="@+id/tv_temperature_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/temperature_f_new"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etv_temperature"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/input_edittext_border"
-                        android:hint="@string/temp_eg"
-                        android:inputType="numberDecimal"
-                        android:maxLength="3"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tv_temperature_lbl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/temperature_f_new"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/etv_temperature_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/etv_temperature"
+                            style="@style/edittext_textcolor"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:background="@drawable/input_edittext_border"
+                            android:hint="@string/temp_eg"
+                            android:inputType="numberDecimal"
+                            android:maxLength="3"
+                            android:padding="@dimen/padding_10"
+                            android:textColorHint="@color/edittext_hint_color"
+                            android:textSize="14sp" />
 
-                <LinearLayout
+                        <TextView
+                            android:id="@+id/etv_temperature_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_spo2_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:id="@+id/tv_spo2_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/spo2"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etv_spo2"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/input_edittext_border"
-                        android:hint="@string/spo2_eg"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tv_spo2_lbl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/spo2"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/etv_spo2_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="This field is mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/etv_spo2"
+                            style="@style/edittext_textcolor"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:background="@drawable/input_edittext_border"
+                            android:hint="@string/spo2_eg"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:padding="@dimen/padding_10"
+                            android:textColorHint="@color/edittext_hint_color"
+                            android:textSize="14sp" />
 
-                <LinearLayout
+                        <TextView
+                            android:id="@+id/etv_spo2_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="This field is mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_respiratory_rate_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:id="@+id/tv_respiratory_rate_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/respiratory_rate_breaths_min"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etv_respiratory_rate"
-                        style="@style/edittext_textcolor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:background="@drawable/input_edittext_border"
-                        android:hint="@string/respiratory_eg"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:padding="@dimen/padding_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tv_respiratory_rate_lbl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/respiratory_rate_breaths_min"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/etv_respiratory_rate_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="visible" />
-                </LinearLayout>
+                        <EditText
+                            android:id="@+id/etv_respiratory_rate"
+                            style="@style/edittext_textcolor"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:background="@drawable/input_edittext_border"
+                            android:hint="@string/respiratory_eg"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:padding="@dimen/padding_10"
+                            android:textColorHint="@color/edittext_hint_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/etv_respiratory_rate_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -561,68 +651,76 @@
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/ll_blood_group_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:id="@+id/tv_blood_group_lbl"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:lineSpacingExtra="1sp"
-                        android:text="@string/blood_group_txt"
-                        android:textColor="@color/gray_3"
-                        android:textSize="@dimen/common_label_text_size"
-                        android:textStyle="normal" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_blood_group_lbl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
+                            android:lineSpacingExtra="1sp"
+                            android:text="@string/blood_group_txt"
+                            android:textColor="@color/gray_3"
+                            android:textSize="@dimen/common_label_text_size"
+                            android:textStyle="normal" />
 
 
-                    <!--<Spinner
-                        android:id="@+id/blood_group_spinner"
-                        style="@style/SmallSpinnerTheme"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:dropDownVerticalOffset="50dp"
-                        android:entries="@array/language_names"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/margin_16dp"
-                        android:paddingBottom="@dimen/margin_10"
-                        android:popupBackground="@drawable/popup_menu_background"
-                        android:spinnerMode="dialog"
-                        android:visibility="gone" />-->
+                        <!--<Spinner
+                            android:id="@+id/blood_group_spinner"
+                            style="@style/SmallSpinnerTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:dropDownVerticalOffset="50dp"
+                            android:entries="@array/language_names"
+                            android:paddingStart="@dimen/fu_margin_start"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingEnd="@dimen/margin_16dp"
+                            android:paddingBottom="@dimen/margin_10"
+                            android:popupBackground="@drawable/popup_menu_background"
+                            android:spinnerMode="dialog"
+                            android:visibility="gone" />-->
 
-                    <TextView
-                        android:id="@+id/tv_blood_group_spinner"
-                        style="@style/SmallSpinnerTheme"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/edittext_height_44dp"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:gravity="start|center_vertical"
-                        android:hint="@string/eg_a_ve"
-                        android:paddingStart="@dimen/fu_margin_start"
-                        android:paddingTop="@dimen/margin_10"
-                        android:paddingEnd="@dimen/margin_16dp"
-                        android:paddingBottom="@dimen/margin_10"
-                        android:textColorHint="@color/medium_gray"
-                        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/tv_blood_group_spinner"
+                            style="@style/SmallSpinnerTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:gravity="start|center_vertical"
+                            android:hint="@string/eg_a_ve"
+                            android:paddingStart="@dimen/fu_margin_start"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingEnd="@dimen/margin_16dp"
+                            android:paddingBottom="@dimen/margin_10"
+                            android:textColorHint="@color/medium_gray"
+                            android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tv_blood_group_error"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="@dimen/hamburger_margin_start"
-                        android:lineSpacingExtra="0sp"
-                        android:text="@string/this_field_is_mandatory"
-                        android:textAppearance="@style/registr_error_msg"
-                        android:textColor="@color/red"
-                        android:textSize="@null"
-                        android:visibility="gone" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_blood_group_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/this_field_is_mandatory"
+                            android:textAppearance="@style/registr_error_msg"
+                            android:textColor="@color/red"
+                            android:textSize="@null"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>
