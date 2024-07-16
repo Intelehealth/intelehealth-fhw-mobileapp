@@ -36,6 +36,7 @@ import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -238,6 +239,10 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+
+            //cancelling alarm manager for end visit followup
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION);
+            NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

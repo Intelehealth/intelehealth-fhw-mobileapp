@@ -14,7 +14,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -27,6 +29,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class PatientsDAO {
@@ -1001,6 +1004,43 @@ public class PatientsDAO {
         }
         cursor.close();
         return patientDTO;
+    }
+
+    //getting followup patient count here
+    public static int getAllFollowupPatientCount() {
+        int count = 0;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
+                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+                + "a.uuid = c.visit_uuid AND   " +
+                "a.patientuuid = b.uuid AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?"
+                +"AND o.voided='0' and "
+                + "o.value is NOT NULL GROUP BY a.patientuuid"
+                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
+
+        Log.d("QUERY_COUNT",""+query);
+
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                        count++;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return count;
     }
 
 }

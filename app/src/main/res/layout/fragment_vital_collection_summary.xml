@@ -163,7 +163,7 @@
                 android:layout_marginTop="@dimen/margin_16"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_height_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -199,7 +199,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_weight_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -236,7 +236,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_bmi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -273,7 +273,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_bp_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -310,7 +310,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_pulse_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -347,7 +347,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_temperature_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -384,7 +384,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_spo2_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -421,7 +421,7 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_respiratory_rate_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -457,7 +457,8 @@
                         android:lineSpacingExtra="1sp"
                         android:text="@string/no_information" />
                 </LinearLayout>
-                <LinearLayout
+
+                <LinearLayout android:id="@+id/ll_blood_group_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"

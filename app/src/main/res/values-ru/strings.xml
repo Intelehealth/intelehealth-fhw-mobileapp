@@ -920,6 +920,15 @@
     <string name="facility_to_visit">Facility to visit</string>
     <string name="follow_up_date">Follow up date</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
+    <string name="reminder">Reminder</string>
+    <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
+    <string name="open_followup">Open Followup</string>
+    <string name="find_patients_hint">Find patients</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="range">Range</string>
+    <string name="apply">Apply</string>
+    <string name="select_date_to_apply_filter">Select date to apply filter.</string>
+    <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
 </resources>
