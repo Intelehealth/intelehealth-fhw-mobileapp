@@ -63,6 +63,9 @@ class ConfigRepository(
                 chatSection = if (config.webrtcSection) config.webrtcStatus.chat else false
                 videoSection = if (config.webrtcSection) config.webrtcStatus.video else false
                 vitalSection = config.patientVitalSection
+                activeStatusPatientAddress = config.activeStatusPatientAddress
+                activeStatusPatientOther = config.activeStatusPatientOther
+                activeStatusAbha = config.activeStatusAbha
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }

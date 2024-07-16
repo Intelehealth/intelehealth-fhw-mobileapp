@@ -341,7 +341,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/date_of_birth_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
@@ -399,7 +398,6 @@
                     android:lineSpacingExtra="3sp"
                     android:text="@string/age_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
@@ -769,7 +767,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/input_edittext_border"
                         android:digits="1234567890"
-                        android:hint="Emergency Contact Number"
+                        android:hint="@string/emergency_contact_number"
                         android:inputType="number"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"

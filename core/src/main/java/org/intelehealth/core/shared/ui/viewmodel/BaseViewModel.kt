@@ -3,6 +3,7 @@ package org.intelehealth.core.shared.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.codeglo.coyamore.data.PreferenceHelper
 import org.intelehealth.core.network.helper.NetworkHelper
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,15 +11,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
-import org.intelehealth.core.network.service.ServiceResponse
 import org.intelehealth.core.network.state.Result
-import org.intelehealth.core.utility.NO_NETWORK
 
 open class BaseViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val networkHelper: NetworkHelper? = null
+    private val networkHelper: NetworkHelper? = null,
+    private val preferenceHelper: PreferenceHelper? = null
 ) : ViewModel() {
-
     private val loadingData = MutableLiveData<Boolean>()
 
     @JvmField
@@ -33,25 +32,28 @@ open class BaseViewModel(
 
     @JvmField
     var errorDataResult: LiveData<Throwable> = errorResult
-    var dataConnectionStatus = MutableLiveData<Boolean>(true)
 
-    fun <T> getDataResult(call: suspend () -> ServiceResponse<T>) = flow {
-        if (isInternetAvailable()) {
-            val response = call()
-            if (response.status == 200) {
-                println("API SUCCESS")
-                val result = Result.Success(response.data, response.message)
-                emit(result)
-            } else {
-                println("API ERROR ${response.message}")
-                emit(Result.Error<T>(response.message))
-            }
-        } else dataConnectionStatus.postValue(false)
+
+    fun <L> executeLocalQuery(
+        queryCall: () -> L?
+    ) = flow {
+        val localData = queryCall.invoke()
+        localData?.let { emit(Result.Success(localData, "")) } ?: kotlin.run {
+            emit(Result.Error<L>("No record found"))
+        }
     }.onStart {
-        emit(Result.Loading<T>("Please wait..."))
+        emit(Result.Loading<L>("Please wait..."))
     }.flowOn(dispatcher)
 
-    private fun isInternetAvailable(): Boolean = networkHelper?.isNetworkConnected() ?: false
+    fun executeLocalInsertUpdateQuery(
+        queryCall: () -> Boolean
+    ) = flow {
+        val status = queryCall.invoke()
+        if (status) emit(Result.Success(true, ""))
+        else emit(Result.Error<Boolean>("Failed"))
+    }.onStart {
+        emit(Result.Loading<Boolean>("Please wait..."))
+    }.flowOn(dispatcher)
 
     /**
      * Handle response here in base with loading and error message
@@ -66,9 +68,7 @@ open class BaseViewModel(
 
             Result.State.FAIL -> {
                 loadingData.postValue(false)
-                if (it.message == NO_NETWORK)
-                    dataConnectionStatus.postValue(false)
-                else failResult.postValue("")
+                failResult.postValue("")
             }
 
             Result.State.SUCCESS -> {
@@ -85,5 +85,13 @@ open class BaseViewModel(
                 errorResult.postValue(Throwable(it.message))
             }
         }
+    }
+
+    fun updateFailResult(message: String) {
+        failResult.postValue(message)
+    }
+
+    companion object {
+        private const val TAG = "BaseViewModel"
     }
 }

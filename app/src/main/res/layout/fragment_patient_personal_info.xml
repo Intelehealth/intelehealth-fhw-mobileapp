@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="patient"
+            type="org.intelehealth.app.models.dto.PatientDTO" />
+
+        <variable
+            name="personalConfig"
+            type="org.intelehealth.app.ui.patient.config.PersonalInfoConfig" />
+
+        <variable
+            name="isEditMode"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llPatientPersonalInfoRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/std_16dp"
+            android:fillViewport="true"
+            android:paddingHorizontal="@dimen/std_16dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@id/btnPatientPersonalNext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/add_picture_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_8dp"
+                    android:visibility="@{personalConfig.profilePic.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/patient_imgview"
+                        config="@{personalConfig.profilePic}"
+                        editMode="@{isEditMode}"
+                        profileUrl="@{patient.patientPhoto}"
+                        android:layout_width="@dimen/patregist_profileimg_icon"
+                        android:layout_height="@dimen/patregist_profileimg_icon"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/my_profile"
+                        android:src="@drawable/avatar1"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/patient_imgview"
+                        android:layout_marginStart="-20dip"
+                        android:layout_toEndOf="@+id/patient_imgview"
+                        android:contentDescription="@string/add_a_picture"
+                        android:elevation="8dip"
+                        android:src="@drawable/lense_with_camera_icon" />
+
+                    <TextView
+                        android:id="@+id/add_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/patient_imgview"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        android:gravity="top"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/add_a_picture"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textColor="@null"
+                        android:textSize="@null"
+                        android:translationY="-1.39sp" />
+
+                    <TextView
+                        android:id="@+id/profile_image_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/add_picture"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/profile_picture_is_mandatory"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="@null"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </RelativeLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayFName"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.firstName}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:hint="@{ personalConfig.firstName.mandatory ? @string/first_name_mandatory + ` *` : @string/first_name_mandatory}"
+                    android:visibility="@{personalConfig.firstName.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_picture_lay"
+                    tools:hint="@string/first_name_mandatory">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETFName"
+                        style="@style/AppTheme.InputBox.Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.firstname}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayMName"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.middleName}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.middleName.mandatory ? @string/middle_name_registration + ` *` : @string/middle_name_registration}"
+                    android:visibility="@{personalConfig.middleName.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayFName"
+                    tools:hint="@string/middle_name_registration">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETMName"
+                        style="@style/AppTheme.InputBox.Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.middlename}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayLName"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.lastName}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
+                    android:visibility="@{personalConfig.lastName.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayMName"
+                    tools:hint="@string/last_name_mandatory">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETLName"
+                        style="@style/AppTheme.InputBox.Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.lastname}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:visibility="@{personalConfig.gender.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayLName">
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleGender"
+                        config="@{personalConfig.gender}"
+                        editMode="@{isEditMode}"
+                        gender="@{patient.gender}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMale"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/male"
+                            app:icon="@drawable/gender_male_svg" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnFemale"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/female"
+                            app:icon="@drawable/gender_female_svg" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOther"
+                            style="@style/AppTheme.OutlinedButton.Icon"
+                            config="@{personalConfig.gender}"
+                            editMode="@{isEditMode}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/other"
+                            app:icon="@drawable/gender_other_svg" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvGenderError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/this_field_is_mandatory"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toggleGender" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayDob"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.dob}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
+                    android:visibility="@{personalConfig.dob.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clGender"
+                    tools:hint="@string/date_of_birth_mandatory">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETDob"
+                        style="@style/AppTheme.InputBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="none" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayAge"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.age}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
+                    android:visibility="@{personalConfig.age.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayDob"
+                    tools:hint="@string/age_mandatory">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETAge"
+                        style="@style/AppTheme.InputBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="none" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayGuardianName"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.guardianName}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.guardianName.mandatory ? @string/guardian_name_non_required + ` *` : @string/guardian_name_non_required}"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayAge"
+                    tools:hint="@string/guardian_name_non_required">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETGuardianName"
+                        style="@style/AppTheme.InputBox.Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.guardianName}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayGuardianType"
+                    style="@style/AppTheme.OutlineInputBox.DropDown"
+                    config="@{personalConfig.guardianType}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.guardianType.mandatory ? @string/guardian_type_non_required + ` *` : @string/guardian_type_non_required}"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayGuardianName"
+                    tools:hint="@string/guardian_type_non_required">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteGuardianType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:minHeight="@dimen/std_48dp" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayPhoneNumber"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.phone}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:hint="@{ personalConfig.phone.mandatory ? @string/phone_number + ` *` : @string/phone_number}"
+                    android:visibility="@{personalConfig.phone.enabled ? View.VISIBLE : View.GONE}"
+                    app:expandedHintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayGuardianType"
+                    app:prefixText="@{patient.countryCode != null ? patient.countryCode + ` | ` : `+91 | `}"
+                    app:startIconDrawable="@drawable/img"
+                    app:startIconTint="@null"
+                    tools:hint="@string/phone_number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETPhoneNumber"
+                        style="@style/AppTheme.InputBox.Phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="true"
+                        android:text="@{patient.mobileNumber}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayEmContactType"
+                    style="@style/AppTheme.OutlineInputBox.DropDown"
+                    config="@{personalConfig.emergencyContactType}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.emergencyContactType.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
+                    android:visibility="@{personalConfig.emergencyContactType.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayPhoneNumber"
+                    tools:hint="@string/contact_type_non_required">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteEmContactType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayECName"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.emergencyContactName}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{ personalConfig.emergencyContactName.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
+                    android:visibility="@{personalConfig.emergencyContactName.enabled ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayEmContactType"
+                    tools:hint="@string/emergency_contact_name_non_required">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETECName"
+                        style="@style/AppTheme.InputBox.Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{patient.emContactName}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/textInputLayEMPhoneNumber"
+                    style="@style/AppTheme.OutlineInputBox"
+                    config="@{personalConfig.emergencyContactNumber}"
+                    editMode="@{isEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:hint="@{ personalConfig.emergencyContactNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                    android:visibility="@{personalConfig.emergencyContactNumber.enabled ? View.VISIBLE : View.GONE}"
+                    app:expandedHintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayECName"
+                    app:prefixText="@{patient.emCountryCode != null ? patient.emCountryCode + ` | ` : `+91 | `}"
+                    app:startIconDrawable="@drawable/img"
+                    app:startIconTint="@null"
+                    tools:hint="@string/emergency_contact_number_non_required">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputETEMPhoneNumber"
+                        style="@style/AppTheme.InputBox.Phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="true"
+                        android:text="@{patient.emMobileNumber}" />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnPatientPersonalNext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/std_16dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:text="@{isEditMode ? @string/save : @string/next}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

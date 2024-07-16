@@ -85,6 +85,10 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
+    private String profileTimestamp;
+
+    private String district;
+
     public String getUuid() {
         return uuid;
     }
@@ -134,6 +138,20 @@ public class PatientDTO implements Serializable {
     }
 
     public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public String getMobileNumber() {
+//        if (phonenumber != null && phonenumber.length() == 13) {
+//            return phonenumber.substring(3);
+//        }
+        return phonenumber;
+    }
+
+    public String getCountryCode() {
+        if (phonenumber != null && phonenumber.length() == 13) {
+            return phonenumber.substring(0, 3);
+        }
         return phonenumber;
     }
 
@@ -270,7 +288,7 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
-    public String  getSon_dau_wife() {
+    public String getSon_dau_wife() {
         return son_dau_wife;
     }
 
@@ -364,6 +382,49 @@ public class PatientDTO implements Serializable {
 
     public void setEmContactNumber(String emContactNumber) {
         this.emContactNumber = emContactNumber;
+    }
+
+    public String getEmMobileNumber() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(3);
+        }
+        return emContactNumber;
+    }
+
+    public String getEmCountryCode() {
+        if (emContactNumber != null && emContactNumber.length() == 13) {
+            return emContactNumber.substring(0, 3);
+        }
+        return emContactNumber;
+    }
+
+    public String getProfileTimestamp() {
+        return profileTimestamp;
+    }
+
+    public void setProfileTimestamp(String profileTimestamp) {
+        this.profileTimestamp = profileTimestamp;
+    }
+
+    public String getDistrict() {
+        if (district != null && !district.isEmpty()) return district;
+        else return splitVillageAndDistrict(0);
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getVillageWithoutDistrict() {
+        return splitVillageAndDistrict(1);
+    }
+
+    private String splitVillageAndDistrict(int index) {
+        if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
+            return cityvillage.split(":")[index];
+        }
+        if (index == 1) return cityvillage;
+        else return null;
     }
 
     @Override

@@ -1,332 +1,348 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fillViewport="true"
-    tools:context=".activities.patientDetailActivity.PatientDetailActivity2">
+<layout>
 
+    <data>
 
-    <RelativeLayout
-        android:id="@+id/toolbar"
+        <variable
+            name="addressActiveStatus"
+            type="Boolean" />
+
+        <variable
+            name="otherActiveStatus"
+            type="Boolean" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="@dimen/toolbar_margin_left"
-        android:layout_marginEnd="@dimen/toolbar_margin_right"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <!-- Frame 100116 -->
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        tools:context=".activities.patientDetailActivity.PatientDetailActivity2">
 
 
-        <!-- arrow-right -->
-        <ImageView
-            android:id="@+id/backbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:background="@null"
-            android:padding="@dimen/margin_5"
-            android:src="@drawable/ic_arrow_right"
-            android:visibility="gone" />
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_right"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <!-- Label -->
-        <TextView
-            android:id="@+id/label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:lineSpacingExtra="1sp"
-            android:text="@string/title_activity_patient_detail"
-            android:textAppearance="@style/label"
-            android:textColor="@null"
-            android:textSize="@dimen/toolbar_text_size"
-            android:textStyle="bold"
-            android:translationY="-0.28sp" />
+            <!-- Frame 100116 -->
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
-
+            <!-- arrow-right -->
             <ImageView
-                android:id="@+id/refresh"
+                android:id="@+id/backbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@null"
+                android:padding="@dimen/margin_5"
+                android:src="@drawable/ic_arrow_right"
+                android:visibility="gone" />
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:background="@null"
-                android:elevation="8dip"
-                android:onClick="syncNow"
-                android:src="@drawable/ic_refreshbtn" />
+                android:layout_centerVertical="true"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/title_activity_patient_detail"
+                android:textAppearance="@style/label"
+                android:textColor="@null"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textStyle="bold"
+                android:translationY="-0.28sp" />
 
-            <ImageView
-                android:id="@+id/cancelbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:elevation="8dip"
-                android:padding="1dp"
-                android:src="@drawable/cancel_btn_cross" />
-
-        </LinearLayout>
-    </RelativeLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/relative_firstscreen_nxt_btn"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginBottom="@dimen/margin_16">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <!--Header Content-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_name_openmrsid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginEnd="@dimen/margin_24"
-                app:cardCornerRadius="@dimen/hamburger_margin_start"
-                app:cardElevation="@dimen/margin_5">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fu_margin_start">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/profile"
-                        android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                        android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                        android:layout_margin="2dp"
-                        android:elevation="0dp"
-                        app:cardCornerRadius="40dp">
-
-                        <ImageView
-                            android:id="@+id/profile_image"
-                            android:layout_width="@dimen/patdetail_profile_imgview_14sp"
-                            android:layout_height="@dimen/patdetail_profile_imgview_14sp"
-                            android:src="@drawable/avatar1" />
-                    </androidx.cardview.widget.CardView>
-
-                    <!--Name and SubTitle-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/fu_margin_start"
-                        android:layout_toEndOf="@+id/profile"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/name_txtview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="-3sp"
-                            android:text="Kiran Devi Prakash"
-                            android:textColor="@color/textview_color"
-                            android:textSize="@dimen/txtsize_patdetail_16sp" />
-
-                        <TextView
-                            android:id="@+id/openmrsID_txt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_4"
-                            android:gravity="center_vertical"
-                            android:text="@string/fu_openmrsID"
-                            android:textAppearance="@style/caption_fu_openmrsId"
-                            android:textColor="@null"
-                            android:textSize="@dimen/find_patient_hint_size" />
-                    </LinearLayout>
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!--Header 1-->
-            <include
-                android:id="@+id/personal_card"
-                layout="@layout/patdetail_personal_droplist_layout" />
-
-            <!--Header 2-->
-            <include
-                android:id="@+id/address_card"
-                layout="@layout/patdetail_address_droplist_layout" />
-
-            <!--Header 3-->
-            <include
-                android:id="@+id/other_card"
-                layout="@layout/patdetail_other_droplist_layout" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/other_card"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:orientation="vertical">
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_past_visits"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/refresh"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    app:cardCornerRadius="@dimen/margin_8"
-                    app:cardElevation="@dimen/margin_5">
+                    android:layout_marginEnd="@dimen/margin_20dp"
+                    android:background="@null"
+                    android:elevation="8dip"
+                    android:onClick="syncNow"
+                    android:src="@drawable/ic_refreshbtn" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/padding_20">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12"
-                            android:layout_marginTop="@dimen/padding_12"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/rounded_blue_bg_shape"
-                                android:padding="12dip"
-                                android:src="@drawable/icons8_activity_history_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_8"
-                                android:gravity="center_vertical"
-                                android:lineSpacingExtra="3sp"
-                                android:text="@string/past_visits"
-                                android:textAppearance="@style/patdetail_header1" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dip"
-                            android:layout_marginVertical="@dimen/padding_12"
-                            android:background="@color/gray_1" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcv_past_visits"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12" />
-
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_open_visits"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/cancelbtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="@dimen/margin_20"
-                    app:cardCornerRadius="@dimen/margin_8"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/padding_20">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12"
-                            android:layout_marginTop="@dimen/padding_12"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/rounded_blue_bg_shape"
-                                android:padding="12dip"
-                                android:src="@drawable/icons8_activity_history_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_8"
-                                android:gravity="center_vertical"
-                                android:lineSpacingExtra="3sp"
-                                android:text="@string/open_visit"
-                                android:textAppearance="@style/patdetail_header1" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dip"
-                            android:layout_marginVertical="@dimen/padding_12"
-                            android:background="@color/gray_1" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcv_open_visits"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12" />
-
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
+                    android:background="@null"
+                    android:elevation="8dip"
+                    android:padding="1dp"
+                    android:src="@drawable/cancel_btn_cross" />
 
             </LinearLayout>
-
-
         </RelativeLayout>
 
-    </androidx.core.widget.NestedScrollView>
-
-    <RelativeLayout
-        android:id="@+id/relative_firstscreen_nxt_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible">
-
-        <Button
-            android:id="@+id/startVisitBtn"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24"
-            android:layout_marginBottom="@dimen/margin_24"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-            android:paddingStart="@dimen/margin_30"
-            android:paddingEnd="@dimen/margin_14"
-            android:text="@string/start_visit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/txtsize_patdetail_16sp" />
+            android:layout_above="@+id/relative_firstscreen_nxt_btn"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginBottom="@dimen/margin_16">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <!--Header Content-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_name_openmrsid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    app:cardCornerRadius="@dimen/hamburger_margin_start"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/fu_margin_start">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/profile"
+                            android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                            android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                            android:layout_margin="2dp"
+                            android:elevation="0dp"
+                            app:cardCornerRadius="40dp">
+
+                            <ImageView
+                                android:id="@+id/profile_image"
+                                android:layout_width="@dimen/patdetail_profile_imgview_14sp"
+                                android:layout_height="@dimen/patdetail_profile_imgview_14sp"
+                                android:src="@drawable/avatar1" />
+                        </androidx.cardview.widget.CardView>
+
+                        <!--Name and SubTitle-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_margin_start"
+                            android:layout_toEndOf="@+id/profile"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/name_txtview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="-3sp"
+                                android:text="Kiran Devi Prakash"
+                                android:textColor="@color/textview_color"
+                                android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+                            <TextView
+                                android:id="@+id/openmrsID_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_4"
+                                android:gravity="center_vertical"
+                                android:text="@string/fu_openmrsID"
+                                android:textAppearance="@style/caption_fu_openmrsId"
+                                android:textColor="@null"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Header 1-->
+                <include
+                    android:id="@+id/personal_card"
+                    layout="@layout/patdetail_personal_droplist_layout" />
+
+                <!--Header 2-->
+                <include
+                    android:id="@+id/address_card"
+                    layout="@layout/patdetail_address_droplist_layout"
+                    app:activeStatus="@{addressActiveStatus}" />
+
+                <!--Header 3-->
+                <include
+                    android:id="@+id/other_card"
+                    layout="@layout/patdetail_other_droplist_layout"
+                    app:activeStatus="@{otherActiveStatus}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/other_card"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_past_visits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="@dimen/margin_24"
+                        app:cardCornerRadius="@dimen/margin_8"
+                        app:cardElevation="@dimen/margin_5">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/padding_20">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/padding_12"
+                                android:layout_marginTop="@dimen/padding_12"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="44dp"
+                                    android:layout_height="44dp"
+                                    android:background="@drawable/rounded_blue_bg_shape"
+                                    android:padding="12dip"
+                                    android:src="@drawable/icons8_activity_history_24" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_8"
+                                    android:gravity="center_vertical"
+                                    android:lineSpacingExtra="3sp"
+                                    android:text="@string/past_visits"
+                                    android:textAppearance="@style/patdetail_header1" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dip"
+                                android:layout_marginVertical="@dimen/padding_12"
+                                android:background="@color/gray_1" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rcv_past_visits"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/padding_12" />
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_open_visits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="@dimen/margin_20"
+                        app:cardCornerRadius="@dimen/margin_8"
+                        app:cardElevation="@dimen/margin_5">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/padding_20">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/padding_12"
+                                android:layout_marginTop="@dimen/padding_12"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="44dp"
+                                    android:layout_height="44dp"
+                                    android:background="@drawable/rounded_blue_bg_shape"
+                                    android:padding="12dip"
+                                    android:src="@drawable/icons8_activity_history_24" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_8"
+                                    android:gravity="center_vertical"
+                                    android:lineSpacingExtra="3sp"
+                                    android:text="@string/open_visit"
+                                    android:textAppearance="@style/patdetail_header1" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dip"
+                                android:layout_marginVertical="@dimen/padding_12"
+                                android:background="@color/gray_1" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rcv_open_visits"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/padding_12" />
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/relative_firstscreen_nxt_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/startVisitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_24"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:paddingStart="@dimen/margin_30"
+                android:paddingEnd="@dimen/margin_14"
+                android:text="@string/start_visit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</layout>

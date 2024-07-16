@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class SessionManager {
     // Shared preferences file name
+    public static SessionManager instance;
     private static final String PREF_NAME = "Intelehealth";
     private static final String VISIT_ID = "visitID";
     private static final String BASE_URL = "base_url";
@@ -90,6 +91,11 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public static SessionManager getInstance(Context context) {
+        if (instance == null) instance = new SessionManager(context);
+        return instance;
     }
 
     public String getPreviousSearchQuery() {
@@ -297,7 +303,7 @@ public class SessionManager {
     }
 
     public void setLicenseKey(String licenseKey) {
-        Log.e("MindMapURL", "setLicenseKey - "+licenseKey);
+        Log.e("MindMapURL", "setLicenseKey - " + licenseKey);
         editor.putString(LICENSE_KEY, licenseKey);
         editor.commit();
     }
@@ -404,7 +410,8 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getLastSyncDateTime() {
+    public String
+    getLastSyncDateTime() {
         return pref.getString(LAST_SYNC_SUCCESS_DATE_TIME, "- - - -");
     }  //getting the sync value  and time and saving in the sharedpref
 
@@ -554,6 +561,7 @@ public class SessionManager {
 
     /**
      * Handling appointment result here
+     *
      * @return
      */
 
@@ -569,6 +577,7 @@ public class SessionManager {
     /**
      * setting webview html here
      * to support offline
+     *
      * @param key
      * @return
      */
@@ -577,7 +586,7 @@ public class SessionManager {
         return pref.getString(key, "");
     }
 
-    public void setHtml(String key,String html) {
+    public void setHtml(String key, String html) {
         editor.putString(key, html);
         editor.commit();
     }

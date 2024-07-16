@@ -5,9 +5,10 @@ package org.intelehealth.app.utilities
  * Email: mhasan@intelehealth.org
  */
 class BundleKeys {
-    companion object{
+    companion object {
         const val FROM_EDIT = "from_edit"
-
+        const val PATIENT_UUID = "patient_uuid"
+        const val PATIENT_CURRENT_STAGE = "patient_current_stage"
         //schedule notification keys
         const val TITLE = "title"
         const val DESCRIPTION = "description"
@@ -23,5 +24,6 @@ class BundleKeys {
         const val ENCOUNTER_UUID_VITALS = "encounterUuidVitals"
         const val VALUE = "value"
         const val FLOAT_AGE_YEAR_MONTH = "float_ageYear_Month"
+
     }
 }

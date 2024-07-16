@@ -63,4 +63,23 @@ public class PatientAttributesDTO implements Serializable {
                 ", patientuuid='" + patientuuid + '\'' +
                 '}';
     }
+
+    public enum Column {
+        TELEPHONE("Telephone Number"),
+        ECONOMIC_STATUS("Economic Status"),
+        EDUCATION("Education Level"),
+        PROVIDER_ID("providerUUID"),
+        OCCUPATION("occupation"),
+        SWD("Son/wife/daughter"),
+        NATIONAL_ID("NationalID"),
+        PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
+        CAST("Caste"),
+        CREATED_DATE("createdDate");
+
+        public final String value;
+
+        Column(String value) {
+            this.value = value;
+        }
+    }
 }

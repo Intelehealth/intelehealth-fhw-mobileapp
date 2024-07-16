@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.github.ajalt.timberkt.Timber;
@@ -22,16 +20,12 @@ import org.intelehealth.app.webrtc.notification.AppNotification;
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
 import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
 import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
-import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
-import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
-import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
