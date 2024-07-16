@@ -1128,4 +1128,30 @@ public class DateAndTimeUtils {
         }
     }
 
+    public static long getTimeStampFromString(String dateString, String format){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+
+        try {
+            Date date = dateFormat.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String parseDateTimeToDateTime(String input) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a", Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH);
+
+        try {
+            Date date = inputFormat.parse(input);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            Log.e("ERRRR", e.getMessage() != null ? e.getMessage() : "");
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 }

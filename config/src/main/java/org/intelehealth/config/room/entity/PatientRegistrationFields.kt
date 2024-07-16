@@ -22,5 +22,5 @@ data class PatientRegistrationFields(
     @SerializedName("is_editable")
     val isEditable: Boolean,
     @SerializedName("is_enabled")
-    val isEnabled: Boolean
+    var isEnabled: Boolean
 )

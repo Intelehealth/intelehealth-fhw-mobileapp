@@ -165,6 +165,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
@@ -211,7 +212,7 @@
                     android:text="@string/forgot_username_link"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"
@@ -223,6 +224,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
@@ -238,11 +240,11 @@
                         android:hint="@string/enter_password1"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
-                        android:maxLength="16"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                        android:maxLength="15"
                         android:singleLine="true"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>

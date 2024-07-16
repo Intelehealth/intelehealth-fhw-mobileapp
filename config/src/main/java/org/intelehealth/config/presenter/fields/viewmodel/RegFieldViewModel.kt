@@ -9,7 +9,7 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewModel() {
+open class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewModel() {
     fun fetchEnabledPersonalRegFields() = repository.getAllEnabledGroupField(FieldGroup.PERSONAL)
 
     fun fetchEnabledAddressRegFields() = repository.getAllEnabledGroupField(FieldGroup.ADDRESS)
@@ -17,4 +17,10 @@ class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewMo
     fun fetchEnabledOtherRegFields() = repository.getAllEnabledGroupField(FieldGroup.OTHER)
 
     fun fetchEnabledAllRegFields() = repository.getAllEnabledLiveFields()
+
+    fun fetchPersonalRegFields() = repository.getGroupFields(FieldGroup.PERSONAL)
+
+    fun fetchAddressRegFields() = repository.getGroupFields(FieldGroup.ADDRESS)
+
+    fun fetchOtherRegFields() = repository.getGroupFields(FieldGroup.OTHER)
 }

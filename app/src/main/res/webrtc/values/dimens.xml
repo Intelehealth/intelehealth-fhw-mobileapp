@@ -10,4 +10,5 @@
     <dimen name="rtc_self_view_width">124dp</dimen>
     <dimen name="rtc_self_view_height">152dp</dimen>
     <dimen name="std_8dp">8dp</dimen>
+    <dimen name="std_24dp">24dp</dimen>
 </resources>

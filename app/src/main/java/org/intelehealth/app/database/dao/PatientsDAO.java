@@ -1,7 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,12 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.enums.FollowupFilterTypeEnum;
 import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -28,6 +29,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class PatientsDAO {
@@ -85,6 +87,7 @@ public class PatientsDAO {
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            isCreated = createdRecordsCount > 0;
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -145,7 +148,7 @@ public class PatientsDAO {
 
     }
 
-    public boolean updatePatientToDB_PatientDTO(PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+    public boolean updatePatientToDB(PatientDTO patientDTO, String uuid) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -196,7 +199,7 @@ public class PatientsDAO {
 
     }
 
-    public boolean updatePatientToDB(Patient patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+    public boolean updatePatientToDB1(Patient patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -956,7 +959,88 @@ public class PatientsDAO {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        return  patientDTO;
+        return patientDTO;
+    }
+
+    public PatientDTO retrievePatientDetails(Cursor cursor) {
+        Timber.tag("PatientDao").d("retrievePatientDetails");
+        PatientDTO patientDTO = new PatientDTO();
+        if (cursor.moveToFirst()) {
+            do {
+                patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                patientDTO.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+                patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
+                patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                patientDTO.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
+                patientDTO.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
+                patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
+                patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
+                patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+
+                // Attributes
+                patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
+                patientDTO.setEconomic(cursor.getString(cursor.getColumnIndexOrThrow("economicStatus")));
+                patientDTO.setEducation(cursor.getString(cursor.getColumnIndexOrThrow("educationLevel")));
+                patientDTO.setProviderUUID(cursor.getString(cursor.getColumnIndexOrThrow("provider")));
+                patientDTO.setOccupation(cursor.getString(cursor.getColumnIndexOrThrow("occupation")));
+                patientDTO.setSon_dau_wife(cursor.getString(cursor.getColumnIndexOrThrow("sdw")));
+                patientDTO.setNationalID(cursor.getString(cursor.getColumnIndexOrThrow("nationalId")));
+                patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
+                patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
+                patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return patientDTO;
+    }
+
+    //getting followup patient count here
+    public static int getAllFollowupPatientCount() {
+        int count = 0;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
+                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+                + "a.uuid = c.visit_uuid AND   " +
+                "a.patientuuid = b.uuid AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?"
+                +"AND o.voided='0' and "
+                + "o.value is NOT NULL GROUP BY a.patientuuid"
+                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
+
+        Log.d("QUERY_COUNT",""+query);
+
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                        count++;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return count;
     }
 
 }

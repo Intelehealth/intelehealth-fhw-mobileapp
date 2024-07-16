@@ -96,7 +96,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
@@ -113,12 +112,14 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.databinding.ActivityPatientDetail2Binding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -129,6 +130,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegConfigKeys;
 import org.intelehealth.app.utilities.PatientRegFieldsUtils;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -138,11 +140,11 @@ import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
 import org.intelehealth.config.presenter.fields.factory.RegFieldViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -207,11 +209,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     RegFieldViewModel regFieldViewModel;
 
     List<PatientRegistrationFields> patientAllFields;
+    private ActivityPatientDetail2Binding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_detail2);
+        binding = ActivityPatientDetail2Binding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         context = PatientDetailActivity2.this;
@@ -258,38 +262,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
         personal_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "personal_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "personal_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
         address_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "address_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "address_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
         others_edit.setOnClickListener(v -> {
-            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
-            intent2.putExtra("patientUuid", patientDTO.getUuid());
-            intent2.putExtra("ScreenEdit", "others_edit");
-            intent2.putExtra("patient_detail", true);
-            Bundle args = new Bundle();
-            args.putSerializable("patientDTO", (Serializable) patientDTO);
-            intent2.putExtra("BUNDLE", args);
-            startActivity(intent2);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER);
+//            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
+//            intent2.putExtra("patientUuid", patientDTO.getUuid());
+//            intent2.putExtra("ScreenEdit", "others_edit");
+//            intent2.putExtra("patient_detail", true);
+//            Bundle args = new Bundle();
+//            args.putSerializable("patientDTO", (Serializable) patientDTO);
+//            intent2.putExtra("BUNDLE", args);
+//            startActivity(intent2);
             finish();
         });
 
@@ -627,7 +634,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
-                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.GENDER -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         genderTr,
@@ -635,7 +642,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.DOB -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         dobTr,
@@ -643,7 +650,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.AGE -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         ageTr,
@@ -652,8 +659,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.Companion.configField(
+                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 guardianTypeTr,
@@ -664,8 +671,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
-                        PatientRegFieldsUtils.Companion.configField(
+                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 guardianNameTr,
@@ -675,7 +682,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         );
                     }
                 }
-                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.PHONE_NUM -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         phoneNumTr,
@@ -684,7 +691,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.EM_CONTACT_TYPE ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 emContactTypeTr,
@@ -693,7 +700,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
                 case PatientRegConfigKeys.EM_CONTACT_NAME ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 emContactNameTr,
@@ -702,7 +709,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
                 case PatientRegConfigKeys.EM_CONTACT_NUMBER ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 emContactNumberTr,
@@ -711,17 +718,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null
                         );
 
-                case PatientRegConfigKeys.POSTAL_CODE ->
-                        PatientRegFieldsUtils.Companion.configField(
-                                false,
-                                fields,
-                                postalCodeTr,
-                                null,
-                                null,
-                                null
-                        );
+                case PatientRegConfigKeys.POSTAL_CODE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        postalCodeTr,
+                        null,
+                        null,
+                        null
+                );
                 case PatientRegConfigKeys.COUNTRY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.INSTANCE.configField(
                             false,
                             fields,
                             countryTr,
@@ -730,7 +736,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.STATE -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         stateTr,
@@ -738,7 +744,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.DISTRICT -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         districtTr,
@@ -747,7 +753,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.VILLAGE_TOWN_CITY -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.INSTANCE.configField(
                             false,
                             fields,
                             villageCityTr,
@@ -756,7 +762,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_1 -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         addressOneTr,
@@ -764,7 +770,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null,
                         null
                 );
-                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ADDRESS_2 -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         addressTwoTr,
@@ -774,7 +780,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 );
 
                 case PatientRegConfigKeys.NATIONAL_ID -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.INSTANCE.configField(
                             false,
                             fields,
                             nidTr,
@@ -783,7 +789,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             null
                     );
                 }
-                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         occupationTr,
@@ -792,7 +798,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.SOCIAL_CATEGORY ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 socialCategoryTr,
@@ -800,7 +806,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
-                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.EDUCATION -> PatientRegFieldsUtils.INSTANCE.configField(
                         false,
                         fields,
                         educationTr,
@@ -810,7 +816,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 );
 
                 case PatientRegConfigKeys.ECONOMIC_CATEGORY ->
-                        PatientRegFieldsUtils.Companion.configField(
+                        PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
                                 economicCategoryTr,
@@ -1731,7 +1737,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientoccupation.setText(getString(R.string.not_provided));
         }
 
-        if (AgeUtils.Companion.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
+        if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays) && mAgeYears > -1) {
             guardianNameTr.setVisibility(View.VISIBLE);
             guardianTypeTr.setVisibility(View.VISIBLE);
 
@@ -1944,15 +1950,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     refresh.clearAnimation();
                     syncAnimator.cancel();
                     recreate();
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
         };
 
 
-
-         // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
-         // because the onreceive function listen the broadcaster receiver even out activity is on background mode
-         // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
+        // sometimes crash happens whenever we register mBroadcastReceiver on oncreate and unregister from ondestroy
+        // because the onreceive function listen the broadcaster receiver even out activity is on background mode
+        // So that's why registering the mBroadcastReceiver on onstart and destroying it from onstop
 
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -2332,4 +2338,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
+            binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+        }
     }
+}

@@ -77,9 +77,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_common_input_bg"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_32dp"
-                    android:paddingVertical="@dimen/margin_20dp"
                     android:text="@string/no"
+                    app:backgroundTint="@null"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/txtsize_patdetail_16sp" />
 
@@ -91,8 +90,6 @@
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_32dp"
-                    android:paddingVertical="@dimen/margin_20dp"
                     android:text="@string/yes"
                     android:textColor="@color/white"
                     android:textSize="@dimen/txtsize_patdetail_16sp" />

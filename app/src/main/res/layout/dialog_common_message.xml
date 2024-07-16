@@ -36,9 +36,9 @@
                 android:lineSpacingExtra="4sp"
                 android:text="@string/patient_registered"
                 android:textAppearance="@style/dialog_title"
-                android:textStyle="bold"
                 android:textColor="@null"
-                android:textSize="@null" />
+                android:textSize="@null"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dialog_subtitle"
@@ -65,24 +65,25 @@
 
                 <Button
                     android:id="@+id/negative_btn"
-                    style="@style/negative_btn"
+                    style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginEnd="@dimen/fu_margin_start"
                     android:background="@drawable/ui2_common_input_bg"
-                    android:paddingHorizontal="@dimen/padding_15"
-                    android:paddingVertical="@dimen/padding_12"
-                    android:text="@string/yes" />
+                    android:gravity="center"
+                    android:text="@string/yes"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/txtsize_patdetail_16sp"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/positive_btn"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_toEndOf="@id/negative_btn"
                     android:background="@drawable/primary_bg_rounded_corners"
+                    android:gravity="center"
                     android:paddingHorizontal="@dimen/padding_15"
                     android:paddingVertical="@dimen/padding_12"
                     android:text="@string/no" />

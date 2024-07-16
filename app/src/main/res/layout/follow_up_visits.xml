@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_lay"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/follow_up_v">
@@ -79,32 +80,122 @@
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/fu_margin_start">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/filter_lay"
+            android:background="@drawable/ui2_background_input_field_new">
+            <EditText
+                android:id="@+id/searchview_received"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                android:drawablePadding="@dimen/find_patient_icon_padding"
+                android:drawableTint="@color/iconTintGrayBottomNav"
+                android:hint="@string/find_patient"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:paddingStart="@dimen/common_edittext_padding_left"
+                android:paddingTop="@dimen/common_edittext_padding_top"
+                android:paddingEnd="@dimen/common_edittext_padding_right"
+                android:paddingBottom="@dimen/common_edittext_padding_bottom1"
+                android:singleLine="true"
+                android:textSize="@dimen/common_hint_text_size" />
 
-        <androidx.appcompat.widget.SearchView
+            <ImageView
+                android:id="@+id/iv_clear"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ui2_ic_close_drawer"
+                android:visibility="gone"
+                app:tint="@color/colorPrimary"
+                tools:visibility="visible" />
+        </RelativeLayout>
+
+       <!-- <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview_received"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/filter_icon"
+            android:layout_toStartOf="@+id/filter_lay"
             android:background="@drawable/ui2_common_input_bg"
             android:maxLines="1"
             android:singleLine="true"
             android:textColorHint="@color/textColorLightGary"
             android:textSize="@dimen/txtsize_patdetail_14sp"
             app:iconifiedByDefault="false"
-            app:queryHint="@string/search_patient" />
+            app:queryHint="@string/find_patients_hint" />-->
 
-        <ImageButton
-            android:id="@+id/filter_icon"
+
+
+        <LinearLayout
+            android:id="@+id/filter_lay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/fu_margin_start"
-            android:background="@null"
-            android:src="@drawable/visit_filter_icon"
-            android:visibility="gone" />
+            >
+
+            <ImageView
+                android:id="@+id/filter_im"
+                android:layout_width="@dimen/icon_filters_width"
+                android:layout_height="@dimen/icon_filters_height"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/ma_icon_margin_start"
+                android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                android:background="@drawable/ui2_ic_filter_bg"
+                android:padding="@dimen/my_appointment_padding"
+                app:tint="?attr/colorPrimary"
+                android:src="@drawable/ui2_ic_filter" />
+
+            <ImageView
+                android:id="@+id/sort_im"
+                android:layout_width="@dimen/icon_filters_width"
+                android:layout_height="@dimen/icon_filters_height"
+                android:layout_marginEnd="@dimen/ma_icon_margin_end"
+                android:background="@drawable/ui2_ic_filter_bg"
+                android:padding="@dimen/my_appointment_padding"
+                app:tint="?attr/colorPrimary"
+                android:src="@drawable/sort" />
+        </LinearLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_results_for"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/search_relative"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_marginTop="@dimen/results_for_margin_top"
+        android:lineHeight="@dimen/results_for_line_height"
+        android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
+        android:text="@string/results_for"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/results_for_text_size"
+        android:textStyle="bold" />
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_chips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:layout_below="@+id/tv_results_for">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipgroup_filter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chip_group_apps_height"
+            android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
+    </HorizontalScrollView>
     <!--ScrollView - start -->
 
     <!--No Patient Found - Start -->
@@ -121,8 +212,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_relative"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scroll_chips"
         android:layout_marginTop="@dimen/fu_margin_start"
         android:fillViewport="true">
 
@@ -145,7 +236,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/you_can_add"
+                    android:id="@+id/today_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fu_margin_start"
@@ -161,7 +252,7 @@
                     android:id="@+id/today_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/today_title"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -174,7 +265,7 @@
                     android:id="@+id/recycler_today"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/today_title"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingTop="@dimen/card_padding"
@@ -191,12 +282,12 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/this_week"
+                    android:id="@+id/tomorrow_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/this_week"
+                    android:text="@string/tomorrow"
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold" />
@@ -205,7 +296,7 @@
                     android:id="@+id/week_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/tomorrow_title"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -215,10 +306,10 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_thisweek"
+                    android:id="@+id/rv_tomorrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/tomorrow_title"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
@@ -234,7 +325,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/this_month"
+                    android:id="@+id/others_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_margin"
@@ -249,7 +340,7 @@
                     android:id="@+id/month_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_month"
+                    android:layout_below="@+id/others_title"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -262,7 +353,7 @@
                     android:id="@+id/rv_thismonth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_month"
+                    android:layout_below="@+id/others_title"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
@@ -273,6 +364,19 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/filter_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/search_relative"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <include layout="@layout/layout_followup_filter" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/empty_view_tv"

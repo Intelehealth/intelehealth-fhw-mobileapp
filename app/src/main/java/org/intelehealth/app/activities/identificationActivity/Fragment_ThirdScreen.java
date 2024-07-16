@@ -60,7 +60,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,7 +72,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
@@ -319,7 +317,7 @@ public class Fragment_ThirdScreen extends Fragment {
      */
     private void fetchRegConfig() {
         if (getActivity() != null) {
-            regFieldViewModel.fetchEnabledOtherRegFields()
+            regFieldViewModel.fetchOtherRegFields()
                     .observe(getActivity(), it -> {
                                 patientRegistrationFields = it;
                                 configAllFields();
@@ -337,7 +335,7 @@ public class Fragment_ThirdScreen extends Fragment {
         for (PatientRegistrationFields fields : patientRegistrationFields) {
             switch (fields.getIdKey()) {
                 case PatientRegConfigKeys.NATIONAL_ID -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.INSTANCE.configField(
                             isEditMode,
                             fields,
                             nationalIdLay,
@@ -346,7 +344,7 @@ public class Fragment_ThirdScreen extends Fragment {
                             nationalIdTv
                     );
                 }
-                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.OCCUPATION -> PatientRegFieldsUtils.INSTANCE.configField(
                         isEditMode,
                         fields,
                         occupationLay,
@@ -354,7 +352,7 @@ public class Fragment_ThirdScreen extends Fragment {
                         null,
                         occupationTv
                 );
-                case PatientRegConfigKeys.SOCIAL_CATEGORY -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.SOCIAL_CATEGORY -> PatientRegFieldsUtils.INSTANCE.configField(
                         isEditMode,
                         fields,
                         socialCategoryLay,
@@ -363,7 +361,7 @@ public class Fragment_ThirdScreen extends Fragment {
                         socialCategoryTv
                 );
                 case PatientRegConfigKeys.EDUCATION -> {
-                    PatientRegFieldsUtils.Companion.configField(
+                    PatientRegFieldsUtils.INSTANCE.configField(
                             isEditMode,
                             fields,
                             educationLay,
@@ -372,7 +370,7 @@ public class Fragment_ThirdScreen extends Fragment {
                             educationTv
                     );
                 }
-                case PatientRegConfigKeys.ECONOMIC_CATEGORY -> PatientRegFieldsUtils.Companion.configField(
+                case PatientRegConfigKeys.ECONOMIC_CATEGORY -> PatientRegFieldsUtils.INSTANCE.configField(
                         isEditMode,
                         fields,
                         economicCategoryLay,
@@ -646,9 +644,9 @@ public class Fragment_ThirdScreen extends Fragment {
 
     private void onPatientCreateClicked() {
         //nid
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
+        if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
             if (mNationalIDEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
+                    PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.NATIONAL_ID)) {
                 mNidErrorTextView.setVisibility(View.VISIBLE);
                 mNidErrorTextView.setText(getString(R.string.error_field_required));
                 mNationalIDEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -661,9 +659,9 @@ public class Fragment_ThirdScreen extends Fragment {
         }
 
         //occupation
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
+        if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
             if (mNationalIDEditText.getText().toString().equals("") &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
+                    PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.OCCUPATION)) {
                 mOccupationErrorTextView.setVisibility(View.VISIBLE);
                 mOccupationErrorTextView.setText(getString(R.string.error_field_required));
                 mOccupationEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -676,9 +674,9 @@ public class Fragment_ThirdScreen extends Fragment {
         }
 
         //social category
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
+        if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
             if (mCasteSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
+                    PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.SOCIAL_CATEGORY)) {
                 mCasteErrorTextView.setVisibility(View.VISIBLE);
                 mCasteErrorTextView.setText(getString(R.string.error_field_required));
                 mCasteSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -691,9 +689,9 @@ public class Fragment_ThirdScreen extends Fragment {
         }
 
         //education
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
+        if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
             if (mEducationSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
+                    PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EDUCATION)) {
                 mEducationErrorTextView.setVisibility(View.VISIBLE);
                 mEducationErrorTextView.setText(getString(R.string.error_field_required));
                 mEducationSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -706,9 +704,9 @@ public class Fragment_ThirdScreen extends Fragment {
         }
 
         //economic category
-        if (PatientRegFieldsUtils.Companion.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
+        if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
             if (mEconomicstatusSpinner.getSelectedItemPosition() == 0 &&
-                    PatientRegFieldsUtils.Companion.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
+                    PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.ECONOMIC_CATEGORY)) {
                 mEconomicErrorTextView.setVisibility(View.VISIBLE);
                 mEconomicErrorTextView.setText(getString(R.string.error_field_required));
                 mEconomicstatusSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -897,7 +895,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 /*isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientID_edit);
                 isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), patientID_edit);*/
 
-                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
+                isPatientInserted = patientsDAO.updatePatientToDB(patientDTO, patientDTO.getUuid());
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
                 isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, patientDTO.getUuid());

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_patient_registration">
+
+    <fragment
+        android:id="@+id/fragmentPatientPersonalInfo"
+        android:name="org.intelehealth.app.ui.patient.fragment.PatientPersonalInfoFragment"
+        tools:layout="@layout/fragment_patient_personal_info_old_design">
+        <action
+            android:id="@+id/navigationPersonalToAddress"
+            app:destination="@id/fragmentPatientAddressInfo" />
+        <action
+            android:id="@+id/navigationPersonalToOther"
+            app:destination="@id/fragmentPatientOtherInfo" />
+        <action
+            android:id="@+id/navigationPersonalToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPatientAddressInfo"
+        android:name="org.intelehealth.app.ui.patient.fragment.PatientAddressInfoFragment"
+        tools:layout="@layout/fragment_patient_address_info">
+        <action
+            android:id="@+id/navigationAddressToOther"
+            app:destination="@id/fragmentPatientOtherInfo" />
+        <action
+            android:id="@+id/navigationAddressToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPatientOtherInfo"
+        android:name="org.intelehealth.app.ui.patient.fragment.PatientOtherInfoFragment"
+        tools:layout="@layout/fragment_patient_other_info">
+        <action
+            android:id="@+id/navigationOtherToDetails"
+            app:destination="@id/activityPatientDetails" />
+    </fragment>
+
+    <activity
+        android:id="@+id/activityPatientDetails"
+        android:name="org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2"
+        tools:layout="@layout/activity_patient_detail2">
+        <argument
+            android:name="patientUuid"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="privacy"
+            app:argType="string"
+            app:nullable="true" />
+
+    </activity>
+</navigation>

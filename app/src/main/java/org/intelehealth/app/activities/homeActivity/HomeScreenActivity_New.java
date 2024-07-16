@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.usage.UsageStats;
@@ -38,6 +39,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -54,6 +56,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -101,6 +105,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -182,6 +187,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
     private NotificationReceiver notificationReceiver;
+
+    private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
+
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
@@ -323,8 +331,55 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         backPress();
         initUI();
         clickListeners();
+
+        //checking alerm parmission added or not
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            setupAlarmPermissionLauncher();
+            checkAlarmAndReminderPermission();
+        }
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
+
+    private void checkAlarmAndReminderPermission() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                scheduleExactAlarmPermissionLauncher.launch(intent);
+            }
+        }
+    }
+    private void setupAlarmPermissionLauncher() {
+        scheduleExactAlarmPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        if (!alarmManager.canScheduleExactAlarms()) {
+                            String message = getString(R.string.required_alarm_and_reminder_permission);
+                            String title = getString(R.string.error);
+                            String action = getString(R.string.button_allow);
+                            String cancel = getString(R.string.cancel);
+                            new DialogUtils().showCommonDialog(
+                                    this, R.drawable.close_patient_svg, title,
+                                    message, false, action, cancel,
+                                    new DialogUtils.CustomDialogListener() {
+                                        @Override
+                                        public void onDialogActionDone(int action) {
+                                            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                                                finish();
+                                            } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                                checkAlarmAndReminderPermission();
+                                            }
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+        );
+    }
+
 
     private void clickListeners() {
         Intent intent_exit = getIntent();
@@ -853,6 +908,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onDestroy() {
         super.onDestroy();
         notificationReceiver.unregisterModuleBReceiver(this);
+        scheduleExactAlarmPermissionLauncher.unregister();
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
