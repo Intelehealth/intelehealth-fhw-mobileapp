@@ -53,7 +53,10 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ResetPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -186,9 +189,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         forgotUserNameLabelTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
+               /* Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
                 intent.putExtra("action",AppConstants.FORGOT_USER_NAME_ACTION);
-                startActivity(intent);
+                startActivity(intent);*/
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(SetupActivityNew.this, getString(R.string.forgot_your_username), getString(R.string.contact_your_admin), getString(R.string.generic_ok));
             }
         });
 

@@ -277,7 +277,7 @@
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
