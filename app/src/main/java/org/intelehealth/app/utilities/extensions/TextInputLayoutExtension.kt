@@ -16,20 +16,24 @@ import com.google.android.material.textfield.TextInputLayout
  **/
 
 fun TextInputLayout.showError(@StringRes resId: Int) {
+    Timber.d { "showError" }
     error = context.getString(resId)
 }
 
 fun TextInputLayout.hideError() {
+    Timber.d { "hideError" }
     isErrorEnabled = false
 }
 
 fun TextInputLayout.showError() {
+    Timber.d { "showError" }
     isErrorEnabled = false
 }
 
 fun TextInputLayout.hideErrorOnTextChang(input: TextInputEditText) {
-    input.doOnTextChanged { _, _, _, count ->
-        if (count > 0) hideError()
+    input.doOnTextChanged { text, _, _, count ->
+        Timber.d { "hideErrorOnTextChang" }
+        if (text?.length!! > 0) hideError()
     }
 }
 
@@ -41,14 +45,6 @@ fun TextInputLayout.hideDigitErrorOnTextChang(input: TextInputEditText, digit: I
 }
 
 fun TextInputLayout.validate(input: TextInputEditText, @StringRes resId: Int): Boolean {
-//    input.text?.let {
-//        Timber.d { "Input data => ${it.isNotEmpty()} => $it" }
-//        if (it.toString().isNotEmpty()) return true
-//        else {
-//            showError(resId)
-//            return false
-//        }
-//    } ?: return false
     return if (input.text.isNullOrEmpty()) {
         showError(resId)
         false

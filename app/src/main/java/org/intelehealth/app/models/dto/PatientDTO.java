@@ -142,9 +142,9 @@ public class PatientDTO implements Serializable {
     }
 
     public String getMobileNumber() {
-        if (phonenumber != null && phonenumber.length() == 13) {
-            return phonenumber.substring(3);
-        }
+//        if (phonenumber != null && phonenumber.length() == 13) {
+//            return phonenumber.substring(3);
+//        }
         return phonenumber;
     }
 
@@ -407,7 +407,8 @@ public class PatientDTO implements Serializable {
     }
 
     public String getDistrict() {
-        return district;
+        if (district != null && !district.isEmpty()) return district;
+        else return splitVillageAndDistrict(0);
     }
 
     public void setDistrict(String district) {
@@ -415,10 +416,15 @@ public class PatientDTO implements Serializable {
     }
 
     public String getVillageWithoutDistrict() {
+        return splitVillageAndDistrict(1);
+    }
+
+    private String splitVillageAndDistrict(int index) {
         if (cityvillage != null && !cityvillage.isEmpty() && cityvillage.contains(":")) {
-            return cityvillage.split(":")[1];
+            return cityvillage.split(":")[index];
         }
-        return cityvillage;
+        if (index == 1) return cityvillage;
+        else return null;
     }
 
     @Override

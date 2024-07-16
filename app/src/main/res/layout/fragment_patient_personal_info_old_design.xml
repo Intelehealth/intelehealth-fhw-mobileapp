@@ -307,8 +307,8 @@
                         android:id="@+id/tvGenderError"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/std_16dp"
                         android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/std_16dp"
                         android:text="@string/this_field_is_mandatory"
                         android:textColor="@color/red"
                         android:visibility="gone"
@@ -560,8 +560,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"
-                                android:hint="@string/phone_number"
-                                android:text="@{patient.mobileNumber}" />
+                                android:hint="@string/phone_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -713,8 +712,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"
-                                android:hint="@string/emergency_contact_number"
-                                android:text="@{patient.emMobileNumber}" />
+                                android:hint="@string/emergency_contact_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>

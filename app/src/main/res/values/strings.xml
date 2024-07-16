@@ -1950,4 +1950,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="hint_drop_down_country">Select Country</string>
     <string name="hint_drop_down_state">Select State</string>
     <string name="hint_drop_down_district">Select District</string>
+    <string name="lbl_clear_all">Clear All</string>
 </resources>

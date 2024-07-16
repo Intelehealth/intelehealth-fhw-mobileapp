@@ -165,6 +165,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
@@ -223,6 +224,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"

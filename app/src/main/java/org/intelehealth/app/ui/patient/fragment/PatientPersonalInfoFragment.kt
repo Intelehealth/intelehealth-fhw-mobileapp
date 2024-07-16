@@ -167,24 +167,27 @@ class PatientPersonalInfoFragment :
     private fun fetchPersonalInfoConfig() {
         patientViewModel.fetchPersonalRegFields().observe(viewLifecycleOwner) {
             binding.personalConfig = PatientRegFieldsUtils.buildPatientPersonalInfoConfig(it)
-            binding.addOnRebindCallback(onRebindCallback)
+            setupGuardianType()
+            setupEmContactType()
+            setupDOB()
+            setupAge()
+            applyFilter()
+            setGender()
+            setClickListener()
+            setInputTextChangListener()
+//            binding.addOnRebindCallback(onRebindCallback)
         }
     }
 
-    private val onRebindCallback =
-        object : OnRebindCallback<FragmentPatientPersonalInfoOldDesignBinding>() {
-            override fun onBound(binding: FragmentPatientPersonalInfoOldDesignBinding?) {
-                super.onBound(binding)
-                setupGuardianType()
-                setupEmContactType()
-                setupDOB()
-                setupAge()
-                applyFilter()
-                setInputTextChangListener()
-                setGender()
-                setClickListener()
-            }
-        }
+//    private val onRebindCallback =
+//        object : OnRebindCallback<FragmentPatientPersonalInfoOldDesignBinding>() {
+//            on
+//            override fun onBound(binding: FragmentPatientPersonalInfoOldDesignBinding?) {
+//                super.onBound(binding)
+//                Timber.d { "OnRebindCallback.onBound" }
+//
+//            }
+//        }
 
     private fun setClickListener() {
         binding.patientImgview.setOnClickListener { requestPermission() }
@@ -194,27 +197,29 @@ class PatientPersonalInfoFragment :
     }
 
     private fun savePatient() {
-        patient.firstname = binding.textInputETFName.text?.toString()
-        patient.middlename = binding.textInputETMName.text?.toString()
-        patient.lastname = binding.textInputETLName.text?.toString()
-        patient.phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
-        patient.guardianName = binding.textInputETGuardianName.text?.toString()
-        patient.emContactName = binding.textInputETECName.text?.toString()
-        patient.emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
+        patient.apply {
+            firstname = binding.textInputETFName.text?.toString()
+            middlename = binding.textInputETMName.text?.toString()
+            lastname = binding.textInputETLName.text?.toString()
+            phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
+            guardianName = binding.textInputETGuardianName.text?.toString()
+            emContactName = binding.textInputETECName.text?.toString()
+            emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
 
-        patientViewModel.updatedPatient(patient)
-        if (patientViewModel.isEditMode) {
-            saveAndNavigateToDetails()
-        } else {
-            if (patientViewModel.activeStatusAddressSection) {
-                PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
-                    findNavController().navigate(this)
-                }
-            } else if (patientViewModel.activeStatusOtherSection) {
-                PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
-                    findNavController().navigate(this)
-                }
-            } else saveAndNavigateToDetails()
+            patientViewModel.updatedPatient(this)
+            if (patientViewModel.isEditMode) {
+                saveAndNavigateToDetails()
+            } else {
+                if (patientViewModel.activeStatusAddressSection) {
+                    PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
+                        findNavController().navigate(this)
+                    }
+                } else if (patientViewModel.activeStatusOtherSection) {
+                    PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
+                        findNavController().navigate(this)
+                    }
+                } else saveAndNavigateToDetails()
+            }
         }
     }
 
@@ -356,8 +361,10 @@ class PatientPersonalInfoFragment :
     private fun setInputTextChangListener() {
         binding.countrycodeSpinner.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
         binding.countrycodeSpinner.setNumberAutoFormattingEnabled(false)
-        binding.ccpEmContactPhone.registerCarrierNumberEditText(binding.textInputETPhoneNumber)
+        binding.countrycodeSpinner.fullNumber = patient.phonenumber
+        binding.ccpEmContactPhone.registerCarrierNumberEditText(binding.textInputETEMPhoneNumber)
         binding.ccpEmContactPhone.setNumberAutoFormattingEnabled(false)
+        binding.ccpEmContactPhone.fullNumber = patient.emContactNumber
         binding.textInputLayFName.hideErrorOnTextChang(binding.textInputETFName)
         binding.textInputLayMName.hideErrorOnTextChang(binding.textInputETMName)
         binding.textInputLayLName.hideErrorOnTextChang(binding.textInputETLName)
@@ -437,11 +444,14 @@ class PatientPersonalInfoFragment :
             } else true
 
             val bPhone = if (it.phone!!.isEnabled && it.phone!!.isMandatory) {
-                binding.textInputLayPhoneNumber.validateDigit(
-                    binding.textInputETPhoneNumber,
-                    R.string.invalid_mobile_no,
-                    10
+                binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
+                    binding.textInputLayPhoneNumber.validateDigit(
+                        binding.textInputETPhoneNumber,
+                        R.string.enter_10_digits,
+                        10
+                    )
                 )
+
             } else true
 
             val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {
@@ -465,11 +475,27 @@ class PatientPersonalInfoFragment :
 
             val bEmPhone =
                 if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
-                    binding.textInputLayEMPhoneNumber.validateDigit(
+                    binding.textInputLayEMPhoneNumber.validate(
                         binding.textInputETEMPhoneNumber,
-                        R.string.invalid_mobile_no,
-                        10
-                    )
+                        error
+                    ).and(
+                        binding.textInputLayEMPhoneNumber.validateDigit(
+                            binding.textInputETEMPhoneNumber,
+                            R.string.enter_10_digits,
+                            10
+                        )
+                    ).and(binding.textInputETPhoneNumber.text?.let { phone ->
+                        val valid =
+                            phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
+                        if (!valid) {
+                            binding.textInputLayEMPhoneNumber.error = getString(
+                                R.string.phone_number_and_emergency_number_can_not_be_the_same
+                            )
+                        }
+                        valid
+                    } ?: false)
+
+
                 } else true
 
             val bEmContactType =

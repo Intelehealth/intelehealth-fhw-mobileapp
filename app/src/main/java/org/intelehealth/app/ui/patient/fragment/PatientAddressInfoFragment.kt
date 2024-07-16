@@ -104,26 +104,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun savePatient() {
-        patient.postalcode = binding.textInputPostalCode.text?.toString()
-        val village = binding.textInputCityVillage.text?.toString()
-        patient.cityvillage =
-            if (patient.district.isNullOrEmpty().not()) "${patient.district}:$village"
+        patient.apply {
+            postalcode = binding.textInputPostalCode.text?.toString()
+            val village = binding.textInputCityVillage.text?.toString()
+            cityvillage = if (district.isNullOrEmpty().not()) "${district}:$village"
             else village
-        patient.address1 = binding.textInputAddress1.text?.toString()
-        patient.address2 = binding.textInputAddress2.text?.toString()
-        patientViewModel.updatedPatient(patient)
-        if (patientViewModel.isEditMode) {
-            saveAndNavigateToDetails()
-        } else {
-            if (patientViewModel.activeStatusOtherSection.not()) {
+            address1 = binding.textInputAddress1.text?.toString()
+            address2 = binding.textInputAddress2.text?.toString()
+            patientViewModel.updatedPatient(this)
+            if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
-                PatientAddressInfoFragmentDirections.navigationAddressToOther().apply {
-                    findNavController().navigate(this)
+                if (patientViewModel.activeStatusOtherSection.not()) {
+                    saveAndNavigateToDetails()
+                } else {
+                    PatientAddressInfoFragmentDirections.navigationAddressToOther().apply {
+                        findNavController().navigate(this)
+                    }
                 }
             }
         }
-
     }
 
     private fun saveAndNavigateToDetails() {
@@ -166,6 +166,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 val state = LanguageUtils.getState(patient.stateprovince)
                 if (state != null) {
                     binding.autoCompleteState.setText(state.toString(), false)
+                    setupDistricts(state)
                 }
             }
 
@@ -189,9 +190,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayDistrict.tag = stateData.distDataList
         if (patient.district != null && patient.district.isNotEmpty()) {
             val selected = LanguageUtils.getDistrict(stateData, patient.district)
-            if (selected != null && adapter.getPosition(selected) > 0) {
+            if (selected != null) {
                 binding.autoCompleteDistrict.setText(selected.toString(), false)
-            } else binding.autoCompleteDistrict.setText("", false)
+            }
         }
 
         binding.autoCompleteDistrict.setOnItemClickListener { adapterView, _, i, _ ->
@@ -206,12 +207,14 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         val error = R.string.this_field_is_mandatory
         binding.addressInfoConfig?.let {
             val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
-                val invalid = R.string.postal_code_6_dig_invalid_txt
-                binding.textInputLayPostalCode.validateDigit(
-                    binding.textInputPostalCode,
-                    invalid,
-                    6
+                binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
+                    binding.textInputLayPostalCode.validateDigit(
+                        binding.textInputPostalCode,
+                        R.string.postal_code_6_dig_invalid_txt,
+                        6
+                    )
                 )
+
             } else true
 
 
@@ -237,7 +240,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bCityVillage = if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory) {
-                binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
+                binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error).and(
+                    binding.textInputLayCityVillage.validateDigit(
+                        binding.textInputCityVillage,
+                        R.string.error_field_valid_village_required,
+                        6
+                    )
+                )
             } else true
 
 

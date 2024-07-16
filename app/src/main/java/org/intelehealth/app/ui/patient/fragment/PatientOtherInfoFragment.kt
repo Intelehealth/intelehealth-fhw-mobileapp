@@ -99,12 +99,14 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun savePatient() {
-        patient.nationalID = binding.textInputNationalId.text?.toString()
-        patient.occupation = binding.textInputOccupation.text?.toString()
-        patientViewModel.updatedPatient(patient)
-        patientViewModel.savePatient().observe(viewLifecycleOwner) {
-            it ?: return@observe
-            patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+        patient.apply {
+            nationalID = binding.textInputNationalId.text?.toString()
+            occupation = binding.textInputOccupation.text?.toString()
+            patientViewModel.updatedPatient(this)
+            patientViewModel.savePatient().observe(viewLifecycleOwner) {
+                it ?: return@observe
+                patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+            }
         }
     }
 

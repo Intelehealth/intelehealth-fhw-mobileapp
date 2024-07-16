@@ -46,6 +46,14 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         initialization()
         setListeners()
 
+        mBinding.simpleAppBar.toolbar.title = getString(R.string.notifi_title)
+        setSupportActionBar(mBinding.simpleAppBar.toolbar)
+        supportActionBar?.let {
+            it.setHomeButtonEnabled(true)
+            it.setDisplayHomeAsUpEnabled(true)
+            mBinding.simpleAppBar.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
+
     }
 
     private fun initialization() {
@@ -84,9 +92,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
 
     private fun setListeners() {
         mBinding.apply {
-            ivBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-            }
+//            ivBack.setOnClickListener {
+//                onBackPressedDispatcher.onBackPressed()
+//            }
             ibClearAll.setOnClickListener {
                 DeleteNotificationDialog.newInstance(
                     supportFragmentManager,

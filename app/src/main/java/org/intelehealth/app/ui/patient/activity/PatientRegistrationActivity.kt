@@ -28,6 +28,8 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.NetworkUtils
+import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
@@ -48,6 +50,9 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private lateinit var syncAnimator: ObjectAnimator
     private lateinit var actionRefresh: ImageView
+    private val networkUtil by lazy {
+        NetworkUtils(this, networkStatusListener)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,8 +90,6 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     private fun extractAndBindUI() {
-        Timber.d { "extractAndBindUI" }
-//        "623b0286-ddba-4ef5-9f40-0da37200465f"
         intent?.let {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
@@ -108,7 +111,6 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     private fun navigateToStage(stage: PatientRegStage) {
-        Timber.d { "Stage =>${stage.name}" }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostPatientReg) as NavHostFragment
         val navController = navHostFragment.navController
@@ -124,7 +126,6 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     private fun generatePatientId() {
-        Timber.d { "generatePatientId" }
         PatientDTO().apply {
             uuid = UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
@@ -134,7 +135,6 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private fun fetchPatientDetails(id: String) {
         patientViewModel.loadPatientDetails(id).observe(this) {
-            Timber.d { "Result => ${Gson().toJson(it)}" }
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
                 patientViewModel.updatedPatient(updatePatientDetails(patient))
@@ -217,26 +217,29 @@ class PatientRegistrationActivity : BaseActivity() {
         activeStatus?.let {
             patientViewModel.activeStatusAddressSection = it.activeStatusPatientAddress
             patientViewModel.activeStatusOtherSection = it.activeStatusPatientOther
-            binding.addressActiveStatus = it.activeStatusPatientAddress
-            binding.otherActiveStatus = it.activeStatusPatientOther
-            if (it.activeStatusPatientOther.and(it.activeStatusPatientAddress).not()) {
+
+            if (it.activeStatusPatientOther.not() && it.activeStatusPatientAddress.not()) {
                 binding.patientTab.root.isVisible = false
+            } else {
+                binding.patientTab.root.isVisible = true
+                binding.addressActiveStatus = it.activeStatusPatientAddress
+                binding.otherActiveStatus = it.activeStatusPatientOther
             }
         }
     }
 
-    fun updateUIForInternetAvailability(isInternetAvailable: Boolean) {
-        Log.d("TAG", "updateUIForInternetAvailability: ")
-        if (isInternetAvailable) {
-//            refresh.setImageDrawable(
-//                ContextCompat.getDrawable(
-//                    this,
-//                    R.drawable.ui2_ic_internet_available
-//                )
-//            )
-        } else {
-//            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet))
-        }
+    override fun onResume() {
+        super.onResume()
+        networkUtil.callBroadcastReceiver()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        networkUtil.unregisterNetworkReceiver()
+    }
+
+    private val networkStatusListener = InternetCheckUpdateInterface {
+        if (::actionRefresh.isInitialized) actionRefresh.isEnabled = it
     }
 
     companion object {
