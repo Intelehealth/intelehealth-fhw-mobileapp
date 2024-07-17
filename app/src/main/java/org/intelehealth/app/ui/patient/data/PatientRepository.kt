@@ -132,7 +132,18 @@ class PatientRepository(
         uuid = UUID.randomUUID().toString()
         patientuuid = patientId
         personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
-        this.value = value ?: "Not provided"
+        this.value = value
+    }
+
+    private fun updatePatientAttribute(
+        patientId: String,
+        attrName: String,
+        value: String?
+    ) = PatientAttributesDTO().apply {
+        uuid = UUID.randomUUID().toString()
+        patientuuid = patientId
+        personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
+        this.value = value
     }
 
     fun syncOnServer() {

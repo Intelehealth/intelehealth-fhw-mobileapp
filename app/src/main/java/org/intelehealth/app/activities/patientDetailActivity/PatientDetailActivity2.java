@@ -628,9 +628,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      */
     private void configAllFields() {
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = Integer.parseInt(ymdData[0]);
-        int mAgeMonths = Integer.parseInt(ymdData[1]);
-        int mAgeDays = Integer.parseInt(ymdData[2]);
+        int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+        int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+        int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
