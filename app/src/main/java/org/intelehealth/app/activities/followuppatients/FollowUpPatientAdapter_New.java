@@ -166,7 +166,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                                 holder.tv_time_diff.setVisibility(View.GONE);
                             }
 
-                            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorGreenLightCard));
+                            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLightCard));
                         } else {
                             holder.tv_time_diff.setVisibility(View.GONE);
                             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
