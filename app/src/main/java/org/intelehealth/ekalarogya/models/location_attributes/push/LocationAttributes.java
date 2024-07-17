@@ -1,4 +1,4 @@
-package org.intelehealth.ekalarogya.models.location_attributes.request;
+package org.intelehealth.ekalarogya.models.location_attributes.push;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

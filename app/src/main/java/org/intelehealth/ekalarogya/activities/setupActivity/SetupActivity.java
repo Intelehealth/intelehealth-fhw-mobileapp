@@ -64,9 +64,11 @@ import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.models.Location;
-import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributeRequest;
-import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributes;
-import org.intelehealth.ekalarogya.models.location_attributes.response.LocationAttributesResponse;
+import org.intelehealth.ekalarogya.models.location_attributes.pull.PullLocationAttributesData;
+import org.intelehealth.ekalarogya.models.location_attributes.pull.PullLocationAttributesRoot;
+import org.intelehealth.ekalarogya.models.location_attributes.push.LocationAttributeRequest;
+import org.intelehealth.ekalarogya.models.location_attributes.push.LocationAttributes;
+import org.intelehealth.ekalarogya.models.location_attributes.push.LocationAttributesResponse;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginModel.Role;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
@@ -126,6 +128,7 @@ public class SetupActivity extends AppCompatActivity {
     final Handler mHandler = new Handler();
     boolean click_box = false;
     Context context;
+    Context updatedContext;
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
@@ -161,6 +164,8 @@ public class SetupActivity extends AppCompatActivity {
 
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
+
+        setUpTranslationTools();
 
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
@@ -400,6 +405,8 @@ public class SetupActivity extends AppCompatActivity {
                         } else {
                             empty_spinner("village");
                         }
+
+                        fetchAndSetLocationAttributes(village_uuid);
                     }
                 } catch (Exception E) {
                     E.printStackTrace();
@@ -435,6 +442,94 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         showProgressbar();
+    }
+
+    private void setUpTranslationTools() {
+        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        updatedContext = SetupActivity.this.createConfigurationContext(configuration);
+    }
+
+    private void fetchAndSetLocationAttributes(String villageUuid) {
+        String finalURL = "https://" + mUrlField.getText().toString().concat("/locattribs/").concat(villageUuid);
+        Observable<PullLocationAttributesRoot> pullLocationAttributesRootObservable = AppConstants.apiInterface.PULL_LOCATION_ATTRIBUTES(finalURL);
+
+        pullLocationAttributesRootObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> customProgressDialog.show())
+                .doOnTerminate(() -> customProgressDialog.hide())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PullLocationAttributesRoot pullLocationAttributesRoot) {
+                        if (!pullLocationAttributesRoot.getAttributesDataList().isEmpty()) {
+                            setLocationData(pullLocationAttributesRoot.getAttributesDataList());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void setLocationData(List<PullLocationAttributesData> attributesDataList) {
+        for (PullLocationAttributesData data : attributesDataList) {
+
+            String distanceData = getDistanceStrings(data.getAttributeValue(), updatedContext, context, sessionManager.getAppLanguage());
+
+            switch (data.getAttributeName()) {
+
+                case AppConstants.DISTANCE_TO_SUB_CENTRE_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(subCentreRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(primaryCentreRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(communityHealthCentreRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(districtHospitalRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(medicalStoreRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(pathologicalLabRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(privateClinicWithMbbsDoctorRadioGroup, distanceData);
+
+                case AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(privateClinicWithAlternateMedicalRadioGroup, distanceData);
+
+                case AppConstants.JAL_JEEVAN_YOJANA_UUID_TEXT ->
+                        checkRadioButtonInsideRadioGroup(jalJeevanYojanaSchemeRadioGroup, distanceData);
+
+            }
+        }
+    }
+
+    private void checkRadioButtonInsideRadioGroup(RadioGroup radioGroup, String distanceText) {
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            RadioButton currentRadioButton = (RadioButton) radioGroup.getChildAt(i);
+            if (currentRadioButton.getText().toString().equalsIgnoreCase(distanceText)) {
+                currentRadioButton.setChecked(true);
+                break;
+            }
+        }
     }
 
     private boolean areFieldsValid() {
@@ -1208,7 +1303,7 @@ public class SetupActivity extends AppCompatActivity {
         // Distance to Jal Jeevan Yojana
         attribute = new LocationAttributes();
         attribute.setAttributeType(AppConstants.JAL_JEEVAN_YOJANA_UUID);
-        attribute.setValue(sessionManager.getPathologicalLabDistance());
+        attribute.setValue(sessionManager.getJalJeevanYojanaScheme());
         locationAttributes.add(attribute);
 
         LocationAttributeRequest request = new LocationAttributeRequest();
@@ -1395,9 +1490,6 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void getDataFromRadioButtons() {
-        Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
-        configuration.setLocale(new Locale("en"));
-        Context updatedContext = SetupActivity.this.createConfigurationContext(configuration);
 
         String subCenterDistance = getDistanceStrings(((RadioButton) subCentreRadioGroup.findViewById(subCentreRadioGroup.getCheckedRadioButtonId())).getText().toString(), context, updatedContext, sessionManager.getAppLanguage());
 

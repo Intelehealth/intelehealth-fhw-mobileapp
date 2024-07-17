@@ -176,5 +176,15 @@ public class AppConstants {
     public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID = "0d7de309-05cf-433a-bb66-2be6d28ab4de";
     public static final String JAL_JEEVAN_YOJANA_UUID = "0edf2076-0b94-45f7-845d-1918ed017ae7";
 
+    public static final String DISTANCE_TO_SUB_CENTRE_UUID_TEXT = "distance_to_sub_centre";
+    public static final String DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT = "distance_to_primary_health_centre";
+    public static final String DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT = "distance_to_nearest_community_health_centre";
+    public static final String DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT = "distance_to_nearest_district_hospital";
+    public static final String DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT = "distance_to_nearest_medical_store";
+    public static final String DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT = "distance_to_nearest_pathological_lab";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT = "distance_to_nearest_private_clinic";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT = "distance_to_nearest_private_clinic_with_alternate_medicine";
+    public static final String JAL_JEEVAN_YOJANA_UUID_TEXT = "does_the_village_get_water_under_jal_jeevan_yojana_scheme";
+
 }
 

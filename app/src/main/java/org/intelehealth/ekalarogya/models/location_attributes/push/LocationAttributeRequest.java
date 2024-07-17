@@ -1,4 +1,4 @@
-package org.intelehealth.ekalarogya.models.location_attributes.request;
+package org.intelehealth.ekalarogya.models.location_attributes.push;
 
 import java.util.List;
 

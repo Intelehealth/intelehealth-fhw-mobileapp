@@ -1,8 +1,6 @@
 package org.intelehealth.ekalarogya.networkApiCalls;
 
 
-import androidx.annotation.ContentView;
-
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.models.Location;
@@ -14,9 +12,9 @@ import org.intelehealth.ekalarogya.models.UserProfileModel.UserAttributeModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
-import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributeRequest;
-import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributes;
-import org.intelehealth.ekalarogya.models.location_attributes.response.LocationAttributesResponse;
+import org.intelehealth.ekalarogya.models.location_attributes.pull.PullLocationAttributesRoot;
+import org.intelehealth.ekalarogya.models.location_attributes.push.LocationAttributes;
+import org.intelehealth.ekalarogya.models.location_attributes.push.LocationAttributesResponse;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
@@ -162,5 +160,10 @@ public interface ApiInterface {
             @Url String url,
             @Header("Authorization") String authHeader,
             @Body List<LocationAttributes> locationAttributeRequestList
+    );
+
+    @GET
+    Observable<PullLocationAttributesRoot> PULL_LOCATION_ATTRIBUTES(
+            @Url String url
     );
 }
