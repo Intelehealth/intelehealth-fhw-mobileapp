@@ -14,6 +14,9 @@ import org.intelehealth.ekalarogya.models.UserProfileModel.UserAttributeModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.UserInfoUpdateModel;
 import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
+import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributeRequest;
+import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributes;
+import org.intelehealth.ekalarogya.models.location_attributes.response.LocationAttributesResponse;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfile;
@@ -24,6 +27,8 @@ import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel
 import org.intelehealth.ekalarogya.models.statewise_location.State;
 import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.ekalarogya.utilities.authJWT_API.AuthJWTResponse;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -149,5 +154,13 @@ public interface ApiInterface {
     Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(
             @Url String url,
             @Body AuthJWTBody authJWTBody
+    );
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<LocationAttributesResponse> PUSH_LOCATION_UUIDS(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body List<LocationAttributes> locationAttributeRequestList
     );
 }

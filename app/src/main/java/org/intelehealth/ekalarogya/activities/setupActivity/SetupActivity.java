@@ -64,6 +64,9 @@ import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.models.Location;
+import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributeRequest;
+import org.intelehealth.ekalarogya.models.location_attributes.request.LocationAttributes;
+import org.intelehealth.ekalarogya.models.location_attributes.response.LocationAttributesResponse;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginModel.Role;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
@@ -973,7 +976,9 @@ public class SetupActivity extends AppCompatActivity {
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
+
         getDataFromRadioButtons();
+        uploadRadioButtonData(CLEAN_URL);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -1110,6 +1115,107 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
+    private void uploadRadioButtonData(String url) {
+        String finalURL = "https://" + url.concat(":3004/api/openmrs/location/").concat(sessionManager.getCurrentLocationUuid());
+        LocationAttributeRequest requestBody = getLocationAttributeRequestBody();
+
+        Observable<LocationAttributesResponse> pushLocationDataObservable = AppConstants.apiInterface.PUSH_LOCATION_UUIDS(finalURL, "Bearer " + sessionManager.getJwtAuthToken(), requestBody.getLocationAttributes());
+        pushLocationDataObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LocationAttributesResponse locationAttributesResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("TempLocation", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+    private LocationAttributeRequest getLocationAttributeRequestBody() {
+        List<LocationAttributes> locationAttributes = new ArrayList<>();
+        LocationAttributes attribute;
+
+        // Village Type
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.VILLAGE_TYPE_UUID);
+        attribute.setValue("Primary");
+        locationAttributes.add(attribute);
+
+        // Distance To Sub Centre
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_SUB_CENTRE_UUID);
+        attribute.setValue(sessionManager.getSubCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Primary Healthcare
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID);
+        attribute.setValue(sessionManager.getPrimaryHealthCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Community Healthcare Centre
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID);
+        attribute.setValue(sessionManager.getCommunityHealthCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest District Hospital
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID);
+        attribute.setValue(sessionManager.getDistrictHospitalDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Medical Store
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID);
+        attribute.setValue(sessionManager.getMedicalStoreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Pathological Lab
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID);
+        attribute.setValue(sessionManager.getPathologicalLabDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Private Clinic
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID);
+        attribute.setValue(sessionManager.getPrivateClinicWithMbbsDoctorDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Private Clinic With Alternate Medicine
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID);
+        attribute.setValue(sessionManager.getPrivateClinicWithAlternateDoctorDistance());
+        locationAttributes.add(attribute);
+
+        // Distance to Jal Jeevan Yojana
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.JAL_JEEVAN_YOJANA_UUID);
+        attribute.setValue(sessionManager.getPathologicalLabDistance());
+        locationAttributes.add(attribute);
+
+        LocationAttributeRequest request = new LocationAttributeRequest();
+        request.setLocationAttributes(locationAttributes);
+        return request;
+    }
+
     private void resetViews() {
         mEmailView.requestFocus();
         mPasswordView.requestFocus();
@@ -1134,39 +1240,36 @@ public class SetupActivity extends AppCompatActivity {
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
-        authJWTResponseObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        authJWTResponseObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                    }
+            }
 
-                    @Override
-                    public void onNext(AuthJWTResponse authJWTResponse) {
-                        // in case of error password
-                        if (!authJWTResponse.getStatus()) {
-                            triggerIncorrectPasswordFlow(progress);
-                            return;
-                        }
+            @Override
+            public void onNext(AuthJWTResponse authJWTResponse) {
+                // in case of error password
+                if (!authJWTResponse.getStatus()) {
+                    triggerIncorrectPasswordFlow(progress);
+                    return;
+                }
 
-                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
-                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
-                        TestSetup(urlString, username, password, admin_password, village_name);
-                    }
+                sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
+                TestSetup(urlString, username, password, admin_password, village_name);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        resetViews();
-                    }
+            @Override
+            public void onError(Throwable e) {
+                resetViews();
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onComplete() {
 
-                    }
-                });
+            }
+        });
     }
 
     private boolean areDoctorCredentialsUsed(LoginModel loginModel) {
