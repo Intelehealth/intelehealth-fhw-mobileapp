@@ -139,16 +139,30 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale">कॅमेरा पूर्वावलोकन दर्शविण्यासाठी कॅमेरा परवानगी आवश्यक आहे.</string>
+    <string name="permission_camera_denied">कॅमेर्‍याची परवानगी नाकारली गेली. कृपया कॅमेर्‍यावर प्रवेश करण्यासाठी हे मंजूर करण्याचा विचार करा!</string>
+    <string name="permission_camera_never_askagain">पुन्हा कधीही विचारू नका सह कॅमेरा परवानगी नाकारली गेली.</string>
+    <string name="button_allow">परवानगी द्या</string>
+    <string name="button_deny">नकार द्या</string>
     <string name="button_ok">ठीक आहे</string>
     <string name="button_cancel">रद्द करा</string>
     <string name="picture_taken">चित्र घेतले</string>
+    <string name="switch_flash">स्विच फ्लॅश</string>
+    <string name="switch_camera">कॅमेरा स्विच करा</string>
+    <string name="flash_auto">फ्लॅश ऑटो</string>
+    <string name="flash_off">फ्लॅश बंद</string>
+    <string name="flash_on">फ्लॅश चालू</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale">एसएमएस पाठविण्यासाठी एसएमएस परवानगी आवश्यक आहे.</string>
+    <string name="permission_sms_denied">एसएमएस परवानगी नाकारली गेली. कृपया अर्जातून एसएमएस पाठविण्यासाठी हे देण्याचा विचार करा!</string>
+    <string name="permission_sms_never_askagain">पुन्हा कधीही विचारू नका सह एसएमएस परवानगी नाकारली गेली.</string>
 
     <string name="button_save">जतन करा</string>
     <string name="button_delete">हटवा</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default">कृपया चांगल्या प्रकाश परिस्थितीमध्ये फक्त दस्तऐवज फोटो क्लिक करा. जर कागदजत्र फोटो स्पष्ट नसेल तर कृपया दस्तऐवज फोटो पुन्हा घ्या.</string>
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible">प्रमाणीकृत करण्यात अक्षम.</string>
@@ -507,4 +521,5 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 </resources>

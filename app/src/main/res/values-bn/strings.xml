@@ -140,16 +140,30 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale">ক্যামেরার পূর্বরূপ দেখানোর জন্য ক্যামেরার অনুমতি প্রয়োজন।</string>
+    <string name="permission_camera_denied">ক্যামেরার অনুমতি প্রত্যাখ্যান করা হয়েছে। ক্যামেরা অ্যাক্সেস করার জন্য এটি মঞ্জুর বিবেচনা করুন!</string>
+    <string name="permission_camera_never_askagain">আর কখনও জিজ্ঞাসা না করে ক্যামেরার অনুমতি প্রত্যাখ্যান করা হয়েছিল।</string>
+    <string name="button_allow">অনুমতি দিন</string>
+    <string name="button_deny">অস্বীকার করুন</string>
     <string name="button_ok">ঠিক আছে</string>
     <string name="button_cancel">বাতিল করুন</string>
     <string name="picture_taken">ছবি তোলা</string>
+    <string name="switch_flash">ফ্ল্যাশ সুইচ করুন</string>
+    <string name="switch_camera">ক্যামেরা পাল্টান</string>
+    <string name="flash_auto">ফ্ল্যাশ অটো</string>
+    <string name="flash_off">ফ্ল্যাশ বন্ধ</string>
+    <string name="flash_on">ফ্ল্যাশ অন</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale">এস এম এস প্রেরণের জন্য এসএম এস এর অনুমতি প্রয়োজন</string>
+    <string name="permission_sms_denied">এসএমএসএর অনুমতি অস্বীকার করা হয়েছিল! এপ্লিকেশন থেকে এসএমএস প্রেরণ করার জন্য এটি অনুদান বিবেচনা করুন</string>
+    <string name="permission_sms_never_askagain">আর কখনো জিগ্যেস না করে এসএমএস -এর অনুমতি অস্বীকার করা হয়েছে</string>
 
     <string name="button_save">সংরক্ষণ</string>
     <string name="button_delete">মুছে ফেলা</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default">দয়াকরে কেবল ভালো আলো শর্তে ডকুমেন্ট ফটোতে ক্লিক করুন !যদি নথির ফটো পরিস্কার না থাকে তবে দয়াকরে দস্তাবেজটির ফটোটি আবার গ্রহণ করুন</string>
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible">প্রমানিকরণ করতে অক্ষম</string>
@@ -1054,4 +1068,5 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 </resources>

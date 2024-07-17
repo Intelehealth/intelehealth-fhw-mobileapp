@@ -7,7 +7,7 @@ package org.intelehealth.app.utilities
 class BundleKeys {
     companion object {
         const val FROM_EDIT = "from_edit"
-        const val PATIENT_UUID = "patient_uuid"
+        //const val PATIENT_UUID = "patient_uuid"
         const val PATIENT_CURRENT_STAGE = "patient_current_stage"
         //schedule notification keys
         const val TITLE = "title"

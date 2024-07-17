@@ -139,16 +139,31 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
     <string name="picture_taken">Picture taken</string>
+    <string name="switch_flash">Switch flash</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="flash_auto">Flash auto</string>
+    <string name="flash_off">Flash off</string>
+    <string name="flash_on">Flash on</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale">SMS permission is needed to send SMS.</string>
+    <string name="permission_sms_denied">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
+    <string name="permission_sms_never_askagain">SMS permission was denied with never ask again.</string>
 
     <string name="button_save">Save</string>
     <string name="button_delete">Delete</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
+
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible">Unable to authenticate.</string>
@@ -1057,4 +1072,5 @@
     <string name="hint_drop_down_state">Select State</string>
     <string name="hint_drop_down_district">Select District</string>
     <string name="lbl_clear_all">Clear All</string>
+    <string name="sync">Refresh</string>
 </resources>

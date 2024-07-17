@@ -139,16 +139,30 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale">কেমেৰাৰ প্ৰিভিউ দেখুৱাবলৈ কেমেৰাৰ অনুমতিৰ প্ৰয়োজন।</string>
+    <string name="permission_camera_denied">কেমেৰাৰ অনুমতি নাকচ কৰা হ\’ল। কেমেৰাত প্ৰৱেশ কৰিবলৈ অনুগ্ৰহ কৰি ইয়াক অনুমোদন দিয়াৰ কথা চিন্তা কৰক!</string>
+    <string name="permission_camera_never_askagain">নেভাৰ আস্ক এগেইন\' বুলি কেমেৰাৰ অনুমতি অস্বীকাৰ কৰা হ\'ল।</string>
+    <string name="button_allow">এলাও</string>
+    <string name="button_deny">ডিনাই</string>
     <string name="button_ok">অ\'কে</string>
     <string name="button_cancel">বাতিল কৰক</string>
     <string name="picture_taken">ফটো লোৱা হৈছে</string>
+    <string name="switch_flash">চুইচ ফ্লেছ</string>
+    <string name="switch_camera">কেমেৰা চুইচ কৰক</string>
+    <string name="flash_auto">ফ্লেচ অটো</string>
+    <string name="flash_off">ফ্লেছ অফ</string>
+    <string name="flash_on">ফ্লেছ অন</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale">এছএমএছ প্ৰেৰণৰ বাবে এছএমএছৰ অনুমতিৰ প্ৰয়োজন।</string>
+    <string name="permission_sms_denied">এছএমএছৰ অনুমতি নাকচ কৰা হ’ল। আবেদনৰ পৰা এছএমএছ পঠিয়াবলৈ অনুগ্ৰহ কৰি ইয়াক অনুমোদন দিয়াৰ কথা চিন্তা কৰক!</string>
+    <string name="permission_sms_never_askagain">নেভাৰ আস্ক এগেইন\' বুলি  এছএমএছৰ অনুমতি নাকচ কৰা হ’ল।</string>
 
     <string name="button_save">চেভ</string>
     <string name="button_delete">ডিলিট</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default">অনুগ্ৰহ কৰি কেৱল ভাল পোহৰৰ অৱস্থাত নথিপত্ৰ ফটো ক্লিক কৰক। যদি নথিপত্ৰৰ ফটো স্পষ্ট নহয়, অনুগ্ৰহ কৰি নথিপত্ৰৰ ফটো পুনৰ লওক।</string>
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible">প্ৰমাণীকৰণ কৰিব পৰা নাই।</string>
@@ -1051,5 +1065,6 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 
 </resources>

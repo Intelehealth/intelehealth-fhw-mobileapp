@@ -140,16 +140,30 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale">કૅમેરા પ્રીવ્યૂ બતાવવા માટે કૅમેરાની મંજૂરી જોઇએ</string>
+    <string name="permission_camera_denied">કૅમેરાની મંજૂરી ન અપાઇ. મંજૂરી આપવા વિનંતી, જેથી કૅમેરાનો ઉપયોગ કરી શકાય</string>
+    <string name="permission_camera_never_askagain">કૅમેરાની મંજૂરી- ક્યારેય ફરી પૂછશો નહીં-, એમ કહ્યું.</string>
+    <string name="button_allow">મંજુરી આપો</string>
+    <string name="button_deny">ખોટુ</string>
     <string name="button_ok">બરાબર છે</string>
     <string name="button_cancel">રદ કર્યુ</string>
     <string name="picture_taken">ફોટો લો</string>
+    <string name="switch_flash">ફ્લૅશ ચાલુ કરો</string>
+    <string name="switch_camera">કૅમેરા ચાલુ કરો</string>
+    <string name="flash_auto">ફ્લૅશ આપોઆપ ચાલુ કરો</string>
+    <string name="flash_off">ફ્લૅશ બંધ</string>
+    <string name="flash_on">ફ્લૅશ ચાલુ</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale">એસએમએસ મોકલવા માટે એસએમએસ મંજૂરી જોઇએ</string>
+    <string name="permission_sms_denied">એસએમએસની મંજૂરી ન અપાઇ. ઍપ્લિકેશન તરફથી એસએમએસ મોકલવા માટે આ મંજૂરી આપો</string>
+    <string name="permission_sms_never_askagain">એસએમએસની મંજૂરી નકારાઇ- ક્યારેય ફરી પૂછશો નહીં, એમ કહ્યું.</string>
 
     <string name="button_save">સાચવો</string>
     <string name="button_delete">કાઢી નાખો</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default">પૂરતા પ્રકાશમાં જ દસ્તાવેજનો ફોટો પાડો. જો તેનો ફોટો સ્પષ્ટ દેખાતો ન હોય તો ફોટો ફરીથી પાડો.</string>
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible">પ્રમાણીકરણ કરી શકાતું નથી</string>
@@ -857,4 +871,5 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 </resources>

@@ -138,16 +138,30 @@
     <!--Setup Activity-->
 
     //Camera Permissions
+    <string name="permission_camera_rationale" translatable="false">Для отображения предварительного просмотра камеры необходимо разрешение доступа к камере.</string>
+    <string name="permission_camera_denied" translatable="false">Доступ к камере был отклонен. Пожалуйста, рассмотрите возможность предоставления доступа к камере!</string>
+    <string name="permission_camera_never_askagain" translatable="false">Разрешение доступа к камере было отклонено и больше не будет запрашиваться.</string>
+    <string name="button_allow" translatable="false">Разрешить</string>
+    <string name="button_deny" translatable="false">Запретить</string>
     <string name="button_ok" translatable="false">OK</string>
     <string name="button_cancel" translatable="false">Отменить</string>
     <string name="picture_taken" translatable="false">Снимок сделан</string>
+    <string name="switch_flash" translatable="false">Переключить вспышку</string>
+    <string name="switch_camera" translatable="false">Переключить камеру</string>
+    <string name="flash_auto" translatable="false">Вспышка авто</string>
+    <string name="flash_off" translatable="false">Вспышка выключена</string>
+    <string name="flash_on" translatable="false">Вспышка включена</string>
 
     //SEND SMS Permissions
+    <string name="permission_sms_rationale" translatable="false">Для отправки SMS необходимо разрешение на SMS.</string>
+    <string name="permission_sms_denied" translatable="false">В разрешении SMS было отказано. Пожалуйста, рассмотрите возможность его предоставления для отправки смс из приложения!</string>
+    <string name="permission_sms_never_askagain" translatable="false">В разрешении на SMS было отказано, никогда больше не спрашивать.</string>
 
     <string name="button_save" translatable="false">Сохранить</string>
     <string name="button_delete" translatable="false">Удалить</string>
 
     //Camera Dialog
+    <string name="camera_dialog_default" translatable="false">Пожалуйста, нажмите на фотографию документа только при хорошем освещении. Если фотография документа нечеткая, сделайте снимок еще раз.</string>
 
     <!--Offline Login Errors-->
     <string name="admin_authentication_not_possible" translatable="false">Невозможно пройти аутентификацию.</string>
@@ -481,4 +495,5 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 </resources>
