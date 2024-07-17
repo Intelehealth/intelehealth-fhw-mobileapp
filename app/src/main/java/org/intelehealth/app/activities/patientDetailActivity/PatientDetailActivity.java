@@ -1679,18 +1679,19 @@ public class PatientDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.detail_home:
-                Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                return true;
-            case R.id.detail_reset_pin:
-                displayResetPinMaterialDialog();
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.detail_home) {
+            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        } else if (itemId == R.id.detail_reset_pin) {
+            displayResetPinMaterialDialog();
+
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

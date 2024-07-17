@@ -463,19 +463,24 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.summary_endAllVisit:
-                endAllVisit();
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.summary_endAllVisit) {
+            endAllVisit();
 
-            case R.id.action_filter:
-                //function call
-                displaySingleSelectionDialog();
-            default:
-                return super.onOptionsItemSelected(item);
+
+            //function call
+            displaySingleSelectionDialog();
+
+            return super.onOptionsItemSelected(item);
+        } else if (itemId == R.id.action_filter) {//function call
+            displaySingleSelectionDialog();
+
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
 

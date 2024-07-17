@@ -61,7 +61,7 @@ public class LanguageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     genericViewHolder.rlRoot.setBackgroundResource(R.drawable.round_corner_gray_light);
                 } else {
                     genericViewHolder.statusImageView.setVisibility(View.INVISIBLE);
-                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
+                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(org.intelehealth.apprtc.R.color.gray_4));
                     genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.NORMAL);
                     genericViewHolder.rlRoot.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 }

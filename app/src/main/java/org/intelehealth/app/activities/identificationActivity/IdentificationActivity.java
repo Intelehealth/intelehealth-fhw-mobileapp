@@ -1411,25 +1411,20 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
 
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-        switch (view.getId()) {
-            case R.id.identification_gender_male:
-                if (checked) mGender = "M";
-                Log.v(TAG, "gender:" + mGender);
-                break;
-            case R.id.identification_gender_female:
-                if (checked) mGender = "F";
-                Log.v(TAG, "gender:" + mGender);
-                break;
-            case R.id.identification_gender_others:
-                if (checked) mGender = "O";
-                Log.v(TAG, "gender:" + mGender);
-                break;
-            case R.id.hoh_yes:
-                if (checked) headOfHousehold = "Yes";
-                break;
-            case R.id.hoh_no:
-                if (checked) headOfHousehold = "No";
-                break;
+        int id = view.getId();
+        if (id == R.id.identification_gender_male) {
+            if (checked) mGender = "M";
+            Log.v(TAG, "gender:" + mGender);
+        } else if (id == R.id.identification_gender_female) {
+            if (checked) mGender = "F";
+            Log.v(TAG, "gender:" + mGender);
+        } else if (id == R.id.identification_gender_others) {
+            if (checked) mGender = "O";
+            Log.v(TAG, "gender:" + mGender);
+        } else if (id == R.id.hoh_yes) {
+            if (checked) headOfHousehold = "Yes";
+        } else if (id == R.id.hoh_no) {
+            if (checked) headOfHousehold = "No";
         }
 
 //        updateRoaster();

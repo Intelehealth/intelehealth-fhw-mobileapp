@@ -1,5 +1,7 @@
 package org.intelehealth.app.services.firebase_services;
 
+import static org.intelehealth.app.app.IntelehealthApplication.getPendingIntentFlag;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,6 +25,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -98,7 +101,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     chatIntent.putExtra("fromUuid", fromUUId);
                     chatIntent.putExtra("toUuid", toUUId);
                     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
+                            getPendingIntentFlag());
                     sendNotification(remoteMessage, pendingIntent);
 
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -153,7 +156,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+                    getPendingIntentFlag());
         }
         String channelId = "CHANNEL_ID";
 

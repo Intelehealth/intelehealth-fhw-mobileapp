@@ -66,7 +66,7 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
             tvFamilyName = itemView.findViewById(R.id.tv_name);
             tvOpenMRSID = itemView.findViewById(R.id.tv_openMRSID);
             tvOpenMRSID.setPaintFlags(tvOpenMRSID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tvOpenMRSID.setTextColor(context.getColor(R.color.deepBlue3));
+            tvOpenMRSID.setTextColor(context.getColor(org.intelehealth.apprtc.R.color.deepBlue3));
         }
     }
 }

@@ -270,53 +270,49 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         if (view.getId() != R.id.next_button)
             checked = ((RadioButton) view).isChecked();
 
-        switch (view.getId()) {
-            case R.id.next_button:
-                try {
-                    insertData();
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-            case R.id.kuchaRadioButton:
-                if (checked)
-                    mhouseStructure = "Kucha";
-                Log.v(TAG, "structure:" + mhouseStructure);
-                break;
-            case R.id.puccaRadioButton:
-                if (checked)
-                    mhouseStructure = "Pucca";
-                Log.v(TAG, "structure:" + mhouseStructure);
-                break;
-            case R.id.availableAccepted:
-                if (checked)
-                    mresultVisit = "available and accepted";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
-            case R.id.availableDeferred:
-                if (checked)
-                    mresultVisit = "available and deferred";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
-            case R.id.notavailableSurvey:
-                if (checked)
-                    mresultVisit = "Not available on Survey";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
-            case R.id.notavailableSecondVisit:
-                if (checked)
-                    mresultVisit = "Not available on second visit";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
-            case R.id.notavailableThirdVisit:
-                if (checked)
-                    mresultVisit = "Not available on third visit";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
-            case R.id.RefusedParticipate:
-                if (checked)
-                    mresultVisit = "Refused to Participate";
-                Log.v(TAG, "resultVisit:" + mresultVisit);
-                break;
+        int id = view.getId();
+        if (id == R.id.next_button) {
+            try {
+                insertData();
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+            if (checked)
+                mhouseStructure = "Kucha";
+            Log.v(TAG, "structure:" + mhouseStructure);
+        } else if (id == R.id.kuchaRadioButton) {
+            if (checked)
+                mhouseStructure = "Kucha";
+            Log.v(TAG, "structure:" + mhouseStructure);
+        } else if (id == R.id.puccaRadioButton) {
+            if (checked)
+                mhouseStructure = "Pucca";
+            Log.v(TAG, "structure:" + mhouseStructure);
+        } else if (id == R.id.availableAccepted) {
+            if (checked)
+                mresultVisit = "available and accepted";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
+        } else if (id == R.id.availableDeferred) {
+            if (checked)
+                mresultVisit = "available and deferred";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
+        } else if (id == R.id.notavailableSurvey) {
+            if (checked)
+                mresultVisit = "Not available on Survey";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
+        } else if (id == R.id.notavailableSecondVisit) {
+            if (checked)
+                mresultVisit = "Not available on second visit";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
+        } else if (id == R.id.notavailableThirdVisit) {
+            if (checked)
+                mresultVisit = "Not available on third visit";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
+        } else if (id == R.id.RefusedParticipate) {
+            if (checked)
+                mresultVisit = "Refused to Participate";
+            Log.v(TAG, "resultVisit:" + mresultVisit);
         }
     }
 

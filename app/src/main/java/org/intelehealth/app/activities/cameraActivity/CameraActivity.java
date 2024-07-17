@@ -336,7 +336,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
-        CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
+        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
     @Override
@@ -353,15 +353,14 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.switch_flash:
-                if (mCameraView != null) {
-                    mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
-                    item.setTitle(FLASH_TITLES[mCurrentFlash]);
-                    item.setIcon(FLASH_ICONS[mCurrentFlash]);
-                    mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
-                }
-                return true;
+        if (item.getItemId() == R.id.switch_flash) {
+            if (mCameraView != null) {
+                mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+                item.setTitle(FLASH_TITLES[mCurrentFlash]);
+                item.setIcon(FLASH_ICONS[mCurrentFlash]);
+                mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

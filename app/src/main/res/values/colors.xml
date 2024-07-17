@@ -81,4 +81,6 @@
     <color name="tag_blue_light_bg">#33befa</color>
     <color name="blue_search_bg">#6650E5</color>
 
+    <color name="gray_6">#1a1919</color>
+
 </resources>

@@ -3,7 +3,8 @@ package org.intelehealth.app.appointment.api;
 
 
 
-import org.intelehealth.app.BuildConfig;
+
+import androidx.multidex.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 

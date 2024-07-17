@@ -1,10 +1,14 @@
 package org.intelehealth.app.app;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.BuildConfig;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -20,7 +25,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 import com.rt.printerlibrary.printer.RTPrinter;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
@@ -170,11 +174,11 @@ public class IntelehealthApplication extends MultiDexApplication implements
     public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
-        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
+      //  TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
         textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
-        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+      //  alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }
@@ -195,5 +199,17 @@ public class IntelehealthApplication extends MultiDexApplication implements
 
     public void setRtPrinter(RTPrinter rtPrinter) {
         this.rtPrinter = rtPrinter;
+    }
+
+    public static int getPendingIntentFlag() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                return PendingIntent.FLAG_IMMUTABLE | FLAG_UPDATE_CURRENT;
+            } else {
+                return FLAG_UPDATE_CURRENT;
+            }
+        } else {
+            return FLAG_UPDATE_CURRENT;
+        }
     }
 }

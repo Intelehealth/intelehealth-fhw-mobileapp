@@ -66,7 +66,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.app.BuildConfig;
+import androidx.multidex.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
@@ -614,14 +614,13 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bluetooth:
-                showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
-                return true;
-
-            case R.id.draftSurvey:
-                draftSurvey();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.bluetooth) {
+            showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+            return true;
+        } else if (itemId == R.id.draftSurvey) {
+            draftSurvey();
+            return true;
 
             /*case R.id.devicesOption:
             {
@@ -629,25 +628,21 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }*/
+        } else if (itemId == R.id.settingsOption) {
+            Intent intent = new Intent(this, ChooseLanguageActivity.class);
+            intent.putExtra("intentType", "home");
+            startActivity(intent);
+            return true;
+        } else if (itemId == R.id.updateProtocolsOption) {
+            if (NetworkConnection.isOnline(this)) {
 
-            case R.id.settingsOption:
-                Intent intent = new Intent(this, ChooseLanguageActivity.class);
-                intent.putExtra("intentType", "home");
-                startActivity(intent);
-                return true;
+                if (!sessionManager.getLicenseKey().isEmpty()) {
 
-            case R.id.updateProtocolsOption: {
+                    String licenseUrl = sessionManager.getMindMapServerUrl();
+                    String licenseKey = sessionManager.getLicenseKey();
+                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
-
-                if (NetworkConnection.isOnline(this)) {
-
-                    if (!sessionManager.getLicenseKey().isEmpty()) {
-
-                        String licenseUrl = sessionManager.getMindMapServerUrl();
-                        String licenseKey = sessionManager.getLicenseKey();
-                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
-
-                    } else {
+                } else {
 //                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
 //                        // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
 //                        LayoutInflater li = LayoutInflater.from(this);
@@ -694,111 +689,110 @@ public class HomeActivity extends AppCompatActivity {
 //                                });
 //                        Dialog builderDialog = dialog.show();
 //                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
-                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(HomeActivity.this);
-                        LayoutInflater li = LayoutInflater.from(this);
-                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                        dialog.setTitle(getString(R.string.enter_license_key))
-                                .setView(promptsView)
-                                .setPositiveButton(getString(R.string.button_ok), null)
-                                .setNegativeButton(getString(R.string.button_cancel), null);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(HomeActivity.this);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    dialog.setTitle(getString(R.string.enter_license_key))
+                            .setView(promptsView)
+                            .setPositiveButton(getString(R.string.button_ok), null)
+                            .setNegativeButton(getString(R.string.button_cancel), null);
 
-                        AlertDialog alertDialog = dialog.create();
-                        alertDialog.setView(promptsView, 20, 0, 20, 0);
-                        alertDialog.show();
-                        alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.setView(promptsView, 20, 0, 20, 0);
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
-                        // Get the alert dialog buttons reference
-                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    // Get the alert dialog buttons reference
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                        // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    // Change the alert dialog buttons text and background color
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-                        positiveButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EditText text = promptsView.findViewById(R.id.licensekey);
+                            EditText url = promptsView.findViewById(R.id.licenseurl);
 
-                                url.setError(null);
-                                text.setError(null);
+                            url.setError(null);
+                            text.setError(null);
 
-                                //If both are not entered...
-                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
+                            //If both are not entered...
+                            if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.enter_server_url));
+                                text.setError(getResources().getString(R.string.enter_license_key));
+                                return;
+                            }
 
-                                //If Url is empty...key is not empty...
-                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
-                                    return;
-                                }
+                            //If Url is empty...key is not empty...
+                            if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.enter_server_url));
+                                return;
+                            }
 
-                                //If Url is not empty...key is empty...
-                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    text.requestFocus();
-                                    text.setError(getResources().getString(R.string.enter_license_key));
-                                    return;
-                                }
+                            //If Url is not empty...key is empty...
+                            if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                text.requestFocus();
+                                text.setError(getResources().getString(R.string.enter_license_key));
+                                return;
+                            }
 
-                                //If Url has : in it...
-                                if (url.getText().toString().trim().contains(":")) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.invalid_url));
-                                    return;
-                                }
+                            //If Url has : in it...
+                            if (url.getText().toString().trim().contains(":")) {
+                                url.requestFocus();
+                                url.setError(getResources().getString(R.string.invalid_url));
+                                return;
+                            }
 
-                                //If url entered is Invalid...
-                                if (!url.getText().toString().trim().isEmpty()) {
-                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-                                        String url_field = "https://" + url.getText().toString() + ":3004/";
-                                        if (URLUtil.isValidUrl(url_field)) {
-                                            key = text.getText().toString().trim();
-                                            licenseUrl = url.getText().toString().trim();
+                            //If url entered is Invalid...
+                            if (!url.getText().toString().trim().isEmpty()) {
+                                if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                                    String url_field = "https://" + url.getText().toString() + ":3004/";
+                                    if (URLUtil.isValidUrl(url_field)) {
+                                        key = text.getText().toString().trim();
+                                        licenseUrl = url.getText().toString().trim();
 
-                                            sessionManager.setMindMapServerUrl(licenseUrl);
+                                        sessionManager.setMindMapServerUrl(licenseUrl);
 
-                                            if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
-                                                alertDialog.dismiss();
-                                            }
-                                        } else {
-                                            Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                                        if (keyVerified(key)) {
+                                            getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                            alertDialog.dismiss();
                                         }
-
                                     } else {
-                                        //invalid url || invalid url and key.
-                                        Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                                     }
+
                                 } else {
-                                    Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                    //invalid url || invalid url and key.
+                                    Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
                                 }
+                            } else {
+                                Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    });
 
-                        negativeButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss();
-                            }
-                        });
+                    negativeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
 
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
 
-                    }
-
-                } else {
-                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }
 
-                return true;
+            } else {
+                Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
             }
+
+            return true;
 
          /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
@@ -820,56 +814,53 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.restoreOption:
 //                manageBackup(false, false); // to restore app data if db is empty
 //                return true;
+        } else if (itemId == R.id.logoutOption) {//                manageBackup(true, false);
 
-            case R.id.logoutOption:
-//                manageBackup(true, false);
-
-                MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-                alertdialogBuilder.setMessage(R.string.sure_to_logout);
-                alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        logout();
-                    }
-                });
-                alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-                AlertDialog alertDialog = alertdialogBuilder.create();
-                alertDialog.show();
-                Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-                return true;
-
-            case R.id.restAppOption:
-
-                if ((isNetworkConnected())) {
-                    mResetSyncDialog.show();
-                    boolean isSynced = syncUtils.syncForeground("home");
-                    if (isSynced) {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() { //Do something after 100ms
-                                showResetConfirmationDialog();
-                            }
-                        }, 3000);
-                    } else {
-                        mResetSyncDialog.dismiss();
-                        DialogUtils dialogUtils = new DialogUtils();
-                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
-                    }
-                    return true;
-                } else {
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertdialogBuilder.setMessage(R.string.sure_to_logout);
+            alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    logout();
                 }
+            });
+            alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+            AlertDialog alertDialog = alertdialogBuilder.create();
+            alertDialog.show();
+            Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+            Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
+        } else if (itemId == R.id.restAppOption) {
+            if ((isNetworkConnected())) {
+                mResetSyncDialog.show();
+                boolean isSynced = syncUtils.syncForeground("home");
+                if (isSynced) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() { //Do something after 100ms
+                            showResetConfirmationDialog();
+                        }
+                    }, 3000);
+                } else {
+                    mResetSyncDialog.dismiss();
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                }
+                return true;
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+            }
+
+
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
 

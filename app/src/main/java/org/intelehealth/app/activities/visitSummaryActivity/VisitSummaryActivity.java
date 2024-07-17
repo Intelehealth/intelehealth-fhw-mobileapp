@@ -417,24 +417,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.summary_home: {
-                Intent i = new Intent(this, HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                return true;
-            }
-            case R.id.summary_sms: {
-                //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
-                return true;
-            }
-            case R.id.summary_endVisit: {
-                onEndVisit();
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.summary_home) {
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            return true;
+        } else if (itemId == R.id.summary_sms) {//     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
+            return true;
+        } else if (itemId == R.id.summary_endVisit) {
+            onEndVisit();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onEndVisit() {

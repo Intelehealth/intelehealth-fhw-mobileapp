@@ -1,5 +1,7 @@
 package org.intelehealth.app.services.firebase_services;
 
+import static org.intelehealth.app.app.IntelehealthApplication.getPendingIntentFlag;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -86,7 +88,7 @@ public class CallListenerBackgroundService extends Service {
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+                PendingIntent.getActivity(this, 0, notificationIntent, getPendingIntentFlag());
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))

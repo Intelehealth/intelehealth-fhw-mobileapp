@@ -91,7 +91,7 @@ public class  DraftSurveyActivity extends AppCompatActivity {
             // start progress dialog on main thread
             runOnUiThread(() -> {
                 mSyncProgressDialog = new ProgressDialog(DraftSurveyActivity.this, R.style.AlertDialogStyle);
-                mSyncProgressDialog.setTitle(R.string.loading);
+                mSyncProgressDialog.setTitle(org.intelehealth.apprtc.R.string.loading);
                 mSyncProgressDialog.setCancelable(false);
                 mSyncProgressDialog.setProgress(i);
                 mSyncProgressDialog.show();
