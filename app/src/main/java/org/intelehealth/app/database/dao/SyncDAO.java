@@ -201,7 +201,7 @@ public class SyncDAO {
                 Intent broadcast = new Intent();
                 broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                 context.sendBroadcast(broadcast);
                 //}
 
