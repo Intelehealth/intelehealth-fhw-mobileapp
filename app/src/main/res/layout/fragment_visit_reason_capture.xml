@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
@@ -21,7 +22,6 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
@@ -30,6 +30,7 @@
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
+            app:backgroundTint="@null"
             android:text="@string/generic_back"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"

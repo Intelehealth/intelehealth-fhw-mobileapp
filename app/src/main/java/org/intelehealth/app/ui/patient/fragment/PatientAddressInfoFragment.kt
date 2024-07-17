@@ -244,7 +244,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.textInputLayCityVillage.validateDigit(
                         binding.textInputCityVillage,
                         R.string.error_field_valid_village_required,
-                        6
+                        3
                     )
                 )
             } else true

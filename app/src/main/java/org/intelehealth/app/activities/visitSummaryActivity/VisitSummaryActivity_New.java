@@ -440,9 +440,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
             findViewById(R.id.add_notes_relative).setVisibility(activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
             findViewById(R.id.add_doc_relative).setVisibility(activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.relative_speciality_block).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cvFollowup).setVisibility(activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+            if (!activeStatus.getVisitSummeryAppointment()) {
+                Button btn = findViewById(R.id.btn_vs_appointment);
+                boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
+                btn.setVisibility(isAppointment ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
