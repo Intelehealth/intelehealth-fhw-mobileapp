@@ -61,13 +61,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private fun fetchPersonalInfoConfig() {
         patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
-            binding.addOnRebindCallback(onRebindCallback)
-        }
-    }
-
-    private val onRebindCallback = object : OnRebindCallback<FragmentPatientOtherInfoBinding>() {
-        override fun onBound(binding: FragmentPatientOtherInfoBinding?) {
-            super.onBound(binding)
             setupSocialCategory()
             setupEducations()
             setupEconomicCategory()

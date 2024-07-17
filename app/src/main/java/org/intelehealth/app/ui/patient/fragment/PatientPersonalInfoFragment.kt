@@ -475,6 +475,7 @@ class PatientPersonalInfoFragment :
 
             val bEmPhone =
                 if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
+                    Timber.d { "Emergency validation" }
                     binding.textInputLayEMPhoneNumber.validate(
                         binding.textInputETEMPhoneNumber,
                         error

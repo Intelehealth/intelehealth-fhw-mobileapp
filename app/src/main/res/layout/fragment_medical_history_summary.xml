@@ -66,6 +66,7 @@
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
             android:text="@string/generic_back"
+            app:backgroundTint="@null"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"

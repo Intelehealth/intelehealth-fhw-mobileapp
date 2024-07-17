@@ -626,7 +626,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
+                        android:text="@{ personalConfig.emergencyContactName.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/emergency_contact_name_non_required" />
@@ -669,7 +669,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                        android:text="@{ personalConfig.emergencyContactNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/emergency_contact_number_non_required" />
