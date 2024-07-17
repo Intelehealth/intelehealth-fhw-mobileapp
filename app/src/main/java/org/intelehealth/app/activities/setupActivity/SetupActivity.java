@@ -1,23 +1,18 @@
 package org.intelehealth.app.activities.setupActivity;
 
+import static org.intelehealth.app.utilities.DialogUtils.showerrorDialog;
+
 import android.accounts.Account;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,13 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +40,6 @@ import android.widget.Toast;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
@@ -73,7 +62,6 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.NewLocationDao;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
-import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.models.statewise_location.ChildLocation;
@@ -90,10 +78,13 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.models.auth.AuthJWTBody;
+import org.intelehealth.app.models.auth.AuthJWTResponse;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -688,7 +679,8 @@ public class SetupActivity extends AppCompatActivity {
 //                String urlString = mUrlField.getText().toString();
                 mLoginButton.setText(getString(R.string.please_wait_progress));
                 mLoginButton.setEnabled(false);
-                TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+              //  TestSetup(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
+                getJWTToken(BuildConfig.SERVER_URL, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1259,7 +1251,6 @@ public class SetupActivity extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -1287,7 +1278,7 @@ public class SetupActivity extends AppCompatActivity {
                             .subscribe(new DisposableObserver<LoginProviderModel>() {
                                 @Override
                                 public void onNext(LoginProviderModel loginProviderModel) {
-                                    if (loginProviderModel.getResults().size() != 0) {
+                                      if (loginProviderModel.getResults().size() != 0) {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
@@ -1315,7 +1306,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                    .server(CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 
@@ -1401,8 +1392,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
+                showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
                 mLoginButton.setEnabled(true);
@@ -1698,5 +1688,67 @@ public class SetupActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
     }
+
+
+    private void getJWTToken(String urlString, String username, String password, String admin_password, Map.Entry<String, String> village_name) {
+        ProgressDialog progress;
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+
+        progress.show();
+        String finalURL = urlString.concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            triggerIncorrectPasswordFlow(progress);
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
+                        TestSetup(urlString, username, password, admin_password, village_name);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        resetViews();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void resetViews() {
+        mEmailView.requestFocus();
+        mPasswordView.requestFocus();
+        mLoginButton.setText(getString(R.string.action_sign_in));
+        mLoginButton.setEnabled(true);
+    }
+
+    private void triggerIncorrectPasswordFlow(ProgressDialog progress) {
+        progress.dismiss();
+        showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title),
+                getString(R.string.error_incorrect_password), getString(R.string.ok));
+        resetViews();
+    }
+
 
 }

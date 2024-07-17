@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 
 import android.Manifest;
@@ -32,6 +33,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
@@ -127,6 +129,11 @@ import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 /**
  * Home Screen
  */
@@ -172,6 +179,19 @@ public class HomeActivity extends BaseActivity {
     private MaterialAlertDialogBuilder dialog;
     private AlertDialog alertDialog;
     MenuItem bluetoothCheck = null;
+
+ /*   ActivityResultLauncher<Intent> result = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            if (o.getResultCode() == Constants.JWT_TOKEN_EXPIRED) {
+                sessionManager.setJwtAuthToken(null);
+                NavigationUtils navigationUtils = new NavigationUtils();
+                navigationUtils.triggerSignOutOn401Response(context);
+            }
+        }
+    });*/
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
@@ -618,11 +638,13 @@ public class HomeActivity extends BaseActivity {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(HomeActivity.this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                      //  EditText url = promptsView.findViewById(R.id.licenseurl);
                         AutoCompleteTextView autoCompleteTextView = promptsView.findViewById(R.id.licenseurl);
+                        autoCompleteTextView.setFilters(new InputFilter[]{emojiFilter});
 
-                        String url = BuildConfig.SERVER_URL.substring(8);
-                        autoCompleteTextView.setText(url);
-
+                        String urlLink = BuildConfig.SERVER_URL.substring(8);
+                        autoCompleteTextView.setText(urlLink);
 
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
@@ -645,48 +667,45 @@ public class HomeActivity extends BaseActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
-
-                                url.setError(null);
+                                autoCompleteTextView.setError(null);
                                 text.setError(null);
 
                                 //If both are not entered...
-                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                if (autoCompleteTextView.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                    autoCompleteTextView.requestFocus();
+                                    autoCompleteTextView.setError(getResources().getString(R.string.enter_server_url));
                                     text.setError(getResources().getString(R.string.enter_license_key));
                                     return;
                                 }
 
                                 //If Url is empty...key is not empty...
-                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                if (autoCompleteTextView.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                    autoCompleteTextView.requestFocus();
+                                    autoCompleteTextView.setError(getResources().getString(R.string.enter_server_url));
                                     return;
                                 }
 
                                 //If Url is not empty...key is empty...
-                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                if (!autoCompleteTextView.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
                                     text.requestFocus();
                                     text.setError(getResources().getString(R.string.enter_license_key));
                                     return;
                                 }
 
                                 //If Url has : in it...
-                                if (url.getText().toString().trim().contains(":")) {
-                                    url.requestFocus();
-                                    url.setError(getResources().getString(R.string.invalid_url));
+                                if (autoCompleteTextView.getText().toString().trim().contains(":")) {
+                                    autoCompleteTextView.requestFocus();
+                                    autoCompleteTextView.setError(getResources().getString(R.string.invalid_url));
                                     return;
                                 }
 
                                 //If url entered is Invalid...
-                                if (!url.getText().toString().trim().isEmpty()) {
-                                    if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
-                                        String url_field = "https://" + url.getText().toString() + ":3004/";
+                                if (!autoCompleteTextView.getText().toString().trim().isEmpty()) {
+                                    if (Patterns.WEB_URL.matcher(autoCompleteTextView.getText().toString().trim()).matches()) {
+                                        String url_field = "https://" + autoCompleteTextView.getText().toString() + ":3004/";
                                         if (URLUtil.isValidUrl(url_field)) {
                                             key = text.getText().toString().trim();
-                                            licenseUrl = url.getText().toString().trim();
+                                            licenseUrl = autoCompleteTextView.getText().toString().trim();
 
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 

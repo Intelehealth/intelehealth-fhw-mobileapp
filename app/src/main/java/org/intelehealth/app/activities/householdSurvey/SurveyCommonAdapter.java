@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
 import org.intelehealth.app.activities.householdSurvey.model.Questions;
+import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class SurveyCommonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void showUserInputBox(final View tempView, final int position, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         EditText dataEditText = tempView.findViewById(R.id.etvData);
+        dataEditText.setFilters(new InputFilter[]{EditTextUtils.emojiFilter});
         dataEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         paramNameTextView.setText(LocaleHelper.isArabic(mContext) ? mItemList.get(position).getQuestionAr() : mItemList.get(position).getQuestion());
         if (mItemList.get(position).getAnswerValue() != null) {

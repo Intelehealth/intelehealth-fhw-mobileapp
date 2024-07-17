@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +49,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.LocaleHelper;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -119,6 +121,8 @@ public class SearchPatientActivity extends BaseActivity {
 
         //toolbar views
         toolbarET = findViewById(R.id.toolbar_ET);
+        toolbarET.setFilters(new InputFilter[]{EditTextUtils.emojiFilter});
+
         toolbarClear = findViewById(R.id.toolbar_clear);
         toolbarSearch = findViewById(R.id.toolbar_search);
 //        toolbarFilter = findViewById(R.id.toolbar_filter);

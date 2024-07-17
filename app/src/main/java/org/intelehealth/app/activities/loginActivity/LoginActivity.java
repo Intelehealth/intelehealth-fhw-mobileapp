@@ -46,6 +46,8 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.auth.AuthJWTBody;
+import org.intelehealth.app.models.auth.AuthJWTResponse;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -59,6 +61,7 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -227,7 +230,8 @@ public class LoginActivity extends AppCompatActivity {
         if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UserLoginTask(email, password);
+           // UserLoginTask(email, password);
+            getJWTToken(email, password);
         } else {
             //offlineLogin.login(email, password);
             offlineLogin.offline_login(email, password);
@@ -477,6 +481,57 @@ public class LoginActivity extends AppCompatActivity {
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
+    }
+
+    private void getJWTToken(String username, String password) {
+        String finalURL = BuildConfig.SERVER_URL.concat(":3030/auth/login");
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            triggerIncorrectCredentialsFlow();
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
+                        UserLoginTask(username, password);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        resetViews();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void triggerIncorrectCredentialsFlow() {
+        Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+        resetViews();
+    }
+
+    private void resetViews() {
+        cpd.dismiss();
+        mEmailSignInButton.setText(getString(R.string.action_sign_in));
+        mEmailSignInButton.setEnabled(true);
     }
 
 }

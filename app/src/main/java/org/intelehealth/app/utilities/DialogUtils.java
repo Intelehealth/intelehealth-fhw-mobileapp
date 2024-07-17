@@ -38,7 +38,7 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public void showerrorDialog(Context context, String title, String message, String ok) {
+    public static void showerrorDialog(Context context, String title, String message, String ok) {
         //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle(title);

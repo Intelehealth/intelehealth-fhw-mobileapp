@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.utilities.EditTextUtils.emojiFilter;
+import static org.intelehealth.app.utilities.EditTextUtils.inputFilter;
 import static org.intelehealth.app.utilities.StringUtils.arrayValueInJson;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
@@ -171,8 +173,6 @@ public class IdentificationActivity extends BaseActivity /*implements SurveyCall
     PatientDTO patientdto = new PatientDTO();
     ImagesDAO imagesDAO = new ImagesDAO();
     Context context;
-    private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
-    private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     Intent i_privacy;
     int dob_indexValue = 15;
     String mAddress1Value = "", mAddress2Value = "", mPostalValue = "", stateValue = "", countryValue = "", villageValue = "", mRelationshipValue = "";
@@ -1434,25 +1434,8 @@ public class IdentificationActivity extends BaseActivity /*implements SurveyCall
 //        updateRoaster();
     }
 
-    private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
-        @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Name.contains(("" + charSequence))) {
-                return "";
-            }
-            return null;
-        }
-    };
 
-    private InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
-        @Override
-        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (charSequence != null && BlockCharacterSet_Others.contains(("" + charSequence))) {
-                return "";
-            }
-            return null;
-        }
-    };
+
 
     public void generateUuid() {
         patientUuid = uuidGenerator.UuidGenerator();
@@ -4101,20 +4084,25 @@ public class IdentificationActivity extends BaseActivity /*implements SurveyCall
     private void initUI() {
         scrollView = findViewById(R.id.identification_scrollView);
         mFirstName = findViewById(R.id.identification_first_name);
-        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter}); //maxlength 25
+
         mMiddleName = findViewById(R.id.identification_middle_name);
-        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter}); //maxlength 25
+
         mLastName = findViewById(R.id.identification_last_name);
-        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter}); //maxlength 25
+
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         phone_checkbox = findViewById(R.id.phone_checkbox);
         earthquakeVictimCheckbox = findViewById(R.id.earthquake_victim_checkbox);
         mAge = findViewById(R.id.identification_age);
+
         mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), emojiFilter}); //maxlength 50
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
+        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), emojiFilter}); //maxlength 50
+
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
         mVillage = findViewById(R.id.spinner_village);

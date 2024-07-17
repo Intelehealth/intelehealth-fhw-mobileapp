@@ -20,6 +20,9 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.models.statewise_location.State;
+import org.intelehealth.app.models.auth.AuthJWTBody;
+import org.intelehealth.app.models.auth.AuthJWTResponse;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -135,4 +138,8 @@ public interface ApiInterface {
     //-SetupLocation
     @GET("getLocations")
     Observable<Setup_LocationModel> SETUP_LOCATIONOBSERVABLE();
+
+    @POST
+    Observable<AuthJWTResponse> AUTH_LOGIN_JWT_API(@Url String url,
+                                                   @Body AuthJWTBody authJWTBody);
 }

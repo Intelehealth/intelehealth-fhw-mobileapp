@@ -64,6 +64,7 @@ public class SessionManager {
     private Context _context;
     // Shared pref mode
     private int PRIVATE_MODE = 0;
+    private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
 
     public SessionManager(Context context) {
         this._context = context;
@@ -71,6 +72,13 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    public void setJwtAuthToken(String token) {
+        editor.putString(JWT_AUTH_TOKEN, token);
+        editor.commit();
+    }
+    public String getJwtAuthToken() {
+        return pref.getString(JWT_AUTH_TOKEN, "");
+    }
 
     public String getVisitId() {
         return pref.getString(VISIT_ID, "");

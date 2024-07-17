@@ -1680,6 +1680,9 @@
     <string name="enter_file_name"> ادخل اسم الملف</string>
     <string name="additional_remarks">ملاحظات إضافية</string>
     <string name="click_on_upload_button_to_save_the_changes">اضغط على زر التحميل لحفظ التغييرات</string>
+    <string name="click_on_save_button_to_save_the_changes">انقر على زر الحفظ لحفظ التغييرات</string>
+    <string name="additional_remark_is_saved_successfully">تم حفظ المعلومات الاضافية</string>
+    <string name="your_session_has_expired_please_log_in_again"> لقد نفذ وقت هذا الدخول، الرجاء تسجيل الدخول مرة أخرى</string>
 
 
 </resources>
