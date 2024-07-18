@@ -15,6 +15,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -339,6 +340,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
     }
 
 
+/*
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
         clickedNode.toggleSelected();
@@ -366,6 +368,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
         }
 
     }
+*/
 
 
     // Method to trigger confirmation dialog
@@ -717,4 +720,160 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
 
         return text;
     }
+    private void onListClick(View v, int groupPosition, int childPosition) {
+        Node rootNode = patientHistoryMap.getOption(groupPosition);
+        Node clickedNode = rootNode.getOption(childPosition);
+
+        if (clickedNode.getText().equalsIgnoreCase("None")) {
+            // Deselect all other options
+            for (Node option : rootNode.getOptionsList()) {
+                option.setSelected(false);
+            }
+            clickedNode.setSelected(true);
+            rootNode.setSelected(true);
+            adapter.notifyDataSetChanged();
+        } else {
+            if (clickedNode.isSelected()) {
+                clickedNode.setSelected(false);
+            } else {
+                clickedNode.setSelected(true);
+            }
+
+            // Deselect "None" if any other option is selected
+          /*  for (Node option : rootNode.getOptionsList()) {
+                if (option != null && option.getText() != null && option.getText().equalsIgnoreCase("None") && clickedNode.isSelected()) {
+                    option.setSelected(false);
+                }
+            }*/
+            for (Node option : rootNode.getOptionsList()) {
+                if (option != null && option.isExcludedFromMultiChoice()  && clickedNode.isSelected()) {
+                    option.setSelected(false);
+                }
+            }
+
+
+            if (rootNode.getOptionsList().stream().anyMatch(Node::isSelected)) {
+                rootNode.setSelected(true);
+            } else {
+                rootNode.setUnselected();
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        // Handle sub-level questions and input types if needed
+        if (clickedNode.getInputType() != null) {
+            if (!clickedNode.getInputType().equals("camera")) {
+                imageName = UUID.randomUUID().toString();
+                Node.handleQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, null, null);
+            }
+        }
+
+        if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
+            imageName = UUID.randomUUID().toString();
+            Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
+        }
+    }
+
+/*
+    private void onListClick(View v, int groupPosition, int childPosition) {
+        if ((patientHistoryMap.getOption(groupPosition).getChoiceType().equals("single")) && !patientHistoryMap.getOption(groupPosition).anySubSelected()) {
+            Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
+            clickedNode.toggleSelected();
+
+            //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
+            if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
+                patientHistoryMap.getOption(groupPosition).setSelected(true);
+            } else {
+                patientHistoryMap.getOption(groupPosition).setUnselected();
+            }
+            adapter.notifyDataSetChanged();
+
+            if (clickedNode.getInputType() != null) {
+                if (!clickedNode.getInputType().equals("camera")) {
+                    imageName = UUID.randomUUID().toString();
+                    Node.handleQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, null, null);
+                }
+            }
+
+            Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
+            if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
+                imageName = UUID.randomUUID().toString();
+
+                Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
+            }
+        }else if ((patientHistoryMap.getOption(groupPosition).getChoiceType().equals("single")) && patientHistoryMap.getOption(groupPosition).anySubSelected()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
+            alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        } else {
+
+            Node question = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
+            question.toggleSelected();
+            if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
+                patientHistoryMap.getOption(groupPosition).setSelected(true);
+            } else {
+                patientHistoryMap.getOption(groupPosition).setUnselected();
+            }
+
+            if (!patientHistoryMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
+                    && !patientHistoryMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
+                //code added to handle multiple and single option selection.
+                Node rootNode = patientHistoryMap.getOption(groupPosition);
+                if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                            patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (!childNode.getId().equals(question.getId())) {
+                            patientHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+            }
+            if (!question.getInputType().isEmpty() && question.isSelected()) {
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        filePath.mkdirs();
+                    }
+                    Node.handleQuestion(question, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, PastMedicalHistoryActivity.this, adapter, null, null);
+                }
+                //If there is an input type, then the question has a special method of data entry.
+            }
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
+                //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
+            }
+        }
+        //adapter.updateNode(currentNode);
+        adapter.notifyDataSetChanged();
+
+    }
+*/
+
 }

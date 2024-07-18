@@ -603,6 +603,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             if (clickedNode.isExcludedFromMultiChoice()) {
                 deselectAllOptions(groupPosition);
                 clickedNode.setSelected(true);
+                familyHistoryMap.getOption(groupPosition).setSelected(true);
             } else {
                 clickedNode.toggleSelected();
                 updateRootSelectionStatus(rootNode);
@@ -645,50 +646,6 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
-
-    /*private void deselectAllOptions(int groupPosition) {
-        Node rootNode = familyHistoryMap.getOption(groupPosition);
-        Log.d(TAG, "kkdeselectAllOptions: rootnode optionslist : "+rootNode.getOptionsList().size());
-        for (Node option : rootNode.getOptionsList()) {
-            option.setUnselected();
-            for (Node subOption : option.getOptionsList()) {
-                Log.d(TAG, "kkdeselectAllOptions: option optionslist : "+option.getOptionsList().size());
-                subOption.setUnselected();
-            }
-        }
-    }
-*/
-/*
-    private void deselectAllOptions(int groupPosition) {
-        Node rootNode = familyHistoryMap.getOption(groupPosition);
-        if (rootNode == null) {
-            Log.e(TAG, "deselectAllOptions: rootNode is null for groupPosition: " + groupPosition);
-            return;
-        }
-
-        List<Node> rootOptionsList = rootNode.getOptionsList();
-        if (rootOptionsList == null) {
-            Log.e(TAG, "deselectAllOptions: rootOptionsList is null for rootNode: " + rootNode);
-            return;
-        }
-
-        Log.d(TAG, "deselectAllOptions: rootNode optionsList size: " + rootOptionsList.size());
-        for (Node option : rootOptionsList) {
-            option.setUnselected();
-            List<Node> subOptionsList = option.getOptionsList();
-            if (subOptionsList != null) {
-                Log.d(TAG, "deselectAllOptions: option subOptionsList size: " + subOptionsList.size());
-                for (Node subOption : subOptionsList) {
-                    subOption.setUnselected();
-                }
-            } else {
-                Log.d(TAG, "deselectAllOptions: subOptionsList is null for option: " + option);
-            }
-        }
-
-        adapter.notifyDataSetChanged();
-    }
-*/
 
     private void deselectAllOptions(int groupPosition) {
         Node rootNode = familyHistoryMap.getOption(groupPosition);
