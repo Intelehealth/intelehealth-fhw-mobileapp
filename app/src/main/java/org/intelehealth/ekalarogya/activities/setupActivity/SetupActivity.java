@@ -606,6 +606,7 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void empty_spinner(String value) {
+        unselectExistingRadioButtons();
 
         if (value.equalsIgnoreCase("state")) {
             List<String> list_district = new ArrayList<>();
