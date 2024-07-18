@@ -132,15 +132,28 @@ class PatientPersonalInfoFragment :
     private fun updateGuardianVisibility(year: Int, month: Int, days: Int) {
         val visibility = AgeUtils.isGuardianRequired(year, month, days)
         Timber.d { "Year[$year]/Month[$month]/Day[$days] => visibility[$visibility]" }
-        binding.llGuardianName.isVisible = visibility
-        binding.llGuardianType.isVisible = visibility
-        if (!visibility) {
-            binding.personalConfig = binding.personalConfig?.let {
-                it.guardianName?.isEnabled = false
-                it.guardianType?.isEnabled = false
-                return@let it
-            }
+        binding.personalConfig?.let {
+            Timber.d { "personalConfig => visibility[$visibility]" }
+            it.guardianName?.isEnabled = it.guardianName?.isEnabled?.let { enabled ->
+                if (visibility) enabled else false
+            } ?: visibility
+
+            it.guardianType?.isEnabled = it.guardianType?.isEnabled?.let { enabled ->
+                if (visibility) enabled else false
+            } ?: visibility
+
+            binding.llGuardianName.isVisible = it.guardianName?.isEnabled ?: visibility
+            binding.llGuardianType.isVisible = it.guardianType?.isEnabled ?: visibility
+            binding.personalConfig = it
         }
+
+//        if (!visibility) {
+//            binding.personalConfig = binding.personalConfig?.let {
+//                it.guardianName?.isEnabled = false
+//                it.guardianType?.isEnabled = false
+//                return@let it
+//            }
+//        }
     }
 
     private fun bindDobValue(calendar: Calendar) {
