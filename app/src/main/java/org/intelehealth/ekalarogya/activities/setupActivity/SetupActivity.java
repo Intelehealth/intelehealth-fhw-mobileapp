@@ -368,6 +368,8 @@ public class SetupActivity extends AppCompatActivity {
                 } else {
                     empty_spinner("sanch");
                 }
+
+                unselectExistingRadioButtons();
             }
 
             @Override
