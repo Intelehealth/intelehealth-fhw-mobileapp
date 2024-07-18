@@ -428,7 +428,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             stateAppointmentPrescription.setVisibility(View.VISIBLE);
             layoutPrescButtons.setVisibility(View.GONE);
             tvPrescStatus.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary1));
-            ivPrescription.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_prescription_green));
+//            ivPrescription.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_prescription_green));
             fabHelp.setVisibility(View.GONE);
             tvPrescStatus.setText(getResources().getString(R.string.received) + " " + prescription_received_time);
 

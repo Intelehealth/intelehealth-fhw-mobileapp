@@ -1048,9 +1048,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="3sp"
-                                android:textColor="@color/colorPrimary"
                                 android:text="@string/follow_up_date"
                                 android:textAppearance="@style/blur_txtview"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="@null" />
 
                             <TextView
