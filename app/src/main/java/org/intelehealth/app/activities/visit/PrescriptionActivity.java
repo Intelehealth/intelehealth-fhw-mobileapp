@@ -116,6 +116,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -207,6 +208,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         setDataToView();
         expandableCardVisibilityHandling();
     }
+
+    private FeatureActiveStatus mFeatureActiveStatus;
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
+        }
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -591,9 +603,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
@@ -1812,7 +1824,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     }
                 }
                 default -> {
-                   flag = 0;
+                    flag = 0;
                 }
             }
         }
@@ -2450,7 +2462,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2777,9 +2789,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.adapter.DialogSimpleListAdapter;
@@ -100,7 +100,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
     private View mRootView;
-    LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mSBPLinearLayout, mDBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
 
     private List<PatientVital> mPatientVitalList;
     public VitalCollectionFragment() {
@@ -179,9 +179,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
 
-        mBMILinearLayout = mRootView.findViewById(R.id.ll_bmi);
+        mBMICardView = mRootView.findViewById(R.id.ll_bmi);
         if (float_ageYear_Month <= 19)
-            mBMILinearLayout.setVisibility(View.GONE);
+            mBMICardView.setVisibility(View.GONE);
         mBMITextView = mRootView.findViewById(R.id.tv_bmi_value);
         mBmiStatusTextView = mRootView.findViewById(R.id.tv_bmi_status);
 
@@ -232,25 +232,25 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mSubmitButton = mRootView.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
         mSubmitButton.setClickable(true);
-        mHeightLinearLayout = mRootView.findViewById(R.id.ll_height_container);
+        mHeightCardView = mRootView.findViewById(R.id.ll_height_container);
 
-        mWeightLinearLayout = mRootView.findViewById(R.id.ll_weight_container);
+        mWeightCardView = mRootView.findViewById(R.id.ll_weight_container);
 
-        mBMILinearLayout = mRootView.findViewById(R.id.ll_bmi);
+        mBMICardView = mRootView.findViewById(R.id.ll_bmi);
 
-        mSBPLinearLayout = mRootView.findViewById(R.id.ll_sbp_container);
+        mSBPCardView = mRootView.findViewById(R.id.ll_sbp_container);
 
-        mDBPLinearLayout = mRootView.findViewById(R.id.ll_dbp_container);
+        mDBPCardView = mRootView.findViewById(R.id.ll_dbp_container);
 
-        mPulseLinearLayout = mRootView.findViewById(R.id.ll_pulse_container);
+        mPulseCardView = mRootView.findViewById(R.id.ll_pulse_container);
 
-        mTemperatureLinearLayout = mRootView.findViewById(R.id.ll_temperature_container);
+        mTemperatureCardView = mRootView.findViewById(R.id.ll_temperature_container);
 
-        mSpo2LinearLayout = mRootView.findViewById(R.id.ll_spo2_container);
+        mSpo2CardView = mRootView.findViewById(R.id.ll_spo2_container);
 
-        mRespiratoryRateLinearLayout = mRootView.findViewById(R.id.ll_respiratory_rate_container);
+        mRespiratoryCardView = mRootView.findViewById(R.id.ll_respiratory_rate_container);
 
-        mBloodGroupLinearLayout = mRootView.findViewById(R.id.ll_blood_group_container);
+        mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
 
 
         //showHeightListing();
@@ -338,16 +338,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private void updateUI() {
-        mHeightLinearLayout.setVisibility(View.GONE);
-        mWeightLinearLayout.setVisibility(View.GONE);
-        mBMILinearLayout.setVisibility(View.GONE);
-        mSBPLinearLayout.setVisibility(View.GONE);
-        mDBPLinearLayout.setVisibility(View.GONE);
-        mPulseLinearLayout.setVisibility(View.GONE);
-        mTemperatureLinearLayout.setVisibility(View.GONE);
-        mSpo2LinearLayout.setVisibility(View.GONE);
-        mRespiratoryRateLinearLayout.setVisibility(View.GONE);
-        mBloodGroupLinearLayout.setVisibility(View.GONE);
+        mHeightCardView.setVisibility(View.GONE);
+        mWeightCardView.setVisibility(View.GONE);
+        mBMICardView.setVisibility(View.GONE);
+        mSBPCardView.setVisibility(View.GONE);
+        mDBPCardView.setVisibility(View.GONE);
+        mPulseCardView.setVisibility(View.GONE);
+        mTemperatureCardView.setVisibility(View.GONE);
+        mSpo2CardView.setVisibility(View.GONE);
+        mRespiratoryCardView.setVisibility(View.GONE);
+        mBloodGroupCardView.setVisibility(View.GONE);
         /*if (float_ageYear_Month <= 19)
             bmiLinearLayout.setVisibility(View.GONE);
         else
@@ -357,35 +357,35 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
-                mHeightLinearLayout.setVisibility(View.VISIBLE);
-                mHeightLinearLayout.setTag(patientVital);
+                mHeightCardView.setVisibility(View.VISIBLE);
+                mHeightCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
-                mWeightLinearLayout.setVisibility(View.VISIBLE);
-                mWeightLinearLayout.setTag(patientVital);
+                mWeightCardView.setVisibility(View.VISIBLE);
+                mWeightCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
-                mBMILinearLayout.setVisibility(View.VISIBLE);
-                mBMILinearLayout.setTag(patientVital);
+                mBMICardView.setVisibility(View.VISIBLE);
+                mBMICardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
-                mSBPLinearLayout.setVisibility(View.VISIBLE);
-                mSBPLinearLayout.setTag(patientVital);
+                mSBPCardView.setVisibility(View.VISIBLE);
+                mSBPCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
-                mDBPLinearLayout.setVisibility(View.VISIBLE);
-                mDBPLinearLayout.setTag(patientVital);
+                mDBPCardView.setVisibility(View.VISIBLE);
+                mDBPCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
-                mPulseLinearLayout.setVisibility(View.VISIBLE);
-                mPulseLinearLayout.setTag(patientVital);
+                mPulseCardView.setVisibility(View.VISIBLE);
+                mPulseCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
-                mTemperatureLinearLayout.setVisibility(View.VISIBLE);
-                mTemperatureLinearLayout.setTag(patientVital);
+                mTemperatureCardView.setVisibility(View.VISIBLE);
+                mTemperatureCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
-                mSpo2LinearLayout.setVisibility(View.VISIBLE);
-                mSpo2LinearLayout.setTag(patientVital);
+                mSpo2CardView.setVisibility(View.VISIBLE);
+                mSpo2CardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.RESPIRATORY_RATE)) {
-                mRespiratoryRateLinearLayout.setVisibility(View.VISIBLE);
-                mRespiratoryRateLinearLayout.setTag(patientVital);
+                mRespiratoryCardView.setVisibility(View.VISIBLE);
+                mRespiratoryCardView.setTag(patientVital);
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BLOOD_TYPE)) {
-                mBloodGroupLinearLayout.setVisibility(View.VISIBLE);
-                mBloodGroupLinearLayout.setTag(patientVital);
+                mBloodGroupCardView.setVisibility(View.VISIBLE);
+                mBloodGroupCardView.setTag(patientVital);
             }
         }
         LinearLayout otherBlockLinearLayout = mRootView.findViewById(R.id.ll_other_info_block_container);
@@ -443,7 +443,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String heightVal = mHeightEditText.getText().toString().trim();
 
         String weight = mWeightEditText.getText().toString().trim();
-        if (mHeightLinearLayout.getTag() != null && ((PatientVital) mHeightLinearLayout.getTag()).isMandatory() && heightVal.isEmpty()) {
+        if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
             mHeightErrorTextView.setText(getString(R.string.error_field_required));
             mHeightErrorTextView.setVisibility(View.VISIBLE);
             //mHeightEditText.requestFocus();
@@ -486,7 +486,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //if (editText.getId() == R.id.etv_weight) {
         String wightVal = mWeightEditText.getText().toString().trim();
         String height = mHeightEditText.getText().toString().trim();
-        if (mWeightLinearLayout.getTag() != null && ((PatientVital) mWeightLinearLayout.getTag()).isMandatory() && wightVal.isEmpty()) {
+        if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
             mWeightErrorTextView.setText(getString(R.string.error_field_required));
             mWeightErrorTextView.setVisibility(View.VISIBLE);
             //mWeightEditText.requestFocus();
@@ -531,7 +531,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String bpDia = mBpDiaEditText.getText().toString().trim();
         if (bpSysVal.isEmpty()) {
-            if (mSBPLinearLayout.getTag() != null && ((PatientVital) mSBPLinearLayout.getTag()).isMandatory()) {
+            if (mSBPCardView.getTag() != null && ((PatientVital) mSBPCardView.getTag()).isMandatory()) {
                 mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                 mBpSysErrorTextView.setVisibility(View.VISIBLE);
                 //mBpSysEditText.requestFocus();
@@ -600,7 +600,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String bpSys = mBpSysEditText.getText().toString().trim();
 
         if (bpDiaVal.isEmpty()) {
-            if (mDBPLinearLayout.getTag() != null && ((PatientVital) mDBPLinearLayout.getTag()).isMandatory()) {
+            if (mDBPCardView.getTag() != null && ((PatientVital) mDBPCardView.getTag()).isMandatory()) {
                 mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
                 mBpDiaErrorTextView.setVisibility(View.VISIBLE);
                 //mBpDiaEditText.requestFocus();
@@ -655,7 +655,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //if (editText.getId() == R.id.etv_pulse) {
         String pulseVal = mPulseEditText.getText().toString().trim();
         if (pulseVal.isEmpty()) {
-            if (mPulseLinearLayout.getTag() != null && ((PatientVital) mPulseLinearLayout.getTag()).isMandatory()) {
+            if (mPulseCardView.getTag() != null && ((PatientVital) mPulseCardView.getTag()).isMandatory()) {
                 mPulseErrorTextView.setText(getString(R.string.error_field_required));
                 mPulseErrorTextView.setVisibility(View.VISIBLE);
                 //mPulseEditText.requestFocus();
@@ -690,7 +690,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //if (editText.getId() == R.id.etv_temperature) {
         String temperatureVal = mTemperatureEditText.getText().toString().trim();
         if (temperatureVal.isEmpty()) {
-            if (mTemperatureLinearLayout.getTag() != null && ((PatientVital) mTemperatureLinearLayout.getTag()).isMandatory()) {
+            if (mTemperatureCardView.getTag() != null && ((PatientVital) mTemperatureCardView.getTag()).isMandatory()) {
                 mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
                 mTemperatureErrorTextView.setVisibility(View.VISIBLE);
                 // mTemperatureEditText.requestFocus();
@@ -739,7 +739,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //if (editText.getId() == R.id.etv_spo2) {
         String spo2Val = mSpo2EditText.getText().toString().trim();
         if (spo2Val.isEmpty()) {
-            if (mSpo2LinearLayout.getTag() != null && ((PatientVital) mSpo2LinearLayout.getTag()).isMandatory()) {
+            if (mSpo2CardView.getTag() != null && ((PatientVital) mSpo2CardView.getTag()).isMandatory()) {
                 mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
                 mSpo2ErrorTextView.setVisibility(View.VISIBLE);
                 //mSpo2EditText.requestFocus();
@@ -773,7 +773,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String respRateVal = mRespEditText.getText().toString().trim();
 
         if (respRateVal.isEmpty()) {
-            if (mRespiratoryRateLinearLayout.getTag() != null && ((PatientVital) mRespiratoryRateLinearLayout.getTag()).isMandatory()) {
+            if (mRespiratoryCardView.getTag() != null && ((PatientVital) mRespiratoryCardView.getTag()).isMandatory()) {
                 mRespErrorTextView.setText(getString(R.string.error_field_required));
                 mRespErrorTextView.setVisibility(View.VISIBLE);
                 //mRespEditText.requestFocus();
@@ -806,7 +806,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String bloodGroup = mBloodGroupTextView.getText().toString().trim();
 
-        if (mBloodGroupLinearLayout.getTag() != null && ((PatientVital) mBloodGroupLinearLayout.getTag()).isMandatory() && bloodGroup.isEmpty()) {
+        if (mBloodGroupCardView.getTag() != null && ((PatientVital) mBloodGroupCardView.getTag()).isMandatory() && bloodGroup.isEmpty()) {
             mBloodGroupErrorTextView.setText(getString(R.string.error_field_required));
             mBloodGroupErrorTextView.setVisibility(View.VISIBLE);
             //mPulseEditText.requestFocus();
@@ -1486,7 +1486,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
 
             try {
-                PatientVital patientVital = (PatientVital) mHeightLinearLayout.getTag();
+                PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
                 if ((patientVital!=null && patientVital.isMandatory()) || !results.getHeight().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -1503,7 +1503,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mWeightLinearLayout.getTag();
+                patientVital = (PatientVital) mWeightCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getWeight().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
@@ -1516,7 +1516,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mPulseLinearLayout.getTag();
+                patientVital = (PatientVital) mPulseCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getPulse().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.PULSE);
@@ -1529,7 +1529,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mSBPLinearLayout.getTag();
+                patientVital = (PatientVital) mSBPCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getBpsys().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
@@ -1542,7 +1542,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mDBPLinearLayout.getTag();
+                patientVital = (PatientVital) mDBPCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getBpdia().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
@@ -1555,7 +1555,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mTemperatureLinearLayout.getTag();
+                patientVital = (PatientVital) mTemperatureCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getTemperature().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
@@ -1568,7 +1568,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mRespiratoryRateLinearLayout.getTag();
+                patientVital = (PatientVital) mRespiratoryCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getResp().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
@@ -1581,7 +1581,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mSpo2LinearLayout.getTag();
+                patientVital = (PatientVital) mSpo2CardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getSpo2().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.SPO2);
@@ -1594,7 +1594,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDAO.updateObs(obsDTO);
                 }
 
-                patientVital = (PatientVital) mBloodGroupLinearLayout.getTag();
+                patientVital = (PatientVital) mBloodGroupCardView.getTag();
                if ((patientVital!=null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
@@ -1634,7 +1634,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         } else {
             ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
 
-            PatientVital patientVital = (PatientVital) mHeightLinearLayout.getTag();
+            PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getHeight().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -1656,7 +1656,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mWeightLinearLayout.getTag();
+            patientVital = (PatientVital) mWeightCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getWeight().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
@@ -1672,7 +1672,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mPulseLinearLayout.getTag();
+            patientVital = (PatientVital) mPulseCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getPulse().isEmpty()) {
 
                 obsDTO = new ObsDTO();
@@ -1689,7 +1689,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mSBPLinearLayout.getTag();
+            patientVital = (PatientVital) mSBPCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getBpsys().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
@@ -1705,7 +1705,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mDBPLinearLayout.getTag();
+            patientVital = (PatientVital) mDBPCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getBpdia().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
@@ -1721,7 +1721,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mTemperatureLinearLayout.getTag();
+            patientVital = (PatientVital) mTemperatureCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getTemperature().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
@@ -1737,7 +1737,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mRespiratoryRateLinearLayout.getTag();
+            patientVital = (PatientVital) mRespiratoryCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getResp().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
@@ -1753,7 +1753,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mSpo2LinearLayout.getTag();
+            patientVital = (PatientVital) mSpo2CardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getSpo2().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.SPO2);
@@ -1769,7 +1769,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
             }
 
-            patientVital = (PatientVital) mBloodGroupLinearLayout.getTag();
+            patientVital = (PatientVital) mBloodGroupCardView.getTag();
            if ((patientVital!=null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);

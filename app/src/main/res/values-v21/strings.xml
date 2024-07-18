@@ -15,10 +15,8 @@
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
-    <string name="sync_strated">"Sync started! "</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
-    <string name="sync_completed">Sync done!</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -28,14 +26,12 @@
     <string name="ui2_no_information">No information</string>
     <string name="confirm_visit_reason">Confirm visit reason?</string>
     <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
-    <string name="check_up_reason">Check-up reason</string>
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
     <string name="enter_occupation_txt">Enter Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
-    <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
     <string name="confirm_end_visit_reason">Close this visit?</string>
     <string name="confirm_end_visit_reason_message">Prescription should be shared before closing visit, are you sure you want to close the visit?</string>
@@ -54,7 +50,6 @@
     <string name="duration_type_validation_txt">Please select the duration type</string>
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
-    <string name="describe_lbl">Describe</string>
     <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
     <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
@@ -68,7 +63,6 @@
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
     <string name="select_image_hdr">Select Image</string>
-    <string name="no_additional_data">No Data</string>
     <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
@@ -86,8 +80,6 @@
     <string name="username_sent_title">Username Sent</string>
     <string name="username_sent_desc">Your username has been sent via SMS to your registered mobile number.</string>
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
-    <string name="no_of_days">No. of days</string>
-    <string name="timings">Timings</string>
     <string name="u2022_strength">• Strength</string>
     <string name="u2022_no_of_days">• No. of days</string>
     <string name="u2022_timings">• Timings</string>
@@ -119,4 +111,5 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
+    <string name="sync">Refresh</string>
 </resources>

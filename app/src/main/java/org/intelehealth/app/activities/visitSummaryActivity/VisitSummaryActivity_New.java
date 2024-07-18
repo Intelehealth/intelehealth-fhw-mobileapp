@@ -429,11 +429,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
-
+    private FeatureActiveStatus mFeatureActiveStatus;
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
             findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
             findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
             findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
@@ -4488,7 +4489,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus);
 
 
         if (isRespiratory) {

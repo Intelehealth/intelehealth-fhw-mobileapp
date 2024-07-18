@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Intelehealth</string>
-    <string name="notification_title">Intelehealth</string>
-    <string name="notification_title_1">Application is active!</string>
     //Generic
-    <string name="generic_the_flipping_word_next">Next</string>
-    <string name="hint_required">Required</string>
-    <string name="hint_optional">Optional</string>
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>
     <string name="generic_cancel">Cancel</string>
@@ -14,131 +9,60 @@
     <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
-    <string name="action_sms">Sms</string>
     <string name="action_home">Home</string>
-    <string name="action_settings">Settings</string>
-    <string name="generic_warning">Warning!</string>
-    <string name="generic_update">Update</string>
-    <string name="generic_deleted">Deleted</string>
 
 
     //Database Schema Names
-    <string name="db_first_name" translatable="false">first_name</string>
-    <string name="db_middle_name" translatable="false">middle_name</string>
-    <string name="db_last_name" translatable="false">last_name</string>
-    <string name="db_dob" translatable="false">date_of_birth</string>
-    <string name="db_phone_number" translatable="false">phone_number</string>
-    <string name="db_address_line1" translatable="false">address1</string>
-    <string name="db_address_line2" translatable="false">address2</string>
-    <string name="db_city" translatable="false">city_village</string>
-    <string name="db_state" translatable="false">state_province</string>
-    <string name="db_postal_code" translatable="false">postal_code</string>
-    <string name="db_country" translatable="false">country</string>
-    <string name="db_gender" translatable="false">gender</string>
-    <string name="db_patient_id1" translatable="false">patient_identifier1</string>
-    <string name="db_patient_id2" translatable="false">patient_identifier2</string>
-    <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
     <string name="title_activity_login">Intelehealth</string>
-    <string name="prompt_email">Username</string>
-    <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
-    <string name="action_sign_in">Login</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="url_invalid">Check your URL.</string>
-    <string name="prefix_invalid">Select a different prefix!</string>
-    <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_password_not_exist">This password does not exist.</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">Please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
-    <string name="error_field_required_non_adult">This field is required for below 18 years old.</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
     <string name="error_location_not_selected">Please select a value from the location dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
-    <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
-    </string>
-    <string name="device_id">Device ID:</string>
-    <string name="identification_screen_prompt_time">Time:</string>
-    <string name="identification_screen_picker_hours" translatable="false">Hours</string>
-    <string name="identification_screen_picker_minute" translatable="false">Minutes</string>
-    <string name="cant_login_user">Can\'t log in?</string>
-    <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
-    <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
 
     //Home Screen (after login)
     <string name="title_home_screen">Home</string>
-    <string name="button_new_pt">New Patient</string>
-    <string name="button_find_pt">Find Patient</string>
-    <string name="button_diagnostic_tests">Diagnostic Tests</string>
-    <string name="button_active_pt">Active Patients</string>
-    <string name="menu_option_sync">Refresh Data</string>
-    <string name="menu_option_settings">Settings</string>
-    <string name="menu_option_end_of_day">End of Day</string>
     <string name="menu_option_logout">Logout</string>
 
 
     //Identification Screen
     <string name="title_activity_identification">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First name *</string>
-    <string name="identification_screen_prompt_middle_name">Middle name</string>
-    <string name="identification_screen_prompt_last_name">Last name *</string>
-    <string name="identification_screen_prompt_address">Address line 1</string>
-    <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
-    <string name="admin_password_dialog_heading">Enter Admin Password</string>
-    <string name="identification_screen_prompt_gender">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_checkbox_other">Other</string>
-    <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City</string>
     <string name="identification_screen_prompt_state">State</string>
     <string name="identification_screen_prompt_district">District</string>
-    <string name="identification_screen_prompt_caste">Caste</string>
-    <string name="identification_screen_prompt_economic_status">Economic status</string>
-    <string name="identification_screen_prompt_education">Education level</string>
     <string name="identification_screen_prompt_country">Country</string>
     <string name="identification_screen_prompt_postal_code">Postal code</string>
-    <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
-    <string name="identification_screen_prompt_occupation">Occupation</string>
-    <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
-    <string name="identification_screen_error_data_fields">Error: data fields are not formatted correctly</string>
-    <string name="identification_screen_dialog_age">Please enter age in years</string>
-    <string name="identification_screen_dialog_error_dob">Date of birth is set for date after today</string>
-    <string name="identification_screen_dialog_error_gender">Gender is not selected</string>
-    <string name="identification_screen_required_fields">Please enter required fields</string>
-    <string name="identification_screen_error_dob">Enter a valid DOB</string>
-    <string name="identification_screen_error_age">Enter a valid age</string>
     <string name="identification_screen_text_years"> years </string>
     <string name="identification_screen_text_months"> months</string>
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">Active Visits</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>
-    <string name="title_activity_search_patient">Patient Lookup</string>
 
     //Complaint Node Screen
-    <string name="title_activity_complaint_select">Select Complaints</string>
-    <string name="title_activity_complaint_questions">Answer All Questions</string>
     <string name="title_activity_complaint_node">Select Complaints</string>
-    <string name="complaint_category_selected">Selected Categories:</string>
-    <string name="complaint_complaint_selected">Selected Complaints:</string>
     <string name="complaint_dialog_title">Reason for visit</string>
     <string name="complaint_required">Complaint must be selected!</string>
 
     //Question Node Screen
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
-    <string name="question_answer_all">Are you sure you have answered all questions.</string>
     <string name="question_answer_all_phy_exam">Please answer all general exam questions.</string>
     <string name="question_duration_picker">Please enter duration</string>
     <string name="question_text_input">Please enter text</string>
@@ -166,7 +90,6 @@
     //Patient Search Screen
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
-    <string name="alert_none_found">Please check username and password entered</string>
 
     //Past Medical History Screen
     <string name="title_activity_patient_history">Past Medical History</string>
@@ -174,106 +97,46 @@
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
-    <string name="title_activity_patient_summary">Visit Summary</string>
     <string name="visit_summary_temperature">Temperature(C)</string>
-    <string name="visit_summary_pulseox">SpO2 (%)</string>
-    <string name="visit_summary_hw_on_duty">CHW On Duty</string>
-    <string name="visit_summary_vitals_heading">Vitals</string>
-    <string name="visit_summary_height_heading">Height (cm)</string>
-    <string name="visit_summary_weight">Weight (kg)</string>
     <string name="visit_summary_bmi">BMI</string>
     <string name="visit_summary_bp">BP</string>
     <string name="visit_summary_pulse">Pulse</string>
-    <string name="visit_summary_previous_reports">Previous Reports</string>
     <string name="visit_summary_medical_history">Medical history</string>
     <string name="visit_summary_family_history">Family history</string>
     <string name="visit_summary_on_examination">On examination</string>
     <string name="visit_summary_complaint">Reason for visit</string>
     <string name="visit_summary_vitals">Vitals</string>
-    <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
-    <string name="visit_summary_diagnosis">Diagnosis</string>
-    <string name="visit_summary_advice">Medical Advice</string>
-    <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
-    <string name="visit_summary_additional_comments">Additional Comments</string>
-    <string name="visit_summary_heading_name">Name</string>
-    <string name="visit_summary_heading_id">ID</string>
-    <string name="visit_summary_button_download">Download</string>
     <string name="visit_summary_button_upload">Upload</string>
-    <string name="name_button_download">button_download</string>
-    <string name="visit_summary_follow_up_date">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
     <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
 
 
     //Diagnostic Tests Screen
-    <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
     //Physical Exam Dialog
     <string name="wash_hands">Remember to wash your hands</string>
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail">Patient information</string>
     <string name="button_history">Patient History</string>
     <string name="title_activity_patient_detail">Patient Details</string>
-    <string name="header_medical_history">History</string>
-    <string name="button_new_visit">Start new visit</string>
-    <string name="header_previous_visits">Previous visits</string>
-    <string name="header_patient_history">Medical history</string>
-    <string name="header_family_history">Family history</string>
-    <string name="string_no_hist">No history of illness</string>
-    <string name="row_patient_id">Patient ID</string>
-    <string name="row_dob">DOB</string>
-    <string name="row_age">Age</string>
-    <string name="row_gender">Gender</string>
-    <string name="row_address">Address</string>
-    <string name="row_phone_number">Phone number</string>
-    <string name="row_open_visit">Click to open visit</string>
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
-        history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync">Data &amp; Refresh</string>
-
-    <string name="pref_title_server_url">Server URL</string>
-    <string name="pref_title_id_prefix">Location Prefix</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="toast_crash">Application error encountered; report sent</string>
 
 
-    <string name="title_activity_setup">Setup</string>
-
-    <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_today_patient">Today\'s Visits</string>
     <string name="title_activity_additional_documents">Additional Documents</string>
     <string name="title_activity_video_library">Video Library</string>
     <string name="visit_summary_patient_details">Visit details</string>
 
     <!--Setup Activity-->
-    <string name="setup_internet">A strong Internet connection is required for setup.</string>
-    <string name="generic_manual_entry">Manual Entry</string>
-    <string name="generic_erase_redo">Erase and Re-Do</string>
-    <string name="visit_summary_edit_vitals">You can re-do the vitals from the vitals screen</string>
 
     //Camera Permissions
     <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
@@ -301,71 +164,39 @@
     //Camera Dialog
     <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
 
+
     <!--Offline Login Errors-->
-    <string name="offline_credentials_unavailable">Offline Login is not available.</string>
-    <string name="offline_user_does_not_match">User does not match.</string>
-    <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
     <string name="admin_authentication_not_possible">Unable to authenticate.</string>
 
-    <string name="login_location_select">Select location</string>
     <string name="prompt_licensekey">License key</string>
     <string name="setup_use_demo_mindmap">Use demo protocols</string>
     <string name="setup_download_mindmap">Download protocols</string>
 
     <string name="please_wait_progress">Please Wait</string>
-    <string name="downloading_protocols">Downloading protocols</string>
     <string name="logging_in">Logging in</string>
     <string name="error_downloading_protocols">Error Downloading Mind Maps</string>
 
     //Sync strings
-    <string name="sync_stopped">Stopped</string>
-    <string name="sync_in_progress">In progress</string>
-    <string name="sync_complete">Complete</string>
-    <string name="sync_error">Error : No such status</string>
 
-    <string name="id_number">ID Number</string>
-    <string name="uploading">Uploading</string>
     <string name="downloading">Downloading...</string>
 
     <string name="visit">Visit</string>
-    <string name="visit_update">Visit Update</string>
     <string name="patient">Patient</string>
-    <string name="patient_update">Patient Update</string>
-    <string name="patient_images">Patient Profile Image</string>
-    <string name="visit_images">Visit Images</string>
     <string name="prescription">Prescription</string>
 
-    <string name="error_no_data">Please download first before attempting to end the visit.</string>
-    <string name="error_phone_number">Phone number can\'t be empty</string>
     <string name="action_end_visit">End Visit</string>
-
-    <string name="error_sms">SMS failed, please try again later!</string>
-    <string name="sms_success">SMS Sent!</string>
 
     <string name="question_update_details">Do you want to update details?</string>
 
-    <string name="backup_completed">Backup Completed!</string>
-
-    <string name="hide_text">HIDE</string>
-    <string name="show_text">SHOW</string>
-
-    <string name="new_patient">New Patient</string>
     <string name="find_patient">Find Patients</string>
-    <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
     <string name="error_admin_password">Admin Password Wrong</string>
     <string name="error_no_file">No Files in this directory</string>
-    <string name="error_no_camera">No camera installed.</string>
-    <string name="error_delete">Error in deleting</string>
-    <string name="error_offline_login">Offline Login Unsuccessful</string>
     <string name="success_offline_login">Offline Login Successful</string>
     <string name="invalidate_offline_login">Offline Login Invalidated</string>
 
-    <string name="patient_upload_error">Patient has not been uploaded</string>
     <string name="patient_not_registered">Patient not registered</string>
-
-    <string name="action_sync_all">Refresh Data</string>
 
     <!-- Vitals Screen Error-->
 
@@ -381,76 +212,22 @@
     <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->
-    <string name="exit_survey_label">How was your experience?</string>
-    <string name="exit_survey_prompt">Enter your comments here</string>
-    <string name="exit_survey_skip">SKIP</string>
-    <string name="exit_survey_submit">Submit</string>
     <string name="exit_survey_toast">Please select a smiley before submitting</string>
 
 
     <!--DB Backup-->
 
-    <string name="db_backup_complete">Database Backup Complete!</string>
-    <string name="db_restore_complete">Database Restore Complete!</string>
-
     <!--Cloud Backup-->
 
-    <string name="cloud_upload_header">Uploading database to cloud</string>
     <string name="no_network">Internet connection not available</string>
-    <string name="no_data">No data to backup!</string>
-    <string name="local_backup_failed">Local backup not available</string>
-    <string name="local_backup_restore">Restoring from local backup</string>
-
-    <string name="cloud_restore_header">Restore form cloud</string>
-    <string name="restore_data">Restoring data</string>
-    <string name="error_existing_data">Database contains data, cannot restore!</string>
-    <string name="cloud_download_data">Downloading database from cloud</string>
-
-    <string name="force_restore_header">Restoring data from cloud(Forced)</string>
-
-    <string name="database_upload">Database Upload</string>
-    <string name="database_uploading">Database Uploading</string>
-    <string name="database_upload_complete">Database Upload Complete</string>
-    <string name="database_upload_failed">Database Upload Failed</string>
-
-    <string name="db_backup_unavailable">Database backup not available</string>
-    <string name="db_file_write_error">Error writing backup file</string>
-
-    <string name="local_restore_alert_title">Restore backup</string>
-    <string name="local_restore_alert_message">A local backup has been found. Do you want to restore?</string>
 
 
     <!--Image Download Service-->
-    <string name="image_downloading_service_title">Downloading</string>
-    <string name="image_downloading_service_message">Downloading Image Data</string>
-    <string name="image_downloading_service_complete_title">Image Data Download Complete</string>
-    <string name="image_downloading_service_complete_message">All image files have been downloaded</string>
-    <string name="image_downloading_service_process_message">Downloaded</string>
-    <string name="error_img_unavailable">Image not available</string>
-    <string name="error_img_download_failed">Image Download failed</string>
 
     <!--Parse Validation User login-->
 
-    <string name="user_logged_in">Already logged in!</string>
-    <string name="user_logged_in_other_device">Already logged in.Please logout from other device.</string>
-    <string name="user_logged_out">Logged out from server</string>
-    <string name="user_login_check_success">Login Successful!</string>
-    <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
-    <string name="user_server_unreachable">Device Offline. Cannot check server for login verification</string>
-
-    <string name="title_activity_splash_acticity">SplashActicity</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_sync">ActivityRefresh</string>
-    <string name="title_activity_privacy_notice">Privacy Notice</string>
-    <string name="title_activity_visit_summary">VisitSummaryActivity</string>
-    <string name="title_activity_past_medical_history">PastMedicalHistoryActivity</string>
-    <string name="title_activity_patient_survey">PatientSurveyActivity</string>
-
     <!--Privacy Notice Activity-->
-    <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
-    <string name="sync_now">Refresh Now</string>
-    <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="patient_denies">Patient denies</string>
@@ -462,106 +239,45 @@
     <string name="invalid_url">Invalid URL</string>
     <string name="years">years</string>
     <string name="months">months</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
-    <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
-    <string name="economic_status">Economic status</string>
-    <string name="education_level">Education level</string>
-    <string name="caste">Caste</string>
-    <string name="previous_visits">Previous visits</string>
     <string name="accept">Accept</string>
-    <string name="reject">Reject</string>
     <string name="next">Next</string>
-    <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
-    <string name="enter_url">Enter URL</string>
-    <string name="choose_a_location_to_login">Choose a location to login</string>
     <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
-    <string name="please_enter_your_username_and_password">Please enter your username and password</string>
-    <string name="android_id">Android Id:</string>
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor Details</string>
-    <string name="health_worker">Health worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
-    <string name="sync">Refresh</string>
-    <string name="update_protocols">Update Protocols</string>
-    <string name="end_all_visit">End All Visit</string>
-    <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="unable_to_end">Unable to end</string>
-    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
-    <string name="active">Active</string>
-    <string name="closed">Closed</string>
 
     <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>
-    <string name="sync_notif_title">refresh</string>
-    <string name="sync_background_completed">refreshBackground Completed</string>
-    <string name="sync_not_available">Refresh not available</string>
-    <string name="please_connect_to_internet">Please connect to an internet connection!</string>
-    <string name="image_upload">ImageUpload</string>
-    <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to log out from the app?</string>
-    <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
-    <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
-    <string name="patient_data_upload">Patient Data Upload</string>
-    <string name="patient_image_download_notifi">Patient Image Download</string>
-    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
-    <string name="no_prior_visits">No prior visits.</string>
-    <string name="end_visit_notif">End visit</string>
-    <string name="visit_ended_notif">Visit ended</string>
     <string name="this_question_only_one_answer">This question can have only one answer.</string>
-    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
-    <string name="visit_data_upload">Visit Data Upload</string>
-    <string name="uploading_visit_data_notif">Uploading visit data</string>
-    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
-    <string name="failed_to_upload">failed to Uploaded</string>
-    <string name="upload_completed">Upload Completed</string>
-    <string name="check_your_connectivity">Check your connectivity</string>
-    <string name="download_from_doctor">Download from doctor</string>
-    <string name="prescription_downloaded">Prescription downloaded</string>
-    <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
-    <string name="patient_data_failed">Patient Data Failed</string>
-    <string name="privacy_notice_title">Privacy Notice</string>
-    <string name="no_data_active_patients">No patient records for this health worker found.</string>
-    <string name="syncing_visitDialog">Refreshing</string>
-    <string name="successfully_synced_notif">Successfully Refreshed</string>
-    <string name="languages">Languages</string>
-    <string name="change_languages">Change Languages</string>
-    <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
-    <string name="location_setup">Setup Location - </string>
-    <string name="today_visits">Today\'s Visits</string>
-    <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully refreshed</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Uploading...</string>
-    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
 
-    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
-    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
-    <string name="not_answered">Not answered</string>
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
@@ -571,84 +287,30 @@
 
     <!--New Ayu Related Changes-->
     <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
-    <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
-    <string name="swipe_up">Swipe to Up for Next</string>
-    <string name="swipe_down">Swipe to Down for previous</string>
     <string name="have_symptom">Do you have this Symptom?</string>
 
 
     <!--New UI changes 2.1-->
-    <string name="personal_information">Personal Information</string>
-    <string name="address_details">Address Details</string>
-    <string name="txt_others">Others</string>
-    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
-    <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help</string>
-    <string name="skip">skip</string>
-    <string name="start">Start</string>
-    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-    <string name="custom_setup">Setup</string>
-    <string name="demo_version">Demo version</string>
-    <string name="sample_text">sample text</string>
-    <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
-    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
-    <string name="active_defaultTag">Active</string>
     <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-    <string name="hello_my_name_is">"Hello, my name is \"</string>
-    <string name="i_need_assistance">\" and I need some assistance, Here are my details \"</string>
-    <string name="hello_my_name_is1">"Hello, my name is \"</string>
-    <string name="i_need_assistance1">\" and I need some assistance, Here are my details \"</string>
-    <string name="please_help">\" and I am not able to login, please help.</string>
-    <string name="economic_values_missing">Economic values are missing</string>
-    <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
-    <string name="Ayu_name">Ayu</string>
-    <string name="close_button">Close</string>
-    <string name="active_tag_patientDetail">" Active"</string>
-    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
-    <string name="device_ID">Device Id: </string>
-    <string name="enter_valid_license_url">Enter valid License Url</string>
     <string name="please_enter_url_and_key">Please enter URL and Key</string>
-    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
     <string name="permission_denied">Permission Denied\n</string>
     <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
     <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-    <string name="temperature_C">"Temperature(C): "</string>
-    <string name="temperature_F">"Temperature(F): "</string>
     <string name="no_history_family_found">No history of illness in family provided.</string>
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">Registration No: </string>
-    <string name="dr_phone_number">Phone Number: </string>
     <string name="dr_email">Email: </string>
     <string name="_visit_summary"> Visit Summary</string>
-    <string name="patient_id_">Patient Id: </string>
-    <string name="patient_name_title">Patient Name: </string>
-    <string name="patient_DOB">Patient DOB: </string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
-    <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
     <string name="days">days</string>
-    <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="enter_15_digits">Enter 15 digits</string>
-    <string name="enter_9_digits">Enter 9 digits</string>
-    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
-    <string name="view_print">View/Print</string>
-    <string name="refresh">Refresh</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
-    <string name="question_not_answered">Question not answered</string>
-    <string name="version_settings">Version 1.3</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="document_">"Document - "</string>
@@ -663,13 +325,9 @@
     <string name="per_Month">per Month</string>
     <string name="per_Year">per Year</string>
     <!--@lincon-->
-    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 
     //setup activity
-    <string name="setup_internet_available">A strong Internet connection is required for setup.</string>
     <string name="setup_internet_not_available">You are not connected to the Internet.</string>
-    <string name="generic_info">Info!</string>
-    <string name="speciality_cardview_title">Speciality</string>
     <string name="select_specialization_text">Select Specialization</string>
     <string name="please_select_specialization_msg">Please select specialization</string>
     <string name="chat_fab">chat fab</string>
@@ -683,163 +341,60 @@
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
     <!--    Strings for special Check-->
-    <string name="str_check_Odisha">Odisha</string>
-    <string name="str_check_Bukidnon">Bukidnon</string>
-    <string name="str_check_India">India</string>
-    <string name="str_check_UnitedStates">United States</string>
-    <string name="str_check_Philippines">Philippines</string>
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
-    <string name="location">Location</string>
 
     //Follow-up Visits
     <string name="title_follow_up">Follow Up Visits</string>
-    <string name="title_follow_reminder">Follow up visit reminder</string>
-    <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
-    <string name="due_on">Due Date:</string>
 
 
     //----------reset app strings-------------
-    <string name="reset_app">Reset App</string>
-    <string name="app_reset_toast">App Reset is done!</string>
     <string name="resetting_app_dialog">Resetting app</string>
     <string name="sure_to_reset_app">Are you sure you want to reset the app?</string>
 
     //Reset App functionality
     <string name="sync_failed">Sync Failed! Please try again later.</string>
-    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
     <string name="app_sync_dialog_title">Syncing app</string>
 
-    <string name="saving_captured_image">Saving Captured Image...</string>
-    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
-
     //Language Screen
-    <string name="choose_lang_title">Choose your Language</string>
-    <string name="save_button">Save</string>
-    <string name="selectLanguageToast">Please select Language</string>
-    <string name="config_not_found_alert_message">No config attribute found</string>
     <string name="error_login_title">Error Login</string>
     <string name="config_file_error">config file error</string>
-    <string name="internet_connected_txt">Connected to Internet!</string>
     <string name="not_connected_txt">Not connected to Internet!</string>
-    <string name="config_error">Config Error</string>
 
-    <string name="notification_message"></string>
-    <string name="ticker_text">Looking for new task</string>
-    <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
-    <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
-    <string name="country_matching_String_forIndia">India</string>
-    <string name="country_matching_String_forPhilippines">Philippines</string>
-    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
     <!--Prescription-->
-    <string name="prescription_age">Age</string>
-    <string name="prescription_gender">Gender</string>
-    <string name="prescription_address_contact">Address and Contact</string>
-    <string name="prescription_patient_id">Patient Id</string>
-    <string name="prescription_date_of_visit">Date of visit</string>
-    <string name="prescription_vitals">Vitals</string>
-    <string name="prescription_rr">Respiratory Rate</string>
     <string name="prescription_pulse">Pulse(bpm)</string>
-    <string name="prescription_bp">Blood Pressure</string>
-    <string name="prescription_bmi">BMI</string>
 
     <string name="prescription_systolic_blood_pressure">Systolic Blood Pressure</string>
     <string name="prescription_diastolic_blood_pressure">Diastolic Blood Pressure</string>
 
     <string name="prescription_wt">Weight(kg)</string>
     <string name="prescription_ht">Height(cm)</string>
-    <string name="prescription_pre_comp">Presenting complaint(s)</string>
-    <string name="prescription_diagnosis">Diagnosis</string>
-    <string name="prescription_med_plan">Medication(s) plan</string>
-    <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
-    <string name="prescription_general_advice">General Advice</string>
-    <string name="prescription_follow_up_date">Follow Up Date</string>
     <string name="prescription_temp_c">Temperature (C): </string>
     <string name="prescription_temp_f">Temperature (F): </string>
 
-    <string name="intro_text_1">
-        Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.
-        \n\n
-        Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
-    </string>
-
-    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
-    <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
-    <string name="patient_interaction">Patient Interaction</string>
-
     <string name="diagnosis">Diagnosis</string>
-    <string name="primary">Primary</string>
-    <string name="secondary">Secondary</string>
-    <string name="provisiona">Provisional</string>
-    <string name="confirmed">Confirmed</string>
-    <string name="recommended_medication">Recommended Medication</string>
-    <string name="medication">Medication</string>
     <string name="strength">Strength</string>
-    <string name="units">Units (eg: mg)</string>
-    <string name="units_tab">Units (eg: Tab/Syrup)</string>
-    <string name="for_duration">For Duration</string>
-    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>
     <string name="additional_instruction">Additional Instruction</string>
-    <string name="recommended_tests">Recommended Tests</string>
-    <string name="test">Test</string>
 
-    <string name="advice_or_refer_patient">Advice or Refer Patient</string>
-    <string name="notes">Notes</string>
-    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>
     <string name="follow_up">Follow Up</string>
-    <string name="sign_and_submit">Sign and Submit</string>
-    <string name="add_test">Add Test</string>
-    <string name="add_advice">Add Advice</string>
-    <string name="add_note">Add Note</string>
-    <string name="schedule_a_follow_up">Schedule a follow up</string>
     <string name="submit">Submit</string>
-    <string name="add_meds">Add Meds</string>
-    <string name="add_diagnosis">Add Diagnosis</string>
-    <string name="startVisitNote">Start Visit Note</string>
-
-    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
-    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
-    <string name="amount">Amount</string>
-    <string name="frequency">Frequency</string>
-    <string name="route_optional">Route (Optional)</string>
-    <string name="reason_optional">Reason (Optional)</string>
-    <string name="choose_a_date">Choose a date</string>
-    <string name="follow_up_remark">Follow up remark</string>
-    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
-    <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="type_to_search">Type to Search..</string>
 
     //----download protocol failed alert dialog-----------
-    <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
 
     <!--Appointment-->
     <string name="book_appointment">Book appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
     <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
     <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
     <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
     <string name="no_appointment_for_priority">Appointment booking is not available for priority visits.</string>
     <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
     <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
     <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
     <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
@@ -848,10 +403,8 @@
     <string name="patient_is_not_available">Patient is not available</string>
     <string name="others">Others</string>
     <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
-    <string name="and">”, and “</string>
     <string name="app_version_string">App Version - %1$s</string>
     <!--Appointment END-->
 
@@ -866,15 +419,11 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="forgot_password_instruction">Follow the instructions below to \naccess your account again</string>
     <string name="mobile_number">Mobile Number</string>
-    <string name="enter_username2">Enter username</string>
-    <string name="enter_username_given">Please enter your username provided by \nIntelehealth</string>
     <string name="login">Login</string>
     <string name="enter_mobile_no">Enter mobile number</string>
-    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
     <string name="enter_verification_code">Enter verification code</string>
     <string name="otp_sent">6-digit OTP sent on your registered number and email.\nPlease check and enter the OTP.</string>
     <string name="no_otp_received">Didn\'t receive OTP?</string>
-    <string name="resend_in_time">Resend in time</string>
     <string name="resend_otp_in">Resend in</string>
     <string name="resend_otp"><font color='#2E1E91'>Resend</font></string>
     <string name="help"><u>Help</u></string>
@@ -889,18 +438,11 @@
     <string name="please_reset_password">Please reset new password for \nyour account</string>
     <string name="forgot_password_link"><u>Forgot password?</u></string>
     <string name="prescriptions">Prescriptions</string>
-    <string name="close_visits">Close Visits</string>
     <string name="close_visit">Close visit</string>
     <string name="skip_new">Skip</string>
 
-    <string name="collect_patient_info">Collect Patient information using AYU</string>
-    <string name="profile_details_added">Profile details added successfully</string>
     <string name="profile_details_updated_new">Profile details updated successfully!</string>
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
-    <string name="otp_sent_success">OTP sent successfully</string>
-
-
-    <string name="share_prescriptions">Share the prescription</string>
 
 
     <string name="hello_i_am_ayu">Hello, I am AYU,</string>
@@ -909,12 +451,9 @@
     <string name="setup">Setup</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="terms_of_use">Terms of Use</string>
     <string name="decline">Decline</string>
     <string name="accept_new">Accept</string>
-    <string name="strong_internet_needed">Strong internet needed</string>
     <string name="next_new">Next</string>
-    <string name="strong_internet_needed_note">Kindly make sure you have\nstrong internet connection for setup\nactivity.</string>
     <string name="okay">Okay</string>
     <string name="my_achievements">My Achievements</string>
     <string name="achievements">Achievements</string>
@@ -936,7 +475,6 @@
     <string name="enter_following_details">Please enter the following details</string>
     <string name="location_new">Location</string>
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
-    <string name="please_wait_refresh">Please wait a moment,\nthe app is refreshing.</string>
     <string name="login_success">Login successful</string>
     <string name="login_success_note">Hurry! You have successfully logged in</string>
     <string name="start_typing_location">Start typing or select location</string>
@@ -946,375 +484,6 @@
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
     <string name="total_time_spent">Total time spent</string>
-    <string name="privacy_policy_content_old"><b><font color='#2E1E91'>Personal Information</font></b>\nHealth Worker will collect personal information and health information from you for your medical records.<br /><br /><b><font color='#2E1E91'>Use</font></b><br />Your information is<br />- used for diagnosing and treating you.<br />- used to send you reminders, prescription information, and other related communication.<br /><br />Your personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b><font color='#2E1E91'>Protection Measures</font></b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b><font color='#2E1E91'>Access and Correction</font></b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>
-    <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
-        Privacy Policy aligns with Generally Accepted
-        Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
-        national and international privacy laws, regulations and good business practices.\n\nIn case of any privacy related complaints/grievances, please fill and submit this Privacy
-        Complaint Form to privacy@intelehealth.io\n\n<font color='#201560' size='16'><b>Introduction</b></font>\n\nIntelehealth endeavours to meet leading standards for data protection and privacy.
-        While our reasons are founded in ethical and corporate responsibility,
-        our privacy practices as outlined in this policy enable the following:
-
-\n\n<li>Dignity for patients: Our work bringing primary healthcare to underserved communities
-        in developing countries and humanitarian conflict zones means we must be mindful
-        of upholding a standard of ethical caring, including patient privacy.</li>\n
-
-<li>Competitive Advantage: Our emphasis on protecting the privacy of customers, vendors,
-    and employees distinguishes us from competitors.</li>\n
-
-<li>Good Corporate Citizenship: A sound privacy policy is emblematic of reliable corporate citizens that
-    respect individuals’ privacy.</li>\n
-
-<li>Business Enablement: Since Intelehealth uses significant volumes of personal information,
-    privacy notices are a prerequisite to building enduring business relationships.</li>\n
-
-<li>Legal Protection: Appropriate privacy notices offer an opportunity to eliminate allegations of
-        unlawful usage of personal information, to limit liability for the conduct of third-party
-    associates and to reserve the right to amend the Enterprise Privacy Policy.</li>\n
-        <font color='#201560' size='16'><b>\nPurpose\n\n</b></font>This Policy defines requirements to ensure compliance with laws and regulations applicable to
-        Intelehealth’s collection, use, and transmission of Personal Data.\n\n
-
-   <font color='#201560' size='16'><b>Scope\n\n</b></font>This policy is applicable to all Intelehealth employees, joint venture employees, contractors,
-        vendors, interns, customers, end users and business partners who, as part of valid
-        business operations, may receive personal information from Intelehealth, have access
-        to personal information collected or processed by Intelehealth, or who provide information to Intelehealth.
-
-\nThis policy covers the treatment of personal information gathered and used by Intelehealth for
-        lawful business purposes. This policy also covers the personal information we share with
-        authorized Third Parties or that Third Parties share with us.
-
-\n“Personal information” refers to any information, whether recorded in a material form or not,
-        from which the identity of an individual is apparent or can be reasonably and directly
-        ascertained by the entity holding the information, or when put together with other information
-        would directly and certainly identify an individual.
-
-\nSensitive personal information refers to personal information:
-
-\n\n<li>About an individual’s race, ethnic origin, colour, caste or tribal affiliation, marital status,
-            age, and religious, philosophical or political affiliations;</li>
-
-\n\n<li>About an individual’s health, education, genetic or sexual life of a person, or to any proceeding for any
-        offense committed or alleged to have been committed by such individual, the disposal of such proceedings,
-            or the sentence of any court in such proceedings;</li>
-
-\n\n<li>Issued by government agencies peculiar to an individual which includes, but is not limited to, social
-        security numbers, aadhar numbers, previous or current health records, licenses or its denials,
-        suspension or revocation, and tax returns;</li>
-
-\n\nSpecial categories of personal data, where Intelehealth operations are within the scope of European
-        Union regulations or equivalent protections, are:
-
-\n\n<li>Personal data revealing racial or ethnic origin, political opinions, religious or philosophical
-            beliefs, or trade union membership</li>
-
-        \n\n<li>Genetic data, biometric data for the purpose of uniquely identifying a natural person</li>
-
-\n\n<li>Data concerning health or data concerning a natural person’s sex life or sexual orientation.</li>
-
-<font color='#201560' size='16'><b>\n\nExceptions\n\n</b></font>This policy does not apply to the privacy practices of third parties whose operations we do not own or
-        control, including but not limited to any third-party services facilitated by Intelehealth, or
-        to any individuals we do not manage or employ, unless otherwise contractually agreed upon between
-        the third party and Intelehealth.
-
-<font color='#201560' size='16'><b>\n\nObjective\n\n</b></font>The main objectives of the Enterprise Privacy Policy are:\n
-
-\n<li>To ensure that all of the personal data or personal information in Intelehealth’s custody is adequately
-            protected against threats to maintain its security.</li>
-
-\n\n<li>To ensure that Intelehealth’s employees &amp; contractors are fully aware of the contractual, statutory or
-            regulatory implications of any privacy breaches.</li>
-
-        \n\n<li>To limit the use of personal data or personal information to identified business purposes for which it is collected.</li>
-
-\n\n<li>To create an awareness of privacy requirements to be an integral part of the day to day operation of every
-        employee &amp; contractor and ensure that all employees &amp; contractors understand the importance
-            of privacy practices and their responsibilities for maintaining privacy.</li>
-
-\n\n<li>To make all the employees &amp; contractors aware about the processes that need to be followed for collection,
-            lawful usage, disclosure/ transfer and disposal of personal data or personal information.</li>
-
-\n\n<li>To ensure that all third parties storing and processing personal information on behalf of Intelehealth provide
-            adequate data protection.</li>
-
-\n\n<li>To ensure that all applicable regulations and contracts regarding the maintenance of privacy and protection
-            of personal data or personal information are adhered to.</li>
-
-<font color='#201560' size='16'><b>\n\nPolicy\n\n</b></font>
-<font color='#EA315B' size='14'><b>\nMANAGEMENT</b></font>\nDevelop and maintain an Enterprise Privacy Policy that documents the privacy principles and practices
-        followed by Intelehealth.
-
-The Enterprise Privacy Policy shall be communicated to Intelehealth’s internal personnel and any external
-        personnel required to comply with the policy.
-
-Establish procedures for disciplinary and remedial action for violations of the Enterprise Privacy Policy.
-        Refer Annexure D: Disciplinary guidelines
-
-Changes or updates to the Enterprise Privacy shall be communicated to Intelehealth’s internal personnel
-        when the changes become effective.
-
-A Privacy Request procedure shall be defined to process complaints and requests for information related to
-        Intelehealth’s privacy practices. Refer Annexure E.
-
-<font color='#EA315B' size='14'><b>\n\nNOTICE</b></font>
-\nAppropriate notice shall be provided at the time an individual is asked to give consent to the collection
-        or processing of personal information and whenever personal information is collected.
-
-        \n\n<ol>The Privacy Notice shall provide the following information:
-
-            <li>\nPurposes for which personal information is collected, used and disclosed;</li>
-
-<li>\nChoices available to the individual regarding collection, use and disclosure of
-        personal information;</li>
-
-        <li>\nThat personal information shall only be collected for the identified purposes;</li>
-
-<li>\nMethods employed for collection of personal information, including ‘cookies’ and other tracking techniques,
-    and third party agencies;</li>
-
-<li>\nThat an individual’s personal information shall be disclosed to Third Parties only for identified lawful
-    business purposes and with the consent of the individual;</li>
-
-<li>\nThat an individual’s personal information may be transferred within Intelehealth’s
-    entities for business purposes;</li>
-
-<li>\nConsequences of withholding or withdrawing consent to the collection, use and disclosure of personal information
-    for identified purposes;</li>
-
-<li>\nIndividuals are responsible for providing Intelehealth with accurate and complete personal information, and for
-    contacting the entity if correction of such information is required;</li>
-
-        <li>\nProcess for an individual to access and update their personal information records;</li>
-
-<li>\nProcess for an individual to register a complaint or grievance regarding privacy
-    practices at Intelehealth;</li>
-
-<li>\nProcess for an individual to withdraw consent for the collection, use and disclosure of their personal information for
-    identified purposes; and</li>
-
-<li>\nThat implicit or explicit consent is required to collect, use and disclose personal information, unless a law or regulation
-        specifically requires or allows otherwise.</li></ol>
-
-\n\n<li>Individuals shall be provided a Privacy Notice in case any new purpose is identified for using or disclosing personal
-            information before such information is used for purposes not previously identified.</li>
-
-        \n\n<li>The Notice shall be in language that is simple and easy to understand, especially for marginalized communities.</li>
-
-<font color='#EA315B' size='14'><b>\n\nCHOICE AND CONSENT</b></font>
-\nImplicit or explicit consent shall be obtained from individuals at the time of collection of personal information or as
-        soon as practicable thereafter.
-
-\n\n<li>Explicit consent shall be obtained from individuals for the collection, use and disclosure of sensitive personal information,
-        unless a law or regulation specifically requires or allows otherwise. A record is maintained of explicit consent
-        obtained from individuals.</li>
-
-\n\n<li>Implicit consent shall be considered adequate for the collection, use and disclosure of personal information which does not
-    qualify as sensitive personal information.</li>
-
-\n\n<li>Implicit consent shall be considered adequate to share sensitive information between health providers for treatment purposes.
-        This allows doctors, nurses, hospitals, laboratory technicians,
-        and other health care providers to use or disclose protected health
-        information, such as X-rays, laboratory and pathology reports, diagnoses,
-        and other medical information for treatment purposes without the patient’s
-        authorization. This includes sharing the information to consult with other providers,
-        including providers who are not covered entities, to treat a patient,
-    or to refer the patient.</li>
-
-\n\n<li>Consent shall be obtained from individuals before their personal information
-    is used for purposes not previously identified.</li>
-
-\n\n<li>Appropriate consent shall be obtained from individuals before their personal information is transferred to or from information
-        processing systems not owned or controlled by Intelehealth
-    except in the cases mentioned above.</li>
-
-        <font color='#EA315B' size='14'><b>\n\nCOLLECTION OF PERSONAL INFORMATION</b></font>
-
-\nThe collection of personal information shall be limited to the minimum requirement for lawful business purposes
-
-\n\n<ol>Methods of collecting personal information shall be reviewed by management to ensure that personal information is obtained:
-
-       \n\n <li>Fairly, without intimidation or deception, and</li>
-
-    \n\n<li>Lawfully, adhering to laws and regulations relating to the collection of personal information.</li></ol>
-
-       \n\n <li>Individuals shall be notified if additional information is developed or acquired about them.</li>
-
-         <font color='#EA315B' size='14'><b>\n\nLIMITING USE, DISCLOSURE, RETENTION AND DISPOSAL</b></font>
-
-\nPersonal information shall not be used or disclosed for purposes other than those for which it was collected, except
-        with the consent of the individual or as permitted by law.
-
-\n\n<li>An information inventory shall be maintained of all personal information collected, its mode of storage, period of
-            retention and method of disposal, which is reviewed at least annually.</li>
-
-\n\n<li>Personal information retention shall be only for the duration necessary to fulfil the identified lawful business purposes
-            or as prescribed by law.</li>
-
-\n\n<li>Personal information and health records shall be retained for a minimum of 6 years from the date of creation or the date
-        the record was last in effect, unless otherwise prescribed by legislative agencies that require records to be retained
-            for greater periods of time.</li>
-
-\n\n<ol>Information may be stored in hard copy or electronic copy. The mode of storage will be determined based on the purpose for
-        which data is collected and will be reviewed annually.
-
-\n\n<li>Hard copy: physical representations of data, such as paper printouts. This includes, among other things, notes, memos,
-    messages, correspondence, transaction records and reports.</li>
-
-\n\n<li>Electronic copy: information stored on electronic media, such as computer hard drives, copier and printer hard drives,
-        cloud storage, removable solid drives including memory, disks and
-    USB flash drives, mobile phones and magnetic tapes.</li></ol>
-
-\n\n<ol><li>Upon the expiration of identified lawful business purposes, Intelehealth shall either securely erase or anonymize the
-            individuals’ personal information.</li></ol>
-
-\n\n<ol><li>When disposing of personal information by completely destroying the hard or electronic copy, including all back ups
-            in such a way as to ensure that the information stored on it can never be recovered.</li></ol>
-
-\n\n<ol>Anonymization shall be carried out in such a way that the information cannot be used to identify an individual using
-        the “Expert Determination” method. Intelehealth may determine that health information is not individually
-        identifiable health information only if:
-
-\n\n<li>A person with appropriate knowledge of and experience with generally accepted statistical and scientific principles
-    and methods for rendering information not individually identifiable:</li>
-
-\n\n<li>Applying such principles and methods, determines that the risk is very small that the information could be used,
-        alone or in combination with other reasonably available information, by an anticipated recipient to identify
-    an individual who is a subject of the information; and</li>
-
-          \n\n<li>Documents the methods and results of the analysis that justify such determination;</li></ol>
-<font color='#EA315B' size='14'><b>\n\nFOR REVIEW AND UPDATE</b></font>
-\nProcesses shall be established for individuals to:
-
-\n\n<li>Request access to their personal data or information;</li>
-
-        \n\n<li>Correct or update their personal data or information; and</li>
-
-        \n\n<li>Withdraw consent for the collection, use and disclosure of their personal information.</li>
-
- \n\n<li>The identity of individuals requesting access their personal information shall be reasonably verified before
-            providing access to such information.</li>
-
- \n\n<li>A response shall be given individuals requesting access to their personal information in an accessible form, within a
-            defined period from receipt of complaint/ request.</li>
-
- \n\n<li>Individuals shall be notified, in writing, the reason for any denial of requests for access to personal information.
-        This notice will provide the source of Intelehealth’s legal right to deny access and the individual’s right
-            to challenge such access as allowed or required by law.</li>
-
-<font color='#EA315B' size='14'><b>\n\nDISCLOSURE TO THIRD PARTIES AND OUTWARD TRANSFERS</b></font>
-
-
-The disclosure of personal information to third parties shall be only for identified lawful business purposes and with
-        appropriate consent from the individuals, unless a law or regulation specifically
-        allows or requires otherwise.
-
-\n\n<ol>Management shall ensure that third parties storing or processing personal information on behalf of Intelehealth have:
-
-\n\n<li>Signed agreements to protect personal information consistent with Intelehealth’s Enterprise Privacy Policy and information
-    security practices;</li></ol>
-
-\n\nSigned non-disclosure agreements or confidentiality agreements; and
-
-\n\nEstablished procedures to meet the terms of their agreement with Intelehealth to protect personal information
-
-\n\n<ol>Personal information may be transferred outside the jurisdiction in which they were created or stored, for storage or
-        processing where any of the following apply:
-
-        \n\n<li>The individual has given consent to the transfer of information</li>
-
-  \n\n<li>The transfer is necessary for the performance of a contract between the individual and Intelehealth, or the implementation
-                of pre-contractual measures taken in response to the individual’s request.</li>>
-  \n\n<li>The transfer is necessary for the conclusion or performance of a contract concluded in the interest of the individual
-                between Intelehealth and a third party.</li>
-
-  \n\n<li>The transfer is necessary or legally required on important public interest grounds or for the establishment, exercise or
-                defence of legal claims.</li>
-
-
-            \n\n<li>The transfer is required by law</li>
-
-            \n\n<li>The transfer is necessary in order to protect the vital
-                interests of the individual.</li></ol>
-
- \n\n<li>Remedial action shall be taken in response to misuse or unauthorized disclosure of personal information by a third party
-    storing or processing personal information on behalf of Intelehealth.</li>
-
-        <font color='#EA315B' size='14'><b>\n\nSECURITY PRACTICES FOR PRIVACY</b></font>
-
-
-\nIntelehealth’s information security policy and procedures shall be documented and implemented to ensure reasonable security
-        for personal information collected, stored, used, transferred and disposed by Intelehealth, as required by law.
-
-   \n\n<li>Information asset labelling and handling guidelines shall include controls specific to the storage, retention and transfer
-            of personal information.</li>
-
-   \n\n<li>Management shall establish procedures that maintain the logical and
-            physical security of personal information.</li>
-
-   \n\n<li>Incident response protocols are established and maintained in order to deal with incidents concerning personal data or
-            privacy practices. Refer: “Intelehealth Personal Data Breach Management Plan”</li>
-
-                <font color='#EA315B' size='14'><b>\n\nQUALITY OF PERSONAL INFORMATION</b></font>
-
-
-\nIntelehealth shall make best efforts to ensure that personal information collected is accurate and complete for the business
-        purposes for which it is to be used.
-
-\n\n<li>Intelehealth shall make best efforts to ensure that personal information collected is relevant to the business purposes for
-            which it is to be used.</li>
-
-                        <font color='#EA315B' size='14'><b>\n\nPRIVACY MONITORING AND ENFORCEMENT</b></font>
-
-
-\nIndividuals can file a complaint/ grievance about Intelehealth’s privacy practices by submitting a filled Privacy Complaint
-        Form (Annexure E) and sending it via mail (physical or electronic) to the
-        Data Privacy Officer.
-
-    \n\n
-    <li>All complaints/ grievances registered by individuals shall be recorded and
-        responded to in a timely manner.
-    </li>
-
-    \n\n
-    <li>The DPO shall conduct an investigation into the complaint and initiate
-        corrective action to resolve it.
-    </li>
-
-    \n\n
-    <li>Each complaint regarding privacy practices registered by individuals shall be validated,
-        responses documented and communicated
-        to the individual.
-    </li>
-
-    \n\n
-    <li>Annual privacy compliance reviews shall be performed for identified business processes
-        and their supporting applications.
-    </li>
-
-    \n\n
-    <li>A record shall be maintained of non-compliances identified in the annual privacy reviews.
-        Corrective and disciplinary
-        measures shall be initiated and tracked to closure, guided by Intelehealth’s management.
-    </li>
-
-    \n\n
-    <li>Procedures shall be established to monitor the effectiveness of controls for personal
-        information and for ensuring corrective
-        actions, as required.
-    </li>
-
-
-    \n\n
-    <li>Privacy Impact Assessments shall be conducted annually, or when there are significant
-        changes to the process or system
-        environment. Refer: Privacy Impact Assessment Template.
-    </li>
-
-    \n\n
-    <li>Any conflicts or disagreements relating to the requirements under this policy or associated
-        privacy practices shall be
-        referred to the Data Privacy Officer for resolution.\n\n
-    </li>
-</string>
     <!-- My Profile UI2.0-->
     <string name="change_photo"><u>Change photo</u></string>
     <string name="first_name">First name</string>
@@ -1333,8 +502,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="enter_phone_number">Enter phone number</string>
     <string name="email">Email</string>
     <string name="enter_your_email">Enter email ID</string>
-    <string name="select_profile_image">Select profile image</string>
-    <string name="select_location">Please select location</string>
 
 
     <!--  Change Password UI2.0-->
@@ -1344,7 +511,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="enter_current_password">Enter current password</string>
     <string name="change_password">Change password</string>
     <string name="password_match">New password and confirm password must be same.</string>
-    <string name="password_changed_successfully">Password changed successfully</string>
     <string name="the_password_has_been_successfully_changed">The password has been successfully changed!</string>
     <string name="username_not_found">Username not found</string>
     <string name="mobile_not_registered">Mobile number not registered</string>
@@ -1358,7 +524,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="check_up">Check-up</string>
     <string name="appointment">Appointment</string>
     <string name="registration">Registration</string>
-    <string name="visit_help">Visit</string>
     <string name="most_searched">Most Searched</string>
     <string name="more">More</string>
     <string name="frequently_asked_ques">Frequently asked questions</string>
@@ -1403,7 +568,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
     <string name="pick_time_slot">Pick a time slot</string>
-    <string name="enter_cred">Enter the credentials given by intelehealth team</string>
 
 
     <!--    Follow-up new screens -->
@@ -1411,14 +575,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="you_can_add">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="this_week">This week</string>
-    <string name="this_month">This Month</string>
     <string name="fu_item_title">Anthony Gonsalves</string>
     <string name="fu_visit_name">Anthony G.</string>
     <string name="fu_card_item_date">Follow up on 12 June</string>
     <string name="misc_txt">M 50</string>
     <string name="fu_openmrsID">ID-987654jK</string>
-    <string name="details_head1">Fever</string>
-    <string name="details_head2">Visit ID: 987654jK</string>
     <string name="fu_detiails_date">21 May 2022</string>
     <string name="gp_txt">General physician</string>
     <string name="dr_speciality">Doctor\'s speciality</string>
@@ -1429,29 +590,23 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="search_hint_text">Previously searched</string>
     <string name="search_date_txt">24 May, at 3:15 pm</string>
     <string name="search_gender">M 22</string>
-    <string name="search_stopwatch_text">In 2 minutes</string>
     <string name="search_pat_not_found_txt">Patient not found!</string>
     <string name="search_pat_hint_txt">Use correct Username or ID to search or you can register a new patient.</string>
     <string name="notifi_title">Notification</string>
-    <string name="notifi_header_title">5 prescriptions received</string>
     <string name="notifi_subheader_title">Send prescriptions to the patients</string>
     <string name="notifi_card_title"><b>Muskan Kala\'s</b> prescription has been received!</string>
     <string name="notifi_reminders">Reminders</string>
     <string name="notifi_incompl_activity">Incomplete activity</string>
     <string name="notifi_archived_notifi">Archived notifications</string>
     <string name="five_presc_received">%1$s prescriptions received</string>
-    <string name="no_visit_created">No visit created</string>
 
     <string name="add_new_patient">Add new patient</string>
-
-    <string name="caption">Name</string>
 
     <string name="aboutus_termscondition">Check out our <a href="https://intelehealth.org/terms-of-use">terms and conditions</a></string>
     <string name="visit_intelehealth_for_more">For more visit our website intelehealth.org</string>
     <string name="aboutus_text">Intelehealth is a non-profit delivering high-quality healthcare where there is no doctor via telemedicine. Using our open-source technology platform that\'s driven by an innovative digital health assistant, we connect patients and frontline health workers at the last mile with doctors, diagnostics &amp; medications.\n\nIntelehealth has reached millions of patients, connecting thousands of health workers and doctors to deliver health services for communicable and non communicable diseases. We have worked in partnership with Ministries of Health in India &amp; Kyrgyzstan as well as organizations like UNICEF, Jhpiego, MSF, Ekal Arogya and many more. Intelehealth has been recognized by the World Economic Forum and Niti Aayog India as an impactful Digital Public Good.</string>
     <string name="add_patient">Add Patients</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>
     <string name="weight_kg">Weight (kg)</string>
@@ -1466,7 +621,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d. Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d. Medical history summary</string>
-    <string name="sync_strated">"Sync started! "</string>
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
     <string name="mobile_no_not_provided">Mobile number not provided.</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
@@ -1474,7 +628,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="invalid_mobile_no">Invalid mobile number</string>
     <string name="select_any_one">Select any one</string>
     <string name="select_one_or_more">Select one or more</string>
-    <string name="this_weeks_visits">This week\'s visits</string>
     <string name="this_months_visits">This month\'s visits</string>
     <string name="language">Language</string>
     <string name="protocols">Protocols</string>
@@ -1491,10 +644,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="gender_mandatory">Gender</string>
     <string name="date_of_birth_mandatory">Date of Birth</string>
     <string name="age_mandatory">Age</string>
-    <string name="phone_number_mandatory">Phone Number</string>
     <string name="this_field_is_mandatory">This field is mandatory</string>
     <string name="add_a_picture">Add a picture</string>
-    <string name="sync_completed">Sync done!</string>
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="enable_permission_for_time_tracking">Kindly enable the required permission for displaying the time tracking feature.</string>
@@ -1526,14 +677,12 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="ui2_no_information">No information</string>
     <string name="confirm_visit_reason">Confirm visit reason?</string>
     <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
-    <string name="check_up_reason">Check-up reason</string>
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
     <string name="enter_occupation_txt">Enter Occupation</string>
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
-    <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
     <string name="confirm_end_visit_reason">Close this visit?</string>
     <string name="confirm_end_visit_reason_message">Prescription should be shared before closing visit,are you sure you want to close the visit?</string>
@@ -1555,10 +704,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="enter_national_ID">Enter National ID</string>
     <!--END-->
 
-    <string name="prescribed_medication_drug_name">Drug name</string>
-    <string name="prescribed_medication_dosage">Dos.</string>
-    <string name="prescribed_medication_days">Days</string>
-    <string name="prescribed_medication_remarks">Remarks</string>
     <string name="recent_visit">Recent Visits</string>
     <string name="older_visits">Older Visits</string>
     <string name="open_visit">Open Visit</string>
@@ -1569,7 +714,6 @@ The disclosure of personal information to third parties shall be only for identi
     </plurals>
 
     <string name="all_patients_txt">All Patients</string>
-    <string name="no_fingerprint_support">You cannot access this feature as your device does not have a fingerprint support.</string>
     <string name="no_fingerprint_title">Fingerprint not available!</string>
     <string name="no_fingerprint_assigned_dialog">You cannot access this feature as your device fingerprint sensor has no fingerprint assigned.</string>
     <string name="fingerprint_not_working_dialog">You cannot access this feature as your device fingerprint sensor is not working.</string>
@@ -1581,7 +725,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="doctor_annotation">Dr.</string>
     <string name="at">at</string>
     <string name="in">In</string>
-    <string name="hours_at">hours, at</string>
     <string name="hours">hours</string>
     <string name="upcoming_0">Upcoming (0)</string>
     <string name="completed_0">Completed (0)</string>
@@ -1601,7 +744,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="camera_permission_denied">Camera permission denied!</string>
     <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
     <string name="max_doc_size_toast_mb">Max doc size is 1 MB</string>
-    <string name="disconnected">Disconnected!</string>
     <string name="how_intelehealth_work">How intelehealth works?</string>
     <string name="how_intelehealth_work_ans">Intelehealth has developed a comprehensive technology platform that Governments, NGO’s and Hospitals can use to deliver telemedicine-based care to their beneficiaries. Built with powerful features like a digital assistant with 80+ care protocols makes it easy for any organization to use and adapt it to meet their needs!</string>
     <string name="why_intelehealth_exist">Why Intelehealth exists?</string>
@@ -1619,13 +761,11 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="failed_to_send_otp">Failed to send OTP</string>
     <string name="otp_is_incorrect">OTP is incorrect!</string>
     <string name="otp_verification_failed">OTP Verification Failed!</string>
-    <string name="error_adding_data">Error in adding the data</string>
     <string name="treat_mild_fever">Treat mild fever at home</string>
     <string name="what_is_anemia">What is Anemia?</string>
     <string name="treat_cough_at_home">Treat cough at home</string>
     <string name="benefits_of_walking">Benefits of walking</string>
     <string name="out_of"> out of </string>
-    <string name="unclosed_visits">unclosed visits</string>
     <string name="pending">Pending</string>
     <string name="exit_app">Exit App</string>
     <string name="last_sync">Last sync</string>
@@ -1644,11 +784,9 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="changing_protocols">Changing protocols</string>
     <string name="wait_while_protocols_changing">Please wait while the protocols are being changed.</string>
     <string name="protocols_successfully_changed">Protocols have been successfully changed!</string>
-    <string name="enter_room_id">Please enter room-id</string>
     <string name="overall">Overall</string>
     <string name="daily">Daily</string>
     <string name="date_range">Date Range</string>
-    <string name="prescription_received">\'s prescription was received!</string>
     <string name="visit_date">Visit Date</string>
     <string name="patient_registered">Patient Registered!</string>
     <string name="does_patient_start_visit_now">Does the patient want to start the visit now?</string>
@@ -1659,7 +797,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_city_added">No city added</string>
     <string name="no_postal_code_added">No postal code added</string>
     <string name="no_mobile_number_added">No phone number added</string>
-    <string name="remarks">Remarks:</string>
     <string name="follow_up_scheduled">Follow up scheduled!</string>
     <string name="follow_up_scheduled_successfully">A follow up for this patient visit has been scheduled successfully.</string>
     <string name="downloaded_to">Downloaded to: </string>
@@ -1675,8 +812,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="level">Level %1$d</string>
     <string name="drag_to_select">Please drag to select!</string>
     <string name="select_yes_or_no">Select yes or no</string>
-    <string name="select_duration_number">Please select the duration number</string>
-    <string name="select_duration_type">Please select the duration type</string>
     <string name="select_duration_type_title">Select Duration Type</string>
     <string name="please_select_date">Please select the date</string>
     <string name="select_at_least_one_option">Please select at least one option!</string>
@@ -1716,7 +851,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="personal_identification">Personal</string>
     <string name="address_identification">Address</string>
     <string name="other_identification">Other</string>
-    <string name="no_prescription">No prescription</string>
     <string name="past_visits">Past Visits</string>
     <string name="start_visit">Start Visit</string>
     <string name="feedback">Feedback</string>
@@ -1734,16 +868,10 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="referred_specialist">Referred Specialist</string>
     <string name="no_follow_up_suggested">\u2022 No follow up suggested</string>
     <string name="clear">Clear</string>
-    <string name="agree_to">"Agree to "</string>
-    <string name="terms_conditions">Terms &amp; Conditions</string>
-    <string name="and_setup">" and "</string>
-    <string name="privacy_policy_setup">privacy policy</string>
     <string name="splash_desc">Deliver quality healthcare where\nthere is no doctor</string>
     <string name="select_language">Select Language</string>
-    <string name="my_visits">My Visits</string>
     <string name="additional_notes">Additional Notes</string>
     <string name="leave_a_note_for_doctor">Leave a note for doctor</string>
-    <string name="notes_shared_by_doctor">Notes shared by doctor will be shown here.</string>
     <string name="add_additional_document_2">Add additional documents (2)</string>
     <string name="add_additional_documents_like">Add additional documents like reports, prescriptions, etc.\u000D</string>
     <string name="doctor_speciality">Doctor\'s Speciality</string>
@@ -1751,8 +879,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="send_visit_button">Send visit</string>
     <string name="thank_you_for_feedback">Thank you for your feedback!</string>
     <string name="info">info</string>
-    <string name="please_enter_text">Please enter text</string>
-    <string name="enter_data_here">Enter data here</string>
     <string name="all_visits">All Visits</string>
     <string name="no_follow_up_data">No follow up data</string>
     <string name="title">Title</string>
@@ -1827,7 +953,6 @@ The disclosure of personal information to third parties shall be only for identi
 
     //IDA-913
     <string name="profile_update_requires_internet">Profile update requires a strong internet connection. You are not connected to internet, please try again later.</string>
-    <string name="describe_lbl">Describe</string>
     <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
     <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="close_all">Close all</string>
@@ -1843,12 +968,9 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="underweight">Underweight</string>
     <string name="normal">Normal Weight</string>
     <string name="overweight">Overweight</string>
-    <string name="obese">Obese</string>
     <string name="very_severely_obese">Very Severe(Morbid) Obesity(Class 3)</string>
     <string name="severely_obese">Severe Obesity(Class 2)</string>
     <string name="morbidly_obese">Moderate Obesity(Class 1)</string>
-    <string name="select_height">Select Height</string>
-    <string name="select_weight">Select Weight</string>
 
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
@@ -1861,7 +983,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
     <string name="select_image_hdr">Select Image</string>
-    <string name="no_additional_data">No Data</string>
     <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
@@ -1871,7 +992,6 @@ The disclosure of personal information to third parties shall be only for identi
 
     <string name="confirm_cancel_appointment">Cancel Appointment?</string>
     <string name="confirm_cancel_appointment_message">This visit has an associated appointment and ending the visit will also cancel the appointment. Are you sure that you want to proceed?</string>
-    <string name="prescription_not_received_because_the_visit_has_been_ended">The prescription hasn\'t been received as the visit has been ended.</string>
     <string name="no_prescription_exists">No Prescription Exists</string>
     <string name="loading">Loading...</string>
     <string name="you_missed_the_compulsory_questions_please_answer_them">You missed the compulsory questions, Please answer them.</string>
@@ -1889,9 +1009,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="teleconsultation_consent_title">Teleconsultation Consent</string>
     <string name="processing_personal_data">Processing Personal Data</string>
     <string name="unable_to_load_data_please_try_again">Unable to load data. Please try again later!</string>
-    <string name="no_of_days">No. of days</string>
-    <string name="timings">Timings</string>
-    <string name="bullet">\u2022</string>
     <string name="u2022_strength">• Strength</string>
     <string name="u2022_no_of_days">• No. of days</string>
     <string name="u2022_timings">• Timings</string>
@@ -1907,16 +1024,11 @@ The disclosure of personal information to third parties shall be only for identi
 
 
     <string name="guardian_name_non_required">Guardian Name</string>
-    <string name="guardian_name_required">Guardian Name*</string>
     <string name="enter_guardian_name">Enter Guardian Name</string>
-    <string name="guardian_type_required">Guardian Type*</string>
     <string name="guardian_type_non_required">Guardian Type</string>
     <string name="select_guardian_type">Select Guardian Type</string>
-    <string name="contact_type_required">Contact Type*</string>
     <string name="contact_type_non_required">Contact Type</string>
-    <string name="emergency_contact_number_required">Emergency Contact Number*</string>
     <string name="emergency_contact_number_non_required">Emergency Contact number</string>
-    <string name="emergency_contact_name_required">Emergency Contact Name*</string>
     <string name="emergency_contact_name_non_required">Emergency Contact Name</string>
     <string name="enter_emergency_contact_name">Enter Emergency Contact name</string>
     <string name="phone_number_and_emergency_number_can_not_be_the_same">Phone Number and Emergency Number cannot be the same</string>
@@ -1960,4 +1072,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="hint_drop_down_state">Select State</string>
     <string name="hint_drop_down_district">Select District</string>
     <string name="lbl_clear_all">Clear All</string>
+    <string name="sync">Refresh</string>
 </resources>

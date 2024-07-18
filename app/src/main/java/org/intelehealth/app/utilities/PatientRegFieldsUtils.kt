@@ -25,7 +25,7 @@ object PatientRegFieldsUtils {
         fieldViewSecondary: View?,
         titleTv: TextView?
     ) {
-        layoutView.visibility = View.VISIBLE
+        layoutView.visibility = if(field.isEnabled)  View.VISIBLE else View.GONE
 
         //if existing title has * then removing it first
         var titleStr = titleTv?.text

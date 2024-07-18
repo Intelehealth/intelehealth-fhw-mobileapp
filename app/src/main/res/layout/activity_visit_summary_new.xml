@@ -358,7 +358,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/cardview_head"
-                    android:layout_marginTop="@dimen/margin_40dp">
+                    android:layout_marginTop="@dimen/margin_20dp">
 
                     <Button
                         android:id="@+id/openall_btn"
