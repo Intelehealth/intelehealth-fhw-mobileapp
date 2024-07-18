@@ -406,6 +406,7 @@ public class SetupActivity extends AppCompatActivity {
                             empty_spinner("village");
                         }
 
+                        unselectExistingRadioButtons();
                         fetchAndSetLocationAttributes(village_uuid);
                     }
                 } catch (Exception E) {
@@ -442,6 +443,19 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         showProgressbar();
+    }
+
+    private void unselectExistingRadioButtons() {
+        subCentreRadioGroup.clearCheck();
+        primaryCentreRadioGroup.clearCheck();
+        communityHealthCentreRadioGroup.clearCheck();
+        districtHospitalRadioGroup.clearCheck();
+        medicalStoreRadioGroup.clearCheck();
+        pathologicalLabRadioGroup.clearCheck();
+        pathologicalLabRadioGroup.clearCheck();
+        privateClinicWithMbbsDoctorRadioGroup.clearCheck();
+        privateClinicWithAlternateMedicalRadioGroup.clearCheck();
+        jalJeevanYojanaSchemeRadioGroup.clearCheck();
     }
 
     private void setUpTranslationTools() {
