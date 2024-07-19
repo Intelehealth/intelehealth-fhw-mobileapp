@@ -9,7 +9,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 static def getDateTime() {
-    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd | HH:mm a");
     return df.format(new Date());
 }
 

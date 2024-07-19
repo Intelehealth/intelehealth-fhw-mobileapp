@@ -85,6 +85,8 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -1300,6 +1302,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setStateName(selectedState);
                                             sessionManager.setDistrictName(selectedDistrict);
                                             sessionManager.setVillageName(selectedVillage);
+                                            saveToken();
                                             IntelehealthApplication.getInstance().initSocketConnection();
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -1748,6 +1751,12 @@ public class SetupActivity extends AppCompatActivity {
         showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title),
                 getString(R.string.error_incorrect_password), getString(R.string.ok));
         resetViews();
+    }
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage(), sessionManager.getJwtAuthToken());
     }
 
 
