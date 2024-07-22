@@ -1754,8 +1754,9 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+      //  Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
+        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage(), sessionManager.getJwtAuthToken());
     }
 
