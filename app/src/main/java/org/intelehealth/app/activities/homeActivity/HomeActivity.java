@@ -196,7 +196,9 @@ public class HomeActivity extends BaseActivity {
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(),
+                IntelehealthApplication.getInstance().refreshedFCMTokenID,
+                sessionManager.getAppLanguage(), sessionManager.getJwtAuthToken());
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.intelehealth.klivekit.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,10 +15,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
-    public static void saveToken(Context context, String userUUID, String fcmToken, String lang) {
+    public static void saveToken(Context context, String userUUID, String fcmToken, String lang, String authToken) {
         Log.v(TAG, userUUID);
         Log.v(TAG, fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -47,7 +51,15 @@ public class FirebaseUtils {
                     Log.v(TAG, "saveToken - onErrorResponse - " + error.getMessage());
 
                 }
-            });
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Authorization", "Bearer " + authToken);
+                    return params;
+                }
+            };
+
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                     7 * 1000,
                     3,
