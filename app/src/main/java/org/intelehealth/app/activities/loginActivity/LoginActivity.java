@@ -483,7 +483,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onNext(AuthJWTResponse authJWTResponse) {
                         // in case of error password
                         if (!authJWTResponse.getStatus()) {
-                            //triggerIncorrectCredentialsFlow();
+                            cpd.dismiss();
+                            triggerIncorrectCredentialsFlow();
                             return;
                         }
 
@@ -510,5 +511,10 @@ public class LoginActivity extends AppCompatActivity {
         cpd.dismiss();
         mEmailSignInButton.setText(getString(R.string.action_sign_in));
         mEmailSignInButton.setEnabled(true);
+    }
+
+    private void triggerIncorrectCredentialsFlow() {
+        Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+        resetViews();
     }
 }
