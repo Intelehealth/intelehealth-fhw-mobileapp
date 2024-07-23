@@ -146,14 +146,6 @@ class PatientPersonalInfoFragment :
             binding.llGuardianType.isVisible = it.guardianType?.isEnabled ?: visibility
             binding.personalConfig = it
         }
-
-//        if (!visibility) {
-//            binding.personalConfig = binding.personalConfig?.let {
-//                it.guardianName?.isEnabled = false
-//                it.guardianType?.isEnabled = false
-//                return@let it
-//            }
-//        }
     }
 
     private fun bindDobValue(calendar: Calendar) {
