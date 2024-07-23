@@ -415,20 +415,19 @@ public class HomeActivity extends BaseActivity implements SyncListener {
                 }
             }
         }
-        if (isVisitVoid[0]) {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                int count = getUnUploadedVisitCount();
 
-                runOnUiThread(() -> {
-                    if (count > 0) {
-                        unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
-                        unUploadedVisitNotificationCV.setVisibility(View.VISIBLE);
-                    } else {
-                        unUploadedVisitNotificationCV.setVisibility(View.GONE);
-                    }
-                });
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = getUnUploadedVisitCount();
+
+            runOnUiThread(() -> {
+                if (count > 0) {
+                    unUploadedVisitNotificationTV.setText(getResources().getString(R.string.you_have_unuploaded_visits, String.valueOf(count)));
+                    unUploadedVisitNotificationCV.setVisibility(View.VISIBLE);
+                } else {
+                    unUploadedVisitNotificationCV.setVisibility(View.GONE);
+                }
             });
-        }
+        });
     }
 
     public void HeartBitApi() {
