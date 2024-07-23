@@ -1828,7 +1828,7 @@ public class SetupActivity extends AppCompatActivity {
                     public void onNext(AuthJWTResponse authJWTResponse) {
                         // in case of error password
                         if (!authJWTResponse.getStatus()) {
-                            //temp   triggerIncorrectPasswordFlow(progress);
+                            triggerIncorrectCredentialsFlow(progress);
                             return;
                         }
 
@@ -1873,5 +1873,10 @@ public class SetupActivity extends AppCompatActivity {
         mPasswordView.requestFocus();
         mLoginButton.setText(getString(R.string.action_sign_in));
         mLoginButton.setEnabled(true);
+    }
+    private void triggerIncorrectCredentialsFlow(ProgressDialog progress) {
+        progress.dismiss();
+        Toast.makeText(SetupActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+        resetViews();
     }
 }
