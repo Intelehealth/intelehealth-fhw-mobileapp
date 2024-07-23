@@ -3915,6 +3915,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            Log.d(TAG, "queryData: famHistText : "+famHistText);
             famHistory.setValue(famHistText);
             famHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {

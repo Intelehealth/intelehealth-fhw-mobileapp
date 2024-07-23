@@ -835,7 +835,7 @@
     <string name="religion_no_religion">कोणताही धर्म नाही</string>
     <string name="nas_caste">जात</string>
     <string name="caste_schedule_caste">अनुसूचित जाति (अनुसूचित जाती)</string>
-    <string name="caste_schedule_tribe">अनुसूचित जमाती((एस टी))</string>
+    <string name="caste_schedule_tribe">अनुसूचित जमाती(एस टी)</string>
     <string name="caste_other_backward_caste">इतर मागास जात (ओबीसी)</string>
 
     <string name="caste_VJNT">विमुक्‍त जाती व भटक्‍या जमाती</string>
@@ -1193,10 +1193,10 @@
     <string name="mode_of_transportation_auto">ऑटो</string>
     <string name="mode_of_transportation_own_vehicle">स्वतःचे वाहन</string>
     <string name="mode_of_transportation_friends_neighbours_vehicle">मित्र / शेजारी \'वाहन</string>
-    <string name="mode_of_transportation_ambulance">एम्बुलन्स</string>
+    <string name="mode_of_transportation_ambulance">रुग्णवाहिका</string>
 
     <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रत्येक वेळी अशा आजारपणासाठी सुविधाकेंद्राला गेल्यावर साधारण खर्च किती येतो ? (प्रवास, राहणे, खाणे)</string>
-    <string name="average_cost_incurred_on_consultation_fees_per_episode">पप्रत्येक भेटीवेळी, सल्ला/ तपासणी साठी साधारण किती फीस लागते / खर्च येतो ?</string>
+    <string name="average_cost_incurred_on_consultation_fees_per_episode">प्रत्येक भेटीवेळी, सल्ला/ तपासणी साठी साधारण किती फीस लागते / खर्च येतो ?</string>
     <string name="average_cost_incurred_on_medicines_per_episode">प्रत्येक वेळी अशा तक्रारींवर/ आजारपणावर होणारा  सरासरी खर्च</string>
     <string name="score_for_experience_of_treatment">उपचार अनुभवासाठी स्कोअर</string>
     <string name="score_dissatisfied">असंतुष्ट</string>
