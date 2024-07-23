@@ -9,6 +9,8 @@ import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import org.intelehealth.klivekit.utils.DateTimeResource;
+
 import java.util.Locale;
 
 /**
@@ -19,6 +21,7 @@ import java.util.Locale;
  */
 
 public class LocaleHelper extends ContextWrapper {
+
     public LocaleHelper(Context base) {
         super(base);
     }
@@ -42,6 +45,8 @@ public class LocaleHelper extends ContextWrapper {
             resources.updateConfiguration(configuration, resources.getDisplayMetrics()); // 7
         }
 
+        DateTimeResource.clearInstance();
+        DateTimeResource.build(context);
         return new LocaleHelper(context);
     }
 
@@ -56,9 +61,13 @@ public class LocaleHelper extends ContextWrapper {
             conf.setLocale(locale);
             context.createConfigurationContext(conf);
             DisplayMetrics dm = res.getDisplayMetrics();
-            conf.setLocales(new LocaleList(locale));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocales(new LocaleList(locale));
+            }
             res.updateConfiguration(conf, dm);
         }
+        DateTimeResource.clearInstance();
+        DateTimeResource.build(context);
         return context;
     }
 
