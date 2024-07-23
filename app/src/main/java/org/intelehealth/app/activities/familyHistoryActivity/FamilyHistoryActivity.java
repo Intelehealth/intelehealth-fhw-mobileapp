@@ -15,6 +15,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -206,7 +207,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("patientFirstName",patientFName);
+                    intent.putExtra("patientFirstName", patientFName);
                     intent.putExtra("patientLastName", patientLName);
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -316,36 +317,6 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
         return result;
     }
 
-    private void onListClick(View v, int groupPosition, int childPosition) {
-        Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-        Log.i(TAG, "onChildClick: ");
-        clickedNode.toggleSelected();
-        if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-            familyHistoryMap.getOption(groupPosition).setSelected(true);
-        } else {
-            familyHistoryMap.getOption(groupPosition).setUnselected();
-        }
-        adapter.notifyDataSetChanged();
-
-        if (clickedNode.getInputType() != null) {
-            if (!clickedNode.getInputType().equals("camera")) {
-                Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
-            }
-        }
-        if (!filePath.exists()) {
-            boolean res = filePath.mkdirs();
-            Log.i("RES>", "" + filePath + " -> " + res);
-        }
-
-        imageName = UUID.randomUUID().toString();
-
-        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-            Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
-        }
-
-    }
-
     private void triggerConfirmation() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
@@ -442,7 +413,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
-            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientFirstName", patientFName);
             intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
@@ -472,7 +443,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
-            intent.putExtra("patientFirstName",patientFName);
+            intent.putExtra("patientFirstName", patientFName);
             intent.putExtra("patientLastName", patientLName);
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -609,6 +580,95 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
 
         return text;
     }
+
+    private void onListClick(View v, int groupPosition, int childPosition) {
+        Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+        Node rootNode = familyHistoryMap.getOption(groupPosition);
+
+        if (rootNode.getChoiceType().equals("single") && !rootNode.anySubSelected()) {
+            Log.i(TAG, "onChildClick: ");
+            clickedNode.toggleSelected();
+            if (rootNode.anySubSelected()) {
+                rootNode.setSelected(true);
+            } else {
+                rootNode.setUnselected();
+            }
+            adapter.notifyDataSetChanged();
+
+            handleSpecialInputType(clickedNode);
+            handleSubLevelQuestion(clickedNode, groupPosition, childPosition);
+        } else if (rootNode.getChoiceType().equals("single") && rootNode.anySubSelected()) {
+            showSingleChoiceAlert();
+        } else {
+            if (clickedNode.isExcludedFromMultiChoice()) {
+                deselectAllOptions(groupPosition);
+                clickedNode.setSelected(true);
+                familyHistoryMap.getOption(groupPosition).setSelected(true);
+            } else {
+                clickedNode.toggleSelected();
+                updateRootSelectionStatus(rootNode);
+
+                handleSpecialInputType(clickedNode);
+                handleSubLevelQuestion(clickedNode, groupPosition, childPosition);
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void handleSpecialInputType(Node node) {
+        if (node.getInputType() != null && !node.getInputType().equals("camera")) {
+            Node.handleQuestion(node, FamilyHistoryActivity.this, adapter, null, null);
+        }
+        if (node.getInputType() != null && node.getInputType().equals("camera")) {
+            if (!filePath.exists()) {
+                filePath.mkdirs();
+            }
+            Node.handleQuestion(node, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+        }
+    }
+
+    private void handleSubLevelQuestion(Node node, int groupPosition, int childPosition) {
+        if (!node.isTerminal() && node.isSelected()) {
+            Node.subLevelQuestion(node, FamilyHistoryActivity.this, adapter, filePath.toString(), UUID.randomUUID().toString());
+        }
+    }
+
+    private void showSingleChoiceAlert() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void deselectAllOptions(int groupPosition) {
+        Node rootNode = familyHistoryMap.getOption(groupPosition);
+        Log.d(TAG, "kkdeselectAllOptions: rootnode optionslist : " + rootNode.getOptionsList().size());
+        for (Node option : rootNode.getOptionsList()) {
+            option.setUnselected();
+            if (option.getOptionsList() != null) {
+                for (Node subOption : option.getOptionsList()) {
+                    Log.d(TAG, "kkdeselectAllOptions: option optionslist : " + option.getOptionsList().size());
+                    subOption.setUnselected();
+                }
+            }
+        }
+    }
+
+    private void updateRootSelectionStatus(Node rootNode) {
+        if (rootNode.anySubSelected()) {
+            rootNode.setSelected(true);
+        } else {
+            rootNode.setUnselected();
+        }
+    }
+
 }
 
 

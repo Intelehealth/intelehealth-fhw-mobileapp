@@ -4,7 +4,7 @@
     <string name="call_canceled_by">कॉल संपला %1$s</string>
     <string name="call_rejected_by">यांनी कॉल नाकारला %1$s</string>
     <string name="call_time_up">कॉल ची वेळ संपली</string>
-    <string name="left_the_call">कॉल बाकी %1$s</string>
+    <string name="left_the_call">कॉल समाप्त %1$s</string>
     <string name="you_declined_call">You declined call</string>
     <string name="reason_not_initiated">कॉल सुरु न केल्यामुळे जोडला गेला नाही</string>
     <string name="reason_duplicated_identity">अनोळखी कॉल नाकारला</string>
@@ -38,4 +38,6 @@
     <string name="decline">घट</string>
     <string name="accept">स्वीकार करा</string>
     <string name="hang_up">हँग अप</string>
+    <string name="call_swipe_up">वर स्वाइप करा</string>
+    <string name="release_now">आता रिलीझ करा</string>
 </resources>

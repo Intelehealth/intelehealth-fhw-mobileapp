@@ -100,7 +100,6 @@ public class IntelehealthApplication extends MultiDexApplication implements
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                 .replace(' ', '0');
-
         String url = sessionManager.getServerUrl();
         if (url == null) {
             Log.i(TAG, "onCreate: Parse not init");
@@ -221,6 +220,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
      * so when app create open it and close on app terminate
      */
     public void initSocketConnection() {
+        DateTimeResource.build(this);
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
             Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());

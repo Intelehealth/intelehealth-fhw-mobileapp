@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amazonaws.HttpMethod;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -66,6 +67,7 @@ import org.intelehealth.klivekit.chat.model.DayHeader;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -89,7 +91,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.socket.emitter.Emitter;
@@ -116,6 +120,7 @@ public class ChatActivity extends AppCompatActivity {
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
+    private String authToken;
 
 
     protected void setupActionBar() {
@@ -169,8 +174,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void onMessageDelivered(Object args) {
         try {
-            int id = new JSONArray(args)
-                    .getJSONArray(0).getJSONObject(0).getInt("id");
+            int id = new JSONArray(args).getJSONArray(0).getJSONObject(0).getInt("id");
             Log.e(TAG, "onMessageDelivered: " + id);
             runOnUiThread(() -> mChatListingAdapter.markMessageAsDelivered(id));
         } catch (JSONException e) {
@@ -180,8 +184,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void markMessageAsRead(Object obj) {
         try {
-            int id = new JSONArray(obj)
-                    .getJSONArray(0).getJSONObject(0).getInt("id");
+            int id = new JSONArray(obj).getJSONArray(0).getJSONObject(0).getInt("id");
             runOnUiThread(() -> mChatListingAdapter.markMessageAsRead(id));
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -196,9 +199,7 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d(TAG, "updateMessage: " + String.valueOf(arg));
             }
 
-            JSONObject jsonObject = new JSONArray(new Gson().toJson(args[0]))
-                    .getJSONObject(0)
-                    .getJSONObject("nameValuePairs");
+            JSONObject jsonObject = new JSONArray(new Gson().toJson(args[0])).getJSONObject(0).getJSONObject("nameValuePairs");
 
 
             runOnUiThread(() -> {
@@ -276,6 +277,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentResourceId());
+        getAuthenticationToken();
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
@@ -367,12 +369,7 @@ public class ChatActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
-        ContextCompat.registerReceiver(
-                this,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        ContextCompat.registerReceiver(this, mBroadcastReceiver, filterSend, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     private void showCharLimitToast() {
@@ -416,9 +413,7 @@ public class ChatActivity extends AppCompatActivity {
         mEmptyTextView.setText(getString(R.string.loading));
         String url = Constants.GET_ALL_MESSAGE_URL + mFromUUId + "/" + mToUUId + "/" + mPatientUUid;
         Log.v(TAG, "getAllMessages - " + url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
@@ -432,7 +427,14 @@ public class ChatActivity extends AppCompatActivity {
                 Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + authToken);
+                return params;
+            }
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -489,15 +491,13 @@ public class ChatActivity extends AppCompatActivity {
 //        sortList(messages);
         Collections.reverse(messages);
         Log.e(TAG, "updateListAdapter: adapter size =>" + mChatListingAdapter.getItemCount());
-        if (!isAlreadySetReadStatus)
-            for (int i = 0; i < response.getData().size(); i++) {
-                //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
-                if (response.getData().get(i).getLayoutType() == Constants.LEFT_ITEM_DOCT
-                        && response.getData().get(i).getIsRead()) {
-                    setReadStatus(response.getData().get(i).getId());
-                    break;
-                }
+        if (!isAlreadySetReadStatus) for (int i = 0; i < response.getData().size(); i++) {
+            //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
+            if (response.getData().get(i).getLayoutType() == Constants.LEFT_ITEM_DOCT && response.getData().get(i).getIsRead()) {
+                setReadStatus(response.getData().get(i).getId());
+                break;
             }
+        }
 
         mChatListingAdapter.refresh(messages);
     }
@@ -539,10 +539,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
         try {
             Log.d(TAG, "postMessages: URL=>" + Constants.SEND_MESSAGE_URL);
-            JsonObjectRequest objectRequest = new JsonObjectRequest(
-                    Request.Method.POST,
-                    Constants.SEND_MESSAGE_URL,
-                    new JSONObject(chatMessage.toJson()), response -> {
+            JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, Constants.SEND_MESSAGE_URL, new JSONObject(chatMessage.toJson()), response -> {
                 Log.v(TAG, "postMessages - response - " + response.toString());
                 try {
                     ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
@@ -558,7 +555,14 @@ public class ChatActivity extends AppCompatActivity {
             }, error -> {
                 Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
                 mLoadingLinearLayout.setVisibility(View.GONE);
-            });
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Authorization", "Bearer " + authToken);
+                    return params;
+                }
+            };
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -574,7 +578,15 @@ public class ChatActivity extends AppCompatActivity {
 //            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + authToken);
+                return params;
+            }
+        };
+
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -659,10 +671,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void vCallNow(View view) {
-        startActivity(new Intent(this, VideoCallActivity.class)
-                .putExtra("roomId", mPatientUUid)
-                .putExtra("nurseId", mFromUUId)
-        );
+        startActivity(new Intent(this, VideoCallActivity.class).putExtra("roomId", mPatientUUid).putExtra("nurseId", mFromUUId));
 
     }
 
@@ -692,32 +701,31 @@ public class ChatActivity extends AppCompatActivity {
         sendBroadcast(broadcast);*/
     }
 
-    ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // Handle the Intent
-                        String currentPhotoPath = data.getStringExtra("RESULT");
+    ActivityResultLauncher<Intent> mStartForCameraResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                // Handle the Intent
+                String currentPhotoPath = data.getStringExtra("RESULT");
 
-                        Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
-                        if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        ChatMessage message = new ChatMessage();
-                        message.setFromUser(mFromUUId);
-                        message.setToUser(mToUUId);
-                        message.setPatientId(mPatientUUid);
-                        message.setMessage(".jpg");
-                        message.setType("attachment");
-                        message.setLoading(true);
-                        addNewMessage(message);
-                        AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
-                    }
+                Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
+                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                    Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
+                ChatMessage message = new ChatMessage();
+                message.setFromUser(mFromUUId);
+                message.setToUser(mToUUId);
+                message.setPatientId(mPatientUUid);
+                message.setMessage(".jpg");
+                message.setType("attachment");
+                message.setLoading(true);
+                addNewMessage(message);
+                AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+            }
+        }
+    });
 
     private void galleryStart() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -772,8 +780,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void validatePermissionAndIntent() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         } else {
             //cameraStart();
@@ -817,120 +824,111 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        String currentPhotoPath = "";
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            String[] filePath = {MediaStore.Images.Media.DATA};
-                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                            c.moveToFirst();
-                            int columnIndex = c.getColumnIndex(filePath[0]);
-                            String picturePath = c.getString(columnIndex);
-                            c.close();
-                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                            Log.v("path", picturePath + "");
+    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String currentPhotoPath = "";
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String picturePath = c.getString(columnIndex);
+                    c.close();
+                    //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                    Log.v("path", picturePath + "");
 
-                            // copy & rename the file
-                            String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
-                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+                    // copy & rename the file
+                    String finalImageName = UUID.randomUUID().toString();
+                    currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
+                    BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
-                            // Handle the Intent
+                    // Handle the Intent
 
 
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
-                            Log.i(TAG, currentPhotoPath);
-                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                                Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            ChatMessage message = new ChatMessage();
-                            message.setFromUser(mFromUUId);
-                            message.setToUser(mToUUId);
-                            message.setPatientId(mPatientUUid);
-                            message.setMessage(".jpg");
-                            message.setType("attachment");
-                            message.setLoading(true);
-                            addNewMessage(message);
-                            AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
-
-                        } else {
-                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
-                        }
-
+                    //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                    Log.i(TAG, currentPhotoPath);
+                    if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                        Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    ChatMessage message = new ChatMessage();
+                    message.setFromUser(mFromUUId);
+                    message.setToUser(mToUUId);
+                    message.setPatientId(mPatientUUid);
+                    message.setMessage(".jpg");
+                    message.setType("attachment");
+                    message.setLoading(true);
+                    addNewMessage(message);
+                    AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+
+                } else {
+                    Toast.makeText(ChatActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                 }
-            });
 
-    ActivityResultLauncher<Intent> mStartForPDFResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        String currentPDFPath = "";
-                        try {
-                            Uri uri = data.getData();
-                            FileInputStream fileInputStream = (FileInputStream) getContentResolver().openInputStream(uri);
-                            if (fileInputStream != null) {
-                                byte[] fileBytesArray = new byte[fileInputStream.available()];
-                                fileInputStream.read(fileBytesArray);
-                                fileInputStream.close();
+            }
+        }
+    });
 
-                                //TODO: Remove below code
-                                //Below code is to test the above fileBytesArray is correct or not.
-                                //Below we are creating a MainTest file in your internal storage (For that You need write Storage permission) and checking the content same as original file
-                                //In-case of file type change .pdf to .txt or whatever type of file you are choosing
-                                File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" +
-                                        UUID.randomUUID().toString() + ".pdf");
-                                OutputStream fileOutputStream = new FileOutputStream(mFile);
-                                fileOutputStream.write(fileBytesArray);
-                                fileOutputStream.close();
-                                //End
-                                currentPDFPath = mFile.getPath();
-                                if (!RealPathUtil.isFileLessThan1MB(mFile)) {
-                                    Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast_mb), Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                Log.v(TAG, "currentPDFPath" + currentPDFPath);
-                                ChatMessage message = new ChatMessage();
-                                message.setFromUser(mFromUUId);
-                                message.setToUser(mToUUId);
-                                message.setPatientId(mPatientUUid);
-                                message.setMessage(".pdf");
-                                message.setType("attachment");
-                                message.setLoading(true);
-                                addNewMessage(message);
+    ActivityResultLauncher<Intent> mStartForPDFResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String currentPDFPath = "";
+                try {
+                    Uri uri = data.getData();
+                    FileInputStream fileInputStream = (FileInputStream) getContentResolver().openInputStream(uri);
+                    if (fileInputStream != null) {
+                        byte[] fileBytesArray = new byte[fileInputStream.available()];
+                        fileInputStream.read(fileBytesArray);
+                        fileInputStream.close();
 
-                                AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPDFPath);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        //TODO: Remove below code
+                        //Below code is to test the above fileBytesArray is correct or not.
+                        //Below we are creating a MainTest file in your internal storage (For that You need write Storage permission) and checking the content same as original file
+                        //In-case of file type change .pdf to .txt or whatever type of file you are choosing
+                        File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/TEMP/" + UUID.randomUUID().toString() + ".pdf");
+                        OutputStream fileOutputStream = new FileOutputStream(mFile);
+                        fileOutputStream.write(fileBytesArray);
+                        fileOutputStream.close();
+                        //End
+                        currentPDFPath = mFile.getPath();
+                        if (!RealPathUtil.isFileLessThan1MB(mFile)) {
+                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast_mb), Toast.LENGTH_SHORT).show();
+                            return;
                         }
+                        Log.v(TAG, "currentPDFPath" + currentPDFPath);
+                        ChatMessage message = new ChatMessage();
+                        message.setFromUser(mFromUUId);
+                        message.setToUser(mToUUId);
+                        message.setPatientId(mPatientUUid);
+                        message.setMessage(".pdf");
+                        message.setType("attachment");
+                        message.setLoading(true);
+                        addNewMessage(message);
 
-
+                        AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPDFPath);
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
+
+
+            }
+        }
+    });
     public String mImagePathRoot = "";
 
     private void showImageOrPdf(String url) {
         if (url.endsWith(".pdf")) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } else {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                    .asDrawable().sizeMultiplier(0.1f);
-            Glide.with(this)
-                    .load(url)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .thumbnail(requestBuilder)
-                    .into((ImageView) findViewById(R.id.preview_img));
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.1f);
+            Glide.with(this).load(url).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL).thumbnail(requestBuilder).into((ImageView) findViewById(R.id.preview_img));
             findViewById(R.id.image_preview_ll).setVisibility(View.VISIBLE);
         }
     }
@@ -956,5 +954,10 @@ public class ChatActivity extends AppCompatActivity {
         args.setNurseId(mFromUUId);
         args.setRoomId(mPatientUUid);
         return args;
+    }
+
+    private void getAuthenticationToken() {
+        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+        authToken = helper.get(PreferenceHelper.AUTH_TOKEN);
     }
 }

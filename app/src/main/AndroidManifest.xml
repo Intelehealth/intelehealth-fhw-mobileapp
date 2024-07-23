@@ -23,10 +23,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"
-        android:maxSdkVersion="30"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
-        android:maxSdkVersion="30"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
@@ -73,7 +75,13 @@
             android:name=".activities.devicesActivity.DevicesActivity"
             android:exported="false"
             android:label="@string/devices"
-            android:parentActivityName=".activities.homeActivity.HomeActivity" />
+            android:parentActivityName=".activities.homeActivity.HomeActivity">
+            <intent-filter>
+                <action android:name="FCM_PLUGIN_HOME_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.householdSurvey.DraftSurveyActivity"
             android:exported="false"
@@ -92,7 +100,13 @@
         <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="FCM_PLUGIN_APPOINTMENT_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".appointment.ScheduleListingActivity"
             android:exported="true"
@@ -394,15 +408,15 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" /> <!-- Firebase Realdb -->
-       <!-- <receiver
-            android:name=".services.firebase_services.CallRTCNotifyReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
-                <action
-                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
-                    android:enabled="true" />
-            </intent-filter>
-        </receiver>-->
+        <!-- <receiver
+             android:name=".services.firebase_services.CallRTCNotifyReceiver"
+             android:exported="false">
+             <intent-filter android:priority="100">
+                 <action
+                     android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
+                     android:enabled="true" />
+             </intent-filter>
+         </receiver>-->
         <!--<receiver
             android:name=".services.firebase_services.RestartServiceReceiver"
             android:exported="false">
@@ -418,10 +432,10 @@
             </intent-filter>
         </receiver>-->
 
-     <!--   <service
-            android:name=".services.firebase_services.CallListenerBackgroundService"
-            android:enabled="true"
-            android:exported="true" />-->
+        <!--   <service
+               android:name=".services.firebase_services.CallListenerBackgroundService"
+               android:enabled="true"
+               android:exported="true" />-->
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->

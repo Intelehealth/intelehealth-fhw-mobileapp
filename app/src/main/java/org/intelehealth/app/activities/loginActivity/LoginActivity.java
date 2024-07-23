@@ -14,6 +14,7 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -48,10 +49,14 @@ import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTBody;
+import org.intelehealth.app.utilities.jwtauth.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.klivekit.data.PreferenceHelper;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
 //    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
@@ -85,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     String encoded = null;
     // UI references.
     private EditText mUsernameView;
-//    private AutoCompleteTextView mUsernameView;
+    //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
 
@@ -180,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
+            Log.e("SetLogo", "No Logo Found in Mindmap Folder");
         }
     }
 
@@ -219,7 +224,8 @@ public class LoginActivity extends AppCompatActivity {
         if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UserLoginTask(email, password);
+            //UserLoginTask(email, password);
+            getJWTToken(email, password);
         } else {
             //offlineLogin.login(email, password);
             offlineLogin.offline_login(email, password);
@@ -241,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
@@ -272,8 +278,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(R.string.close_button, null);
 
-      AlertDialog alertDialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        AlertDialog alertDialog = builder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         //prajwal_changes
     }
@@ -307,12 +313,12 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
+                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
+                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
@@ -338,8 +344,6 @@ public class LoginActivity extends AppCompatActivity {
                                             //offlineLogin.invalidateLoginCredentials();
 
 
-
-
                                         }
                                     }
                                     SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -362,7 +366,8 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 
@@ -370,7 +375,7 @@ public class LoginActivity extends AppCompatActivity {
                                         values.put("username", mEmail);
                                         values.put("password", hash_password);
                                         values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                         sqLiteDatabase.setTransactionSuccessful();
@@ -391,7 +396,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                  //  showProgress(false);
+                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);
@@ -455,5 +460,61 @@ public class LoginActivity extends AppCompatActivity {
         }
         return salt;
 
+    }
+
+    private void getJWTToken(String username, String password) {
+        // String finalURL = "https://" + sessionManager.getServerUrl().concat(":3030/auth/login");
+        String finalURL = "https://" + sessionManager.getServerUrl().concat(":3030/auth/login");
+        cpd.show();
+        Log.d(TAG, "getJWTToken: finalURL: " + finalURL);
+        AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.getJWTToken(finalURL, authBody);
+
+        authJWTResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AuthJWTResponse authJWTResponse) {
+                        // in case of error password
+                        if (!authJWTResponse.getStatus()) {
+                            cpd.dismiss();
+                            triggerIncorrectCredentialsFlow();
+                            return;
+                        }
+
+                        sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        PreferenceHelper helper = new PreferenceHelper(getApplicationContext());
+                        helper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
+                        UserLoginTask(username, password);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        resetViews();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void resetViews() {
+        cpd.dismiss();
+        mEmailSignInButton.setText(getString(R.string.action_sign_in));
+        mEmailSignInButton.setEnabled(true);
+    }
+
+    private void triggerIncorrectCredentialsFlow() {
+        Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+        resetViews();
     }
 }

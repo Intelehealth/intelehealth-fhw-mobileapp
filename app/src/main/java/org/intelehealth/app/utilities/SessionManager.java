@@ -1,8 +1,10 @@
 package org.intelehealth.app.utilities;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Set;
 
@@ -60,6 +62,8 @@ public class SessionManager {
     private Context _context;
     // Shared pref mode
     private int PRIVATE_MODE = 0;
+    private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
+
 
     public SessionManager(Context context) {
         this._context = context;
@@ -469,4 +473,16 @@ public class SessionManager {
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
+
+    public void setJwtAuthToken(String token) {
+        Log.d(TAG, "setJwtAuthToken: token : " + token);
+        String tokenValWithPrefix = "Bearer "+token;
+        editor.putString(JWT_AUTH_TOKEN, tokenValWithPrefix);
+        editor.commit();
+    }
+
+    public String getJwtAuthToken() {
+        return pref.getString(JWT_AUTH_TOKEN, "");
+    }
+
 }
