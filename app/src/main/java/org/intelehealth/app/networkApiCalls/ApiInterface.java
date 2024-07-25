@@ -215,21 +215,21 @@ public interface ApiInterface {
     Single<TokenResponse> GET_TOKEN(@Url String url);
 
     @POST
-    Single<OTPResponse> GET_OTP_FOR_AADHAR(@Url String url,
+    Single<Response<OTPResponse>> GET_OTP_FOR_AADHAR(@Url String url,
                                            @Header("Authorization") String accessToken,
                                            @Body AadharApiBody aadharApiBody);
     @POST
-    Single<OTPResponse> getEnrollNumberWithABDM(@Url String url,
+    Single<Response<OTPResponse>> getEnrollNumberWithABDM(@Url String url,
                                            @Header("Authorization") String accessToken,
                                            @Body EnrollNumberWithABDMRequest apiRequest);
 
     @POST
-    Single<OTPResponse> GET_OTP_FOR_MOBILE(@Url String url,
+    Single<Response<OTPResponse>> GET_OTP_FOR_MOBILE(@Url String url,
                                            @Header("Authorization") String accessToken,
                                            @Body MobileLoginApiBody mobileLoginApiBody);
 
     @POST
-    Single<OTPVerificationResponse> PUSH_OTP_FOR_VERIFICATION(@Url String url,
+    Single<Response<OTPVerificationResponse>> PUSH_OTP_FOR_VERIFICATION(@Url String url,
                                                                   @Header("Authorization") String accessToken,
                                                                   @Body OTPVerificationRequestBody otpVerificationRequestBody);
     @POST

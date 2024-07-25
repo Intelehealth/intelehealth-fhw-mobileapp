@@ -16,6 +16,9 @@ public class OTPResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("authResult")
+    @Expose
+    private String authResult;
 
     public String getTxnId() {
         return txnId;
@@ -33,4 +36,11 @@ public class OTPResponse {
         this.message = message;
     }
 
+    public String getAuthResult() {
+        return authResult;
+    }
+
+    public void setAuthResult(String authResult) {
+        this.authResult = authResult;
+    }
 }

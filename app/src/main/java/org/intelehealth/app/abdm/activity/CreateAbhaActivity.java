@@ -56,6 +56,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 public class CreateAbhaActivity extends AppCompatActivity {
@@ -79,7 +80,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =  ActivityCreateAbhaBinding.inflate(getLayoutInflater());
+        binding = ActivityCreateAbhaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         WindowsUtils.setStatusBarColor(CreateAbhaActivity.this);  // changing status bar color
         cpd = new CustomProgressDialog(context);
@@ -103,8 +104,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
                 resendOtp();
                 binding.otpBox.setText("");
                 callGenerateTokenApi();
-            }
-            else
+            } else
                 resendCounterAttemptsTextDisplay();
         });
 
@@ -141,7 +141,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
 
     private void checkInternetConnection() {
         if (!NetworkConnection.isOnline(context)) {    // no internet.
-            showOKDialog(context,ContextCompat.getDrawable(context,R.drawable.ui2_ic_warning_internet),
+            showOKDialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_warning_internet),
                     getString(R.string.error_network), getString(R.string.you_need_an_active_internet_connection_to_use_this_feature),
                     getString(R.string.ok), action -> {
                         if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
@@ -186,7 +186,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
                                 cancelResendAndHideView();
                                 return;
                             }
-                             callAadhaarMobileVerificationApi(accessToken);
+                            callAadhaarMobileVerificationApi(accessToken);
                         }
 
                         @Override
@@ -215,32 +215,48 @@ public class CreateAbhaActivity extends AppCompatActivity {
         aadharApiBody.setValue(aadhaarNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
-        Single<OTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
+        Single<Response<OTPResponse>> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
         new Thread(() -> {
             // api - start
             responseBodySingle.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
-                        public void onSuccess(OTPResponse otpResponse) {
+                        public void onSuccess(Response<OTPResponse> response) {
                             cpd.dismiss();
-                            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                    StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+                            if (response.code() == 200) {
+                                OTPResponse otpResponse = response.body();
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
 
-                            Timber.tag(TAG).d("onSuccess: AadhaarResponse: %s", otpResponse.toString());
-                            // here, we will receive: txtID, otp
-                            // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
+                                Timber.tag(TAG).d("onSuccess: AadhaarResponse: %s", otpResponse.toString());
+                                // here, we will receive: txtID, otp
+                                // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
-                            if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
-                                binding.flOtpBox.setVisibility(View.VISIBLE);
-                                binding.rlResendOTP.setVisibility(View.VISIBLE);
-                                binding.llResendCounter.setVisibility(View.VISIBLE);
-                                binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
+                                    binding.flOtpBox.setVisibility(View.VISIBLE);
+                                    binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                    binding.llResendCounter.setVisibility(View.VISIBLE);
+                                    binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                }
+
+                                binding.sendOtpBtn.setTag(otpResponse.getTxnId());
+                                binding.sendOtpBtn.setText(getString(R.string.verify));
+                                binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+                            } else if (response.code() == 429) {
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                        StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
+
+                                binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                binding.otpBox.setText("");
+                            } else {
+                                binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                binding.otpBox.setText("");
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             }
 
-                            binding.sendOtpBtn.setTag(otpResponse.getTxnId());
-                            binding.sendOtpBtn.setText(getString(R.string.verify));
-                            binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
                         }
 
                         @Override
@@ -274,7 +290,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + mobileNo + ", " + otp);
 
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
-        binding.sendOtpBtn.setTag(null);    // resetting...
+
 
         // payload
         String url = UrlModifiers.getOTPForVerificationUrl();
@@ -283,7 +299,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
         requestBody.setTxnId(txnId);
         requestBody.setMobileNo(mobileNo);
 
-        Single<OTPVerificationResponse> otpVerificationResponseObservable =
+        Single<Response<OTPVerificationResponse>> otpVerificationResponseObservable =
                 AppConstants.apiInterface.PUSH_OTP_FOR_VERIFICATION(url, accessToken, requestBody);
 
         new Thread(() -> {
@@ -293,24 +309,31 @@ public class CreateAbhaActivity extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
-                        public void onSuccess(OTPVerificationResponse otpVerificationResponse) {
+                        public void onSuccess(Response<OTPVerificationResponse> otpVerificationResponse) {
                             cpd.dismiss();
                             Timber.tag("callOTPForVerificationApi: ").d("onSuccess: %s", otpVerificationResponse.toString());
+                            if (otpVerificationResponse.code() == 200) {
+                                binding.sendOtpBtn.setTag(null);    // resetting...
+                                OTPVerificationResponse otpResponse = otpVerificationResponse.body();
+                                String mobile = otpResponse.getABHAProfile().getMobile();
+                                boolean isMobileEmpty = TextUtils.isEmpty(mobile);
+                                boolean isNewUser = otpResponse.getIsNew();
 
-                            String mobile = otpVerificationResponse.getABHAProfile().getMobile();
-                            boolean isMobileEmpty = TextUtils.isEmpty(mobile);
-                            boolean isNewUser = otpVerificationResponse.getIsNew();
-
-                            if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
-                                MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
-                                dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                    otpVerificationResponse.getABHAProfile().setMobile(mobileNo);
-                                    handleUserFlow(otpVerificationResponse, accessToken, isNewUser);
-                                });
-                                dialog.show(getSupportFragmentManager(), "");
+                                if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
+                                    MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
+                                    dialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                                        otpResponse.getABHAProfile().setMobile(mobileNo);
+                                        handleUserFlow(otpResponse, accessToken, isNewUser);
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
+                                } else {
+                                    handleUserFlow(otpResponse, accessToken, isNewUser);
+                                }
                             } else {
-                                handleUserFlow(otpVerificationResponse, accessToken, isNewUser);
+                                Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
                             }
+
                         }
 
                         @Override
@@ -487,6 +510,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
                 })).start();
 
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();

@@ -345,7 +345,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         String url = UrlModifiers.getMobileLoginVerificationUrl();
         // payload - end
 
-        Single<OTPResponse> mobileResponseSingle = AppConstants.apiInterface.GET_OTP_FOR_MOBILE(url, accessToken, mobileLoginApiBody);
+        Single<Response<OTPResponse>> mobileResponseSingle = AppConstants.apiInterface.GET_OTP_FOR_MOBILE(url, accessToken, mobileLoginApiBody);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -353,27 +353,32 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 mobileResponseSingle
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableSingleObserver<OTPResponse>() {
+                        .subscribe(new DisposableSingleObserver<>() {
                             @Override
-                            public void onSuccess(OTPResponse otpResponse) {
+                            public void onSuccess(Response<OTPResponse> otpResponse) {
                                 cpd.dismiss();
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+                                if (otpResponse.code() == 200) {
+                                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                            StringUtils.getMessageTranslated(otpResponse.body().getMessage(), sessionManager.getAppLanguage()), true);
 
-                                Log.d(TAG, "onSuccess: callMobileNumberVerificationApi: " + otpResponse.toString());
-                                // here, we will receive: txtID and otp will be received via SMS.
-                                // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
+                                    Timber.tag(TAG).d("onSuccess: callMobileNumberVerificationApi: %s", otpResponse.toString());
+                                    // here, we will receive: txtID and otp will be received via SMS.
+                                    // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
-                                if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
-                                    binding.flOtpBox.setVisibility(View.VISIBLE);
-                                    binding.rlResendOTP.setVisibility(View.VISIBLE);
-                                    binding.llResendCounter.setVisibility(View.VISIBLE);
-                                    binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                    if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
+                                        binding.flOtpBox.setVisibility(View.VISIBLE);
+                                        binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                        binding.llResendCounter.setVisibility(View.VISIBLE);
+                                        binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                    }
+
+                                    binding.sendOtpBtn.setTag(otpResponse.body().getTxnId());
+                                    binding.sendOtpBtn.setText(getString(R.string.verify));
+                                    binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+
+                                } else {
+                                    Toast.makeText(context, R.string.the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number, Toast.LENGTH_SHORT).show();
                                 }
-
-                                binding.sendOtpBtn.setTag(otpResponse.getTxnId());
-                                binding.sendOtpBtn.setText(getString(R.string.verify));
-                                binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
                             }
 
                             @Override
@@ -405,34 +410,49 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         aadharApiBody.setValue(aadharNo);
         String url = UrlModifiers.getAadharOTPVerificationUrl();
 
-        Single<OTPResponse> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
+        Single<Response<OTPResponse>> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // api - start
                 responseBodySingle.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableSingleObserver<OTPResponse>() {
+                        .subscribe(new DisposableSingleObserver<>() {
                             @Override
-                            public void onSuccess(OTPResponse otpResponse) {
+                            public void onSuccess(Response<OTPResponse> response) {
                                 cpd.dismiss();
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+                                if (response.code() == 200) {
+                                    OTPResponse otpResponse = response.body();
+                                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                            StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
 
-                                Log.d(TAG, "onSuccess: AadharResponse: " + otpResponse.toString());
-                                // here, we will receive: txtID, otp
-                                // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
+                                    Log.d(TAG, "onSuccess: AadharResponse: " + otpResponse.toString());
+                                    // here, we will receive: txtID, otp
+                                    // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
 
-                                if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
-                                    binding.flOtpBox.setVisibility(View.VISIBLE);
-                                    binding.rlResendOTP.setVisibility(View.VISIBLE);
-                                    binding.llResendCounter.setVisibility(View.VISIBLE);
-                                    binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                    if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
+                                        binding.flOtpBox.setVisibility(View.VISIBLE);
+                                        binding.rlResendOTP.setVisibility(View.VISIBLE);
+                                        binding.llResendCounter.setVisibility(View.VISIBLE);
+                                        binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                                    }
+
+                                    binding.sendOtpBtn.setTag(otpResponse.getTxnId());
+                                    binding.sendOtpBtn.setText(getString(R.string.verify));
+                                    binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+                                } else if (response.code() == 429) {
+                                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                            StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
+
+                                    binding.sendOtpBtn.setEnabled(true);
+                                    binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                    binding.otpBox.setText("");
+                                } else {
+                                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    binding.sendOtpBtn.setEnabled(true);
+                                    binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                    binding.otpBox.setText("");
                                 }
-
-                                binding.sendOtpBtn.setTag(otpResponse.getTxnId());
-                                binding.sendOtpBtn.setText(getString(R.string.verify));
-                                binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
                             }
 
                             @Override
@@ -772,7 +792,7 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         requestBody.setTxnId(txnId);
         requestBody.setMobileNo(mobileNo);
 
-        Single<OTPVerificationResponse> otpVerificationResponseObservable =
+        Single<Response<OTPVerificationResponse>> otpVerificationResponseObservable =
                 AppConstants.apiInterface.PUSH_OTP_FOR_VERIFICATION(url, accessToken, requestBody);
 
         new Thread(new Runnable() {
@@ -782,32 +802,37 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 otpVerificationResponseObservable
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableSingleObserver<OTPVerificationResponse>() {
+                        .subscribe(new DisposableSingleObserver<>() {
                             @Override
-                            public void onSuccess(OTPVerificationResponse otpVerificationResponse) {
+                            public void onSuccess(Response<OTPVerificationResponse> otpVerificationResponse) {
                                 cpd.dismiss();
 
-                                // 1. if new user than isNew = true
-                                // 2. if already exist user than isNew = false.
-                                Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
-
-                                if (otpVerificationResponse.getIsNew()) {
-                                    // New user -> than fetch address suggestions and take to ABHA address screen.
-                                    callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
-                                } else {
-                                    // Already user exist -> than take to Patient Registration screen.
-
-                                    if (otpVerificationResponse.getABHAProfile().getMobile() != null &&
-                                            otpVerificationResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
-                                        checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
+                                if (otpVerificationResponse.code() == 200) {
+                                    // 1. if new user than isNew = true
+                                    // 2. if already exist user than isNew = false.
+                                    Log.d("callOTPForVerificationApi: ", "onSuccess: " + otpVerificationResponse.toString());
+                                    OTPVerificationResponse otpResponse = otpVerificationResponse.body();
+                                    if (otpResponse.getIsNew()) {
+                                        // New user -> than fetch address suggestions and take to ABHA address screen.
+                                        callFetchAbhaAddressSuggestionsApi(otpResponse, accessToken);
                                     } else {
-                                        MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
-                                        dialog.openMobileNumberVerificationDialog(accessToken, otpVerificationResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                            checkUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
+                                        // Already user exist -> than take to Patient Registration screen.
 
-                                        });
-                                        dialog.show(getSupportFragmentManager(), "");
+                                        if (otpResponse.getABHAProfile().getMobile() != null &&
+                                                otpResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
+                                            checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+                                        } else {
+                                            MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
+                                            dialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                                                checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+
+                                            });
+                                            dialog.show(getSupportFragmentManager(), "");
+                                        }
                                     }
+                                } else {
+                                    Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+
                                 }
                             }
 

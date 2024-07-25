@@ -991,5 +991,9 @@
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">The ABHA address can contain alphanumeric, with a single dot (.) and underscore (_) allowed in the middle, but not at the beginning or end.</string>
     <string name="please_select_abha_address">Please select ABHA address.</string>
     <string name="mobile">Mobile</string>
+    <string name="the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number">The mobile number you have entered does not match with any of the records. Please enter a different number.</string>
+    <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have requested multiple OTPs Or Exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
+    <string name="please_enter_valid_abha">Please enter valid ABHA</string>
+    <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
 
 </resources>

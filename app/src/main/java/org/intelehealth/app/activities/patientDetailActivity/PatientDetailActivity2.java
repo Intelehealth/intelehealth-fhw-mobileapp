@@ -179,7 +179,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     float float_ageYear_Month;
     ImageView profile_image;
     LinearLayout personal_edit, address_edit, others_edit;
-    Myreceiver reMyreceive;
+//    Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn, btnViewAbhaCard;
     EncounterDTO encounterDTO;
@@ -237,7 +237,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         filter = new IntentFilter("OpenmrsID");
-        reMyreceive = new Myreceiver();
+//        reMyreceive = new Myreceiver();
 
 
         // changing status bar color
@@ -415,10 +415,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
+                Timber.tag(TAG).v("Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();
-
+                setDisplay(patientDTO.getUuid());
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -1040,7 +1040,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 .into(profile_image);
 
         // setting openmrs id
-        if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty()) {
+        if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty() && !patientDTO.getOpenmrsId().equalsIgnoreCase("NA")) {
             openmrsID_txt.setText(patientDTO.getOpenmrsId());
         }
 
@@ -1672,34 +1672,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (NetworkConnection.isOnline(this)) {
             refresh.clearAnimation();
             syncAnimator.start();
-            reMyreceive.clearAbortBroadcast();
-            new SyncUtils().syncBackground();
+            new SyncUtils().syncBackground1();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
 
     // Receiver class for Openmrs ID
-    public class Myreceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                String openMrsId = patientsDAO.getOpenmrsId(patientDTO.getUuid());
-                if (!TextUtils.isEmpty(openMrsId)) {
-                    openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
-                }
-
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-            setTitle(openmrsID_txt.getText());
-        }
-    }
+//    public static class Myreceiver extends BroadcastReceiver {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            try {
+//                Toast.makeText(context, "Reseiver", Toast.LENGTH_SHORT).show();
+////                setDisplay(patientDTO.getUuid());
+//            } catch (Exception e) {
+//                FirebaseCrashlytics.getInstance().recordException(e);
+//            }
+//
+//        }
+//    }
 
     @Override
     protected void onStart() {
         super.onStart();
 //        registerReceiver(reMyreceive, filter);
-        ContextCompat.registerReceiver(this, reMyreceive, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+//        ContextCompat.registerReceiver(this, reMyreceive, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
@@ -1707,7 +1703,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     public void onStop() {
         super.onStop();
-        unregisterReceiver(reMyreceive);
+//        unregisterReceiver(reMyreceive);
         try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
@@ -1716,155 +1712,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
-   /* @Override
-    protected void onDestroy() {
-        unregisterReceiver(reMyreceive);
-        super.onDestroy();
-    }*/
-
-    // Dialog show
-    public void startVisitDialog(Context context, Drawable drawable, String title, String subTitle,
-                                 String positiveBtnTxt, String negativeBtnTxt) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
-        alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
-
-        icon.setImageDrawable(drawable);
-        dialog_title.setText(title);
-        dialog_subtitle.setText(subTitle);
-        positive_btn.setText(positiveBtnTxt);
-        negative_btn.setText(negativeBtnTxt);
-
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
-
-        });
-
-        positive_btn.setOnClickListener(v -> {
-            //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
-        });
-
-        alertDialog.show();
-    }
-
-/*
-    private void checkVisitOrStartNewVisit() {
-        // before starting, we determine if it is new visit for a returning patient
-        // extract both FH and PMH
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
-
-
-        String uuid = UUID.randomUUID().toString();
-        EncounterDAO encounterDAO = new EncounterDAO();
-        encounterDTO = new EncounterDTO();
-        encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-        encounterDTO.setEncounterTime(thisDate);
-        encounterDTO.setVisituuid(uuid);
-        encounterDTO.setSyncd(false);
-        encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
-        encounterDTO.setVoided(0);
-        //   encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added. // TODO: handle later.
-
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
-        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-
-        String CREATOR_ID = sessionManager.getCreatorID();
-        returning = false;
-        sessionManager.setReturning(returning);
-
-        String[] cols = {"value"};
-        // querying for PMH (Past Medical History)
-        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",
-                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                null, null, null);
-
-        if (cursor.moveToFirst()) {
-            // rows present
-            do {
-                // so that null data is not appended
-                phistory = phistory + cursor.getString(0);
-
-            }
-            while (cursor.moveToNext());
-            returning = true;
-            sessionManager.setReturning(returning);
-        }
-        cursor.close();
-
-//                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
-//                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
-//                        null, null, null);
-//                if (cursor1.moveToFirst()) {
-//                    // rows present
-//                    do {
-//                        fhistory = fhistory + cursor1.getString(0);
-//                    }
-//                    while (cursor1.moveToNext());
-//                    returning = true;
-//                    sessionManager.setReturning(returning);
-//                }
-//                cursor1.close();
-
-        // Will display data for patient as it is present in database
-        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
-        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
-
-        Intent intent2 = new Intent(PatientDetailActivity2.this, VitalsActivity.class);
-        String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
-        intent2.putExtra("patientUuid", patientDTO.getUuid());
-        VisitDTO visitDTO = new VisitDTO();
-        visitDTO.setUuid(uuid);
-        visitDTO.setPatientuuid(patientDTO.getUuid());
-        visitDTO.setStartdate(thisDate);
-        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
-        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
-        visitDTO.setSyncd(false);
-        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
-        VisitsDAO visitsDAO = new VisitsDAO();
-
-        try {
-            visitsDAO.insertPatientToDB(visitDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-        // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
-        intent2.putExtra("patientUuid", patientDTO.getUuid());
-        intent2.putExtra("visitUuid", uuid);
-        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
-        intent2.putExtra("encounterUuidAdultIntial", "");
-        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
-        intent2.putExtra("name", fullName);
-        intent2.putExtra("gender", mGender);
-        intent2.putExtra("tag", "new");
-        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-        startActivity(intent2);
-    }
-*/
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
