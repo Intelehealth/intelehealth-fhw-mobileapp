@@ -9,10 +9,6 @@ android {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm")
     def date = df.format(new Date())
 
-    // kf
-    // Unicef telemedkg
-    // namma
-    // ida
     productFlavors {
 
         ida {
@@ -53,6 +49,14 @@ android {
             archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
         }
 
+        nas {
+            dimension client
+            applicationId "org.intelehealth.nas"
+            versionCode 1
+            versionName '1.0'
+            archivesBaseName = "intelehealth_nas-" + versionName + " - " + date
+        }
+
         // This flavor used to handle different type of endpoint
         dev {
             dimension server
@@ -84,6 +88,8 @@ android {
             domain = "BIOCON"
         } else if (name.contains("bmgf")) {
             domain = "BMGF"
+        } else if (name.contains("nas")) {
+            domain = "NAS"
         } else {
             domain = "IDA"
         }
@@ -122,12 +128,6 @@ def buildVariantConfigField(clientServer, variant) {
     def buildLiveKitUrl = property[clientServer + liveKitUrl].toString()
     def buildSocketUrl = property[clientServer + socketUrl].toString()
     def buildFbRtDb = property[clientServer + fbRtDb].toString()
-
-//    println(clientServer + "SERVER_URL ----> $buildServerUrl")
-//    println(clientServer + "REAL_TIME_FB_URL ------> $buildRealTimeFbUrl")
-//    println(clientServer + "LIVE_KIT_URL ------> $buildLiveKitUrl")
-//    println(clientServer + "SOCKET_URL ------> $buildSocketUrl")
-//    println(clientServer + "FB_RT_INSTANCE ------> $buildFbRtDb")
 
     variant.buildConfigField "String", serverUrl, buildServerUrl
     variant.buildConfigField "String", realTimeFbUrl, buildRealTimeFbUrl

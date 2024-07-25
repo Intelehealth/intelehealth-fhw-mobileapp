@@ -25,6 +25,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -219,6 +220,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
+@SuppressLint("Range")
 public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
@@ -3571,6 +3573,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * @param dataString variable of type String
      * @return void
      */
+
     public void queryData(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String patientSelection = "uuid = ?";
