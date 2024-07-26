@@ -397,7 +397,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        handleOnOtpError();
+                        cpd.dismiss();
+                        binding.sendOtpBtn.setEnabled(true);
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 })).start();
@@ -409,9 +410,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
             if (response.body() != null) {
                 MobileLoginOnOTPVerifiedResponse mobileLoginOnOTPVerifiedResponse = response.body();
-                binding.sendOtpBtn.setTag(null);    // resetting...
                 if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
-                    if (!TextUtils.isEmpty(response.body().getToken())) {
+                    if (!TextUtils.isEmpty(mobileLoginOnOTPVerifiedResponse.getToken())) {
                         String X_TOKEN = BEARER_AUTH + response.body().getToken();
                         callFetchUserProfileAPI(null, response.body().getTxnId(), X_TOKEN);
                     } else {
@@ -419,8 +419,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         binding.sendOtpBtn.setEnabled(true);
                     }
                 } else {
-                    if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null) {
-                        if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {// ie. there is at least one (1) account.
+                    if (mobileLoginOnOTPVerifiedResponse.getAccounts() != null && mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 0) {
                             if (mobileLoginOnOTPVerifiedResponse.getAccounts().size() > 1) {
                                 AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
                                 dialog.openAccountSelectionDialog(mobileLoginOnOTPVerifiedResponse.getAccounts(), account -> {
@@ -436,7 +435,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 callFetchUserProfileAPI(ABHA_NUMBER, mobileLoginOnOTPVerifiedResponse.getTxnId(), X_TOKEN);
                             }
 
-                        }
                     } else {
                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.sendOtpBtn.setEnabled(true);
@@ -444,15 +442,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 }
 
             } else {
-                handleOnOtpError();
+                binding.sendOtpBtn.setEnabled(true);
                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
             }
         } else if (response.code() == 422) {
             binding.sendOtpBtn.setEnabled(true);
             Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
         } else {
-            handleOnOtpError();
-            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            binding.sendOtpBtn.setEnabled(true);
+            Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
             Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
         }
     }
@@ -684,7 +682,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
-                        handleOnOtpError();
+                        binding.sendOtpBtn.setEnabled(true);
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 })).start();

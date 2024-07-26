@@ -1672,24 +1672,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (NetworkConnection.isOnline(this)) {
             refresh.clearAnimation();
             syncAnimator.start();
-            new SyncUtils().syncBackground1();
+            new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
-
-    // Receiver class for Openmrs ID
-//    public static class Myreceiver extends BroadcastReceiver {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            try {
-//                Toast.makeText(context, "Reseiver", Toast.LENGTH_SHORT).show();
-////                setDisplay(patientDTO.getUuid());
-//            } catch (Exception e) {
-//                FirebaseCrashlytics.getInstance().recordException(e);
-//            }
-//
-//        }
-//    }
 
     @Override
     protected void onStart() {

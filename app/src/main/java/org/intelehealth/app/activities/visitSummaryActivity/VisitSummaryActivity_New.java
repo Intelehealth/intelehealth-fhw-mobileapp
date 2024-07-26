@@ -18,6 +18,7 @@ import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -192,6 +193,7 @@ import okhttp3.ResponseBody;
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
+@SuppressLint("Range")
 public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
@@ -464,18 +466,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 physicalExams.addAll(selectedExams);
             }
 
-/*
-            Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
-                    visitUuid + "\n" +
-                    patientGender + "\n" +
-                    encounterVitals + "\n" +
-                    encounterUuidAdultIntial + "\n" +
-                    EncounterAdultInitial_LatestVisit + "\n" +
-                    patientName + "\n" +
-                    float_ageYear_Month + "\n" +
-                    intentTag + "\n" +
-                    isPastVisit + "\n");
-*/
+
             queryData(String.valueOf(patientUuid));
         }
 
@@ -2540,167 +2531,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
             alertDialog.show();
-
-//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-//
-//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-//                                startActivity(new Intent(Intent.ACTION_VIEW,
-//                                        Uri.parse(
-//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                                        phoneNumber, whatsappMessage))));
-//
-//                                // isreturningWhatsapp = true;
-//
-//                            } else {
-//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-           /* AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
         } else {
-            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
-
             Toast.makeText(context, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
         }
     }
 
-/*
-    private void setGenderAgeLocal(Context context, TextView genderView, Patient patient, SessionManager sessionManager) {
-        //  1. Age
-        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), this.context);
-        String gender = patient.getGender();
-
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            if (gender.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
-            } else if (gender.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            } else if (gender.equalsIgnoreCase("O")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
-            } else {
-                genderView.setText(gender + " " + age);
-            }
-        } else {
-            genderView.setText(gender + " " + age);
-        }
-    }
-*/
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
 
