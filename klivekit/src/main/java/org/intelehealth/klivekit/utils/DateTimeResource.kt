@@ -25,9 +25,13 @@ class DateTimeResource private constructor(val resource: Resources) {
 
         @JvmStatic
         fun getInstance() = INSTANCE
+        @JvmStatic
+        fun clearInstance() { INSTANCE = null }
     }
 
     fun getResourceString(@StringRes resId: Int) = resource.getString(resId)
 
     fun getResourceString(@StringRes resId: Int, argStr: String) = resource.getString(resId, argStr)
+
+
 }
