@@ -48,7 +48,7 @@ class HeadsUpNotificationServiceBackup : Service() {
 //                    AudioManager.RINGER_MODE_VIBRATE -> {
 //                        status = false
 //                        vstatus = true
-//                        CustomLog.e("Service!!", "vibrate mode")
+//                        Log.e("Service!!", "vibrate mode")
 //                    }
 //                }
 //            }
@@ -127,7 +127,7 @@ class HeadsUpNotificationServiceBackup : Service() {
 //
 //                // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
 //                mvibrator!!.vibrate(pattern, 0)
-//                CustomLog.e("Service!!", "vibrate mode start")
+//                Log.e("Service!!", "vibrate mode start")
 //            }
 //        } catch (e: Exception) {
 //            e.printStackTrace()
