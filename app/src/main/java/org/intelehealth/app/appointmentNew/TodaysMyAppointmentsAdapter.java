@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
     @Override
     public void onBindViewHolder(TodaysMyAppointmentsAdapter.MyViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: appointmentInfoList : " + appointmentInfoList.size());
+        CustomLog.d(TAG, "onBindViewHolder: appointmentInfoList : " + appointmentInfoList.size());
 
         try {
             AppointmentInfo appointmentInfoModel = appointmentInfoList.get(position);
@@ -117,7 +117,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
                     long second = diff / 1000;
                     long minutes = second / 60;
-                    Log.v("AppointmentInfo", "Diff minutes - " + minutes);
+                    CustomLog.v("AppointmentInfo", "Diff minutes - " + minutes);
 
                     String timeText = "";
                     //check for appointmet but presc not given and visit not completed
@@ -176,7 +176,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
 
                 } catch (ParseException e) {
-                    Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+                    CustomLog.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
                     e.printStackTrace();
                 }
             }
@@ -191,7 +191,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPatientId.setVisibility(View.GONE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time(), context));
-                Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
+                CustomLog.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.cvPrescRx.setVisibility(View.VISIBLE);
                     holder.cvPrescPending.setVisibility(View.GONE);
@@ -209,8 +209,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPatientId.setVisibility(View.GONE);
 
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotDate());
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotTime());
+                CustomLog.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotDate());
+                CustomLog.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotTime());
             }
 
 
@@ -248,7 +248,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
 
         } catch (Exception e) {
-            Log.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "onBindViewHolder: e main : " + e.getLocalizedMessage());
             e.printStackTrace();
         }
 

@@ -3,7 +3,7 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,7 +137,7 @@ public class PhysicalExaminationFragment extends Fragment {
                         mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
                         mQuestionsListingAdapter.notifyItemChanged(index);
                     }
-                    Log.v("onSelect", "node - " + node.getText());
+                    CustomLog.v("onSelect", "node - " + node.getText());
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         //if (mCurrentChildComplainNodeOptionsIndex < physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size()) {
                         //if (mCurrentChildComplainNodeOptionsIndex == physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOptionsList().size() - 1) {

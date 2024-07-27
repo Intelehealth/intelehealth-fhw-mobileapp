@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -331,7 +331,7 @@ public class ObsDAO {
                 do {
                     try {
                         result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                        Log.v("value_text", "value_text: " + result);
+                        CustomLog.v("value_text", "value_text: " + result);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

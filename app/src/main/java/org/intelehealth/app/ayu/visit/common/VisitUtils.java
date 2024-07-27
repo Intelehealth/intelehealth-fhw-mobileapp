@@ -1,6 +1,6 @@
 package org.intelehealth.app.ayu.visit.common;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -98,13 +98,13 @@ AB NEGATIVE = 1231*/
 
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
-        Log.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
+        CustomLog.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
         if (!isEditMode && !isAlreadyLoaded)
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
 
     public static String replaceEnglishCommonString(String data, String locale) {
-        Log.v("VisitUtils", "RAW - " + data);
+        CustomLog.v("VisitUtils", "RAW - " + data);
         String result = data;
         if (locale.equalsIgnoreCase("hi")) {
 
@@ -233,13 +233,13 @@ AB NEGATIVE = 1231*/
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை");
         }
-        Log.v("VisitUtils", "OUT - " + result);
+        CustomLog.v("VisitUtils", "OUT - " + result);
 
         return result;
     }
 
     public static String replaceToEnglishCommonString(String data, String locale) {
-        Log.v("VisitUtils", "replaceToEnglishCommonString - " + data);
+        CustomLog.v("VisitUtils", "replaceToEnglishCommonString - " + data);
         String result = data;
         if (locale.equalsIgnoreCase("hi")) {
 
@@ -316,7 +316,7 @@ AB NEGATIVE = 1231*/
 
 
         }
-        Log.v("VisitUtils", "OUT - " + result);
+        CustomLog.v("VisitUtils", "OUT - " + result);
 
         return result;
     }
@@ -353,7 +353,7 @@ AB NEGATIVE = 1231*/
     }
 
     public static String convertFtoC(String TAG, String temperature) {
-        Log.i(TAG, "convertFtoC IN: " + temperature);
+        CustomLog.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
@@ -364,7 +364,7 @@ AB NEGATIVE = 1231*/
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.format("%.1f", cTemp);
             //result = String.valueOf(cTemp);
-            Log.i(TAG, "convertFtoC OUT: " + result);
+            CustomLog.i(TAG, "convertFtoC OUT: " + result);
 
             return result;
         }
@@ -373,7 +373,7 @@ AB NEGATIVE = 1231*/
     }
 
     public static String convertCtoF(String TAG, String temperature) {
-        Log.i(TAG, "convertCtoF IN: " + temperature);
+        CustomLog.i(TAG, "convertCtoF IN: " + temperature);
 
         if (temperature == null || temperature.isEmpty()) return "";
         String result = "";
@@ -385,7 +385,7 @@ AB NEGATIVE = 1231*/
         b = Double.parseDouble(dtime.format(b));
         result = String.format("%.1f", b);
         //result = String.valueOf(b);
-        Log.i(TAG, "convertCtoF OUT: " + result);
+        CustomLog.i(TAG, "convertCtoF OUT: " + result);
         return result;
 
     }

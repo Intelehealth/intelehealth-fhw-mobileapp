@@ -17,7 +17,7 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -741,7 +741,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         for (int i = 0; i < followUpModels.size(); i++) {
             if (followUpModels.get(i).getUuid() != null) {
                 String visitUUID = followUpModels.get(i).getUuid();
-                Log.v("Followup", "visitid: " + visitUUID);
+                CustomLog.v("Followup", "visitid: " + visitUUID);
                 String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " + "e.visituuid = ? " + "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
                         "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
 
@@ -751,7 +751,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         try {
                             String complaint = cursor.getString(cursor.getColumnIndexOrThrow("value"));
                             followUpModels.get(i).setChiefComplaint(complaint);
-                            Log.v("Followup", "chiefcomplaint: " + complaint);
+                            CustomLog.v("Followup", "chiefcomplaint: " + complaint);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

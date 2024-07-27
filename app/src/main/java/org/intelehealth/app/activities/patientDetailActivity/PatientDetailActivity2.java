@@ -64,7 +64,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -459,7 +459,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
@@ -946,7 +946,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 String chiefComplain = "";
                                 visitValue = visitValue.replaceAll("<.*?>", "");
                                 System.out.println(visitValue);
-                                Log.v(TAG, visitValue);
+                                CustomLog.v(TAG, visitValue);
                                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                 String[] spt = visitValue.split("►");
@@ -1001,7 +1001,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                 mCurrentVisitDataList.add(pastVisitData);
-                                Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                                CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
@@ -1013,7 +1013,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             } while (visitCursor.moveToPrevious());
         }
-        Log.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
+        CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
         if (!mCurrentVisitDataList.isEmpty()) {
             PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                 @Override
@@ -1236,7 +1236,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setTitle(patientDTO.getOpenmrs_id());
 
-        Log.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
+        CustomLog.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
         int mAgeYears = -1, mAgeMonths = 0, mAgeDays = 0;
         // setting age
         if (patientDTO.getDateofbirth() != null) {
@@ -1945,7 +1945,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
+                CustomLog.v(TAG, "Sync Done!");
                 try {
                     refresh.clearAnimation();
                     syncAnimator.cancel();
@@ -2051,7 +2051,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         encounterDTO.setVisituuid(uuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         //   encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added. // TODO: handle later.
 
@@ -2141,7 +2141,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_internet_available));
         } else {
@@ -2255,7 +2255,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     String chiefComplain = "";
                                     visitValue = visitValue.replaceAll("<.*?>", "");
                                     System.out.println(visitValue);
-                                    Log.v(TAG, visitValue);
+                                    CustomLog.v(TAG, visitValue);
                                     //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                     String[] spt = visitValue.split("►");
@@ -2310,7 +2310,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);

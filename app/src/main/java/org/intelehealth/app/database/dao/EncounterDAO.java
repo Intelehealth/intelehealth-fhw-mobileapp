@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -73,7 +73,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:", "VALUES: " + values);
+            CustomLog.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -135,7 +135,7 @@ public class EncounterDAO {
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
-        Log.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
+        CustomLog.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -143,9 +143,9 @@ public class EncounterDAO {
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
-                Log.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                CustomLog.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
-                Log.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                CustomLog.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
@@ -156,7 +156,7 @@ public class EncounterDAO {
         db.endTransaction();
 
         Gson gson = new Gson();
-        Log.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
+        CustomLog.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -278,7 +278,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
+            CustomLog.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 
@@ -517,7 +517,7 @@ public class EncounterDAO {
                             "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
                     new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            //Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
+            //CustomLog.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
             if (idCursor.getCount() > 0) {
                 return true;
             }
@@ -580,7 +580,7 @@ public class EncounterDAO {
                     do {
                         try {
                             complaintValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                            Log.v("Followup", "chiefcomplaint: " + complaintValue);
+                            CustomLog.v("Followup", "chiefcomplaint: " + complaintValue);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -633,7 +633,7 @@ public class EncounterDAO {
                 do {
                     try {
                         modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
-                        Log.v("modifiedDate", "modifiedDate: " + modifiedDate);
+                        CustomLog.v("modifiedDate", "modifiedDate: " + modifiedDate);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -668,7 +668,7 @@ public class EncounterDAO {
                 do {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
-                        Log.v("modifiedDate", "uuid: " + uuid);
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -703,7 +703,7 @@ public class EncounterDAO {
                 do {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
-                        Log.v("modifiedDate", "uuid: " + uuid);
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -786,7 +786,7 @@ public class EncounterDAO {
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 modifiedTime = idCursor.getString(idCursor.getColumnIndexOrThrow("obsservermodifieddate"));
-                Log.d(TAG, "getPrescriptionReceivedTime:modifiedTime :  " + modifiedTime);
+                CustomLog.d(TAG, "getPrescriptionReceivedTime:modifiedTime :  " + modifiedTime);
 
             }
         }

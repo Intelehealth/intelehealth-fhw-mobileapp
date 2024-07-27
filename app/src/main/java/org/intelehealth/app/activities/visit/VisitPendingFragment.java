@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,7 +175,7 @@ public class VisitPendingFragment extends Fragment {
                         // update older data as it will not go at very bottom of list.
                         if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
-                            Log.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
+                            CustomLog.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
                             return;
                         }
                         if (!isolderFullyLoaded) {
@@ -210,7 +210,7 @@ public class VisitPendingFragment extends Fragment {
         fetchOlderData();
 
         int totalCount = totalCounts_recent + totalCounts_older;
-        Log.d("rece", "defaultData: pending" + totalCount);
+        CustomLog.d("rece", "defaultData: pending" + totalCount);
 
         // loaded month data 1st for showing the count in main ui
 //        thisMonths_Visits();
@@ -224,7 +224,7 @@ public class VisitPendingFragment extends Fragment {
     private void fetchOlderData() {
         // pagination - start
         olderList = olderVisits(olderLimit, olderStart);
-        Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+        CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
         older_adapter = new VisitAdapter(getActivity(), olderList);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
@@ -273,7 +273,7 @@ public class VisitPendingFragment extends Fragment {
             List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 recentList.addAll(tempList);
-                Log.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
+                CustomLog.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
                 recent_adapter.list.addAll(tempList);
                 recent_adapter.notifyDataSetChanged();
                 recentStart = recentEnd;
@@ -296,7 +296,7 @@ public class VisitPendingFragment extends Fragment {
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 olderList.addAll(tempList);
-                Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+                CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
                 older_adapter.list.addAll(tempList);
                 older_adapter.notifyDataSetChanged();
                 olderStart = olderEnd;
@@ -885,7 +885,7 @@ public class VisitPendingFragment extends Fragment {
      * @param query
      */
     private void searchOperation(String query) {
-        Log.v("Search", "Search Word: " + query);
+        CustomLog.v("Search", "Search Word: " + query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
@@ -1039,7 +1039,7 @@ public class VisitPendingFragment extends Fragment {
 
         //
         recent_older_visibility(recentList, olderList);
-        Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
+        CustomLog.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
         recent_adapter = new VisitAdapter(getActivity(), recentList);
       //  recycler_recent.setNestedScrollingEnabled(false);

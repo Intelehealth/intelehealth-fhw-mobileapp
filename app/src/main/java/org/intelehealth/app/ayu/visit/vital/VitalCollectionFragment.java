@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +48,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -165,7 +166,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_vital_collection, container, false);
-        Log.v("float_ageYear_Month", float_ageYear_Month + "");
+        CustomLog.v("float_ageYear_Month", float_ageYear_Month + "");
         //mHeightSpinner = view.findViewById(R.id.sp_height);
         //mWeightSpinner = view.findViewById(R.id.sp_weight);
 
@@ -354,7 +355,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             bmiLinearLayout.setVisibility(View.VISIBLE);*/
 
         for (PatientVital patientVital : mPatientVitalList) {
-            Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightCardView.setVisibility(View.VISIBLE);
@@ -1023,7 +1024,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         double bmi_value = numerator / denominator;
         DecimalFormat df = new DecimalFormat("0.00");
         mBMITextView.setText(df.format(bmi_value) + " kg/m");
-        Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
+        CustomLog.d("BMI", "BMI: " + mBMITextView.getText().toString());
         //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -1042,7 +1043,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMITextView.setText(df.format(bmi_value) + " kg/m");
-            Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
+            CustomLog.d("BMI", "BMI: " + mBMITextView.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
             BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -1077,8 +1078,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 heightvalue = value;
                 //mHeightTextView.setText(value);
                 if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
-                    //Log.v(TAG, "getHeight - " + results.getHeight());
-                    //Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                    //CustomLog.v(TAG, "getHeight - " + results.getHeight());
+                    //CustomLog.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
                     //mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " " + getResources().getString(R.string.cm)), true);
                     mHeightEditText.setText(heightvalue);
                 }
@@ -1798,7 +1799,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     /*private String convertFtoC(String temperature) {
-        Log.i(TAG, "convertFtoC IN: " + temperature);
+        CustomLog.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
@@ -1809,7 +1810,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.format("%.1f", cTemp);
             //result = String.valueOf(cTemp);
-            Log.i(TAG, "convertFtoC OUT: " + result);
+            CustomLog.i(TAG, "convertFtoC OUT: " + result);
 
             return result;
         }
@@ -1818,7 +1819,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private String convertCtoF(String temperature) {
-        Log.i(TAG, "convertCtoF IN: " + temperature);
+        CustomLog.i(TAG, "convertCtoF IN: " + temperature);
 
         if (temperature == null) return "";
         String result = "";
@@ -1830,7 +1831,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         b = Double.parseDouble(dtime.format(b));
         result = String.format("%.1f", b);
         //result = String.valueOf(b);
-        Log.i(TAG, "convertCtoF OUT: " + result);
+        CustomLog.i(TAG, "convertCtoF OUT: " + result);
         return result;
 
     }*/

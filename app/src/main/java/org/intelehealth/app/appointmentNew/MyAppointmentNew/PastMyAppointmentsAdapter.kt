@@ -25,6 +25,7 @@ import org.intelehealth.app.appointment.model.AppointmentInfo
 import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity
 import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DownloadFilesUtils
 import org.intelehealth.app.utilities.Logger
@@ -54,7 +55,7 @@ class PastMyAppointmentsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder: appointmentInfoList : " + appointmentInfoList.size)
+        CustomLog.d(TAG, "onBindViewHolder: appointmentInfoList : " + appointmentInfoList.size)
         try {
             val appointmentInfoModel = appointmentInfoList[position]
             if (appointmentInfoModel.patientProfilePhoto == null || appointmentInfoModel.patientProfilePhoto.equals(
@@ -146,11 +147,11 @@ class PastMyAppointmentsAdapter(
                     )
                 }
             } catch (e: ParseException) {
-                Log.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
+                CustomLog.d(TAG, "onBindViewHolder: date exce : " + e.localizedMessage)
                 e.printStackTrace()
             }
         } catch (e: Exception) {
-            Log.d(TAG, "onBindViewHolder: e main : " + e.localizedMessage)
+            CustomLog.d(TAG, "onBindViewHolder: e main : " + e.localizedMessage)
             e.printStackTrace()
         }
     }

@@ -2,7 +2,7 @@ package org.intelehealth.app.shared;
 
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 /**
  * Created by Kaveri Zaware on 28-07-2023
@@ -13,19 +13,19 @@ public class FirstLetterUpperCaseInputFilter implements InputFilter {
 
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        Log.e(TAG, "filter: " + source);
-        Log.e(TAG, "Spanned: " + dest);
-        Log.e(TAG, "start: " + start);
-        Log.e(TAG, "end: " + end);
-        Log.e(TAG, "dstart: " + dstart);
-        Log.e(TAG, "dend: " + dend);
-        Log.e(TAG, "source.length: " + source.length());
+        CustomLog.e(TAG, "filter: " + source);
+        CustomLog.e(TAG, "Spanned: " + dest);
+        CustomLog.e(TAG, "start: " + start);
+        CustomLog.e(TAG, "end: " + end);
+        CustomLog.e(TAG, "dstart: " + dstart);
+        CustomLog.e(TAG, "dend: " + dend);
+        CustomLog.e(TAG, "source.length: " + source.length());
         if (dstart == 0 && end == 1) {
             // Convert the first character to uppercase
             char c = source.charAt(0);
             if (Character.isLowerCase(c)) {
                 String str = String.valueOf(Character.toUpperCase(c)) + source.subSequence(1, end);
-                Log.e(TAG, "toUpperCase: " + str);
+                CustomLog.e(TAG, "toUpperCase: " + str);
                 return String.valueOf(Character.toUpperCase(c));
             } else return null;
         }

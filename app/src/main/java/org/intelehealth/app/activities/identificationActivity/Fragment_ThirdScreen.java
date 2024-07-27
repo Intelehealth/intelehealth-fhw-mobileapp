@@ -48,7 +48,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -303,7 +303,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
         if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().isEmpty())
             mRelationNameEditText.setText(patientDTO.getSon_dau_wife());
-        Log.v(TAG, "relation: " + patientDTO.getSon_dau_wife());
+        CustomLog.v(TAG, "relation: " + patientDTO.getSon_dau_wife());
 
         if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().isEmpty())
             mOccupationEditText.setText(patientDTO.getOccupation());
@@ -837,7 +837,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
         patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
         patientAttributesDTOList.add(patientAttributesDTO);
-        Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
+        CustomLog.v(TAG, "values_caste: " + patientAttributesDTO.toString());
 
         // education
         patientAttributesDTO = new PatientAttributesDTO();
@@ -930,7 +930,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
     private void setscreen(String str) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Log.v(TAG, "relation: " + str);
+        CustomLog.v(TAG, "relation: " + str);
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {str};

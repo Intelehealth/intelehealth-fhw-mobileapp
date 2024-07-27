@@ -3,7 +3,7 @@ package org.intelehealth.app.syncModule;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;

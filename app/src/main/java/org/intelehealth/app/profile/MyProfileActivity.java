@@ -33,7 +33,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -301,7 +301,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         });
 
         btnSave.setOnClickListener(v -> {
-            Log.i("Btn Save", ": Clicked");
+            CustomLog.i("Btn Save", ": Clicked");
             hideSoftKeyboard(MyProfileActivity.this, btnSave);
             checkInternetAndUpdateProfile();
         });
@@ -783,7 +783,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
 
-            Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+            CustomLog.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
             if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(this)) {
                     profilePicDownloaded(providerDTO);
@@ -832,7 +832,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                CustomLog.v("path", picturePath + "");
 
                 // copy & rename the file
                 String finalImageName = UUID.randomUUID().toString();
@@ -962,14 +962,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     private void saveImage(String picturePath) {
-        Log.v("saveImage", "picturePath = " + picturePath);
+        CustomLog.v("saveImage", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
             try {
 
                 long length = photo.length();
                 length = length / 1024;
-                Log.e("------->>>>", length + "");
+                CustomLog.e("------->>>>", length + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("File not found : " + e.getMessage() + e);
@@ -1037,7 +1037,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     String picturePath = c.getString(columnIndex);
                     c.close();
                     //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    Log.v("path", picturePath + "");
+                    CustomLog.v("path", picturePath + "");
 
                     // copy & rename the file
                     String finalImageName = UUID.randomUUID().toString();
@@ -1157,7 +1157,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             e.printStackTrace();
         }
         String url = new UrlModifiers().getHWProfileDetails(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
         Observable<Profile> profileDetailsDownload = AppConstants.apiInterface.PROVIDER_PROFILE_DETAILS_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
         profileDetailsDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Profile>() {
@@ -1165,7 +1165,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             public void onNext(Profile profile) {
                 if (profile != null) {
                     Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
-                    Log.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+                    CustomLog.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
 
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
                     if (profile.getResults().get(0).getPerson().getPreferredName().getGivenName() != null)
@@ -1263,7 +1263,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             ivProfileImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
         }
 
-        Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+        CustomLog.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
         if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
             if (NetworkConnection.isOnline(this)) {
                 try {
@@ -1292,12 +1292,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     }
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
+        CustomLog.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(MyProfileActivity.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
         String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -1306,7 +1306,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
+                CustomLog.d(TAG, "onNext: ");
                 DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                 downloadFilesUtils.saveToDisk(file, uuid);
             }
@@ -1347,7 +1347,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        CustomLog.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
         String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
         if (!selectedDate.isEmpty()) {
             dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
@@ -1356,10 +1356,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             //dobToDb = dateForAge.replace("/","-");
             String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), this);
             //for age
-            Log.d(TAG, "getSelectedDate: date : " + DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate));
+            CustomLog.d(TAG, "getSelectedDate: date : " + DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate));
             String[] splitedDate = selectedDate.split("/");
 
-            Log.d(TAG, "getSelectedDate: age : " + age);
+            CustomLog.d(TAG, "getSelectedDate: age : " + age);
             if (age != null && !age.isEmpty() && Integer.parseInt(age) >= 18) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
@@ -1369,7 +1369,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
                 if (tvErrorDob.getVisibility() == View.VISIBLE) tvErrorDob.setVisibility(View.GONE);
                 shouldActivateSaveButton();
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                CustomLog.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
             } else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
                 tvAge.setText("");
                 tvDob.setText("");
@@ -1384,7 +1384,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         } else {
-            Log.d(TAG, "onClick: date empty");
+            CustomLog.d(TAG, "onClick: date empty");
         }
     }
 

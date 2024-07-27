@@ -1,6 +1,6 @@
 package org.intelehealth.app.knowledgeEngine;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -113,7 +113,7 @@ public class PhysicalExam extends Node {
 
                                     Node examNodeRef = null;
                                     if (locationNodeRef != null) {
-                                        Log.i(TAG, "matchSelections: [Location]" + location);
+                                        CustomLog.i(TAG, "matchSelections: [Location]" + location);
                                         examNodeRef = locationNodeRef.getOptionByName(exam);
                                     }
                                     if (examNodeRef != null) {
@@ -288,7 +288,7 @@ public class PhysicalExam extends Node {
                 else stringsList.add(bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage();
-                    Log.i(TAG, "generateFindings: " + lang);
+                    CustomLog.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
                 }
             }
@@ -337,29 +337,29 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            Log.v(TAG, "getExamNode - " + node.toString());
+            CustomLog.v(TAG, "getExamNode - " + node.toString());
 
             String title = getPageTitlesLocale().get(i);
-            Log.v(TAG, "getPageTitlesLocale - " + node.toString());
+            CustomLog.v(TAG, "getPageTitlesLocale - " + node.toString());
             String[] split = title.split(" : ");
             String levelOne = split[0];
-            Log.v(TAG, "levelOne - " + levelOne);
+            CustomLog.v(TAG, "levelOne - " + levelOne);
             if ((node.isSelected() | node.anySubSelected())) {
                 cleanUpTheImages(node);
                 boolean checkSet = rootStrings.add(levelOne);
-                Log.i(TAG, "rootStrings: " + rootStrings);
+                CustomLog.i(TAG, "rootStrings: " + rootStrings);
                 if (checkSet)
                     //stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
                     stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay());
                     //else stringsList.add(bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.findDisplay());
-                Log.i(TAG, "stringsList: " + stringsList);
+                CustomLog.i(TAG, "stringsList: " + stringsList);
                 if (!node.isTerminal()) {
                     //String lang = node.formLanguage();
                     String lang = node.formQuestionAnswer(0, false);
-                    Log.i(TAG, "generateFindings: " + lang);
+                    CustomLog.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
-                    Log.i(TAG, "Not isTerminal - stringsList: " + stringsList);
+                    CustomLog.i(TAG, "Not isTerminal - stringsList: " + stringsList);
                 }
 
             }

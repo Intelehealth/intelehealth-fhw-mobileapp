@@ -15,7 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -99,7 +99,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         thirdScreen = new Fragment_ThirdScreen();
 
         String language = sessionManager.getAppLanguage();
-        Log.d("lang", "lang: " + language);
+        CustomLog.d("lang", "lang: " + language);
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -170,7 +170,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         // Bundle data
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientdto);
-        Log.v(TAG, "reltion: " + patientID_edit);
+        CustomLog.v(TAG, "reltion: " + patientID_edit);
         if (patientID_edit != null) {
             bundle.putString("patientUuid", patientID_edit);
         } else {
@@ -246,7 +246,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {

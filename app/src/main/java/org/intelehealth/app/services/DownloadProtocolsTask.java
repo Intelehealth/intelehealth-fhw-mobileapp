@@ -3,7 +3,7 @@ package org.intelehealth.app.services;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Toast;
 
 
@@ -70,7 +70,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
     public static void copyFile(File sourceFile, File destFile) throws IOException {
         if (!destFile.exists()) {
             destFile.createNewFile();
-            Log.i(TAG, "copyFile: DoesNotExists");
+            CustomLog.i(TAG, "copyFile: DoesNotExists");
         }
 
         FileChannel origin = null;
@@ -107,7 +107,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             try {
                 mProgress.show();
             } catch (Exception ex) {
-                Log.e(TAG, "onPreExecute: ", ex);
+                CustomLog.e(TAG, "onPreExecute: ", ex);
             }
         }
     }
@@ -139,18 +139,18 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             File engines_dir = new File(activity.getFilesDir().getAbsolutePath(), AppConstants.JSON_FOLDER);
             if (engines_dir.exists()) deleteFolder(engines_dir);
             File physicalExam = new File(activity.getFilesDir().getAbsolutePath() + "/physExam.json");
-            Log.i(TAG, "onPostExecute: " + physicalExam.exists());
+            CustomLog.i(TAG, "onPostExecute: " + physicalExam.exists());
             File familyHistory = new File(activity.getFilesDir().getAbsolutePath() + "/famHist.json");
-            Log.i(TAG, "onPostExecute: " + familyHistory);
+            CustomLog.i(TAG, "onPostExecute: " + familyHistory);
             File pastMedicalHistory = new File(activity.getFilesDir().getAbsolutePath() + "/patHist.json");
-            Log.i(TAG, "onPostExecute: " + pastMedicalHistory);
+            CustomLog.i(TAG, "onPostExecute: " + pastMedicalHistory);
             File config = new File(activity.getFilesDir().getAbsolutePath() + "/config.json");
-            Log.i(TAG, "onPostExecute: " + config);
+            CustomLog.i(TAG, "onPostExecute: " + config);
             File base_dir = new File(activity.getFilesDir().getAbsolutePath(), AppConstants.JSON_FOLDER_Update);
             base_dir.renameTo(engines_dir);
             File physExam = new File(engines_dir, "physExam.json");
             if (physExam.exists()) {
-                Log.i(TAG, "onPostExecute: physExam");
+                CustomLog.i(TAG, "onPostExecute: physExam");
                 physicalExam.delete();
                 try {
                     copyFile(physExam, physicalExam);
@@ -162,7 +162,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
 
             File famHist = new File(engines_dir, "famHist.json");
             if (famHist.exists()) {
-                Log.i(TAG, "onPostExecute: famHist");
+                CustomLog.i(TAG, "onPostExecute: famHist");
                 familyHistory.delete();
                 try {
                     copyFile(famHist, familyHistory);
@@ -174,7 +174,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
 
             File patHist = new File(engines_dir, "patHist.json");
             if (patHist.exists()) {
-                Log.i(TAG, "onPostExecute: patHist");
+                CustomLog.i(TAG, "onPostExecute: patHist");
                 pastMedicalHistory.delete();
                 try {
                     copyFile(patHist, pastMedicalHistory);
@@ -186,7 +186,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
 
             File configfile = new File(engines_dir, "config.json");
             if (configfile.exists()) {
-                Log.i(TAG, "onPostExecute: configfile");
+                CustomLog.i(TAG, "onPostExecute: configfile");
                 config.delete();
                 try {
                     copyFile(configfile, config);
@@ -234,7 +234,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             try {
                 mProgress.dismiss();
             } catch (Exception ex) {
-                Log.e(TAG, "onPreExecute: ", ex);
+                CustomLog.e(TAG, "onPreExecute: ", ex);
             }
         }
     }
@@ -243,14 +243,14 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         List<Mindmap> mmList = new ArrayList<>();
         String mmListRequest =
                 String.format("{\"licensekey\":\"%s\"}", licensekey);
-        Log.i(TAG, "licensekey: " + mmListRequest);
+        CustomLog.i(TAG, "licensekey: " + mmListRequest);
         HttpURLConnection urlConnection = null;
         try {
             publishProgress("progress", "Downloading Mindmap List");
             //Download List of Protocols Available
             String servStr = "https://" + sessionManager.getMindMapServerUrl() + "/parse/functions/downloadMindMapList";
             URL url = new URL(servStr);
-            Log.i("GetMMList", servStr);
+            CustomLog.i("GetMMList", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -262,7 +262,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             dStream.flush();
             dStream.close();
             int responseCode = urlConnection.getResponseCode();
-            Log.i("RES->", "" + urlConnection.getResponseMessage());
+            CustomLog.i("RES->", "" + urlConnection.getResponseMessage());
             if (responseCode == 200) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 StringBuilder stringBuilder = new StringBuilder();
@@ -302,10 +302,10 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
 
 
         } catch (JSONException e) {
-            Log.e(TAG, "onPostExecute: ", e);
+            CustomLog.e(TAG, "onPostExecute: ", e);
             // deleteFolder(base_dir);
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            CustomLog.e("ERROR", e.getMessage(), e);
             // deleteFolder(base_dir);
         } finally {
             if (urlConnection != null)
@@ -320,14 +320,14 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                                 "\"objectid\":\"%s\"}",
                         licensekey,
                         mindmap.getObjectId());
-        Log.i(TAG, "licensekey: " + mmListRequest);
+        CustomLog.i(TAG, "licensekey: " + mmListRequest);
         HttpURLConnection urlConnection = null;
         try {
             publishProgress("progress", "Downloading Mindmap " + mindmap.name);
             //Download List of Protocols Available
             String servStr = "https://" + sessionManager.getMindMapServerUrl() + "/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
-            Log.i("GetMM", servStr);
+            CustomLog.i("GetMM", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -339,7 +339,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             dStream.flush();
             dStream.close();
             int responseCode = urlConnection.getResponseCode();
-            Log.i("RES->", "" + urlConnection.getResponseMessage());
+            CustomLog.i("RES->", "" + urlConnection.getResponseMessage());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             StringBuilder stringBuilder = new StringBuilder();
             String line;
@@ -367,10 +367,10 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             }
 
         } catch (JSONException e) {
-            Log.e(TAG, "onPostExecute: ", e);
+            CustomLog.e(TAG, "onPostExecute: ", e);
             // deleteFolder(base_dir);
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            CustomLog.e("ERROR", e.getMessage(), e);
             publishProgress("Error downloading" + mindmap.getName());
             return downloadMindMap(licensekey, mindmap);
             // deleteFolder(base_dir);
@@ -411,14 +411,14 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             File file = new File(base_dir.getAbsolutePath(), file_name);
             if (file.exists()) file.delete();
-            Log.i(TAG, "FNAM : " + file_name);
+            CustomLog.i(TAG, "FNAM : " + file_name);
             FileOutputStream fileout = new FileOutputStream(file);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             outputWriter.write(content);
             outputWriter.close();
         } catch (Exception e) {
             deleteFolder(base_dir);
-            Log.e(TAG, "onPostExecute: ", e);
+            CustomLog.e(TAG, "onPostExecute: ", e);
         }
 
     }

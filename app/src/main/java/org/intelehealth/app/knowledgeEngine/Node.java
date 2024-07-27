@@ -10,7 +10,7 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -662,7 +662,7 @@ public class Node implements Serializable {
     }
 
     public static void openCamera(Activity activity, String imagePath, String imageName) {
-        Log.d(TAG, "open Camera!");
+        CustomLog.d(TAG, "open Camera!");
         Intent cameraIntent = new Intent(activity, CameraActivity.class);
         if (imageName != null && imagePath != null) {
             File filePath = new File(imagePath);
@@ -1302,7 +1302,7 @@ public class Node implements Serializable {
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter, final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
-        Log.d(TAG, "subQ " + type);
+        CustomLog.d(TAG, "subQ " + type);
         switch (type) {
             case "text":
                 subAskText(questionNode, context, adapter);
@@ -1593,13 +1593,13 @@ public class Node implements Serializable {
 
     //In certain instances, the input is added to the starter language given to the user.
     public void addLanguage(String newText) {
-        //Log.d("Node", language);
+        //CustomLog.d("Node", language);
         if (language.contains("_")) {
             language = language.replace("_", newText);
-            //Log.d("Node", language);
+            //CustomLog.d("Node", language);
         } else {
             language = newText;
-            //Log.d("Node", language);
+            //CustomLog.d("Node", language);
         }
     }
 
@@ -1613,12 +1613,12 @@ public class Node implements Serializable {
 
         switch (locale) {
             case "en": {
-                //Log.i(TAG, "findDisplay: eng");
+                //CustomLog.i(TAG, "findDisplay: eng");
                 if (display != null && display.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: eng txt");
+                    //CustomLog.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
-                    //Log.i(TAG, "findDisplay: eng dis");
+                    //CustomLog.i(TAG, "findDisplay: eng dis");
                     return display;
                 }
             }
@@ -1627,10 +1627,10 @@ public class Node implements Serializable {
                     return display_gujarati;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
@@ -1640,10 +1640,10 @@ public class Node implements Serializable {
                     return display_bengali;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
@@ -1653,41 +1653,41 @@ public class Node implements Serializable {
                     return display_tamil;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
             }
             case "or": {
-                //Log.i(TAG, "findDisplay: ori");
+                //CustomLog.i(TAG, "findDisplay: ori");
                 if (display_oriya != null && !display_oriya.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: ori dis");
+                    //CustomLog.i(TAG, "findDisplay: ori dis");
                     return display_oriya;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
 
             }
             case "hi": {
-                //Log.i(TAG, "findDisplay: cb");
+                //CustomLog.i(TAG, "findDisplay: cb");
                 if (display_hindi != null && !display_hindi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: cb ");
+                    //CustomLog.i(TAG, "findDisplay: cb ");
                     return display_hindi;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
@@ -1697,24 +1697,24 @@ public class Node implements Serializable {
                     return display_telugu;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
             }
             case "mr": {
                 if (display_marathi != null && !display_marathi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: mr ");
+                    //CustomLog.i(TAG, "findDisplay: mr ");
                     return display_marathi;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
@@ -1820,7 +1820,7 @@ public class Node implements Serializable {
                 }
             }
         }
-        if (foundNode == null) Log.i(TAG, "getOptionByName [Not Found]: " + name);
+        if (foundNode == null) CustomLog.i(TAG, "getOptionByName [Not Found]: " + name);
         return foundNode;
     }
 
@@ -1929,9 +1929,9 @@ public class Node implements Serializable {
                                 //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 //raw = raw.substring(6);
                                 raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + r1) + next_line;
-                                Log.e("FinalText= ", raw);
+                                CustomLog.e("FinalText= ", raw);
                             } else {
-                                Log.e("FinalText= ", raw);
+                                CustomLog.e("FinalText= ", raw);
 
                             }
                         } else {
@@ -1966,19 +1966,19 @@ public class Node implements Serializable {
                             //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             //raw = raw.substring(6);
                             raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + r1) + next_line;
-                            Log.e("FinalText= ", raw);
+                            CustomLog.e("FinalText= ", raw);
                         } else {
-                            Log.e("FinalText= ", raw);
+                            CustomLog.e("FinalText= ", raw);
                         }
                     }
                 }
-                Log.v("node", raw);
+                CustomLog.v("node", raw);
             }
         }
 
         String formatted;
         if (!raw.isEmpty()) {
-            Log.i(TAG, "generateLanguage: " + raw);
+            CustomLog.i(TAG, "generateLanguage: " + raw);
             if (Character.toString(raw.charAt(0)).equals(",")) {
                 formatted = raw.substring(2);
             } else {
@@ -1986,7 +1986,7 @@ public class Node implements Serializable {
             }
             formatted = formatted.replaceAll("\\. -", ".");
             formatted = formatted.replaceAll("\\.,", ", ");
-            Log.i(TAG, "generateLanguage: " + formatted);
+            CustomLog.i(TAG, "generateLanguage: " + formatted);
             return formatted;
         }
         return null;
@@ -2019,9 +2019,9 @@ public class Node implements Serializable {
                         //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                         //raw = raw.substring(6);
                         raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + r1) + next_line;
-                        Log.e("FinalText= ", raw);
+                        CustomLog.e("FinalText= ", raw);
                     } else {
-                        Log.e("FinalText= ", raw);
+                        CustomLog.e("FinalText= ", raw);
 
                     }
                 } else {
@@ -2055,18 +2055,18 @@ public class Node implements Serializable {
                     //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                     //raw = raw.substring(6);
                     raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + r1) + next_line;
-                    Log.e("FinalText= ", raw);
+                    CustomLog.e("FinalText= ", raw);
                 } else {
-                    Log.e("FinalText= ", raw);
+                    CustomLog.e("FinalText= ", raw);
                 }
             }
         }
-        Log.v("node", raw);
+        CustomLog.v("node", raw);
 
 
         String formatted;
         if (!raw.isEmpty()) {
-            Log.i(TAG, "generateLanguage: " + raw);
+            CustomLog.i(TAG, "generateLanguage: " + raw);
             if (Character.toString(raw.charAt(0)).equals(",")) {
                 formatted = raw.substring(2);
             } else {
@@ -2074,7 +2074,7 @@ public class Node implements Serializable {
             }
             formatted = formatted.replaceAll("\\. -", ".");
             formatted = formatted.replaceAll("\\.,", ", ");
-            Log.i(TAG, "generateLanguage: " + formatted);
+            CustomLog.i(TAG, "generateLanguage: " + formatted);
             return formatted;
         }
         return null;
@@ -2608,8 +2608,8 @@ public class Node implements Serializable {
 //        String mLanguageNegative = associatedSymptomNode.negativeCondition;
         String mLanguageNegative = "Patient denies -" + next_line;
 
-        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
-        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
+        CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
 
 
         for (int i = 0; i < mOptions.size(); i++) {
@@ -2668,7 +2668,7 @@ public class Node implements Serializable {
         if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
             finalTexts.add(bullet_hollow);
             for (String string : positiveAssociations) {
-                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
                 if (!flagPositive) {
                     flagPositive = true;
                     finalTexts.add(mLanguagePositive + " " + string);
@@ -2682,7 +2682,7 @@ public class Node implements Serializable {
         if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
             finalTexts.add(bullet_hollow);
             for (String string : negativeAssociations) {
-                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
                 if (!flagNegative) {
                     flagNegative = true;
                     finalTexts.add(mLanguageNegative + " " + string);
@@ -2704,7 +2704,7 @@ public class Node implements Serializable {
         final_language = final_language.replaceAll("of,", "of");
         final_language = final_language.replaceAll("\\, \\[", " [");
         final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
-        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
+        CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
 
         return final_language;
 
@@ -2809,8 +2809,8 @@ public class Node implements Serializable {
 
                     }
                 } else {
-                    Log.i(TAG, "ipt: nested question " + question);
-                    Log.i(TAG, "ipt: nested question level - " + level);
+                    CustomLog.i(TAG, "ipt: nested question " + question);
+                    CustomLog.i(TAG, "ipt: nested question level - " + level);
                     if (level > 0 && level % 2 != 0)
                         if (question.startsWith("▻"))
                             question = bullet_hollow + " " + question.substring(1);
@@ -3272,10 +3272,10 @@ public class Node implements Serializable {
                     }
                 }
 
-                Log.v(TAG, "checkAllRequiredAnswered - " + node.text);
-                Log.v(TAG, "checkAllRequiredAnswered - " + String.valueOf(node.isSelected()));
+                CustomLog.v(TAG, "checkAllRequiredAnswered - " + node.text);
+                CustomLog.v(TAG, "checkAllRequiredAnswered - " + String.valueOf(node.isSelected()));
             }
-            Log.v(TAG, "checkAllRequiredAnswered requiredStrings - " + stringBuilder.toString());
+            CustomLog.v(TAG, "checkAllRequiredAnswered requiredStrings - " + stringBuilder.toString());
         }
         answerResult.requiredStrings = stringBuilder.toString();
         return answerResult;
@@ -3321,11 +3321,11 @@ public class Node implements Serializable {
                 }
             }
 
-            Log.v(TAG, "checkAllRequiredAnsweredRootNode - " + text);
-            Log.v(TAG, "checkAllRequiredAnsweredRootNode isSelected - " + String.valueOf(isSelected()));
-            Log.v(TAG, "checkAllRequiredAnsweredRootNode isNoSelected - " + String.valueOf(isNoSelected()));
-            Log.v(TAG, "checkAllRequiredAnsweredRootNode anySubSelected - " + String.valueOf(anySubSelected()));
-            Log.v(TAG, "checkAllRequiredAnsweredRootNode isNestedMandatoryOptionsAnswered - " + String.valueOf(isNestedMandatoryOptionsAnswered(this)));
+            CustomLog.v(TAG, "checkAllRequiredAnsweredRootNode - " + text);
+            CustomLog.v(TAG, "checkAllRequiredAnsweredRootNode isSelected - " + String.valueOf(isSelected()));
+            CustomLog.v(TAG, "checkAllRequiredAnsweredRootNode isNoSelected - " + String.valueOf(isNoSelected()));
+            CustomLog.v(TAG, "checkAllRequiredAnsweredRootNode anySubSelected - " + String.valueOf(anySubSelected()));
+            CustomLog.v(TAG, "checkAllRequiredAnsweredRootNode isNestedMandatoryOptionsAnswered - " + String.valueOf(isNestedMandatoryOptionsAnswered(this)));
 
         }
 
@@ -3334,7 +3334,7 @@ public class Node implements Serializable {
     }
 
     public boolean isNestedMandatoryOptionsAnswered(Node node) {
-        Log.v(TAG, "isNestedMandatory - " + new Gson().toJson(node).toString());
+        CustomLog.v(TAG, "isNestedMandatory - " + new Gson().toJson(node).toString());
         boolean allAnswered = node.isSelected();
         /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
             if(!node.optionsList.get(0).isSelected()){
@@ -3353,12 +3353,12 @@ public class Node implements Serializable {
             }
 
         }
-        Log.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
+        CustomLog.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
         return allAnswered;
     }
 
     public boolean isAllAssociatedSymptomsOptionsAnswered() {
-        Log.v(TAG, "isAllAssociatedSymptomsOptionsAnswered - " + new Gson().toJson(this).toString());
+        CustomLog.v(TAG, "isAllAssociatedSymptomsOptionsAnswered - " + new Gson().toJson(this).toString());
         boolean allAnswered = true;
         /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
             if(!node.optionsList.get(0).isSelected()){
@@ -3368,9 +3368,9 @@ public class Node implements Serializable {
         if (optionsList != null && !optionsList.isEmpty()) {
             for (int i = 0; i < optionsList.size(); i++) {
                 Node innerNode = optionsList.get(i);
-                Log.v(TAG, "isNestedMandatory innerNode findDisplay- " + innerNode.findDisplay());
-                Log.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isNoSelected());
-                Log.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isSelected());
+                CustomLog.v(TAG, "isNestedMandatory innerNode findDisplay- " + innerNode.findDisplay());
+                CustomLog.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isNoSelected());
+                CustomLog.v(TAG, "isNestedMandatory innerNode isNoSelected- " + innerNode.isSelected());
                 if (!innerNode.isNoSelected() && !innerNode.isSelected()) {
                     allAnswered = false;
                     break;
@@ -3379,7 +3379,7 @@ public class Node implements Serializable {
             }
 
         }
-        Log.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
+        CustomLog.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
         return allAnswered;
     }
 
@@ -3411,8 +3411,8 @@ public class Node implements Serializable {
     }
 
     public boolean isNestedMandatoryOptionsAnswered() {
-        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
-        Log.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isDataCaptured- " + isDataCaptured());
+        CustomLog.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered - " + findDisplay());
+        CustomLog.v(TAG, "isNestedMandatory isNestedMandatoryOptionsAnswered isDataCaptured- " + isDataCaptured());
         boolean allAnswered = isSelected();
         if (isMultiChoice() && !isDataCaptured()) {
             allAnswered = false;
@@ -3427,7 +3427,7 @@ public class Node implements Serializable {
             for (int i = 0; i < optionsList.size(); i++) {
                 Node innerNode = optionsList.get(i);
                 if (innerNode.isSelected()) {
-                    Log.v(TAG, innerNode.isRequired() + " = isNestedMandatory - " + innerNode.findDisplay() + " innerNode.isDataCaptured() - " + innerNode.isDataCaptured());
+                    CustomLog.v(TAG, innerNode.isRequired() + " = isNestedMandatory - " + innerNode.findDisplay() + " innerNode.isDataCaptured() - " + innerNode.isDataCaptured());
                     countSelected++;
                     if (innerNode.isRequired()) {
                         //if (innerNode.optionsList != null && !innerNode.optionsList.isEmpty()) {
@@ -3450,7 +3450,7 @@ public class Node implements Serializable {
             }
 
         }
-        Log.v(TAG, "isNestedMandatory allAnswered result - " + allAnswered + "\t" + findDisplay());
+        CustomLog.v(TAG, "isNestedMandatory allAnswered result - " + allAnswered + "\t" + findDisplay());
         return allAnswered;
     }
 
@@ -3506,7 +3506,7 @@ public class Node implements Serializable {
      * unselect all nested Node recursively
      */
     public void unselectAllNestedNode() {
-        Log.v(TAG, "unselectAllNestedNode - " + getText());
+        CustomLog.v(TAG, "unselectAllNestedNode - " + getText());
         if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {
                 optionsList.get(i).setSelected(false);
@@ -3519,7 +3519,7 @@ public class Node implements Serializable {
     }
 
     public void removeImagesAllNestedNode() {
-        Log.v(TAG, "removeImagesAllNestedNode - " + getText());
+        CustomLog.v(TAG, "removeImagesAllNestedNode - " + getText());
         setImageUploaded(false);
         setImagePath("");
         setImagePathList(new ArrayList<String>());
@@ -3627,11 +3627,11 @@ public class Node implements Serializable {
             type = getOptionsList() != null && getOptionsList().size() == 1 ? getOptionsList().get(0).getInputType() : getInputType();
         }
 
-        Log.v(TAG, "isUserInputsTypeNode - type : " + getText() + "\t=" + type);
+        CustomLog.v(TAG, "isUserInputsTypeNode - type : " + getText() + "\t=" + type);
         if (type.equals("text") || type.equals("date") || type.equals("location") || type.equals("number") || type.equals("area") || type.equals("duration") || type.equals("range") || type.equals("frequency")) {
             result = true;
         }
-        Log.v(TAG, "isUserInputsTypeNode - result : " + result);
+        CustomLog.v(TAG, "isUserInputsTypeNode - result : " + result);
         return result;
     }
 
@@ -3676,7 +3676,7 @@ public class Node implements Serializable {
 
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswerV2(level + 1));
-                    Log.i(TAG, "ipt: stringsList " + stringsList);
+                    CustomLog.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
@@ -3714,7 +3714,7 @@ public class Node implements Serializable {
                     stringsListNoSelected.add("Patient denies -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-                Log.e(TAG, "ipt: " + stringsListNoSelected);
+                CustomLog.e(TAG, "ipt: " + stringsListNoSelected);
             }
         }
 
@@ -3782,7 +3782,7 @@ public class Node implements Serializable {
 
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
-                    Log.i(TAG, "ipt: stringsList " + stringsList);
+                    CustomLog.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
@@ -3820,7 +3820,7 @@ public class Node implements Serializable {
                     stringsListNoSelected.add("Patient denies -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-                Log.e(TAG, "ipt: " + stringsListNoSelected);
+                CustomLog.e(TAG, "ipt: " + stringsListNoSelected);
             }
         }
 
@@ -3859,7 +3859,7 @@ public class Node implements Serializable {
     }
 
     public boolean isFoundCompareAttribute() {
-        Log.v(TAG, "isFoundCompareAttribute - " + getText());
+        CustomLog.v(TAG, "isFoundCompareAttribute - " + getText());
         if (compareDuplicateNode != null && !compareDuplicateNode.isEmpty()) return true;
         if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {

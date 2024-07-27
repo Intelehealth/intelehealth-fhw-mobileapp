@@ -18,7 +18,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -398,11 +398,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         }
 
         if (location != null) {
-            Log.i(TAG, location.getDisplay());
+            CustomLog.i(TAG, location.getDisplay());
             //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
             //getting jwt token here
             getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password,location);
-            Log.d(TAG, "attempting setup");
+            CustomLog.d(TAG, "attempting setup");
         }
     }
 
@@ -478,13 +478,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
-        Log.d(TAG, "TestSetup: ");
+        CustomLog.d(TAG, "TestSetup: ");
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-        Log.d(TAG, "TestSetup: urlString : " + urlString);
-        Log.d(TAG, "TestSetup: encoded : " + encoded);
-        Log.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
+        CustomLog.d(TAG, "TestSetup: urlString : " + urlString);
+        CustomLog.d(TAG, "TestSetup: encoded : " + encoded);
+        CustomLog.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -519,7 +519,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                     public void onNext(LoginProviderModel loginProviderModel) {
                                         if (loginProviderModel.getResults().size() != 0) {
                                             for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                                CustomLog.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                                 try {
                                                     sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                responsecode = 200;
@@ -538,7 +538,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
 
                                                     IntelehealthApplication.getInstance().initSocketConnection();
-                                                    Log.d(TAG, "onNext: 11");
+                                                    CustomLog.d(TAG, "onNext: 11");
                                                     // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                                     AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
@@ -558,7 +558,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     String random_salt = getSalt_DATA();
 
                                                     //String random_salt = stringEncryption.getRandomSaltString();
-                                                    Log.d("salt", "salt: " + random_salt);
+                                                    CustomLog.d("salt", "salt: " + random_salt);
                                                     //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
                                                     //salt_getter_setter.setSalt(random`_salt);
 
@@ -580,16 +580,16 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                                         sqLiteDatabase.setTransactionSuccessful();
-                                                        Log.d(TAG, "onCreate: selected chw1 : " + loginModel.getUser().getDisplay());
+                                                        CustomLog.d(TAG, "onCreate: selected chw1 : " + loginModel.getUser().getDisplay());
 
                                                         Logger.logD("values", "values" + values);
                                                         Logger.logD("created user credentials", "create user records" + createdRecordsCount);
                                                     } catch (SQLException e) {
-                                                        Log.d("SQL", "SQL user credentials: " + e);
+                                                        CustomLog.d("SQL", "SQL user credentials: " + e);
                                                     } finally {
                                                         sqLiteDatabase.endTransaction();
                                                     }
-                                                    Log.i(TAG, "onPostExecute: Parse init");
+                                                    CustomLog.i(TAG, "onPostExecute: Parse init");
                                                     sessionManager.setIsLoggedIn(true);
 
                                                     Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
@@ -636,7 +636,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         cpd.dismiss();
                     }
                     else {
-                        Log.d(TAG, "onNext: loginmodel is null");
+                        CustomLog.d(TAG, "onNext: loginmodel is null");
                         cpd.dismiss();
                         showErrorDialog();
                     }
@@ -693,10 +693,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             public void onNext(Results<Location> locationResults) {
                                 if (locationResults.getResults() != null) {
                                     Results<Location> locationList = locationResults;
-                                    Log.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
+                                    CustomLog.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
                                     mLocations = locationList.getResults();
                                     List<String> items = getLocationStringList(locationList.getResults());
-                                    Log.d(TAG, "11onNext: items size : " + items.size());
+                                    CustomLog.d(TAG, "11onNext: items size : " + items.size());
                                     LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, items);
                                     autotvLocations.setAdapter(adapter);
                                     isLocationFetched = true;
@@ -750,12 +750,12 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         try {
             for (int i = 0; i < locationList.size(); i++) {
                 list.add(locationList.get(i).getDisplay());
-                Log.d(TAG, "getLocationStringList: value : " + locationList.get(i).getDisplay());
+                CustomLog.d(TAG, "getLocationStringList: value : " + locationList.get(i).getDisplay());
             }
 
 
         } catch (Exception e) {
-            Log.d(TAG, "getLocationStringList: " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "getLocationStringList: " + e.getLocalizedMessage());
             e.printStackTrace();
         }
 
@@ -782,7 +782,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             while ((mLine = reader.readLine()) != null) {
                 //process line
                 salt = mLine;
-                Log.d("SA", "SA " + salt);
+                CustomLog.d("SA", "SA " + salt);
             }
         } catch (Exception e) {
             //log the exception
@@ -941,7 +941,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             customProgressDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
+                                CustomLog.e("MindMapURL", "Successfully get MindMap URL");
                                 //mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
@@ -956,7 +956,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         @Override
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
-                            Log.e("MindMapURL", " " + e);
+                            CustomLog.e("MindMapURL", " " + e);
                             Toast.makeText(SetupActivityNew.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
                         }
 
@@ -966,8 +966,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
                     });
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
-            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            CustomLog.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            CustomLog.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
         }
     }
 
@@ -976,39 +976,39 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         //Check is there any existing mindmaps are present, if yes then delete.
 
         File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
-        Log.e(TAG, "Engines folder=" + engines.exists());
+        CustomLog.e(TAG, "Engines folder=" + engines.exists());
         if (engines.exists()) {
             engines.delete();
         }
         File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
-        Log.e(TAG, "Logo folder=" + logo.exists());
+        CustomLog.e(TAG, "Logo folder=" + logo.exists());
         if (logo.exists()) {
             logo.delete();
         }
         File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
-        Log.e(TAG, "physExam.json=" + physicalExam.exists());
+        CustomLog.e(TAG, "physExam.json=" + physicalExam.exists());
         if (physicalExam.exists()) {
             physicalExam.delete();
         }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
-        Log.e(TAG, "famHist.json=" + familyHistory.exists());
+        CustomLog.e(TAG, "famHist.json=" + familyHistory.exists());
         if (familyHistory.exists()) {
             familyHistory.delete();
         }
         File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
-        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
+        CustomLog.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
         if (pastMedicalHistory.exists()) {
             pastMedicalHistory.delete();
         }
         File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
-        Log.e(TAG, "config.json=" + config.exists());
+        CustomLog.e(TAG, "config.json=" + config.exists());
         if (config.exists()) {
             config.delete();
         }
 
         //Start downloading mindmaps
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
-        Log.e("DOWNLOAD", "isSTARTED");
+        CustomLog.e("DOWNLOAD", "isSTARTED");
 
     }
 

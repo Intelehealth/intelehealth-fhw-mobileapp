@@ -30,7 +30,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -80,6 +80,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -163,7 +164,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             gender = intent.getStringExtra("gender");
             dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : " + age);
+            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
 
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
@@ -199,7 +200,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        Log.v("VD", "vd_pat_phone: " + pat_phoneno);
+        CustomLog.v("VD", "vd_pat_phone: " + pat_phoneno);
 
         // Fetching dr details from Local db.
         drDetails = fetchDrDetailsFromLocalDb(visitID);
@@ -207,7 +208,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            Timber.tag("TAG").e("TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -392,7 +393,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
         if (chief_complaint_value == null)
             chief_complaint_value = getChiefComplaint(visitID);
-        Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
+        CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
 
         /*if (chief_complaint_value != null) {
             int first = chief_complaint_value.indexOf("<b>");
@@ -463,7 +464,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
-                Log.v(TAG, chief_complaint_value);
+                CustomLog.v(TAG, chief_complaint_value);
                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                 String[] spt = chief_complaint_value.split("►");
@@ -504,20 +505,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         visit_startTime = findViewById(R.id.visit_startTime);
 
         if (visit_startDate != null) {
-            Log.v("Followup", "actual date: " + visit_startDate);
+            CustomLog.v("Followup", "actual date: " + visit_startDate);
 
             // Time - start
             String startTime = DateAndTimeUtils.date_formatter(visit_startDate,
                     "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                     "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
-            Log.v("SearchPatient", "date: " + startTime);
+            CustomLog.v("SearchPatient", "date: " + startTime);
             visit_startTime.setText(startTime);
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 visit_startDate = StringUtils.en__hi_dob(visit_startDate);
-            Log.v("Followup", "foramted date: " + visit_startDate);
+            CustomLog.v("Followup", "foramted date: " + visit_startDate);
             visit_startDate_txt.setText(visit_startDate);
         }
 
@@ -570,7 +571,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 yes_no_followup_relative.setVisibility(View.GONE);
             }
 
-            Log.v("vd", "vd: " + followup_info);
+            CustomLog.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);
             yes_no_followup_relative.setVisibility(View.GONE);
@@ -606,7 +607,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
+                CustomLog.v(TAG, "Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();
                 recreate();
@@ -758,7 +759,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                     String chiefComplain = "";
                                     visitValue = visitValue.replaceAll("<.*?>", "");
                                     System.out.println(visitValue);
-                                    Log.v(TAG, visitValue);
+                                    CustomLog.v(TAG, visitValue);
                                     //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                     String[] spt = visitValue.split("►");
@@ -805,7 +806,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -888,7 +889,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -262,7 +262,7 @@ public class ProviderDAO {
             values.put("sync", "false");
 
             updatedCount = db.update("tbl_provider", values, selection, new String[]{provider.getUuid()});
-            Log.d(TAG, "updateProfileDetails: updatedCount : " + updatedCount);
+            CustomLog.d(TAG, "updateProfileDetails: updatedCount : " + updatedCount);
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             e.printStackTrace();
@@ -301,7 +301,7 @@ public class ProviderDAO {
     }
 
     public List<ProviderDTO> unsyncedProviderDetails(String uuid) throws DAOException {
-        Log.d(TAG, "unsyncedProviderDetails: uuid : " + uuid);
+        CustomLog.d(TAG, "unsyncedProviderDetails: uuid : " + uuid);
         List<ProviderDTO> providerDTOList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();

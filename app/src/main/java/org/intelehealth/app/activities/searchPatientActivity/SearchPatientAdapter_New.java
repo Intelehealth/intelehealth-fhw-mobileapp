@@ -211,7 +211,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     intent.putExtra("tag", "searchPatient");
                     intent.putExtra("hasPrescription", "false");
                     //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-                    //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                    //   CustomLog.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     Bundle args = new Bundle();

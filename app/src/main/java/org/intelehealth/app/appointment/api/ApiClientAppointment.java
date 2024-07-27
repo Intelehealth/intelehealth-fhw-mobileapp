@@ -1,7 +1,7 @@
 package org.intelehealth.app.appointment.api;
 
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
@@ -35,7 +35,7 @@ public class ApiClientAppointment {
     }
 
     public static synchronized ApiClientAppointment getInstance(String baseUrl) {
-        Log.d("TAG", "getInstance: baseUrl" + baseUrl);
+        CustomLog.d("TAG", "getInstance: baseUrl" + baseUrl);
         if (instance == null) {
             instance = new ApiClientAppointment(baseUrl);
         }

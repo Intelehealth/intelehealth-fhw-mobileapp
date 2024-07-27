@@ -1,7 +1,7 @@
 package org.intelehealth.app.activities.help.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +48,7 @@ public class ChatSupportAdapter_New extends RecyclerView.Adapter<ChatSupportAdap
     }
    /* public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
-        if (bool) Log.d(TAG, "add: Item added to list");
+        if (bool) CustomLog.d(TAG, "add: Item added to list");
         notifyDataSetChanged();
     }*/
 

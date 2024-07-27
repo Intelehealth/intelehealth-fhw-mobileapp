@@ -2,7 +2,7 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Button;
 
 import androidx.core.content.ContextCompat;
@@ -77,7 +77,7 @@ public class AdapterUtils {
     }
 
     public static void setToDefault(Button button) {
-        Log.v(TAG, "setToDefault");
+        CustomLog.v(TAG, "setToDefault");
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         button.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
         button.setClickable(true);
@@ -85,7 +85,7 @@ public class AdapterUtils {
     }
 
     public static void setToDisable(Button button) {
-        Log.v(TAG, "setToDisable");
+        CustomLog.v(TAG, "setToDisable");
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg_1);
         button.setClickable(false);

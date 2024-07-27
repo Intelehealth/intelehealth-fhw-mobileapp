@@ -14,7 +14,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -260,8 +260,8 @@ public class Fragment_SecondScreen extends Fragment {
         mDistrictNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.v(TAG, "i - " + i);
-                Log.v(TAG, "item - " + adapterView.getItemAtPosition(i));
+                CustomLog.v(TAG, "i - " + i);
+                CustomLog.v(TAG, "item - " + adapterView.getItemAtPosition(i));
                 if (i != 0) {
                     String distName = adapterView.getItemAtPosition(i).toString();
 //                    if (!distName.equalsIgnoreCase(mDistName))
@@ -315,7 +315,7 @@ public class Fragment_SecondScreen extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    Log.v(TAG, "onItemSelected - " + i);
+                    CustomLog.v(TAG, "onItemSelected - " + i);
                     mStateName = adapterView.getItemAtPosition(i).toString();
                     mStateNameEn = mLastSelectedStateList.get(i - 1).getState();
                     mStateNameErrorTextView.setVisibility(View.GONE);
@@ -403,7 +403,7 @@ public class Fragment_SecondScreen extends Fragment {
                         mIsIndiaSelected = true;
                         mStateEditText.setVisibility(View.GONE);
                         mStateNameSpinner.setVisibility(View.VISIBLE);
-                        Log.v(TAG, "setStateAdapter calling....599");
+                        CustomLog.v(TAG, "setStateAdapter calling....599");
                         setStateAdapter(mCountryName);
 
                         mDistrictET.setVisibility(View.GONE);
@@ -492,10 +492,10 @@ public class Fragment_SecondScreen extends Fragment {
 
             if (mCountryName.equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत")) {
                 mIsIndiaSelected = true;
-                Log.v(TAG, "setStateAdapter calling....344");
+                CustomLog.v(TAG, "setStateAdapter calling....344");
                 //setStateAdapter(mCountryName);
                 mStateNameEn = String.valueOf(patientDTO.getStateprovince());
-                Log.v(TAG, "mStateName -" + mStateNameEn + "??");
+                CustomLog.v(TAG, "mStateName -" + mStateNameEn + "??");
 
             } else {
                 mIsIndiaSelected = false;
@@ -770,7 +770,7 @@ public class Fragment_SecondScreen extends Fragment {
     private List<DistData> mLastSelectedDistList = new ArrayList<>();
 
     private void setStateAdapter(String countryName) {
-        Log.v(TAG, "setStateAdapter");
+        CustomLog.v(TAG, "setStateAdapter");
         mLastSelectedStateList = mStateDistMaster.getStateDataList();
         String[] stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
         stateList[0] = getResources().getString(R.string.select_spinner);
@@ -789,7 +789,7 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setDistAdapter(String stateName) {
 
-        Log.v(TAG, "setDistAdapter - " + stateName);
+        CustomLog.v(TAG, "setDistAdapter - " + stateName);
         List<DistData> distDataList = new ArrayList<>();
 
         for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
@@ -839,7 +839,7 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setAddress1(mAddress1EditText.getText().toString());
         patientDTO.setAddress2(mAddress2EditText.getText().toString());
 
-        Log.v("fragmemt_2", "values: " + new Gson().toJson(patientDTO));
+        CustomLog.v("fragmemt_2", "values: " + new Gson().toJson(patientDTO));
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);

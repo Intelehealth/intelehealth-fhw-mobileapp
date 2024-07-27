@@ -17,7 +17,7 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -180,8 +180,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "onReceive  flag=  " + mIsPendingForAppointmentSave);
-                Log.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
+                CustomLog.v(TAG, "onReceive  flag=  " + mIsPendingForAppointmentSave);
+                CustomLog.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
                 if (mIsPendingForAppointmentSave) {
                     mStatusCount = 0;
                     broadcasterReceiverStatusMap.add(intent.getIntExtra("JOB", -1));
@@ -204,7 +204,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                         finish();
                     }
                 } else {
-                    Log.v(TAG, "Sync Done!");
+                    CustomLog.v(TAG, "Sync Done!");
                     if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing()) {
                         if (!isFinishing() && !isDestroyed()) {
                             mSyncAlertDialog.dismiss();
@@ -267,7 +267,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
         btnBookAppointment = findViewById(R.id.btn_book_appointment);
         btnBookAppointment.setOnClickListener(v -> {
-            Log.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
+            CustomLog.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
             if (!selectedDateTime.isEmpty()) {
                 bookAppointmentDialog(ScheduleAppointmentActivity_New.this, selectedDateTime);
 
@@ -432,8 +432,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
 
             @Override
             public void onFailure(Call<SlotInfoResponse> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
-                //log out operation if response code is 401
+                CustomLog.v("onFailure", t.getMessage());
+                //CustomLog out operation if response code is 401
                 new NavigationUtils().logoutOperation(ScheduleAppointmentActivity_New.this, t);
             }
         });

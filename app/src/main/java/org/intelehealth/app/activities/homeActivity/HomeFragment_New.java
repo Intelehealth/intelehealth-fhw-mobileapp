@@ -18,7 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +56,7 @@ import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseFragment;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.NotificationSchedulerUtils;
@@ -122,12 +123,12 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         ((HomeScreenActivity_New) requireActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
+                CustomLog.v(TAG, "onStart");
             }
 
             @Override
             public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
+                CustomLog.v(TAG, "onFinished");
                 Activity activity = getActivity();
                 if (isAdded() && activity != null) {
                     initUI();
@@ -141,6 +142,9 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 }
             }
         });
+
+        CustomLog.d("Test1","Tanvir");
+        CustomLog.d("Test2","Tanvir2");
 
         return view;
     }
@@ -252,7 +256,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 }
             });
         } else {
-            Log.d(TAG, "clickListeners: iv_hamburger null");
+            CustomLog.d(TAG, "clickListeners: iv_hamburger null");
         }*/
         mUpcomingAppointmentCountTextView = view.findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
@@ -507,7 +511,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        Log.d("COUNT_QUERY",query);
+        CustomLog.d("COUNT_QUERY",query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -516,8 +520,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    Log.v(TAG, "value_text - " + value_text);
-                    Log.v(TAG, "visitUuid - " + visitUuid);
+                    CustomLog.v(TAG, "value_text - " + value_text);
+                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
                         modelList.add(new FollowUpModel(visitUuid,
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),

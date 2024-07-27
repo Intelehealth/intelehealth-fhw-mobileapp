@@ -24,7 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -147,7 +147,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
-                    Log.d("TAG", "recentCloseVisitsList size: " + "A: " + recentCloseVisitsList.size());
+                    CustomLog.d("TAG", "recentCloseVisitsList size: " + "A: " + recentCloseVisitsList.size());
                     if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }
@@ -219,8 +219,8 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         olderStart = olderEnd;
         olderEnd += olderLimit;
         recent_older_visibility(recentCloseVisitsList, olderCloseVisitsList);
-        Log.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
-        Log.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
+        CustomLog.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
+        CustomLog.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
@@ -245,7 +245,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
-        Log.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
+        CustomLog.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
@@ -282,7 +282,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
         }
         else {
-            Log.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
+            CustomLog.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
             if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                 isRecentFullyLoaded = true;
                 return;
@@ -291,8 +291,8 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
             List<PrescriptionModel> tempList = recentNotEndedVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 recentCloseVisitsList.addAll(tempList);
-                Log.d("TAG", "recentCloseVisitsList size: " + "E: " + recentCloseVisitsList.size());
-                Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentCloseVisitsList.size());
+                CustomLog.d("TAG", "recentCloseVisitsList size: " + "E: " + recentCloseVisitsList.size());
+                CustomLog.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentCloseVisitsList.size());
                 recentVisitsAdapter.arrayList.addAll(tempList);
                 recentVisitsAdapter.notifyDataSetChanged();
                 recentStart = recentEnd;
@@ -312,7 +312,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
             List<PrescriptionModel> tempList = olderNotEndedVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 olderCloseVisitsList.addAll(tempList);
-                Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderCloseVisitsList.size());
+                CustomLog.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderCloseVisitsList.size());
                 olderVisitsAdapter.arrayList.addAll(tempList);
                 olderVisitsAdapter.notifyDataSetChanged();
                 olderStart = olderEnd;
@@ -335,7 +335,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_internet_available));
         } else {
@@ -369,10 +369,10 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     }*/
 
     private void searchOperation(String query) {
-        Log.v("Search", "Search Word: " + query);
+        CustomLog.v("Search", "Search Word: " + query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
-        Log.d("TAG", "searchOperation: " + query);
+        CustomLog.d("TAG", "searchOperation: " + query);
 
 //        List<PrescriptionModel> recent = new ArrayList<>();
 //        List<PrescriptionModel> older = new ArrayList<>();
@@ -384,7 +384,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
               //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
-                Log.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
+                CustomLog.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

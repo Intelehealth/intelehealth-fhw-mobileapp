@@ -26,7 +26,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -276,7 +276,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         tvVisitId.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         String chief_complaint_value = getChiefComplaint(visitID);
-        Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
+        CustomLog.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
         if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
 
 
@@ -330,7 +330,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
-                Log.v(TAG, chief_complaint_value);
+                CustomLog.v(TAG, chief_complaint_value);
                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                 String[] spt = chief_complaint_value.split("►");
@@ -574,7 +574,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
     private void handleWhatsappAndCall() {
         try {
-            Log.d(TAG, "handleWhatsappAndCall: patientPhoneNo : " + patientPhoneNo);
+            CustomLog.d(TAG, "handleWhatsappAndCall: patientPhoneNo : " + patientPhoneNo);
             //for patient
 
             ivWhatsappPatient.setOnClickListener(v -> {
@@ -609,7 +609,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
 
@@ -651,7 +651,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
     private String getChiefComplaint(String visitUUID) {
         String chief_complaint_value = "";
-        Log.v("Followup", "visitid: " + visitUUID);
+        CustomLog.v("Followup", "visitid: " + visitUUID);
         if (visitUUID != null && !visitUUID.isEmpty()) {
             String complaint_query = "select e.uuid, o.value  from tbl_encounter e, tbl_obs o where " + "e.visituuid = ? " + "and e.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f' " + // adult_initial
                     "and e.uuid = o.encounteruuid and o.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'"; // chief complaint
@@ -661,7 +661,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 do {
                     try {
                         chief_complaint_value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                        Log.v("Followup", "chiefcomplaint: " + chief_complaint_value);
+                        CustomLog.v("Followup", "chiefcomplaint: " + chief_complaint_value);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -710,7 +710,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 isVisitStartsIn = false;
             }
         } catch (ParseException e) {
-            Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
             e.printStackTrace();
         }
         return timeText;
@@ -787,7 +787,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
             @Override
             public void onFailure(Call<CancelResponse> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                CustomLog.v("onFailure", t.getMessage());
             }
         });
     }
@@ -916,7 +916,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                     in.putExtra("speciality", visit_speciality);
                     in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_APPOINTMENT_DETAILS);
 
-                    Log.d(TAG, "onClick: speciality : " + visit_speciality);
+                    CustomLog.d(TAG, "onClick: speciality : " + visit_speciality);
                     mStartForScheduleAppointment.launch(in);
                 }
 
@@ -1014,7 +1014,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     }
 
     public static String fetchPrescriptionReceivedTime(String visitUUID) {
-        Log.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
+        CustomLog.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
         String modifiedDate = "";
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -1028,7 +1028,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 do {
                     try {
                         String receivedTime = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
-                        Log.v("receivedTime", "receivedTime: " + modifiedDate);
+                        CustomLog.v("receivedTime", "receivedTime: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -147,8 +147,8 @@ public class VisitsDAO {
     public boolean update_visitTbl_speciality(String spinner_value, String visitUUID) throws DAOException {
         boolean isupdatedone = false;
 //        String cursor_uuid = "", cursor_value="";
-        Log.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
-        Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
+        CustomLog.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
+        CustomLog.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
 
        */
 /* SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -219,7 +219,7 @@ public class VisitsDAO {
             {
                 String aa_uuid = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_uuid"));
                 String aa_value = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_value"));
-                Log.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
+                CustomLog.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
             }
         }
         idCursor_aa.close();
@@ -870,7 +870,7 @@ public class VisitsDAO {
                 do {
                     try {
                         modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
-                        Log.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -933,7 +933,7 @@ public class VisitsDAO {
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
 
-        Log.v("totalCount", "totalCountsEndVisit: " + total);
+        CustomLog.v("totalCount", "totalCountsEndVisit: " + total);
 
         return total;
     }
@@ -1011,7 +1011,7 @@ public class VisitsDAO {
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
 
-        Log.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
+        CustomLog.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
         return count;
     }
 

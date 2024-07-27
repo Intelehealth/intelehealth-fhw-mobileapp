@@ -2,11 +2,13 @@ package android.print;
 
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.PublicDirFileSaverUtils;
 
 import java.io.File;
 
@@ -56,8 +58,8 @@ this.attributes = printAttributes;
     }
 
     private ParcelFileDescriptor getOutputFile(File path, String filename) {
-        Log.v(TAG, "path = "+path);
-        Log.v(TAG, "filename = "+filename);
+        CustomLog.v(TAG, "path = "+path);
+        CustomLog.v(TAG, "filename = "+filename);
         if (!path.exists()) {
             path.mkdirs();
         }
@@ -67,7 +69,7 @@ this.attributes = printAttributes;
             file.createNewFile();
             return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE);
         } catch (Exception e) {
-            Log.e(TAG, "Failed to open ParcelFileDescriptor", e);
+            CustomLog.e(TAG, "Failed to open ParcelFileDescriptor", e);
         }
 
         return null;

@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Environment;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -59,7 +59,7 @@ public class SmoothUpgrade {
             File data = Environment.getDataDirectory();
 
             if (sd.canWrite()) {
-                Log.d("TAG", "DatabaseHandler: can write in sd");
+                CustomLog.d("TAG", "DatabaseHandler: can write in sd");
                 //Replace with YOUR_PACKAGE_NAME and YOUR_DB_NAME
                 //String currentDBPath = "filepath here"+DATABASE_NAME;
                 //Replace with YOUR_FOLDER_PATH and TARGET_DB_NAME in the SD card
@@ -67,7 +67,7 @@ public class SmoothUpgrade {
                 File currentDB = new File(data + "/data/io.intelehealth.app/databases/", "localRecords.db");
                 File copieDB = new File(AppConstants.dbfilepath);
                 if (currentDB.exists()) {
-                    Log.d("TAG", "DatabaseHandler: DB exist");
+                    CustomLog.d("TAG", "DatabaseHandler: DB exist");
                     @SuppressWarnings("resource")
                     FileChannel src = new FileInputStream(currentDB).getChannel();
                     @SuppressWarnings("resource")

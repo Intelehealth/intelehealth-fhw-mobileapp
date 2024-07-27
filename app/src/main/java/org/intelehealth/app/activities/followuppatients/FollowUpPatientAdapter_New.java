@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +127,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // photo - end
 
                 // Patient Name section
-                Log.v("Followup", new Gson().toJson(model));
+                CustomLog.v("Followup", new Gson().toJson(model));
                 String fullName = "";
                 if (model.getMiddle_name() == null || model.getMiddle_name().isEmpty()) {
                     fullName = model.getFirst_name() + " " + model.getLast_name();
@@ -141,7 +141,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // Followup Date section
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
-                        Log.v("getFollowup_date", model.getFollowup_date());
+                        CustomLog.v("getFollowup_date", model.getFollowup_date());
 
                         String followupDateTimeRaw = "";
                         try {
@@ -150,9 +150,9 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
                         }
 
-                        Log.v("getFollowup_date", followupDateTimeRaw + "OK");
+                        CustomLog.v("getFollowup_date", followupDateTimeRaw + "OK");
                         String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
-                        Log.v("getFollowup_date", "final followupDate " + followupDateTime);
+                        CustomLog.v("getFollowup_date", "final followupDate " + followupDateTime);
 
                         String todaysDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                         String formatedFollowupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "yyyy-MM-dd");

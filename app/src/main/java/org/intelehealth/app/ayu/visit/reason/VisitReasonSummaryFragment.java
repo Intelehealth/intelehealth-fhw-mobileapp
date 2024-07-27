@@ -6,7 +6,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPati
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +155,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
             answerInLocale = answerInLocale.replaceAll("<.*?>", "");
             System.out.println(answerInLocale);
-            Log.v(TAG, answerInLocale);
+            CustomLog.v(TAG, answerInLocale);
             //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
             String[] spt = answerInLocale.split("►");
@@ -272,11 +272,11 @@ public class VisitReasonSummaryFragment extends Fragment {
             if (!associatedSymptomsString.trim().isEmpty()) {
                 String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
-                Log.v(TAG, associatedSymptomsString);
+                CustomLog.v(TAG, associatedSymptomsString);
                 String[] spt1 = associatedSymptomsString.trim().split("•");
-                Log.e("node", associatedSymptomsString);
-                Log.e("node", String.valueOf(spt1.length));
-                Log.e("node", "sections.length - " + String.valueOf(sections.length));
+                CustomLog.e("node", associatedSymptomsString);
+                CustomLog.e("node", String.valueOf(spt1.length));
+                CustomLog.e("node", "sections.length - " + String.valueOf(sections.length));
                 for (int i = 0; i < sections.length; i++) {
                     String patientReports = sections[i]; // Patient reports & // Patient denies
                     if (patientReports != null && patientReports.length() >= 2) {
@@ -352,7 +352,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             List<String> list = new ArrayList<>();
             String associatedSymptomsString = "";
             for (String s : spt) {
-                Log.e("node", s);
+                CustomLog.e("node", s);
                 if (s.trim().startsWith("" + Node.ASSOCIATE_SYMPTOMS + ":")) {
                     associatedSymptomsString = s;
                 } else {
@@ -404,11 +404,11 @@ public class VisitReasonSummaryFragment extends Fragment {
                 }
             }
             String[] spt1 = associatedSymptomsString.trim().split("•");
-            Log.e("node", associatedSymptomsString);
-            Log.e("node", String.valueOf(spt1.length));
+            CustomLog.e("node", associatedSymptomsString);
+            CustomLog.e("node", String.valueOf(spt1.length));
             mAssociateSymptomsLinearLayout.removeAllViews();
             for (String value : spt1) {
-                Log.e("node", value);
+                CustomLog.e("node", value);
                 if (value.contains(" - ")) {
                     String k = value.substring(0, value.indexOf(" - ")).trim();
                     String v = value.substring(value.indexOf(" - ") + 2).trim();

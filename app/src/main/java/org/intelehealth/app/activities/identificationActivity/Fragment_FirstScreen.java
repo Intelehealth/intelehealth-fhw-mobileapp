@@ -25,7 +25,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -475,14 +475,14 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mGenderFemaleRadioButton.setChecked(false);
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
-                Log.v(TAG, "yes");
+                CustomLog.v(TAG, "yes");
             } else if (patientdto.getGender().equals("F")) {
                 mGenderFemaleRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
                 if (mGenderOthersRadioButton.isChecked())
                     mGenderOthersRadioButton.setChecked(false);
-                Log.v(TAG, "yes");
+                CustomLog.v(TAG, "yes");
             } else {
                 mGenderOthersRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
@@ -694,13 +694,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeEditText = view.findViewById(R.id.age_edittext);
         mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
         mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
-        Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
+        CustomLog.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
         mEmContactNoCountryCodePicker = view.findViewById(R.id.emergency_contact_countrycode_spinner);
         mEmContactNumberEditText = view.findViewById(R.id.emergency_contact_no_edittext);
-        Log.v("em_phone", "phone value: " + mEmContactNoCountryCodePicker.getSelectedCountryCode());
+        CustomLog.v("em_phone", "phone value: " + mEmContactNoCountryCodePicker.getSelectedCountryCode());
         mEmContactNoCountryCodePicker.registerCarrierNumberEditText(mEmContactNumberEditText); // attaches the ccp spinner with the edittext
         mEmContactNoCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
@@ -881,7 +881,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        CustomLog.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
         if (selectedDate != null) {
             try {
                 Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
@@ -913,7 +913,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mDOBEditText.setText(dateToshow1 + ", " + splitedDate[2]);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     mDOBEditText.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                CustomLog.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
 
                 updateGuardianVisibility();
             } else {
@@ -921,7 +921,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mDOBEditText.setText("");
             }
         } else {
-            Log.d(TAG, "onClick: date empty");
+            CustomLog.d(TAG, "onClick: date empty");
         }
     }
 
@@ -1153,17 +1153,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             case R.id.gender_male:
                 if (checked)
                     mGender = "M";
-                Log.v(TAG, "gender:" + mGender);
+                CustomLog.v(TAG, "gender:" + mGender);
                 break;
             case R.id.gender_female:
                 if (checked)
                     mGender = "F";
-                Log.v(TAG, "gender:" + mGender);
+                CustomLog.v(TAG, "gender:" + mGender);
                 break;
             case R.id.gender_other:
                 if (checked)
                     mGender = "O";
-                Log.v(TAG, "gender: " + mGender);
+                CustomLog.v(TAG, "gender: " + mGender);
                 break;
         }
         mGenderErrorTextView.setVisibility(View.GONE);
@@ -1180,7 +1180,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     private void onPatientCreateClicked() {
         uuid = UUID.randomUUID().toString();
-        Log.v(TAG, "reltion: " + patientID_edit);
+        CustomLog.v(TAG, "reltion: " + patientID_edit);
         if (patient_detail) {
         } else {
             patientdto.setUuid(uuid);
@@ -1320,7 +1320,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
             if (PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.PHONE_NUM)) {
                 String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
-                Log.v("phone", "phone: " + s);
+                CustomLog.v("phone", "phone: " + s);
                 if (s.length() < mSelectedMobileNumberValidationLength) {
                     mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                     mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
@@ -1420,7 +1420,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
         //Emergency contact number country code picker
         if (PatientRegFieldsUtils.INSTANCE.getFieldEnableStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
-            Log.d("ppppp", " " + PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
+            CustomLog.d("ppppp", " " + PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER));
             if (PatientRegFieldsUtils.INSTANCE.getFieldMandatoryStatus(patientRegistrationFields, PatientRegConfigKeys.EM_CONTACT_NUMBER)) {
                 String s = mEmContactNumberEditText.getText().toString().replaceAll("\\s+", "");
                 if (s.length() < mSelectedMobileNumberValidationLength) {
@@ -1610,9 +1610,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     ActivityResultLauncher<Intent> cameraActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            Log.i(TAG, "Result OK");
+            CustomLog.i(TAG, "Result OK");
             mCurrentPhotoPath = result.getData().getStringExtra("RESULT");
-            Log.v("IdentificationActivity", mCurrentPhotoPath);
+            CustomLog.v("IdentificationActivity", mCurrentPhotoPath);
             RequestBuilder<Drawable> requestBuilder = Glide.with(getActivity())
                     .asDrawable().sizeMultiplier(0.25f);
             Glide.with(getActivity())

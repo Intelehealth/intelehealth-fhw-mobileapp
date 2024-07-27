@@ -16,7 +16,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -256,11 +256,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         cpd.show(getString(R.string.otp_sending));
         mButtonContinue.setEnabled(false);
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
-        Log.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
+        CustomLog.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         RequestOTPParamsModel_New inputModel = new RequestOTPParamsModel_New(mActionType == AppConstants.FORGOT_USER_NAME_ACTION ? "username" : "password", username, mobileNo, 91, "");
-        Log.d(TAG, "apiCallForRequestOTP: inputModel : " + new Gson().toJson(inputModel));
+        CustomLog.d(TAG, "apiCallForRequestOTP: inputModel : " + new Gson().toJson(inputModel));
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<ForgotPasswordApiResponseModel_New> loginModelObservable = apiService.REQUEST_OTP_OBSERVABLE(inputModel);
@@ -393,8 +393,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         } else if (!mOptionSelected.isEmpty() && mOptionSelected.equals("mobile")) {
             String code = countryCodePicker.getSelectedCountryCode();
             mobile = mobile.replace(" ", "");
-            Log.v(TAG, code);
-            Log.v(TAG, mobile);
+            CustomLog.v(TAG, code);
+            CustomLog.v(TAG, mobile);
             if (TextUtils.isEmpty(mobile)) {
                 result = false;
                 tvMobileError.setVisibility(View.VISIBLE);

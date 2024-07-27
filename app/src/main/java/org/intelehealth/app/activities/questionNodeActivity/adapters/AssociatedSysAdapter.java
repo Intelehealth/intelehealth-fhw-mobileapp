@@ -1,7 +1,7 @@
 package org.intelehealth.app.activities.questionNodeActivity.adapters;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,7 +137,7 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
                             notifyDataSetChanged();
                         });
 
-                        Log.e("->>>",thisNode.isNoSelected()+"");
+                        CustomLog.e("->>>",thisNode.isNoSelected()+"");
 
 
 

@@ -23,6 +23,7 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;

@@ -2,7 +2,7 @@ package org.intelehealth.app.activities.complaintNodeActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,24 +88,24 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
 
     // Filter Class
     public void filter(String charText) {
-        Log.i(TAG, "filter: Entered Filter");
-        Log.i(TAG, "filter: "+ mNodes.size());
-        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        CustomLog.i(TAG, "filter: Entered Filter");
+        CustomLog.i(TAG, "filter: "+ mNodes.size());
+        CustomLog.i(TAG, "filter: "+ mNodesFilter.size());
         mNodesFilter.clear();
-        Log.i(TAG, "filter: "+ mNodes.size());
-        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        CustomLog.i(TAG, "filter: "+ mNodes.size());
+        CustomLog.i(TAG, "filter: "+ mNodesFilter.size());
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.i(TAG, "filter: "+charText);
+        CustomLog.i(TAG, "filter: "+charText);
         if (!charText.trim().isEmpty()) {
-            Log.i(TAG, "filter: Not Empty" );
+            CustomLog.i(TAG, "filter: Not Empty" );
             for (Node node : mNodes) {
-                Log.i(TAG, "filter: " + node.getText());
-                Log.i(TAG, "filter: " + node.findDisplay());
+                CustomLog.i(TAG, "filter: " + node.getText());
+                CustomLog.i(TAG, "filter: " + node.findDisplay());
                 if (!node.findDisplay().isEmpty()) {
                     if (node.findDisplay().toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         mNodesFilter.add(node);
-                        Log.i(TAG, "filter: Node Matched");
+                        CustomLog.i(TAG, "filter: Node Matched");
                     }
                 }
             }

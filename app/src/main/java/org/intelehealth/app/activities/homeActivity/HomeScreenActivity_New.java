@@ -42,7 +42,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,6 +109,7 @@ import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -200,7 +201,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v(TAG, "onNewIntent");
+        CustomLog.v(TAG, "onNewIntent");
 //        catchFCMMessageData();
     }
 
@@ -211,7 +212,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //            Bundle remoteMessage = getIntent().getExtras();
 //            try {
 //                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-//                    //Log.d(TAG, "actionType : TEXT_CHAT");
+//                    //CustomLog.d(TAG, "actionType : TEXT_CHAT");
 //                    String fromUUId = remoteMessage.getString("toUser");
 //                    String toUUId = remoteMessage.getString("fromUser");
 //                    String patientUUid = remoteMessage.getString("patientId");
@@ -238,7 +239,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //                    startActivity(chatIntent);
 //
 //                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-//                    //Log.d(TAG, "actionType : VIDEO_CALL");
+//                    //CustomLog.d(TAG, "actionType : VIDEO_CALL");
 //                    Intent in = new Intent(this, CompleteActivity.class);
 //                    String roomId = remoteMessage.getString("roomId");
 //                    String doctorName = remoteMessage.getString("doctorName");
@@ -295,7 +296,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private UpdateFragmentOnEvent mUpdateFragmentOnEvent;
 
     public void initUpdateFragmentOnEvent(UpdateFragmentOnEvent listener) {
-        Log.v(TAG, "initUpdateFragmentOnEvent");
+        CustomLog.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEvent = listener;
     }
 
@@ -614,7 +615,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: icon clicked");
+                CustomLog.d(TAG, "onClick: icon clicked");
                 mDrawerLayout.openDrawer(GravityCompat.START);
 
             }
@@ -707,7 +708,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void checkForInternet() {
         boolean result = NetworkConnection.isOnline(this);
-        Log.d(TAG, "checkForInternet: result : " + result);
+        CustomLog.d(TAG, "checkForInternet: result : " + result);
     }
 
     /**
@@ -727,8 +728,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        Timber.tag(TAG).d("backStackEntryCount %s", backStackEntryCount);
-        Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
+        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
             // finish();
@@ -777,7 +778,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return "";
         }
         String topFragment = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        Log.v(TAG, topFragment);
+        CustomLog.v(TAG, topFragment);
         return topFragment;
 
     }
@@ -1051,7 +1052,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
-        Log.d(TAG, "check11onResume: home");
+        CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
@@ -1062,7 +1063,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
-        Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
+        CustomLog.d(TAG, "onCreate: firstLogin : " + firstLogin);
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
@@ -1122,7 +1123,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             @Override
             public void onError(Throwable e) {
-                Log.e("Error", "" + e);
+                CustomLog.e("Error", "" + e);
             }
         }));
 
@@ -1146,7 +1147,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     }
                 }
 
-                Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
+                CustomLog.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
                 if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
                         mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
@@ -1284,7 +1285,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             switch (item.getItemId()) {
                 case R.id.bottom_nav_home_menu:
-                    Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                    CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
@@ -1395,12 +1396,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
+        CustomLog.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
         String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -1408,7 +1409,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
+                CustomLog.d(TAG, "onNext: ");
                 DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                 downloadFilesUtils.saveToDisk(file, uuid);
             }

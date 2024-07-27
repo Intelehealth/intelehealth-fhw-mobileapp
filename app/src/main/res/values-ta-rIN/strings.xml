@@ -409,5 +409,6 @@
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
     <string name="sync">Refresh</string>
+    <string name="sending_otp">Sending OTP...</string>
 </resources>
 

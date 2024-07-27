@@ -2,7 +2,7 @@ package org.intelehealth.app.shared.builder;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 /**
  * Created by Vaghela Mithun R. on 25-06-2023 - 10:58.
@@ -18,7 +18,7 @@ public class VisitQueryBuilder extends QueryBuilder {
                 .from(" tbl_encounter ")
                 .where(" encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' AND provider_uuid = '" + providerId + "' ")
                 .build();
-        Log.e(TAG, "outcomePendingPatientCountQuery => " + query);
+        CustomLog.e(TAG, "outcomePendingPatientCountQuery => " + query);
         return query;
     }
 

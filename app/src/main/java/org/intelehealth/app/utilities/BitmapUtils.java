@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -81,12 +81,12 @@ public class BitmapUtils {
             out.close();
             out = null;
 
-            Log.d("AdditionalDocuments", outputPath);
+            CustomLog.d("AdditionalDocuments", outputPath);
 
         } catch (FileNotFoundException fnfe1) {
-            Log.e("AdditionalDocuments", fnfe1.getMessage());
+            CustomLog.e("AdditionalDocuments", fnfe1.getMessage());
         } catch (Exception e) {
-            Log.v("AdditionalDocuments", e.getMessage());
+            CustomLog.v("AdditionalDocuments", e.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ public class BitmapUtils {
     public static boolean fileCompressed(String filePath) {
         File file = new File(filePath);
 
-        Log.d(TAG, "fileCompressed: filePath : "+filePath);
+        CustomLog.d(TAG, "fileCompressed: filePath : "+filePath);
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -112,8 +112,8 @@ public class BitmapUtils {
         float maxWidth = 612.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
-        Log.d(TAG, "fileCompressed: actualWidth : "+actualWidth);
-        Log.d(TAG, "fileCompressed: actualHeight : "+actualHeight);
+        CustomLog.d(TAG, "fileCompressed: actualWidth : "+actualWidth);
+        CustomLog.d(TAG, "fileCompressed: actualHeight : "+actualHeight);
 
         if (actualHeight > maxHeight || actualWidth > maxWidth) {
             if (imgRatio < maxRatio) {
@@ -165,17 +165,17 @@ public class BitmapUtils {
             exif = new ExifInterface(filePath);
 
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
-            Log.e("EXIF", "Exif: " + orientation);
+            CustomLog.e("EXIF", "Exif: " + orientation);
             Matrix matrix = new Matrix();
             if (orientation == 6) {
                 matrix.postRotate(90);
-                Log.e("EXIF", "Exif: " + orientation);
+                CustomLog.e("EXIF", "Exif: " + orientation);
             } else if (orientation == 3) {
                 matrix.postRotate(180);
-                Log.e("EXIF", "Exif: " + orientation);
+                CustomLog.e("EXIF", "Exif: " + orientation);
             } else if (orientation == 8) {
                 matrix.postRotate(270);
-                Log.e("EXIF", "Exif: " + orientation);
+                CustomLog.e("EXIF", "Exif: " + orientation);
             }
             scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
                     matrix, true);

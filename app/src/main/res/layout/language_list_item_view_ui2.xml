@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/parent_layout_margin"
         android:layout_marginEnd="@dimen/parent_layout_margin"
-        android:background="@color/color_language_bg"
         android:orientation="horizontal"
         android:paddingStart="@dimen/parent_layout_padding_start">
 

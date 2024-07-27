@@ -3,7 +3,7 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
 
@@ -72,6 +72,7 @@ public class SessionManager {
     public static final String PRIVACY_POLICY = "PRIVACY_POLICY";
     public static final String TERMS_OF_USE = "TERMS_OF_USE";
     public static final String PERSONAL_DATA_PROCESSING_POLICY = "PERSONAL_DATA_PROCESSING_POLICY";
+    private static final String CUSTOM_LOG_VERSION = "custom_log_version";
 
 
     // LogCat tag
@@ -303,13 +304,13 @@ public class SessionManager {
     }
 
     public void setLicenseKey(String licenseKey) {
-        Log.e("MindMapURL", "setLicenseKey - " + licenseKey);
+        CustomLog.e("MindMapURL", "setLicenseKey - " + licenseKey);
         editor.putString(LICENSE_KEY, licenseKey);
         editor.commit();
     }
 
     public void deleteLicensekey() {
-        Log.e("MindMapURL", "deleteLicensekey - ");
+        CustomLog.e("MindMapURL", "deleteLicensekey - ");
         editor.remove(LICENSE_KEY);
         editor.commit();
     }
@@ -589,5 +590,17 @@ public class SessionManager {
     public void setHtml(String key, String html) {
         editor.putString(key, html);
         editor.commit();
+    }
+
+    /**
+     * custom logger version
+     */
+    public void setCustomLogVersion(int version) {
+        editor.putInt(CUSTOM_LOG_VERSION, version);
+        editor.commit();
+    }
+
+    public int getCustomLogVersion() {
+        return pref.getInt(CUSTOM_LOG_VERSION,0);
     }
 }

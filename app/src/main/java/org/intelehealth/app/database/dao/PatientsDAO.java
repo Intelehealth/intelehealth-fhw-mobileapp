@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.github.ajalt.timberkt.Timber;
@@ -19,6 +19,7 @@ import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
@@ -671,7 +672,7 @@ public class PatientsDAO {
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        Log.d("patientUUID_list", "list: " + patientUUID_List);
+        CustomLog.d("patientUUID_list", "list: " + patientUUID_List);
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
@@ -786,9 +787,9 @@ public class PatientsDAO {
                         else if (isSynced.equalsIgnoreCase("1") || isSynced.toLowerCase().equalsIgnoreCase("true"))
                             sync = true;
                     }
-                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
+                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
                     visitDTO.setSyncd(sync);
-                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
+                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
                 }
                 while (idCursor.moveToNext());
             }
@@ -1024,7 +1025,7 @@ public class PatientsDAO {
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        Log.d("QUERY_COUNT",""+query);
+        CustomLog.d("QUERY_COUNT",""+query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
