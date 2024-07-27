@@ -1,6 +1,13 @@
 package org.intelehealth.app.abdm.utils
 
-object ABDMUtils{
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.intelehealth.app.abdm.model.ABDMErrorModel
+import org.intelehealth.app.abdm.model.OTPVerificationResponse
+import retrofit2.Response
+import java.lang.Exception
+
+object ABDMUtils {
     fun formatIntoAbhaString(input: String): String? {
         val result = StringBuilder()
         val length = input.length
@@ -22,4 +29,18 @@ object ABDMUtils{
         val regex = "^[A-Za-z0-9]([A-Za-z0-9]*[._]?[A-Za-z0-9]*){6,16}[A-Za-z0-9]$".toRegex()
         return regex.matches(input)
     }
+
+    @JvmStatic
+    fun getErrorMessage(response: Response<OTPVerificationResponse>): String? {
+        return try {
+            val gson = Gson()
+            val type = object : TypeToken<ABDMErrorModel>() {}.type
+            val errorResponse: ABDMErrorModel? = gson.fromJson(response.errorBody()!!.charStream(), type)
+            errorResponse?.message
+        } catch (e: Exception) {
+            "Something went wrong"
+        }
+
+    }
+
 }

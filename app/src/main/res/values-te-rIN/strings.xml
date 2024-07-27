@@ -838,5 +838,6 @@
     <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have requested multiple OTPs Or Exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
     <string name="please_enter_valid_abha">Please enter valid ABHA</string>
     <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
+    <string name="request_failed_with_status_code_400">Request failed with status code 400</string>
 
 </resources>

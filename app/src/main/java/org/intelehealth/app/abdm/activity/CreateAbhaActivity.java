@@ -34,6 +34,7 @@ import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
+import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
@@ -329,8 +330,9 @@ public class CreateAbhaActivity extends AppCompatActivity {
                                 } else {
                                     handleUserFlow(otpResponse, accessToken, isNewUser);
                                 }
-                            } else {
-                                Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(context, ABDMUtils.getErrorMessage(otpVerificationResponse), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                             }
 
