@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -529,9 +530,12 @@ public class SyncDAO {
                             try {
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                     try {
-                                        patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                        if (!TextUtils.isEmpty(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId())&&!pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId().equalsIgnoreCase("NA"))
+                                        {
+                                            patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                        }
                                         Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                                    } catch (DAOException e) {
+                                    } catch (Exception e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
                                 }

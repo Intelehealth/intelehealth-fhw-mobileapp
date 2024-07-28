@@ -182,17 +182,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 //    Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn, btnViewAbhaCard;
-    EncounterDTO encounterDTO;
-    ImageView cancelBtn;
-    //private boolean returning;
-    //private String encounterAdultIntials = "";
-    //String phistory = "";
+
 
     String privacy_value_selected;
     String phistory = "";
-    String fhistory = "";
-    LinearLayout previousVisitsList;
-    String visitValue;
+
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     private boolean returning;
