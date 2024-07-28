@@ -111,7 +111,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
                 .server(BuildConfig.SERVER_URL + ":1337/parse/")
                 .build()
         );
-        Log.i(TAG, "onCreate: Parse init");
+        CustomLog.i(TAG, "onCreate: Parse init");
 
         InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -165,7 +165,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
      */
     public void initSocketConnection() {
         DateTimeResource.build(this);
-        Log.d(TAG, "initSocketConnection: ");
+        CustomLog.d(TAG, "initSocketConnection: ");
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
             String socketUrl = BuildConfig.SERVER_URL + ":3004" + "?userId="

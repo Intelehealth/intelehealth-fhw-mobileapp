@@ -595,12 +595,12 @@ public class SessionManager {
     /**
      * custom logger version
      */
-    public void setCustomLogVersion(int version) {
-        editor.putInt(CUSTOM_LOG_VERSION, version);
+    public void setCustomLogVersion(String version) {
+        editor.putString(CUSTOM_LOG_VERSION, version);
         editor.commit();
     }
 
-    public int getCustomLogVersion() {
-        return pref.getInt(CUSTOM_LOG_VERSION,0);
+    public String getCustomLogVersion() {
+        return pref.getString(CUSTOM_LOG_VERSION,"");
     }
 }

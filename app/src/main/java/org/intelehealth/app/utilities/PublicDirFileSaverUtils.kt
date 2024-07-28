@@ -4,12 +4,14 @@ import android.R.attr.mimeType
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import org.intelehealth.app.app.IntelehealthApplication
 import java.io.File
 import java.io.FileOutputStream
+import java.io.FileWriter
 import java.io.IOException
 import java.io.OutputStream
 
@@ -25,7 +27,11 @@ class PublicDirFileSaverUtils {
             fileName: String,
             filePath: String,
             environment: String
-        ): Uri {
+        ) {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                savePdfForLowerVersion(fileName,filePath,environment)
+                return
+            }
 
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
@@ -67,13 +73,34 @@ class PublicDirFileSaverUtils {
                 if (stream == null) {
                     throw IOException("Failed to get output stream.")
                 }
-                return uri
             } catch (e: IOException) {
                 // Don't leave an orphan entry in the MediaStore
                 resolver.delete(uri!!, null, null)
                 throw e
             } finally {
                 stream?.close()
+            }
+        }
+
+        private fun savePdfForLowerVersion(
+                fileName: String,
+                filePath: String,
+                environment: String
+        ) {
+            try {
+                if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+                    val documentsDir = Environment.getExternalStoragePublicDirectory(environment)
+
+
+                    val logFile = File(documentsDir, fileName)
+                    try {
+                        File(filePath).copyTo(logFile)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }catch (e: java.lang.Exception){
+                e.printStackTrace()
             }
         }
     }
