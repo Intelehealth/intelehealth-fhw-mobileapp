@@ -67,7 +67,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     Button buttonVerifyOtp;
     SessionManager sessionManager = null;
     private int mActionType = 0;
-    private CountDownTimer coundownTimer;
+    private CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +104,6 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvResendOtp.setEnabled(false);
-                tvResendOtp.setText(R.string.sending_otp);
-                tvResendOtp.setTextColor(ContextCompat.getColor(ForgotPasswordOtpVerificationActivity_New.this,R.color.gray));
-                tvResendOtp.setPaintFlags(View.INVISIBLE);
-
-                resendOtp();
                 etPin1.setText("");
                 etPin2.setText("");
                 etPin3.setText("");
@@ -264,6 +258,11 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     }
 
     public void apiCallForRequestOTP(Context context, String username, String mobileNo) {
+        tvResendOtp.setEnabled(false);
+        tvResendOtp.setText(R.string.sending_otp);
+        tvResendOtp.setTextColor(ContextCompat.getColor(ForgotPasswordOtpVerificationActivity_New.this,R.color.textColorLightGary));
+        tvResendOtp.setPaintFlags(View.INVISIBLE);
+
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
         CustomLog.d(TAG, "apiCallForRequestOTP: serverUrl : " + serverUrl);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -284,14 +283,12 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
+                    resendOtp();
                     snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                     etPin1.requestFocus();
                 } else {
                     snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
-                    if(coundownTimer != null){
-                        coundownTimer.cancel();
-                        coundownTimer.onFinish();
-                    }
+                    cancelCountDownTimer();
                 }
             }
 
@@ -301,10 +298,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                 e.printStackTrace();
                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 tvResendOtp.setEnabled(true);
-                if(coundownTimer != null){
-                    coundownTimer.cancel();
-                    coundownTimer.onFinish();
-                }
+               cancelCountDownTimer();
             }
 
             @Override
@@ -313,6 +307,13 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             }
         });
 
+    }
+
+    private void cancelCountDownTimer() {
+        if(countdownTimer != null){
+            countdownTimer.cancel();
+            countdownTimer.onFinish();
+        }
     }
 
 
@@ -428,7 +429,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         tvResendOtp.setTextColor(ContextCompat.getColor(this,R.color.green));
         tvResendOtp.setPaintFlags(View.VISIBLE);
         String resendTime = getResources().getString(R.string.resend_otp_in);
-        coundownTimer = new CountDownTimer(60000, 1000) {
+        countdownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
