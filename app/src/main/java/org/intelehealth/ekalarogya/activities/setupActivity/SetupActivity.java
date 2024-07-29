@@ -1323,6 +1323,13 @@ public class SetupActivity extends AppCompatActivity {
         attribute.setValue(sessionManager.getJalJeevanYojanaScheme());
         locationAttributes.add(attribute);
 
+        // Set Secondary Village
+        attribute = new LocationAttributes();
+        attribute.setSecondaryVillageId(sessionManager.getSecondaryLocationUuid());
+        attribute.setAttributeType(AppConstants.SECONDARY_VILLAGE_UUID);
+        attribute.setValue("Secondary");
+        locationAttributes.add(attribute);
+
         LocationAttributeRequest request = new LocationAttributeRequest();
         request.setLocationAttributes(locationAttributes);
         return request;

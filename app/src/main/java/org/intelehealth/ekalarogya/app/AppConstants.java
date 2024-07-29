@@ -175,6 +175,7 @@ public class AppConstants {
     public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID = "e9aa35b4-2c74-414d-b727-f80d217a78b1";
     public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID = "0d7de309-05cf-433a-bb66-2be6d28ab4de";
     public static final String JAL_JEEVAN_YOJANA_UUID = "0edf2076-0b94-45f7-845d-1918ed017ae7";
+    public static final String SECONDARY_VILLAGE_UUID = "b9d762cb-ea7f-4347-8d8b-f21ca908bf82";
 
     public static final String DISTANCE_TO_SUB_CENTRE_UUID_TEXT = "distance_to_sub_centre";
     public static final String DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT = "distance_to_primary_health_centre";

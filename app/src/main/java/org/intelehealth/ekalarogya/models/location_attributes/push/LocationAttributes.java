@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class LocationAttributes {
 
+    @SerializedName("secondaryVillageId")
+    @Expose
+    private String secondaryVillageId = null;
+
     @SerializedName("attributeType")
     @Expose
     private String attributeType;
@@ -12,6 +16,14 @@ public class LocationAttributes {
     @SerializedName("value")
     @Expose
     private String value;
+
+    public String getSecondaryVillageId() {
+        return secondaryVillageId;
+    }
+
+    public void setSecondaryVillageId(String secondaryVillageId) {
+        this.secondaryVillageId = secondaryVillageId;
+    }
 
     public String getAttributeType() {
         return attributeType;
