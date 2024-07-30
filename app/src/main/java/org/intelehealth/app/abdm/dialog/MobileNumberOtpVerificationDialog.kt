@@ -27,6 +27,7 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog
 import retrofit2.Response
 
 
+@Suppress("DEPRECATION")
 class MobileNumberOtpVerificationDialog : DialogFragment() {
     private lateinit var binding: DialogMobileNumberOtpVerificationBinding
     private val cpd: CustomProgressDialog? = null
@@ -182,7 +183,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
                                             sessionManager?.appLanguage
                                         ), true
                                     )
-                                    onMobileEnrollCompleted?.mobileRegistered(otpResponse?.txnId)
+                                    onMobileEnrollCompleted?.mobileRegistered(otpResponse.txnId)
                                     dismiss()
                                 } else {
                                     snackBarUtils?.showSnackLinearLayoutParentSuccess(
