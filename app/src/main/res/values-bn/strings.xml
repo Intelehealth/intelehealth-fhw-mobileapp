@@ -820,5 +820,7 @@
     <string name="please_enter_valid_abha">Please enter valid ABHA</string>
     <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
     <string name="request_failed_with_status_code_400">Request failed with status code 400</string>
+    <string name="entered_aadhaar_or_mobile_number_is_incorrect">Entered Aadhaar or mobile number is incorrect.</string>
+    <string name="please_enter_6_digit_valid_otp">Please enter 6 digit valid OTP</string>
 
 </resources>

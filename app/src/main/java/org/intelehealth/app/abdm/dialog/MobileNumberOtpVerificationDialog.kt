@@ -57,9 +57,26 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         )
 
         binding.sendOtpBtn.setOnClickListener {
-            if (binding.otpBox.text.isNullOrEmpty() || binding.otpBox.text!!.length < 6) {
-                binding.otpBox.error = getString(R.string.please_enter_valid_otp)
-            } else {
+            if (binding.otpBox.text.isNullOrEmpty()) {
+                snackBarUtils?.showSnackLinearLayoutParentSuccess(
+                    context, binding.llParents,
+                    StringUtils.getMessageTranslated(
+                        getString(R.string.please_enter_otp_received),
+                        sessionManager?.appLanguage
+                    ), false
+                )
+            }
+            else if (binding.otpBox.text!!.length < 6)
+            {
+                snackBarUtils?.showSnackLinearLayoutParentSuccess(
+                    context, binding.llParents,
+                    StringUtils.getMessageTranslated(
+                        getString(R.string.please_enter_6_digit_valid_otp),
+                        sessionManager?.appLanguage
+                    ), false
+                )
+            }
+            else {
                 callEnrollABDMWithMobileApi(binding.otpBox.text.toString(), txnId)
             }
         }

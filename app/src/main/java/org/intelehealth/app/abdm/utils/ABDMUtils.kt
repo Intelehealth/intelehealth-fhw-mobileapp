@@ -2,7 +2,9 @@ package org.intelehealth.app.abdm.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.ResponseBody
 import org.intelehealth.app.abdm.model.ABDMErrorModel
+import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse
 import org.intelehealth.app.abdm.model.OTPVerificationResponse
 import retrofit2.Response
 import java.lang.Exception
@@ -30,12 +32,27 @@ object ABDMUtils {
         return regex.matches(input)
     }
 
+
     @JvmStatic
     fun getErrorMessage(response: Response<OTPVerificationResponse>): String? {
         return try {
             val gson = Gson()
             val type = object : TypeToken<ABDMErrorModel>() {}.type
             val errorResponse: ABDMErrorModel? = gson.fromJson(response.errorBody()!!.charStream(), type)
+            errorResponse?.message
+        } catch (e: Exception) {
+            "Something went wrong"
+        }
+
+    }
+
+
+    @JvmStatic
+    fun getErrorMessage1(responseBody: ResponseBody): String? {
+        return try {
+            val gson = Gson()
+            val type = object : TypeToken<ABDMErrorModel>() {}.type
+            val errorResponse: ABDMErrorModel? = gson.fromJson(responseBody.charStream(), type)
             errorResponse?.message
         } catch (e: Exception) {
             "Something went wrong"

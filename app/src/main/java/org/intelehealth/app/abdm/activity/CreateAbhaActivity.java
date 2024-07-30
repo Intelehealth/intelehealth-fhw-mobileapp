@@ -286,6 +286,10 @@ public class CreateAbhaActivity extends AppCompatActivity {
      * @param otp      get from aadhaar card verification api
      */
     private void callOTPForAadhaarVerificationApi(String txnId, String mobileNo, String otp) {
+        if (otp.length() < 6) {
+            Toast.makeText(context, getString(R.string.please_enter_6_digit_valid_otp), Toast.LENGTH_SHORT).show();
+            return;
+        }
         cpd = new CustomProgressDialog(context);
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + mobileNo + ", " + otp);
@@ -330,8 +334,13 @@ public class CreateAbhaActivity extends AppCompatActivity {
                                 } else {
                                     handleUserFlow(otpResponse, accessToken, isNewUser);
                                 }
-                            }
-                            else {
+                            } else if (otpVerificationResponse.code() == 400) {
+                                Toast.makeText(context, getText(R.string.entered_aadhaar_or_mobile_number_is_incorrect), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
+                            } else if (otpVerificationResponse.code() == 422) {
+                                Toast.makeText(context, getText(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+                                binding.sendOtpBtn.setEnabled(true);
+                            } else {
                                 Toast.makeText(context, ABDMUtils.getErrorMessage(otpVerificationResponse), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
                             }
