@@ -429,7 +429,7 @@ public class Node implements Serializable {
                 adapter.notifyDataSetChanged();
 
                 // exclude from multi-choice - start
-                Node currentNode = node.getOption(position);
+                /*Node currentNode = node.getOption(position);
                 if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
                     for (int i = 0; i < node.optionsList.size(); i++) {
                         Node innerNode = node.optionsList.get(i);
@@ -457,7 +457,7 @@ public class Node implements Serializable {
                                 innerNode.setUnselected();
                         }
                     }
-                }
+                }*/
                 // exclude from multi-choice - start
 
                 if (node.getOption(position).getInputType() != null) {

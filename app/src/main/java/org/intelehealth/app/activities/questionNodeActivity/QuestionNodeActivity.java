@@ -286,7 +286,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             }
 
            //  Nas-248 - start
-            if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+           /* if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
@@ -307,7 +307,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                     }
                 }
             }
-              adapter.notifyDataSetChanged();
+              adapter.notifyDataSetChanged();*/
             //  Nas-248 - end
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
