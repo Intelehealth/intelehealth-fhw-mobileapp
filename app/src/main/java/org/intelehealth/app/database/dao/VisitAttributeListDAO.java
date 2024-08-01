@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
+    String TAG = "VisitAttributeListDAO";
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
@@ -41,6 +42,7 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -78,6 +80,7 @@ public class VisitAttributeListDAO {
             }
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
 
@@ -153,6 +156,7 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();

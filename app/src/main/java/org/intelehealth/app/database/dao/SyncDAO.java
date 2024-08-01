@@ -188,6 +188,7 @@ public class SyncDAO {
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
@@ -276,6 +277,7 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
                     }
                     if (sync) {
                         int nextPageNo = response.body().getData().getPageNo();
@@ -579,6 +581,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
@@ -587,6 +590,7 @@ public class SyncDAO {
                                         visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
@@ -596,6 +600,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
@@ -606,6 +611,7 @@ public class SyncDAO {
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
+                                        CustomLog.e(TAG,exception.getMessage());
                                     }
                                 }
 
@@ -619,6 +625,7 @@ public class SyncDAO {
                                         } catch (DAOException e) {
                                             e.printStackTrace();
                                             FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG,e.getMessage());
                                         }
                                     }
                                 }
@@ -634,6 +641,7 @@ public class SyncDAO {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                CustomLog.e(TAG,e.getMessage());
                             }
 
                         }

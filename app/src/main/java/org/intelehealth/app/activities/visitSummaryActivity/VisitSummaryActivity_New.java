@@ -687,6 +687,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
                 Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
+                CustomLog.e(TAG,e.getMessage());
                 throw new RuntimeException(e);
             }
 
@@ -754,6 +755,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
             } catch (DAOException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
             boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
@@ -1075,6 +1077,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
         }
 
@@ -1203,6 +1206,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         // temperature - end
 
@@ -1240,6 +1244,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
             rowListItem = new ArrayList<>();
 
@@ -1302,6 +1307,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -1321,6 +1327,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     encounterDAO.setEmergency(visitUuid, isChecked);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
         });
@@ -1445,6 +1452,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
+                                CustomLog.e(TAG,e1.getMessage());
                             }
                         }
 
@@ -1592,6 +1600,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
+                                CustomLog.e(TAG,e1.getMessage());
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
@@ -2197,6 +2206,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         }
     }
@@ -2361,6 +2371,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
     }
 

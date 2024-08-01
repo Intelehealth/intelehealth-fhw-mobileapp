@@ -22,58 +22,58 @@ import java.lang.Exception
 class CustomLog {
     companion object {
         @JvmStatic
-        fun v(key: String, msg: String) {
+        fun v(key: String, msg: String?) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).v(msg)
-                saveLogData(key, msg, "verbose")
+                saveLogData(key, msg?:"", "verbose")
             }
         }
 
         @JvmStatic
-        fun v(key: String, msg: String, vararg args: String) {
+        fun v(key: String, msg: String?, vararg args: String) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).v(msg)
-                saveLogData(key, String.format(msg, args), "verbose")
+                saveLogData(key, String.format(msg?:"", args), "verbose")
             }
         }
 
         @JvmStatic
-        fun d(key: String, msg: String) {
+        fun d(key: String, msg: String?) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).d(msg)
-                saveLogData(key, msg, "debug")
+                saveLogData(key, msg?:"", "debug")
             }
         }
 
         @JvmStatic
-        fun d(key: String, msg: String, vararg args: Any) {
+        fun d(key: String, msg: String?, vararg args: Any) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).d(msg)
-                saveLogData(key, String.format(msg, args), "debug")
+                saveLogData(key, String.format(msg?:"", args), "debug")
             }
         }
 
         @JvmStatic
-        fun i(key: String, msg: String) {
+        fun i(key: String, msg: String?) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).i(msg)
-                saveLogData(key, msg, "info")
+                saveLogData(key, msg?:"", "info")
             }
         }
 
         @JvmStatic
-        fun i(key: String, msg: String, vararg args: Any) {
+        fun i(key: String, msg: String?, vararg args: Any) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).i(msg)
-                saveLogData(key, String.format(msg, args), "info")
+                saveLogData(key, String.format(msg?:"", args), "info")
             }
         }
 
         @JvmStatic
-        fun e(key: String, msg: String) {
+        fun e(key: String, msg: String?) {
             if (BuildConfig.FLAVOR_server != "production") {
                 tag(key).e(msg)
-                saveLogData(key, msg, "error")
+                saveLogData(key, msg?:"", "error")
             }
         }
 

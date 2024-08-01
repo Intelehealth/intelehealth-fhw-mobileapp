@@ -22,6 +22,8 @@ import java.io.OutputStream
  */
 class PublicDirFileSaverUtils {
     companion object {
+        private val TAG: String = "PublicDirFileSaverUtils"
+
         @JvmStatic
         fun savePdf(
             fileName: String,
@@ -62,6 +64,7 @@ class PublicDirFileSaverUtils {
                     pfd.close()
                 } catch (e: Exception) {
                     e.printStackTrace()
+                     CustomLog.e(TAG,e.message);
                 }
 
                 contentValues.clear()
@@ -74,8 +77,8 @@ class PublicDirFileSaverUtils {
                     throw IOException("Failed to get output stream.")
                 }
             } catch (e: IOException) {
-                // Don't leave an orphan entry in the MediaStore
                 resolver.delete(uri!!, null, null)
+                CustomLog.e(TAG,e.message);
                 throw e
             } finally {
                 stream?.close()
@@ -97,10 +100,12 @@ class PublicDirFileSaverUtils {
                         File(filePath).copyTo(logFile)
                     } catch (e: IOException) {
                         e.printStackTrace()
+                        CustomLog.e(TAG,e.message);
                     }
                 }
             }catch (e: java.lang.Exception){
                 e.printStackTrace()
+                CustomLog.e(TAG,e.message);
             }
         }
     }

@@ -58,6 +58,7 @@ public class PatientsFrameJson {
             appointmentRequestList = new AppointmentDAO().getUnsyncedAppointments();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         List<VisitDTO> visitDTOList = visitsDAO.unsyncedVisits();
         List<EncounterDTO> encounterDTOList = encounterDAO.unsyncedEncounters();
@@ -100,6 +101,7 @@ public class PatientsFrameJson {
                     attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
 
@@ -197,6 +199,7 @@ public class PatientsFrameJson {
             providerDetailsDTOList = providerDAO.unsyncedProviderDetails(session.getProviderID());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
 
         if (providerDetailsDTOList != null && providerDetailsDTOList.size() > 0) {

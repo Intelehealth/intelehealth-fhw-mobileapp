@@ -924,6 +924,7 @@ public class Fragment_ThirdScreen extends Fragment {
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
     }
 
@@ -972,6 +973,7 @@ public class Fragment_ThirdScreen extends Fragment {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
