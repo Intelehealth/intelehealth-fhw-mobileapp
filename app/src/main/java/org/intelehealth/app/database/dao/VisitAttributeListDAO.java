@@ -27,7 +27,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
-    String TAG = "VisitAttributeListDAO";
+    private static final String TAG = "VisitAttributeListDAO";
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {

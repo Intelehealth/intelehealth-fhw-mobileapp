@@ -34,7 +34,7 @@ public class VisitsDAO {
 
     private long createdRecordsCount = 0;
 
-    private static String TAG = "VisitsDAO";
+    private static final String TAG = "VisitsDAO";
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;

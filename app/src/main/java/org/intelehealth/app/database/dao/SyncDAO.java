@@ -53,7 +53,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SyncDAO {
-    public static String TAG = "SyncDAO";
+    public static final String TAG = "SyncDAO";
     public static final String PULL_ISSUE = "PULL_ISSUE";
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
