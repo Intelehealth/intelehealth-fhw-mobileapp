@@ -606,6 +606,11 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
                 familyHistoryMap.getOption(groupPosition).setSelected(true);
             } else {
                 clickedNode.toggleSelected();
+                for (Node option : rootNode.getOptionsList()) {
+                    if (option != null && option.isExcludedFromMultiChoice()  && clickedNode.isSelected()) {
+                        option.setSelected(false);
+                    }
+                }
                 updateRootSelectionStatus(rootNode);
 
                 handleSpecialInputType(clickedNode);

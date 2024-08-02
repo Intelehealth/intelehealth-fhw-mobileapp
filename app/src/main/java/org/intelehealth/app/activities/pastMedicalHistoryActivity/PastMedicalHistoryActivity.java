@@ -724,7 +724,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
         Node rootNode = patientHistoryMap.getOption(groupPosition);
         Node clickedNode = rootNode.getOption(childPosition);
 
-        if (clickedNode.getText().equalsIgnoreCase("None")) {
+        if (clickedNode !=null && clickedNode.getText() !=null && clickedNode.getText().equalsIgnoreCase("None")) {
             // Deselect all other options
             for (Node option : rootNode.getOptionsList()) {
                 option.setSelected(false);
