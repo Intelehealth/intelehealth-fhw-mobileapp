@@ -24,9 +24,9 @@ android {
         applicationId "org.intelehealth.nas"
         minSdkVersion 24
         targetSdk 34
-        versionCode 40
+        versionCode 41
         //buildToolsVersion('29.0.2')
-        versionName "1.5.3"
+        versionName "1.5.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
