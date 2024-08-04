@@ -76,9 +76,11 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
+    public static final String VISIT_SUMMARY_LINK = "ca449d30-7a56-4242-b484-9119d0f1589d";
 
     public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
+    public static final String REFERRAL_FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7c";
     public static final String CLOSE_CASE = "57ffb7a1-7881-41e6-9d18-257d8281bbd6";
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";

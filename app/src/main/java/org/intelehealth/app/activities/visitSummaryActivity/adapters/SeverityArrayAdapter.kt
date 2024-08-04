@@ -1,4 +1,4 @@
-package org.intelehealth.app.activities.visitSummaryActivity.saverity
+package org.intelehealth.app.activities.visitSummaryActivity.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

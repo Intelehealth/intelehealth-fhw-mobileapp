@@ -18,6 +18,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CLOSE_CASE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
+import static org.intelehealth.app.utilities.UuidDictionary.REFERRAL_FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
@@ -91,7 +92,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -124,9 +124,9 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
-import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.adapters.ReferralFacilityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData;
+import org.intelehealth.app.activities.visitSummaryActivity.adapters.SeverityArrayAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -146,6 +146,7 @@ import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
+import org.intelehealth.app.enums.ReferralFacilityDataFormatType;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -195,8 +196,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -380,6 +379,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     //    private List<FacilityToVisitModel> facilityList = null;
 //    private List<String> severityList = null;
     private String selectedFacilityToVisit = null;
+    private String selectedReferralFacility = null;
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     boolean isSynced = false;
@@ -564,6 +564,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Timber.tag(TAG).d(new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
+            setReferralFacilitySpinner();
             setSeveritySpinner();
             setCloseCaseSpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
@@ -2103,6 +2104,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
+    private void setReferralFacilitySpinner() {
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, REFERRAL_FACILITY);
+        ReferralFacilityData referralFacilityData = LanguageUtils.getReferralFacilityByName(facility.split("\\(")[0]);
+        if(referralFacilityData != null){
+            facility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityData, ReferralFacilityDataFormatType.VIEW);
+        }else {
+            facility = "";
+        }
+
+        if (!TextUtils.isEmpty(facility)) {
+            mBinding.tvReferralVisitValue.setText(" " + Node.bullet + "  " + facility);
+        }
+
+        List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
+        referralFacilityDataList.addAll(LanguageUtils.getReferralFacility());
+        ReferralFacilityArrayAdapter referralFacilityArrayAdapter = new ReferralFacilityArrayAdapter(this,referralFacilityDataList);
+
+        mBinding.spinnerReferralFacilityCard.setAdapter(referralFacilityArrayAdapter);
+        mBinding.spinnerReferralFacilityCard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    selectedReferralFacility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityDataList.get(i),ReferralFacilityDataFormatType.ATTRIBUTE);
+                } else {
+                    selectedReferralFacility = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     private void setSeveritySpinner() {
 //        if (severityList == null || severityList.isEmpty()) {
 //            severityList = getSeverityList();
@@ -2983,7 +3019,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Button sharebtn = convertView.findViewById(R.id.sharebtn);
 
 
-            String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+            String partial_whatsapp_presc_url = new UrlModifiers().getWhatsappUrl();
             String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
@@ -3078,6 +3114,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (selectedFacilityToVisit != null) {
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit, FACILITY);
             }
+
+            if (selectedReferralFacility != null) {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedReferralFacility, REFERRAL_FACILITY);
+            }
+
             if (selectedSeverity != null) {
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
             }

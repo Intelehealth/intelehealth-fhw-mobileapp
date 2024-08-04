@@ -1937,7 +1937,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 }
             };*/
 
-            String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+            String partial_whatsapp_presc_url = new UrlModifiers().getWhatsappUrl();
             String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());

@@ -1315,5 +1315,10 @@
     <string name="reminder">Reminder</string>
     <string name="hw_message_sent_text"><![CDATA[Hello! This is %1$s from Arogya Path, your Health Worker. Sending your visit summary for your reference. If you have any questions, feel free to ask. Thank you!]]></string>
     <string name="please_attach_the_patient_visit_details_pdf">Please attach the patient visit details pdf</string>
+    <string name="enter_the_mobile_number_to_which_you_want_to_share_the_visit_summary">Enter the mobile number to which you want to share the visit summary.</string>
+    <string name="hello_thank_you_for_using_intelehealth_to_download_your_visit_summary_click_here">"Hello, Thank you for using Intelehealth. To download your visit summary click here  "</string>
+    <string name="visit_summary_link_not_found">Visit summary link not found.</string>
+    <string name="to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number">To view the visit summary, click on the link and enter OTP which will be sent to your registered mobile number..</string>
+    <string name="select_referral_facility">Select referral facility</string>
 
 </resources>

@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CLOSE_CASE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_SUMMARY_LINK;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
@@ -59,17 +60,18 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,13 +81,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.text.SpannedStringKt;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.print.PrintHelper;
@@ -108,9 +108,7 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
-import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
 import org.intelehealth.app.adapter.PdfPrintDocumentAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -149,7 +147,6 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LanguageUtils;
-import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -171,14 +168,11 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -193,7 +187,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -747,8 +740,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
-                        visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
+                    ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
+                    visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
 //                    }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -761,7 +754,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         });
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
+    //    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
         // Extract the date and time part
         String datePart = followupValue.split(", Time:")[0];
@@ -1562,9 +1555,51 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         shareBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showShareDialog();
+                //showShareDialog();
+                shareVisitSummary();
             }
         });
+    }
+
+    private void shareVisitSummary() {
+        String visitSummary_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, VISIT_SUMMARY_LINK);
+        if(visitSummary_link.isEmpty()) {
+            Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.visit_summary_link_not_found), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
+        alertdialogBuilder.setView(convertView);
+
+        TextView messageTxt = convertView.findViewById(R.id.message);
+        EditText editText = convertView.findViewById(R.id.editText_mobileno);
+        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
+
+        messageTxt.setText(R.string.enter_the_mobile_number_to_which_you_want_to_share_the_visit_summary);
+        String partial_whatsapp_url = new UrlModifiers().getWhatsappUrl();
+        editText.setText(patient.getPhone_number());
+
+        sharebtn.setOnClickListener(v -> {
+            if (!editText.getText().toString().equalsIgnoreCase("")) {
+                String phoneNumber = editText.getText().toString();
+                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getString(R.string.hello_thank_you_for_using_intelehealth_to_download_your_visit_summary_click_here) + partial_whatsapp_url + Uri.encode("#") + visitSummary_link + getString(R.string.to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number));
+                Log.v("whatsappMessage", whatsappMessage);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
+            } else {
+                Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = VisitSummaryActivityPreview.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+
     }
 
     private void showShareDialog() {

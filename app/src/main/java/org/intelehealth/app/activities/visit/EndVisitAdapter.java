@@ -284,7 +284,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         alertdialogBuilder.setView(convertView);
         EditText editText = convertView.findViewById(R.id.editText_mobileno);
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
-        String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+        String partial_whatsapp_presc_url = new UrlModifiers().getWhatsappUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
 
       /*  if(model.getPhone_number()!=null)
