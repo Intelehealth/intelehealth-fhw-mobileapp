@@ -7,7 +7,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -190,7 +190,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    CustomLog.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
 
 
@@ -206,8 +206,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();
-                        Log.v("K", "k - " + k);
-                        Log.v("V", "V - " + v);
+                        CustomLog.v("K", "k - " + k);
+                        CustomLog.v("V", "V - " + v);
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
@@ -220,7 +220,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         visitSummaryDataList.add(summaryData);
                     } else {
                         boolean isOddSequence = qa.length % 2 != 0;
-                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
+                        CustomLog.v("isOddSequence", qa.length + " = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
@@ -230,7 +230,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                             for (int j = 0; j < qa.length; j++) {
                                 boolean isLastItem = j == qa.length - 1;
                                 String v1 = qa[j];
-                                Log.v("V", v1);
+                                CustomLog.v("V", v1);
                                 if (lastString.equals(v1)) continue;
                                 //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
@@ -261,7 +261,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                             }
                         } else {
                             for (int j = 0; j < qa.length; j++) {
-                                Log.v("QA", "qa - " + qa[j]);
+                                CustomLog.v("QA", "qa - " + qa[j]);
                                 if (j == 0) {
                                     k1 = qa[j];
                                 } else {

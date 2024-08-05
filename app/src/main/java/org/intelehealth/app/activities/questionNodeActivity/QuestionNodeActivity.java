@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -236,7 +236,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
-        Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
+        CustomLog.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
         if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
@@ -304,7 +304,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                         }
                     }
                 }
-                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                CustomLog.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
                 if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
                         question.isExcludedFromMultiChoice() && question.isSelected())) {
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
@@ -360,7 +360,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 }
             });
             Dialog alertDialog = alertDialogBuilder.show();
-            Log.v(TAG, answerResult.requiredStrings);
+            CustomLog.v(TAG, answerResult.requiredStrings);
             return;
         }
 
@@ -424,7 +424,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
-                    Log.i(TAG, "fabClick: update" + insertion);
+                    CustomLog.i(TAG, "fabClick: update" + insertion);
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -442,7 +442,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
                     startActivity(intent);
                 } else {
-                    Log.i(TAG, "fabClick: " + insertion);
+                    CustomLog.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
                     Intent intent = new Intent
                             (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
@@ -481,7 +481,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
      */
     private boolean insertDb(String value) {
 
-        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        CustomLog.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
@@ -512,7 +512,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
     }
 
     private void updateDatabase(String string) {
-        Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        CustomLog.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
 //        }
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
@@ -596,7 +596,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
                 assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
                 currentNode = assoComplaintsNodes.get(complaintIndex);
-                Log.e("CurrentNode", "" + currentNode);
+                CustomLog.e("CurrentNode", "" + currentNode);
 
             } else {
                 currentNode = complaintsNodes.get(complaintIndex);
@@ -700,7 +700,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String a = currentNode.formQuestionAnswer(0, false);
-            Log.d("tag", a);
+            CustomLog.d("tag", a);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0, false)
                     .replace("Question not answered", "सवाल का जवाब नहीं दिया")
                     .replace("Patient reports -", "पेशेंट ने सूचित किया -")

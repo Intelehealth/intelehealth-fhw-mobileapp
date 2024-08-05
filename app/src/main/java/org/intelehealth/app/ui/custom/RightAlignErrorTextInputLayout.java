@@ -7,7 +7,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,8 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.lang.reflect.Field;
 
@@ -102,9 +104,9 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
             params.gravity = Gravity.BOTTOM;
             imageButton.setLayoutParams(params);
         } else if (imageButton == null) {
-            Log.e(TAG, "setMultilineInputEndIconGravity: no end icon found");
+            CustomLog.e(TAG, "setMultilineInputEndIconGravity: no end icon found");
         } else if (getEditText() == null) {
-            Log.e(TAG, "setMultilineInputEndIconGravity: no edit text attached");
+            CustomLog.e(TAG, "setMultilineInputEndIconGravity: no edit text attached");
         }
     }
 }

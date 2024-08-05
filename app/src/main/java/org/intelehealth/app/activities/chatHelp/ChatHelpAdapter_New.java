@@ -7,7 +7,7 @@ import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,15 +82,15 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
     @Override
     public void onBindViewHolder(ChatHelpAdapter_New.MyViewHolder holder, int position) {
         ChatHelpModel chatHelpModel = chattingDetailsList.get(position);
-        Log.d(TAG, "onBindViewHolder: image path : " + chatHelpModel.getOutgoingMediaPath());
-        Log.d(TAG, "onBindViewHolder: isimage : " + chatHelpModel.isOutgoingMsgImage());
-        Log.d(TAG, "onBindViewHolder: istext : " + chatHelpModel.isOutgoingMsgText());
-        Log.d(TAG, "onBindViewHolder: outgoing video path : " + chatHelpModel.getOutgoingMediaPath());
+        CustomLog.d(TAG, "onBindViewHolder: image path : " + chatHelpModel.getOutgoingMediaPath());
+        CustomLog.d(TAG, "onBindViewHolder: isimage : " + chatHelpModel.isOutgoingMsgImage());
+        CustomLog.d(TAG, "onBindViewHolder: istext : " + chatHelpModel.isOutgoingMsgText());
+        CustomLog.d(TAG, "onBindViewHolder: outgoing video path : " + chatHelpModel.getOutgoingMediaPath());
 
         holder.tvIncomingMsgTime.setText(chatHelpModel.getOutgoingMsgTime());
         if (chatHelpModel.isOutgoingMsgText()) {
 
-            Log.d(TAG, "onBindViewHolder: in if");
+            CustomLog.d(TAG, "onBindViewHolder: in if");
 
             holder.tvOutgoingMsg.setVisibility(View.VISIBLE);
             holder.cardOutgoingImage.setVisibility(View.GONE);
@@ -103,7 +103,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
             mediaPath = chatHelpModel.getOutgoingMediaPath();
             holder.tvOutgoingMsg.setVisibility(View.GONE);
             holder.cardOutgoingImage.setVisibility(View.VISIBLE);
-            Log.d(TAG, "onBindViewHolder: in else");
+            CustomLog.d(TAG, "onBindViewHolder: in else");
             holder.layoutSentStatus.setVisibility(View.VISIBLE);
             holder.cardOutgoingDocument.setVisibility(View.GONE);
 
@@ -118,7 +118,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
 
-                Log.d(TAG, "onBindViewHolder:  glide");
+                CustomLog.d(TAG, "onBindViewHolder:  glide");
                 Glide.with(context)
                         .load(chatHelpModel.getOutgoingMediaPath())
                         .thumbnail(requestBuilder)
@@ -136,9 +136,9 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                 holder.cardOutgoingImage.setVisibility(View.VISIBLE);
                 holder.cardOutgoingDocument.setVisibility(View.GONE);
 
-                Log.d(TAG, "onBindViewHolder: in else");
+                CustomLog.d(TAG, "onBindViewHolder: in else");
                 holder.layoutSentStatus.setVisibility(View.VISIBLE);
-                Log.d(TAG, "onBindViewHolder1: outgoing video path1 : " + chatHelpModel.getOutgoingMediaPath());
+                CustomLog.d(TAG, "onBindViewHolder1: outgoing video path1 : " + chatHelpModel.getOutgoingMediaPath());
                 //holder.ivSelectedImage.setImageBitmap(createVideoThumbNail(chatHelpModel.getOutgoingMediaPath()));
 
                 Glide.with(context).load(chatHelpModel.getOutgoingMediaPath())
@@ -147,7 +147,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
                         .into(holder.ivSelectedImage);
 
             } catch (Exception e) {
-                Log.d(TAG, "onBindViewHolder1: " + e.getLocalizedMessage());
+                CustomLog.d(TAG, "onBindViewHolder1: " + e.getLocalizedMessage());
             }
 
 
@@ -170,7 +170,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
 
         //for incoming msg
         if (chatHelpModel.isIncomingMsgText()) {
-            Log.d(TAG, "onBindViewHolder: in if");
+            CustomLog.d(TAG, "onBindViewHolder: in if");
 
             holder.tvIncomingMsg.setVisibility(View.VISIBLE);
             holder.cardIncomingImage.setVisibility(View.GONE);
@@ -178,7 +178,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
         } else if (chatHelpModel.isIncomingMsgImage() || chatHelpModel.isIncomingMsgVideo()) {
             holder.tvIncomingMsg.setVisibility(View.GONE);
             holder.cardIncomingImage.setVisibility(View.VISIBLE);
-            Log.d(TAG, "onBindViewHolder: in else");
+            CustomLog.d(TAG, "onBindViewHolder: in else");
 
             /*if (chatHelpModel.getOutgoingMediaPath() == null || chatHelpModel.getOutgoingMediaPath().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(context)) {
@@ -188,7 +188,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
             */
 
             if (chatHelpModel.getIncomingMediaPath() != null && !chatHelpModel.getIncomingMediaPath().isEmpty()) {
-                Log.d(TAG, "onBindViewHolder:  glide");
+                CustomLog.d(TAG, "onBindViewHolder:  glide");
 
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
@@ -321,7 +321,7 @@ public class ChatHelpAdapter_New extends RecyclerView.Adapter<ChatHelpAdapter_Ne
 
  /*   public void add(ChatHelpModel chatHelpModel) {
         boolean bool = chattingDetailsList.add(chatHelpModel);
-        if (bool) Log.d(TAG, "add: Item added to list");
+        if (bool) CustomLog.d(TAG, "add: Item added to list");
         notifyDataSetChanged();
     }*/
 

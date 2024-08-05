@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -170,7 +170,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
+            CustomLog.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
 
 
@@ -349,7 +349,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             }
         }
 
-        Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
+        CustomLog.i(TAG, String.valueOf(clickedNode.isTerminal()));
         if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
             imageName = UUID.randomUUID().toString();
 
@@ -502,7 +502,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
+                CustomLog.i(TAG, mCurrentPhotoPath);
                 patientHistoryMap.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }

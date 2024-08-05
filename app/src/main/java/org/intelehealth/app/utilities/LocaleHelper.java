@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.util.Locale;
 /**

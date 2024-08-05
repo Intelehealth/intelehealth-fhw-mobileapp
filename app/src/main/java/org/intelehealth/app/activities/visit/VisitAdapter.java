@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,7 +149,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 String startDate = model.getVisit_start_date();
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
-                Log.v("startdate", "startDAte: " + startDate);
+                CustomLog.v("startdate", "startDAte: " + startDate);
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
@@ -308,7 +308,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                 + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
                                 + model.getOpenmrs_id());
-                Log.v("whatsappMessage", whatsappMessage);
+                CustomLog.v("whatsappMessage", whatsappMessage);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(whatsappMessage)));
             } else {

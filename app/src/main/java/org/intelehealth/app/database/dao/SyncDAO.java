@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -26,6 +26,7 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -52,7 +53,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SyncDAO {
-    public static String TAG = "SyncDAO";
+    public static final String TAG = "SyncDAO";
     public static final String PULL_ISSUE = "PULL_ISSUE";
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
@@ -111,14 +112,14 @@ public class SyncDAO {
     }
 
     private void saveConfig(ConfigResponse response) {
-        Timber.tag(TAG).d("saveConfig");
+        CustomLog.d(TAG,"saveConfig");
         PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
         int version = helper.get(CONFIG_VERSION, 0);
-        Timber.tag(TAG).d("saveConfig old version => %s", version);
+        CustomLog.d(TAG,"saveConfig old version => %s", version);
         if (version > 0 && response.getVersion() > version) {
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
-            Timber.tag(TAG).d("saveConfig new version => %s", response.getVersion());
+            CustomLog.d(TAG,"saveConfig new version => %s", response.getVersion());
         } else helper.save(CONFIG_VERSION, response.getVersion());
     }
 
@@ -183,10 +184,11 @@ public class SyncDAO {
 
         try {
             sync = SyncData(response.body());
-            Log.d(TAG, "onResponse: response body : " + response.body().toString());
+            CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
@@ -205,7 +207,7 @@ public class SyncDAO {
                 context.sendBroadcast(broadcast);
                 //}
 
-                Log.d(TAG, "onResponse: sync : " + sync);
+                CustomLog.d(TAG, "onResponse: sync : " + sync);
                 sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
             }
         } else {
@@ -275,6 +277,7 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
                     }
                     if (sync) {
                         int nextPageNo = response.body().getData().getPageNo();
@@ -495,7 +498,7 @@ public class SyncDAO {
             for (int i = 0; i < listPatientUUID.size(); i++) {
                 for (int j = 0; j < activePatientList.size(); j++) {
                     if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
-                        Log.e("GET-ID", "" + NotificationID.getID());
+                        CustomLog.e("GET-ID", "" + NotificationID.getID());
                         AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " +
                                         activePatientList.get(j).getFirst_name() + " " +
                                         activePatientList.get(j).getLast_name(),
@@ -551,9 +554,9 @@ public class SyncDAO {
         final boolean[] isSucess = {true};
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
-        Log.d(TAG, "pushDataApi: encoded : " + encoded);
+        CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
@@ -569,15 +572,16 @@ public class SyncDAO {
                     .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                            Log.d(TAG, "onSuccess: in push api response");
+                            CustomLog.d(TAG, "onSuccess: in push api response");
                             Logger.logD(TAG, "success" + pushResponseApiCall);
                             try {
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                     try {
                                         patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                                        Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
@@ -586,15 +590,17 @@ public class SyncDAO {
                                         visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
                                 for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                     try {
                                         encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
-                                        Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                        CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG,e.getMessage());
                                     }
                                 }
 
@@ -605,19 +611,21 @@ public class SyncDAO {
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
+                                        CustomLog.e(TAG,exception.getMessage());
                                     }
                                 }
 
                                 //ui2.0 for provider profile details
                                 if (pushResponseApiCall.getData().getProviderlist() != null) {
-                                    Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
+                                    CustomLog.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
                                     for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
                                         try {
                                             providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");
-                                            Log.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
+                                            CustomLog.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
                                         } catch (DAOException e) {
                                             e.printStackTrace();
                                             FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG,e.getMessage());
                                         }
                                     }
                                 }
@@ -633,6 +641,7 @@ public class SyncDAO {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                CustomLog.e(TAG,e.getMessage());
                             }
 
                         }

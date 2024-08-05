@@ -25,6 +25,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
@@ -108,7 +109,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);

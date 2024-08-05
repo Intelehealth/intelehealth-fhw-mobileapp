@@ -78,7 +78,7 @@ class NotificationSchedulerUtils {
                 }
 
             } catch (e: DAOException) {
-                Log.e("ERRRR", e.message ?: "Err")
+                CustomLog.e("ERRRR", e.message ?: "Err")
                 throw RuntimeException(e)
             }
 
@@ -117,7 +117,7 @@ class NotificationSchedulerUtils {
 
             val delay = (dateTime - System.currentTimeMillis()) - durationType.toMillis(duration)
 
-            Log.d(
+            CustomLog.d(
                 "DELAY_NOTIFICATION",
                 "" + delay + "  " + durationType.toMillis(duration) + "  " + dateTime + "  " + System.currentTimeMillis()
             )
@@ -202,7 +202,7 @@ class NotificationSchedulerUtils {
                 )
             }
 
-            Log.d("TRIGGER_TIME", "" + triggerTime+" "+Gson().toJson(notificationData)+"  "+Gson().toJson(notification))
+            CustomLog.d("TRIGGER_TIME", "" + triggerTime+" "+Gson().toJson(notificationData)+"  "+Gson().toJson(notification))
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
         }
 

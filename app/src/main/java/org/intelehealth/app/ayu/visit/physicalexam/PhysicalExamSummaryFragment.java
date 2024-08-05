@@ -3,7 +3,7 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,7 +170,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 String lastString = "";
 
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("PH0", _list.get(i));
+                    CustomLog.v("PH0", _list.get(i));
                     String val = _list.get(i);
                     String v1 = val;
                     if (lastString.equals(v1)) continue;

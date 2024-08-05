@@ -3,7 +3,7 @@ package org.intelehealth.app.ayu.visit.reason.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +66,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.node = mItemList.get(genericViewHolder.index);
             genericViewHolder.tvName.setText(mItemList.get(genericViewHolder.index).findDisplay());
 
-            //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
+            //CustomLog.v("node", String.valueOf(genericViewHolder.node.isSelected()));
 
 
             if (genericViewHolder.node.isSelected()) {
@@ -84,8 +84,8 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 //if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
                 new Handler().postDelayed(() -> {
                     String id = mItemList.get(genericViewHolder.index).getId();
-                    Log.v(TAG, "TAG - " + id);
-                    Log.v(TAG, "mEditTimeLoadedIds - " + new Gson().toJson(mEditTimeLoadedIds));
+                    CustomLog.v(TAG, "TAG - " + id);
+                    CustomLog.v(TAG, "mEditTimeLoadedIds - " + new Gson().toJson(mEditTimeLoadedIds));
                     if (!mEditTimeLoadedIds.contains(id)) {
                         mEditTimeLoadedIds.add(id);
                         mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
@@ -123,10 +123,10 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvName.setOnClickListener(view -> {
-                Log.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
-                Log.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
-                Log.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
-                Log.v("node", "isExclusiveOption - " + node.isExclusiveOption());
+                CustomLog.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
+                CustomLog.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                CustomLog.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
+                CustomLog.v("node", "isExclusiveOption - " + node.isExclusiveOption());
                 if (!mParentNode.isMultiChoice()) {
                     if (mParentNode.isEnableExclusiveOption()) {
                         if (!node.isExclusiveOption()) {

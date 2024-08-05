@@ -8,7 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
+    private static final String TAG = "VisitAttributeListDAO";
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
@@ -41,6 +42,7 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -71,13 +73,14 @@ public class VisitAttributeListDAO {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 } else {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 }
             }
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
 
@@ -90,7 +93,7 @@ public class VisitAttributeListDAO {
         String isValue = "";
 
         if (VISITUUID != null) {
-            Log.d("specc", "spec_fun: " + VISITUUID);
+            CustomLog.d("specc", "spec_fun: " + VISITUUID);
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
             //db.beginTransaction();
 
@@ -101,7 +104,7 @@ public class VisitAttributeListDAO {
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                    Log.d("specc", "spec_3: " + isValue);
+                    CustomLog.d("specc", "spec_3: " + isValue);
                 }
             } else {
                 isValue = "";
@@ -111,7 +114,7 @@ public class VisitAttributeListDAO {
             //db.endTransaction();
 //            db.close();
 
-            Log.d("specc", "spec_4: " + isValue);
+            CustomLog.d("specc", "spec_4: " + isValue);
         }
 
         return isValue;
@@ -130,8 +133,8 @@ public class VisitAttributeListDAO {
             DAOException {
         boolean isInserted = false;
 
-        Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
-        Log.d("SPINNER", "SPINNER_Selected_value_logs: " + value);
+        CustomLog.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
+        CustomLog.d("SPINNER", "SPINNER_Selected_value_logs: " + value);
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
@@ -153,12 +156,13 @@ public class VisitAttributeListDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
         }
 
-        Log.d("isInserted", "isInserted: " + isInserted);
+        CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
     }
 

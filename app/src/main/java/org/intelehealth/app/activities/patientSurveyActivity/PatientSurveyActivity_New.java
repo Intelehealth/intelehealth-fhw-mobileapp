@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,7 +120,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
                 //Getting the rating
                 rating = String.valueOf(ratingBar.getRating());
                 if (rating != null && !TextUtils.isEmpty(rating)) {
-                    Log.d(TAG, "Rating is " + rating);
+                    CustomLog.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit("Feedback screen with feedback");
                 } else {
@@ -258,7 +258,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         }

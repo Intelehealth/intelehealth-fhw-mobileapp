@@ -65,7 +65,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -161,6 +161,7 @@ import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -518,7 +519,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
                             mPatientVitalList = it;
-                            timber.log.Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            CustomLog.v(TAG,new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
                 );
@@ -536,7 +537,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mBloodGroupLinearLayout.setVisibility(View.GONE);
         for (PatientVital patientVital : mPatientVitalList) {
-            timber.log.Timber.tag(TAG).v(patientVital.getName() + "\t" + patientVital.getVitalKey());
+            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
 
             if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
                 mHeightLinearLayout.setVisibility(View.VISIBLE);
@@ -620,7 +621,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
         viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
         viewModel.fetchSpecialization().observe(this, specializations -> {
-            Timber.tag(TAG).d(new Gson().toJson(specializations));
+           CustomLog.d(TAG,new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
             setSeveritySpinner();
@@ -693,6 +694,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
                 Timber.tag(TAG).d("has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
+                CustomLog.e(TAG,e.getMessage());
                 throw new RuntimeException(e);
             }
 
@@ -760,6 +762,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
             } catch (DAOException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
             boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
@@ -855,7 +858,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
-        Timber.tag(TAG).d("has prescription::%s", hasPrescription);
+        CustomLog.d(TAG,"has prescription::%s", hasPrescription);
         updateUIState();
 
         //here we changing the appointment button behavior
@@ -1081,6 +1084,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
         }
 
@@ -1136,7 +1140,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             else weightView.setText(weight.getValue());
         } else weightView.setText(getResources().getString(R.string.no_information));
 
-        Log.d(TAG, "onCreate: " + weight.getValue());
+        CustomLog.d(TAG, "onCreate: " + weight.getValue());
         if (weight.getValue() != null) {
             String mWeight = weight.getValue().split(" ")[0];
             String mHeight = height.getValue().split(" ")[0];
@@ -1197,18 +1201,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
                 tempView.setText(temperature.getValue());
-                Log.d("temp", "temp_C: " + temperature.getValue());
+                CustomLog.d("temp", "temp_C: " + temperature.getValue());
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
-                    Log.d("temp", "temp_F: " + tempView.getText().toString());
+                    CustomLog.d("temp", "temp_F: " + tempView.getText().toString());
                     tempView.setText(convertCtoF(TAG, temperature.getValue()));
                 }
             }
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         // temperature - end
 
@@ -1246,6 +1251,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
             rowListItem = new ArrayList<>();
 
@@ -1285,7 +1291,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // speciality data
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
-        Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
+        CustomLog.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
         if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
@@ -1308,6 +1314,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
 
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -1327,6 +1334,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     encounterDAO.setEmergency(visitUuid, isChecked);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
         });
@@ -1391,7 +1399,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         } else {
                             dialogEditText.setText("");
                         }
-                        Log.v("complai", "complai: " + complaint.getValue());
+                        CustomLog.v("complai", "complai: " + complaint.getValue());
                         //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -1402,13 +1410,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         AlertDialog alertDialog = textInput.create();
@@ -1451,6 +1459,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
+                                CustomLog.e(TAG,e1.getMessage());
                             }
                         }
 
@@ -1549,13 +1558,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
                                 }
                                 updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         //  AlertDialog dialog = textInput.show();
@@ -1598,6 +1607,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
                                 FirebaseCrashlytics.getInstance().recordException(e1);
+                                CustomLog.e(TAG,e1.getMessage());
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
@@ -1695,13 +1705,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     patHistView.setText(Html.fromHtml(patHistory.getValue()));
                                 }
                                 updateDatabase(patHistory.getValue(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
 //                        AlertDialog dialog = textInput.show();
@@ -1834,13 +1844,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
                                 }
                                 updateDatabase(famHistory.getValue(), UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                Dialog.dismiss();
                             }
                         });
                       *//*  AlertDialog alertDialog = textInput.show();
@@ -1988,7 +1998,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
 
 //        List<String> items = providerAttributeLIstDAO.getAllValues();
-        Log.d("specc", "spec: " + visitUuid);
+        CustomLog.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
         SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
@@ -2017,13 +2027,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
+                    CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
                     Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
                     speciality_selected = specialization.getName();
                     String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
-                    Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
-                    Log.d("ResUtils", "SPINNER_Selected_final: " + value);
+                    CustomLog.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+                    CustomLog.d("ResUtils", "SPINNER_Selected_final: " + value);
                 } else {
                     speciality_selected = "";
                 }
@@ -2203,6 +2213,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         }
     }
@@ -2367,6 +2378,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
     }
 
@@ -2416,7 +2428,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                CustomLog.v("path", picturePath + "");
                 BitmapUtils.fileCompressed(picturePath);
 
                 // copy & rename the file
@@ -2861,7 +2873,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             startActivity(in);
             finish();
         } else {
-            Log.d("CCCCCV", "Destry" + VisitSummaryActivity_New.this);
+            CustomLog.d("CCCCCV", "Destry" + VisitSummaryActivity_New.this);
         }
     }
 
@@ -2885,7 +2897,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-                    Log.d("PPPPP", prescription_link);
+                    CustomLog.d("PPPPP", prescription_link);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 
@@ -2956,7 +2968,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Log.d("visitUUID", "upload_click: " + visitUUID);
+        CustomLog.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
@@ -3015,16 +3027,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     }
 
                 }
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                CustomLog.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             } catch (DAOException e) {
                 e.printStackTrace();
-                Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                CustomLog.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
             }
 
             // Additional Notes - Start
             try {
                 String addnotes = etAdditionalNotesVS.getText().toString().trim();
-                Log.v("addnotes", "addnotes: " + addnotes);
+                CustomLog.v("addnotes", "addnotes: " + addnotes);
                 if (!addnotes.equalsIgnoreCase("") && addnotes != null)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
                 else
@@ -3032,7 +3044,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 // keeping raw string as we dont want regional lang data to be stored in DB.
             } catch (DAOException e) {
                 e.printStackTrace();
-                Log.v("addnotes", "addnotes - error: " + e.getMessage());
+                CustomLog.v("addnotes", "addnotes - error: " + e.getMessage());
             }
             // Additional Notes - End
 
@@ -3114,7 +3126,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             isSynedFlag = "1";
                             //
                             showVisitID();
-                            Log.d("visitUUID", "showVisitID: " + visitUUID);
+                            CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                             if (isVisitSpecialityExists) {
                                 speciality_spinner.setEnabled(false);
@@ -3430,14 +3442,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
-                Log.i(TAG, "parseData: val:" + value);
-                Log.i(TAG, "parseData: rx" + rxReturned);
+                CustomLog.i(TAG, "parseData: val:" + value);
+                CustomLog.i(TAG, "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty()) {
                     rxReturned = rxReturned + "\n" + value;
                 } else {
                     rxReturned = value;
                 }
-                Log.i(TAG, "parseData: rxfin" + rxReturned);
+                CustomLog.i(TAG, "parseData: rxfin" + rxReturned);
                /* if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -3448,16 +3460,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = adviceReturned + "\n" + value;
-                    Log.d("GAME", "GAME: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
-                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }*/
                 //medicalAdviceTextView.setText(adviceReturned);
-                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
 
                 int j = adviceReturned.indexOf('<');
                 int i = adviceReturned.lastIndexOf('>');
@@ -3467,10 +3479,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     medicalAdvice_HyperLink = "";
                 }
 
-                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+                CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
                  * variable a contains the hyperlink sent from webside.
@@ -3484,7 +3496,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
+                CustomLog.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
                 //checkForDoctor();
                 break;
             }
@@ -3541,7 +3553,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             default:
-                Log.i(TAG, "parseData: " + value);
+                CustomLog.i(TAG, "parseData: " + value);
                 break;
         }
     }
@@ -3552,7 +3564,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
         objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
-        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+        CustomLog.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
@@ -3921,14 +3933,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     // handle message
     private void handleMessage(Intent msg) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        Log.i(TAG, "handleMessage: Entered");
+        CustomLog.i(TAG, "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = 0;
         if (data != null) {
             check = data.getInt("Restart");
         }
         if (check == 100) {
-            Log.i(TAG, "handleMessage: 100");
+            CustomLog.i(TAG, "handleMessage: 100");
             diagnosisReturned = "";
             rxReturned = "";
             testsReturned = "";
@@ -3948,7 +3960,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
             visitCursor.close();
         } else if (check == 200) {
-            Log.i(TAG, "handleMessage: 200");
+            CustomLog.i(TAG, "handleMessage: 200");
             String[] columns = {"concept_id"};
             String orderBy = "visit_id";
 
@@ -3966,19 +3978,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 switch (dbConceptID) {
                     //case values for each prescription
                     case UuidDictionary.TELEMEDICINE_DIAGNOSIS:
-                        Log.i(TAG, "found diagnosis");
+                        CustomLog.i(TAG, "found diagnosis");
                         break;
                     case UuidDictionary.JSV_MEDICATIONS:
-                        Log.i(TAG, "found medications");
+                        CustomLog.i(TAG, "found medications");
                         break;
                     case UuidDictionary.MEDICAL_ADVICE:
-                        Log.i(TAG, "found medical advice");
+                        CustomLog.i(TAG, "found medical advice");
                         break;
                     case UuidDictionary.ADDITIONAL_COMMENTS:
-                        Log.i(TAG, "found additional comments");
+                        CustomLog.i(TAG, "found additional comments");
                         break;
                     case UuidDictionary.REQUESTED_TESTS:
-                        Log.i(TAG, "found tests");
+                        CustomLog.i(TAG, "found tests");
                         break;
                     default:
                 }
@@ -3987,7 +3999,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 //if any obs  found then end the visit
                 //endVisit();
             } else {
-                Log.i(TAG, "found sothing for test");
+                CustomLog.i(TAG, "found sothing for test");
             }
         }
     }
@@ -4048,7 +4060,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                CustomLog.v("path", picturePath + "");
                 BitmapUtils.fileCompressed(picturePath);
 
                 // copy & rename the file
@@ -4062,14 +4074,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     // save image
     private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         BitmapUtils.fileCompressed(picturePath);
         if (photo.exists()) {
             try {
                 long length = photo.length();
                 length = length / 1024;
-                Log.e("------->>>>", length + "");
+                CustomLog.e("------->>>>", length + "");
             } catch (Exception e) {
                 System.out.println("File not found : " + e.getMessage() + e);
             }
@@ -4216,9 +4228,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_Button(view, webview_heightContent);
                 mWebView = null;
             }
@@ -4333,7 +4345,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - " + val);
+            CustomLog.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -4381,7 +4393,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
 //        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
-//        Log.d("Hyperlink", "hyper_print: " + advice_web);
+//        CustomLog.d("Hyperlink", "hyper_print: " + advice_web);
 //        String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
 //                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
 //                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
@@ -4396,12 +4408,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
 //        String advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-//        Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+//        CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
 
@@ -4559,7 +4571,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -4602,7 +4614,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } else {
             String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -4630,7 +4642,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.ui2_ic_internet_available));
         } else {
@@ -4650,9 +4662,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_downloadBtn(view, webview_heightContent);
                 mWebView = null;
             }
@@ -4797,7 +4809,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
 //        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
-//        Log.d("Hyperlink", "hyper_print: " + advice_web);
+//        CustomLog.d("Hyperlink", "hyper_print: " + advice_web);
 //        String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
 //                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
 //                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
@@ -4812,12 +4824,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
 //        String advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-//        Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+//        CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
 
@@ -4950,7 +4962,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -5025,7 +5037,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
 
             File dir = new File(path);
-            Log.v(TAG, "dir.exists() : " + dir.exists());
+            CustomLog.v(TAG, "dir.exists() : " + dir.exists());
             if (!dir.exists()) dir.mkdirs();
 
 
@@ -5096,7 +5108,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -5298,8 +5310,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     e.printStackTrace();
                 }
             }
-            Log.v(TAG, "isInOldFormat: " + mIsCCInOldFormat);
-            Log.v(TAG, "complaint: " + value);
+            CustomLog.v(TAG, "isInOldFormat: " + mIsCCInOldFormat);
+            CustomLog.v(TAG, "complaint: " + value);
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
             if (mIsCCInOldFormat) {
@@ -5309,8 +5321,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
-                Log.v(TAG, "complaint: " + valueArray[0]);
-                Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
+                CustomLog.v(TAG, "complaint: " + valueArray[0]);
+                CustomLog.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
                 String[] headerchips = valueArray[0].split("►");
                 List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
 
@@ -5403,7 +5415,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     e.printStackTrace();
                 }
             }
-            Log.v(TAG, "phyExam : " + value);
+            CustomLog.v(TAG, "phyExam : " + value);
             if (isInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
@@ -5444,7 +5456,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     e.printStackTrace();
                 }
             }
-            Log.v(TAG, "patHistory : " + value);
+            CustomLog.v(TAG, "patHistory : " + value);
             if (isInOldFormat) {
                 patHistView.setVisibility(View.VISIBLE);
                 patHistView.setText(Html.fromHtml(value));
@@ -5473,7 +5485,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     e.printStackTrace();
                 }
             }
-            Log.v(TAG, "famHistory : " + value);
+            CustomLog.v(TAG, "famHistory : " + value);
             if (isInOldFormat) {
                 famHistView.setVisibility(View.VISIBLE);
                 famHistView.setText(Html.fromHtml(value));
@@ -5491,7 +5503,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
         answerInLocale = answerInLocale.replaceAll("<.*?>", "");
         System.out.println(answerInLocale);
-        Log.v(TAG, answerInLocale);
+        CustomLog.v(TAG, answerInLocale);
         //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
         String[] spt = answerInLocale.split("►");
@@ -5500,12 +5512,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         for (String s : spt) {
             if (s.isEmpty()) continue;
             //String s1 =  new String(s.getBytes(), "UTF-8");
-            Log.v(TAG, "Chunk - " + s);
+            CustomLog.v(TAG, "Chunk - " + s);
             //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
             //if (s.trim().contains("Patient denies -•")) {
             if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
                 associatedSymptomsString = s;
-                Log.v(TAG, "associatedSymptomsString - " + associatedSymptomsString);
+                CustomLog.v(TAG, "associatedSymptomsString - " + associatedSymptomsString);
             } else {
                 list.add(s);
             }
@@ -5597,10 +5609,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
 
-        Log.v(TAG, associatedSymptomsString);
+        CustomLog.v(TAG, associatedSymptomsString);
         String[] spt1 = associatedSymptomsString.trim().split("•");
-        Log.e(TAG, associatedSymptomsString);
-        Log.e(TAG, String.valueOf(spt1.length));
+        CustomLog.e(TAG, associatedSymptomsString);
+        CustomLog.e(TAG, String.valueOf(spt1.length));
         mAssociateSymptomsLinearLayout.removeAllViews();
 
         for (int i = 0; i < sections.length; i++) {
@@ -5673,7 +5685,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(getFormattedComplain(_complain));
-                Log.v("PH0_complain", _complain);
+                CustomLog.v("PH0_complain", _complain);
                 if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))) {
                     complainLabelTextView.setVisibility(View.GONE);
                 }
@@ -5686,7 +5698,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 String lastString = "";
 
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("PH0", _list.get(i));
+                    CustomLog.v("PH0", _list.get(i));
                     String val = _list.get(i);
                     String v1 = val;
                     if (lastString.equals(v1)) continue;
@@ -5801,13 +5813,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    CustomLog.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();
-                        Log.v("K", "k - " + k);
-                        Log.v("V", "V - " + v);
+                        CustomLog.v("K", "k - " + k);
+                        CustomLog.v("V", "V - " + v);
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
@@ -5817,7 +5829,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         visitSummaryDataList.add(summaryData);
                     } else {
                         boolean isOddSequence = qa.length % 2 != 0;
-                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
+                        CustomLog.v("isOddSequence", qa.length + " = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
@@ -5827,7 +5839,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             for (int j = 0; j < qa.length; j++) {
                                 boolean isLastItem = j == qa.length - 1;
                                 String v1 = qa[j];
-                                Log.v("V", v1);
+                                CustomLog.v("V", v1);
                                 if (lastString.equals(v1)) continue;
                                 //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
@@ -5856,7 +5868,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             }
                         } else {
                             for (int j = 0; j < qa.length; j++) {
-                                Log.v("QA", "qa - " + qa[j]);
+                                CustomLog.v("QA", "qa - " + qa[j]);
                                 if (j == 0) {
                                     k1 = qa[j];
                                 } else {
@@ -5937,13 +5949,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    CustomLog.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();
-                        Log.v("K", "k - " + k);
-                        Log.v("V", "V - " + v);
+                        CustomLog.v("K", "k - " + k);
+                        CustomLog.v("V", "V - " + v);
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
@@ -5953,7 +5965,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         visitSummaryDataList.add(summaryData);
                     } else {
                         boolean isOddSequence = qa.length % 2 != 0;
-                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
+                        CustomLog.v("isOddSequence", qa.length + " = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
@@ -5963,7 +5975,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             for (int j = 0; j < qa.length; j++) {
                                 boolean isLastItem = j == qa.length - 1;
                                 String v1 = qa[j];
-                                Log.v("V", v1);
+                                CustomLog.v("V", v1);
                                 if (lastString.equals(v1)) continue;
                                 //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
@@ -5992,7 +6004,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             }
                         } else {
                             for (int j = 0; j < qa.length; j++) {
-                                Log.v("QA", "qa - " + qa[j]);
+                                CustomLog.v("QA", "qa - " + qa[j]);
                                 if (j == 0) {
                                     k1 = qa[j];
                                 } else {
@@ -6012,7 +6024,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 
                 }
-                Log.v("visitSummaryDataList", visitSummaryDataList.size() + " visitSummaryDataList");
+                CustomLog.v("visitSummaryDataList", visitSummaryDataList.size() + " visitSummaryDataList");
                 SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
 
                     @Override

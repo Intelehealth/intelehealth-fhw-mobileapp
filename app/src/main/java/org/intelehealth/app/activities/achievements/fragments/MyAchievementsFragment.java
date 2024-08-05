@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,7 +148,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d(TAG, "updateUIForInternetAvailability: ");
+        CustomLog.d(TAG, "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
 

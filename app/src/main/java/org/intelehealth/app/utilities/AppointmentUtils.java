@@ -1,6 +1,6 @@
 package org.intelehealth.app.utilities;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -33,7 +33,7 @@ public class AppointmentUtils {
 
             @Override
             public void onFailure(Call<CancelResponse> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                CustomLog.v("onFailure", t.getMessage());
             }
         });
     }

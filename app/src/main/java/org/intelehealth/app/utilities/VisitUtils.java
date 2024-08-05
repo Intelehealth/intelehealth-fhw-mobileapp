@@ -64,7 +64,7 @@ public class VisitUtils {
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                    Dialog.dismiss();
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();

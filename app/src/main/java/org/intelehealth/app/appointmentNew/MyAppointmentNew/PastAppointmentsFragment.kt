@@ -47,6 +47,7 @@ import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.enums.DataLoadingType
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.SessionManager
@@ -568,7 +569,7 @@ class PastAppointmentsFragment :
 
 
     private fun getPatientProfile(patientUuid: String): String {
-        Log.d(TAG, "getPatientProfile: patientUuid : $patientUuid")
+        CustomLog.d(TAG, "getPatientProfile: patientUuid : $patientUuid")
         val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
         var imagePath = ""
         val idCursor =

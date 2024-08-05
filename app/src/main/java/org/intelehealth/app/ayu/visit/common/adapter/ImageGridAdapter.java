@@ -1,7 +1,7 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mItemList = itemList;
         mOnImageAction = onImageAction;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
-        Log.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
+        CustomLog.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
     }
 
     public void addNull() {
@@ -60,14 +60,14 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             int position = holder.getAbsoluteAdapterPosition();
-            Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
+            CustomLog.v("ImageGridAdapter", "onBindViewHolder - " + position);
             if (position < mItemList.size()) {
                 genericViewHolder.image = mItemList.get(position);
             } else {
                 genericViewHolder.image = null;
             }
             genericViewHolder.index = position;
-            Log.v("ImageGridAdapter", "genericViewHolder.image - " + genericViewHolder.image);
+            CustomLog.v("ImageGridAdapter", "genericViewHolder.image - " + genericViewHolder.image);
             if (genericViewHolder.image != null && !genericViewHolder.image.isEmpty()) {
                 Glide.with(mContext)
                         .load(genericViewHolder.image)

@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -34,6 +34,8 @@ public class VisitsDAO {
 
     private long createdRecordsCount = 0;
 
+    private static final String TAG = "VisitsDAO";
+
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -46,6 +48,7 @@ public class VisitsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -71,6 +74,7 @@ public class VisitsDAO {
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
         }
@@ -107,6 +111,7 @@ public class VisitsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -134,6 +139,7 @@ public class VisitsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -147,8 +153,8 @@ public class VisitsDAO {
     public boolean update_visitTbl_speciality(String spinner_value, String visitUUID) throws DAOException {
         boolean isupdatedone = false;
 //        String cursor_uuid = "", cursor_value="";
-        Log.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
-        Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
+        CustomLog.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
+        CustomLog.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
 
        */
 /* SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -219,7 +225,7 @@ public class VisitsDAO {
             {
                 String aa_uuid = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_uuid"));
                 String aa_value = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_value"));
-                Log.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
+                CustomLog.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
             }
         }
         idCursor_aa.close();
@@ -353,7 +359,7 @@ public class VisitsDAO {
             Logger.logD("visit", "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD("visit", "updated" + sql.getMessage());
+            CustomLog.e("visit", "updated" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -380,7 +386,7 @@ public class VisitsDAO {
             Logger.logD("visit", "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD("visit", "updated" + sql.getMessage());
+            CustomLog.e("visit", "updated" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -427,7 +433,7 @@ public class VisitsDAO {
         } catch (SQLException sql) {
             isUpdated = false;
             FirebaseCrashlytics.getInstance().recordException(sql);
-            Logger.logD("visit", "updated isdownloaded" + sql.getMessage());
+            CustomLog.e("visit", "updated isdownloaded" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -452,6 +458,7 @@ public class VisitsDAO {
 
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e);
         } finally {
             //db.setTransactionSuccessful();
@@ -528,6 +535,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -576,6 +584,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -624,6 +633,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     throw new RuntimeException(e);
                 }
                 //
@@ -676,6 +686,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -724,6 +735,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -805,6 +817,7 @@ public class VisitsDAO {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
+                    CustomLog.e(TAG,e.getMessage());
                     e.printStackTrace();
                 }
                 if (!isCompletedExitedSurvey && isPrescriptionReceived) {
@@ -814,6 +827,7 @@ public class VisitsDAO {
                         emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
                         emergencyUuid = "";
                     }
 
@@ -870,9 +884,10 @@ public class VisitsDAO {
                 do {
                     try {
                         modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
-                        Log.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        CustomLog.e(TAG,e.getMessage());
                     }
                 } while (cursor.moveToNext());
             }
@@ -933,7 +948,7 @@ public class VisitsDAO {
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
 
-        Log.v("totalCount", "totalCountsEndVisit: " + total);
+        CustomLog.v("totalCount", "totalCountsEndVisit: " + total);
 
         return total;
     }
@@ -998,6 +1013,7 @@ public class VisitsDAO {
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
                 if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  //
@@ -1011,7 +1027,7 @@ public class VisitsDAO {
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
 
-        Log.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
+        CustomLog.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
         return count;
     }
 
@@ -1072,6 +1088,7 @@ public class VisitsDAO {
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
+                        CustomLog.e(TAG,e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
@@ -1106,7 +1123,9 @@ public class VisitsDAO {
                 getVisitCountsByStatus(isForReceivedPrescription);
             }catch (Exception ex){
                 FirebaseCrashlytics.getInstance().recordException(ex);
+                CustomLog.e(TAG,ex.getMessage());
             }
+            CustomLog.e(TAG,e.getMessage());
         }
 
         return count;

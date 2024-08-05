@@ -24,7 +24,7 @@ public class Logger {
      * @param e
      */
     public static void logE(String tag, String desc, Exception e) {
-        Log.e(tag, desc, e);
+        CustomLog.e(tag, desc, e);
         FirebaseCrashlytics.getInstance().recordException(e);
     }
 
@@ -35,7 +35,7 @@ public class Logger {
      * @param desc
      */
     public static void logD(String tag, String desc) {
-        Log.d(tag, "" + desc);
+        CustomLog.d(tag, "" + desc);
     }
 
     /**
@@ -45,7 +45,7 @@ public class Logger {
      * @param desc
      */
     public static void logV(String tag, String desc) {
-        Log.v(tag, "" + desc);
+        CustomLog.v(tag, "" + desc);
     }
 
 }

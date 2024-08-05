@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -27,7 +27,7 @@ public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
     public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid, String comments) throws DAOException {
-        Log.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid + "\t" + comments);
+        CustomLog.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid + "\t" + comments);
         boolean isInserted = false;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
@@ -414,7 +414,7 @@ public class ImagesDAO {
 
     //added for push provider profile image to the server
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
-        Log.d(TAG, "updateLoggedInUserProfileImage: imagepath : " + imagepath);
+        CustomLog.d(TAG, "updateLoggedInUserProfileImage: imagepath : " + imagepath);
         boolean isUpdated = false;
         long isupdate = 0;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();

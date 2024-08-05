@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,7 +130,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 try {
                     List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
                     for (String images : imageList) {
-                        Log.d(TAG, "image= " + images);
+                        CustomLog.d(TAG, "image= " + images);
 
                     }
                     imagesDAO.deleteImageFromDatabase(imageList.get(position));
@@ -150,7 +150,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
-        if (bool) Log.d(TAG, "add: Item added to list");
+        if (bool) CustomLog.d(TAG, "add: Item added to list");
         notifyDataSetChanged();
     }
 

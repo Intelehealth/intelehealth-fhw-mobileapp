@@ -19,7 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -217,7 +217,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                Log.v("path", picturePath + "");
+                CustomLog.v("path", picturePath + "");
 
                 // copy & rename the file
                 String finalImageName = UUID.randomUUID().toString();
@@ -252,14 +252,14 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
 
     }
     private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
             try {
 
                 long length = photo.length();
                 length = length / 1024;
-                Log.e("------->>>>", length + "");
+                CustomLog.e("------->>>>", length + "");
             } catch (Exception e) {
                 System.out.println("File not found : " + e.getMessage() + e);
             }

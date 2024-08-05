@@ -2,7 +2,7 @@ package org.intelehealth.app.appointmentNew;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +72,8 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
                 public void onClick(View v) {
                     if (mOnItemSelection != null) {
                         //  int position = getAdapterPosition();
-                        Log.d(TAG, "onClick: getAdapterPosition : " + holder.getBindingAdapterPosition());
-                        Log.d(TAG, "onClick: RecyclerView.NO_POSITION : " + RecyclerView.NO_POSITION);
+                        CustomLog.d(TAG, "onClick: getAdapterPosition : " + holder.getBindingAdapterPosition());
+                        CustomLog.d(TAG, "onClick: RecyclerView.NO_POSITION : " + RecyclerView.NO_POSITION);
 
                         if (holder.getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                             mOnItemSelection.onSelect(holder.slotInfo);
@@ -82,7 +82,7 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
                             notifyItemChanged(selectedPos);
                         }
                     } else {
-                        Log.d(TAG, "onClick:listener is null");
+                        CustomLog.d(TAG, "onClick:listener is null");
                     }
                 }
             });

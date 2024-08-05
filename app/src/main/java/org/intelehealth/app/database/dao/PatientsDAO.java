@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.github.ajalt.timberkt.Timber;
@@ -19,6 +19,7 @@ import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
@@ -37,6 +38,7 @@ public class PatientsDAO {
     private int updatecount = 0;
     private long createdRecordsCount = 0;
     int limit = 10, offset = 0;
+    private static final String TAG = "PatientsDAO";
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
@@ -51,6 +53,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -90,6 +93,7 @@ public class PatientsDAO {
             isCreated = createdRecordsCount > 0;
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         }
         return isCreated;
@@ -140,6 +144,7 @@ public class PatientsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -191,6 +196,7 @@ public class PatientsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -236,6 +242,7 @@ public class PatientsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -262,6 +269,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -289,6 +297,7 @@ public class PatientsDAO {
             cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             //db.endTransaction();
@@ -314,6 +323,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -337,6 +347,7 @@ public class PatientsDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
@@ -367,6 +378,7 @@ public class PatientsDAO {
             // db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG,s.getMessage());
             throw new DAOException(s);
         }
         return listPatientNames;
@@ -389,6 +401,7 @@ public class PatientsDAO {
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             //db.endTransaction();
@@ -416,6 +429,7 @@ public class PatientsDAO {
         } catch (SQLException e) {
             isInserted = false;
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -443,6 +457,7 @@ public class PatientsDAO {
         } catch (SQLException e) {
             isInserted = false;
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -481,7 +496,7 @@ public class PatientsDAO {
             Logger.logD("patient", "description" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD("patient", "patient" + sql.getMessage());
+            CustomLog.e("patient", "patient" + sql.getMessage());
             FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
@@ -531,6 +546,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -556,9 +572,9 @@ public class PatientsDAO {
             Logger.logD("patient", "description" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD("patient", "patient" + sql.getMessage());
             isUpdated = false;
             FirebaseCrashlytics.getInstance().recordException(sql);
+            CustomLog.e(TAG,sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -583,6 +599,7 @@ public class PatientsDAO {
             //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG,s.getMessage());
             throw new DAOException(s);
         } finally {
             //db.endTransaction();
@@ -641,6 +658,7 @@ public class PatientsDAO {
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         return modelList;
 
@@ -670,8 +688,9 @@ public class PatientsDAO {
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
-        Log.d("patientUUID_list", "list: " + patientUUID_List);
+        CustomLog.d("patientUUID_list", "list: " + patientUUID_List);
         if (patientUUID_List.size() != 0) {
             for (int i = 0; i < patientUUID_List.size(); i++) {
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
@@ -707,6 +726,7 @@ public class PatientsDAO {
                     }
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
         } else { // no mobile number was added in search text.
@@ -745,6 +765,7 @@ public class PatientsDAO {
                 }
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG,e.getMessage());
             }
         }
         return modelList;
@@ -763,6 +784,7 @@ public class PatientsDAO {
             }
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG,s.getMessage());
         }
         idCursor.close();
         return phone;
@@ -786,13 +808,14 @@ public class PatientsDAO {
                         else if (isSynced.equalsIgnoreCase("1") || isSynced.toLowerCase().equalsIgnoreCase("true"))
                             sync = true;
                     }
-                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
+                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
                     visitDTO.setSyncd(sync);
-                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
+                    CustomLog.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
                 }
                 while (idCursor.moveToNext());
             }
         } catch (SQLException e) {
+            CustomLog.e(TAG,e.getMessage());
 
         }
 
@@ -923,6 +946,7 @@ public class PatientsDAO {
                     name = new PatientsDAO().getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1024,7 +1048,7 @@ public class PatientsDAO {
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        Log.d("QUERY_COUNT",""+query);
+        CustomLog.d("QUERY_COUNT",""+query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -1034,6 +1058,7 @@ public class PatientsDAO {
                         count++;
                 }catch (Exception e){
                     e.printStackTrace();
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
             while (cursor.moveToNext());

@@ -440,7 +440,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI", "BMI: " + mBMI.getText().toString());
+            CustomLog.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
@@ -462,7 +462,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            CustomLog.d("BMI","BMI: "+mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else  {
             // do nothing
@@ -998,7 +998,7 @@ public class VitalsActivity extends AppCompatActivity {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
+            CustomLog.i(TAG, "uploadTemperatureInC: " + cTemp);
             DecimalFormat dtime = new DecimalFormat("#.##");
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.valueOf(cTemp);

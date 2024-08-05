@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -122,7 +122,7 @@ public class ComplaintNodeActivity extends BaseActivity {
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
@@ -181,7 +181,7 @@ public class ComplaintNodeActivity extends BaseActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (currentFile != null) {
-                    Log.i(TAG, currentFile.toString());
+                    CustomLog.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
 
                     complaints.add(currentNode);

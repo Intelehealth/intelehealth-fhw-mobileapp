@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -86,7 +86,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
+                CustomLog.d(TAG, "onClick: ");
                 Intent intent = new Intent(IntroScreensActivity_New.this, SetupPrivacyNoteActivity_New.class);
                 startActivity(intent);
                 finish();
