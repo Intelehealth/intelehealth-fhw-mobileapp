@@ -1096,7 +1096,7 @@
 
 
             <Button
-                android:id="@+id/print_bt"
+                android:id="@+id/share_referral_facility_bt"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
@@ -1104,28 +1104,28 @@
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
-                android:backgroundTint="@color/colorPrimaryLightCard"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="@string/action_print"
-                android:textColor="@color/colorPrimary"
+                android:autoSizeTextType="uniform"
+                android:text="Share to facility"
+                android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <Button
-                android:id="@+id/share_bt"
+                android:id="@+id/share_patient_bt"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_5"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
+                android:autoSizeTextType="uniform"
+                android:text="Share to patient"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/margin_12"
-                android:text="@string/share"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />

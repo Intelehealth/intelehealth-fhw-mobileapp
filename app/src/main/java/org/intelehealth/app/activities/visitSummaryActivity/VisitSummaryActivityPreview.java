@@ -1405,7 +1405,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void initUI() {
-        shareBt = findViewById(R.id.share_bt);
+        shareBt = findViewById(R.id.share_patient_bt);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
 

@@ -1251,6 +1251,7 @@
                                     android:paddingTop="@dimen/margin_10"
                                     android:paddingBottom="@dimen/margin_10" />
                             </RelativeLayout>
+
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
@@ -1310,7 +1311,6 @@
                                         android:src="@drawable/ui2_ic_chevron_down" />
                                 </RelativeLayout>
 
-                                <!--Expanded Vitals-->
                                 <RelativeLayout
                                     android:id="@+id/rlReferralVisitHeaderExpandView"
                                     android:layout_width="match_parent"
