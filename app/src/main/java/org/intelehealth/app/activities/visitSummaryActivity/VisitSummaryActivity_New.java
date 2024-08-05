@@ -431,7 +431,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
+
     private FeatureActiveStatus mFeatureActiveStatus;
+
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
@@ -446,10 +448,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
             findViewById(R.id.cvFollowup).setVisibility(activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
-            if (!activeStatus.getVisitSummeryAppointment()) {
-                Button btn = findViewById(R.id.btn_vs_appointment);
-                boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
-                btn.setVisibility(isAppointment ? View.GONE : View.VISIBLE);
+            Button btn = findViewById(R.id.btn_vs_appointment);
+            boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
+            if (isAppointment) {
+                btn.setVisibility(!activeStatus.getVisitSummeryAppointment() ? View.GONE : View.VISIBLE);
             }
         }
     }
