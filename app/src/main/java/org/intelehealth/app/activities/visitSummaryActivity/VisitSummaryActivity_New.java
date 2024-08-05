@@ -431,7 +431,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
-
     private FeatureActiveStatus mFeatureActiveStatus;
 
     @Override
