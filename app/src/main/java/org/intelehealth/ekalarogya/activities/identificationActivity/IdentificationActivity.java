@@ -3674,7 +3674,9 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
 //            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
-            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+            String mobilePhoneType = getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage());
+            mobilePhoneType = second_filter(mobilePhoneType);
+            patientAttributesDTO.setValue(mobilePhoneType);
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -5275,7 +5277,9 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
             // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
 //            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
-            patientAttributesDTO.setValue(getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage()));
+            String mobilePhoneType = getMobilePhoneOwnership(mobilephone_spinner.getSelectedItem().toString(), originalResources, updatedResources, sessionManager.getAppLanguage());
+            mobilePhoneType = second_filter(mobilePhoneType);
+            patientAttributesDTO.setValue(mobilePhoneType);
             Log.d("HOH", "mobile phone type: " + mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 

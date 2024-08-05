@@ -6495,11 +6495,180 @@ public final class StringUtils {
                     .replace("মিনিট", "Minutes");
 
         // drinking water source.
-        if (value.contains("सार्वजनिक नल\\/स्टैंडपाइप") || value.contains("घर पर हैंड पंप")
-                || value.contains("आवास में बोर किया गया") || value.contains("বাসস্থান মধ্য পাইপ")
-                || value.contains("यार्ड\\/प्लॉट में बोर किया गया") || value.contains("सार्वजनिक नल\\/स्टैंडपाइप")
-                || value.contains("ट्यूब वेल\\/बोरहोल") || value.contains("संरक्षित कुआं") || value.contains("सामान्य हैंड पंप")
-                || value.contains("সুৰক্ষিত ভাল") || value.contains("টিউব ৱেল বা ব’ৰহ’ল")) {
+        if (value.contains("বাসস্থান মধ্য পাইপ") || value.contains("বাসস্থান মধ্যে পাইপ") || value.contains("રહેઠાણમાં પાઈપ") || value.contains("आवास में बोर किया गया")
+                || value.contains("ವಾಸಕ್ಕೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ") || value.contains("घरामध्येच पाइपद्वारे") || value.contains("ବାସଗୃହକୁ ପାଇପଯୋଗେ ପାଣି")) {
+            value = value
+                    .replace("বাসস্থান মধ্য পাইপ", "Piped Into Dwelling")
+                    .replace("বাসস্থান মধ্যে পাইপ", "Piped Into Dwelling")
+                    .replace("રહેઠાણમાં પાઈપ", "Piped Into Dwelling")
+                    .replace("आवास में बोर किया गया", "Piped Into Dwelling")
+                    .replace("ವಾಸಕ್ಕೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ", "Piped Into Dwelling")
+                    .replace("घरामध्येच पाइपद्वारे", "Piped Into Dwelling")
+                    .replace("ବାସଗୃହକୁ ପାଇପଯୋଗେ ପାଣି", "Piped Into Dwelling");
+        }
+
+        if (value.contains("পাইপ ইনটু য়াৰ্ড বা প্লট") || value.contains("ইয়ার্ড বা প্লট মধ্যে পাইপ") || value.contains("પાઈપ ટુ યાર્ડ/પ્લોટ") || value.contains("यार्ड/प्लॉट में बोर किया गया")
+                || value.contains("ಯಾರ್ಡ್ ಅಥವಾ ಪ್ಲಾಟ್‌ಗೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ") || value.contains("अंगणात किंवा आसपास परिसरात पाइपद्वारे") || value.contains("ଅଗଣାକୁ ପାଇପ ପାଣି ଯୋଗାଣ")) {
+            value = value
+                    .replace("পাইপ ইনটু য়াৰ্ড বা প্লট", "Piped Into Yard or Plot")
+                    .replace("ইয়ার্ড বা প্লট মধ্যে পাইপ", "Piped Into Yard or Plot")
+                    .replace("પાઈપ ટુ યાર્ડ/પ્લોટ", "Piped Into Yard or Plot")
+                    .replace("यार्ड/प्लॉट में बोर किया गया", "Piped Into Yard or Plot")
+                    .replace("ಯಾರ್ಡ್ ಅಥವಾ ಪ್ಲಾಟ್‌ಗೆ ಪೈಪ್ ಹಾಕಲಾಗಿದೆ", "Piped Into Yard or Plot")
+                    .replace("अंगणात किंवा आसपास परिसरात पाइपद्वारे", "Piped Into Yard or Plot")
+                    .replace("ଅଗଣାକୁ ପାଇପ ପାଣି ଯୋଗାଣ", "Piped Into Yard or Plot");
+        }
+
+        if (value.contains("ৰাজহুৱা টেপ বা ষ্টেণ্ডপাইপ") || value.contains("পাবলিক ট্যাপ বা স্ট্যান্ডপাইপ") || value.contains("ટ્યુબ વેલ/બોરહોલ") || value.contains("सार्वजनिक नल/स्टैंडपाइप")
+                || value.contains("ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ") || value.contains("सार्वजनिक नळ / स्टँडपाइप") || value.contains("ସର୍ବସାଧାରଣ ଟ୍ୟାବ")) {
+            value = value
+                    .replace("ৰাজহুৱা টেপ বা ষ্টেণ্ডপাইপ", "Public Tap or Standpipe")
+                    .replace("পাবলিক ট্যাপ বা স্ট্যান্ডপাইপ", "Public Tap or Standpipe")
+                    .replace("ટ્યુબ વેલ/બોરહોલ", "Public Tap or Standpipe")
+                    .replace("सार्वजनिक नल/स्टैंडपाइप", "Public Tap or Standpipe")
+                    .replace("ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ", "Public Tap or Standpipe")
+                    .replace("सार्वजनिक नळ / स्टँडपाइप", "Public Tap or Standpipe")
+                    .replace("ସର୍ବସାଧାରଣ ଟ୍ୟାବ", "Public Tap or Standpipe");
+        }
+
+        if (value.contains("টিউব ৱেল বা ব’ৰহ’ল") || value.contains("নলকূপ বা বোরয়েল") || value.contains("ટ્યુબ વેલ/બોરહોલ") || value.contains("ट्यूब वेल/बोरहोल")
+                || value.contains("ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ") || value.contains("कूपनलिका / विंधन विहीर / बोअरवेल") || value.contains("ନଳକୁପ/ ବୋର ୱେଲ")) {
+            value = value
+                    .replace("টিউব ৱেল বা ব’ৰহ’ল", "Tube Well or Borehole")
+                    .replace("নলকূপ বা বোরয়েল", "Tube Well or Borehole")
+                    .replace("ટ્યુબ વેલ/બોરહોલ", "Tube Well or Borehole")
+                    .replace("ट्यूब वेल/बोरहोल", "Tube Well or Borehole")
+                    .replace("ಕೊಳವೆ ಬಾವಿ ಅಥವಾ ಕೊಳವೆಬಾವಿ", "Tube Well or Borehole")
+                    .replace("कूपनलिका / विंधन विहीर / बोअरवेल", "Tube Well or Borehole")
+                    .replace("ନଳକୁପ/ ବୋର ୱେଲ", "Tube Well or Borehole");
+        }
+
+        if (value.contains("সুৰক্ষিত ভাল") || value.contains("সুরক্ষিত ওয়েল") || value.contains("સંરક્ષિત કૂવો") || value.contains("संरक्षित कुआं")
+                || value.contains("ಚೆನ್ನಾಗಿ ರಕ್ಷಿಸಲಾಗಿದೆ") || value.contains("संरक्षित विहिर") || value.contains("ସୁରକ୍ଷିତ କୂଅ")) {
+            value = value
+                    .replace("সুৰক্ষিত ভাল", "Protected Well")
+                    .replace("সুরক্ষিত ওয়েল", "Protected Well")
+                    .replace("સંરક્ષિત કૂવો", "Protected Well")
+                    .replace("संरक्षित कुआं", "Protected Well")
+                    .replace("ಚೆನ್ನಾಗಿ ರಕ್ಷಿಸಲಾಗಿದೆ", "Protected Well")
+                    .replace("संरक्षित विहिर", "Protected Well")
+                    .replace("ସୁରକ୍ଷିତ କୂଅ", "Protected Well");
+        }
+
+        if (value.contains("অসুৰক্ষিত কুঁৱা") || value.contains("অরক্ষিত কূপ") || value.contains("અસુરક્ષિત કૂવો") || value.contains("असुरक्षित कुआं")
+                || value.contains("ರಕ್ಷಣೆಯಿಲ್ಲದ ಬಾವಿ") || value.contains("असंरक्षित विहिर") || value.contains("ଅସୁରକ୍ଷିତ ପୂଅ")) {
+            value = value
+                    .replace("অসুৰক্ষিত কুঁৱা", "Unprotected Well")
+                    .replace("অরক্ষিত কূপ", "Unprotected Well")
+                    .replace("અસુરક્ષિત કૂવો", "Unprotected Well")
+                    .replace("असुरक्षित कुआं", "Unprotected Well")
+                    .replace("ರಕ್ಷಣೆಯಿಲ್ಲದ ಬಾವಿ", "Unprotected Well")
+                    .replace("असंरक्षित विहिर", "Unprotected Well")
+                    .replace("ଅସୁରକ୍ଷିତ ପୂଅ", "Unprotected Well");
+        }
+
+        if (value.contains("সুৰক্ষিত বসন্ত") || value.contains("সুরক্ষিত বসন্ত") || value.contains("સુરક્ષિત ઝરણું") || value.contains("संरक्षित झरना")
+                || value.contains("ರಕ್ಷಿತ ವಸಂತ") || value.contains("संरक्षित झऱ्याचे पाणीी") || value.contains("ଅସୁରକ୍ଷିତ କୁଅ")) {
+            value = value
+                    .replace("সুৰক্ষিত বসন্ত", "Protected Spring")
+                    .replace("সুরক্ষিত বসন্ত", "Protected Spring")
+                    .replace("સુરક્ષિત ઝરણું", "Protected Spring")
+                    .replace("संरक्षित झरना", "Protected Spring")
+                    .replace("ರಕ್ಷಿತ ವಸಂತ", "Protected Spring")
+                    .replace("संरक्षित झऱ्याचे पाणीी", "Protected Spring")
+                    .replace("ଅସୁରକ୍ଷିତ କୁଅ", "Protected Spring");
+        }
+
+        if (value.contains("অসুৰক্ষিত বসন্ত") || value.contains("অরক্ষিত বসন্ত") || value.contains("અસુરક્ષિત ઝરણું") || value.contains("असुरक्षित झरना")
+                || value.contains("ಅಸುರಕ್ಷಿತ ವಸಂತ") || value.contains("असंरक्षित झऱ्याचे पाणी") || value.contains("ଅସୁରକ୍ଷିତ ଝରଣା")) {
+            value = value
+                    .replace("অসুৰক্ষিত বসন্ত", "Unprotected Spring")
+                    .replace("অরক্ষিত বসন্ত", "Unprotected Spring")
+                    .replace("અસુરક્ષિત ઝરણું", "Unprotected Spring")
+                    .replace("असुरक्षित झरना", "Unprotected Spring")
+                    .replace("ಅಸುರಕ್ಷಿತ ವಸಂತ", "Unprotected Spring")
+                    .replace("असंरक्षित झऱ्याचे पाणी", "Unprotected Spring")
+                    .replace("ଅସୁରକ୍ଷିତ ଝରଣା", "Unprotected Spring");
+        }
+
+        if (value.contains("বৰষুণৰ পানী") || value.contains("বৃষ্টির জল") || value.contains("વરસાદી પાણી") || value.contains("वर्षा जल")
+                || value.contains("ಮಳೆನೀರು") || value.contains("पावसाचे पाणी") || value.contains("ବର୍ଷାପାଣି")) {
+            value = value
+                    .replace("বৰষুণৰ পানী", "Rainwater")
+                    .replace("বৃষ্টির জল", "Rainwater")
+                    .replace("વરસાદી પાણી", "Rainwater")
+                    .replace("वर्षा जल", "Rainwater")
+                    .replace("ಮಳೆನೀರು", "Rainwater")
+                    .replace("पावसाचे पाणी", "Rainwater")
+                    .replace("ବର୍ଷାପାଣି", "Rainwater");
+        }
+
+        if (value.contains("টেংকাৰ ট্ৰাক") || value.contains("ট্যাঙ্কার ট্রাক") || value.contains("ટેન્કર ટ્રક") || value.contains("टैंकर ट्रक")
+                || value.contains("ಟ್ಯಾಂಕರ್ ಟ್ರಕ್") || value.contains("टँकर ट्रक") || value.contains("ଟ୍ୟାଙ୍କର ପାଣି")) {
+            value = value
+                    .replace("টেংকাৰ ট্ৰাক", "Tanker Truck")
+                    .replace("ট্যাঙ্কার ট্রাক", "Tanker Truck")
+                    .replace("ટેન્કર ટ્રક", "Tanker Truck")
+                    .replace("टैंकर ट्रक", "Tanker Truck")
+                    .replace("ಟ್ಯಾಂಕರ್ ಟ್ರಕ್", "Tanker Truck")
+                    .replace("टँकर ट्रक", "Tanker Truck")
+                    .replace("ଟ୍ୟାଙ୍କର ପାଣି", "Tanker Truck");
+        }
+
+        if (value.contains("সৰু ট্ৰাকৰ সৈতে কাৰ্ট") || value.contains("ছোট ট্রাক সঙ্গে কার্ট") || value.contains("નાની ટાંકી સાથેનું કાર્ટ") || value.contains("टैंकर छोटे टैंक के साथ")
+                || value.contains("ಸಣ್ಣ ಟ್ರಕ್ ಜೊತೆ ಕಾರ್ಟ್") || value.contains("लहान टाकी-गाडी") || value.contains("ଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି")) {
+            value = value
+                    .replace("সৰু ট্ৰাকৰ সৈতে কাৰ্ট", "Cart With Small Truck")
+                    .replace("ছোট ট্রাক সঙ্গে কার্ট", "Cart With Small Truck")
+                    .replace("નાની ટાંકી સાથેનું કાર્ટ", "Cart With Small Truck")
+                    .replace("टैंकर छोटे टैंक के साथ", "Cart With Small Truck")
+                    .replace("ಸಣ್ಣ ಟ್ರಕ್ ಜೊತೆ ಕಾರ್ಟ್", "Cart With Small Truck")
+                    .replace("लहान टाकी-गाडी", "Cart With Small Truck")
+                    .replace("ଛୋଟ ଟ୍ୟାଙ୍କର ଗାଡି", "Cart With Small Truck");
+        }
+
+        if (value.contains("পৃষ্ঠীয় পানী") || value.contains("ভূগর্ভস্থ পানি") || value.contains("સપાટીનું પાણી") || value.contains("सतही जल")
+                || value.contains("ಮೇಲ್ಮೈ ನೀರು") || value.contains("पृष्ठभागाचे पाणी") || value.contains("ଭୂପୃଷ୍ଠ ଜଳ")) {
+            value = value
+                    .replace("পৃষ্ঠীয় পানী", "Surface Water")
+                    .replace("ভূগর্ভস্থ পানি", "Surface Water")
+                    .replace("સપાટીનું પાણી", "Surface Water")
+                    .replace("सतही जल", "Surface Water")
+                    .replace("ಮೇಲ್ಮೈ ನೀರು", "Surface Water")
+                    .replace("पृष्ठभागाचे पाणी", "Surface Water")
+                    .replace("ଭୂପୃଷ୍ଠ ଜଳ", "Surface Water");
+        }
+
+        if (value.contains("সাধাৰণ হেণ্ড পাম্প") || value.contains("কমন হ্যান্ড পাম্প") || value.contains("કોમન હેન્ડ પંપ") || value.contains("सामान्य हैंड पंप")
+                || value.contains("ಸಾಮಾನ್ಯ ಕೈ ಪಂಪ್") || value.contains("सामान्य हात पंप/ हापसा") || value.contains("ସାଧାରଣ ହାତ ପମ୍ପ")) {
+            value = value
+                    .replace("সাধাৰণ হেণ্ড পাম্প", "Common Hand Pump")
+                    .replace("কমন হ্যান্ড পাম্প", "Common Hand Pump")
+                    .replace("કોમન હેન્ડ પંપ", "Common Hand Pump")
+                    .replace("सामान्य हैंड पंप", "Common Hand Pump")
+                    .replace("ಸಾಮಾನ್ಯ ಕೈ ಪಂಪ್", "Common Hand Pump")
+                    .replace("सामान्य हात पंप/ हापसा", "Common Hand Pump")
+                    .replace("ସାଧାରଣ ହାତ ପମ୍ପ", "Common Hand Pump");
+        }
+
+        if (value.contains("হেণ্ড পাম্প এট হোম") || value.contains("বাড়িতে হ্যান্ড পাম্প") || value.contains("ઘરે હેન્ડ પંપ") || value.contains("घर पर हैंड पंप")
+                || value.contains("ಮನೆಯಲ್ಲಿ ಕೈ ಪಂಪ್") || value.contains("हँड पंप (घरी)") || value.contains("ଘରେ ଥିବା ହାତ ପମ୍ପ")) {
+            value = value
+                    .replace("হেণ্ড পাম্প এট হোম", "Hand Pump At Home")
+                    .replace("বাড়িতে হ্যান্ড পাম্প", "Hand Pump At Home")
+                    .replace("ઘરે હેન્ડ પંપ", "Hand Pump At Home")
+                    .replace("घर पर हैंड पंप", "Hand Pump At Home")
+                    .replace("ಮನೆಯಲ್ಲಿ ಕೈ ಪಂಪ್", "Hand Pump At Home")
+                    .replace("हँड पंप (घरी)", "Hand Pump At Home")
+                    .replace("ଘରେ ଥିବା ହାତ ପମ୍ପ", "Hand Pump At Home");
+        }
+
+        if (value.contains("सार्वजनिक नल\\/स्टैंडपाइप") || value.contains("घर पर हैंड पंप") ||
+                value.contains("आवास में बोर किया गया") || value.contains("বাসস্থান মধ্য পাইপ") ||
+                value.contains("यार्ड\\/प्लॉट में बोर किया गया") || value.contains("ट्यूब वेल\\/बोरहोल") ||
+                value.contains("संरक्षित कुआं") || value.contains("सामान्य हैंड पंप") ||
+                value.contains("সুৰক্ষিত ভাল") || value.contains("টিউব ৱেল বা ব’ৰহ’ল")) {
+
             value = value.replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
                     .replace("घर पर हैंड पंप", "Hand Pump At Home")
                     .replace("आवास में बोर किया गया", "Piped Into Dwelling")
@@ -6617,9 +6786,152 @@ public final class StringUtils {
         if (value.contains("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ"))
             value = value.replace("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ", "Shared Toilet with other households");
 
+        // Water Safer To Drink
+
+        if (value.contains("উতলোৱা") || value.contains("ফুটান") || value.contains("ઉકાળો") || value.contains("उबालते है") || value.contains("ಕುದಿಸಿ") || value.contains("उकळणे") || value.contains("ଫୁଟାପାଣି")) {
+            value = value
+                    .replace("উতলোৱা", "Boiling")
+                    .replace("ফুটান", "Boiling")
+                    .replace("ઉકાળો", "Boiling")
+                    .replace("उबालते है", "Boiling")
+                    .replace("ಕುದಿಸಿ", "Boiling")
+                    .replace("उकळणे", "Boiling")
+                    .replace("ଫୁଟାପାଣି", "Boiling");
+        }
+
+        if (value.contains("এলুম ব্যৱহাৰ কৰক") || value.contains("অ্যালুম ব্যবহার করুন") || value.contains("ફટકડીનો ઉપયોગ કરો") || value.contains("फिटकरी  का उपयोग करें") || value.contains("ಹರಳೆಣ್ಣೆ ಬಳಸಿ") || value.contains("तुरटी वापरणे") || value.contains("ଫିଟିକିରି ବ୍ୟବହାର")) {
+            value = value
+                    .replace("এলুম ব্যৱহাৰ কৰক", "Use Alum")
+                    .replace("অ্যালুম ব্যবহার করুন", "Use Alum")
+                    .replace("ફટકડીનો ઉપયોગ કરો", "Use Alum")
+                    .replace("फिटकरी  का उपयोग करें", "Use Alum")
+                    .replace("ಹರಳೆಣ್ಣೆ ಬಳಸಿ", "Use Alum")
+                    .replace("तुरटी वापरणे", "Use Alum")
+                    .replace("ଫିଟିକିରି ବ୍ୟବହାର", "Use Alum");
+        }
+
+        if (value.contains("ব্লিচ যোগ কৰক") || value.contains("ব্লিচ যোগ করুন") || value.contains("બ્લિચ ઉમેરવું") || value.contains("ब्लीच डालते हैं") || value.contains("ಬ್ಲೀಚ್ ಸೇರಿಸಿ") || value.contains("ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स") || value.contains("ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା")) {
+            value = value
+                    .replace("ব্লিচ যোগ কৰক", "Add bleach")
+                    .replace("ব্লিচ যোগ করুন", "Add bleach")
+                    .replace("બ્લિચ ઉમેરવું", "Add bleach")
+                    .replace("ब्लीच डालते हैं", "Add bleach")
+                    .replace("ಬ್ಲೀಚ್ ಸೇರಿಸಿ", "Add bleach")
+                    .replace("ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स", "Add bleach")
+                    .replace("ବିରଞ୍ଜନ ଯୁକ୍ତ କରିବା", "Add bleach");
+        }
+
+        if (value.contains("ষ্ট্ৰেইন থ্ৰু এ ক্লথ") || value.contains("একটি কাপড় মাধ্যমে স্ট্রেন") || value.contains("કાપડ દ્વારા તાણ") || value.contains("कपड़े से छानते है") || value.contains("ಒಂದು ಬಟ್ಟೆಯ ಮೂಲಕ ಸ್ಟ್ರೈನ್ ಮಾಡಿ") || value.contains("कापडाने गाळणे") || value.contains("କପଡ଼ାରେ ଛ।ନିବା")) {
+            value = value
+                    .replace("ষ্ট্ৰেইন থ্ৰু এ ক্লথ", "Strain Through A Cloth")
+                    .replace("একটি কাপড় মাধ্যমে স্ট্রেন", "Strain Through A Cloth")
+                    .replace("કાપડ દ્વારા તાણ", "Strain Through A Cloth")
+                    .replace("कपड़े से छानते है", "Strain Through A Cloth")
+                    .replace("ಒಂದು ಬಟ್ಟೆಯ ಮೂಲಕ ಸ್ಟ್ರೈನ್ ಮಾಡಿ", "Strain Through A Cloth")
+                    .replace("कापडाने गाळणे", "Strain Through A Cloth")
+                    .replace("କପଡ଼ାରେ ଛ।ନିବା", "Strain Through A Cloth");
+        }
+
+        if (value.contains("পানী ফিল্টাৰ") || value.contains("জল ফিল্টার") || value.contains("વોટર ફિલ્ટરનો ઉપયોગ") || value.contains("पानी फिल्टर का उपयोग करते है") || value.contains("ವಾಟರ್ ಫಿಲ್ಟರ್ ಬಳಸಿ") || value.contains("पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)") || value.contains("ଫିଲ୍ଟର ପାଣି")) {
+            value = value
+                    .replace("পানী ফিল্টাৰ", "Boiling")
+                    .replace("জল ফিল্টার", "Boiling")
+                    .replace("વોટર ફિલ્ટરનો ઉપયોગ", "Boiling")
+                    .replace("पानी फिल्टर का उपयोग करते है", "Boiling")
+                    .replace("ವಾಟರ್ ಫಿಲ್ಟರ್ ಬಳಸಿ", "Boiling")
+                    .replace("पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)", "Boiling")
+                    .replace("ଫିଲ୍ଟର ପାଣି", "Boiling");
+        }
+
+        if (value.contains("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ") || value.contains("হ্যান্ড মেড পিউরিফায়ার") || value.contains("ઘરે બનાવેલું ફિલ્ટર") || value.contains("घर पर बनाये फ़िल्टर का उपयोग करते है") || value.contains("ಕೈಯಿಂದ ಮಾಡಿದ ಪ್ಯೂರಿಫೈಯರ್") || value.contains("हँड मेड प्युरिफायर") || value.contains("ହାତ ତିଆରି ବିଶୋଧକ")) {
+            value = value
+                    .replace("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ", "Hand Made Purifier")
+                    .replace("হ্যান্ড মেড পিউরিফায়ার", "Hand Made Purifier")
+                    .replace("ઘરે બનાવેલું ફિલ્ટર", "Hand Made Purifier")
+                    .replace("घर पर बनाये फ़िल्टर का उपयोग करते है", "Hand Made Purifier")
+                    .replace("ಕೈಯಿಂದ ಮಾಡಿದ ಪ್ಯೂರಿಫೈಯರ್", "Hand Made Purifier")
+                    .replace("हँड मेड प्युरिफायर", "Hand Made Purifier")
+                    .replace("ହାତ ତିଆରି ବିଶୋଧକ", "Hand Made Purifier");
+        }
+
+        if (value.contains("একো নকৰিব") || value.contains("কিছুই করবেন না") || value.contains("મૂકી રાખો અને સ્થિર કરો") || value.contains("कुछ नहीं करते है") || value.contains("ಏನನ್ನೂ ಮಾಡಬೇಡ") || value.contains("काही करत नाही") || value.contains("କିଛି କରୁ ନାହିଁ")) {
+            value = value
+                    .replace("একো নকৰিব", "Do Nothing")
+                    .replace("কিছুই করবেন না", "Do Nothing")
+                    .replace("મૂકી રાખો અને સ્થિર કરો", "Do Nothing")
+                    .replace("कुछ नहीं करते है", "Do Nothing")
+                    .replace("ಏನನ್ನೂ ಮಾಡಬೇಡ", "Do Nothing")
+                    .replace("काही करत नाही", "Do Nothing")
+                    .replace("କିଛି କରୁ ନାହିଁ", "Do Nothing");
+        }
+
+        if (value.contains("আন কিছুমান") || value.contains("অন্যান্য") || value.contains("અન્ય") || value.contains("अन्य") || value.contains("ಇತರೆ") || value.contains("इतर") || value.contains("ଅନ୍ୟମାନେ |")) {
+            value = value
+                    .replace("আন কিছুমান", "Others")
+                    .replace("অন্যান্য", "Others")
+                    .replace("અન્ય", "Others")
+                    .replace("अन्य", "Others")
+                    .replace("ಇತರೆ", "Others")
+                    .replace("इतर", "Others")
+                    .replace("ଅନ୍ୟମାନେ |", "Others");
+        }
+
+        if (value.contains("স্মাৰ্টফোনৰ মালিক") || value.contains("স্মার্টফোনের মালিক") || value.contains("પોતાનો સ્માર્ટફોન") || value.contains("स्वयं का स्मार्टफोन है") || value.contains("ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಹೊಂದಿದ್ದಾರೆ") || value.contains("स्वतःचा स्मार्टफोन") || value.contains("ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍")) {
+            value = value
+                    .replace("স্মাৰ্টফোনৰ মালিক", "Own Smartphone")
+                    .replace("স্মার্টফোনের মালিক", "Own Smartphone")
+                    .replace("પોતાનો સ્માર્ટફોન", "Own Smartphone")
+                    .replace("स्वयं का स्मार्टफोन है", "Own Smartphone")
+                    .replace("ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಹೊಂದಿದ್ದಾರೆ", "Own Smartphone")
+                    .replace("स्वतःचा स्मार्टफोन", "Own Smartphone")
+                    .replace("ନିଜର ସ୍ମାର୍ଟ ଫୋନ୍", "Own Smartphone");
+        }
+
+        if (value.contains("বৈশিষ্ট্য ফোন মালিক") || value.contains("ফিচার ফোনের মালিক") || value.contains("પોતાનો ફીચર ફોન") || value.contains("स्वयं का फीचर फोन है") || value.contains("ಫೀಚರ್ ಫೋನ್ ಅನ್ನು ಹೊಂದಿದೆ") || value.contains("स्वतःचा साधारण फोन") || value.contains("ନିଜର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍")) {
+            value = value
+                    .replace("বৈশিষ্ট্য ফোন মালিক", "Own Feature Phone")
+                    .replace("ফিচার ফোনের মালিক", "Own Feature Phone")
+                    .replace("પોતાનો ફીચર ફોન", "Own Feature Phone")
+                    .replace("स्वयं का फीचर फोन है", "Own Feature Phone")
+                    .replace("ಫೀಚರ್ ಫೋನ್ ಅನ್ನು ಹೊಂದಿದೆ", "Own Feature Phone")
+                    .replace("स्वतःचा साधारण फोन", "Own Feature Phone")
+                    .replace("ନିଜର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍", "Own Feature Phone");
+        }
+
+        if (value.contains("শ্বেয়াৰ কৰা স্মাৰ্টফোন") || value.contains("শেয়ার করা স্মার্টফোন") || value.contains("શેર કરેલ સ્માર્ટફોન") || value.contains("साझा स्मार्टफोन है") || value.contains("ಹಂಚಿದ ಸ್ಮಾರ್ಟ್‌ಫೋನ್") || value.contains("सामायिक स्मार्टफोन") || value.contains("ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍")) {
+            value = value
+                    .replace("শ্বেয়াৰ কৰা স্মাৰ্টফোন", "Shared Smartphone")
+                    .replace("শেয়ার করা স্মার্টফোন", "Shared Smartphone")
+                    .replace("શેર કરેલ સ્માર્ટફોન", "Shared Smartphone")
+                    .replace("साझा स्मार्टफोन है", "Shared Smartphone")
+                    .replace("ಹಂಚಿದ ಸ್ಮಾರ್ಟ್‌ಫೋನ್", "Shared Smartphone")
+                    .replace("सामायिक स्मार्टफोन", "Shared Smartphone")
+                    .replace("ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ମାର୍ଟ ଫୋନ୍", "Shared Smartphone");
+        }
+
+        if (value.contains("শ্বেয়াৰ কৰা বৈশিষ্ট্য ফোন") || value.contains("শেয়ার করা ফিচার ফোন") || value.contains("શેર કરેલ ફીચર ફોન") || value.contains("साझा फीचर फोन है") || value.contains("ಹಂಚಿದ ವೈಶಿಷ್ಟ್ಯ ಫೋನ್") || value.contains("सामायिक साधारण फोन") || value.contains("ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍")) {
+            value = value
+                    .replace("শ্বেয়াৰ কৰা বৈশিষ্ট্য ফোন", "Shared Feature Phone")
+                    .replace("শেয়ার করা ফিচার ফোন", "Shared Feature Phone")
+                    .replace("શેર કરેલ ફીચર ફોન", "Shared Feature Phone")
+                    .replace("साझा फीचर फोन है", "Shared Feature Phone")
+                    .replace("ಹಂಚಿದ ವೈಶಿಷ್ಟ್ಯ ಫೋನ್", "Shared Feature Phone")
+                    .replace("सामायिक साधारण फोन", "Shared Feature Phone")
+                    .replace("ଅନ୍ୟ ସହ ଅଂଶୀଦାର ସ୍ଵତନ୍ତ୍ର ଫୋନ୍", "Shared Feature Phone");
+        }
+
+        if (value.contains("একো নাই") || value.contains("কোনোটিই নয়") || value.contains("કોઈ નથી") || value.contains("कोई नहीं") || value.contains("ಯಾವುದೂ ಇಲ್ಲ") || value.contains("काहीही नाही") || value.contains("କିଛି ନୁହେଁ")) {
+            value = value
+                    .replace("একো নাই", "None")
+                    .replace("কোনোটিই নয়", "None")
+                    .replace("કોઈ નથી", "None")
+                    .replace("कोई नहीं", "None")
+                    .replace("ಯಾವುದೂ ಇಲ್ಲ", "None")
+                    .replace("काहीही नाही", "None")
+                    .replace("କିଛି ନୁହେଁ", "None");
+        }
 
         Logger.logV("StringUtils", "second_filter: " + value);  // 16.
         return value;
     }
-
 }
