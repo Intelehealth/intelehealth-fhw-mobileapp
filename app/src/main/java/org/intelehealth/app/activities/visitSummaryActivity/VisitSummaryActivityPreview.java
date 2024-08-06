@@ -347,7 +347,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private SpecializationViewModel viewModel;
 
-    Button printBt, shareBt;
+    Button printBt, sharePatientBt,shareFacilityBt;
     private Bitmap bitmap;
     private String filePath;
     private ArrayList<File> fileList;
@@ -1405,7 +1405,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void initUI() {
-        shareBt = findViewById(R.id.share_patient_bt);
+        sharePatientBt = findViewById(R.id.share_patient_bt);
+        shareFacilityBt = findViewById(R.id.share_referral_facility_bt);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
 
@@ -1552,54 +1553,31 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
 
-        shareBt.setOnClickListener(new View.OnClickListener() {
+        sharePatientBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showShareDialog();
-                shareVisitSummary();
+                shareVisitToWhatsApp(patient.getPhone_number(),"");
+            }
+        });
+
+        shareFacilityBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareVisitToWhatsApp(patient.getPhone_number(),"");
             }
         });
     }
 
-    private void shareVisitSummary() {
+    private void shareVisitToWhatsApp(String phoneNumber, String facilityId) {
         String visitSummary_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, VISIT_SUMMARY_LINK);
         if(visitSummary_link.isEmpty()) {
             Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.visit_summary_link_not_found), Toast.LENGTH_SHORT).show();
             return;
         }
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        final LayoutInflater inflater = LayoutInflater.from(this);
-        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
-        alertdialogBuilder.setView(convertView);
-
-        TextView messageTxt = convertView.findViewById(R.id.message);
-        EditText editText = convertView.findViewById(R.id.editText_mobileno);
-        Button sharebtn = convertView.findViewById(R.id.sharebtn);
-
-
-        messageTxt.setText(R.string.enter_the_mobile_number_to_which_you_want_to_share_the_visit_summary);
         String partial_whatsapp_url = new UrlModifiers().getWhatsappUrl();
-        editText.setText(patient.getPhone_number());
-
-        sharebtn.setOnClickListener(v -> {
-            if (!editText.getText().toString().equalsIgnoreCase("")) {
-                String phoneNumber = editText.getText().toString();
-                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getString(R.string.hello_thank_you_for_using_intelehealth_to_download_your_visit_summary_click_here) + partial_whatsapp_url + Uri.encode("#") + visitSummary_link + getString(R.string.to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number));
-                Log.v("whatsappMessage", whatsappMessage);
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
-            } else {
-                Toast.makeText(VisitSummaryActivityPreview.this, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
-            }
-
-        });
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = VisitSummaryActivityPreview.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
-
+        String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getString(R.string.hello_thank_you_for_using_intelehealth_to_download_your_visit_summary_click_here) + partial_whatsapp_url + Uri.encode("#") + visitSummary_link + getString(R.string.to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number));
+        Log.v("whatsappMessage", whatsappMessage);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
     }
 
     private void showShareDialog() {

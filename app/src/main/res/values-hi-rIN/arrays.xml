@@ -276,7 +276,7 @@
         <item>दीर्घकालीन उपचार चल रहा है</item>
     </string-array>
 
-    <string-array name="visit_facilities">
+   <!-- <string-array name="visit_facilities">
         <item>स्वास्थ्य फेसिलिटी चुने</item>
         <item>साहिया/ आशा</item>
         <item>आंगनबाड़ी केंद्र</item>
@@ -285,6 +285,16 @@
         <item>जिला अस्पताल</item>
         <item>मेडिकल कॉलेज/ आयुष्मान अस्पताल</item>
         <item>अन्य</item>
+    </string-array>-->
+
+    <string-array name="visit_facilities">
+        <item>स्वास्थ्य फेसिलिटी चुने</item>
+        <item>AB-PMJAY</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>HSC</item>
+        <item>HWC</item>
+        <item>ASHA</item>
     </string-array>
 
     <string-array name="visit_severity">

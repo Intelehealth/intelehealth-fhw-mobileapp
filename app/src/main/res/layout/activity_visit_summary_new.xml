@@ -891,11 +891,148 @@
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
+                    <!--Facility name list-->
+                    <FrameLayout
+                        android:id="@+id/flReferralFacility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_below="@+id/flFacilityToVisit">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvReferralFacilityDoc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/toolbar_margin_left"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:elevation="16dp"
+                            app:cardCornerRadius="@dimen/margin_5"
+                            app:cardElevation="@dimen/margin_5">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RelativeLayout
+                                    android:id="@+id/rlReferralVisitHeader"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                                    <ImageView
+                                        android:id="@+id/ivReferralVisit"
+                                        android:layout_width="@dimen/edittext_height_44dp"
+                                        android:layout_height="@dimen/edittext_height_44dp"
+                                        android:src="@drawable/speciality_red_icon" />
+
+                                    <TextView
+                                        style="@style/text_title_style"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="@dimen/margin_8"
+                                        android:layout_toEndOf="@+id/ivReferralVisit"
+                                        android:text="@string/referral_facility" />
+
+                                    <ImageButton
+                                        android:id="@+id/ibReferralVisitHeader"
+                                        android:layout_width="@dimen/fu_icon_width"
+                                        android:layout_height="@dimen/fu_icon_height"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:background="@null"
+                                        android:src="@drawable/ui2_ic_chevron_down" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/rlReferralVisitHeaderExpandView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/rlReferralVisitHeader"
+                                    android:visibility="gone"
+                                    tools:visibility="visible">
+
+                                    <View
+                                        android:id="@+id/dividerReferralVisit"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginStart="@dimen/fu_margin_start"
+                                        android:layout_marginEnd="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                                        android:background="@color/notifi_divider_color" />
+
+
+                                    <TextView
+                                        android:id="@+id/tvReferralVisitValue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/dividerReferralVisit"
+                                        android:layout_marginStart="@dimen/fu_margin_start"
+                                        android:layout_marginEnd="@dimen/fu_margin_start"
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        android:text="@string/no_information" />
+
+                                </RelativeLayout>
+
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvReferralFacility"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/toolbar_margin_left"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:elevation="16dp"
+                            app:cardCornerRadius="@dimen/margin_5"
+                            app:cardElevation="@dimen/margin_5">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/fu_card_margin_sides">
+
+                                <TextView
+                                    android:id="@+id/tvReferralFacility"
+                                    style="@style/vs_title_head_14sp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/referral_facility"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textStyle="bold" />
+
+                                <Spinner
+                                    android:id="@+id/spinnerReferralFacilityCard"
+                                    style="@style/AppTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_below="@+id/tvReferralFacility"
+                                    android:layout_marginTop="@dimen/fu_margin_start"
+                                    android:layout_marginBottom="@dimen/margin_16dp"
+                                    android:entries="@array/speciality_values"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/select_referral_facility"
+                                    android:paddingStart="@dimen/fu_margin_start"
+                                    android:paddingTop="@dimen/margin_10"
+                                    android:paddingBottom="@dimen/margin_10" />
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+                    </FrameLayout>
+
                     <FrameLayout
                         android:id="@+id/flSeverity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/flFacilityToVisit">
+                        android:layout_below="@+id/flReferralFacility">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cvSeverityDoc"
@@ -1253,141 +1390,6 @@
                             </RelativeLayout>
 
                         </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:id="@+id/flReferralFacility"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/flCloseCaseToVisit">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cvReferralFacility"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/toolbar_margin_left"
-                            android:layout_marginTop="@dimen/margin_5"
-                            android:layout_marginEnd="@dimen/toolbar_margin_left"
-                            android:layout_marginBottom="@dimen/margin_10"
-                            android:elevation="16dp"
-                            app:cardCornerRadius="@dimen/margin_5"
-                            app:cardElevation="@dimen/margin_5">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <RelativeLayout
-                                    android:id="@+id/rlReferralVisitHeader"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/fu_card_margin_sides"
-                                    android:layout_marginTop="@dimen/fu_card_margin_sides"
-                                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
-                                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
-
-                                    <ImageView
-                                        android:id="@+id/ivReferralVisit"
-                                        android:layout_width="@dimen/edittext_height_44dp"
-                                        android:layout_height="@dimen/edittext_height_44dp"
-                                        android:src="@drawable/dialog_close_visit_icon" />
-
-                                    <TextView
-                                        style="@style/text_title_style"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginStart="@dimen/margin_8"
-                                        android:layout_toEndOf="@+id/ivReferralVisit"
-                                        android:text="@string/close_case" />
-
-                                    <ImageButton
-                                        android:id="@+id/ibReferralVisitHeader"
-                                        android:layout_width="@dimen/fu_icon_width"
-                                        android:layout_height="@dimen/fu_icon_height"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerVertical="true"
-                                        android:background="@null"
-                                        android:src="@drawable/ui2_ic_chevron_down" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/rlReferralVisitHeaderExpandView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/rlReferralVisitHeader"
-                                    android:visibility="gone"
-                                    tools:visibility="visible">
-
-                                    <View
-                                        android:id="@+id/dividerReferralVisit"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="1dp"
-                                        android:layout_marginStart="@dimen/fu_margin_start"
-                                        android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
-                                        android:background="@color/notifi_divider_color" />
-
-
-                                    <TextView
-                                        android:id="@+id/tvReferralVisitValue"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/dividerReferralVisit"
-                                        android:layout_marginStart="@dimen/fu_margin_start"
-                                        android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="@string/no_information" />
-
-                                </RelativeLayout>
-
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/referralFacilityCard"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/toolbar_margin_left"
-                            android:layout_marginTop="@dimen/margin_5"
-                            android:layout_marginEnd="@dimen/toolbar_margin_left"
-                            android:layout_marginBottom="@dimen/margin_10"
-                            android:elevation="16dp"
-                            app:cardCornerRadius="@dimen/margin_5"
-                            app:cardElevation="@dimen/margin_5">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="@dimen/fu_card_margin_sides">
-
-                                <TextView
-                                    android:id="@+id/tvReferralFacility"
-                                    style="@style/vs_title_head_14sp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/referral_facility"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textStyle="bold" />
-
-                                <Spinner
-                                    android:id="@+id/spinnerReferralFacilityCard"
-                                    style="@style/AppTheme"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/edittext_height_44dp"
-                                    android:layout_below="@+id/tvReferralFacility"
-                                    android:layout_marginTop="@dimen/fu_margin_start"
-                                    android:layout_marginBottom="@dimen/margin_16dp"
-                                    android:entries="@array/speciality_values"
-                                    android:gravity="center_vertical"
-                                    android:hint="@string/select_referral_facility"
-                                    android:paddingStart="@dimen/fu_margin_start"
-                                    android:paddingTop="@dimen/margin_10"
-                                    android:paddingBottom="@dimen/margin_10" />
-                            </RelativeLayout>
-                        </androidx.cardview.widget.CardView>
-
-
                     </FrameLayout>
                 </RelativeLayout>
 

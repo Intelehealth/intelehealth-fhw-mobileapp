@@ -2461,7 +2461,7 @@
         <item>Long term treatment</item>
     </string-array>
 
-    <string-array name="visit_facilities">
+    <!--<string-array name="visit_facilities">
         <item>Select Facility</item>
         <item>Asha</item>
         <item>AWW</item>
@@ -2470,6 +2470,15 @@
         <item>DH</item>
         <item>Medical Collage AB - PVT</item>
         <item>Hospital Other</item>
+    </string-array>-->
+    <string-array name="visit_facilities">
+        <item>Select Facility</item>
+        <item>AB-PMJAY</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>HSC</item>
+        <item>HWC</item>
+        <item>ASHA</item>
     </string-array>
 
     <string-array name="visit_severity">

@@ -378,7 +378,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ActivityVisitSummaryNewBinding mBinding;
     //    private List<FacilityToVisitModel> facilityList = null;
 //    private List<String> severityList = null;
-    private String selectedFacilityToVisit = null;
     private String selectedReferralFacility = null;
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
@@ -485,7 +484,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
 
-        Log.d("ADDDD", "" + encounterUuidAdultIntial);
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -564,7 +562,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Timber.tag(TAG).d(new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
-            setReferralFacilitySpinner();
             setSeveritySpinner();
             setCloseCaseSpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
@@ -852,6 +849,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mBinding.cvFacilityToVisitDoc.setVisibility(View.VISIBLE);
             mBinding.cvFacilityToVisit.setVisibility(View.GONE);
 
+            mBinding.cvReferralFacilityDoc.setVisibility(View.VISIBLE);
+            mBinding.cvReferralFacility.setVisibility(View.GONE);
+
             mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
             mBinding.cvSeverity.setVisibility(View.GONE);
 
@@ -1024,6 +1024,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
+
+        mBinding.rlReferralVisitHeader.setOnClickListener(v -> {
+            if (mBinding.rlReferralVisitHeaderExpandView.getVisibility() == View.VISIBLE) {
+                mBinding.rlReferralVisitHeaderExpandView.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.rlReferralVisitHeaderExpandView.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
         mBinding.rlSeverityHeader.setOnClickListener(v -> {
             if (mBinding.rlSavertyHeaderExpandView.getVisibility() == View.VISIBLE) {
                 mBinding.rlSavertyHeaderExpandView.setVisibility(View.GONE);
@@ -2073,9 +2090,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void setFacilityToVisitSpinner() {
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
-        facility = LanguageUtils.getLocalValueFromArray(this, facility, R.array.visit_facilities);
+        if (!facility.isEmpty()) {
+            try {
+                ReferralFacilityData referralFacilityData = new Gson().fromJson(facility, ReferralFacilityData.class);
+                if (referralFacilityData != null) {
+                    facility = LanguageUtils.getLocalValueFromArray(this, referralFacilityData.getCategory(), R.array.visit_facilities);
+                }
+            } catch (Exception e) {
+            }
+        }
+
         if (!TextUtils.isEmpty(facility)) {
             mBinding.tvFacilityToVisitValue.setText(" " + Node.bullet + "  " + facility);
+            setReferralFacilitySpinner("");
         }
 
 //        FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
@@ -2091,9 +2118,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (i != 0) {
 //                    Timber.tag("SPINNER").d("SPINNER_Selected: %s", adapterView.getItemAtPosition(i).toString());
                     Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
-                    selectedFacilityToVisit = resources.getStringArray(R.array.visit_facilities)[i];
+                    String selectedFacilityToVisit = resources.getStringArray(R.array.visit_facilities)[i];
+                    setReferralFacilitySpinner(selectedFacilityToVisit);
                 } else {
-                    selectedFacilityToVisit = null;
+                    //selectedFacilityToVisit = null;
                 }
             }
 
@@ -2104,29 +2132,47 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
 
-    private void setReferralFacilitySpinner() {
+    private void setReferralFacilitySpinner(String selectedFacilityToVisit) {
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, REFERRAL_FACILITY);
-        ReferralFacilityData referralFacilityData = LanguageUtils.getReferralFacilityByName(facility.split("\\(")[0]);
-        if(referralFacilityData != null){
+        ReferralFacilityData referralFacilityData = new Gson().fromJson(facility, ReferralFacilityData.class);
+        if (referralFacilityData != null) {
             facility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityData, ReferralFacilityDataFormatType.VIEW);
-        }else {
+        } else {
             facility = "";
         }
 
-        if (!TextUtils.isEmpty(facility)) {
+        List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
+        referralFacilityDataList.add(getInitialData());
+        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategory(selectedFacilityToVisit));
+
+        if (referralFacilityDataList.size() > 1) {
+            mBinding.cvReferralFacilityDoc.setVisibility(View.VISIBLE);
+            mBinding.cvReferralFacility.setVisibility(View.GONE);
             mBinding.tvReferralVisitValue.setText(" " + Node.bullet + "  " + facility);
+        } else {
+            mBinding.flReferralFacility.setVisibility(View.GONE);
         }
 
-        List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
-        referralFacilityDataList.addAll(LanguageUtils.getReferralFacility());
-        ReferralFacilityArrayAdapter referralFacilityArrayAdapter = new ReferralFacilityArrayAdapter(this,referralFacilityDataList);
+        if (referralFacilityDataList.isEmpty()) {
+            mBinding.flReferralFacility.setVisibility(View.GONE);
+            ReferralFacilityData data = new ReferralFacilityData(
+                    0, "", "", "", "", "", "", "",
+                    "", selectedFacilityToVisit,
+                    "", "", "", "", "", "", "", 0
+            );
+            selectedReferralFacility = new Gson().toJson(data);
+            return;
+        } else {
+            mBinding.flReferralFacility.setVisibility(View.VISIBLE);
+        }
+        ReferralFacilityArrayAdapter referralFacilityArrayAdapter = new ReferralFacilityArrayAdapter(this, referralFacilityDataList);
 
         mBinding.spinnerReferralFacilityCard.setAdapter(referralFacilityArrayAdapter);
         mBinding.spinnerReferralFacilityCard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    selectedReferralFacility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityDataList.get(i),ReferralFacilityDataFormatType.ATTRIBUTE);
+                    selectedReferralFacility = new Gson().toJson(referralFacilityDataList.get(i));
                 } else {
                     selectedReferralFacility = null;
                 }
@@ -2137,6 +2183,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
         });
+    }
+
+    private ReferralFacilityData getInitialData() {
+        return new ReferralFacilityData(
+                0, "", "", "", "", "", "",
+                getString(R.string.select_referral_facility),
+                getString(R.string.select_referral_facility),
+                "", "", "", "", "", "", "", "", 0
+        );
     }
 
     private void setSeveritySpinner() {
@@ -3111,8 +3166,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (speciality_selected != null && !speciality_selected.isEmpty() && !isVisitSpecialityExists) {
                 isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
             }
-            if (selectedFacilityToVisit != null) {
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit, FACILITY);
+            if (selectedReferralFacility != null) {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedReferralFacility, FACILITY);
             }
 
             if (selectedReferralFacility != null) {

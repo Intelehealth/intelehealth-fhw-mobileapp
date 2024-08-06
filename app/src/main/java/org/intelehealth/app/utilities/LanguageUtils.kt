@@ -118,7 +118,7 @@ object LanguageUtils {
     }
 
     @JvmStatic
-    fun getReferralFacility(): List<ReferralFacilityData?> {
+    fun getReferralFacilityByCategory(category: String): List<ReferralFacilityData?> {
         val context = IntelehealthApplication.getAppContext()
         val jsonObject = FileUtils.encodeJSON(context, FACILITY_ALL_DATA_JSON)
         val referralFacilityData: ReferralFacility = Gson().fromJson(
@@ -126,7 +126,7 @@ object LanguageUtils {
             ReferralFacility::class.java
         )
 
-        return referralFacilityData.data
+        return referralFacilityData.data.filter { it.category.contains(category) }
     }
 
     @JvmStatic
@@ -146,16 +146,16 @@ object LanguageUtils {
         referralFacilityData: ReferralFacilityData,
         type: ReferralFacilityDataFormatType
     ): String {
-        if(type == ReferralFacilityDataFormatType.VIEW) {
-            if(referralFacilityData.id == 0L){
+        if (type == ReferralFacilityDataFormatType.VIEW) {
+            if (referralFacilityData.id == 0L) {
                 if (getLocalLang().equals("hi")) return referralFacilityData.facilityNameHi
                 return referralFacilityData.facilityName
-            }else{
+            } else {
                 if (getLocalLang().equals("hi")) return "${referralFacilityData.facilityNameHi} (${referralFacilityData.categoryHi}, ${referralFacilityData.blockHi})"
                 return "${referralFacilityData.facilityName} (${referralFacilityData.category}, ${referralFacilityData.block})"
             }
 
-        }else{
+        } else {
             return "${referralFacilityData.facilityName} (${referralFacilityData.category}, ${referralFacilityData.block}) Incharge - ${referralFacilityData.nameOfMoicIncharge} (${referralFacilityData.contactNumber})"
         }
     }
