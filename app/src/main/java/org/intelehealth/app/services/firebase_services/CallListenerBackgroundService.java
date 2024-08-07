@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -102,7 +103,11 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(ONGOING_NOTIFICATION_ID, notification);
+        } else {
+            startForeground(ONGOING_NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL);
+        }
         //do heavy work on a background thread
 
         // Write a message to the database

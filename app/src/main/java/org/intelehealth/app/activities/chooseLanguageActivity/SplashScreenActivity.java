@@ -221,6 +221,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int foregroundServicePhoneCallPermission;
+        int manageOwnCallPermission;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            foregroundServicePhoneCallPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_PHONE_CALL);
+            manageOwnCallPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_OWN_CALLS);
+            if (foregroundServicePhoneCallPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_PHONE_CALL);
+            }
+            if (manageOwnCallPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.MANAGE_OWN_CALLS);
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
             int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
@@ -552,7 +565,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     break;
                 }
             }
-            if(permissionsCheck) {
+            if (permissionsCheck) {
                 if (allGranted) {
                     checkPerm();
                 } else {
