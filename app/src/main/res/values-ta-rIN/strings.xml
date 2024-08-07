@@ -805,5 +805,6 @@
     <string name="visit_summary_link_not_found">Visit summary link not found.</string>
     <string name="to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number">To view the visit summary, click on the link and enter OTP which will be sent to your registered mobile number..</string>
     <string name="select_referral_facility">Select referral facility</string>
+    <string name="facility_not_found">Facility not found</string>
 </resources>
 
