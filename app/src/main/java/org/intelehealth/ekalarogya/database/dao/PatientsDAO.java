@@ -441,6 +441,7 @@ public class PatientsDAO {
         try {
             Intent in = new Intent();
             in.setAction("OpenmrsID");
+            in.setPackage(IntelehealthApplication.getAppContext().getPackageName());
             IntelehealthApplication.getAppContext().sendBroadcast(in);
 //            Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
 //            IntelehealthApplication.getAppContext().startService(intent);
