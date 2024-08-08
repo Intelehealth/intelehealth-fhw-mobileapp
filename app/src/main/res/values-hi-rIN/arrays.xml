@@ -289,12 +289,12 @@
 
     <string-array name="visit_facilities">
         <item>स्वास्थ्य फेसिलिटी चुने</item>
-        <item>AB-PMJAY</item>
-        <item>CHC</item>
-        <item>DH</item>
-        <item>HSC</item>
-        <item>HWC</item>
-        <item>ASHA</item>
+        <item>आयुष्मान भारत - प्रधानमंत्री जन आरोग्य योजना</item>
+        <item>सामुदायिक स्वास्थ्य केंद्र</item>
+        <item>सदर अस्पताल</item>
+        <item>स्वास्थ्य उप केंद्र</item>
+        <item>आयुष्मान आरोग्य मंदिर</item>
+        <item>साहिया/ आशा</item>
     </string-array>
 
     <string-array name="visit_severity">

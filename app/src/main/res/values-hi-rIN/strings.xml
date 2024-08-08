@@ -1571,5 +1571,8 @@
     <string name="to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number">To view the visit summary, click on the link and enter OTP which will be sent to your registered mobile number..</string>
     <string name="referral_facility">रेफरल सुविधा</string>
     <string name="select_referral_facility">रेफरल सुविधा का चयन करें</string>
-    <string name="facility_not_found">Facility not found</string>
+    <string name="facility_not_found">फैसिलिटी नहीं मिली</string>
+    <string name="share_facility">फैसिलिटी से साझा करें</string>
+    <string name="share_patient">मरीज़ के साथ साझा करें</string>
+
 </resources>

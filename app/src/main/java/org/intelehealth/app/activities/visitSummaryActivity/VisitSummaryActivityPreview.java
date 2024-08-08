@@ -1599,6 +1599,10 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             public void onClick(View view) {
                 try {
                     ReferralFacilityData referralFacilityData = getReferralFacilityData();
+                    if(referralFacilityData.getContactNumber() == 0){
+                        Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.facility_not_found), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     shareVisitToWhatsApp(String.valueOf(referralFacilityData.getContactNumber()), String.valueOf(referralFacilityData.getId()));
                 }catch (Exception e){
                     Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.facility_not_found), Toast.LENGTH_SHORT).show();
