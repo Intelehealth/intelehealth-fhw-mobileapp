@@ -382,6 +382,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
     boolean isSynced = false;
 
+    int totalSync = 0;
+    private boolean isFromSaveVisit = false;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -460,6 +463,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(syncBroadcastReceiver);
     }
 
     @Override
@@ -497,6 +501,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showTimePickerDialog();
 
         });
+
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
 
     }
 
@@ -2088,7 +2095,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //    }
 
     private void setFacilityToVisitSpinner() {
-        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);;
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
         try {
             ReferralFacilityData referralFacilityData = getReferralFacilityData();
             if (referralFacilityData != null) {
@@ -3521,59 +3528,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                     //Do something after 100ms
                     SyncUtils syncUtils = new SyncUtils();
-                    isSynced = syncUtils.syncForeground("visitSummary");
-                    if (isSynced) {
-                        // remove the local cache
-                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
-                        // ie. visit is uploded successfully.
-                        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
-                        setAppointmentButtonStatus();
-
-                        NotificationSchedulerUtils.scheduleFollowUpNotification();
-                        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-
-                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
-                        isSynedFlag = "1";
-                        //
-                        showVisitID();
-                        Log.d("visitUUID", "showVisitID: " + visitUUID);
-                        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                        if (isVisitSpecialityExists) {
-                            speciality_spinner.setEnabled(false);
-                            flag.setEnabled(false);
-                            flag.setClickable(false);
-                        } else {
-                            flag.setEnabled(true);
-                            flag.setClickable(true);
-                        }
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupSpecialization();
-
-                                if (TextUtils.isEmpty(selectedFollowupDate) && TextUtils.isEmpty(selectedFollowupTime)) {
-                                    mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
-                                } else {
-                                    if (TextUtils.isEmpty(selectedFollowupTime)) {
-                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate);
-                                    } else {
-                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
-                                    }
-                                }
-
-                            }
-                        });
-                        fetchingIntent();
-                    } else {
+                    boolean isSync = syncUtils.syncForeground("visitSummary");
+                    isFromSaveVisit = true;
+                    if (!isSync) {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                     }
-                    uploaded = true;
                 }
             }, 4000);
         } else {
@@ -3581,6 +3540,57 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             fetchingIntent();
             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
         }
+    }
+
+    void handleDataAfterSync() {
+        // remove the local cache
+        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
+        // ie. visit is uploded successfully.
+        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+        setAppointmentButtonStatus();
+
+        NotificationSchedulerUtils.scheduleFollowUpNotification();
+        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+
+                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
+        isSynedFlag = "1";
+        //
+        showVisitID();
+        Log.d("visitUUID", "showVisitID: " + visitUUID);
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        if (isVisitSpecialityExists) {
+            speciality_spinner.setEnabled(false);
+            flag.setEnabled(false);
+            flag.setClickable(false);
+        } else {
+            flag.setEnabled(true);
+            flag.setClickable(true);
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setupSpecialization();
+
+                if (TextUtils.isEmpty(selectedFollowupDate) && TextUtils.isEmpty(selectedFollowupTime)) {
+                    mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
+                } else {
+                    if (TextUtils.isEmpty(selectedFollowupTime)) {
+                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate);
+                    } else {
+                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
+                    }
+                }
+
+            }
+        });
+        fetchingIntent();
+        uploaded = true;
     }
 
     /**
@@ -3639,6 +3649,31 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         public void onReceive(Context context, Intent intent) {
             onResume();
             physicalDoumentsUpdates();
+        }
+    };
+
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
+            if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                //here we are checking that pull push done or not
+                //if done then the sum of intent flag will be 3. 1 = pull, 2 = push
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                        flagType == AppConstants.SYNC_PUSH_DATA_DONE) {
+                    totalSync += flagType;
+                }
+                //if syncStatus = true means from save visit
+                //otherwise from sync button
+                if (totalSync == 3) {
+                    if (isFromSaveVisit) {
+                        handleDataAfterSync();
+                        isFromSaveVisit = false;
+                    }
+                    totalSync = 0;
+                }
+            }
         }
     };
 
