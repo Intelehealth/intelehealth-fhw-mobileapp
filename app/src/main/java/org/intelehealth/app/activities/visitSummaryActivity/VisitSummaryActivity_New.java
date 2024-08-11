@@ -3664,7 +3664,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         flagType == AppConstants.SYNC_PUSH_DATA_DONE) {
                     totalSync += flagType;
                 }
-                //if syncStatus = true means from save visit
+                //if isFromSaveVisit = true means from save visit
                 //otherwise from sync button
                 if (totalSync == 3) {
                     if (isFromSaveVisit) {
