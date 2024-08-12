@@ -1,17 +1,19 @@
 package org.intelehealth.app.activities.notification.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New
+import org.intelehealth.app.activities.notification.NotificationList
 import org.intelehealth.app.activities.notification.listeners.ClearNotificationListener
+import org.intelehealth.app.activities.notification.listeners.CloudNotificationClickListener
 import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
 import org.intelehealth.app.activities.notification.result.NotificationResult
 import org.intelehealth.app.activities.notification.viewmodel.NotificationViewModel
@@ -22,6 +24,7 @@ import org.intelehealth.app.databinding.ActivityNotificationBinding
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.klivekit.data.PreferenceHelper
 
@@ -36,7 +39,9 @@ private const val TAG = "@@NotificationActivity::"
 
 class NotificationActivity : BaseActivity(), ClearNotificationListener {
     private var notificationAdapter: NotificationAdapter? = null
+    private var cloudNotificationAdapter: NotificationCloudAdapter? = null
     private var notificationList: ArrayList<NotificationModel>? = null
+    private var notificationCloudList: ArrayList<NotificationList>? = null
     private lateinit var mBinding: ActivityNotificationBinding
     private lateinit var mViewModel: NotificationViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +75,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 }
 
                 is NotificationResult.Data -> {
-                    mBinding.progressBar.visibility = GONE
-                    mBinding.rlPrescriptionHeader.visibility = VISIBLE
-                    mBinding.ibClearAll.visibility = VISIBLE
+
                     notificationList = it.data as ArrayList<NotificationModel>
                     setNotificationAdapter()
                     if (!notificationList.isNullOrEmpty()) {
@@ -83,9 +86,37 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                             )
                         )
 
-                    } else {
+                    }
+                }
+
+                else -> {}
+            }
+        }
+
+
+        mViewModel.fetchAllCloudNotification(sessionManager.providerID,"1","100").observe(this) {
+            when (it) {
+                is NotificationResult.Loading -> {
+                    mBinding.progressBar.visibility = VISIBLE
+                    mBinding.rlPrescriptionHeader.visibility = GONE
+                    mBinding.ibClearAll.visibility = GONE
+                }
+
+                is NotificationResult.Data -> {
+                    Logger.logD("TAG",it.data.toString())
+                    mBinding.progressBar.visibility = GONE
+                    mBinding.rlPrescriptionHeader.visibility = VISIBLE
+                    mBinding.ibClearAll.visibility = VISIBLE
+
+                    notificationCloudList = it.data as ArrayList<NotificationList>
+                    setCloudNotificationAdapter()
+                    if (notificationList.isNullOrEmpty() && notificationCloudList.isNullOrEmpty()) {
                         clearNotification()
                     }
+                }
+
+                else -> {
+                    Logger.logD("TAG",it.toString())
                 }
             }
         }
@@ -107,22 +138,32 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
     }
 
     private fun setNotificationAdapter() {
-        if (notificationList.isNullOrEmpty()) {
+        mBinding.tvNoData.visibility = GONE
+        mBinding.ibClearAll.visibility = VISIBLE
+        mBinding.rvNotifications.apply {
+            notificationAdapter = NotificationAdapter(notificationList, clickListener)
+            adapter = notificationAdapter
+            layoutManager =
+                LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
+        }
+    }
+    private fun setCloudNotificationAdapter() {
+        if (notificationList.isNullOrEmpty() && notificationCloudList.isNullOrEmpty()) {
             mBinding.tvNoData.visibility = VISIBLE
             mBinding.ibClearAll.visibility = GONE
         } else {
             mBinding.tvNoData.visibility = GONE
             mBinding.ibClearAll.visibility = VISIBLE
-            mBinding.rvNotifications.apply {
-                notificationAdapter = NotificationAdapter(notificationList, clickListener)
-                adapter = notificationAdapter
+            mBinding.rvCloudNotifications.apply {
+                cloudNotificationAdapter = NotificationCloudAdapter(notificationCloudList, clickListener)
+                adapter = cloudNotificationAdapter
                 layoutManager =
                     LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
             }
         }
     }
 
-    private val clickListener = object : NotificationClickListener {
+    private val clickListener = object : NotificationClickListener, CloudNotificationClickListener {
         override fun deleteNotification(notificationModel: NotificationModel, position: Int) {
             mViewModel.deleteNotification(notificationModel.uuid)
             notificationList?.removeAt(position)
@@ -136,31 +177,39 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 }
                 if (visitUUID.isNullOrBlank()) {
                     ToastUtil.showLongToast(
-                            this@NotificationActivity,
-                            getString(R.string.this_visit_is_completed)
+                        this@NotificationActivity,
+                        getString(R.string.this_visit_is_completed)
                     )
                 } else {
                     if (notificationModel.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION) {
-                        val intent = Intent(this@NotificationActivity, FollowUpPatientActivity_New::class.java).apply {
-                            putExtra("uuid",notificationModel.uuid)
+                        val intent = Intent(
+                            this@NotificationActivity,
+                            FollowUpPatientActivity_New::class.java
+                        ).apply {
+                            putExtra("uuid", notificationModel.uuid)
                         }
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@NotificationActivity, PrescriptionActivity::class.java)
+                        val intent =
+                            Intent(this@NotificationActivity, PrescriptionActivity::class.java)
                         intent.putExtra("patientname", "$first_name $last_name")
                         intent.putExtra("patientUuid", patientuuid)
                         intent.putExtra("patient_photo", patient_photo)
                         intent.putExtra("visit_ID", visitUUID)
                         intent.putExtra("visit_startDate", visit_startDate)
                         intent.putExtra("gender", gender)
-                        val vitalsUUID = EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
+                        val vitalsUUID =
+                            EncounterDAO.fetchEncounterUuidForEncounterVitals(visitUUID)
                         val adultInitialUUID =
-                                EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
+                            EncounterDAO.fetchEncounterUuidForEncounterAdultInitials(visitUUID)
                         intent.putExtra("encounterUuidVitals", vitalsUUID)
                         intent.putExtra("encounterUuidAdultIntial", adultInitialUUID)
                         intent.putExtra(
-                                "age",
-                                DateAndTimeUtils.getAge_FollowUp(date_of_birth, this@NotificationActivity)
+                            "age",
+                            DateAndTimeUtils.getAge_FollowUp(
+                                date_of_birth,
+                                this@NotificationActivity
+                            )
                         )
                         intent.putExtra("tag", "VisitDetailsActivity")
                         intent.putExtra("followupDate", followupDate)
@@ -173,11 +222,37 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             }
         }
 
+        override fun deleteNotification(notificationModel: NotificationList, position: Int) {
+            ToastUtil.showLongToast(this@NotificationActivity,"Work in progress..")
+        }
+
+        override fun updateReadStatus(notificationModel: NotificationList, position: Int) {
+            mViewModel.updateNotificationStatus(notificationModel.id.toString())
+            notificationModel.isRead = NotificationDbConstants.READ_STATUS
+            cloudNotificationAdapter?.notifyItemChanged(position)
+        }
+
     }
 
-    override fun deleteNotification() {
+    @SuppressLint("NotifyDataSetChanged")
+    override fun clearAllNotification() {
         mViewModel.deleteAllNotifications()
         notificationList?.clear()
+
+        mViewModel.clearAllCloudNotification(sessionManager.providerID).observe(this) {
+            when (it) {
+                is NotificationResult.Loading -> {
+                }
+
+                is NotificationResult.Data -> {
+                    notificationCloudList?.clear()
+                    cloudNotificationAdapter?.notifyDataSetChanged()
+                }
+
+                else -> {}
+            }
+        }
+
         clearNotification()
         notificationAdapter?.notifyDataSetChanged()
     }
@@ -186,6 +261,8 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         mBinding.rlPrescriptionHeader.visibility = GONE
         mBinding.tvNoData.visibility = VISIBLE
         mBinding.ibClearAll.visibility = GONE
+
+
     }
 
 

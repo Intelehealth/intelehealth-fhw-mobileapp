@@ -47,7 +47,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.notification.usecase.DeleteNotificationUseCase;
+import org.intelehealth.app.activities.notification.usecase.DeleteLocalNotificationUseCase;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -156,7 +156,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         try {
             String uuid = getIntent().getStringExtra("uuid");
             if (uuid != null) {
-                new DeleteNotificationUseCase().deleteNotification(uuid);
+                new DeleteLocalNotificationUseCase().deleteNotification(uuid);
             }
         } catch (Exception e) {
         }

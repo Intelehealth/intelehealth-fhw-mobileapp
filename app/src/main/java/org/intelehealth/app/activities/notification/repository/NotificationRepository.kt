@@ -1,23 +1,64 @@
 package org.intelehealth.app.activities.notification.repository
 
-import org.intelehealth.app.database.dao.EncounterDAO
+import android.annotation.SuppressLint
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
+import org.intelehealth.app.BuildConfig
+import org.intelehealth.app.activities.notification.NotificationResponse
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.database.dao.VisitsDAO.recentVisits
 import org.intelehealth.app.database.dao.notification.NotificationDAO
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
+import org.intelehealth.app.networkApiCalls.ApiClient
+import org.intelehealth.app.networkApiCalls.ApiInterface
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.exception.DAOException
+import retrofit2.Response
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 const val LIMIT = 15
 const val OFFSET = 0
+const val TAG = " NotificationRepository"
 
+@SuppressLint("TimberTagLength")
 class NotificationRepository {
     private val notificationDao = NotificationDAO()
-     private val syncUtils = SyncUtils()
+    private val syncUtils = SyncUtils()
+    private val apiService = ApiClient.createService(ApiInterface::class.java)
+    private var sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+
+    init {
+        ApiClient.changeApiBaseUrl(BuildConfig.SOCKET_URL)
+    }
+
+    fun updateNotificationStatus(id: String): Single<ResponseBody> =
+        apiService.notificationsAcknowledge(
+            "Basic " + sessionManager.encoded, id
+        )
+
+    fun clearAllNotification(userUid: String): Single<ResponseBody> =
+        apiService.clearAllNotifications(
+            "Basic " + sessionManager.encoded, userUid
+        )
+
+    fun fetchAllNotification(userId: String, page: String, size: String): Single<NotificationResponse> =
+        apiService.fetchAllNotifications(
+            "Basic " + sessionManager.encoded, userId, page, size
+        )
+
 
     fun fetchNonDeletedNotification(): List<NotificationModel> {
         syncUtils.syncInBackground()
@@ -81,18 +122,23 @@ class NotificationRepository {
          * deleting all expired followup notification here
          * and creating new list
          */
-       for (data in nonDeletedNotificationList){
-           if(data.notification_type == NotificationDbConstants.PRESCRIPTION_TYPE_NOTIFICATION){
-               notificationListWithOutExpiredFollowup.add(data)
-           }
-           else if (data.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION &&
-               DateAndTimeUtils.getTimeStampFromString( data.description.substring(data.description.length-21,data.description.length),"yyyy-MM-dd 'at' h:mm a") > System.currentTimeMillis()){
-               notificationListWithOutExpiredFollowup.add(data)
-           }
-       }
+        for (data in nonDeletedNotificationList) {
+            if (data.notification_type == NotificationDbConstants.PRESCRIPTION_TYPE_NOTIFICATION) {
+                notificationListWithOutExpiredFollowup.add(data)
+            } else if (data.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION &&
+                DateAndTimeUtils.getTimeStampFromString(
+                    data.description.substring(
+                        data.description.length - 21,
+                        data.description.length
+                    ), "yyyy-MM-dd 'at' h:mm a"
+                ) > System.currentTimeMillis()
+            ) {
+                notificationListWithOutExpiredFollowup.add(data)
+            }
+        }
 
-// Sort the notificationList ArrayList using the defined Comparator
-        (notificationListWithOutExpiredFollowup as ArrayList).sortWith(comparator)
+        // Sort the notificationList ArrayList using the defined Comparator
+        notificationListWithOutExpiredFollowup.sortWith(comparator)
 
         return notificationListWithOutExpiredFollowup
     }

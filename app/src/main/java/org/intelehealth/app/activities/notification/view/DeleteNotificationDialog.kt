@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.notification.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,7 @@ class DeleteNotificationDialog : DialogFragment() {
 
     private fun setListeners() {
         mBinding.tvDelete.setOnClickListener {
-            clickListeners.deleteNotification()
+            clickListeners.clearAllNotification()
             dismiss()
         }
         mBinding.tvCancel.setOnClickListener {
