@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.notification.view
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
@@ -122,6 +123,22 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         }
 
     }
+    fun showAlertDialog(message :String) {
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Notification")
+        builder.setMessage(message)
+
+        // Add the OK button
+        builder.setPositiveButton("OK") { dialog, _ ->
+            // User clicked OK button
+            dialog.dismiss()
+        }
+
+        // Create and show the alert dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
 
     private fun setListeners() {
         mBinding.apply {
@@ -229,6 +246,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         override fun updateReadStatus(notificationModel: NotificationList, position: Int) {
             mViewModel.updateNotificationStatus(notificationModel.id.toString())
             notificationModel.isRead = NotificationDbConstants.READ_STATUS
+            notificationModel.title?.let { showAlertDialog(it) }
             cloudNotificationAdapter?.notifyItemChanged(position)
         }
 
