@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.apprtc.CompleteActivity;
@@ -114,6 +115,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
                     intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.services.firebase_services.RTCMessageReceiver"));
+                    intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                     getApplicationContext().sendBroadcast(intent);
 
 

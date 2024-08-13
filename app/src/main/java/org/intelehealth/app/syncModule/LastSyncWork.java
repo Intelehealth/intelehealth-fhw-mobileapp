@@ -1,5 +1,6 @@
 package org.intelehealth.app.syncModule;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
@@ -43,6 +44,7 @@ public class LastSyncWork extends Worker {
 
         Intent in = new Intent();
         in.setAction(AppConstants.SYNC_INTENT_ACTION);
+        in.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         IntelehealthApplication.getAppContext().sendBroadcast(in);
 
         return Result.success();

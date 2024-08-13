@@ -1,5 +1,6 @@
 package org.intelehealth.apprtc.utils;
 
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -133,6 +134,7 @@ public class AwsS3Utils {
                             Intent intent = new Intent();
                             intent.setAction(ACTION_FILE_UPLOAD_DONE);
                             intent.putExtra("fileUrl", fileUrl);
+                            intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
                             context.sendBroadcast(intent);
                         }
                     });

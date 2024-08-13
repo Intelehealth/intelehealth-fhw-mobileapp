@@ -67,6 +67,7 @@ public class CallListenerBackgroundService extends Service {
         instance = null;
         Intent intent = new Intent(CallListenerBackgroundService.this, RestartServiceReceiver.class);
         intent.setAction("org.intelehealth.app.RTC_SERVICE_START");
+        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         sendBroadcast(intent);
     }
 
@@ -144,6 +145,7 @@ public class CallListenerBackgroundService extends Service {
                     if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
                         Intent broadcast = new Intent();
                         broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         sendBroadcast(broadcast);
                         return;
                     }
@@ -201,6 +203,7 @@ public class CallListenerBackgroundService extends Service {
                         Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
                         intent.putExtras(bundle);
                         intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+                        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         sendBroadcast(intent);
                     }
 

@@ -199,7 +199,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        registerReceiver(mBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(this,mBroadcastReceiver, filterSend,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     private int mStatusCount = 0;
