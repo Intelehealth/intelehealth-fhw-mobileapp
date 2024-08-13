@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.annotation.ArrayRes
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat
@@ -26,6 +25,8 @@ import java.util.Locale
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
     private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
+    //private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
+
 
     @JvmStatic
     fun getLocalLang(): String {
@@ -151,8 +152,8 @@ object LanguageUtils {
                 if (getLocalLang().equals("hi")) return referralFacilityData.facilityNameHi
                 return referralFacilityData.facilityName
             } else {
-                if (getLocalLang().equals("hi")) return "${referralFacilityData.facilityNameHi} (${referralFacilityData.categoryHi}, ${referralFacilityData.blockHi})"
-                return "${referralFacilityData.facilityName} (${referralFacilityData.category}, ${referralFacilityData.block})"
+                if (getLocalLang().equals("hi")) return "${referralFacilityData.facilityNameHi} (${referralFacilityData.blockHi})"
+                return "${referralFacilityData.facilityName} (${referralFacilityData.block})"
             }
 
         } else {
