@@ -747,8 +747,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             if (!TextUtils.isEmpty(followupValue)) {
                 try {
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
-                        visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
+                    ((TextView) findViewById(R.id.tvViewFollowUpDateTime)).setText(getFormattedDateTime(followupValue));
+                    visitSummaryPdfData.setFollowUpDate(getFormattedDateTime(followupValue));
 //                    }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -761,7 +761,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         });
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
+    //    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getFormattedDateTime(String followupValue) {
         // Extract the date and time part
         String datePart = followupValue.split(", Time:")[0];
@@ -1611,7 +1611,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
                 // Create a print job with name and adapter instance
 
-                String path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/" + getString(R.string.app_name);
+
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/" + getString(R.string.app_name);
                 String fileName = patientName.replace(" ", "_") + "_" + System.currentTimeMillis() + ".pdf";
                 File dir = new File(path);
                 if (!dir.exists()) dir.mkdirs();
@@ -1621,6 +1622,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, new PdfPrint.CallbackPrint() {
                     @Override
                     public void success(String path) {
+                        Timber.tag(TAG).d("Pdf Saved path => %s", path);
                         sentMsgToWhatsApp(msg);
                         Toast.makeText(VisitSummaryActivityPreview.this, R.string.please_attach_the_patient_visit_details_pdf, Toast.LENGTH_LONG).show();
                     }
