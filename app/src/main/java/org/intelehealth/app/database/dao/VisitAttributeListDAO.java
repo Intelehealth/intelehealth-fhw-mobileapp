@@ -6,6 +6,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_SUMMARY_LINK;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -73,8 +74,9 @@ public class VisitAttributeListDAO {
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(FACILITY) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SEVERITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CLOSE_CASE)
-                    || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CLOSE_CASE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_SUMMARY_LINK)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {

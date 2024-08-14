@@ -91,7 +91,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -124,9 +123,9 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
-import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.adapters.ReferralFacilityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData;
+import org.intelehealth.app.activities.visitSummaryActivity.adapters.SeverityArrayAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -146,6 +145,7 @@ import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
+import org.intelehealth.app.enums.ReferralFacilityDataFormatType;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -195,8 +195,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -379,10 +377,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ActivityVisitSummaryNewBinding mBinding;
     //    private List<FacilityToVisitModel> facilityList = null;
 //    private List<String> severityList = null;
-    private String selectedFacilityToVisit = null;
+    private String selectedReferralFacility = null;
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     boolean isSynced = false;
+
+    int totalSync = 0;
+    private boolean isFromSaveVisit = false;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -462,6 +463,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(syncBroadcastReceiver);
     }
 
     @Override
@@ -485,7 +487,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
 
-        Log.d("ADDDD", "" + encounterUuidAdultIntial);
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -500,6 +501,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showTimePickerDialog();
 
         });
+
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
 
     }
 
@@ -851,6 +855,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mBinding.cvFacilityToVisitDoc.setVisibility(View.VISIBLE);
             mBinding.cvFacilityToVisit.setVisibility(View.GONE);
 
+            mBinding.cvReferralFacilityDoc.setVisibility(View.VISIBLE);
+            mBinding.cvReferralFacility.setVisibility(View.GONE);
+
             mBinding.cvSeverityDoc.setVisibility(View.VISIBLE);
             mBinding.cvSeverity.setVisibility(View.GONE);
 
@@ -1023,6 +1030,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
+
+        mBinding.rlReferralVisitHeader.setOnClickListener(v -> {
+            if (mBinding.rlReferralVisitHeaderExpandView.getVisibility() == View.VISIBLE) {
+                mBinding.rlReferralVisitHeaderExpandView.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.rlReferralVisitHeaderExpandView.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
         mBinding.rlSeverityHeader.setOnClickListener(v -> {
             if (mBinding.rlSavertyHeaderExpandView.getVisibility() == View.VISIBLE) {
                 mBinding.rlSavertyHeaderExpandView.setVisibility(View.GONE);
@@ -2072,9 +2096,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void setFacilityToVisitSpinner() {
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
-        facility = LanguageUtils.getLocalValueFromArray(this, facility, R.array.visit_facilities);
+        try {
+            ReferralFacilityData referralFacilityData = getReferralFacilityData();
+            if (referralFacilityData != null) {
+                facility = LanguageUtils.getLocalValueFromArray(this, referralFacilityData.getCategory(), R.array.visit_facilities);
+            }
+        } catch (Exception e) {
+        }
+
+
         if (!TextUtils.isEmpty(facility)) {
             mBinding.tvFacilityToVisitValue.setText(" " + Node.bullet + "  " + facility);
+            setReferralFacilitySpinner("");
         }
 
 //        FacilityToVisitArrayAdapter arrayAdapter = new FacilityToVisitArrayAdapter(this, facilityList);
@@ -2090,9 +2123,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (i != 0) {
 //                    Timber.tag("SPINNER").d("SPINNER_Selected: %s", adapterView.getItemAtPosition(i).toString());
                     Resources resources = LanguageUtils.getSpecificLocalResource(VisitSummaryActivity_New.this, "en");
-                    selectedFacilityToVisit = resources.getStringArray(R.array.visit_facilities)[i];
+                    String selectedFacilityToVisit = resources.getStringArray(R.array.visit_facilities)[i];
+                    setReferralFacilitySpinner(selectedFacilityToVisit);
                 } else {
-                    selectedFacilityToVisit = null;
+                    //selectedFacilityToVisit = null;
                 }
             }
 
@@ -2101,6 +2135,83 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
         });
+    }
+
+    private void setReferralFacilitySpinner(String selectedFacilityToVisit) {
+        String facility = "";
+        try {
+            ReferralFacilityData referralFacilityData = getReferralFacilityData();
+            if (referralFacilityData != null) {
+                facility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityData, ReferralFacilityDataFormatType.VIEW);
+            }
+        } catch (Exception e) {
+        }
+
+
+        if (selectedFacilityToVisit.isEmpty()) {
+            if (!facility.isEmpty()) {
+                mBinding.flReferralFacility.setVisibility(View.VISIBLE);
+                mBinding.cvReferralFacilityDoc.setVisibility(View.VISIBLE);
+                mBinding.cvReferralFacility.setVisibility(View.GONE);
+                mBinding.tvReferralVisitValue.setText(" " + Node.bullet + "  " + facility);
+                return;
+            } else {
+                mBinding.flReferralFacility.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
+        referralFacilityDataList.add(getInitialData());
+        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategory(selectedFacilityToVisit));
+
+        if (referralFacilityDataList.size() == 1) {
+            mBinding.flReferralFacility.setVisibility(View.GONE);
+            ReferralFacilityData data = new ReferralFacilityData(
+                    0, "", "", "", "", "", "", "",
+                    "", selectedFacilityToVisit,
+                    "", "", "", "", "", "", "", 0
+            );
+            selectedReferralFacility = new Gson().toJson(data);
+            return;
+        } else {
+            mBinding.flReferralFacility.setVisibility(View.VISIBLE);
+            mBinding.cvReferralFacilityDoc.setVisibility(View.GONE);
+            mBinding.cvReferralFacility.setVisibility(View.VISIBLE);
+        }
+
+        ReferralFacilityArrayAdapter referralFacilityArrayAdapter = new ReferralFacilityArrayAdapter(this, referralFacilityDataList);
+
+        mBinding.spinnerReferralFacilityCard.setAdapter(referralFacilityArrayAdapter);
+        mBinding.spinnerReferralFacilityCard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    selectedReferralFacility = new Gson().toJson(referralFacilityDataList.get(i));
+                } else {
+                    selectedReferralFacility = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private ReferralFacilityData getReferralFacilityData() {
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        return new Gson().fromJson(facility, ReferralFacilityData.class);
+    }
+
+    private ReferralFacilityData getInitialData() {
+        return new ReferralFacilityData(
+                0, "", "", "", "", "", "",
+                getString(R.string.select_referral_facility),
+                getString(R.string.select_referral_facility),
+                "", "", "", "", "", "", "", "", 0
+        );
     }
 
     private void setSeveritySpinner() {
@@ -2983,7 +3094,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Button sharebtn = convertView.findViewById(R.id.sharebtn);
 
 
-            String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+            String partial_whatsapp_presc_url = new UrlModifiers().getWhatsappUrl();
             String prescription_link = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
@@ -3075,9 +3186,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (speciality_selected != null && !speciality_selected.isEmpty() && !isVisitSpecialityExists) {
                 isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
             }
-            if (selectedFacilityToVisit != null) {
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit, FACILITY);
+            if (selectedReferralFacility != null) {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedReferralFacility, FACILITY);
             }
+
             if (selectedSeverity != null) {
                 visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
             }
@@ -3416,59 +3528,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                     //Do something after 100ms
                     SyncUtils syncUtils = new SyncUtils();
-                    isSynced = syncUtils.syncForeground("visitSummary");
-                    if (isSynced) {
-                        // remove the local cache
-                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                        sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
-                        // ie. visit is uploded successfully.
-                        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
-                        setAppointmentButtonStatus();
-
-                        NotificationSchedulerUtils.scheduleFollowUpNotification();
-                        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-
-                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
-                        isSynedFlag = "1";
-                        //
-                        showVisitID();
-                        Log.d("visitUUID", "showVisitID: " + visitUUID);
-                        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                        if (isVisitSpecialityExists) {
-                            speciality_spinner.setEnabled(false);
-                            flag.setEnabled(false);
-                            flag.setClickable(false);
-                        } else {
-                            flag.setEnabled(true);
-                            flag.setClickable(true);
-                        }
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupSpecialization();
-
-                                if (TextUtils.isEmpty(selectedFollowupDate) && TextUtils.isEmpty(selectedFollowupTime)) {
-                                    mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
-                                } else {
-                                    if (TextUtils.isEmpty(selectedFollowupTime)) {
-                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate);
-                                    } else {
-                                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
-                                    }
-                                }
-
-                            }
-                        });
-                        fetchingIntent();
-                    } else {
+                    boolean isSync = syncUtils.syncForeground("visitSummary");
+                    isFromSaveVisit = true;
+                    if (!isSync) {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                     }
-                    uploaded = true;
                 }
             }, 4000);
         } else {
@@ -3476,6 +3540,57 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             fetchingIntent();
             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
         }
+    }
+
+    void handleDataAfterSync() {
+        // remove the local cache
+        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+        sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
+        // ie. visit is uploded successfully.
+        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+        setAppointmentButtonStatus();
+
+        NotificationSchedulerUtils.scheduleFollowUpNotification();
+        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+
+                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
+        isSynedFlag = "1";
+        //
+        showVisitID();
+        Log.d("visitUUID", "showVisitID: " + visitUUID);
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        if (isVisitSpecialityExists) {
+            speciality_spinner.setEnabled(false);
+            flag.setEnabled(false);
+            flag.setClickable(false);
+        } else {
+            flag.setEnabled(true);
+            flag.setClickable(true);
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setupSpecialization();
+
+                if (TextUtils.isEmpty(selectedFollowupDate) && TextUtils.isEmpty(selectedFollowupTime)) {
+                    mBinding.tvViewFollowUpDateTime.setText(getString(R.string.no_information));
+                } else {
+                    if (TextUtils.isEmpty(selectedFollowupTime)) {
+                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate);
+                    } else {
+                        mBinding.tvViewFollowUpDateTime.setText(selectedFollowupDate + ", " + selectedFollowupTime);
+                    }
+                }
+
+            }
+        });
+        fetchingIntent();
+        uploaded = true;
     }
 
     /**
@@ -3534,6 +3649,31 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         public void onReceive(Context context, Intent intent) {
             onResume();
             physicalDoumentsUpdates();
+        }
+    };
+
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
+            if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                //here we are checking that pull push done or not
+                //if done then the sum of intent flag will be 3. 1 = pull, 2 = push
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                        flagType == AppConstants.SYNC_PUSH_DATA_DONE) {
+                    totalSync += flagType;
+                }
+                //if isFromSaveVisit = true means from save visit
+                //otherwise from sync button
+                if (totalSync == 3) {
+                    if (isFromSaveVisit) {
+                        handleDataAfterSync();
+                        isFromSaveVisit = false;
+                    }
+                    totalSync = 0;
+                }
+            }
         }
     };
 

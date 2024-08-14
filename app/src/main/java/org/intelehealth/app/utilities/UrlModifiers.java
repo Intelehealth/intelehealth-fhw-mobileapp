@@ -61,7 +61,7 @@ public class UrlModifiers {
     /**
      * @return BASE_URL which returns the partial url for whatsapp prescription share feature.
      */
-    public String setwhatsappPresciptionUrl() {
+    public String getWhatsappUrl() {
         //https://uiux.intelehealth.org/intelehealth/index.html#/i/7d
         String BASE_URL = BuildConfig.SERVER_URL + "/intelehealth/index.html";
         return BASE_URL;

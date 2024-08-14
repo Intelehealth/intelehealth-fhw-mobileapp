@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CLOSE_CASE;
 import static org.intelehealth.app.utilities.UuidDictionary.FACILITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SEVERITY;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_SUMMARY_LINK;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
@@ -59,17 +60,18 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,13 +81,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.text.SpannedStringKt;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.print.PrintHelper;
@@ -108,9 +108,8 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
-import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData;
 import org.intelehealth.app.adapter.PdfPrintDocumentAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -126,6 +125,7 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.enums.ReferralFacilityDataFormatType;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
@@ -149,7 +149,6 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LanguageUtils;
-import org.intelehealth.app.utilities.LayoutCaptureUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -171,14 +170,11 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -193,7 +189,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -354,7 +349,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private SpecializationViewModel viewModel;
 
-    Button printBt, shareBt;
+    Button printBt, sharePatientBt, shareFacilityBt;
     private Bitmap bitmap;
     private String filePath;
     private ArrayList<File> fileList;
@@ -741,6 +736,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             Timber.tag(TAG).d(new Gson().toJson(specializations));
             setupSpecializationDataSpinner(specializations);
             setFacilityToVisitSpinner();
+            setReferralFacilitySpinner();
             setSeveritySpinner();
             String followupValue = fetchValueFromLocalDb(visitUUID);
             Timber.tag(TAG).d("follow up=>%s", followupValue);
@@ -778,7 +774,15 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
     private void setFacilityToVisitSpinner() {
         String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
-        facility = LanguageUtils.getLocalValueFromArray(this, facility, R.array.visit_facilities);
+        if (!facility.isEmpty()) {
+            try {
+                ReferralFacilityData referralFacilityData = new Gson().fromJson(facility, ReferralFacilityData.class);
+                if (referralFacilityData != null) {
+                    facility = LanguageUtils.getLocalValueFromArray(this, referralFacilityData.getCategory(), R.array.visit_facilities);
+                }
+            } catch (Exception e) {
+            }
+        }
         Timber.tag(TAG).d("facility=>%s", facility);
         if (!TextUtils.isEmpty(facility)) {
             ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(" " + Node.bullet + "  " + facility);
@@ -787,6 +791,29 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             String noInfo = getString(R.string.no_information);
             ((TextView) findViewById(R.id.tvFacilityToVisitValue)).setText(noInfo);
             visitSummaryPdfData.setFacility(noInfo);
+        }
+    }
+
+    private void setReferralFacilitySpinner() {
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        try {
+            ReferralFacilityData referralFacilityData = new Gson().fromJson(facility, ReferralFacilityData.class);
+            if (referralFacilityData != null) {
+                facility = LanguageUtils.getReferralFacilityDataByLanguage(referralFacilityData, ReferralFacilityDataFormatType.VIEW);
+            } else {
+                facility = "";
+            }
+        } catch (Exception e) {
+            facility = "";
+        }
+
+        Timber.tag(TAG).d("facility=>%s", facility);
+        if (!TextUtils.isEmpty(facility)) {
+            ((FrameLayout) findViewById(R.id.flReferralFacility)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.tvReferralFacilityValue)).setText(" " + Node.bullet + "  " + facility);
+            visitSummaryPdfData.setFacility(" " + Node.bullet + "  " + facility);
+        } else {
+            ((FrameLayout) findViewById(R.id.flReferralFacility)).setVisibility(View.GONE);
         }
     }
 
@@ -1412,7 +1439,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void initUI() {
-        shareBt = findViewById(R.id.share_bt);
+        sharePatientBt = findViewById(R.id.share_patient_bt);
+        shareFacilityBt = findViewById(R.id.share_referral_facility_bt);
         // textview - start
         filter_framelayout = findViewById(R.id.filter_framelayout);
 
@@ -1559,12 +1587,56 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
 
-        shareBt.setOnClickListener(new View.OnClickListener() {
+        sharePatientBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showShareDialog();
+                shareVisitToWhatsApp(patient.getPhone_number(), "");
             }
         });
+
+        shareFacilityBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    ReferralFacilityData referralFacilityData = getReferralFacilityData();
+                    if(referralFacilityData.getContactNumber() == 0){
+                        Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.facility_not_found), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    shareVisitToWhatsApp(String.valueOf(referralFacilityData.getContactNumber()), String.valueOf(referralFacilityData.getId()));
+                }catch (Exception e){
+                    Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.facility_not_found), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void shareVisitToWhatsApp(String phoneNumber, String facilityId) {
+        String visitSummary_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, VISIT_SUMMARY_LINK);
+        if (visitSummary_link.isEmpty()) {
+            Toast.makeText(VisitSummaryActivityPreview.this, getString(R.string.visit_summary_link_not_found), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String partial_whatsapp_url = new UrlModifiers().getWhatsappUrl();
+        if (phoneNumber.length() <= 10) {
+            phoneNumber = "+91" + phoneNumber;
+        }
+
+        String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                phoneNumber,
+                getString(R.string.hello_thank_you_for_using_intelehealth_to_download_your_visit_summary_click_here)
+                        + partial_whatsapp_url
+                        + Uri.encode("#")
+                        + visitSummary_link
+                        + "/" +facilityId+"\n"
+                        + getString(R.string.to_view_the_visit_summary_click_on_the_link_and_enter_otp_which_will_be_sent_to_your_registered_mobile_number));
+        Log.v("whatsappMessage", whatsappMessage);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
+    }
+
+    private ReferralFacilityData getReferralFacilityData() {
+        String facility = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, FACILITY);
+        return  new Gson().fromJson(facility, ReferralFacilityData.class);
     }
 
     private void showShareDialog() {

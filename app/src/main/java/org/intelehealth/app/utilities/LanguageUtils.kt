@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.annotation.ArrayRes
-import androidx.annotation.StringRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -12,7 +11,10 @@ import org.intelehealth.app.activities.identificationActivity.model.GramPanchaya
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster
 import org.intelehealth.app.activities.identificationActivity.model.Village
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacility
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.enums.ReferralFacilityDataFormatType
 import java.util.Locale
 
 /**
@@ -22,6 +24,9 @@ import java.util.Locale
  **/
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
+    private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
+    //private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
+
 
     @JvmStatic
     fun getLocalLang(): String {
@@ -111,5 +116,48 @@ object LanguageUtils {
             return if (index > 0) array[index]
             else ""
         } else dbString
+    }
+
+    @JvmStatic
+    fun getReferralFacilityByCategory(category: String): List<ReferralFacilityData?> {
+        val context = IntelehealthApplication.getAppContext()
+        val jsonObject = FileUtils.encodeJSON(context, FACILITY_ALL_DATA_JSON)
+        val referralFacilityData: ReferralFacility = Gson().fromJson(
+            jsonObject.toString(),
+            ReferralFacility::class.java
+        )
+
+        return referralFacilityData.data.filter { it.category.contains(category) }
+    }
+
+    @JvmStatic
+    fun getReferralFacilityByName(facilityName: String): ReferralFacilityData? {
+        val context = IntelehealthApplication.getAppContext()
+        val jsonObject = FileUtils.encodeJSON(context, FACILITY_ALL_DATA_JSON)
+        val referralFacilityData: ReferralFacility = Gson().fromJson(
+            jsonObject.toString(),
+            ReferralFacility::class.java
+        )
+
+        return referralFacilityData.data.find { it.facilityName == facilityName }
+    }
+
+    @JvmStatic
+    fun getReferralFacilityDataByLanguage(
+        referralFacilityData: ReferralFacilityData,
+        type: ReferralFacilityDataFormatType
+    ): String {
+        if (type == ReferralFacilityDataFormatType.VIEW) {
+            if (referralFacilityData.id == 0L) {
+                if (getLocalLang().equals("hi")) return referralFacilityData.facilityNameHi
+                return referralFacilityData.facilityName
+            } else {
+                if (getLocalLang().equals("hi")) return "${referralFacilityData.facilityNameHi} (${referralFacilityData.blockHi})"
+                return "${referralFacilityData.facilityName} (${referralFacilityData.block})"
+            }
+
+        } else {
+            return "${referralFacilityData.facilityName} (${referralFacilityData.category}, ${referralFacilityData.block}) Incharge - ${referralFacilityData.nameOfMoicIncharge} (${referralFacilityData.contactNumber})"
+        }
     }
 }
