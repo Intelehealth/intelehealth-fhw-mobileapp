@@ -4,6 +4,8 @@ package org.intelehealth.app.networkApiCalls;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.intelehealth.app.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -16,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     //
     private static final OkHttpClient.Builder client = new OkHttpClient.Builder();
-    private static String apiBaseUrl = "https://intelehealth.org";    //testing server
+    private static String apiBaseUrl = BuildConfig.SERVER_URL;    //testing server
     private static final Gson gson = new GsonBuilder()
             .setLenient()
             .create();
