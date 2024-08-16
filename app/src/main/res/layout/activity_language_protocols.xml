@@ -8,7 +8,7 @@
     tools:context=".activities.settingsActivity.Language_ProtocolsActivity">
 
     <!--    Toolbar - start -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"
@@ -260,6 +260,7 @@
 
     <!--Protocols - Start-->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvProtocall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lang_card"
@@ -373,6 +374,89 @@
 
             </RelativeLayout>
         </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cvProtocall"
+        android:layout_marginStart="@dimen/toolbar_margin_left"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginEnd="@dimen/toolbar_margin_left"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:elevation="16dp"
+        app:cardCornerRadius="@dimen/corner_radius_8dp"
+        app:cardElevation="@dimen/margin_5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rvBackOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
+                android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                <ImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_2dp"
+                    android:src="@drawable/protocols_icon" />
+
+                <TextView
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_toEndOf="@+id/ivNotification"
+                    android:text="Blackout"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:src="@drawable/ui2_ic_chevron_down"
+                    tools:ignore="DuplicateIds" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_marginEnd="@dimen/fu_margin_start"
+                android:background="@color/notifi_divider_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To disable notification between below time period. switch on the blackout period"
+                android:textColor="@color/hint_text_color"
+                android:layout_marginHorizontal="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_12"
+                android:textSize="@dimen/txtsize_patdetail_14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="From 9:00 PM To 6:00 AM"
+                android:textColor="@color/black"
+                android:layout_margin="@dimen/margin_12"
+                android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
     <!--Protocols - End-->
 

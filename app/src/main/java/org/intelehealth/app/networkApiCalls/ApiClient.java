@@ -1,7 +1,8 @@
 package org.intelehealth.app.networkApiCalls;
 
 
-import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,9 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     //
-    private static OkHttpClient.Builder client = new OkHttpClient.Builder();
+    private static final OkHttpClient.Builder client = new OkHttpClient.Builder();
     private static String apiBaseUrl = "https://intelehealth.org";    //testing server
-    private static Retrofit retrofit;
+    private static final Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
+
+
+
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
@@ -27,7 +33,7 @@ public class ApiClient {
     public static void changeApiBaseUrl(String newApiBaseUrl) {
         apiBaseUrl = newApiBaseUrl;
         builder = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(apiBaseUrl);
 
@@ -41,7 +47,7 @@ public class ApiClient {
         client.connectTimeout(60, TimeUnit.SECONDS);
         client.readTimeout(60, TimeUnit.SECONDS);
         client.writeTimeout(60, TimeUnit.SECONDS);
-        retrofit = builder.client(client.build()).build();
+        Retrofit retrofit = builder.client(client.build()).build();
         return retrofit.create(serviceClass);
     }
 

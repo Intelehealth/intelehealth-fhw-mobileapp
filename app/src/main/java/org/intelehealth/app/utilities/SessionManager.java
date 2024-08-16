@@ -18,6 +18,7 @@ public class SessionManager {
     private static final String ENCODED = "encoded";
     private static final String PULL_EXECUTED_TIME = "pullexecutedtime";
     private static final String KEY_PREF_SETUP_COMPLETE = "setup";
+    private static final String KEY_BLACKOUT = "blackout";
     private static final String APP_LANGUAGE = "Language";
     private static final String SESSION_ID = "sessionid";
     private static final String CREATOR_ID = "creatorid";
@@ -168,6 +169,15 @@ public class SessionManager {
 
     public void setSetupComplete(Boolean setupComplete) {
         editor.putBoolean(KEY_PREF_SETUP_COMPLETE, setupComplete);
+        editor.commit();
+    }
+
+    public boolean isBlackout() {
+        return pref.getBoolean(KEY_BLACKOUT, false);
+    }
+
+    public void setBlackout(Boolean blackout) {
+        editor.putBoolean(KEY_BLACKOUT, blackout);
         editor.commit();
     }
 

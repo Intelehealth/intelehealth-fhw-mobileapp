@@ -16,10 +16,10 @@
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/space_10dp"
         app:draggedItem="@id/scroll_relative"
         app:isEnabledSwipe="true"
         app:isFreeDragAfterOpen="true"
-       android:elevation="@dimen/space_10dp"
         app:rightItem="@id/delete_relative"
         app:swipeDirection="left">
 
@@ -39,14 +39,13 @@
                 android:src="@drawable/ic_delete_red_icon"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/scroll_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/selector_color_notification"
-            android:padding="@dimen/fu_margin_start"
-
-             >
+            android:padding="@dimen/fu_margin_start">
 
             <ImageView
                 android:id="@+id/profile"
@@ -65,7 +64,7 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/search_name"
+                    android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
@@ -76,55 +75,21 @@
                     android:textColor="@color/header_subtitle_color"
                     android:textSize="@dimen/fu_male_textsize" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/presc_pending_CV"
+                <TextView
+                    android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/search_name"
-                    android:layout_marginHorizontal="2dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp"
-                    app:cardCornerRadius="3dp">
-
-                    <LinearLayout
-                        android:id="@+id/open_presc_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#EFE8FF"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="2dp">
-
-
-                        <TextView
-                            android:id="@+id/button_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/dm_sans"
-                            android:paddingHorizontal="6dp"
-                            android:text="@string/open_prescription"
-                            android:textColor="#1B163A"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/arrow_forward_blue"
-                            tools:ignore="ContentDescription" />
-
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:text="@string/open_prescription"
+                    android:textColor="#1B163A"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
         </RelativeLayout>
-
-
-
 
 
     </com.zerobranch.layout.SwipeLayout>
