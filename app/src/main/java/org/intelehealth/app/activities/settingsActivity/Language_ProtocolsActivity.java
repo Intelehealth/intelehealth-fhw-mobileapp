@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +78,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 
     private LanguageAdapter languageAdapter;
     private ActiveLanguage selectedLanguage;
+    private SwitchCompat switchNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,12 +125,18 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
         btRefresh = findViewById(R.id.refresh);
         mLangTextView = findViewById(R.id.lang_spinner_txt);
+        switchNotification = findViewById(R.id.switchNotification);
         clickListeners();
 
         Intent intent = getIntent();
         if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("language updated")) {
             showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
         }
+        switchNotification.setChecked(sessionManager.isBlackout());
+
+       switchNotification .setOnCheckedChangeListener((buttonView, isChecked) -> {
+           sessionManager.setBlackout(isChecked);
+       });
     }
 
 //    public Context setLocale(Context context) {

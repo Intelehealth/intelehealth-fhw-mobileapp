@@ -20,8 +20,9 @@
         <item
             android:id="@+id/menu_change_language"
             android:icon="@drawable/ui2_ic_icon_tune"
-            android:title="@string/change_lang"
+            android:title="@string/action_settings"
             app:iconTint="?colorPrimary" />
+<!--        android:title="@string/change_lang"-->
 
         <item
             android:id="@+id/menu_view_call_log"

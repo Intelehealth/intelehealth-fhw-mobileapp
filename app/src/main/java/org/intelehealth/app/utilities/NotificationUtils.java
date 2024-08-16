@@ -11,6 +11,8 @@ import androidx.core.app.NotificationCompat;
 
 import org.intelehealth.app.R;
 
+import java.util.Calendar;
+
 
 public class NotificationUtils {
 
@@ -134,5 +136,24 @@ public class NotificationUtils {
     public static int getPendingIntentFlag() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                 ? PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT : PendingIntent.FLAG_UPDATE_CURRENT;
+    }
+
+    public static boolean isWithinRestrictedTime(int startHour, int startMinute, int endHour, int endMinute) {
+        Calendar now = Calendar.getInstance();
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, startHour);
+        startTime.set(Calendar.MINUTE, startMinute);
+
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(Calendar.HOUR_OF_DAY, endHour);
+        endTime.set(Calendar.MINUTE, endMinute);
+
+        if (endTime.before(startTime)) {
+            // If the end time is before the start time, it means the time range crosses midnight.
+            return now.after(startTime) || now.before(endTime);
+        } else {
+            return now.after(startTime) && now.before(endTime);
+        }
     }
 }
