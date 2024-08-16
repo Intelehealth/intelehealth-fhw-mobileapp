@@ -16,4 +16,5 @@
     <color name="color_tagline_text">@color/white</color>
     <color name="colorPrimaryLightCard">#1a00CA04</color>
     <color name="colorAccentLightCard">#1aF57F17</color>
+    <color name="notification_background">#D3D3D3</color>
 </resources>

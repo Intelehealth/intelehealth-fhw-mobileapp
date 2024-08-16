@@ -44,10 +44,8 @@
             android:id="@+id/scroll_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ui2_chat_edit_bubble_color"
-            android:padding="@dimen/fu_margin_start"
-
-            >
+            android:background="@color/selector_color_notification"
+            android:padding="@dimen/fu_margin_start">
 
             <ImageView
                 android:id="@+id/profile"

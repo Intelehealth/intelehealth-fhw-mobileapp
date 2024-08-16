@@ -57,22 +57,7 @@ class NotificationCloudAdapter(
                 clickListener.updateReadStatus(model, holder.layoutPosition)
             }
 
-            if (model.isRead == NotificationDbConstants.UN_READ_STATUS) {
-                holder.scroll_relative.setBackgroundColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.ui2_chat_edit_bubble_color
-                    )
-                )
-            } else {
-                holder.scroll_relative.setBackgroundColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.white
-                    )
-                )
-
-            }
+            holder.scroll_relative.isSelected = model.isRead == NotificationDbConstants.UN_READ_STATUS
         }
 
     }

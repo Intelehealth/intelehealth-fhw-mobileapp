@@ -108,12 +108,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     mBinding.progressBar.visibility = GONE
                     mBinding.rlPrescriptionHeader.visibility = VISIBLE
                     mBinding.ibClearAll.visibility = VISIBLE
-
                     notificationCloudList = it.data as ArrayList<NotificationList>
                     setCloudNotificationAdapter()
-                    if (notificationList.isNullOrEmpty() && notificationCloudList.isNullOrEmpty()) {
-                        clearNotification()
-                    }
+
                 }
 
                 else -> {
@@ -166,8 +163,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
     }
     private fun setCloudNotificationAdapter() {
         if (notificationList.isNullOrEmpty() && notificationCloudList.isNullOrEmpty()) {
-            mBinding.tvNoData.visibility = VISIBLE
-            mBinding.ibClearAll.visibility = GONE
+            clearNotification()
         } else {
             mBinding.tvNoData.visibility = GONE
             mBinding.ibClearAll.visibility = VISIBLE
@@ -265,6 +261,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 is NotificationResult.Data -> {
                     notificationCloudList?.clear()
                     cloudNotificationAdapter?.notifyDataSetChanged()
+                    clearNotification()
                 }
 
                 else -> {}
