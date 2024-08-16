@@ -131,6 +131,7 @@ public class SyncDAO {
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
@@ -143,8 +144,10 @@ public class SyncDAO {
                     }
                     //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else {
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                        IntelehealthApplication.getAppContext().sendBroadcast(intent);
                     }
                     //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
@@ -183,15 +186,19 @@ public class SyncDAO {
                 //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
                 /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
+                intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
             }
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
             }
         });
         sessionManager.setPullSyncFinished(true);
@@ -230,6 +237,7 @@ public class SyncDAO {
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -262,8 +270,10 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
 //                        }
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                        IntelehealthApplication.getAppContext().sendBroadcast(intent);
                     }
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -302,15 +312,19 @@ public class SyncDAO {
                 //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
                /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
+                intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
             }
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                IntelehealthApplication.getAppContext().sendBroadcast(intent);
             }
         });
         sessionManager.setPullSyncFinished(true);
@@ -470,6 +484,7 @@ public class SyncDAO {
                                 Intent broadcast = new Intent();
                                 broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
                                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
 
                             } catch (Exception e) {
@@ -483,13 +498,17 @@ public class SyncDAO {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
                             e.printStackTrace();
                             isSucess[0] = false;
-                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                            Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                            intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                            IntelehealthApplication.getAppContext().sendBroadcast(intent);
                         }
                     });
             sessionManager.setPullSyncFinished(true);
-            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+            Intent intent = new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE);
+            intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+            IntelehealthApplication.getAppContext().sendBroadcast(intent);
         }
 
         return isSucess[0];

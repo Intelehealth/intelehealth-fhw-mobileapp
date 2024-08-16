@@ -208,6 +208,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
                     intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);

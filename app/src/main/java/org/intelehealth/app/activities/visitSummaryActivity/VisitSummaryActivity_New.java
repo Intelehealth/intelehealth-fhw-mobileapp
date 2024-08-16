@@ -2765,13 +2765,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(
+                this,
+                broadcastReceiverForIamgeDownlaod,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(
+                this,
+                downloadPrescriptionService,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     @Override
@@ -3298,7 +3308,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(
+                    this,
+                    receiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
             isReceiverRegistered = true;
         }
     }
