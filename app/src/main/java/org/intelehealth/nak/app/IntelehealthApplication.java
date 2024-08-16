@@ -86,7 +86,6 @@ public class IntelehealthApplication extends MultiDexApplication {
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                 .replace(' ', '0');
-
         String url = sessionManager.getServerUrl();
         Log.d(TAG, "onCreate: appurl kk :: " + url);
         if (url == null || url.isEmpty()) {

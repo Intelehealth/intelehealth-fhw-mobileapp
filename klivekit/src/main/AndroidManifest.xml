@@ -24,9 +24,7 @@
         android:name="android.permission.MANAGE_OWN_CALLS"
         android:minSdkVersion="34" />
     <application>
-        <service android:name=".service.ForegroundService" />
 
-        <service android:name=".call.notification.HeadsUpNotificationService"  />
 
         <receiver
             android:name=".call.notification.CallReceiver"

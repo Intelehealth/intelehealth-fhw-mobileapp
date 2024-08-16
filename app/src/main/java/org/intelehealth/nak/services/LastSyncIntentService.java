@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.nak.app.IntelehealthApplication;
 import org.intelehealth.nak.utilities.Logger;
 
 public class LastSyncIntentService extends IntentService {
@@ -27,6 +28,7 @@ public class LastSyncIntentService extends IntentService {
 
         Intent in = new Intent();
         in.setAction("lasysync");
+        in.setPackage(IntelehealthApplication.getInstance().getPackageName());
         sendBroadcast(in);
     }
 }
