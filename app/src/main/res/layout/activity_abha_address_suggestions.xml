@@ -66,33 +66,39 @@
         android:layout_margin="@dimen/margin_20"
         app:hintEnabled="false">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etAbhaAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textbox_outline"
-            android:hint="@string/abha_address"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="18"
-            android:padding="14dp"
-            android:singleLine="true"
-            android:textAppearance="@style/type_mobile_no"
-            android:textColor="@null"
-            android:textColorHint="@color/hint_color"
-            android:textSize="@null" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           >
+           <com.google.android.material.textfield.TextInputEditText
+               android:id="@+id/etAbhaAddress"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="wrap_content"
+               android:background="@drawable/textbox_outline"
+               android:hint="@string/abha_address"
+               android:imeOptions="actionNext"
+               android:inputType="text"
+               android:maxLength="18"
+               android:padding="14dp"
+               android:singleLine="true"
+               android:textAppearance="@style/type_mobile_no"
+               android:textColor="@null"
+               android:textColorHint="@color/hint_color"
+               android:textSize="@null" />
+           <ImageView
+               android:id="@+id/ivAbhaSuggestion"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/info_blue_svg"
+               android:layout_gravity="center"
+               android:padding="@dimen/padding_10"
+               app:tint="@color/red" />
 
-        <TextView
-            android:id="@+id/aadhar_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/hamburger_margin_start"
-            android:lineSpacingExtra="0sp"
-            android:text="@string/the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end"
-            android:textAppearance="@style/registr_error_msg"
-            android:textColor="@color/black"
-            android:textSize="@null" />
+       </LinearLayout>
+
+
 
 
     </com.google.android.material.textfield.TextInputLayout>

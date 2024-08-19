@@ -18,7 +18,9 @@ import androidx.core.view.ViewCompat;
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.dialog.AbhaAddressSuggestionDialogFragment;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
@@ -90,7 +92,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             }
 
         });
-    }
+        binding.ivAbhaSuggestion.setOnClickListener(v -> {
+            AbhaAddressSuggestionDialogFragment  abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
+            abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(),"");
+        });
+
+     }
 
     private boolean isValidAbhaAddress(String text) {
         if (text.length() < 8) {
