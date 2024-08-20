@@ -13,7 +13,7 @@
 <!--        android:title="@string/pref_header_data_sync" />-->
 
     <header
-        android:fragment="org.intelehealth.msfarogyabharat.activities.settingsActivity.SettingsActivity$LanguagePreferenceFragment"
+        android:fragment="org.intelehealth.vikalphelpline.activities.settingsActivity.SettingsActivity$LanguagePreferenceFragment"
         android:icon="@drawable/ic_translate_black_24dp"
         android:title="@string/languages" />
 
