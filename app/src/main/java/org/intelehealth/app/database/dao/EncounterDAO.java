@@ -269,11 +269,8 @@ public class EncounterDAO {
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setVoided(0);
             encounterDTO.setEncounterTypeUuid(emergency_uuid);
-            try {
-                encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }            encounterDTO.setSyncd(false);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
             Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 

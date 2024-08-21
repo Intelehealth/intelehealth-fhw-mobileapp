@@ -335,7 +335,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button generateBillBtn;
     String receiptNum, receiptDate, patientFName, patientLName;
     String receiptPaymentStatus = "NA";
-    String special_value = "";
+    String special_value = "", billEncounterUuid = "";
 
 
 
@@ -433,11 +433,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void onEndVisit() {
-        //meera
         if (downloaded) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
             alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                 @Override
@@ -450,17 +447,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     endVisit();
-//                    AppointmentDAO appointmentDAO = new AppointmentDAO();
-//                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         } else {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
             alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
@@ -469,7 +462,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();
-            //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
     }
@@ -544,7 +536,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-//            hasPrescription = intent.getStringExtra("hasPrescription");
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -628,9 +619,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
-//we can remove by data binding
-
-        //we can remove by data binding
         mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
         mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
         mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
@@ -694,6 +682,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
         visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
+        generateBillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                generateBill("generateBtnCLicked");
+            }
+        });
+
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -710,12 +705,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (hasPrescription.equalsIgnoreCase("true")) {
-//                    try {
-//                        doWebViewPrint();
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -843,8 +832,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setAdapter(stringArrayAdapter);
 
             if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
-//                speciality_spinner.setSelection(9); // wrong implementation
-                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.general_physician)));
+                //for skip protocol option no complaints are registered and thus the visit should be uploaded to no doctor.
+                speciality_spinner.setSelection(stringArrayAdapter.getPosition(getString(R.string.doctor_not_needed)));
                 if (isVisitSpecialityExists)
                     speciality_spinner.setEnabled(false);
             } else {
@@ -934,6 +923,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
 
+        billEncounterUuid = checkForOldBill();
+        if (!billEncounterUuid.equals("")) {
+            editVitals.setVisibility(View.GONE);
+            editDiagnostics.setVisibility(View.GONE);
+            generateBillBtn.setText(getResources().getString(R.string.view_bill));
+        }
+
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
 
@@ -970,7 +966,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             btnSignSubmit.setVisibility(View.GONE);
-            generateBillBtn.setVisibility(View.GONE);
+            /* This is because we shouldn't allow user to generate bill after ending visit thus it is better to hide this option. They should only be allowed to access existing bills (if any).
+            After ending bill generation is not allowed, because when we generate bill encounter is created and encounter time should always be between visit start and end time.
+            Thus, no encounter can be created after ending the visit. */
+            if (!billEncounterUuid.equals(""))
+                generateBillBtn.setVisibility(View.VISIBLE);
+            else
+                generateBillBtn.setVisibility(View.GONE);
             if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                 card_share.setVisibility(View.VISIBLE);
                 card_print.setVisibility(View.VISIBLE);
@@ -1027,9 +1029,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
+                        generateBillBtn.setVisibility(View.VISIBLE);
                         if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                             downloadButton.setVisibility(View.VISIBLE);
-                            generateBillBtn.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -1119,14 +1121,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
+                                        generateBillBtn.setVisibility(View.VISIBLE);
                                         if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                                             downloadButton.setVisibility(View.VISIBLE);
-                                            generateBillBtn.setVisibility(View.VISIBLE);
                                         }
                                     }
 
-                                    if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint"))
+                                    /*if (intentTag != null && !intentTag.isEmpty() && intentTag.equalsIgnoreCase("skipComplaint")) {
                                         endVisit();
+                                    }*/
+
 
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " +
@@ -2044,30 +2048,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return isExists;
     }
 
-//    private String convertCtoF(String temperature) {
-//
-//        String result = "";
-//        double a = Double.parseDouble(String.valueOf(temperature));
-//        Double b = (a * 9 / 5) + 32;
-//
-//        DecimalFormat dtime = new DecimalFormat("#.##");
-//        b = Double.valueOf(dtime.format(b));
-//
-//        result = String.valueOf(b);
-//        return result;
-//
-//    }
 
     private String convertCtoF(String temperature) {
-
         String resultVal;
         NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
         double a = Double.parseDouble(temperature);
         double b = (a * 9 / 5) + 32;
         nf.format(b);
-//        DecimalFormat dtime = new DecimalFormat("0.00");
-//        b = Double.parseDouble(dtime.format(b));
-//        int IntValue = (int) Math.round(b);
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
@@ -2122,7 +2109,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 hideVisitUUID = visitUuid;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
-//              visitView.setText("----");
             }
         }
     }
@@ -2173,7 +2159,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void physicalDoumentsUpdates() {
-
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
@@ -3257,7 +3242,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
-
     }
 
     //print button end
@@ -3522,19 +3506,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void endVisit() {
-        Log.d(TAG, "endVisit: ");
-        if (visitUUID == null || visitUUID.isEmpty()) {
-            String visitIDorderBy = "startdate";
-            String visitIDSelection = "uuid = ?";
-            String[] visitIDArgs = {visitUuid};
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+
+            if (visitUUID == null || visitUUID.isEmpty()) {
+                String visitIDorderBy = "startdate";
+                String visitIDSelection = "uuid = ?";
+                String[] visitIDArgs = {visitUuid};
+                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                    visitIDCursor.moveToFirst();
+                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (visitIDCursor != null) visitIDCursor.close();
             }
-            if (visitIDCursor != null) visitIDCursor.close();
-        }
-        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+            VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+    }
+
+    private void showDialogToGenerateBill() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.generate_bill_before_end_visit_summary));
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generate_bill), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                generateBill("endVisitClicked");
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        alertDialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
 
@@ -4087,23 +4086,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Logger.logD(TAG, file.getMessage());
         }
 
-        //logic code for handling the whatsapp prescription part...
-//        if(isreturningWhatsapp)
-//        {
-//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
-//            File dir = new File(path);
-//            deleteRecursive(dir);
-//        }
     }
 
-//    public static void deleteRecursive(File fileOrDirectory) {
-//        if (fileOrDirectory.isDirectory()) {
-//            for (File child : fileOrDirectory.listFiles()) {
-//                deleteRecursive(child);
-//            }
-//        }
-//        fileOrDirectory.delete();
-//    }
 
     @Override
     public void onPause() {
@@ -4400,12 +4384,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     requestedTestsTextView.setText("");
                     requestedTestsCard.setVisibility(View.GONE);
                 }
-//                if (!additionalReturned.isEmpty()) {
-//                    additionalReturned = "";
-//                    additionalCommentsTextView.setText("");
-//                    additionalCommentsCard.setVisibility(View.GONE);
-//
-//                }
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";
                     followUpDateTextView.setText("");
@@ -4454,7 +4432,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     editMedHist.setVisibility(View.GONE);
                     editAddDocs.setVisibility(View.GONE);
                     uploadButton.setVisibility(View.GONE);
-                    generateBillBtn.setVisibility(View.GONE);
                     if (!intentTag.equalsIgnoreCase("skipComplaint")) {
                         card_print.setVisibility(View.VISIBLE);
                         card_share.setVisibility(View.VISIBLE);
@@ -4604,10 +4581,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 obsCursor.close();
                 if (!intentTag.equalsIgnoreCase("skipComplaint"))
                     addDownloadButton();
-
-                //if any obs  found then end the visit
-                //endVisit();
-
             } else {
                 Log.i(TAG, "found sothing for test");
 
@@ -4914,11 +4887,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     // This function will call the TextPrintActivity screen for printing the text data.
-
     private void textPrint() throws UnsupportedEncodingException {
         if (objClsDoctorDetails != null) {
             String htmlDocPrescription = sms_prescription();
-            // Bitmap doctorSignature = getdoctorsignature();
             String htmlDoctorDetails = getDoctorDetailsHTML();
             Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
             intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
@@ -4928,7 +4899,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             startActivity(intent_esc);
         } else {
             Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.no_presc_available), Toast.LENGTH_SHORT).show();
-            //  Toast.makeText(VisitSummaryActivity.this, "No Prescription Available", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -5012,12 +4982,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
-
                     mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
-
                 } else if (obj.getBoolean("mFahrenheit")) {
-
-//                    mTemp = "Temperature(F): " + temperature.getValue();
                     mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
@@ -5347,8 +5313,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return formatted;
     }
 
-    public void generateBill(View view) {
-        String billEncounterUuid = checkForOldBill();
+    public void generateBill(String tag) {
         if (!billEncounterUuid.equals("")) {
             fetchBillDetails(billEncounterUuid);
         } else {
@@ -5361,9 +5326,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             if (!glucosePostPrandial.getText().toString().isEmpty())
                 selected_tests[3] = true;
-
-//            if (!textView_glucose_Fasting_value.getText().toString().isEmpty())
-//                selected_tests[4] = true;
 
             if (!uricAcid_textview.getText().toString().isEmpty())
                 selected_tests[5] = true;
@@ -5384,18 +5346,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (!ecg_textview.getText().toString().isEmpty()) // ecg
                 selected_tests[10] = true;
 
-            showTestConfirmationCustomDialog(selected_tests);
+            showTestConfirmationCustomDialog(selected_tests, tag);
         }
     }
 
-    private void showTestConfirmationCustomDialog(boolean[] checkedTests) {
+    private void showTestConfirmationCustomDialog(boolean[] checkedTests, String tag) {
         ArrayList selectedTests = new ArrayList<>();
         String[] test_names = {getString(R.string.visit_summary_bp), getString(R.string.blood_glucose_non_fasting),
                 getString(R.string.blood_glucose_fasting), getString(R.string.blood_glucose_post_prandial),
                 getString(R.string.blood_glucose_random), getString(R.string.uric_acid),
                 getString(R.string.total_cholestrol), getString(R.string.haemoglobin),
         getString(R.string.table_spo2), getString(R.string.temperature), getString(R.string.ecg)};
-//        selectedTests.clear();
 
         final Dialog dialog = new Dialog(VisitSummaryActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -5404,17 +5365,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         CheckBox glucose_fast = dialog.findViewById(R.id.glucose_f_CB);
         CheckBox glucose_non_fast = dialog.findViewById(R.id.glucose_nf_CB);
-//        CheckBox glucose_rand = dialog.findViewById(R.id.glucose_ran_CB);
-//        CheckBox glucose_ppn = dialog.findViewById(R.id.glucose_ppn_CB);
         CheckBox bp = dialog.findViewById(R.id.bp_CB);
         CheckBox haemoglobin = dialog.findViewById(R.id.haemoglobin_CB);
         CheckBox uric_acid = dialog.findViewById(R.id.uric_acid_CB);
         CheckBox cholesterol = dialog.findViewById(R.id.cholesterol_CB);
-        // new fields.
         CheckBox cb_spo2 = dialog.findViewById(R.id.spo2_CB);
         CheckBox cb_temperature = dialog.findViewById(R.id.temperature_CB);
         CheckBox cb_ecg = dialog.findViewById(R.id.ecg_CB);
-
         TextView ok_dialog = dialog.findViewById(R.id.dialog_ok_button);
         TextView cancel_dialog = dialog.findViewById(R.id.dialog_cancel_button);
 
@@ -5422,10 +5379,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             glucose_non_fast.setChecked(true);
         if (checkedTests[2])
             glucose_fast.setChecked(true);
-      /*  if (checkedTests[3])
-            glucose_ppn.setChecked(true);
-        if (checkedTests[4])
-            glucose_rand.setChecked(true);*/
         if (checkedTests[5])
             uric_acid.setChecked(true);
         if (checkedTests[6])
@@ -5459,7 +5412,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 receiptNum = generateReceiptNum();
                 receiptDate = fetchSystemDateForBill();
-                passIntent(selectedTests);
+                passIntent(selectedTests, tag);
                 dialog.dismiss();
             }
         });
@@ -5472,6 +5425,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private String generateReceiptNum() {
@@ -5484,7 +5439,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return uniqueReceiptNum;
     }
 
-    private void passIntent(ArrayList<String> selectedTests) {
+    private void passIntent(ArrayList<String> selectedTests, String tag) {
         Intent intent = new Intent(VisitSummaryActivity.this, billConfirmationActivity.class);
         intent.putExtra("patientName", patientName);
         intent.putExtra("patientOpenMRSID", patientOpenMRSID);
@@ -5497,6 +5452,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("receiptDate", receiptDate);
         intent.putExtra("visitType", visitType);
         intent.putExtra("billType", receiptPaymentStatus);
+        intent.putExtra("patientUUID", patientUuid);
+        intent.putExtra("encounterVitals", encounterVitals);
+        intent.putExtra("encounterAdultinitials", encounterUuidAdultIntial);
+        intent.putExtra("tag", tag);
         startActivity(intent);
     }
 
@@ -5508,7 +5467,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private String checkForOldBill() {
-        String billEncounterUuid = "";
+        String billEncounterUuid1 = "";
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
@@ -5517,22 +5476,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
                 if (encounterDAO.getEncounterTypeUuid("Visit Billing Details").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    billEncounterUuid = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    billEncounterUuid1 = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
             } while (encounterCursor.moveToNext());
 
         }
-//        encounterCursor.close();
-
-        return billEncounterUuid;
+        return billEncounterUuid1;
 
     }
 
-    private void fetchBillDetails(String billEncounterUuid) {
+    private void fetchBillDetails(String billEncounterUuid1) {
         ArrayList selectedTests = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
-        String[] visitArgs = {billEncounterUuid, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+        String visitSelection = "encounteruuid = ? and voided = ?";
+        String[] visitArgs = {billEncounterUuid1, "0"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -5542,8 +5500,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     parseBillData(selectedTests, dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
-//        visitCursor.close();
-        passIntent(selectedTests);
+        passIntent(selectedTests, "oldBill");
     }
 
     private void parseBillData(ArrayList<String> selectedTests, String concept_id, String value) {
@@ -5570,16 +5527,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 selectedTests.add(getString(R.string.blood_glucose_non_fasting));
                 break;
             }
-          /*  case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID: // Glucose - Random
-            {
-                selectedTests.add(getString(R.string.blood_glucose_random));
-                break;
-            }
-            case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID: // Glucose - Post-prandial
-            {
-                selectedTests.add(getString(R.string.blood_glucose_post_prandial));
-                break;
-            }*/
             case UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID: // Glucose
             {
                 selectedTests.add(getString(R.string.blood_glucose_fasting));

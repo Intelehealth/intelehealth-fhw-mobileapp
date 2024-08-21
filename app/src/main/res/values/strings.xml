@@ -1047,4 +1047,12 @@
     <string name="setup_select_village_str">Select Village</string>
     <string name="setup_select_dropdown_village_msg">Select Village from dropdown</string>
     <string name="locations">Locations</string>
+    <string name="view_bill">View Bill</string>
+    <string name="generate_bill_before_end_today_visit">You have not generated the bill! Click on "Visit Details" to generate the bill.</string>
+    <string name="generate_bill_before_end_visit_summary">You have not generated the bill! Before ending the visit, first generate the bill.</string>
+    <string name="bluetooth_connect_permission_granted">Bluetooth Connect Permission Granted!</string>
+    <string name="bluetooth_connect_permission_denied">Bluetooth Connect Permission Denied!</string>
+    <string name="bluetooth_scan_permission_granted">Bluetooth Scan Permission Granted!</string>
+    <string name="bluetooth_scan_permission_denied">Bluetooth Scan Permission Denied!</string>
+
 </resources>

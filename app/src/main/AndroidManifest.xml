@@ -50,9 +50,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.vitalActivity.ECGReadingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.homeActivity.devicesActivity.DevicesActivity"
             android:exported="false" />
@@ -266,8 +265,8 @@
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -308,7 +307,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.smartcaredoc.app.fileprovider"
+            android:authorities="com.mysmartcaredoc.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -331,7 +330,8 @@
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name=".services.firebase_services.MyFirebaseMessagingService"
+        <service
+            android:name=".services.firebase_services.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -380,7 +380,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_launcher" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
     </application>
 

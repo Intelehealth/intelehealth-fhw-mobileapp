@@ -176,7 +176,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         } catch (Exception e) {
             e.printStackTrace();
         }

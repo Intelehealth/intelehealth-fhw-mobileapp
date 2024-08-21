@@ -237,7 +237,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientLName = intent.getStringExtra("patientLastName");
             hasPrescription = intent.getStringExtra("hasPrescription");
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
-
             intentTag = intent.getStringExtra("tag");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
@@ -309,7 +308,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
                 try {
-                    encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
+                    encounterDTO.setEncounterTime(ThirtySecondsLate(thisDate));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }                encounterDTO.setVisituuid(uuid);
@@ -414,9 +413,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public String OneMinutesLate(String timeStamp) throws ParseException {
+    public String ThirtySecondsLate (String timeStamp) throws ParseException {
 
-        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        long FIVE_MINS_IN_MILLIS = (1 * 60 * 1000)/2;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 
@@ -1423,7 +1422,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("patientLastName", patientLName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", intentTag);
+                visitSummary.putExtra("tag", getVisitType(visit_id, intentTag));
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     visitSummary.putExtra("hasPrescription", "true");
@@ -1435,6 +1434,28 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
+    }
+
+    private String getVisitType(String visit_id, String intentTag) {
+        String encounterlocalAdultintial = intentTag;
+        String encounterIDSelection = "visituuid = ? AND sync!=?";
+        String[] encounterIDArgs = {visit_id, "false"};
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+        }
+        encounterCursor.close();
+        if(!encounterlocalAdultintial.equalsIgnoreCase(intentTag))
+            return intentTag;
+        else
+            return "skipComplaint";
     }
 
     /**

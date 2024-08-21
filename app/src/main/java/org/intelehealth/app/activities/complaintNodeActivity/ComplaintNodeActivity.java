@@ -125,7 +125,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
         try {
-            encounterDTO.setEncounterTime(OneMinutesLate(AppConstants.dateAndTimeUtils.currentDateTime()));
+            encounterDTO.setEncounterTime(ThirtySecondsLate(AppConstants.dateAndTimeUtils.currentDateTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }        encounterDTO.setVisituuid(visitUuid);
@@ -314,9 +314,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         fab.setVisibility(View.VISIBLE);
     }
 
-    public String OneMinutesLate(String timeStamp) throws ParseException {
+    public String ThirtySecondsLate (String timeStamp) throws ParseException {
 
-        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        //ThirtySecondsLate
+        long FIVE_MINS_IN_MILLIS = (1 * 60 * 1000)/2;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 

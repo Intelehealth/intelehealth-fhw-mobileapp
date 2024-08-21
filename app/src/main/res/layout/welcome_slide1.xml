@@ -12,14 +12,14 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/instructionImage"
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/ic_welcome_intro_svg" />
+            android:src="@drawable/ic_welcome_intro" />
 
         <TextView
             android:layout_width="wrap_content"

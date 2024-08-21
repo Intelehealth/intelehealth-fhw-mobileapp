@@ -185,7 +185,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 visitSummary.putExtra("patientLastName", patientLName);
                 visitSummary.putExtra("gender", mGender);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", "");
+                visitSummary.putExtra("tag", getVisitType(visit_id));
                 visitSummary.putExtra("pastVisit", past_visit);
 
                 if (holder.ivPriscription.getTag().equals("1")) {
@@ -215,12 +215,15 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (todayPatientModelList.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (todayPatientModelList.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
                 enableEndVisit = true;
             }
         }
+
+        if(todayPatientModelList.get(position).getEnddate()!=null && !todayPatientModelList.get(position).getEnddate().equalsIgnoreCase(""))
+            enableEndVisit = true;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.btnVisitDetails.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary)));
@@ -258,6 +261,28 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 }
             });
         }
+    }
+
+    private String getVisitType(String visit_id) {
+        String encounterlocalAdultintial = "";
+        String encounterIDSelection = "visituuid = ? AND sync!=?";
+        String[] encounterIDArgs = {visit_id, "false"};
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+        }
+        encounterCursor.close();
+        if(!encounterlocalAdultintial.equalsIgnoreCase(""))
+            return "";
+        else
+            return "skipComplaint";
     }
 
     @Override

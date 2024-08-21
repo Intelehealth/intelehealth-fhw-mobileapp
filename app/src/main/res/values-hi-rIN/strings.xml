@@ -1052,5 +1052,13 @@
     <string name="setup_select_dropdown_village_msg">ड्रॉपडाउन से गांव का चयन करें</string>
     <string name="locations">स्थान</string>
     <string name="doctor_not_needed">डॉक्टर परामर्श नहीं चाहिए</string>
+    <string name="view_bill">बिल देखें</string>
+    <string name="generate_bill_before_end_today_visit">आपने बिल जनरेट नहीं किया है! बिल जनरेट करने के लिए "विजिट डिटेल्स" पर क्लिक करें।</string>
+    <string name="generate_bill_before_end_visit_summary">आपने बिल जनरेट नहीं किया है! विजिट समाप्त करने से पहले, पहले बिल जनरेट करें।</string>
+    <string name="bluetooth_connect_permission_granted">ब्लूटूथ कनेक्ट की अनुमति दी गई!</string>
+    <string name="bluetooth_connect_permission_denied">ब्लूटूथ कनेक्ट अनुमति अस्वीकृत!</string>
+    <string name="bluetooth_scan_permission_granted">ब्लूटूथ स्कैन की अनुमति दी गई!</string>
+    <string name="bluetooth_scan_permission_denied">ब्लूटूथ स्कैन अनुमति अस्वीकृत!</string>
+
 
 </resources>

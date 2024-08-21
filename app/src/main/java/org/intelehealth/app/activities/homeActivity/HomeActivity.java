@@ -1465,27 +1465,30 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     }
 
     public void clickConnect() {
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
-        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
-        }
-        initRemosDevice();
-        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            {
-                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-            }
-        }
 
-        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            {
-                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+        initRemosDevice();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+            listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             }
+            if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                }
+            }
+
+            if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 3);
+                }
+            }
+        }
+        else
+        {
+            startActivityForResult(new Intent("android.bluetooth.adapter.action.REQUEST_ENABLE"), REQUEST_OPEN_BT);
         }
 
     }
