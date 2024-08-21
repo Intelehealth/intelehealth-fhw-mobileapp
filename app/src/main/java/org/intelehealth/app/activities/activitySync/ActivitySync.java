@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 public class ActivitySync extends AppCompatActivity {

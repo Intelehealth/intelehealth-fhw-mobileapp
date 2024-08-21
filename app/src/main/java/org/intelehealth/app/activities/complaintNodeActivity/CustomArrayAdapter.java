@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Locale;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 

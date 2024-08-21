@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 

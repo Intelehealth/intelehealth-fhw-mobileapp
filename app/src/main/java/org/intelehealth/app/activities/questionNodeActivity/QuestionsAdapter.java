@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.questionNodeActivity.adapters.AssociatedSysAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;

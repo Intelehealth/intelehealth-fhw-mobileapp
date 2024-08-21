@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.PatientDTO;

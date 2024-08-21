@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.whealthService.OnBLEService;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 import java.util.List;
 

@@ -48,7 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;

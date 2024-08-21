@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 

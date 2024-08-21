@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;

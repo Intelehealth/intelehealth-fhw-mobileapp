@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.utilities.Logger;
 
 

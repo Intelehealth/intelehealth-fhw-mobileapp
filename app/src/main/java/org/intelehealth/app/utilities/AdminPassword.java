@@ -11,7 +11,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 /**

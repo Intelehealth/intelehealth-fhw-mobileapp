@@ -23,7 +23,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;

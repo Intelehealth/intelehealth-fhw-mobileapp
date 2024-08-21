@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 /**

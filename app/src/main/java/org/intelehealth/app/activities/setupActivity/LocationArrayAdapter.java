@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 public class LocationArrayAdapter extends ArrayAdapter<String> {
 

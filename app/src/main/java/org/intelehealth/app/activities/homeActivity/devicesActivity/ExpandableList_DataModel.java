@@ -2,7 +2,7 @@ package org.intelehealth.app.activities.homeActivity.devicesActivity;
 
 import android.content.Context;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

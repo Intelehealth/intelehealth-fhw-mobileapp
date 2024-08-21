@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 

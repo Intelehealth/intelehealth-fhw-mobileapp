@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 import java.util.HashMap;
 import java.util.List;

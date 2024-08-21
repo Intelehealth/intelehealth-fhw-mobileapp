@@ -91,7 +91,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
