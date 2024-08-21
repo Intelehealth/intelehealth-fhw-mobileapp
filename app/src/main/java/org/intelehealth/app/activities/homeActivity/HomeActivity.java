@@ -13,7 +13,6 @@ import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
-import org.intelehealth.app.BuildConfig;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -88,7 +87,8 @@ import com.linktop.infs.OnDeviceInfoListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.whealthService.BleDevManager;
 import com.linktop.whealthService.OnBLEService;
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.BuildConfig;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;

@@ -42,7 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import java.util.Locale;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.appCompatPreferenceActivity.AppCompatPreferenceActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.AdminPassword;

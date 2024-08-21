@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 public class DateAndTimeUtils {

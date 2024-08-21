@@ -32,7 +32,7 @@ import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.constant.TestPaper;
 import com.linktop.whealthService.MeasureType;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.rhemos_device.DeviceInfoModel;
 import org.intelehealth.app.utilities.SessionManager;

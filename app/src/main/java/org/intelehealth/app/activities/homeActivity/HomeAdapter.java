@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;

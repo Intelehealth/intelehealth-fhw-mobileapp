@@ -10,7 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 /**
  * Created by Prajwal Waingankar

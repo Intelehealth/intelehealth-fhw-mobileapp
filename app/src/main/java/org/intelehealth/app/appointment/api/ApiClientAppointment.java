@@ -2,8 +2,7 @@ package org.intelehealth.app.appointment.api;
 
 
 
-
-import org.intelehealth.app.BuildConfig;
+import com.smartcaredoc.app.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 

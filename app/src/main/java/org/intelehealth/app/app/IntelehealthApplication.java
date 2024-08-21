@@ -22,8 +22,7 @@ import com.linktop.MonitorDataTransmissionManager;
 import com.parse.Parse;
 import com.rt.printerlibrary.printer.RTPrinter;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.SessionManager;

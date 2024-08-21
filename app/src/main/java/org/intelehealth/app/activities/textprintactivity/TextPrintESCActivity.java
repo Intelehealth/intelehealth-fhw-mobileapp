@@ -66,7 +66,7 @@ import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
 import com.rt.printerlibrary.utils.PrintListener;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;

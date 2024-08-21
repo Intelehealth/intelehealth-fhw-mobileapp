@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 /**

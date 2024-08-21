@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.Objects;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;

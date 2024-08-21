@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 import java.util.Calendar;
 

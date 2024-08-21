@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.List;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 /**

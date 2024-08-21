@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 

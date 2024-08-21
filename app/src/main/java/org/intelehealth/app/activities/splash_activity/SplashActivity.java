@@ -23,8 +23,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.BuildConfig;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;

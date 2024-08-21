@@ -29,7 +29,7 @@ import com.linktop.infs.OnEcgResultListener;
 import com.linktop.whealthService.MeasureType;
 import com.linktop.whealthService.task.EcgTask;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.models.rhemos_device.ECG;
 import org.intelehealth.app.models.rhemos_device.ECG_JsonModel;
 import org.intelehealth.app.models.rhemos_device.UserProfile;

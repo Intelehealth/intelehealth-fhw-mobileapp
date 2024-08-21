@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.app.knowledgeEngine.Node;
 

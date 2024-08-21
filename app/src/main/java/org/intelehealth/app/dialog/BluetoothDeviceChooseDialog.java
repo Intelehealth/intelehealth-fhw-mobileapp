@@ -23,7 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.BluetoothDeviceAdapter;
 
 import java.util.ArrayList;

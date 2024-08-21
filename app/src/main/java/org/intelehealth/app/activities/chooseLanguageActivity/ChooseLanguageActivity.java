@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;

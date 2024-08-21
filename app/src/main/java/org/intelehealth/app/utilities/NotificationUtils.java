@@ -6,7 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import androidx.core.app.NotificationCompat;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 public class NotificationUtils {

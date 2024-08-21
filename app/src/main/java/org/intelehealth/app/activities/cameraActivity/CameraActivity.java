@@ -36,10 +36,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
+
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.BitmapUtils;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -95,7 +97,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
-    private boolean fabClickFlag=true;
+    private boolean fabClickFlag = true;
 
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
@@ -326,8 +328,8 @@ public class CameraActivity extends AppCompatActivity {
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mCameraView != null && fabClickFlag==true) {
-                        fabClickFlag=false;
+                    if (mCameraView != null && fabClickFlag == true) {
+                        fabClickFlag = false;
                         mCameraView.takePicture();
                     }
                 }
@@ -339,7 +341,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (mCameraView != null) mCameraView.stop();
-        CameraActivityPermissionsDispatcher.startCameraWithCheck(this);
+        CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
     @Override
@@ -436,13 +438,16 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //do nothing
+        super.onBackPressed();
         finish();
 
     }
 
-    /** Prajwal -
+    /**
+     * Prajwal -
      * This function is called from camera xml directly. It is used to Flip the camera in case user wants
      * front camera and vice-versa.
+     *
      * @param view
      */
     public void flipCamera(View view) {

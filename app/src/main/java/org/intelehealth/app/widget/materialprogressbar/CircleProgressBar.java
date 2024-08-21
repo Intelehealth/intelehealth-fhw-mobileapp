@@ -33,7 +33,7 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 
 
 /**

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import org.intelehealth.app.R;
+import com.smartcaredoc.app.R;
 import org.intelehealth.app.models.rhemos_device.ECG;
 import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.WaveView;
 import org.intelehealth.app.widget.materialprogressbar.rhemos_widget.wave.ECGDrawWave;
