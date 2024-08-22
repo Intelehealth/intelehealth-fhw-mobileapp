@@ -3,6 +3,8 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.os.Bundle;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,6 +157,8 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
 
             Node mainNode = new Node(currentFile);
+            Log.d("TAG", "kkonCreateView:patientGender :  "+patientGender);
+            patientGender  = "F";
             if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
                 mFinalEnabledMMList.add(mindMapName);
             }

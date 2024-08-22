@@ -83,6 +83,21 @@ public class UuidDictionary {
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
 
+    //Bill - NAS
+    public static final String BILL_DATE = "caa20b34-48a2-4f79-b08e-7be82f379e49";
+    public static final String BILL_VISIT_TYPE = "82be928b-5b17-4f44-86f0-3b75ffc56839";
+    public static final String BILL_PAYMENT_STATUS = "ba8b1ed9-ec2f-4bab-9e0e-c60fcb44c918";
+    public static final String BILL_PRICE_BLOOD_GLUCOSE_ID = "ff82d253-877a-4970-a03f-3da16bee2a4a";
+    public static final String BILL_PRICE_BLOOD_GLUCOSE_FASTING_ID = "f6763c8d-c5e5-4e51-945c-c3d991b12fe2";
+    public static final String BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID = "d7670f6a-377f-4807-92c8-26dc339fb0fe";
+    public static final String BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID = "790cbe32-4a85-4953-a3a6-4f6b0e26336e";
+    public static final String BILL_PRICE_HEMOGLOBIN_ID = "71f0aadf-2a15-420f-897a-145dfc87fcd1";
+    public static final String BILL_PRICE_URIC_ACID_ID = "e331ccc4-7995-41d5-abe6-15b3e5ead1b1";
+    public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325720";
+    public static final String BILL_PRICE_BP_ID = "dd51ab03-12ef-43cb-9aef-2ec93a989816";
+    public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
+    public static final String ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK = "ce364c8a-4cb7-4a3b-929e-6311ddcadc01";
+    public static final String VISIT_SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
 
 
 

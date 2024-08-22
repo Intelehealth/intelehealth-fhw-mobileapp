@@ -28,7 +28,9 @@ data class FeatureActiveStatus(
     @SerializedName("facility_to_visit_section")
     val visitSummeryFacilityToVisit: Boolean,
     @SerializedName("hw_followup_section")
-    val visitSummeryHwFollowUp: Boolean
+    val visitSummeryHwFollowUp: Boolean,
+    @SerializedName("generate_bill_button")
+    val generateBillButton: Boolean
 ) {
     var videoSection: Boolean = true
     var chatSection: Boolean = true

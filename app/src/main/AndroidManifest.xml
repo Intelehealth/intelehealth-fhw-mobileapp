@@ -50,6 +50,11 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".activities.bill.BillGenerationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".activities.onboarding.CommonWebviewActivity"
             android:exported="false" />
         <activity
@@ -223,11 +228,13 @@
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activities.notification.view.NotificationActivity"
@@ -444,8 +451,7 @@
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
