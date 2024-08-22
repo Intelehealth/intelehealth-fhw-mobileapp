@@ -909,6 +909,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onDestroy() {
         super.onDestroy();
         notificationReceiver.unregisterModuleBReceiver(this);
+        if (scheduleExactAlarmPermissionLauncher != null)
         scheduleExactAlarmPermissionLauncher.unregister();
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());

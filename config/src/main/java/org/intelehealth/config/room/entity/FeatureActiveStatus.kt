@@ -30,7 +30,9 @@ data class FeatureActiveStatus(
     @SerializedName("hw_followup_section")
     val visitSummeryHwFollowUp: Boolean,
     @SerializedName("generate_bill_button")
-    val generateBillButton: Boolean
+    val generateBillButton: Boolean,
+    @SerializedName("restrict_end_visit_till_prescription_download")
+    val restrictEndVisit: Boolean
 ) {
     var videoSection: Boolean = true
     var chatSection: Boolean = true

@@ -2146,12 +2146,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void showEndVisitConfirmationDialog() {
         if (!hasPrescription) {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    checkIfAppointmentExistsForVisit(visitUUID);
-                }
-            });
+            if (mFeatureActiveStatus.getRestrictEndVisit()) {
+                //added restrictEndVisit because in NAS - we cant end the visit is prescription not shared by dr -Nas-ida migration
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.alert_label_txt), context.getResources().getString(R.string.prescription_notprovided_msg), true, context.getResources().getString(R.string.ok), context.getResources().getString(R.string.cancel), action -> {
+                });
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        checkIfAppointmentExistsForVisit(visitUUID);
+                    }
+                });
+            }
         } else {
             triggerEndVisit();
         }
@@ -2396,12 +2403,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private String showVisitID() {
         if (visitUUID != null && !visitUUID.isEmpty()) {
-           String hideVisitUUID = visitUUID;
+            String hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-            Log.d(TAG, "kkshowVisitID: hideVisitUUID : "+hideVisitUUID);
+            Log.d(TAG, "kkshowVisitID: hideVisitUUID : " + hideVisitUUID);
             visitView.setText("XXXX" + hideVisitUUID);
         }
-        Log.d(TAG, "kkshowVisitID:kk "+visitView.getText().toString());
+        Log.d(TAG, "kkshowVisitID:kk " + visitView.getText().toString());
         return visitView.getText().toString();
     }
 
@@ -6061,9 +6068,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         billModel.setHideVisitUUID(showVisitID());
         billModel.setVisitType(visitType);
         //billModel.setReceiptPaymentStatus();
-        Log.d(TAG, "kkgenerateAndViewBillData: visitUuid : "+visitUuid);
-        Log.d(TAG, "kkgenerateAndViewBillData: showVisitID() : "+showVisitID());
-        Log.d(TAG, "kkgenerateAndViewBillData: visitType : "+visitType);
+        Log.d(TAG, "kkgenerateAndViewBillData: visitUuid : " + visitUuid);
+        Log.d(TAG, "kkgenerateAndViewBillData: showVisitID() : " + showVisitID());
+        Log.d(TAG, "kkgenerateAndViewBillData: visitType : " + visitType);
 
         if (isVisitSpecialityExists && mFeatureActiveStatus.getGenerateBillButton()) {
             speciality_spinner.setEnabled(false);
