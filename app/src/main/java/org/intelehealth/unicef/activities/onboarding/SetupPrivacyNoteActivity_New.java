@@ -124,6 +124,7 @@ public class SetupPrivacyNoteActivity_New extends LocalConfigActivity {
             @Override
             public void onClick(View textView) {
                 Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
+                mIntent.putExtra("IntentFrom", AppConstants.INTENT_FROM_AYU_FOR_SETUP);
                 mIntent.putExtra("intentType", "doNotNavigateFurther");
                 mIntent.putExtra("isPrivacyPolicy", true);
                 startActivity(mIntent);
