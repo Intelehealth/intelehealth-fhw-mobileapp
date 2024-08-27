@@ -186,14 +186,14 @@ public class ScheduleAppointmentActivity_New extends LocalConfigActivity impleme
                 Log.v(TAG, "onReceive  flag=  " + mIsPendingForAppointmentSave);
                 Log.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
                 if (mIsPendingForAppointmentSave) {
-                    mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
+                    mStatusCount = intent.getIntExtra("JOB", -1);
+
                     if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
                         if (mSyncAlertDialog != null && mSyncAlertDialog.isShowing())
                             mSyncAlertDialog.dismiss();
                         ScheduleAppointmentActivity_New.this.setResult(Activity.RESULT_OK);
                         finish();
                     }
-
                 } else {
                     Log.v(TAG, "Sync Done!");
                     recreate();
