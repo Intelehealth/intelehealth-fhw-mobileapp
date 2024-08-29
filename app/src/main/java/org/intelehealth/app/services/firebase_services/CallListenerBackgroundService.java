@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -67,6 +68,7 @@ public class CallListenerBackgroundService extends Service {
         instance = null;
         Intent intent = new Intent(CallListenerBackgroundService.this, RestartServiceReceiver.class);
         intent.setAction("org.intelehealth.app.RTC_SERVICE_START");
+        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         sendBroadcast(intent);
     }
 
@@ -99,7 +101,14 @@ public class CallListenerBackgroundService extends Service {
                 .build();
 
         // Notification ID cannot be 0.
-        startForeground(ONGOING_NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(ONGOING_NOTIFICATION_ID, notification);
+
+        } else {
+            int type = ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL;
+            startForeground(ONGOING_NOTIFICATION_ID, notification,type);
+        }
+
         //do heavy work on a background thread
 
         // Write a message to the database
@@ -128,6 +137,7 @@ public class CallListenerBackgroundService extends Service {
                     if (value.containsKey("callEnded") && (Boolean) value.get("callEnded")) {
                         Intent broadcast = new Intent();
                         broadcast.setAction(CompleteActivity.CALL_END_FROM_WEB_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         sendBroadcast(broadcast);
                         return;
                     }
@@ -181,6 +191,7 @@ public class CallListenerBackgroundService extends Service {
                         Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
                         intent.putExtras(bundle);
                         intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+                        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         sendBroadcast(intent);
                     }
 

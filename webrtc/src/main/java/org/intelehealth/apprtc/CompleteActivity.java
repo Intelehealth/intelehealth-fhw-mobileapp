@@ -275,12 +275,12 @@ public class CompleteActivity extends AppCompatActivity {
             }
         };
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        registerReceiver(broadcastReceiver, receiverFilter);
+        ContextCompat.registerReceiver(this,broadcastReceiver, receiverFilter,ContextCompat.RECEIVER_NOT_EXPORTED);
 
         start();
 
         IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
-        registerReceiver(mPhoneStateBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this,mPhoneStateBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
 
 
         mCallEndBroadcastReceiver = new BroadcastReceiver() {
@@ -296,7 +296,7 @@ public class CompleteActivity extends AppCompatActivity {
         };
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(CALL_END_FROM_WEB_INTENT_ACTION);
-        registerReceiver(mCallEndBroadcastReceiver, filterSend);
+        ContextCompat.registerReceiver(this,mCallEndBroadcastReceiver, filterSend,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     private void setAudioStatus(boolean targetAudioStatus) {

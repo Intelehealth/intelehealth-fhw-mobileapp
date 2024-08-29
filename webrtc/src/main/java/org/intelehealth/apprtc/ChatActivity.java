@@ -346,7 +346,7 @@ public class ChatActivity extends AppCompatActivity {
                                     intent.putExtra("visit_uuid", mVisitUUID);
                                     intent.putExtra("connection_info", connectionInfoObject.toString());
                                     intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
-
+                                    intent.setPackage(packageName);
                                     getApplicationContext().sendBroadcast(intent);
                                     getAllMessages();
                                 } catch (JSONException e) {

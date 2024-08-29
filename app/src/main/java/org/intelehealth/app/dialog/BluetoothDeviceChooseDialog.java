@@ -114,7 +114,7 @@ public class BluetoothDeviceChooseDialog extends DialogFragment {
                     mBluetoothIntentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
                     mSearchInited = true;
                 }
-                mContext.registerReceiver(mBluetoothReceiver, mBluetoothIntentFilter);
+                ContextCompat.registerReceiver(mContext,mBluetoothReceiver, mBluetoothIntentFilter,ContextCompat.RECEIVER_NOT_EXPORTED);
                 mRegistered = true;
                 if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

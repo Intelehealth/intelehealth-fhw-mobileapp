@@ -79,6 +79,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -374,13 +375,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(this,broadcastReceiverForIamgeDownlaod, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(this,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+
     }
 
 
@@ -494,6 +496,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent.putExtra("visit_uuid", visitUUID);
                         intent.putExtra("connection_info", connectionInfoObject.toString());
                         intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                         getApplicationContext().sendBroadcast(intent);
 
                         Log.v(TAG, "collectChatConnectionInfoFromFirebase, onDataChange : " + connectionInfoObject.toString());
@@ -4042,7 +4045,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(this,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
+
             isReceiverRegistered = true;
         }
     }

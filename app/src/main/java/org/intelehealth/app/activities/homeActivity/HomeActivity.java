@@ -235,6 +235,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
                     intent.putExtra("visit_uuid", visitUUID);
                     intent.putExtra("connection_info", connectionInfoObject.toString());
                     intent.setComponent(new ComponentName(packageName, "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                     getApplicationContext().sendBroadcast(intent);
 
                     Intent chatIntent = new Intent(this, ChatActivity.class);
@@ -979,7 +980,7 @@ public class HomeActivity extends AppCompatActivity implements MonitorDataTransm
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this,syncBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
         showBadge();
     }
 
