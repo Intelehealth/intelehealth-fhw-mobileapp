@@ -545,6 +545,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 year, month, day);
 
         // Disable past dates
+
+        // @lincon: 29/08/2024
+        //as per the programs team request to support back date entry we are allowing for last 6 months date that can be selected by HW
+        //Add 6 days with current date
+        calendar.add(Calendar.MONTH, -6);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
