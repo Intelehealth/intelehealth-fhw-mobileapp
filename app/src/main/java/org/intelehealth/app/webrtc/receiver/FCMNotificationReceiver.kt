@@ -43,7 +43,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
-        Timber.tag(TAG).d("onMessageReceived: ")
+        Timber.tag(TAG).d("onMessageReceived: $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {

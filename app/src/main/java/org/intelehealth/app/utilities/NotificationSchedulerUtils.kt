@@ -147,6 +147,8 @@ class NotificationSchedulerUtils {
             isFromBootComplete: Boolean,
             notificationData: FollowUpNotificationData,
         ) {
+            val triggerTime:Long = dateTime - TimeUnit.HOURS.toMillis(duration)
+            if (triggerTime < System.currentTimeMillis()) return
             val intent = Intent(
                 IntelehealthApplication.getAppContext(),
                 ScheduleNotificationReceiver::class.java
@@ -171,6 +173,7 @@ class NotificationSchedulerUtils {
                     )
                     putExtra(BundleKeys.VISIT_UUI, notificationData.visitUuid)
                     putExtra(BundleKeys.NAME, notificationData.name)
+                    putExtra(BundleKeys.NOTIFICATION_TRIGGER_TIME, triggerTime)
                 }
             val requestCode = (System.currentTimeMillis()+duration).toInt()
             val pendingIntent = PendingIntent.getBroadcast(
@@ -182,9 +185,7 @@ class NotificationSchedulerUtils {
 
             val alarmManager = IntelehealthApplication.getAppContext()
                 .getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val triggerTime = dateTime - TimeUnit.HOURS.toMillis(duration)
 
-            if (triggerTime < System.currentTimeMillis()) return
             val notification = FollowUpNotificationShData(
                 id = notificationData.visitUuid + "-" + duration,
                 dateTime = dateTime.toString(),

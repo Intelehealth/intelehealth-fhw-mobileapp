@@ -38,7 +38,7 @@ public class AppConstants {
 
     public static final int PAGE_LIMIT = 50;
 
-    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 2;
+    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;
 
     //App vitals constants
