@@ -38,6 +38,7 @@ class NotificationSchedulerUtils {
                     val followupDateTimeBefore24H =
                         followUpTime - TimeUnit.HOURS.toMillis(AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION)
 
+                    CustomLog.d("24_h_sub",""+followUpTime+"  "+TimeUnit.HOURS.toMillis(AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION)+"  "+followUpNotificationData.value+"  ")
                     /**
                      * if followup date time is less than 24 h triggering the notification immediately
                      */
@@ -154,6 +155,7 @@ class NotificationSchedulerUtils {
                 ScheduleNotificationReceiver::class.java
             )
                 .apply {
+                    //addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
                     putExtra(
                         BundleKeys.TITLE,
                         IntelehealthApplication.getAppContext().getString(R.string.reminder)
@@ -174,11 +176,12 @@ class NotificationSchedulerUtils {
                     putExtra(BundleKeys.VISIT_UUI, notificationData.visitUuid)
                     putExtra(BundleKeys.NAME, notificationData.name)
                     putExtra(BundleKeys.NOTIFICATION_TRIGGER_TIME, triggerTime)
+                    putExtra("key",UuidGenerator().UuidGenerator())
                 }
             val requestCode = (System.currentTimeMillis()+duration).toInt()
             val pendingIntent = PendingIntent.getBroadcast(
                 IntelehealthApplication.getAppContext(),
-                requestCode,
+                intent.hashCode(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -195,7 +198,7 @@ class NotificationSchedulerUtils {
                 openMrsId = notificationData.openMrsId,
                 patientUid = notificationData.patientUid,
                 visitUuid = notificationData.visitUuid,
-                requestCode = requestCode.toString()
+                requestCode = /*requestCode.toString()*/intent.hashCode().toString()
             );
             if (!isFromBootComplete) {
                 FollowUpNotificationDAO().insertFollowupNotification(
