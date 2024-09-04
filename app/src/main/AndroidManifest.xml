@@ -33,7 +33,13 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"
+        android:minSdkVersion="34" />
+    <uses-permission
+        android:name="android.permission.MANAGE_OWN_CALLS"
+        android:minSdkVersion="34" />
 
     <application
         android:name=".app.IntelehealthApplication"
@@ -270,14 +276,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
-<!--        <receiver-->
-<!--            android:name=".services.firebase_services.RTCMessageReceiver"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <!--        <receiver-->
+        <!--            android:name=".services.firebase_services.RTCMessageReceiver"-->
+        <!--            android:enabled="true"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
 
         <receiver
             android:name=".services.CameraOpenRequestReceiver"
@@ -403,13 +409,13 @@
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-<!--        <service-->
-<!--            android:name=".services.firebase_services.MyFirebaseMessagingService"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service> -->
+        <!--        <service-->
+        <!--            android:name=".services.firebase_services.MyFirebaseMessagingService"-->
+        <!--            android:exported="false">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+        <!--            </intent-filter>-->
+        <!--        </service> -->
         <!-- <receiver -->
         <!-- android:name="org.intelehealth.app.utilities.NetworkChangeListener" -->
         <!-- android:label="NetworkChangeReceiver"> -->

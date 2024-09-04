@@ -81,7 +81,8 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
     fun registerReceivers(context: Context) {
         IntentFilter().apply {
             addAction(CALL_END_FROM_WEB_INTENT_ACTION)
-            context.registerReceiver(callEndBroadcastReceiver, this)
+            //context.registerReceiver(callEndBroadcastReceiver, this)
+            ContextCompat.registerReceiver(context, callEndBroadcastReceiver, this, ContextCompat.RECEIVER_EXPORTED); //changed because previous code not working on android 14 and above
         }
 
         IntentFilter().apply {

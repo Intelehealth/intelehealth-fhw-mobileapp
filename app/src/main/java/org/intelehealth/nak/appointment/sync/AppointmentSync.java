@@ -68,10 +68,12 @@ public class AppointmentSync {
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                        broadcast.setPackage(IntelehealthApplication.getInstance().getPackageName());
                         context.sendBroadcast(broadcast);
 
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE));
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)
+                                .setPackage(IntelehealthApplication.getInstance().getPackageName()));
                     }
 
 
