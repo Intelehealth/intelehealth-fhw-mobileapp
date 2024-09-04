@@ -29,19 +29,9 @@ class ScheduleNotificationReceiver : BroadcastReceiver() {
         val visitUUid = inputData?.getString(BundleKeys.VISIT_UUI)
         val name = inputData?.getString(BundleKeys.NAME)
         val notificationTriggerTime = inputData?.getLong(BundleKeys.NOTIFICATION_TRIGGER_TIME)
-        Log.d("TTTTTT",""+notificationTriggerTime+"  "+System.currentTimeMillis())
         sendNotification(
-            title+" "+notificationTriggerTime+" "+System.currentTimeMillis(), description, channelId, visitUUid, name
+            title, description, channelId, visitUUid, name
         )
-       /* if (notificationTriggerTime != null) {
-            if(notificationTriggerTime < System.currentTimeMillis()) {
-                return
-            }else{
-                sendNotification(
-                    title, description, channelId, visitUUid, name
-                )
-            }
-        }*/
     }
 
     private fun sendNotification(

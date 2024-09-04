@@ -343,36 +343,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             checkAlarmAndReminderPermission();
         }
 
-        NotificationSchedulerUtils.scheduleFollowUpNotification(
-                new FollowUpNotificationData(
-                        "2024-09-04, Time: 12:00 PM",
-                        "Test" + " " + "Notifi",
-                        "123",
-                        "erertertertertert",
-                        "asdsdfsdf"
-                )
-        );
-
-        NotificationSchedulerUtils.scheduleFollowUpNotification(
-                new FollowUpNotificationData(
-                        "2024-09-04, Time: 12:00 PM",
-                        "Test" + " " + "Notifi",
-                        "123",
-                        "ereertertertert",
-                        "asdfsdf"
-                )
-        );
-
-        NotificationSchedulerUtils.scheduleFollowUpNotification(
-                new FollowUpNotificationData(
-                        "2024-09-04, Time: 12:00 PM",
-                        "Test" + " " + "Notifi",
-                        "123",
-                        "erertertrtertert",
-                        "asdsdsdf"
-                )
-        );
-
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
 
