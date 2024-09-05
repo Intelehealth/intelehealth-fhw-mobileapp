@@ -69,7 +69,6 @@ public class VisitsDAO {
             values.put("creator", visit.getCreatoruuid());
             values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
-            values.put("enddateFormated", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getEnddate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", visit.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -382,7 +381,6 @@ public class VisitsDAO {
         String[] whereargs = {uuid};
         try {
             values.put("enddate", enddate);
-            values.put("enddateFormated", enddate);
             values.put("sync", "0");
             int i = db.update("tbl_visit", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);

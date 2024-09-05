@@ -42,10 +42,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -119,7 +116,6 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
-import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -342,7 +338,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             setupAlarmPermissionLauncher();
             checkAlarmAndReminderPermission();
         }
-
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
 
@@ -355,7 +350,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
-
     private void setupAlarmPermissionLauncher() {
         scheduleExactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -734,7 +728,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
+        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
         CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {

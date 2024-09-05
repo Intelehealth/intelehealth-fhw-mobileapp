@@ -146,10 +146,11 @@ public class DailyAchievementsFragment extends Fragment {
     // get the number of visits that were ended by the current health worker today
     private void setVisitsEndedToday() {
         String date = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "MMM d, yyyy");
+        String unsyncDateFormat = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "yyyy-MM-dd");
         String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
                 "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
                 "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
-                "AND v.enddate LIKE '" + date + "%'";
+                "AND CASE WHEN v.sync = 1 then v.enddate LIKE '" + date + "%' else v.enddate LIKE '" + unsyncDateFormat + "%'";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor todayVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{
                 sessionManager.getProviderID()
