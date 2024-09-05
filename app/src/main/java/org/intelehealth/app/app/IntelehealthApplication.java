@@ -1,6 +1,7 @@
 package org.intelehealth.app.app;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,12 +35,14 @@ import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
+@HiltAndroidApp
+public class IntelehealthApplication extends Application   {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -118,7 +121,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         mDbHelper.onCreate(localdb);
 //        }
 
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+//        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         initSocketConnection();
 
         if (BuildConfig.DEBUG) {
@@ -199,3 +202,4 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         socketManager.disconnect();
     }
 }
+

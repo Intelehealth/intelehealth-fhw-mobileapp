@@ -3,6 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.google.dagger.hilt.android'
 apply plugin: "kotlin-kapt"
 apply from: "resdir.gradle"
 apply from: "whitelabel.gradle"
@@ -10,8 +11,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 static def getDateTime() {
-    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
-    return df.format(new Date());
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm")
+    return df.format(new Date())
 }
 
 android {
@@ -20,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdk 23
+        minSdk 24
         targetSdk 34
         versionCode 65
         versionName '5.0'
@@ -84,7 +85,10 @@ dependencies {
     implementation project(':klivekit')
     implementation project(':fcm')
     implementation project(':config')
+    implementation project(':abdm:features')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.dagger:hilt-android:2.49"
+    kapt 'com.google.dagger:hilt-compiler:2.47'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.12.0'
