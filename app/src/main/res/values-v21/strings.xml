@@ -164,4 +164,27 @@
     <string name="please_connect">Select Available Device</string>
     <string name="disconnect">Disconnect</string>
     <string name="connect">Connect</string>
+    <string name="view_print">View/Print</string>
+    <string name="printing">Printing...</string>
+    <string name="paired_devices">Paired</string>
+    <string name="tip_have_no_paired_device">No paired device</string>
+    <string name="tip_have_no_found_bluetooth_device">No Device</string>
+    <string name="search_device">Search</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_tip">Tip</string>
+    <string name="main_pls_choose_device">Please choose a device</string>
+    <string name="dialog_back">Back</string>
+    <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
+    <string name="barcode_print">Barcode Print</string>
+    <string name="headbar_back">Back</string>
+    <string name="title_barcode">Barcode</string>
+    <string name="title_activity_barcode_print">BarcodePrintActivity</string>
+    <string name="choose_bluetooth_device">Choose Bluetooth Device</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="_main_connected">" connect success"</string>
+    <string name="_main_connected_fail">connect fail</string>
+    <string name="_main_disconnect">" disconnected"</string>
+
 </resources>

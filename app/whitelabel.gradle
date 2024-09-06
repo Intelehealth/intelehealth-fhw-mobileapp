@@ -52,8 +52,8 @@ android {
         nas {
             dimension client
             applicationId "org.intelehealth.nas"
-            versionCode 1
-            versionName '1.0'
+            versionCode 50
+            versionName '1.5.4'
             archivesBaseName = "intelehealth_nas-" + versionName + " - " + date
         }
 

@@ -70,33 +70,33 @@ public class BillGenerationActivity extends BaseActivity {
 
     private static final String TAG = "BillConfirmationActivit";
     //Toolbar toolbar;
-    String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
-    ArrayList<String> selectedTests = new ArrayList<>();
-    TextView patientDetailsTV, paymentStatusTV;
-    String patientDetails;
-    String receiptNum = "XXXXX";
-    String billDateString = "DD MM YYYY";
-    LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
+    private String patientName, patientVillage, patientOpenID, patientHideVisitID, patientPhoneNum, visitType, patientVisitID, billType;
+    private ArrayList<String> selectedTests = new ArrayList<>();
+    private TextView patientDetailsTV, paymentStatusTV;
+    private String patientDetails;
+    private String receiptNum = "XXXXX";
+    private String billDateString = "DD MM YYYY";
+    private LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
             cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
-    CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
-    TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
+    private CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
+    private TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
             glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV,
             uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected;
-    Button btn_disConnect, btn_connect;
+    private Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
-    String paymentStatus = "";
-    int total_amount = 0;
-    RadioButton yes, no;
-    String not_paying_reason = "";
-    EditText not_paying_reasonET;
-    TextInputLayout not_paying_reasonTIL;
-    RadioGroup radioGroup;
-    SessionManager sessionManager;
+    private String paymentStatus = "";
+    private int total_amount = 0;
+    private RadioButton yes, no;
+    private String not_paying_reason = "";
+    private EditText not_paying_reasonET;
+    private TextInputLayout not_paying_reasonTIL;
+    private RadioGroup radioGroup;
+    private SessionManager sessionManager;
     private boolean hasLicense = false;
-    JSONObject obj = null;
+    private JSONObject obj = null;
     private Bitmap bitmap;
-    String finalBillPath = "";
-    SyncUtils syncUtils = new SyncUtils();
+    private String finalBillPath = "";
+    private SyncUtils syncUtils = new SyncUtils();
     ///ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
     //private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     //private RTPrinter rtPrinter = null;
