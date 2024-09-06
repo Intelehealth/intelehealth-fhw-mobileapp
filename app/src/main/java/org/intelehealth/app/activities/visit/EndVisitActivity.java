@@ -24,7 +24,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,6 +46,8 @@ import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +72,14 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private EndVisitAdapter recentVisitsAdapter, olderVisitsAdapter;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
-   // int totalCounts_recent = 0, totalCounts_older = 0;
+    // int totalCounts_recent = 0, totalCounts_older = 0;
 
     private Context context = EndVisitActivity.this;
     private RelativeLayout no_patient_found_block, main_block;
     List<PrescriptionModel> recent = new ArrayList<>();
     List<PrescriptionModel> older = new ArrayList<>();
+    private FeatureActiveStatus mFeatureActiveStatus;
+    private CustomProgressDialog progressDialog;
 
 
     @Override
@@ -84,10 +90,12 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         getWindow().setStatusBarColor(Color.WHITE);
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         networkUtils = new NetworkUtils(this, this);
+        progressDialog = new CustomProgressDialog(context);
+        progressDialog.show(getString(R.string.please_wait));
 
         handleBackPress();
         initViews();
-        endVisits_data();
+        //endVisits_data();
         refresh.setOnClickListener(v -> {
             syncNow(EndVisitActivity.this, refresh, syncAnimator);
         });
@@ -96,6 +104,16 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
+    }
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            progressDialog.dismiss();
+            mFeatureActiveStatus = activeStatus;
+            endVisits_data();
+        }
     }
 
     public Context setLocale(Context context) {
@@ -163,8 +181,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                         if (!isolderFullyLoaded) {
                             if (recent != null && older != null) {
                                 if (recent.size() > 0 || older.size() > 0) {
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
                                     setOlderMoreDataIntoRecyclerView();
                                 }
@@ -190,12 +207,13 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 searchOperation(query);
                 return false;   // setting to false will close the keyboard when clicked on search btn.
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.blue_border_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.blue_border_bg));
                 } else {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_common_input_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_common_input_bg));
                 }
                 return false;
             }
@@ -221,10 +239,10 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         recent_older_visibility(recentCloseVisitsList, olderCloseVisitsList);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
         CustomLog.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
     }
@@ -246,7 +264,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
 
@@ -262,7 +280,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void olderCloseVisits() {
         olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
 
@@ -280,8 +298,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void setRecentMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        }
-        else {
+        } else {
             CustomLog.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
             if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                 isRecentFullyLoaded = true;
@@ -303,8 +320,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void setOlderMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {
-        }
-        else {
+        } else {
             if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
                 isolderFullyLoaded = true;
                 return;
@@ -323,7 +339,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void thisMonths_EndVisits() {
         List<PrescriptionModel> arrayList = thisMonths_NotEndedVisits();
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList, mFeatureActiveStatus);
         recycler_month.setNestedScrollingEnabled(false);
         recycler_month.setAdapter(adapter_new);
         months_count = arrayList.size();
@@ -337,9 +353,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -381,7 +397,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         new Thread(new Runnable() {
             @Override
             public void run() {
-              //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
+                //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
                 CustomLog.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
@@ -432,13 +448,12 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                                         String fullName = firstName + " " + middleName + " " + lastName;
 
                                         if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
-                                                || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                             older.add(model);
                                         } else {
                                             // do nothing
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
@@ -452,11 +467,11 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                                 }
                             }
 
-                            recentVisitsAdapter = new EndVisitAdapter(context, recent);
+                            recentVisitsAdapter = new EndVisitAdapter(context, recent, mFeatureActiveStatus);
                             recycler_recent.setNestedScrollingEnabled(false);
                             recycler_recent.setAdapter(recentVisitsAdapter);
 
-                            olderVisitsAdapter = new EndVisitAdapter(context, older);
+                            olderVisitsAdapter = new EndVisitAdapter(context, older, mFeatureActiveStatus);
                             recycler_older.setNestedScrollingEnabled(false);
                             recycler_older.setAdapter(olderVisitsAdapter);
 
@@ -497,7 +512,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         }
     }
 
-    void handleBackPress(){
+    void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
