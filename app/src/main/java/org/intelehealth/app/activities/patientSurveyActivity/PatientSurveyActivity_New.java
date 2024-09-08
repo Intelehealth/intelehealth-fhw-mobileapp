@@ -3,10 +3,8 @@ package org.intelehealth.app.activities.patientSurveyActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,8 +14,6 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
@@ -50,10 +46,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
 
 public class PatientSurveyActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
@@ -77,12 +71,6 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
     SessionManager sessionManager = null;
     private NetworkUtils networkUtils;
-    private BroadcastReceiver mBroadcastReceiver;
-    Set<Integer> broadcasterReceiverStatusMap = new HashSet<>();
-    private boolean submitClicked = false;
-    private int mStatusCount = 0;
-    private String endVisitTag = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,57 +85,6 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         initUI();
         networkUtils = new NetworkUtils(this, this);
         clickListeners();
-
-        //handling survey submit result on the broadcaster receiver
-        //because we triggering sync after ending visit
-
-        //so, if we close the screen and go to any other screen and initiate any query related to visit
-        //the we might not get the actual result
-
-        //hence checking that sync is completed or not
-        //if completed then closing the activity and showing success result
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                CustomLog.v(TAG, "onReceive JOB =  " + intent.getIntExtra("JOB", -1));
-                if (submitClicked) {
-                    mStatusCount = 0;
-                    broadcasterReceiverStatusMap.add(intent.getIntExtra("JOB", -1));
-                    //sometimes the broadcaster receiver returning same status multipple times
-                    //that's why added those values on SET then calculating
-                    for(int status : broadcasterReceiverStatusMap){
-                        mStatusCount+=status;
-                    }
-                    //mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
-                    if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
-                        // the Time will be changed for last sync.
-                        endVisitTag = "";
-                        submitClicked = false;
-
-                        sessionManager.removeVisitSummary(patientUuid, visitUuid);
-                        Intent i = new Intent(PatientSurveyActivity_New.this, HomeScreenActivity_New.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i.putExtra("intentTag", endVisitTag);
-                        startActivity(i);
-                    }
-                }
-            }
-        };
-
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                this,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -309,11 +246,14 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        submitClicked = true;
-        endVisitTag = tag;
         syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
+        // the Time will be changed for last sync.
 
-        //handling success result on the broadcaster receiver
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+        Intent i = new Intent(this, HomeScreenActivity_New.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("intentTag", tag);
+        startActivity(i);
     }
 
     @Override

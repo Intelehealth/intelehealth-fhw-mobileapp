@@ -29,6 +29,7 @@ import org.intelehealth.app.models.ObsImageModel.Encounter;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -186,9 +187,18 @@ public class DateRangeAchievementsFragment extends Fragment {
         int numberOfVisitsEnded = 0;
 
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
-        String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-d");
-        String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-d");
-        String formatedEndDate = "REPLACE((substr(v.enddate, 8, 5) || '-' || " +
+        String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
+        String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
+        //here added two logic for date filter
+        //because if sync status = 1 then the date format is "MMM d, yyyy"
+        //and sync status = 0 then the date format is "yyyy-MM-dd"
+
+        String formatedDay = "(CASE " +
+                "WHEN instr(substr(v.enddate, 5, 2), ',') > 0 THEN substr(v.enddate, 5, 1) " +
+                "ELSE substr(v.enddate, 5, 2) " +
+                "END)";
+
+        String formatedEndDate = "(CASE WHEN v.sync = 1 THEN REPLACE((substr(v.enddate, 8, 5) || '-' || " +
                 "(CASE substr(v.enddate, 1, 3) " +
                 "WHEN 'Jan' THEN '01' " +
                 "WHEN 'Feb' THEN '02' " +
@@ -203,37 +213,43 @@ public class DateRangeAchievementsFragment extends Fragment {
                 "WHEN 'Nov' THEN '11' " +
                 "WHEN 'Dec' THEN '12' " +
                 "END) || '-' || " +
-                "(CASE " +
-                "WHEN instr(substr(v.enddate, 5, 2), ',') > 0 THEN substr(v.enddate, 5, 1) " +
-                "ELSE substr(v.enddate, 5, 2) " +
-                "END)),' ','')";
+                "CASE WHEN LENGTH("+formatedDay+") = 1 THEN '0'||"+formatedDay+" ELSE "+formatedDay+" END ),' ','') else substr(v.enddate,1,10) END)";
 
-        String visitEndedQuery = "SELECT DISTINCT e.visituuid, e.modified_date FROM tbl_encounter as e, tbl_visit as v " +
+        String visitEndedQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
                 "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
                 "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
                 "AND "+formatedEndDate+" >= '"+startDate+"' and "+formatedEndDate+"<= '"+endDate+"'";
+
+        CustomLog.d("visitEndedQuery",""+visitEndedQuery);
 
         //String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangePatientsCreatedCursor = db.rawQuery(visitEndedQuery, new String[]{sessionManager.getProviderID()});
 
-        if (rangePatientsCreatedCursor.moveToFirst()) {
+        rangePatientsCreatedCursor.moveToFirst();
+        String count = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndex(rangePatientsCreatedCursor.getColumnName(0)));
+
+
+        /*if (rangePatientsCreatedCursor.moveToFirst()) {
             do {
                 String visitUuid = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("visituuid"));
-                String encounterTime = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("modified_date"));
+                //String encounterTime = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("modified_date"));
                 EncounterDTO encounterDTO = new EncounterDTO();
                 encounterDTO.setVisituuid(visitUuid);
-                encounterDTO.setEncounterTime(encounterTime);
+                //encounterDTO.setEncounterTime(encounterTime);
                 encounterDTOList.add(encounterDTO);
+
+                CustomLog.d("VISIT_UID",""+visitUuid);
+
             } while (rangePatientsCreatedCursor.moveToNext());
 
             if (!encounterDTOList.isEmpty()) {
                 numberOfVisitsEnded = countVisitsEndedBetweenRange(encounterDTOList);
             }
         }
-
+*/
         int finalCount = numberOfVisitsEnded;
-        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(count));
         rangePatientsCreatedCursor.close();
     }
 

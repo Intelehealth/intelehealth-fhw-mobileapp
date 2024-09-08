@@ -147,10 +147,13 @@ public class DailyAchievementsFragment extends Fragment {
     private void setVisitsEndedToday() {
         String date = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "MMM d, yyyy");
         String unsyncDateFormat = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "yyyy-MM-dd");
+        //here added two logic for date filter
+        //because if sync status = 1 then the date format is "MMM d, yyyy"
+        //and sync status = 0 then the date format is "yyyy-MM-dd"
         String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
                 "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
                 "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
-                "AND CASE WHEN v.sync = 1 then v.enddate LIKE '" + date + "%' else v.enddate LIKE '" + unsyncDateFormat + "%'";
+                "AND (CASE WHEN v.sync = 1 then v.enddate LIKE '" + date + "%' else substr(v.enddate,1,10) LIKE '" + unsyncDateFormat + "%' END)";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor todayVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{
                 sessionManager.getProviderID()
