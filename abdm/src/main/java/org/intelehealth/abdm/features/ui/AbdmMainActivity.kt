@@ -6,7 +6,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.abdm.R
 import org.intelehealth.abdm.databinding.ActivityAbdmMainBinding
 import org.intelehealth.abdm.features.base.BaseActivity
-import org.intelehealth.abdm.features.dialog.RegistrationConfirmationDialog
+import org.intelehealth.abdm.features.ui.registration.dialog.RegistrationConfirmationDialog
 import org.intelehealth.abdm.features.viewmodel.AbdMainViewModel
 
 @AndroidEntryPoint

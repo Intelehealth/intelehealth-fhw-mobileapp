@@ -35,6 +35,7 @@ class RegistrationConsentAdapter(
         }
         holder.binding.chkBox.setOnCheckedChangeListener { _, isChecked ->
             model.isChecked = isChecked
+            onCheckboxChecked.onOptionChecked(model)
         }
     }
 
@@ -51,7 +52,8 @@ class RegistrationConsentAdapter(
         return true
     }
 
-    inner class MyViewHolder(val binding: ItemAbhaRegistrationConsentBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class MyViewHolder(val binding: ItemAbhaRegistrationConsentBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     interface OnCheckboxChecked {
         fun onOptionChecked(model: RegistrationConsent)

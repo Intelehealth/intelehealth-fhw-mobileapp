@@ -2,7 +2,8 @@ package org.intelehealth.abdm.features.viewmodel.registration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
- import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -28,8 +29,8 @@ class AbhaRegistrationConsentViewModel @Inject constructor(
 
     private fun getConsentList()
     {
-//        viewModelScope.launch(ioDispatcher) {
-//            _consentLiveData.postValue(consentUseCase())
-//        }
+        viewModelScope.launch(ioDispatcher) {
+            _consentLiveData.postValue(consentUseCase())
+        }
     }
 }

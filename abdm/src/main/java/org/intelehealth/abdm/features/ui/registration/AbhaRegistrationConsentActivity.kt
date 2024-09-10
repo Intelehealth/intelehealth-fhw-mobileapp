@@ -28,6 +28,7 @@ class AbhaRegistrationConsentActivity :
     @SuppressLint("NotifyDataSetChanged")
     private fun initialization() {
         consentList = ArrayList()
+        binding.btnAccept.btnActive.isEnabled = false
         setConsentAdapter()
         viewModel.consentLiveData.observe(this) {
             consentList.addAll(it)
@@ -40,7 +41,9 @@ class AbhaRegistrationConsentActivity :
             onBackPressedDispatcher.onBackPressed()
         }
         binding.btnAccept.btnActive.setOnClickListener {
-            startActivity(Intent(this, AbdmRegistrationActivity::class.java))
+            if (registrationConsentAdapter.areAllItemsChecked()) {
+                startActivity(Intent(this, AbdmRegistrationActivity::class.java))
+            }
         }
     }
 
@@ -55,6 +58,10 @@ class AbhaRegistrationConsentActivity :
 
     override fun initBinding() = ActivityAbhaRegistrationConsentBinding.inflate(layoutInflater)
     override fun onOptionChecked(model: RegistrationConsent) {
-        TODO("Not yet implemented")
+        if (registrationConsentAdapter.areAllItemsChecked()) {
+            binding.btnAccept.btnActive.isEnabled = true
+        } else {
+            binding.btnAccept.btnActive.isEnabled = true
+        }
     }
 }

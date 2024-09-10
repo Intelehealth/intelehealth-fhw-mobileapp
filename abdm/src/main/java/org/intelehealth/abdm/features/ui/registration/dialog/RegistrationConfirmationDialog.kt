@@ -1,5 +1,6 @@
-package org.intelehealth.abdm.features.dialog
+package org.intelehealth.abdm.features.ui.registration.dialog
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import org.intelehealth.abdm.R
 import org.intelehealth.abdm.common.utils.ToastUtil
 import org.intelehealth.abdm.databinding.DialogAbdmRegistrationConfirmationBinding
+import org.intelehealth.abdm.features.ui.registration.AbhaRegistrationConsentActivity
 
 
 class RegistrationConfirmationDialog : DialogFragment() {
@@ -31,7 +33,7 @@ class RegistrationConfirmationDialog : DialogFragment() {
 
     private fun setClickListener() {
         mBinding.btnYes.btnDecline.setOnClickListener {
-
+            startActivity(Intent(requireContext(),AbhaRegistrationConsentActivity::class.java))
         }
         mBinding.btnNo.btnActive.setOnClickListener {
             ToastUtil.showShortToast(requireContext(), "Work in progress")

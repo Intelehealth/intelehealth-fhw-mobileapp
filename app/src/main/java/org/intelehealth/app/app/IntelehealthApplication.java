@@ -41,7 +41,6 @@ import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
 @HiltAndroidApp
-
 public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
