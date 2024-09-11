@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.provider.MediaStore.Audio
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -84,7 +85,6 @@ open class CallViewModel(
 //        adaptiveStream = true
 //    )
 
-    val audioHandler = AudioSwitchHandler(application)
 //    val room = LiveKit.create(
 //        appContext = application.applicationContext,
 //        options = options,
@@ -100,6 +100,9 @@ open class CallViewModel(
 //    )
 
     val room = RtcEngine.create(application.applicationContext)
+    private val audioHandler = room.audioHandler as AudioSwitchHandler
+
+//        AudioSwitchHandler(application)
 
     private val mutableError = MutableStateFlow<Throwable?>(null)
     val error = mutableError.hide()
