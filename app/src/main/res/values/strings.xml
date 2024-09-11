@@ -1074,4 +1074,25 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="blood_glucose_random">Blood Glucose (Random)</string>
+    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
+    <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
+    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="uric_acid">Uric Acid</string>
+    <string name="total_cholestrol">Total Cholesterol</string>
+    <string name="glucose_random_eg">E.g., 30</string>
+    <string name="glucose_fasting_eg">E.g., 30</string>
+    <string name="glucose_post_prandial_eg">E.g., 70</string>
+    <string name="hemoglobin_eg">E.g., 4 mg/dL</string>
+    <string name="cholestrol_eg">E.g., 70</string>
+    <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
+    <string name="glucose_non_fasting_eg">E.g., 60</string>
+    <string name="uric_acid_eg">E.g., 2</string>
+    <string name="glucose_random_error">Blood glucose(Random) should be in between %1$s and %2$s</string>
+    <string name="glucose_fasting_error">Blood glucose(Fasting) should be in between %1$s and %2$s</string>
+    <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
+    <string name="post_prandial_error">Blood Glucose (Post-Prandial) should be in between %1$s and %2$s</string>
+    <string name="hemoglobin_error">Haemoglobin should be in between %1$s and %2$s</string>
+
 </resources>

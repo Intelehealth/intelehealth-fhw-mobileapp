@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -150,10 +152,20 @@ public class SyncDAO {
 
                     //handling response data from background thread
                     //to prevent lagging
+                    /*Single.fromCallable(() -> populatePullSuccessBackground(response, context))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();*/
                     Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
+                            .subscribe(result -> {
+                                // Handle success here, `result` is the output of `populatePullSuccessBackground`
+                            }, throwable -> {
+                                // Handle error here, `throwable` will contain the exception
+                                Log.e("RxJavaError", "Error occurred in populatePullSuccessBackground", throwable);
+                                // You can also take additional action like showing a user-friendly error message or retrying the operation
+                            });
                 }
 
                 Logger.logD("End Pull request", "Ended");

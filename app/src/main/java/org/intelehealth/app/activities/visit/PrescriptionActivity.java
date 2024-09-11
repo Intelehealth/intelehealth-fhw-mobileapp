@@ -40,9 +40,16 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescription;
+import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionTest;
+import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionDataModel;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,7 +79,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -104,7 +110,6 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AppointmentUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -193,6 +198,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private FrameLayout filter_framelayout;
     private View hl_2;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
+    private String medicalAdvice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +224,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (activeStatus != null) {
             mFeatureActiveStatus = activeStatus;
+            Log.d(TAG, "onFeatureActiveStatusLoaded: mFeatureActiveStatus : " + mFeatureActiveStatus.getPrintUsingThermalPrinter());
+            ((Button) findViewById(R.id.btn_vs_print)).setText(getString(activeStatus.getPrintUsingThermalPrinter() ? R.string.view_print : R.string.action_print));
         }
     }
 
@@ -287,7 +295,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
         downloadBtn = findViewById(R.id.downloadBtn);
-        btn_vs_print = findViewById(R.id.btn_vs_print);   // print
+        btn_vs_print = findViewById(R.id.btn_vs_print);
         btn_vs_share = findViewById(R.id.btn_vs_share);   // share
 
         btn_up_header = findViewById(R.id.btn_up_header);
@@ -348,9 +356,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             intentTag = intent.getStringExtra("tag");
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
-                CustomLog.d(PrescriptionActivity.class.getSimpleName(),"has prescription main::%s", hasPrescription);
+                CustomLog.d(PrescriptionActivity.class.getSimpleName(), "has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);
             }
             queryData(String.valueOf(patientUuid));
@@ -438,11 +446,46 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // Bottom Buttons - start
         btn_vs_print.setOnClickListener(v -> {
-            try {
-                doWebViewPrint_Button();
-            } catch (ParseException e) {
-                e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+            if (mFeatureActiveStatus.getPrintUsingThermalPrinter()) {
+                // PrintViewPrescription prescription = new PrintViewPrescription();
+                PrintViewPrescriptionDataModel prescriptionDataModel = new PrintViewPrescriptionDataModel();
+                prescriptionDataModel.setVisitUuid(visitID);
+                prescriptionDataModel.setPatHistory(patHistory);
+                prescriptionDataModel.setFamHistory(famHistory);
+                prescriptionDataModel.setHeight(height);
+                prescriptionDataModel.setWeight(weight);
+                prescriptionDataModel.setBpSys(bpSys);
+                prescriptionDataModel.setBpDias(bpDias);
+                prescriptionDataModel.setPulse(pulse);
+                prescriptionDataModel.setHasLicense(hasLicense);
+                prescriptionDataModel.setTemperature(temperature);
+                prescriptionDataModel.setResp(resp);
+                prescriptionDataModel.setSpO2(spO2);
+                prescriptionDataModel.setComplaint(complaint);
+                prescriptionDataModel.setRxReturned(rxReturned);
+                prescriptionDataModel.setTestsReturned(testsReturned);
+                prescriptionDataModel.setDiagnosisReturned(diagnosisReturned);
+                prescriptionDataModel.setFollowUpDate(followUpDate);
+                prescriptionDataModel.setDoctorName(doctorName);
+                prescriptionDataModel.setPrescription1(prescription1);
+                prescriptionDataModel.setPrescription2(prescription2);
+                prescriptionDataModel.setBP(mBP);
+                prescriptionDataModel.setMedicalAdvice(medicalAdvice);
+                Log.d(TAG, "setDataToView: testsReturned  : " + testsReturned);
+                PrintViewPrescription printViewPrescription = new PrintViewPrescription(
+                        PrescriptionActivity.this, details, patient, prescriptionDataModel, PrescriptionActivity.this);
+                try {
+                    printViewPrescription.textPrint();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    doWebViewPrint_Button();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    CustomLog.e(TAG, e.getMessage());
+                }
             }
         });
 
@@ -562,7 +605,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
     }
@@ -920,7 +963,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -1242,7 +1285,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
@@ -1372,6 +1415,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
                 adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                medicalAdvice = String.valueOf(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
+                Log.d(TAG, "kkparseData: medicalAdvice : " + medicalAdvice);
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -1720,7 +1765,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
 
@@ -1920,7 +1965,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 }
                 downloadDoctorDetails();
@@ -1932,7 +1977,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         } catch (DAOException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
     // downlaod presc - end
@@ -2200,7 +2245,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -2262,7 +2307,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
 
