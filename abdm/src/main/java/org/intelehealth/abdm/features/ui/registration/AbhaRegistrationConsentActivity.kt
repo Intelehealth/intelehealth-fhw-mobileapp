@@ -42,7 +42,7 @@ class AbhaRegistrationConsentActivity :
         }
         binding.btnAccept.btnActive.setOnClickListener {
             if (registrationConsentAdapter.areAllItemsChecked()) {
-                startActivity(Intent(this, AbdmRegistrationActivity::class.java))
+                startActivity(Intent(this, AadhaarVerificationActivity::class.java))
             }
         }
     }

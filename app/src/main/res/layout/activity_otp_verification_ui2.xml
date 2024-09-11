@@ -159,7 +159,7 @@
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:lineSpacingExtra="0sp"
                         android:text="@string/enter_otp"
-                        android:textAppearance="@style/registr_error_msg"
+                        android:textAppearance="@style/register_error_msg"
                         android:textColor="@color/red"
                         android:textSize="@null"
                         android:visibility="gone" />

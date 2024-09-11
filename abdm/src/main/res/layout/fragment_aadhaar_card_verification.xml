@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="@dimen/_16dp"
+        tools:context=".features.ui.registration.AadhaarCardVerificationFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAadhaarCardNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/transparent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAadhaarNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_outline"
+                android:hint="@string/enter_your_aadhaar_card_number"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:padding="@dimen/_14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColor="@null"
+                android:textColorHint="@color/hint_color"
+                android:textSize="@null" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvAadhaarError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8dp"
+            android:text="@string/this_field_is_mandatory"
+            android:textAppearance="@style/register_error_msg"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilAadhaarCardNo"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAadhaarError"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/transparent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_outline"
+                android:hint="@string/enter_your_aadhaar_card_number"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:padding="@dimen/_14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColor="@null"
+                android:textColorHint="@color/hint_color"
+                android:textSize="@null" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvPhoneError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8dp"
+            android:text="@string/this_field_is_mandatory"
+            android:textAppearance="@style/register_error_msg"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilPhoneNo"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/btnSendOtp"
+            layout="@layout/btn_solid_active"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPhoneError" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

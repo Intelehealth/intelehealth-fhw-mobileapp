@@ -150,7 +150,7 @@
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/error_location_not_selected"
-                    android:textAppearance="@style/registr_error_msg"
+                    android:textAppearance="@style/register_error_msg"
                     android:textColor="@color/red"
                     android:textSize="13sp"
                     android:visibility="visible" />
@@ -198,7 +198,7 @@
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/error_field_required"
-                    android:textAppearance="@style/registr_error_msg"
+                    android:textAppearance="@style/register_error_msg"
                     android:textColor="@color/red"
                     android:textSize="13sp"
                     android:visibility="visible" />
@@ -257,7 +257,7 @@
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/error_field_required"
-                    android:textAppearance="@style/registr_error_msg"
+                    android:textAppearance="@style/register_error_msg"
                     android:textColor="@color/red"
                     android:textSize="13sp"
                     android:visibility="visible" />
@@ -373,7 +373,7 @@
             android:layout_marginVertical="@dimen/hamburger_margin_start"
             android:lineSpacingExtra="0sp"
             android:text="@string/setup_internet_not_available"
-            android:textAppearance="@style/registr_error_msg"
+            android:textAppearance="@style/register_error_msg"
             android:textColor="@color/red"
             android:textSize="13sp"
             android:visibility="visible" />

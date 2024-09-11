@@ -16,5 +16,13 @@
     <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
     <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
     <string name="abha_consent_line7">I have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card or Phone number or ABHA for data security and privacy.</string>
+    <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you one time OTP on your AADHAAR registered mobile number.</string>
+    <string name="otp_verification">OTP Verification</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_your_aadhaar_card_number">Enter your AADHAAR card number</string>
+    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="send_otp">Send OTP</string>
 
 </resources>

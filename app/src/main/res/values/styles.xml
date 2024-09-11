@@ -366,7 +366,7 @@
         </item>
     </style>
 
-    <style name="registr_error_msg">
+    <style name="register_error_msg">
         <item name="android:textSize">
             @dimen/find_patient_hint_size
         </item>
