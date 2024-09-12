@@ -29,7 +29,9 @@ class NotificationDAO {
 
             e.printStackTrace() // Log the exception
         } finally {
-            db.endTransaction()
+            if(db != null && db.inTransaction()){
+                db.endTransaction();
+            }
         }
 
     }

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,21 +185,32 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setVisitsEndedInRange() {
-        int numberOfVisitsEnded = 0;
+        //int numberOfVisitsEnded = 0;
 
-        List<EncounterDTO> encounterDTOList = new ArrayList<>();
         String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
         String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
-        //here added two logic for date filter
-        //because if sync status = 1 then the date format is "MMM d, yyyy"
+
+        //normally sqlite doesn't support filter for "MMM d, yyyy" this date format
+        //that's why here added two logics for date filter
+        //if sync status = 1 then the date format is "MMM d, yyyy"
         //and sync status = 0 then the date format is "yyyy-MM-dd"
 
-        String formatedDay = "(CASE " +
+        //ex date if sync is 1: Sep 1, 2024
+        //ex date if sync is 0: 2024-09-01
+
+        //whenever we substr(v.enddate, 5, 2) sometimes the result is like "1," for (Sep 1, 2024)  and "11" for (Sep 11, 2024)
+        //here to check "," exist or not, added instr function
+        //if the function returns 0 then we are taking substr(v.enddate, 5, 2). output will be like "11" Ex date:Sep 11, 2024
+        //if the function returns > 0 then we are taking substr(v.enddate, 5, 1). output will be like "1" Ex date:Sep 1, 2024
+        String formattedDay = "(CASE " +
                 "WHEN instr(substr(v.enddate, 5, 2), ',') > 0 THEN substr(v.enddate, 5, 1) " +
                 "ELSE substr(v.enddate, 5, 2) " +
                 "END)";
 
-        String formatedEndDate = "(CASE WHEN v.sync = 1 THEN REPLACE((substr(v.enddate, 8, 5) || '-' || " +
+        //as we know sqlite doesn't support "Sep 11, 2024" this format for filter
+        //we are formatting month and year here to "yyyy-MM-dd" this format
+        //converting month text to digit
+        String formattedEndDate = "(CASE WHEN v.sync = 1 THEN REPLACE((substr(v.enddate, 8, 5) || '-' || " +
                 "(CASE substr(v.enddate, 1, 3) " +
                 "WHEN 'Jan' THEN '01' " +
                 "WHEN 'Feb' THEN '02' " +
@@ -213,12 +225,17 @@ public class DateRangeAchievementsFragment extends Fragment {
                 "WHEN 'Nov' THEN '11' " +
                 "WHEN 'Dec' THEN '12' " +
                 "END) || '-' || " +
-                "CASE WHEN LENGTH("+formatedDay+") = 1 THEN '0'||"+formatedDay+" ELSE "+formatedDay+" END ),' ','') else substr(v.enddate,1,10) END)";
+                //checking length of the formatted date here
+                //if length is 1 then adding another 0 before the digit
+                //if length is more than 1, that means it's in correct format
+                "CASE WHEN LENGTH("+formattedDay+") = 1 THEN '0'||"+formattedDay+" ELSE "+formattedDay+" END ),' ','') else substr(v.enddate,1,10) END)";
+
+        //if the end date is "Sep 11, 2024" then the final output will be "11-09-2024" for formattedEndDate
 
         String visitEndedQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
                 "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
                 "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
-                "AND "+formatedEndDate+" >= '"+startDate+"' and "+formatedEndDate+"<= '"+endDate+"'";
+                "AND "+formattedEndDate+" >= '"+startDate+"' and "+formattedEndDate+"<= '"+endDate+"'";
 
         CustomLog.d("visitEndedQuery",""+visitEndedQuery);
 
@@ -248,7 +265,7 @@ public class DateRangeAchievementsFragment extends Fragment {
             }
         }
 */
-        int finalCount = numberOfVisitsEnded;
+        //int finalCount = numberOfVisitsEnded;
         requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(count));
         rangePatientsCreatedCursor.close();
     }
