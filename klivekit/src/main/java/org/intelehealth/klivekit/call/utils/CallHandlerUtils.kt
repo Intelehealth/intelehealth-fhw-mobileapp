@@ -12,6 +12,7 @@ import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.CallLogHandler
+import org.intelehealth.klivekit.call.CallServiceWorker
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.notification.CallReceiver
@@ -50,9 +51,7 @@ object CallHandlerUtils {
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
-            IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
-                ContextCompat.startForegroundService(context, it)
-            }
+            CallServiceWorker.startCallServiceWorker(callArgs, context)
         }
     }
 
@@ -62,7 +61,7 @@ object CallHandlerUtils {
      * @param callArgs an instance of RtcArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateIncomingCall(context: Context, callArgs: RtcArgs, ) {
+    fun operateIncomingCall(context: Context, callArgs: RtcArgs) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
@@ -74,8 +73,7 @@ object CallHandlerUtils {
     }
 
     private fun getCallLogHandler(context: Context) = CallLogHandler(
-        CallLogRepository(WebRtcDatabase.getInstance(context).rtcCallLogDao()),
-        PreferenceHelper(context)
+        CallLogRepository(WebRtcDatabase.getInstance(context).rtcCallLogDao()), PreferenceHelper(context)
     )
 
     private fun generateCallLog(callArgs: RtcArgs, context: Context) = RtcCallLog(
@@ -84,7 +82,7 @@ object CallHandlerUtils {
         calleeId = callArgs.nurseId!!,
         calleeName = callArgs.nurseName!!,
         roomId = callArgs.roomId!!,
-        roomName = callArgs.patientName?:"",
+        roomName = callArgs.patientName ?: "",
         callMode = callArgs.callMode,
         callStatus = callArgs.callStatus,
         callTime = System.currentTimeMillis().toString(),
@@ -188,9 +186,7 @@ object CallHandlerUtils {
      * @return MediaPlayer
      */
     fun playRingtoneInEarPiece(
-        context: Context,
-        audioManager: AudioManager,
-        messageBody: RtcArgs
+        context: Context, audioManager: AudioManager, messageBody: RtcArgs
     ) {
 
         mediaPlayer = MediaPlayer.create(context, R.raw.ring_ring)
@@ -208,9 +204,7 @@ object CallHandlerUtils {
         val volume = audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL)
 
         audioManager.setStreamVolume(
-            AudioManager.STREAM_VOICE_CALL,
-            volume,
-            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
+            AudioManager.STREAM_VOICE_CALL, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
         )
 
         mediaPlayer?.start()
