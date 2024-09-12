@@ -12,6 +12,7 @@ import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.CallLogHandler
+import org.intelehealth.klivekit.call.CallServiceWorker
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.notification.CallReceiver
@@ -50,9 +51,7 @@ object CallHandlerUtils {
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
-            IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
-                ContextCompat.startForegroundService(context, it)
-            }
+            CallServiceWorker.startCallServiceWorker(callArgs, context)
         }
     }
 
@@ -189,9 +188,7 @@ object CallHandlerUtils {
      * @return MediaPlayer
      */
     fun playRingtoneInEarPiece(
-        context: Context,
-        audioManager: AudioManager,
-        messageBody: RtcArgs
+        context: Context, audioManager: AudioManager, messageBody: RtcArgs
     ) {
 
         mediaPlayer = MediaPlayer.create(context, R.raw.ring_ring)
@@ -209,9 +206,7 @@ object CallHandlerUtils {
         val volume = audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL)
 
         audioManager.setStreamVolume(
-            AudioManager.STREAM_VOICE_CALL,
-            volume,
-            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
+            AudioManager.STREAM_VOICE_CALL, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
         )
 
         mediaPlayer?.start()
