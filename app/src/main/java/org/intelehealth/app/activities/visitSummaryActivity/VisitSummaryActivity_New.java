@@ -124,8 +124,8 @@ import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.adapters.ReferralFacilityArrayAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData;
 import org.intelehealth.app.activities.visitSummaryActivity.adapters.SeverityArrayAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.model.ReferralFacilityData;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -384,6 +384,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     int totalSync = 0;
     private boolean isFromSaveVisit = false;
+    private boolean mIsFollowUpTypeVisit = false;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -454,6 +455,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
                 btn.setVisibility(isAppointment ? View.GONE : View.VISIBLE);
             }
+            uiUpdateForFollowUpVisit();
         }
     }
 
@@ -2934,7 +2936,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void navigateToPreview() {
         Intent intent = new Intent(VisitSummaryActivity_New.this, VisitSummaryActivityPreview.class);
-        intent.putExtras(getIntent());
+        Intent in = getIntent();
+        in.putExtra("IsFollowUpTypeVisit",mIsFollowUpTypeVisit);
+        intent.putExtras(in);
         startActivity(intent);
     }
 
@@ -3530,6 +3534,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    // during folloup visit no need of the case close manually it will be done after visit upload
+
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                     //Do something after 100ms
                     SyncUtils syncUtils = new SyncUtils();
@@ -3537,6 +3543,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     isFromSaveVisit = true;
                     if (!isSync) {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                  /*  new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(mIsFollowUpTypeVisit){
+                                saveCloseCaseReason("Follow-Up done");
+                            }
+                        }
+                    }, 4000);*/
                     }
                 }
             }, 4000);
@@ -5804,7 +5818,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
                         mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
                 }
-
+                for (int i = 0; i < mChiefComplainList.size() ; i++) {
+                    if (mChiefComplainList.get(i).contains("Follow up visit") || mChiefComplainList.get(i).contains("दोबारा विजिट करना (फॉलो अप विजिट)")) {
+                        mIsFollowUpTypeVisit = true;
+                        break;
+                    }
+                }
                 cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
                 cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
                 cc_adapter = new ComplaintHeaderAdapter(this, mChiefComplainList);
@@ -5962,7 +5981,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         // family history - end
         // medical history data - end
+
+        uiUpdateForFollowUpVisit();
     }
+    private void uiUpdateForFollowUpVisit(){
+        findViewById(R.id.flFacilityToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        findViewById(R.id.flReferralFacility).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        findViewById(R.id.flSeverity).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        findViewById(R.id.flCloseCaseToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+    }
+
 
     List<String> mChiefComplainList = new ArrayList<>();
 
@@ -6058,6 +6086,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 });
                 recyclerView.setAdapter(summaryViewAdapter);
                 mComplainSummaryLinearLayout.addView(view);
+            }
+        }
+        for (int i = 0; i < mChiefComplainList.size() ; i++) {
+            if (mChiefComplainList.get(i).contains("Follow up visit") || mChiefComplainList.get(i).contains("दोबारा विजिट करना (फॉलो अप विजिट)")) {
+                mIsFollowUpTypeVisit = true;
+                break;
             }
         }
 

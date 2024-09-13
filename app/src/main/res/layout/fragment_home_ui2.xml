@@ -6,392 +6,397 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textlayout_find_patient"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/find_patient_margin_start_new"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="@dimen/find_patient_margin_end_new"
-        android:background="@drawable/ui2_common_input_bg"
-        android:drawableStart="@drawable/ui2_ic_search_icon_home"
-        android:drawablePadding="@dimen/find_patient_icon_padding"
-        android:drawableTint="@color/colorPrimary"
-        android:gravity="center_vertical"
-        android:importantForAutofill="no"
-        android:maxLines="1"
-        android:minHeight="52dp"
-        android:padding="@dimen/find_patient_padding"
-        android:singleLine="true"
-        android:text="@string/find_patient"
-        android:textColor="@color/textColorGray"
-        android:textSize="@dimen/find_patient_hint_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textlayout_find_patient"
-        android:orientation="vertical"
-        android:weightSum="10">
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/addpatient_cardview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/margin_12"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
-            android:layout_weight="1.5"
-            app:cardBackgroundColor="?colorPrimary"
-            app:cardCornerRadius="@dimen/common_card_corner_radius"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textlayout_find_patient">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textlayout_find_patient"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/textlayout_find_patient"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/card_add_patient_margin"
-                android:background="?attr/colorPrimary">
-
-                <ImageView
-                    android:id="@+id/imageview_add_patient"
-                    android:layout_width="@dimen/image_add_patient_width"
-                    android:layout_height="@dimen/image_add_patient_height"
-                    android:layout_centerVertical="true"
-                    android:foregroundGravity="center"
-                    android:padding="@dimen/image_add_patient_padding"
-                    android:src="@drawable/ui2_ic_add_pateint_home"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/image_add_patient_margin_start"
-                    android:layout_toEndOf="@+id/imageview_add_patient"
-                    android:text="@string/add_patient"
-                    android:textColor="@color/textColorWhite"
-                    android:textSize="@dimen/common_headings_home"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageview_add_patient"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="@dimen/image_add_patient_next_width"
-                    android:layout_height="@dimen/image_add_patient_next_height"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:foregroundGravity="center"
-                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
-                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
-                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/dark_primary_arrow_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_prescription"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
-            android:layout_weight="2.75"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="@dimen/common_card_corner_radius"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorAccentLightCard"
-                android:paddingStart="@dimen/common_all_card_start_padding">
-
-                <TextView
-                    android:id="@+id/textview_prescriptions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:text="@string/prescriptions"
-                    android:textSize="@dimen/common_headings_home"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textview_received_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_prescriptions"
-                    android:layout_marginTop="@dimen/common_info_margin_top"
-                    android:text="5 out of 12 received"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_label_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
-
-                <ImageView
-                    android:layout_width="@dimen/image_add_patient_next_width"
-                    android:layout_height="@dimen/image_add_patient_next_height"
-                    android:layout_below="@+id/textview_received_no"
-                    android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
-                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
-                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
-                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/ui2_ic_forward_arrow_green"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageView
-                    android:layout_width="@dimen/card_prescription_image_width"
-                    android:layout_height="72dip"
-
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="16dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ui2_image_prescription_green_bg"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <ImageView
-                    android:layout_width="@dimen/card_prescription_image_width"
-                    android:layout_height="@dimen/card_prescription_image_height"
-                    android:layout_alignParentEnd="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ui2_image_prescription_green"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/closedVisitsCardView"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/common_all_card_end_margin"
-            android:layout_weight="2.75"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="@dimen/common_card_corner_radius"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_prescription">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryLightCard"
-                android:paddingStart="@dimen/common_all_card_start_padding"
-                android:paddingTop="@dimen/common_all_card_top_margin">
-
-                <TextView
-                    android:id="@+id/textview_close_visit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/open_visits"
-                    android:textSize="@dimen/common_headings_home"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textview_close_visit_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_close_visit"
-                    android:layout_marginTop="@dimen/common_info_margin_top"
-                    android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/common_label_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit"
-                    tools:text="12 unclosed visits" />
-
-                <ImageView
-                    android:layout_width="@dimen/image_add_patient_next_width"
-                    android:layout_height="@dimen/image_add_patient_next_height"
-                    android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
-                    android:paddingTop="@dimen/image_add_patient_icon_padding_top"
-                    android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
-                    android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
-                    android:src="@drawable/dark_primary_arrow_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageView
-                    android:layout_width="@dimen/card_prescription_image_width"
-                    android:layout_height="@dimen/card_prescription_image_height"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:src="@drawable/ui2_ic_close_visit"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView4_appointment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/card_appointment_margin_end"
-                android:background="@drawable/ui2_card_bg_gray_border"
-                app:cardCornerRadius="@dimen/common_card_corner_radius"
-                app:cardElevation="@dimen/card_appointment_card_elevation"
-                app:cardMaxElevation="8dp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/followup_cardview"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/backgroundWhite"
-                    android:padding="@dimen/card_options_padding"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_options_icons_margin_top"
-                        android:src="@drawable/ui2_ic_appointments_icon_home"
-                        app:layout_constraintBottom_toTopOf="@id/textView4"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:text="@string/appointments"
-                        android:textSize="@dimen/common_sub_headings_home"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/textView5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/options_sub_heading_margin_top"
-                        android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="@string/upcoming"
-                        android:textSize="@dimen/common_label_text_size"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/followup_cardview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/card_followup_margin_start"
-                android:backgroundTint="@color/backgroundWhite"
-                app:cardCornerRadius="@dimen/common_card_corner_radius"
-                app:cardElevation="@dimen/card_appointment_card_elevation"
-                app:cardMaxElevation="8dp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/find_patient_margin_start_new"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/find_patient_margin_end_new"
+                android:background="@drawable/ui2_common_input_bg"
+                android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                android:drawablePadding="@dimen/find_patient_icon_padding"
+                android:drawableTint="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:minHeight="52dp"
+                android:padding="@dimen/find_patient_padding"
+                android:singleLine="true"
+                android:text="@string/find_patient"
+                android:textColor="@color/textColorGray"
+                android:textSize="@dimen/find_patient_hint_size"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/cardView4_appointment"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/addpatient_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+                app:cardBackgroundColor="?colorPrimary"
+                app:cardCornerRadius="@dimen/common_card_corner_radius"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textlayout_find_patient">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/backgroundWhite"
-                    android:padding="@dimen/card_options_padding">
+                    android:layout_margin="@dimen/card_add_patient_margin"
+                    android:background="?attr/colorPrimary">
 
                     <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_options_icons_margin_top"
-                        android:src="@drawable/ui2_ic_followup_visits_icon_home"
-                        app:layout_constraintBottom_toTopOf="@id/txtFollowUpVisits"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-                    <TextView
-                        android:id="@+id/txtFollowUpVisits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:text="@string/follow_up_visits"
-                        android:textSize="@dimen/common_sub_headings_home"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/textView6"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/options_sub_heading_margin_top"
-                        android:layout_marginBottom="@dimen/common_info_margin_bottom"
-                        android:text="@string/pending"
-                        android:textSize="@dimen/common_label_text_size"
+                        android:id="@+id/imageview_add_patient"
+                        android:layout_width="@dimen/image_add_patient_width"
+                        android:layout_height="@dimen/image_add_patient_height"
+                        android:layout_centerVertical="true"
+                        android:foregroundGravity="center"
+                        android:padding="@dimen/image_add_patient_padding"
+                        android:src="@drawable/ui2_ic_add_pateint_home"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtFollowUpVisits" />
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/image_add_patient_margin_start"
+                        android:layout_toEndOf="@+id/imageview_add_patient"
+                        android:text="@string/add_patient"
+                        android:textColor="@color/textColorWhite"
+                        android:textSize="@dimen/common_headings_home"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageview_add_patient"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="@dimen/image_add_patient_next_width"
+                        android:layout_height="@dimen/image_add_patient_next_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:foregroundGravity="center"
+                        android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                        android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                        android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
+                        android:src="@drawable/dark_primary_arrow_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_prescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/common_card_corner_radius"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccentLightCard"
+                    android:minHeight="130dp"
+                    android:paddingStart="@dimen/common_all_card_start_padding">
+
+                    <TextView
+                        android:id="@+id/textview_prescriptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/std_12dp"
+                        android:text="@string/prescriptions"
+                        android:textSize="@dimen/common_headings_home"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_received_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview_prescriptions"
+                        android:layout_marginTop="@dimen/common_info_margin_top"
+                        android:text="5 out of 12 received"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
+
+                    <ImageView
+                        android:layout_width="@dimen/image_add_patient_next_width"
+                        android:layout_height="@dimen/image_add_patient_next_height"
+                        android:layout_below="@+id/textview_received_no"
+                        android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
+                        android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                        android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                        android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
+                        android:src="@drawable/ui2_ic_forward_arrow_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:layout_width="@dimen/card_prescription_image_width"
+                        android:layout_height="72dip"
+
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="16dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ui2_image_prescription_green_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:layout_width="@dimen/card_prescription_image_width"
+                        android:layout_height="@dimen/card_prescription_image_height"
+                        android:layout_alignParentEnd="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ui2_image_prescription_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/closedVisitsCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/common_card_corner_radius"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_prescription">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimaryLightCard"
+                    android:minHeight="130dp"
+                    android:paddingStart="@dimen/common_all_card_start_padding"
+                    android:paddingTop="@dimen/common_all_card_top_margin">
+
+                    <TextView
+                        android:id="@+id/textview_close_visit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_visits"
+                        android:textSize="@dimen/common_headings_home"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_close_visit_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textview_close_visit"
+                        android:layout_marginTop="@dimen/common_info_margin_top"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_close_visit"
+                        tools:text="12 unclosed visits" />
+
+                    <ImageView
+                        android:layout_width="@dimen/image_add_patient_next_width"
+                        android:layout_height="@dimen/image_add_patient_next_height"
+                        android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
+                        android:paddingTop="@dimen/image_add_patient_icon_padding_top"
+                        android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
+                        android:paddingBottom="@dimen/image_add_patient_icon_padding_bottom"
+                        android:src="@drawable/dark_primary_arrow_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:layout_width="@dimen/card_prescription_image_width"
+                        android:layout_height="@dimen/card_prescription_image_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:src="@drawable/ui2_ic_close_visit"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardView4_appointment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/card_appointment_margin_end"
+                    android:background="@drawable/ui2_card_bg_gray_border"
+                    android:minHeight="120dp"
+                    app:cardCornerRadius="@dimen/common_card_corner_radius"
+                    app:cardElevation="@dimen/card_appointment_card_elevation"
+                    app:cardMaxElevation="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/followup_cardview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/backgroundWhite"
+                        android:padding="@dimen/card_options_padding"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_options_icons_margin_top"
+                            android:src="@drawable/ui2_ic_appointments_icon_home"
+                            app:layout_constraintBottom_toTopOf="@id/textView4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_8"
+                            android:text="@string/appointments"
+                            android:textSize="@dimen/common_sub_headings_home"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/textView5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/options_sub_heading_margin_top"
+                            android:layout_marginBottom="@dimen/common_info_margin_bottom"
+                            android:text="@string/upcoming"
+                            android:textSize="@dimen/common_label_text_size"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/followup_cardview"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/card_followup_margin_start"
+                    android:backgroundTint="@color/backgroundWhite"
+                    android:minHeight="120dp"
+                    app:cardCornerRadius="@dimen/common_card_corner_radius"
+                    app:cardElevation="@dimen/card_appointment_card_elevation"
+                    app:cardMaxElevation="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@+id/cardView4_appointment"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="@color/backgroundWhite"
+                        android:padding="@dimen/card_options_padding">
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_options_icons_margin_top"
+                            android:src="@drawable/ui2_ic_followup_visits_icon_home"
+                            app:layout_constraintBottom_toTopOf="@id/txtFollowUpVisits"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/txtFollowUpVisits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_8"
+                            android:text="@string/follow_up_visits"
+                            android:textSize="@dimen/common_sub_headings_home"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/textView6"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/options_sub_heading_margin_top"
+                            android:layout_marginBottom="@dimen/common_info_margin_bottom"
+                            android:text="@string/pending"
+                            android:textSize="@dimen/common_label_text_size"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtFollowUpVisits" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
     <!--   <include
       android:id="@+id/bottom_nav_add_pay_cr"
       layout="@layout/ui2_layout_common_bottom_nav" />

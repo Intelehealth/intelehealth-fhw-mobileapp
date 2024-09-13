@@ -60,13 +60,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -361,7 +358,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     String htmlContent = "<b>Pdf</b>";
     private List<FacilityToVisitModel> facilityList = null;
     private List<String> severityList = null;
-
+    private boolean mIsFollowUpTypeVisit = false;
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -467,6 +464,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         // todo: uncomment this block later for testing it is commented.
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
+            mIsFollowUpTypeVisit = intent.getBooleanExtra("IsFollowUpTypeVisit", false);
             if (intent.hasExtra("CommonVisitData")) {
                 mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
 
@@ -1437,7 +1435,12 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         });
 
     }
-
+    private void uiUpdateForFollowUpVisit(){
+        findViewById(R.id.flFacilityToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        findViewById(R.id.flReferralFacility).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        findViewById(R.id.flSeverity).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+        //findViewById(R.id.flCloseCaseToVisit).setVisibility(!mIsFollowUpTypeVisit ? View.VISIBLE : View.GONE);
+    }
     private void initUI() {
         sharePatientBt = findViewById(R.id.share_patient_bt);
         shareFacilityBt = findViewById(R.id.share_referral_facility_bt);
@@ -1609,6 +1612,8 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
                 }
             }
         });
+
+        uiUpdateForFollowUpVisit();
     }
 
     private void shareVisitToWhatsApp(String phoneNumber, String facilityId) {
@@ -1664,7 +1669,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
     }
 
     private void shareOperation(String msg) {
-        htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
+        htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData, mIsFollowUpTypeVisit);
         WebView webView = new WebView(this);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
@@ -1748,7 +1753,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        String htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData);
+        String htmlContent = VisitSummaryPdfGenerator.generateHtmlContent(context, visitSummaryPdfData, mIsFollowUpTypeVisit);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -4819,6 +4824,7 @@ public class VisitSummaryActivityPreview extends BaseActivity implements Adapter
             findViewById(R.id.cardPriorityVisit).setVisibility(activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
             //findViewById(R.id.btn_vs_appointment).setVisibility(activeStatus.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
             visitSummaryPdfData.setActiveStatus(activeStatus);
+            uiUpdateForFollowUpVisit();
         }
     }
 }

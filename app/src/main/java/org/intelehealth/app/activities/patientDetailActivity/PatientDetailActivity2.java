@@ -102,7 +102,6 @@ import org.intelehealth.app.activities.identificationActivity.model.Block;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
 import org.intelehealth.app.activities.identificationActivity.model.StateData;
-import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
 import org.intelehealth.app.activities.identificationActivity.model.Village;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
@@ -1019,14 +1018,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             });
             mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
         }
-
-        if (mCurrentVisitDataList.isEmpty()) {
+        // allow now for follow-up visit even if open visit is there
+        /*if (mCurrentVisitDataList.isEmpty()) {
             findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
             startVisitBtn.setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
             startVisitBtn.setVisibility(View.GONE);
-        }
+        }*/
         // }
     }
 

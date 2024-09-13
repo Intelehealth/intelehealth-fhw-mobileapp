@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.visitSummaryActivity
 import android.content.Context
 import androidx.core.content.ContextCompat
 import org.intelehealth.app.R
-import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.models.DocumentObject
 import org.intelehealth.app.models.VisitSummaryPdfData
 import org.intelehealth.app.utilities.Base64Utils
@@ -21,6 +20,7 @@ class VisitSummaryPdfGenerator {
         fun generateHtmlContent(
             context: Context,
             visitSummaryPdfData: VisitSummaryPdfData,
+            isFollowUpTypeVisit: Boolean
         ): String {
             val meta =
                 "<meta charset=\"utf-8\" />" + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />" +
@@ -48,8 +48,8 @@ class VisitSummaryPdfGenerator {
                 .append(getAdditionalNoteHtml(context, visitSummaryPdfData))
                 .append(getAdditionalDocHtml(context, visitSummaryPdfData))
                 .append(getDoctorSpecialityHtml(context, visitSummaryPdfData))
-                .append(getFacility(context, visitSummaryPdfData))
-                .append(getSeverity(context, visitSummaryPdfData))
+                .append(if (isFollowUpTypeVisit) "" else getFacility(context, visitSummaryPdfData))
+                .append(if (isFollowUpTypeVisit) "" else getSeverity(context, visitSummaryPdfData))
                 .append(getFollowupDate(context, visitSummaryPdfData))
                 .append(getCloseCaseReasonHTMLView(context, visitSummaryPdfData))
                 .append(getPriorityHtml(context, visitSummaryPdfData))

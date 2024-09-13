@@ -31,7 +31,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -238,7 +237,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //startActivity(intent2);
         //finish();
     }
-
+private boolean mIsLoadedOnce = false;
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
@@ -250,12 +249,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             totalScreen = 3;
             Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
         }
-
-        if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
+        if(!mIsLoadedOnce) {
+            if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
 //            getSupportFragmentManager().beginTransaction().
 //                    replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, mIsEditMode, null), VITAL_FRAGMENT).
 //                    commit();
-        else makeReadyForEdit();
+            else makeReadyForEdit();
+        }
+        mIsLoadedOnce = true;
     }
 
     @Override
