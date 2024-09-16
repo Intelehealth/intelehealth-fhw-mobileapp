@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_16dp"
+        android:paddingBottom="@dimen/_16dp"
+        tools:context=".features.ui.registration.SelectAbhaAddressActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/white_toolbar" />
+
+        <TextView
+            android:id="@+id/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:gravity="top"
+            android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
+            android:textColor="@color/subtitle_color"
+            android:textSize="@dimen/_13sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGrp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_weight="1"
+            app:chipSpacingHorizontal="@dimen/_14dp"
+            app:singleSelection="true" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_20dp"
+            app:hintEnabled="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAbhaAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_outline"
+                    android:hint="@string/abha_address"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="18"
+                    android:padding="14dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/type_mobile_no"
+                    android:textColor="@null"
+                    android:textColorHint="@color/hint_color"
+                    android:textSize="@null" />
+
+                <ImageView
+                    android:id="@+id/ivInfoAbhaSuggestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_10dp"
+                    android:src="@android:drawable/ic_menu_info_details"
+                    app:tint="@color/red" />
+
+            </LinearLayout>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include
+            android:id="@+id/btnSubmit"
+            layout="@layout/btn_solid_active"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

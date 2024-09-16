@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5dp"
+        app:cardCornerRadius="@dimen/_16dp"
+        app:cardElevation="@dimen/_16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_16dp">
+
+            <ImageView
+                android:id="@+id/dialog_icon"
+                android:layout_width="@dimen/_64dp"
+                android:layout_height="@dimen/_64dp"
+                android:layout_marginTop="@dimen/_16dp"
+                android:src="@drawable/close_patient_svg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16dp"
+                android:gravity="center"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/patient_registered"
+                android:textColor="@null"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/dialog_icon"
+                app:layout_constraintStart_toStartOf="@+id/dialog_icon"
+                app:layout_constraintTop_toBottomOf="@id/dialog_icon" />
+
+            <TextView
+                android:id="@+id/dialog_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16dp"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/does_patient_start_visit_now"
+                android:textColor="@null"
+                android:textSize="@null"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_32dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/dialog_subtitle"
+                app:layout_constraintStart_toStartOf="@+id/dialog_subtitle"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_subtitle"
+                 >
+
+                <include
+                    android:id="@+id/btnYes"
+                    layout="@layout/white_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_8dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/btnNo"
+                    layout="@layout/btn_solid_active"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

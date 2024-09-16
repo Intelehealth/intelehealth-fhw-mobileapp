@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">features</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_content_old"><b><font color='#2E1E91'>Personal Information</font></b>\nHealth Worker will collect personal information and health information from you for your medical records.\n\n<b><font color='#2E1E91'>Use</font></b>\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b><font color='#2E1E91'>Protection Measures</font></b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b><font color='#2E1E91'>Access and Correction</font></b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="patient_registered">Patient Registered!</string>
+    <string name="does_patient_start_visit_now">Does the patient want to start the visit now?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="i_hereby_declare_that">I hereby declare that:</string>
+    <string name="abha_consent_line1"><![CDATA[I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India <b>(“UIDAI”)</b>, and my demographic information for the purpose of\n creating an Ayushman Bharat Health Account number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b>. I authorize NHA to use my Aadhaar\n number / Virtual ID for performing Aadhaar based authentication with UIDAI as per the provisions of the Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits\n and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication.]]></string>
+    <string name="abha_consent_line2"><![CDATA[I intend to create Ayushman Bharat Health Account Number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b> using document other than\n Aadhaar. (Click here to proceed further)]]></string>
+    <string name="abha_consent_line3">I consent to usage of my ABHA address and ABHA number for linking of my legacy (past) health records and those which will be generated during this encounter.</string>
+    <string name="abha_consent_line4">I authorize the sharing of all my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter</string>
+    <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
+    <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
+    <string name="abha_consent_line7">I have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card or Phone number or ABHA for data security and privacy.</string>
+    <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you one time OTP on your AADHAAR registered mobile number.</string>
+    <string name="otp_verification">OTP Verification</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_your_aadhaar_card_number">Enter your AADHAAR card number</string>
+    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have requested multiple OTPs Or Exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
+    <string name="something_went_wrong">Something went wrong. Please contact support</string>
+    <string name="enter_mobile_number">Enter mobile number</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="please_select_an_abha_address_from_the_suggestions_below">*Please select an ABHA address from the suggestions below.</string>
+    <string name="abha_address">ABHA address</string>
+    <string name="select_an_abha_address">Select an ABHA Address</string>
+    <string name="submit">Submit</string>
+    <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\\n2. Maximum length - 18 characters\\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>
+    <string name="abha_address_must_be_at_least_8_characters_long">ABHA address must be at least 8 characters long.</string>
+    <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
+
+</resources>

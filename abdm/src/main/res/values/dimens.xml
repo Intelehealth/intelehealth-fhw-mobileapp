@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_margin_start">16dp</dimen>
+    <dimen name="toolbar_header_size">18sp</dimen>
+    <dimen name="_14sp">14sp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_13dp">13dp</dimen>
+    <dimen name="_16sp">16sp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_64dp">64dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+    <dimen name="_12dp">12dp</dimen>
+    <dimen name="_13sp">13sp</dimen>
+    <dimen name="_14dp">14dp</dimen>
+    <dimen name="_15dp">15dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+</resources>
