@@ -1,4 +1,4 @@
-package org.intelehealth.abdm.domain.repository.registration.request
+package org.intelehealth.abdm.domain.model.request
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

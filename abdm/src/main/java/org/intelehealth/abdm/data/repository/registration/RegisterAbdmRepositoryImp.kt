@@ -7,8 +7,8 @@ import org.intelehealth.abdm.data.services.AbdmService
 import org.intelehealth.abdm.domain.model.AadhaarOTP
 import org.intelehealth.abdm.domain.model.AadhaarOtpVerification
 import org.intelehealth.abdm.domain.repository.registration.RegisterAbdmRepository
-import org.intelehealth.abdm.domain.repository.registration.request.SendAadhaarOtpApiRequest
-import org.intelehealth.abdm.domain.repository.registration.request.AadhaarOtpVerificationRequest
+import org.intelehealth.abdm.domain.model.request.SendAadhaarOtpApiRequest
+import org.intelehealth.abdm.domain.model.request.AadhaarOtpVerificationRequest
 import org.intelehealth.abdm.domain.result.ApiResult
 import javax.inject.Inject
 

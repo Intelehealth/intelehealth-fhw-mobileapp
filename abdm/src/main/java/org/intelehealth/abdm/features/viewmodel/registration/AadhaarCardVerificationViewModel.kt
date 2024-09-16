@@ -15,8 +15,8 @@ import org.intelehealth.abdm.common.utils.ErrorCode.CODE_429
 import org.intelehealth.abdm.data.network.ABDMConstant
 import org.intelehealth.abdm.data.network.ABDMConstant.BEARER_AUTH
 import org.intelehealth.abdm.domain.model.AadhaarOtpVerification
-import org.intelehealth.abdm.domain.repository.registration.request.AadhaarOtpVerificationRequest
-import org.intelehealth.abdm.domain.repository.registration.request.SendAadhaarOtpApiRequest
+import org.intelehealth.abdm.domain.model.request.AadhaarOtpVerificationRequest
+import org.intelehealth.abdm.domain.model.request.SendAadhaarOtpApiRequest
 import org.intelehealth.abdm.domain.result.ApiResult
 import org.intelehealth.abdm.domain.usecase.GetAuthTokenUseCase
 import org.intelehealth.abdm.domain.usecase.registration.SendAadhaarOtpUseCase
