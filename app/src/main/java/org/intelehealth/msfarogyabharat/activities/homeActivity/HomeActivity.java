@@ -38,6 +38,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -817,7 +818,7 @@ c7.setOnClickListener(new View.OnClickListener() {
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        ContextCompat.registerReceiver(this,syncBroadcastReceiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
         showFollowUpBadge();
     }
 

@@ -26,6 +26,7 @@ import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,7 +46,6 @@ public class ImagesPushDAO {
     SessionManager sessionManager = null;
     String encoded_filename = "";
     Base64Utils base64Utils_filename = new Base64Utils();
-
 
 
     public boolean patientProfileImagesPush() {
@@ -86,8 +86,10 @@ public class ImagesPushDAO {
                     });
         }
         sessionManager.setPullSyncFinished(true);
-        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
+        IntelehealthApplication.getAppContext()
+                .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
@@ -125,7 +127,7 @@ public class ImagesPushDAO {
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.
                     OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
             Log.v("main", "obsurl" + url);
-            Log.v("main", "obsdata: "+ p.toString());
+            Log.v("main", "obsdata: " + p.toString());
 
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -187,8 +189,10 @@ public class ImagesPushDAO {
                     });
         }
         sessionManager.setPushSyncFinished(true);
-        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
+        IntelehealthApplication.getAppContext().sendBroadcast(
+                new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }

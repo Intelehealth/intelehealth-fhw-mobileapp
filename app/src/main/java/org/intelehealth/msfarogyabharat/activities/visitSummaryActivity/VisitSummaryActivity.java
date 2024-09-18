@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
@@ -337,7 +338,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean allVisitsEnded = false;
     private boolean hide_endvisit = false;
     String shareoptionsarray[] = {"Whatsapp", "Email"};
-    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
+    //public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
     URLEncoder urlEncoder;
 
     List<String> districtList;
@@ -394,13 +395,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void registerBroadcastReceiverDynamically() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+        ContextCompat.registerReceiver(this,broadcastReceiverForIamgeDownlaod, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     public void registerDownloadPrescription() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("downloadprescription");
-        registerReceiver(downloadPrescriptionService, filter);
+        ContextCompat.registerReceiver(this,downloadPrescriptionService, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
 
@@ -628,6 +629,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physexamList_adapter = new ArrayList<>();
 
         String a = sessionManager1.getFacilityResolution();
+        Log.d("FFFFFFF",""+sessionManager1.getFacilityResolution().equalsIgnoreCase(latestVisitUuid)+" "+sessionManager1.getFacilityResolution()+" "+(latestVisitUuid));
         if (sessionManager1.getFacilityResolution().equalsIgnoreCase(latestVisitUuid)) {
             button_resolution.setVisibility(View.GONE);
         } else {
@@ -642,8 +644,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(prescriptionUrl + patientUuid + "/" + sessionManager.getAppLanguage()));
-                Log.v("main", "prescurl: " + prescriptionUrl + patientUuid);
+                        Uri.parse(getPrescriptionUrl() + patientUuid + "/" + sessionManager.getAppLanguage()));
+                Log.v("main", "prescurl: " + getPrescriptionUrl() + patientUuid);
                 startActivity(intent1);
 
 /*                } catch (ParseException e) {
@@ -2332,7 +2334,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void shareEmail() {
         String to = "";
         String subject = "E-Prescription";
-        String body = prescriptionUrl + patientUuid + "/" + sessionManager.getAppLanguage();
+        String body = getPrescriptionUrl() + patientUuid + "/" + sessionManager.getAppLanguage();
         //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId/en
         Log.v("main", "prescurl: " + body);
         String mailTo = "mailto:" + to +
@@ -2346,13 +2348,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
         //Whatsapp is not accepting special characters # so need to encode it.
         String url = "";
-        url = URLEncoder.encode(prescriptionUrl);
+        url = URLEncoder.encode(getPrescriptionUrl());
         String message = url + patientUuid + "/" + sessionManager.getAppLanguage();
         Log.v("main", "prescurl: " + message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
+    }
+
+    String getPrescriptionUrl(){
+        String baseUrl = sessionManager.getServerUrl();
+        return "https://"+baseUrl+"/intelehealth/index.html#/prescription/";
     }
 
     public JSONObject loadJsonObjectFromAsset(String assetName) {
@@ -4494,7 +4501,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (!isReceiverRegistered) {
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             receiver = new NetworkChangeReceiver();
-            registerReceiver(receiver, filter);
+            ContextCompat.registerReceiver(this,receiver, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
             isReceiverRegistered = true;
         }
     }
