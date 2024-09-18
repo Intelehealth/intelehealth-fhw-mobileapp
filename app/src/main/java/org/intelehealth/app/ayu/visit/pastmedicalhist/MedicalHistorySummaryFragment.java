@@ -7,7 +7,9 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,8 +87,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
-        int index = status.getVitalSection() ? 4 : 3;
-        int total = status.getVitalSection() ? 4 : 3;
+        int index = status.getVitalSection() ? 5 : 4;
+        int total = status.getVitalSection() ? 5 : 4;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
         tvTitle.setText(getString(R.string.ui2_medical_hist_title_text, index, total));
     }
@@ -104,21 +106,21 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     requireActivity().setResult(Activity.RESULT_OK);
                     requireActivity().finish();
                 } else
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_6_VISIT_SUMMARY, mIsEditMode, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_7_VISIT_SUMMARY, mIsEditMode, null);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIsEditMode = true;
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIsEditMode = true;
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
             }
         });
         ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
@@ -179,9 +181,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
                         } else if (key.equalsIgnoreCase("Family history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_6_FAMILY_HISTORY);
                         }
 
                     }
@@ -343,9 +345,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
                         } else if (key.equalsIgnoreCase("Family history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_6_FAMILY_HISTORY);
                         }
 
                     }

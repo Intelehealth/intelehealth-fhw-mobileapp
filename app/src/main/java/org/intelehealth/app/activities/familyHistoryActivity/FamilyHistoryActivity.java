@@ -101,6 +101,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     QuestionsAdapter adapter;
     String edit_FamHist = "";
     String new_result;
+    private String encounterUuidDiagnostics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            encounterUuidDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
+
 
             if(edit_FamHist == null)
                 new_result = getFamilyHistoryVisitData();
@@ -200,6 +203,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
+                    intent.putExtra("encounterUuidDiagnostics", encounterUuidDiagnostics);
 
                     startActivity(intent);
 
@@ -414,6 +418,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("encounterUuidDiagnostics", encounterUuidDiagnostics);
             //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }

@@ -115,7 +115,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
     String new_result;
-
+    private String encounterDiagnostics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -148,6 +148,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            encounterDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
 
             if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
@@ -215,6 +216,8 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
                     intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
+                    intent.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
+
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
@@ -419,6 +422,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
 
