@@ -1074,4 +1074,6 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
+    <string name="enter_url">Enter URL</string>
 </resources>

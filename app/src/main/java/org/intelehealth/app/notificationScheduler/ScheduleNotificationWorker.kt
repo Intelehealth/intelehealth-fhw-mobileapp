@@ -66,7 +66,7 @@ class ScheduleNotificationWorker(context: Context, parameters: WorkerParameters)
                         .setContentTitle(title)
                         .setContentText(description)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.splash_logo)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(false)
 
