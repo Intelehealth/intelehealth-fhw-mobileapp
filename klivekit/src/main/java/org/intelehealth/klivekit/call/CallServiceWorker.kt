@@ -39,7 +39,8 @@ class CallServiceWorker(private val context: Context, private val workerParams: 
                 val args = Gson().toJson(messageBody)
                 putString(CALL_SERVICE_ARGS, args)
             }.also {
-                OneTimeWorkRequest.Builder(CallServiceWorker::class.java).addTag(CALL_SERVICE_TAG)
+                OneTimeWorkRequest.Builder(CallServiceWorker::class.java)
+                    .addTag(CALL_SERVICE_TAG)
                     .setInputData(it.build()).build().apply {
                         WorkManager.getInstance(context).enqueue(this)
                     }
