@@ -31,6 +31,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 
 import java.util.Date;
 import java.util.Locale;
@@ -144,9 +145,19 @@ public class DailyAchievementsFragment extends Fragment {
 
     // get the number of visits that were ended by the current health worker today
     private void setVisitsEndedToday() {
-        String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter WHERE provider_uuid = ? AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\" AND modified_date LIKE '" + todaysDateInYYYYMMDD + "%'";
+        String date = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "MMM d, yyyy");
+        String unsyncDateFormat = DateAndTimeUtils.getDateTimeFromTimestamp(System.currentTimeMillis(), "yyyy-MM-dd");
+        //here added two logic for date filter
+        //because if sync status = 1 then the date format is "MMM d, yyyy"
+        //and sync status = 0 then the date format is "yyyy-MM-dd"
+        String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
+                "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
+                "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
+                "AND (CASE WHEN v.sync = 1 then v.enddate LIKE '" + date + "%' else substr(v.enddate,1,10) LIKE '" + unsyncDateFormat + "%' END)";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        final Cursor todayVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{sessionManager.getProviderID()});
+        final Cursor todayVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{
+                sessionManager.getProviderID()
+        });
 
         todayVisitsEndedCursor.moveToFirst();
         String todayVisitsEndedCount = todayVisitsEndedCursor.getString(todayVisitsEndedCursor.getColumnIndex(todayVisitsEndedCursor.getColumnName(0)));

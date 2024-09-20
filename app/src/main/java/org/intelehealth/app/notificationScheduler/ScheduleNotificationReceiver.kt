@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New
@@ -27,7 +28,7 @@ class ScheduleNotificationReceiver : BroadcastReceiver() {
         val channelId = inputData?.getString(BundleKeys.CHANNEL_ID)
         val visitUUid = inputData?.getString(BundleKeys.VISIT_UUI)
         val name = inputData?.getString(BundleKeys.NAME)
-
+        val notificationTriggerTime = inputData?.getLong(BundleKeys.NOTIFICATION_TRIGGER_TIME)
         sendNotification(
             title, description, channelId, visitUUid, name
         )

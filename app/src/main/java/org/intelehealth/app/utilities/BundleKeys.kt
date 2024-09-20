@@ -18,6 +18,7 @@ class BundleKeys {
         const val VISIT_UUI = "visitUuid"
         const val GENDER = "gender"
         const val NAME = "name"
+        const val NOTIFICATION_TRIGGER_TIME = "notification_trigger_time"
         const val ENCOUNTER_TYPE_UUID = "encounterTypeUid"
         const val CONCEPT_UUID = "conceptUuid"
         const val ENCOUNTER_UUID = "encounterUuid"
