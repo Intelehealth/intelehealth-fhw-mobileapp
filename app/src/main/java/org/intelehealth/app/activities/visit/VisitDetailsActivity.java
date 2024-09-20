@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterDiagnostics;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getChiefComplaint;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
@@ -136,7 +137,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private RecyclerView mPastVisitsRecyclerView;
     private Context context;
     private FeatureActiveStatus mFeatureActiveStatus;
-
+    private String encounterDiagnostics;
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
@@ -264,6 +265,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             presc_relative = findViewById(R.id.presc_relative);
             vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
             adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+            encounterDiagnostics = fetchEncounterUuidForEncounterDiagnostics(visitID);
 
 /*
         vs_arrowRight.setOnClickListener(v -> {
@@ -289,6 +291,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
                 in.putExtra("float_ageYear_Month", age);
                 in.putExtra("tag", "VisitDetailsActivity");
+                in.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
                 startActivity(in);
             });
             // visit summary - end
@@ -344,6 +347,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     in.putExtra("tag", "VisitDetailsActivity");
                     in.putExtra("followupDate", followUpDate_format);
                     in.putExtra("openmrsID", openmrsID);
+                    in.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
+
                     startActivity(in);
                 });
             } else {
@@ -845,6 +850,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                             in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
                             in.putExtra("float_ageYear_Month", age);
                             in.putExtra("tag", "VisitDetailsActivity");
+                            in.putExtra("encounterUuidDiagnostics", pastVisitData.getDiagnostics());
                             startActivity(in);
                         }
                     });

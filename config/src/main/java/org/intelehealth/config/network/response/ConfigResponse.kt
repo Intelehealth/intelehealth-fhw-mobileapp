@@ -2,6 +2,7 @@ package org.intelehealth.config.network.response
 
 import com.google.gson.annotations.SerializedName
 import org.intelehealth.config.room.entity.ActiveLanguage
+import org.intelehealth.config.room.entity.Diagnostics
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 import org.intelehealth.config.room.entity.PatientVital
 import org.intelehealth.config.room.entity.Specialization
@@ -32,5 +33,7 @@ data class ConfigResponse(
     var activeStatusPatientOther: Boolean = true,
     @SerializedName("abha_section")
     var activeStatusAbha: Boolean = true,
-    val version: Int = 0
+    val version: Int = 0,
+    @SerializedName("patient_diagnostics")
+    val diagnostics: List<Diagnostics>
 )

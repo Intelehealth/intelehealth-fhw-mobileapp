@@ -375,9 +375,13 @@
                         android:textColor="#7F7B92"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
                     <!--                android:src="@drawable/close_all_btn"-->
-                    <include layout="@layout/visit_summary_itemscard" />
+                    <include
+                        android:id="@+id/layoutVisitSummarySections"
+                        layout="@layout/visit_summary_itemscard" />
 
                 </RelativeLayout>
+                <!--Vitals and Other cards - end-->
+
                 <!--Vitals and Other cards - end-->
 
                 <!--Additional notes - start-->

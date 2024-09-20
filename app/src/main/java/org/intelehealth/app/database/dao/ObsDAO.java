@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSTICS;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
@@ -10,9 +11,12 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
@@ -85,6 +89,7 @@ public class ObsDAO {
     }
 
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
+        Log.d(TAG, "insertObskkk: obsdto : " + new Gson().toJson(obsDTO));
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -203,9 +208,9 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                if(idCursor.getColumnIndex("comments") < 0){
+                if (idCursor.getColumnIndex("comments") < 0) {
                     obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
-                }else {
+                } else {
                     obsDTO.setComments("");
                 }
                 obsDTOList.add(obsDTO);
@@ -371,7 +376,7 @@ public class ObsDAO {
         encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='"+ HW_FOLLOWUP_CONCEPT_ID +"'";
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='" + HW_FOLLOWUP_CONCEPT_ID + "'";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
@@ -388,6 +393,7 @@ public class ObsDAO {
         return dbValue;
         // fetch dr details from local db - end
     }
+
     public static String fetchValueFromLocalDb(String visitUuid) {
         // fetch dr details from local db - start
         String dbValue = null;
@@ -439,6 +445,28 @@ public class ObsDAO {
         // Check if the vitals encounter exists
         // If it does,fetch the vitals encounter
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, ENCOUNTER_VITALS});
+        if (cursor.moveToFirst()) {
+            doesVitalsEncounterExist = true;
+            encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+        }
+        cursor.close();
+
+        // In case the vitals encounter exists
+        // delete all the entries which have encounteruuid
+        if (doesVitalsEncounterExist) {
+            String deleteClause = "encounteruuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
+        }
+    }
+
+    public static void deleteExistingDiagnosticsDataIfExists(String visitUuid) {
+        boolean doesVitalsEncounterExist = false;
+        String encounterUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        // Check if the vitals encounter exists
+        // If it does,fetch the vitals encounter
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, DIAGNOSTICS});
         if (cursor.moveToFirst()) {
             doesVitalsEncounterExist = true;
             encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));

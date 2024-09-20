@@ -154,9 +154,9 @@
     <string name="uric_acid_calibration">Uric Acid Calibration</string>
     <string name="total_cholesterol_calibration">Total Cholesterol Calibration</string>
     <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
-    <string name="blood_glucose_random">Blood Glucose (Random)</string>
-    <string name="blood_glucose_post_prandial">Blood Glucose (Post-prandial)</string>
-    <string name="blood_glucose_fasting">Blood Glucose (Fasting)</string>
+    <string name="blood_glucose_random">Random Blood Sugar (RBS) (mg/dl)</string>
+    <string name="blood_glucose_post_prandial">Post Prandial Blood Sugar (PPBS) (mg/dl)</string>
+    <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
     <string name="haemoglobin">Haemoglobin (mg/dL)</string>
     <string name="visit_summary_button_download">Download</string>
 

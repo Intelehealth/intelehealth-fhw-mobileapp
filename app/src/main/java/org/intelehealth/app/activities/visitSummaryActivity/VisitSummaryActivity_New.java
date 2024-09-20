@@ -181,16 +181,21 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.presenter.fields.data.DiagnosticsRepository;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
+import org.intelehealth.config.presenter.fields.factory.DiagnosticsViewModelFactory;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.DiagnosticsViewModel;
 import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
 import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.Diagnostics;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.room.entity.Specialization;
+import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -242,7 +247,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
-    String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
+    String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit, encounterDiagnostics;
     SharedPreferences mSharedPreference;
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
@@ -437,7 +442,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
-
     private FeatureActiveStatus mFeatureActiveStatus;
 
     @Override
@@ -504,7 +508,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         setupVitalConfig();
-
+        //for diagnstics section which is after vitals
+        VisitDiagnosticsSummary visitDiagnosticsSummary = new VisitDiagnosticsSummary
+                (mBinding, VisitSummaryActivity_New.this, null,
+                        this, encounterDiagnostics, mCommonVisitData);
+        visitDiagnosticsSummary.initViews();
     }
 
     private List<PatientVital> mPatientVitalList;
@@ -667,6 +675,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intentTag = mCommonVisitData.getIntentTag();
 
                 isPastVisit = mCommonVisitData.isPastVisit();
+                encounterDiagnostics = mCommonVisitData.getEncounterUuidDiagnostics();
             } else {
                 visitUuid = intent.getStringExtra("visitUuid");
                 mCommonVisitData = new CommonVisitData();
@@ -694,6 +703,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
+                encounterDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
+                mCommonVisitData.setEncounterUuidDiagnostics(encounterDiagnostics);
             }
 
 
@@ -735,6 +746,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.GONE);
 //            btnSignSubmit.setVisibility(View.GONE);// todo: uncomment handle later.
             invalidateOptionsMenu();
         } else {
@@ -787,7 +799,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editMedHist.setVisibility(View.GONE);
                 editAddDocs.setVisibility(View.GONE);
                 add_additional_doc.setVisibility(View.GONE);
-
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.GONE);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
 
@@ -848,6 +860,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.VISIBLE);
                 tvAddNotesValueVS.setVisibility(View.GONE);
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
 
             }
             // Edit btn visibility based on user coming from Visit Details screen - End
@@ -926,7 +939,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-                mOpenCount = 6;
+                mBinding.layoutVisitSummarySections.vsDiagnosticsHeaderExpandview.setVisibility(View.VISIBLE);
+                mOpenCount = 7;
             } else {
                 openall_btn.setText(getResources().getString(R.string.open_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
@@ -936,6 +950,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
+                mBinding.layoutVisitSummarySections.vsDiagnosticsHeaderExpandview.setVisibility(View.GONE);
                 mOpenCount = 0;
             }
 
@@ -1078,6 +1093,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
+        mBinding.layoutVisitSummarySections.diagnosticsHeaderRelative.setOnClickListener(v -> {
+            if (mBinding.layoutVisitSummarySections.vsDiagnosticsHeaderExpandview.getVisibility() == View.VISIBLE) {
+                mBinding.layoutVisitSummarySections.vsDiagnosticsHeaderExpandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                }
+            } else {
+                mOpenCount++;
+                mBinding.layoutVisitSummarySections.vsDiagnosticsHeaderExpandview.setVisibility(View.VISIBLE);
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
     }
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
@@ -1486,7 +1517,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
 
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_VISIT_REASON);
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_3_VISIT_REASON);
                         mCommonVisitData.setIntentTag("edit");
                         intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
@@ -1633,7 +1664,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
 
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
                         mCommonVisitData.setIntentTag("edit");
                         intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
@@ -1768,7 +1799,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
 
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY);
                         mCommonVisitData.setIntentTag("edit");
                         intent1.putExtra("CommonVisitData", mCommonVisitData);
                         //startActivity(intent1);
@@ -1915,7 +1946,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
 
-                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        mCommonVisitData.setEditFor(VisitCreationActivity.STEP_6_FAMILY_HISTORY);
                         mCommonVisitData.setIntentTag("edit");
                         intent1.putExtra("CommonVisitData", mCommonVisitData);
 
@@ -2003,6 +2034,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+        // edit listeners - start
+        mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(context, VisitCreationActivity.class);
+
+                mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_DIAGNOSTICS);
+                mCommonVisitData.setIntentTag("edit");
+                intent1.putExtra("CommonVisitData", mCommonVisitData);
+
+                //startActivity(intent1);
+                mStartForEditVisit.launch(intent1);
+            }
+        });
+
     }
 
     private void setupSpecializationDataSpinner(List<Specialization> specializations) {
@@ -2695,6 +2741,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("tag", "VISITSUMMARY");
                 in.putExtra("followupDate", "");
                 in.putExtra("openmrsID", patient.getOpenmrs_id());
+                in.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
+
                 startActivity(in);
             }
         });
@@ -3727,6 +3775,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (encounterVitals != null) {
             try {
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                if (visitCursor != null && visitCursor.moveToFirst()) {
+                    do {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    } while (visitCursor.moveToNext());
+                }
+                if (visitCursor != null) {
+                    visitCursor.close();
+                }
+            } catch (SQLException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+        //Diagnostics code kaveri
+        String[] visitArgsDiagnostics = {encounterVitals};
+        if (encounterDiagnostics != null) {
+            try {
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgsDiagnostics, null, null, null);
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
@@ -5267,6 +5334,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        recreate();
                 fetchingIntent();
                 setViewsData();
+                //for diagnostics section visit taking
+                VisitDiagnosticsSummary visitDiagnosticsSummary = new VisitDiagnosticsSummary
+                        (mBinding, VisitSummaryActivity_New.this, null,
+                                VisitSummaryActivity_New.this, encounterDiagnostics, mCommonVisitData);
+                visitDiagnosticsSummary.initViews();
             }
         }
     });

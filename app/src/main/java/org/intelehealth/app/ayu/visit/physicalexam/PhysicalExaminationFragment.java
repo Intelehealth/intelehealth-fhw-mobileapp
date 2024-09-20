@@ -96,7 +96,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
 
                     }
                 });
@@ -164,7 +164,7 @@ public class PhysicalExaminationFragment extends Fragment {
                         // }
                     } else {
                         if (!mIsEditMode)
-                            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                         else
                             Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                     }
@@ -180,7 +180,7 @@ public class PhysicalExaminationFragment extends Fragment {
                 @Override
                 public void onAllAnswered(boolean isAllAnswered) {
                     if (!mIsEditMode)
-                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                     else
                         Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }

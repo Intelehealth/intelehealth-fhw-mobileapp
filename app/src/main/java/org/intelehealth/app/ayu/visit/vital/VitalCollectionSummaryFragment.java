@@ -219,7 +219,9 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                   // mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS, mIsEditMode, mVitalsObject);
+
                 }
             }
         });

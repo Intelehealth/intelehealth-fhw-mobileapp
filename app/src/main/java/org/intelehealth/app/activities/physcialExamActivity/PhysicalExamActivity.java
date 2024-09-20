@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +114,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     QuestionsAdapter adapter;
     String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
-
+    private String encounterDiagnostics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +128,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
@@ -150,7 +151,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         //alertDialog.show();
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));
+        pb.setTextColor(ContextCompat.getColor(this, (R.color.colorPrimary)));
         //pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         selectedExamsList = new ArrayList<>();
@@ -166,6 +167,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
+            encounterDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
             if (selectedExams != null)
@@ -207,7 +209,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -217,7 +219,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -263,10 +265,9 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -322,7 +323,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("gender",mgender);
+                intent.putExtra("gender", mgender);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
@@ -332,6 +333,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
+                intent.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
 
                 for (String exams : selectedExamsList) {
                     CustomLog.i(TAG, "onClick:++ " + exams);
@@ -352,6 +354,8 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent1.putExtra("tag", intentTag);
                 intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("hasPrescription", "false");
+                intent1.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
+
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
             }
@@ -395,7 +399,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
-
 
 
     private void updateDatabase(String string) {
@@ -442,7 +445,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE,"");
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE, "");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

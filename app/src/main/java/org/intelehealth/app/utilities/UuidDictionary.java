@@ -98,7 +98,14 @@ public class UuidDictionary {
     public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
     public static final String ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK = "ce364c8a-4cb7-4a3b-929e-6311ddcadc01";
     public static final String VISIT_SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
-
+    public static final String BLOOD_GLUCOSE = "8df25ddf-ff39-4fa3-bd13-5dfbec8cb5ee";
+    public static final String BLOOD_GLUCOSE_FASTING = "2dc7b9dd-825c-4061-a289-c939f758b10e";
+    public static final String BLOOD_GLUCOSE_RANDOM = "dab6dfb4-0560-42d6-a5f6-af04085c3358";
+    public static final String BLOOD_GLUCOSE_POST_PRANDIAL = "b0a7d2b6-64ba-4597-bde3-63623c8237ef";
+    public static final String HEMOGLOBIN = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
+    public static final String URIC_ACID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
+    public static final String TOTAL_CHOLESTEROL = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
+    public static final String DIAGNOSTICS = "b1a8fab4-d79f-44e6-8a90-2ac5e7ecd4d3";
 
 
 

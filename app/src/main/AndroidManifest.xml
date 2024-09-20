@@ -25,9 +25,23 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--
+ <uses-permission
+           android:name="android.permission.PACKAGE_USAGE_STATS"
+           tools:ignore="ProtectedPermissions" />
+    -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" /> <!-- added support to lenova tab 2 -->
@@ -49,6 +63,19 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <activity
+            android:name=".activities.prescription.thermalprinter.TextPrintESCActivityOLDK"
+            android:exported="false" />
+        <activity
+            android:name=".activities.prescription.thermalprinter.TextPrintESCActivityOLD"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.prescription.thermalprinter.TextPrintESCActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.bill.BillGenerationActivity"
             android:exported="false"
