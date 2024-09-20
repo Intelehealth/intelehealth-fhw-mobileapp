@@ -73,8 +73,8 @@ public class PhysicalExamSummaryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
-        int index = status.getVitalSection() ? 3 : 2;
-        int total = status.getVitalSection() ? 4 : 3;
+        int index = status.getVitalSection() ? 4 : 3;
+        int total = status.getVitalSection() ? 5 : 4;
         TextView tvTitle = view.findViewById(R.id.tv_sub_title);
         tvTitle.setText(getString(R.string.ui2_physical_exam_summay_title, index, total));
     }
@@ -92,20 +92,20 @@ public class PhysicalExamSummaryFragment extends Fragment {
                     requireActivity().setResult(Activity.RESULT_OK);
                     requireActivity().finish();
                 } else
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY, mIsEditMode, null);
             }
         });
 
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
             }
         });
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
@@ -160,7 +160,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
+                        mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PHYSICAL_EXAMINATION);
                     }
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);

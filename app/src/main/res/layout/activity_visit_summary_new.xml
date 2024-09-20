@@ -339,7 +339,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:text="Test:XXX543573"
+                                        android:hint="Test:XXX543573"
                                         android:textAppearance="@style/caption"
                                         android:textColor="@color/textview_color"
                                         android:textSize="@dimen/find_patient_hint_size" />
@@ -375,9 +375,13 @@
                         android:textColor="#7F7B92"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
                     <!--                android:src="@drawable/close_all_btn"-->
-                    <include layout="@layout/visit_summary_itemscard" />
+                    <include
+                        android:id="@+id/layoutVisitSummarySections"
+                        layout="@layout/visit_summary_itemscard" />
 
                 </RelativeLayout>
+                <!--Vitals and Other cards - end-->
+
                 <!--Vitals and Other cards - end-->
 
                 <!--Additional notes - start-->
@@ -1179,10 +1183,11 @@
             </RelativeLayout>
         </ScrollView>
         <!--Visit Details - start -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/bottom_btn_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:paddingTop="@dimen/fu_margin_start"
             android:paddingBottom="@dimen/fu_card_margin_sides">
@@ -1296,7 +1301,21 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </RelativeLayout>
+            <Button
+                android:id="@+id/btnGenerateBill"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fu_btn_size"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:padding="@dimen/margin_12"
+                android:text="@string/generate_bill"
+                android:layout_marginTop="@dimen/margin_5"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_button_text_size"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/filter_framelayout"

@@ -104,6 +104,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
 
     private List<PatientVital> mPatientVitalList;
+    private String encounterDiagnostics;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -129,6 +130,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
         String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
         fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+        fragment.encounterDiagnostics = commonVisitData.getEncounterUuidDiagnostics();//intent.getStringExtra("encounterUuidVitals");
         return fragment;
     }
 

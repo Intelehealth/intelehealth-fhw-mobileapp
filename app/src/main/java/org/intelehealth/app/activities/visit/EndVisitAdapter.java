@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +83,12 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
+    FeatureActiveStatus featureActiveStatus;
 
-    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
+    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus) {
         this.context = context;
         this.arrayList.addAll(arrayList);
+        this.featureActiveStatus = featureActiveStatus;
         sessionManager = new SessionManager(context);
     }
 
@@ -153,7 +158,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
             // photo - end
 
@@ -205,20 +210,28 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         if (model.isHasPrescription()) {
             triggerEndVisit(model);
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    context,
-                    R.drawable.dialog_close_visit_icon,
-                    context.getResources().getString(R.string.confirm_end_visit_reason),
-                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    context.getResources().getString(R.string.confirm),
-                    context.getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(model);
-                        }
-                    });
+            if (featureActiveStatus.getRestrictEndVisit()) {
+                //added restrictEndVisit because in NAS - we cant end the visit is prescription not shared by dr -Nas-ida migration
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.alert_label_txt), context.getResources().getString(R.string.prescription_notprovided_msg), true, context.getResources().getString(R.string.ok), context.getResources().getString(R.string.cancel), action -> {
+                });
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(
+                        context,
+                        R.drawable.dialog_close_visit_icon,
+                        context.getResources().getString(R.string.confirm_end_visit_reason),
+                        context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                        false,
+                        context.getResources().getString(R.string.confirm),
+                        context.getResources().getString(R.string.cancel),
+                        action -> {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                checkIfAppointmentExistsForVisit(model);
+                            }
+                        });
+            }
+
         }
     }
 

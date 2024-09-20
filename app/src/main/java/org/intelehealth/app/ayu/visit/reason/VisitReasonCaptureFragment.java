@@ -3,6 +3,8 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.os.Bundle;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +79,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private List<String> mFinalEnabledMMList = new ArrayList<>();
     private List<ReasonData> mRawReasonDataList = new ArrayList<>();
     private boolean mIsEditMode = false;
+    private String encounterDiagnostics;
 
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
@@ -104,6 +107,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
         fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
         fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
+        fragment.encounterDiagnostics = commonVisitData.getEncounterUuidDiagnostics();//intent.getStringExtra("encounterUuidVitals");
         return fragment;
     }
 
@@ -135,7 +139,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, false, null);
             }
         });
 
@@ -155,6 +159,8 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
 
             Node mainNode = new Node(currentFile);
+            Log.d("TAG", "kkonCreateView:patientGender :  "+patientGender);
+            patientGender  = "F";
             if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
                 mFinalEnabledMMList.add(mindMapName);
             }
@@ -273,7 +279,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
                 }
             }
         });
