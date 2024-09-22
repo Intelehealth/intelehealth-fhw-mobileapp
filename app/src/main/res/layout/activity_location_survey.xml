@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.location_survey.LocationSurveyActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fu_toolbat_txt_height"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginTop="@dimen/common_title_margin_top"
+                android:layout_marginEnd="@dimen/toolbar_margin_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/backbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:contentDescription="@string/generic_back"
+                    android:padding="@dimen/margin_5"
+                    android:src="@drawable/ic_arrow_right"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/location_new"
+                    android:textAppearance="@style/label"
+                    android:textColor="@null"
+                    android:textSize="@dimen/toolbar_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/backbtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/location_fields"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginTop="@dimen/tv_location_margin_top"
+                android:layout_marginEnd="@dimen/toolbar_margin_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                <TextView
+                    android:id="@+id/tv_choose_location_info"
+                    style="@style/TextviewInputTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="@string/which_server_would_you_like_to_connect_to"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/ll_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/tv_choose_location_info">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_title_margin_top"
+                        android:text="@string/state"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/AutocompleteviewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_select_state"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ui2_ic_new_chevron_down"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_state"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/common_hint_text_size"
+                            app:endIconMode="custom"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_state_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_state_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ll_state">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_title_margin_top"
+                        android:text="@string/district"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/AutocompleteviewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_select_district"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ui2_ic_new_chevron_down"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_district"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/common_hint_text_size"
+                            app:endIconMode="custom"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_district_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_district_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_sanch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ll_district">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_title_margin_top"
+                        android:text="@string/sanch"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/AutocompleteviewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_select_sanch"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ui2_ic_new_chevron_down"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_sanch"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/common_hint_text_size"
+                            app:endIconMode="custom"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_sanch_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_sanch_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_primary_village"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ll_sanch">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_title_margin_top"
+                        android:text="@string/primary_village"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/AutocompleteviewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_select_primary_village"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ui2_ic_new_chevron_down"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_primary_village"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/common_hint_text_size"
+                            app:endIconMode="custom"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_primary_village_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_primary_village_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_secondary_village"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ll_primary_village">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_title_margin_top"
+                        android:text="@string/secondary_village"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/AutocompleteviewStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_edittext_margin_top"
+                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_select_secondary_village"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_input_fieldnew"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ui2_ic_new_chevron_down"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_secondary_village"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:paddingStart="@dimen/common_edittext_padding_left"
+                            android:paddingTop="@dimen/common_edittext_padding_top"
+                            android:paddingEnd="@dimen/common_edittext_padding_right"
+                            android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorGray"
+                            android:textSize="@dimen/common_hint_text_size"
+                            app:endIconMode="custom"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/tv_location_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_secondary_village_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

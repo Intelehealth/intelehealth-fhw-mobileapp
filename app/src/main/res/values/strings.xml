@@ -27,6 +27,11 @@
     <string name="error_network" translatable="false">Network Error</string>
     <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
     <string name="error_location_not_selected">Please select a value from the location dropdown</string>
+    <string name="error_state_not_selected">Please select a value from the state dropdown</string>
+    <string name="error_district_not_selected">Please select a value from the district dropdown</string>
+    <string name="error_sanch_not_selected">Please select a value from the sanch dropdown</string>
+    <string name="error_primary_village_not_selected">Please select a value from the primary village dropdown</string>
+    <string name="error_secondary_village_not_selected">Please select a value from the secondary village dropdown</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
 
     //Home Screen (after login)
@@ -1078,4 +1083,12 @@
     <string name="enter_url">Enter URL</string>
     <string name="please_enter_a_valid_url">Please enter a valid URL.</string>
     <string name="select_location">Select location</string>
+    <string name="select_state">Select state</string>
+    <string name="select_district">Select district</string>
+    <string name="sanch">Sanch</string>
+    <string name="select_sanch">Select sanch</string>
+    <string name="primary_village">Primary Village</string>
+    <string name="select_primary_village">Select primary village</string>
+    <string name="secondary_village">Secondary Village</string>
+    <string name="select_secondary_village">Select secondary village</string>
 </resources>

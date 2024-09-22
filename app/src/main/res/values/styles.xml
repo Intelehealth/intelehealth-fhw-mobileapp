@@ -291,7 +291,7 @@
     <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeWidth">0dp</item>
         <item name="hintEnabled">false</item>
-
+        <item name="android:textColor">@color/textColorGray</item>
     </style>
 
     <style name="NavigationDrawerItemStyle" parent="AppTheme">
