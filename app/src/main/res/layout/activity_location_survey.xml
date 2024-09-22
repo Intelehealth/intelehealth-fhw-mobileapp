@@ -458,7 +458,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/frag2_btn_back"
+            android:id="@+id/btn_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"
@@ -469,7 +469,7 @@
             android:textColor="@color/primary_text" />
 
         <Button
-            android:id="@+id/frag2_btn_next"
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_12dp"
