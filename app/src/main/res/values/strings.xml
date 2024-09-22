@@ -1091,4 +1091,6 @@
     <string name="select_primary_village">Select primary village</string>
     <string name="secondary_village">Secondary Village</string>
     <string name="select_secondary_village">Select secondary village</string>
+    <string name="location_survey_enter_following_details">Enter following details</string>
+    <string name="choose_a_location_to_login">Choose a location to login</string>
 </resources>

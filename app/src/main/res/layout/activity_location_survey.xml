@@ -7,10 +7,12 @@
     tools:context=".activities.location_survey.LocationSurveyActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_15"
+        app:layout_constraintBottom_toTopOf="@+id/ll_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -79,7 +81,7 @@
                     style="@style/TextviewInputTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/which_server_would_you_like_to_connect_to"
+                    android:text="@string/choose_a_location_to_login"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="bold"
@@ -414,8 +416,69 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_location_survey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/toolbar_margin_left"
+                android:layout_marginTop="@dimen/tv_location_margin_top"
+                android:layout_marginEnd="@dimen/toolbar_margin_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location_fields">
+
+                <TextView
+                    android:id="@+id/tv_enter_location_details"
+                    style="@style/TextviewInputTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location_survey_enter_following_details"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/common_label_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/frag2_btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/space_12dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/ui2_common_primary_bg_disabled"
+            android:text="@string/generic_back"
+            android:textColor="@color/primary_text" />
+
+        <Button
+            android:id="@+id/frag2_btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_12dp"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_weight="0.5"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:text="@string/save" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
