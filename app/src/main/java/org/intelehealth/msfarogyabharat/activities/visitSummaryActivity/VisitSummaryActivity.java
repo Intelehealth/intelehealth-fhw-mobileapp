@@ -96,6 +96,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
 import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
 import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
@@ -1558,6 +1559,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //Do something after 100ms
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground("visitSummary");
+                            CustomLog.d("SYNC_STATUS_VISIT_SUMMARY",""+isSynced);
+
                             if (isSynced) {
                                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 //

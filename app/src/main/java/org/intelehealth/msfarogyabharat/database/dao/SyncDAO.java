@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
@@ -388,6 +389,7 @@ public class SyncDAO {
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
+        CustomLog.d("PUSH_REQUEST_PAYLOAD",gson.toJson(pushRequestApiCall));
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
         Logger.logD("url", url);
@@ -399,6 +401,7 @@ public class SyncDAO {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             Logger.logD(TAG, "success" + pushResponseApiCall);
+                            CustomLog.d("PUSH_RESPONSE_PAYLOAD",gson.toJson(pushResponseApiCall));
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());

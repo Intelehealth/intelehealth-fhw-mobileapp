@@ -53,6 +53,7 @@ public class SessionManager {
     private static final String STATENAME = "STATENAME";
     private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
     private static final String FACILITY_RESOLUTION = "FACILITY_RESOLUTION";
+    private static final String CUSTOM_LOG_VERSION = "custom_log_version";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -483,5 +484,17 @@ public class SessionManager {
     public void setFacilityResolution(String visitUuid) {
         editor.putString(FACILITY_RESOLUTION, visitUuid);
         editor.commit();
+    }
+
+    /**
+     * custom logger version
+     */
+    public void setCustomLogVersion(String version) {
+        editor.putString(CUSTOM_LOG_VERSION, version);
+        editor.commit();
+    }
+
+    public String getCustomLogVersion() {
+        return pref.getString(CUSTOM_LOG_VERSION,"");
     }
 }

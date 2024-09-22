@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import androidx.work.WorkManager;
 
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesPushDAO;
@@ -113,6 +114,8 @@ public class SyncUtils {
 
         /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
         IntelehealthApplication.getAppContext().startService(intent);*/
+
+        CustomLog.d("SYNC_STATUS_SYNCUTILS",""+isSynced);
 
         return isSynced;
     }
