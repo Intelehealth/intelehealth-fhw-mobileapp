@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -217,6 +218,7 @@ public class SyncDAO {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
                 if (response.isSuccessful()) {
+                    CustomLog.d("PULL_DATA_RESPONSE",new Gson().toJson(response.body()));
 
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
@@ -307,6 +309,7 @@ public class SyncDAO {
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
+                CustomLog.d("PULL_DATA_ERROR",""+t.getCause()+"\n"+t.getMessage()+"\n"+t.getLocalizedMessage());
                 Logger.logD("pull data", "exception" + t.getMessage());
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .setPackage(IntelehealthApplication.getAppContext().getPackageName())
@@ -435,6 +438,8 @@ public class SyncDAO {
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
                             isSucess[0] = false;
+                            CustomLog.d("PUSH_ERROR",e.getCause()+"\n"+e.getMessage()+"\n"+e.getLocalizedMessage());
+
                             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));

@@ -40,18 +40,18 @@ class CustomLog {
 
         @JvmStatic
         fun d(key: String, msg: String?) {
-            //if (BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(key,msg?:"")
                 saveLogData(key, msg?:"", "debug")
-           // }
+            }
         }
 
         @JvmStatic
         fun d(key: String, msg: String?, vararg args: Any) {
-           // if (BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(key,msg?:"")
                 saveLogData(key, String.format(msg?:"", args), "debug")
-            //}
+            }
         }
 
         @JvmStatic
@@ -174,7 +174,7 @@ class CustomLog {
          * file name
          */
         private fun getFileName(version: String?): String {
-            return "Intelehealth_$version.txt"
+            return "Vikalp_$version.txt"
         }
 
         /**
