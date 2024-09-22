@@ -147,7 +147,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="13sp"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -211,7 +212,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="13sp"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -275,7 +277,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="13sp"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -339,7 +342,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="13sp"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -403,7 +407,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="13sp"
-                        android:visibility="visible" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 

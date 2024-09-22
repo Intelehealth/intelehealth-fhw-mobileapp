@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Patterns;
@@ -162,6 +163,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         etServer.addTextChangedListener(new MyTextWatcher(etServer));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
 
+        autotvLocations.setOnClickListener(v -> {
+            Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
+            startActivity(intent);
+        });
+
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +211,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
-            getLocationFromServer();
+//            getLocationFromServer();
         }
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +291,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
             mNoInternetTextView.setVisibility(View.GONE);
-            getLocationFromServer();
+//            getLocationFromServer();
             tvForgotPassword.setEnabled(true);
             btnSetup.setEnabled(true);
         } else {
@@ -709,72 +715,72 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         });
     }
 
-    private void getLocationFromServer() {
-        isLocationFetched = false;
-        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
-        if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
-            ApiClient.changeApiBaseUrl(BASE_URL);
-            ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-            try {
-                Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-                resultsObservable
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new DisposableObserver<Results<Location>>() {
-                            @Override
-                            public void onNext(Results<Location> locationResults) {
-                                if (locationResults.getResults() != null) {
-                                    Results<Location> locationList = locationResults;
-                                    CustomLog.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
-                                    mLocations = locationList.getResults();
-                                    List<String> items = getLocationStringList(locationList.getResults());
-                                    CustomLog.d(TAG, "11onNext: items size : " + items.size());
-                                    LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, items);
-                                    autotvLocations.setAdapter(adapter);
-                                    isLocationFetched = true;
-                                    autotvLocations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            String selectedValue = (String) adapterView.getItemAtPosition(i);
-                                            autotvLocations.setThreshold(100);  // Setting high threshold so that everytime all suggestions are shown.
-                                            autotvLocations.setText("");
-                                            autotvLocations.setText(selectedValue);
-                                            int pos = items.indexOf(selectedValue);
-                                            location = locationList.getResults().get(pos);
-                                            autotvLocations.setError(null);
-                                            autotvLocations.setSelection(autotvLocations.getText().length());
-                                            mLocationErrorTextView.setVisibility(View.GONE);
-                                            autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                                        }
-                                    });
-                                } else {
-                                    isLocationFetched = false;
-                                    Toast.makeText(SetupActivityNew.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                isLocationFetched = false;
-                                Toast.makeText(SetupActivityNew.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-            } catch (IllegalArgumentException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-        } else
-            Toast.makeText(SetupActivityNew.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-
-
-    }
+//    private void getLocationFromServer() {
+//        isLocationFetched = false;
+//        String BASE_URL = BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/";
+//        if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
+//            ApiClient.changeApiBaseUrl(BASE_URL);
+//            ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+//            try {
+//                Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+//                resultsObservable
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new DisposableObserver<Results<Location>>() {
+//                            @Override
+//                            public void onNext(Results<Location> locationResults) {
+//                                if (locationResults.getResults() != null) {
+//                                    Results<Location> locationList = locationResults;
+//                                    CustomLog.d(TAG, "11onNext: locations list size : " + locationList.getResults().size());
+//                                    mLocations = locationList.getResults();
+//                                    List<String> items = getLocationStringList(locationList.getResults());
+//                                    CustomLog.d(TAG, "11onNext: items size : " + items.size());
+//                                    LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, items);
+//                                    autotvLocations.setAdapter(adapter);
+//                                    isLocationFetched = true;
+//                                    autotvLocations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                        @Override
+//                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                                            String selectedValue = (String) adapterView.getItemAtPosition(i);
+//                                            autotvLocations.setThreshold(100);  // Setting high threshold so that everytime all suggestions are shown.
+//                                            autotvLocations.setText("");
+//                                            autotvLocations.setText(selectedValue);
+//                                            int pos = items.indexOf(selectedValue);
+//                                            location = locationList.getResults().get(pos);
+//                                            autotvLocations.setError(null);
+//                                            autotvLocations.setSelection(autotvLocations.getText().length());
+//                                            mLocationErrorTextView.setVisibility(View.GONE);
+//                                            autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
+//
+//                                        }
+//                                    });
+//                                } else {
+//                                    isLocationFetched = false;
+//                                    Toast.makeText(SetupActivityNew.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                isLocationFetched = false;
+//                                Toast.makeText(SetupActivityNew.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+//
+//                            }
+//
+//                            @Override
+//                            public void onComplete() {
+//
+//                            }
+//                        });
+//            } catch (IllegalArgumentException e) {
+//                FirebaseCrashlytics.getInstance().recordException(e);
+//            }
+//
+//        } else
+//            Toast.makeText(SetupActivityNew.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+//
+//
+//    }
 
     private List<String> getLocationStringList(List<Location> locationList) {
         List<String> list = new ArrayList<String>();

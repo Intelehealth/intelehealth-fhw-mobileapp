@@ -51,7 +51,10 @@
         tools:replace="allowBackup">
         <activity
             android:name=".activities.location_survey.LocationSurveyActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".activities.onboarding.CommonWebviewActivity"
             android:exported="false" />
