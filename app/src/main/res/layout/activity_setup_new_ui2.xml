@@ -161,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+                    app:endIconDrawable="@drawable/ui2_ic_chevron_right">
 
                     <AutoCompleteTextView
                         android:id="@+id/autotv_select_location"
@@ -171,7 +171,7 @@
                         android:background="@drawable/bg_input_fieldnew"
                         android:cursorVisible="false"
                         android:focusableInTouchMode="false"
-                        android:hint="@string/start_typing_location"
+                        android:hint="@string/select_location"
                         android:importantForAutofill="no"
                         android:inputType="none"
                         android:maxLines="1"
@@ -181,7 +181,6 @@
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
                         android:textSize="@dimen/common_hint_text_size"
-                        app:endIconDrawable="@drawable/ui2_ic_chevron_down"
                         app:endIconMode="custom"
                         tools:ignore="SpeakableTextPresentCheck" />
 
