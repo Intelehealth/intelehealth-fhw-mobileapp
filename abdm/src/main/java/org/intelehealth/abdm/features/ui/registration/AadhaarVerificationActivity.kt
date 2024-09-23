@@ -1,5 +1,6 @@
 package org.intelehealth.abdm.features.ui.registration
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -10,6 +11,7 @@ import org.intelehealth.abdm.databinding.ActivityAadhaarVerificationBinding
 import org.intelehealth.abdm.features.base.BaseActivity
 import org.intelehealth.abdm.features.viewmodel.registration.AadhaarCardVerificationViewModel
 import org.intelehealth.abdm.features.viewstate.SendAadhaarOtpViewState
+import org.intelehealth.abdm.features.viewstate.VerifyAadhaarOtpViewState
 
 @AndroidEntryPoint
 class AadhaarVerificationActivity :
@@ -19,6 +21,7 @@ class AadhaarVerificationActivity :
         super.onCreate(savedInstanceState)
         initialization()
         handleSendOtpState()
+        handleVerifyAadhaarOtp()
         setClickListener()
     }
 
@@ -41,9 +44,14 @@ class AadhaarVerificationActivity :
     }
 
 
-    private fun setOtpVerificationFragment() {
+    private fun setAadhaarOtpVerificationFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.flVerificationLayout, AadhaarOtpVerificationFragment())
+            .addToBackStack(null).commit()
+    }
+    private fun setNewMobileOtpVerificationFragment() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.flVerificationLayout, MobileOtpVerificationFragment())
             .addToBackStack(null).commit()
     }
 
@@ -62,12 +70,36 @@ class AadhaarVerificationActivity :
 
                 is SendAadhaarOtpViewState.Success -> {
                     progressBarDialog.dismissProgressBar()
-                    setOtpVerificationFragment()
+                    setAadhaarOtpVerificationFragment()
                 }
 
                 is SendAadhaarOtpViewState.Error -> {
                     ToastUtil.showLongToast(this,it.message)
                     progressBarDialog.dismissProgressBar()
+                }
+
+            }
+        }
+
+    }
+
+    private fun handleVerifyAadhaarOtp()
+    {
+        viewModel.verifyAadhaarOtpState.observe(this) {
+            when (it) {
+                is VerifyAadhaarOtpViewState.Idle -> {}
+                is VerifyAadhaarOtpViewState.Error ->  {
+                    progressBarDialog.dismissProgressBar()
+                    ToastUtil.showShortToast(this,it.message)
+                }
+
+                is VerifyAadhaarOtpViewState.Loading -> progressBarDialog.showCircularProgressbar()
+                is VerifyAadhaarOtpViewState.OpenMobileVerificationScreen -> {
+                    progressBarDialog.dismissProgressBar()
+                    setNewMobileOtpVerificationFragment()
+                }
+                is VerifyAadhaarOtpViewState.OpenSelectAbhaScreen -> {
+                    startActivity(Intent(this,SelectAbhaAddressActivity::class.java))
                 }
             }
         }

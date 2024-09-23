@@ -1,5 +1,12 @@
 package org.intelehealth.abdm.data.network
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.intelehealth.abdm.data.model.ABDMErrorModel
+import org.intelehealth.abdm.domain.model.AadhaarOtpVerification
+import retrofit2.Response
+import java.lang.Exception
+
 object ErrorMessage {
     const val MESSAGE_500: String =
         "Oops! Something went wrong on our end. Our team has been notified, and we're working to fix it as soon as possible."
@@ -18,4 +25,16 @@ object ErrorMessage {
     const val IO_EXCEPTION: String = "Couldn't reach server. Check your internet connection."
     const val DEFAULT_MESSAGE: String = "Something went wrong"
 
+    @JvmStatic
+    fun getErrorMessage(response: Response<AadhaarOtpVerification>): String? {
+        return try {
+            val gson = Gson()
+            val type = object : TypeToken<ABDMErrorModel>() {}.type
+            val errorResponse: ABDMErrorModel? = gson.fromJson(response.errorBody()!!.charStream(), type)
+            errorResponse?.message
+        } catch (e: Exception) {
+            "Something went wrong"
+        }
+
+    }
 }

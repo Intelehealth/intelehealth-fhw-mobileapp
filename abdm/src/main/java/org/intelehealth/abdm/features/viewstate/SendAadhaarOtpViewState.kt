@@ -7,5 +7,4 @@ sealed interface SendAadhaarOtpViewState {
     data object Idle : SendAadhaarOtpViewState
     data class Error(val message: String) : SendAadhaarOtpViewState
     data class Success(val data: AadhaarOTP) : SendAadhaarOtpViewState
-
 }

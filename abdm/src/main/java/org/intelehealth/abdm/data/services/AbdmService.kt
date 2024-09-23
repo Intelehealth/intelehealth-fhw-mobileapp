@@ -7,9 +7,12 @@ import org.intelehealth.abdm.data.model.AadhaarOtpVerificationResponseDto
 import org.intelehealth.abdm.data.model.AbhaAddressSuggestionListDto
 import org.intelehealth.abdm.data.model.AuthTokenResponseDto
 import org.intelehealth.abdm.data.model.EnrolledAbhaAddressDto
-import org.intelehealth.abdm.domain.model.EnrolledAbhaAddressDetails
+import org.intelehealth.abdm.data.model.SendMobileOtpDto
+import org.intelehealth.abdm.data.model.VerifyMobileOtpResponseDto
 import org.intelehealth.abdm.domain.model.request.AbhaAddressSuggestionRequest
 import org.intelehealth.abdm.domain.model.request.EnrollAbhaAddressRequest
+import org.intelehealth.abdm.domain.model.request.SendMobileOtpRequest
+import org.intelehealth.abdm.domain.model.request.EnrollMobileOtpRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -43,5 +46,17 @@ interface AbdmService {
         @Header("Authorization") accessToken: String,
         @Body enrollAbhaAddressRequest: EnrollAbhaAddressRequest
     ): Response<EnrolledAbhaAddressDto>
+
+    @POST("/abha/enrollOTPReq")
+    suspend fun getMobileOtp(
+        @Header("Authorization") accessToken: String,
+        @Body sendMobileOtpRequest: SendMobileOtpRequest
+    ): Response<SendMobileOtpDto>
+
+    @POST("/abha/enrollByAbdm")
+    suspend fun verifyMobileOtp(
+        @Header("Authorization") accessToken: String,
+        @Body enrollMobileOtpRequest: EnrollMobileOtpRequest
+    ): Response<VerifyMobileOtpResponseDto>
 
 }
