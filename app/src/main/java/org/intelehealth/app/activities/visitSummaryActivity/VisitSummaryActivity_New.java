@@ -247,7 +247,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
-    String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit, encounterDiagnostics;
+    String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
@@ -511,7 +511,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         //for diagnstics section which is after vitals
         VisitDiagnosticsSummary visitDiagnosticsSummary = new VisitDiagnosticsSummary
                 (mBinding, VisitSummaryActivity_New.this, null,
-                        this, encounterDiagnostics, mCommonVisitData);
+                        this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
     }
 
@@ -675,7 +675,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intentTag = mCommonVisitData.getIntentTag();
 
                 isPastVisit = mCommonVisitData.isPastVisit();
-                encounterDiagnostics = mCommonVisitData.getEncounterUuidDiagnostics();
             } else {
                 visitUuid = intent.getStringExtra("visitUuid");
                 mCommonVisitData = new CommonVisitData();
@@ -703,8 +702,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
-                encounterDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
-                mCommonVisitData.setEncounterUuidDiagnostics(encounterDiagnostics);
             }
 
 
@@ -2741,7 +2738,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("tag", "VISITSUMMARY");
                 in.putExtra("followupDate", "");
                 in.putExtra("openmrsID", patient.getOpenmrs_id());
-                in.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
 
                 startActivity(in);
             }
@@ -3791,7 +3787,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         //Diagnostics code kaveri
         String[] visitArgsDiagnostics = {encounterVitals};
-        if (encounterDiagnostics != null) {
+        if (encounterVitals != null) {
             try {
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgsDiagnostics, null, null, null);
                 if (visitCursor != null && visitCursor.moveToFirst()) {
@@ -5337,7 +5333,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 //for diagnostics section visit taking
                 VisitDiagnosticsSummary visitDiagnosticsSummary = new VisitDiagnosticsSummary
                         (mBinding, VisitSummaryActivity_New.this, null,
-                                VisitSummaryActivity_New.this, encounterDiagnostics, mCommonVisitData);
+                                VisitSummaryActivity_New.this, encounterVitals, mCommonVisitData);
                 visitDiagnosticsSummary.initViews();
             }
         }

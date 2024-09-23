@@ -57,7 +57,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private String state;
     private String patientUuid;
     private String visitUuid;
-     private String encounterVitals;
+    private String encounterVitals;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     private SessionManager sessionManager;
     private ConfigUtils configUtils;
@@ -65,12 +65,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private boolean mIsEditMode = false;
     private List<Diagnostics> mPatientDiagnosticsList;
     private FragmentDiagnosticsCollectionBinding mBinding;
-    private String diagnosticsEncounter;
-
-    View mRootView;
-    /*TODO - KAVERI
-    Check for filters i.e.numbers , decimalpoint, digits etc
-    */
 
     public DiagnosticsCollectionFragment() {
         // Required empty public constructor
@@ -93,7 +87,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         fragment.patientName = commonVisitData.getPatientName();//intent.getStringExtra("name");
         fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
         fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
-        fragment.diagnosticsEncounter = commonVisitData.getEncounterUuidDiagnostics();//intent.getStringExtra("encounterUuidVitals");
         return fragment;
     }
 
@@ -384,7 +377,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         if (view.getId() == R.id.btn_submit) {
             mBinding.btnSubmit.setClickable(false);
             boolean isValid = isValidaForm();
-            Log.d(TAG, "onClick: btn_submit clicked- "+isValid);//validate
+            Log.d(TAG, "onClick: btn_submit clicked- " + isValid);//validate
 
             setDisabledSubmit(!isValid);
             if (isValid) {
@@ -434,7 +427,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided!='1'";
-        String[] visitArgs = {diagnosticsEncounter};
+        String[] visitArgs = {encounterVitals};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -513,11 +506,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseRandom().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucoseRandom());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -526,11 +519,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseFasting().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucoseFasting());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -539,11 +532,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucosePostPrandial().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucosePostPrandial());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -552,11 +545,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseNonFasting().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucoseNonFasting());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -565,11 +558,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getUricAcid().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.URIC_ACID);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getUricAcid());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -578,11 +571,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getCholesterol().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getCholesterol());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -591,19 +584,19 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getHemoglobin().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN);
-                    obsDTO.setEncounteruuid(diagnosticsEncounter);
+                    obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getHemoglobin());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(diagnosticsEncounter, diagnostics.getUuid()));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
 
                     obsDAO.updateObs(obsDTO);
                 }
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
-                    encounterDAO.updateEncounterSync("false", diagnosticsEncounter);
-                    encounterDAO.updateEncounterModifiedDate(diagnosticsEncounter);
+                    encounterDAO.updateEncounterSync("false", encounterVitals);
+                    encounterDAO.updateEncounterModifiedDate(encounterVitals);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -620,7 +613,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.PULSE);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucoseRandom());
 
@@ -636,7 +629,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucoseFasting());
 
@@ -652,7 +645,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucoseNonFasting());
 
@@ -667,7 +660,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGlucosePostPrandial());
 
@@ -682,7 +675,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.SPO2);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getHemoglobin());
 
@@ -697,7 +690,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.SPO2);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getCholesterol());
 
@@ -712,7 +705,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.SPO2);
                 obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(diagnosticsEncounter);
+                obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getUricAcid());
 

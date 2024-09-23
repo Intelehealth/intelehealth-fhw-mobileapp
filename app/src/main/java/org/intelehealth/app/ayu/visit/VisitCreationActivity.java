@@ -1,7 +1,6 @@
 package org.intelehealth.app.ayu.visit;
 
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
-import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSTICS;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -189,7 +188,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private boolean mHasLicence = false;
     private FeatureActiveStatus featureActiveStatus;
-    private String encounterDiagnostics;
 
 
     private void startVisit() {
@@ -219,26 +217,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-        String uuidDiagnostics = UUID.randomUUID().toString();
-        EncounterDAO encounterDAODiagnostics = new EncounterDAO();
-        EncounterDTO encounterDTODiagnostics = new EncounterDTO();
-        encounterDTODiagnostics.setUuid(uuidDiagnostics);
-        encounterDTODiagnostics.setEncounterTypeUuid(encounterDAODiagnostics.getEncounterTypeUuid("DIAGNOSTICS"));
-        encounterDTODiagnostics.setEncounterTime(thisDate);
-        encounterDTODiagnostics.setVisituuid(visitUuid);
-        encounterDTODiagnostics.setSyncd(false);
-        encounterDTODiagnostics.setProvideruuid(sessionManager.getProviderID());
-        CustomLog.d("DTO", "DTO:detail " + encounterDTODiagnostics.getProvideruuid());
-        encounterDTODiagnostics.setVoided(0);
-        encounterDTODiagnostics.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-        try {
-            encounterDAODiagnostics.createEncountersToDB(encounterDTODiagnostics);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG, e.getMessage());
         }
 
         VisitDTO visitDTO = new VisitDTO();
@@ -271,8 +249,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         EncounterAdultInitial_LatestVisit = encounterAdultIntials;
         mCommonVisitData.setEncounterAdultInitialLatestVisit(EncounterAdultInitial_LatestVisit);
-        encounterDiagnostics = encounterDTODiagnostics.getUuid();
-        mCommonVisitData.setEncounterUuidDiagnostics(encounterDiagnostics);
         //intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
 
 
@@ -350,8 +326,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 EncounterAdultInitial_LatestVisit = mCommonVisitData.getEncounterAdultInitialLatestVisit();
 
                 mEditFor = mCommonVisitData.getEditFor();//intent.getIntExtra("edit_for", STEP_1_VITAL);
-                encounterDiagnostics = mCommonVisitData.getEncounterUuidDiagnostics();
-
             }
 
 
