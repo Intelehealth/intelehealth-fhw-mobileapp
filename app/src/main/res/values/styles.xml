@@ -625,4 +625,16 @@
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
     </style>
+
+    <style name="LocationChoiceChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipStrokeWidth">@dimen/location_chip_stroke_width</item>
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipBackgroundColor">@color/location_chip_background_color</item>
+        <item name="android:textSize">@dimen/location_chip_text_size</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
+        <item name="android:textColor">@color/location_chip_text_color</item>
+        <item name="chipStartPadding">@dimen/location_chip_start_padding</item>
+        <item name="chipEndPadding">@dimen/location_chip_end_padding</item>
+    </style>
+
 </resources>

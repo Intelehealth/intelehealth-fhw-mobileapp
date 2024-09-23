@@ -817,5 +817,11 @@
     <dimen name="tv_cal_view_date_day_text_size">12sp</dimen>
     <dimen name="icons_appoint_height">40dp</dimen>
 
+    <!--    Location survey UI -->
+    <dimen name="location_chip_stroke_width">2dp</dimen>
+    <dimen name="location_chip_spacing_vertical">0dp</dimen>
+    <dimen name="location_chip_text_size">16dp</dimen>
+    <dimen name="location_chip_start_padding">5dp</dimen>
+    <dimen name="location_chip_end_padding">5dp</dimen>
 
 </resources>

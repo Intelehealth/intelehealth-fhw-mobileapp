@@ -40,7 +40,7 @@
                     android:contentDescription="@string/generic_back"
                     android:padding="@dimen/margin_5"
                     android:src="@drawable/ic_arrow_right"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -439,6 +439,638 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/ll_sc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_enter_location_details">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_sub_centre_in_walking_time"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_sc_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_sc_within_five_mins"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_5_minutes" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_sc_five_fifteen_mins"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/five_fifteen_minutes" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_sc_fifteen_thirty_mins"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fifteen_thirty_minutes" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_sc_more_than_thirty_mins"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_thirty_minutes" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_sub_centre_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_sub_centre_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_phc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_sc">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_primary_health_centre_in_kms"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_phc_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_phc_within_one_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_1_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_phc_one_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/one_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_phc_three_five_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_five_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_sc_more_than_five_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_five_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_primary_health_centre_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_primary_health_centre_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_chc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_phc">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_community_health_centre_in_kms"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_chc_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_chc_within_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_chc_three_six_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_six_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_chc_six_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/six_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_chc_more_than_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_ten_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_community_health_centre_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_community_health_centre_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_dh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_chc">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_district_hospital"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_dh_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dh_within_five_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_five_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dh_five_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/five_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dh_ten_twenty_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ten_twenty_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dh_twenty_thirty_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/twenty_thirty_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_dh_more_than_thirty_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_thirty_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_district_hospital_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_district_hospital_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_ms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_dh">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_medical_store"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_ms_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_ms_within_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_ms_three_six_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_six_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_ms_six_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/six_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_ms_more_than_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_ten_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_medical_store_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_medical_store_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_ms">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_pathological_lab"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_pl_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pl_within_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pl_three_six_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_six_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pl_six_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/six_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pl_more_than_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_ten_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_pathological_lab_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_pathological_lab_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_pl">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_private_clinic"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_pc_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pc_within_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pc_three_six_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_six_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pc_six_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/six_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pc_more_than_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_ten_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_private_clinic_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_private_clinic_alternate_medicine_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pcam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_pc">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_to_nearest_private_clinic_with_alternate_medicine"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_pcam_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pcam_within_three_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_three_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pcam_three_six_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/three_six_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pcam_six_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/six_ten_km" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_pcam_more_than_ten_km"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_than_ten_km" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_private_clinic_alternate_medicine_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_private_clinic_alternate_medicine_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_jjy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_title_margin_top"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_pcam">
+
+                    <TextView
+                        style="@style/TextviewInputTitleStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/does_this_village_get_water_under_jal_jeevan_yojana_scheme"
+                        android:textColor="@color/textColorGray"
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cb_jjy_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_jjy_yes"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/generic_yes" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_jjy_no"
+                            style="@style/LocationChoiceChipStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/generic_no" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_jjy_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:lineSpacingExtra="0sp"
+                        android:text="@string/error_private_clinic_alternate_medicine_distance_not_selected"
+                        android:textAppearance="@style/registr_error_msg"
+                        android:textColor="@color/red"
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
