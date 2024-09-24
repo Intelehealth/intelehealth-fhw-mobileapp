@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
@@ -132,13 +133,27 @@ public class DateRangeAchievementsFragment extends Fragment {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
-        if(value.equalsIgnoreCase("startDate"))
+        if (value.equalsIgnoreCase("startDate"))
             datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
-        else if(value.equalsIgnoreCase("endDate")) {
+        else if (value.equalsIgnoreCase("endDate")) {
             datePicker.setMaxDate(System.currentTimeMillis());
             datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
         }
         datePickerDialog.show();
+        updateButtonTheme(datePickerDialog);
+    }
+
+    private void updateButtonTheme(DatePickerDialog datePickerDialog) {
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(
+                        ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorAccent
+                        )
+                ); // Change to your desired color
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent));
     }
 
     private void fetchAndSetUIData() {
