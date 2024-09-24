@@ -148,12 +148,12 @@ public class DateRangeAchievementsFragment extends Fragment {
                 .setTextColor(
                         ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorAccent
+                                R.color.colorPrimary
                         )
                 ); // Change to your desired color
 
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent));
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
     }
 
     private void fetchAndSetUIData() {
