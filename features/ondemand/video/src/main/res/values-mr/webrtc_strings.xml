@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">उत्तर मिळाले नाही %1$s</string>
+    <string name="call_canceled_by">कॉल संपला %1$s</string>
+    <string name="call_rejected_by">यांनी कॉल नाकारला %1$s</string>
+    <string name="call_time_up">कॉल ची वेळ संपली</string>
+    <string name="left_the_call">कॉल बाकी %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">कॉल सुरु न केल्यामुळे जोडला गेला नाही</string>
+    <string name="reason_duplicated_identity">अनोळखी कॉल नाकारला</string>
+    <string name="reason_server_shutdown">सर्वर बंद असल्यामुळे कॉल जोडला गेला नाही</string>
+    <string name="reason_participant_removed">सहभागी काढून टाकल्यामुळे काल जोडला गेला नाही</string>
+    <string name="reason_room_deleted">रूम न मिळाल्यामुळे कॉल जोडला नाही</string>
+    <string name="reason_state_mismatch">जुळत नसल्यामुळे कॉल जोडला नाही</string>
+    <string name="reason_join_failure">रूम मध्ये सामील होण्यास अयशस्वी झाल्यामुळे कॉल जोडला नाही</string>
+    <string name="reason_unknown">अज्ञात कारणास्तव अयशस्वी झाल्यामुळे कॉल जोडला नाही</string>
+
+    <string name="call_missed">सुटलेला कॉल</string>
+    <string name="call_outgoing">जाणारे कॉल</string>
+    <string name="call_ongoing">चालू कॉल</string>
+    <string name="call_unknown">अनोळखी</string>
+    <string name="call_incoming">येणारे कॉल</string>
+    <string name="call_logs">कॉल इतिहास</string>
+    <string name="calling">कॉल करत आहे</string>
+
+    <string name="an_hour_ago">एक तासापूर्वी</string>
+    <string name="hours_ago">%1$s तासापूर्वी</string>
+    <string name="a_min_ago">एक मिनिटापूर्वी</string>
+    <string name="mins_ago">%1$s मिनिटापूर्वी</string>
+    <string name="a_second_ago">एक सेकंदापूर्वी</string>
+    <string name="seconds_ago">%1$s सेकंदापूर्वी</string>
+    <string name="today">आज</string>
+    <string name="today_at">आज येथे</string>
+    <string name="yesterday">काल</string>
+    <string name="yesterday_at">काल येथे</string>
+    <string name="now">आता</string>
+
+    <string name="decline">घट</string>
+    <string name="accept">स्वीकार करा</string>
+    <string name="hang_up">हँग अप</string>
+</resources>

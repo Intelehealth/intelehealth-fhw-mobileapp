@@ -9,6 +9,9 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
@@ -43,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -123,7 +127,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         String date = textView.getText().toString();
         Calendar calendar = DateAndTimeUtils.convertStringToCalendarObject(date, "dd MMM, yyyy", sessionManager.getAppLanguage());
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.datepicker, (datePicker, year, month, day) -> {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, (datePicker, year, month, day) -> {
             Calendar newDate = Calendar.getInstance();
             newDate.set(Calendar.YEAR, year);
             newDate.set(Calendar.MONTH, month);
@@ -135,13 +139,26 @@ public class DateRangeAchievementsFragment extends Fragment {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
-        if(value.equalsIgnoreCase("startDate"))
+        if (value.equalsIgnoreCase("startDate"))
             datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
-        else if(value.equalsIgnoreCase("endDate")) {
+        else if (value.equalsIgnoreCase("endDate")) {
             datePicker.setMaxDate(System.currentTimeMillis());
             datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
         }
+
         datePickerDialog.show();
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(
+                        ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorPrimary
+                        )
+                ); // Change to your desired color
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+
     }
 
     private void fetchAndSetUIData() {
@@ -187,8 +204,8 @@ public class DateRangeAchievementsFragment extends Fragment {
     private void setVisitsEndedInRange() {
         //int numberOfVisitsEnded = 0;
 
-        String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
-        String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(),"dd MMM, yyyy"), "yyyy-MM-dd");
+        String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(), "dd MMM, yyyy"), "yyyy-MM-dd");
+        String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(), "dd MMM, yyyy"), "yyyy-MM-dd");
 
         //normally sqlite doesn't support filter for "MMM d, yyyy" this date format
         //that's why here added two logics for date filter
@@ -228,16 +245,16 @@ public class DateRangeAchievementsFragment extends Fragment {
                 //checking length of the formatted date here
                 //if length is 1 then adding another 0 before the digit
                 //if length is more than 1, that means it's in correct format
-                "CASE WHEN LENGTH("+formattedDay+") = 1 THEN '0'||"+formattedDay+" ELSE "+formattedDay+" END ),' ','') else substr(v.enddate,1,10) END)";
+                "CASE WHEN LENGTH(" + formattedDay + ") = 1 THEN '0'||" + formattedDay + " ELSE " + formattedDay + " END ),' ','') else substr(v.enddate,1,10) END)";
 
         //if the end date is "Sep 11, 2024" then the final output will be "11-09-2024" for formattedEndDate
 
         String visitEndedQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
                 "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
                 "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
-                "AND "+formattedEndDate+" >= '"+startDate+"' and "+formattedEndDate+"<= '"+endDate+"'";
+                "AND " + formattedEndDate + " >= '" + startDate + "' and " + formattedEndDate + "<= '" + endDate + "'";
 
-        CustomLog.d("visitEndedQuery",""+visitEndedQuery);
+        CustomLog.d("visitEndedQuery", "" + visitEndedQuery);
 
         //String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();

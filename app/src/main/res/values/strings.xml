@@ -1074,4 +1074,5 @@
     <string name="lbl_clear_all">Clear All</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+    <string name="title_video">Video Feature</string>
 </resources>

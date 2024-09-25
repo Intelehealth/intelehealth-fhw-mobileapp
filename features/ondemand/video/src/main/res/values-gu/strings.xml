@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <string name="settings_name" translatable="false">AppRTC Settings</string>
+    <string name="disconnect_call">ફોને કાપવો</string>
+    <string name="room_description">કૃપા કરી ને રૂમનું નામ લખો રૂમનું નામ બધા સાથે શેર કરવા માં આવે છે તેથી કંઈક નવું વિચારી ને તેને મિત્રને ને મોકલો.</string>
+    <string name="favorites">પસંદ</string>
+    <string name="no_favorites">કોઈ પસંદ નથી</string>
+    <string name="invalid_url_title">યુ આ રેલ માન્ય નહી</string>
+    <string name="invalid_url_text">તમે લખેલો યુ આ રેલ અથવા રૂમ નામના પરિણામ સ્વરૂપ એક અસામાન્ય  યું આર એલ આવ્યું છે:%1$s</string>
+    <string name="channel_error_title">કનેક્શન ત્રુટિ</string>
+    <string name="connecting_to">જોડાણ  થઈ રહ્યું છે: %1$s</string>
+    <string name="missing_url">ગંભીર ત્રુટિ : જોડાણ કરવા માટે યુ આર એલ ગાયબ છે.</string>
+    <string name="camera2_texture_only_error">કેમેરા ૨ માત્ર બનાવટ ને ખેચવા માટે સપોર્ટ કરે છે. કેમેરા 2 ને અક્ષમ કરો કે પછી વિકલ્પોમાંથી ટેક્ષ્ચરને ખેચવા માટે સક્ષમ કરો.</string>
+    <string name="ok">બરાબર છે.</string>
+    <string name="switch_camera">આગળ/પાછળ નો કેમેરો બદલો</string>
+    <string name="capture_format_change_text">કેપ્ચર ફોર્મેટ બદલવા માટે સરકાવો</string>
+    <string name="muted">મ્યુટ</string>
+    <string name="toggle_debug">ડીબગ દ્ર્શ્ય ટોગલ કરો.</string>
+    <string name="toggle_mic">માઇક્રોફોન ને ચાલુ/બંધ કરો</string>
+    <string name="action_settings">સેટીંગ</string>
+    <string name="action_loopback">લૂપબેક જોડાણ</string>
+    <string name="connect_description">રૂમ સાથે જોડાણ કરો</string>
+    <string name="add_favorite_description">મનપસંદ જોડાણ કરો</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+
+    <string name="video_on_lbl">વિડીઓ ચાલુ!</string>
+    <string name="video_off_lbl">વિડીઓ બંધ!</string>
+    <string name="call_end_lbl">કોલ સમાપ્ત!</string>
+    <string name="audio_off_lbl">ઓડીઓ બંધ!</string>
+    <string name="audio_on_lbl">ઓડિયો  ચાલુ!</string>
+    <string name="video_on_off_button">વિડીઓ ચાલુ/બંધ બટન</string>
+    <string name="flip_camera">કેમેરો ફ્લિપ કરો</string>
+    <string name="call_end_button">કોલ સમાપ્ત બટન</string>
+    <string name="audio_on_off_button">ઓડીઓ ચાલુ/બંધ કરવાનું બટન </string>
+    <string name="you">તમે</string>
+    <string name="start_call_now">હમણાં ફોન શરૂ કરો.</string>
+    <string name="start_txt_chat_now">હમણાં ટેક્સ મેસેજ શરૂ કરો</string>
+    <string name="connecting">જોડાણ થઈ રહ્યું છે…</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
+    <string name="you_have_no_messages_start_sending_messages_now">તમારી પાસે કોઈ મેસેજ નથી, હમણાં મેસેજ શરૂ કરો</string>
+    <string name="empty_message_txt">કૃપા કરી ને  તમારો મેસેજ લખો.</string>
+    <string name="loading">લોડિંગ થઈ રહ્યું છે…</string>
+    <string name="video_call">વિડીઓ કોલ</string>
+    <string name="please_wait_for_doctor">કૃપા કરી ને ડોકટોર ની ઉપસ્થિતિ ની રાહ જુઓ</string>
+    <string name="call_end_aler_txt">શુ તમે વિડીઓ કોલ બંધ કરવા માંગો છો?</string>
+    <string name="yes">હા</string>
+    <string name="no">ના</string>
+    <string name="type_text_here_str">અહીં લખો…</string>
+    <string name="take_photo_lbl">ફોટો પાડો</string>
+    <string name="choose_from_gallery_lbl">ગેલેરી માંથી પસંદ કરો</string>
+    <string name="cancel_lbl">કાઢી નાખવુ</string>
+    <string name="max_doc_size_toast">અધિકતમ ડોક્યુમેન્ટ સાઇઝ 512KB છે.</string>
+    <string name="choose_documents">ડોક્યુમેન્ટ પસંદ કરો.</string>
+    <string name="read">વાંચો</string>
+    <string name="sent">મોકલી આપેલું છે</string>
+    <string name="msg_delivered">વિતરણ થઈ ચૂક્યું છે.</string>
+    <string name="sending">મોકલવામાં આવી રહ્યું છે.</string>
+    <string name="max_5_image">વધુ વધુમાં 5 ફોટો તમે એક કેસમાં મોકલી શકો છો.</string>
+    <string name="max_2_image">વધુ વધુમાં 2 ફોટો તમે એક કેસમાં મોકલી શકો છો.</string>
+    <string name="select">પસંદ કરો</string>
+    <string name="camera_permission_denied">કેમેરા ની પરમિશન અશ્વિકાર!</string>
+    <string name="unable_to_pick_data">ગેલેરીમાંથી ડેટા પસંદ કરવામાં અસમર્થ!</string>
+    <string name="max_doc_size_toast_mb">અધિકતમ ડોક્યુમેન્ટની સાઈઝ 1 MB છે.</string>
+    <string name="doctor_annotation">ડૉ.</string>
+    <string name="disconnected">જોડાણ રદ્દ!</string>
+    <string name="enter_room_id">કૃપા કરી ને રૂમ ની આઈડી દાખલ કરો</string>
+    <string name="permission_denied">અનુમતિ અસ્વીકાર\n</string>
+    <string name="incoming_voice_call">ઇનકમિંગ વોઇઝ કોલ</string>
+    <string name="incoming_call">ઇનકમિંગ કોલ</string>
+    <string name="doctor_profile_picture">ડોકટોર પ્રોફાઈલ ચિત્ર</string>
+    <string name="poor_connection">ખરાબ જોડાણ</string>
+    <string name="remote_participant_mic_off_status">દૂરના સહભાગીનું માઇક બંધ સ્તિથી</string>
+    <string name="sender_image">પ્રેષક છબી</string>
+    <string name="select_spinner">પસંદ કરો</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+</resources>

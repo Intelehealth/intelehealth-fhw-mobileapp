@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">পৰা কোনো উত্তৰ নাই %1$s</string>
+    <string name="call_canceled_by">কল শেষ হ\'ল %1$s</string>
+    <string name="call_rejected_by">কল নাকচ কৰা হৈছে %1$s</string>
+    <string name="call_time_up">কলৰ সময় সমাপ্ত হ\'ল</string>
+    <string name="left_the_call">কল স্থাপন কৰা হৈছে %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">কলটো আৰম্ভ নকৰাৰ বাবে বিচ্ছিন্ন হৈ পৰিছিল।</string>
+    <string name="reason_duplicated_identity">ভুল পৰিচয়ৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_server_shutdown">চাৰ্ভাৰ বন্ধ হোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_participant_removed">অংশগ্ৰহণকাৰী আঁতৰোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_room_deleted">কোঠা নোপোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_state_mismatch">কোঠাৰ মিল নোহোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_join_failure">জইন ৰুমত ব্যৰ্থ হোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+    <string name="reason_unknown">অজ্ঞাত কাৰণত বিফল হোৱাৰ বাবে কল বিচ্ছিন্ন</string>
+
+    <string name="call_missed">মিছড কল</string>
+    <string name="call_outgoing">আউটগোয়িং কল</string>
+    <string name="call_ongoing">আউটগোয়িং কল</string>
+    <string name="call_unknown">অজ্ঞাত</string>
+    <string name="call_incoming">ইনকামিং কল</string>
+    <string name="calling">ফোন কৰি আছে</string>
+    <string name="call_logs">কল লগসমূহ</string>
+
+    <string name="an_hour_ago">এঘণ্টা আগতে</string>
+    <string name="hours_ago">%1$s ঘন্টা আগতে</string>
+    <string name="a_min_ago">এমিনিট আগতে</string>
+    <string name="mins_ago">%1$s মিনিট আগতে</string>
+    <string name="a_second_ago">এছেকেণ্ড আগতে</string>
+    <string name="seconds_ago">%1$s ছেকেণ্ড আগতে</string>
+    <string name="today">আজি</string>
+    <string name="today_at">আজি বজাত</string>
+    <string name="yesterday">যোৱাকালি</string>
+    <string name="yesterday_at">কালি বজাত.</string>
+    <string name="now">এতিয়া</string>
+
+    <string name="decline">অস্বীকাৰ কৰা</string>
+    <string name="accept">গ্ৰহণ কৰা</string>
+    <string name="hang_up">ৰাখক</string>
+</resources>
