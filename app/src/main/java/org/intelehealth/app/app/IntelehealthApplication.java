@@ -18,6 +18,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.intelehealth.appointment.AppointmentBuilder;
 import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
@@ -78,6 +79,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
+        //new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004");
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)

@@ -52,6 +52,7 @@ public class AppointmentSync {
                             try {
                                 CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
                                 appointmentDAO.insert(slotInfoResponse.getData().get(i));
+
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }
