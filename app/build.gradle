@@ -78,6 +78,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+    dynamicFeatures = [':appointment']
 
 }
 dependencies {
