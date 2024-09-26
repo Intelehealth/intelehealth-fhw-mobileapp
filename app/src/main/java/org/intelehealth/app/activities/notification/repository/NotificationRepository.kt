@@ -54,7 +54,11 @@ class NotificationRepository {
             "Basic " + sessionManager.encoded, userUid
         )
 
-    fun fetchAllNotification(userId: String, page: String, size: String): Single<NotificationResponse> =
+    fun fetchAllNotification(
+        userId: String,
+        page: String,
+        size: String
+    ): Single<NotificationResponse> =
         apiService.fetchAllNotifications(
             "Basic " + sessionManager.encoded, userId, page, size
         )
@@ -127,10 +131,11 @@ class NotificationRepository {
                 notificationListWithOutExpiredFollowup.add(data)
             } else if (data.notification_type == NotificationDbConstants.FOLLOW_UP_NOTIFICATION &&
                 DateAndTimeUtils.getTimeStampFromString(
-                    data.description.substring(
+                    /*data.description.substring(
                         data.description.length - 21,
                         data.description.length
-                    ), "yyyy-MM-dd 'at' h:mm a"
+                    )*/
+                    data.description.split("on").last(), "yyyy-MM-dd 'at' h:mm a"
                 ) > System.currentTimeMillis()
             ) {
                 notificationListWithOutExpiredFollowup.add(data)
