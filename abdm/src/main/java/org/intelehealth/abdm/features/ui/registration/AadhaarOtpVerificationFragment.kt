@@ -17,8 +17,6 @@ import org.intelehealth.abdm.features.viewmodel.registration.AadhaarCardVerifica
 class AadhaarOtpVerificationFragment :
     BaseFragment<FragmentAadhaarOtpVerificationBinding, AadhaarCardVerificationViewModel>() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +29,7 @@ class AadhaarOtpVerificationFragment :
 
     override fun setClickListener() {
         binding.btnVerifyOtp.btnActive.setOnClickListener {
-            viewModel.sendIntent(RegistrationVerificationIntent.OnClickVerifyAadhaarOtp(viewModel.enteredMobileNumber))
+            viewModel.sendIntent(RegistrationVerificationIntent.OnClickVerifyAadhaarOtp(binding.otpBox.text.toString()))
         }
     }
 

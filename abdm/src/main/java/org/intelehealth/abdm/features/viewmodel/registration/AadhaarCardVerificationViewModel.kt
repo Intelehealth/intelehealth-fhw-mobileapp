@@ -10,18 +10,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import org.intelehealth.abdm.R
-import org.intelehealth.abdm.common.constant.Constants.BEARER_AUTH
 import org.intelehealth.abdm.common.constant.Constants.SCOPE_AADHAAR
 import org.intelehealth.abdm.common.di.IoDispatcher
 import org.intelehealth.abdm.common.utils.ErrorCode
 import org.intelehealth.abdm.common.utils.ErrorCode.CODE_429
-import org.intelehealth.abdm.domain.model.AadhaarOtpVerification
+import org.intelehealth.abdm.common.utils.PreferenceUtils
 import org.intelehealth.abdm.domain.model.request.AadhaarOtpVerificationRequest
+import org.intelehealth.abdm.domain.model.request.EnrollMobileOtpRequest
 import org.intelehealth.abdm.domain.model.request.SendAadhaarOtpApiRequest
 import org.intelehealth.abdm.domain.model.request.SendMobileOtpRequest
-import org.intelehealth.abdm.domain.model.request.EnrollMobileOtpRequest
 import org.intelehealth.abdm.domain.result.ApiResult
-import org.intelehealth.abdm.domain.usecase.GetAuthTokenUseCase
 import org.intelehealth.abdm.domain.usecase.registration.EnrollMobileOtpUseCase
 import org.intelehealth.abdm.domain.usecase.registration.SendAadhaarOtpUseCase
 import org.intelehealth.abdm.domain.usecase.registration.SendMobileOtpToEnrollUseCase
@@ -38,7 +36,6 @@ import javax.inject.Inject
 class AadhaarCardVerificationViewModel @Inject constructor(
     @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
-    private val getAuthTokenUseCase: GetAuthTokenUseCase,
     private val sendAadhaarOtpUseCase: SendAadhaarOtpUseCase,
     private val verifyAadhaarOtpUseCase: VerifyAadhaarOtpUseCase,
     private val sendMobileOtpToEnrollUseCase: SendMobileOtpToEnrollUseCase,
@@ -47,9 +44,7 @@ class AadhaarCardVerificationViewModel @Inject constructor(
 ) : BaseViewModel() {
     var enteredMobileNumber: String = ""
     private var aadhaarNo: String = ""
-    private var accessToken: String? = null
-    private var aadhaarOtpVerification: AadhaarOtpVerification? = null
-    private var txnId: String = ""
+    private var transactionId: String = ""
 
     private val _sendAadhaarOtpState =
         MutableLiveData<SendAadhaarOtpViewState>(SendAadhaarOtpViewState.Idle)
@@ -78,30 +73,31 @@ class AadhaarCardVerificationViewModel @Inject constructor(
                 this.enteredMobileNumber = intent.mobileNo
                 this.aadhaarNo = intent.aadhaarNo
                 _sendAadhaarOtpState.postValue(SendAadhaarOtpViewState.Loading)
-                sendAadhaarOtp(intent.aadhaarNo)
+                sendAadhaarOtp(intent.aadhaarNo, PreferenceUtils.getAuthToken(appContext) ?: "")
             }
 
             is RegistrationVerificationIntent.ResendAadhaarOtp -> {
                 this.enteredMobileNumber = intent.mobileNo
                 _sendAadhaarOtpState.postValue(SendAadhaarOtpViewState.Loading)
-                sendAadhaarOtp(intent.aadhaarNo)
+                sendAadhaarOtp(intent.aadhaarNo, PreferenceUtils.getAuthToken(appContext) ?: "")
             }
 
             is RegistrationVerificationIntent.OnClickVerifyAadhaarOtp -> {
                 val request = AadhaarOtpVerificationRequest().apply {
                     otp = intent.aadhaarOtp
-                    txnId = aadhaarOtpVerification?.txnId
+                    txnId = transactionId
                     mobileNo = enteredMobileNumber
                 }
-                verifyAadhaarOtp(request)
+                verifyAadhaarOtp(request, PreferenceUtils.getAuthToken(appContext) ?: "")
             }
 
             is RegistrationVerificationIntent.OnClickSendMobileOtp -> {
                 sendMobileToEnrollOtp(
+                    PreferenceUtils.getAuthToken(appContext) ?: "",
                     SendMobileOtpRequest(
                         scope = SCOPE_AADHAAR,
                         value = aadhaarNo,
-                        txnId = txnId
+                        txnId = transactionId
                     )
                 )
             }
@@ -114,71 +110,56 @@ class AadhaarCardVerificationViewModel @Inject constructor(
                 val apiRequest = EnrollMobileOtpRequest(
                     otp = intent.mobileOtp,
                     mobileNo = enteredMobileNumber,
-                    txnId = txnId
+                    txnId = transactionId
                 )
-                verifyAndEnrollMobileNumber(apiRequest)
+                verifyAndEnrollMobileNumber(PreferenceUtils.getAuthToken(appContext)?:"",apiRequest)
             }
         }
     }
 
-    private fun getAuthToken() = BEARER_AUTH.plus(accessToken)
 
-    private fun sendAadhaarOtp(aadhaarNo: String) {
+    private fun sendAadhaarOtp(aadhaarNo: String, authToken: String) {
         val otpApiRequest =
             SendAadhaarOtpApiRequest(value = aadhaarNo, scope = SCOPE_AADHAAR)
         viewModelScope.launch(ioDispatcher) {
-            val authApiResult = getAuthTokenUseCase()
-
-            if (authApiResult is ApiResult.Success) {
-                accessToken = authApiResult.data.accessToken
-                when (val apiResult = sendAadhaarOtpUseCase(getAuthToken(), otpApiRequest)) {
-                    is ApiResult.Success -> {
-                        txnId = apiResult.data.txnId ?: ""
-                        _sendAadhaarOtpState.postValue(SendAadhaarOtpViewState.Success(apiResult.data))
-                    }
-
-                    is ApiResult.Error -> {
-                        val error = when (apiResult.code) {
-                            CODE_429 -> {
-                                appContext.getString(
-                                    R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes
-                                )
-                            }
-
-                            else -> {
-                                appContext.getString(
-                                    R.string.something_went_wrong
-                                )
-                            }
-                        }
-                        _sendAadhaarOtpState.postValue(
-                            SendAadhaarOtpViewState.Error(
-                                error
-                            )
-                        )
-                    }
+            when (val apiResult = sendAadhaarOtpUseCase(authToken, otpApiRequest)) {
+                is ApiResult.Success -> {
+                    transactionId = apiResult.data.txnId ?: ""
+                    _sendAadhaarOtpState.postValue(SendAadhaarOtpViewState.Success(apiResult.data))
                 }
 
-            } else {
-                _sendAadhaarOtpState.postValue(
-                    SendAadhaarOtpViewState.Error(
-                        appContext.getString(
-                            R.string.something_went_wrong
+                is ApiResult.Error -> {
+                    val error = when (apiResult.code) {
+                        CODE_429 -> {
+                            appContext.getString(
+                                R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes
+                            )
+                        }
+
+                        else -> {
+                            appContext.getString(
+                                R.string.something_went_wrong
+                            )
+                        }
+                    }
+                    _sendAadhaarOtpState.postValue(
+                        SendAadhaarOtpViewState.Error(
+                            error
                         )
                     )
-                )
+                }
             }
 
         }
     }
 
-    private fun verifyAadhaarOtp(apiRequest: AadhaarOtpVerificationRequest) {
+    private fun verifyAadhaarOtp(apiRequest: AadhaarOtpVerificationRequest, authToken: String) {
         viewModelScope.launch(ioDispatcher) {
             _verifyAadhaarOtpState.postValue(VerifyAadhaarOtpViewState.Loading)
             when (val apiResult =
-                verifyAadhaarOtpUseCase(getAuthToken(), apiRequest)) {
+                verifyAadhaarOtpUseCase(authToken, apiRequest)) {
                 is ApiResult.Success -> {
-                    txnId = apiResult.data.txnId ?: ""
+                    transactionId = apiResult.data.txnId ?: ""
                     _verifyAadhaarOtpState.postValue(
                         VerifyAadhaarOtpViewState.OpenSelectAbhaScreen(
                             apiResult.data
@@ -227,13 +208,13 @@ class AadhaarCardVerificationViewModel @Inject constructor(
     }
 
 
-    private fun sendMobileToEnrollOtp(apiRequest: SendMobileOtpRequest) {
+    private fun sendMobileToEnrollOtp(authToken: String, apiRequest: SendMobileOtpRequest) {
         viewModelScope.launch(ioDispatcher) {
             _sendMobileOtpState.postValue(SendMobileOtpToEnrollViewState.Loading)
             when (val apiResult =
-                sendMobileOtpToEnrollUseCase(getAuthToken(), apiRequest)) {
+                sendMobileOtpToEnrollUseCase(authToken, apiRequest)) {
                 is ApiResult.Success -> {
-                    txnId = apiResult.data.txnId ?: ""
+                    transactionId = apiResult.data.txnId ?: ""
                     _sendMobileOtpState.postValue(SendMobileOtpToEnrollViewState.Success(apiResult.data))
                 }
 
@@ -250,11 +231,11 @@ class AadhaarCardVerificationViewModel @Inject constructor(
         }
     }
 
-    private fun verifyAndEnrollMobileNumber(apiRequest: EnrollMobileOtpRequest) {
+    private fun verifyAndEnrollMobileNumber(authToken: String,apiRequest: EnrollMobileOtpRequest) {
         viewModelScope.launch(ioDispatcher) {
             _enrollMobileOtpState.postValue(EnrollMobileOtpViewState.Loading)
             when (val apiResult =
-                enrollMobileOtpUseCase(getAuthToken(), apiRequest)) {
+                enrollMobileOtpUseCase(authToken, apiRequest)) {
                 is ApiResult.Success -> {
                     _enrollMobileOtpState.postValue(
                         EnrollMobileOtpViewState.OpenSelectAbhaScreen(
@@ -275,6 +256,5 @@ class AadhaarCardVerificationViewModel @Inject constructor(
             }
         }
     }
-
 
 }

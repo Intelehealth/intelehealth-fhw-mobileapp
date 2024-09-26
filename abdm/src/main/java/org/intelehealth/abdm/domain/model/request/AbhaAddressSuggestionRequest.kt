@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class AbhaAddressSuggestionRequest(
     @SerializedName("txnId")
-    private val txnId: String? = null
+    private val txnId: String?
 )

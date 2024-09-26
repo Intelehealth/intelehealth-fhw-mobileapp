@@ -35,6 +35,18 @@ interface AbdmService {
         @Body aadhaarOtpVerificationRequest: AadhaarOtpVerificationRequest
     ): Response<AadhaarOtpVerificationResponseDto>
 
+    @POST("/abha/enrollOTPReq")
+    suspend fun getMobileOtp(
+        @Header("Authorization") accessToken: String,
+        @Body sendMobileOtpRequest: SendMobileOtpRequest
+    ): Response<SendMobileOtpDto>
+
+    @POST("/abha/enrollByAbdm")
+    suspend fun verifyMobileOtp(
+        @Header("Authorization") accessToken: String,
+        @Body enrollMobileOtpRequest: EnrollMobileOtpRequest
+    ): Response<VerifyMobileOtpResponseDto>
+
     @POST("/abha/enrollSuggestion")
     suspend fun getAbhaAddressSuggestionListApi(
         @Header("Authorization") accessToken: String,
@@ -47,16 +59,5 @@ interface AbdmService {
         @Body enrollAbhaAddressRequest: EnrollAbhaAddressRequest
     ): Response<EnrolledAbhaAddressDto>
 
-    @POST("/abha/enrollOTPReq")
-    suspend fun getMobileOtp(
-        @Header("Authorization") accessToken: String,
-        @Body sendMobileOtpRequest: SendMobileOtpRequest
-    ): Response<SendMobileOtpDto>
-
-    @POST("/abha/enrollByAbdm")
-    suspend fun verifyMobileOtp(
-        @Header("Authorization") accessToken: String,
-        @Body enrollMobileOtpRequest: EnrollMobileOtpRequest
-    ): Response<VerifyMobileOtpResponseDto>
 
 }

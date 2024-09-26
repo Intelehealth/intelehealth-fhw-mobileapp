@@ -4,11 +4,7 @@ import android.content.Context
 import com.tashila.pleasewait.PleaseWaitDialog
 
 class ProgressBarUtils(context: Context) {
-    private var progressDialog: PleaseWaitDialog
-
-    init {
-        progressDialog = PleaseWaitDialog(context = context)
-    }
+    private var progressDialog: PleaseWaitDialog = PleaseWaitDialog(context = context)
 
     fun showCircularProgressbar(title: String = "", message: String = "") {
         if (!progressDialog.isAdded && !progressDialog.isVisible) {

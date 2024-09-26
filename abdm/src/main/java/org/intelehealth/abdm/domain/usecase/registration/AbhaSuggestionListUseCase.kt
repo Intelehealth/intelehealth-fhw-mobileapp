@@ -5,6 +5,7 @@ import org.intelehealth.abdm.domain.repository.registration.EnrollAbhaAddressRep
 import javax.inject.Inject
 
 class AbhaSuggestionListUseCase @Inject constructor(private val enrollAbhaAddressRepository: EnrollAbhaAddressRepository) {
+
     suspend operator fun invoke(
         authHeader: String,
         abhaAddressSuggestionRequest: AbhaAddressSuggestionRequest

@@ -4,7 +4,9 @@
     <application>
         <activity
             android:name=".features.ui.registration.SelectAbhaAddressActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".features.ui.registration.AadhaarVerificationActivity"
             android:exported="false"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.intelehealth.abdm.R
+import org.intelehealth.abdm.common.utils.BundleConstant
 import org.intelehealth.abdm.common.utils.ProgressBarUtils
 import org.intelehealth.abdm.common.utils.ToastUtil
 import org.intelehealth.abdm.databinding.ActivityAadhaarVerificationBinding
@@ -49,6 +50,7 @@ class AadhaarVerificationActivity :
         fragmentTransaction.replace(R.id.flVerificationLayout, AadhaarOtpVerificationFragment())
             .addToBackStack(null).commit()
     }
+
     private fun setNewMobileOtpVerificationFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.flVerificationLayout, MobileOtpVerificationFragment())
@@ -74,7 +76,7 @@ class AadhaarVerificationActivity :
                 }
 
                 is SendAadhaarOtpViewState.Error -> {
-                    ToastUtil.showLongToast(this,it.message)
+                    ToastUtil.showLongToast(this, it.message)
                     progressBarDialog.dismissProgressBar()
                 }
 
@@ -83,14 +85,13 @@ class AadhaarVerificationActivity :
 
     }
 
-    private fun handleVerifyAadhaarOtp()
-    {
+    private fun handleVerifyAadhaarOtp() {
         viewModel.verifyAadhaarOtpState.observe(this) {
             when (it) {
                 is VerifyAadhaarOtpViewState.Idle -> {}
-                is VerifyAadhaarOtpViewState.Error ->  {
+                is VerifyAadhaarOtpViewState.Error -> {
                     progressBarDialog.dismissProgressBar()
-                    ToastUtil.showShortToast(this,it.message)
+                    ToastUtil.showShortToast(this, it.message)
                 }
 
                 is VerifyAadhaarOtpViewState.Loading -> progressBarDialog.showCircularProgressbar()
@@ -98,12 +99,16 @@ class AadhaarVerificationActivity :
                     progressBarDialog.dismissProgressBar()
                     setNewMobileOtpVerificationFragment()
                 }
+
                 is VerifyAadhaarOtpViewState.OpenSelectAbhaScreen -> {
-                    startActivity(Intent(this,SelectAbhaAddressActivity::class.java))
+                    val intent = Intent(this, SelectAbhaAddressActivity::class.java)
+                    intent.putExtra(BundleConstant.TXN_ID, it.data.txnId)
+                    startActivity(intent)
                 }
             }
         }
 
     }
+
 
 }

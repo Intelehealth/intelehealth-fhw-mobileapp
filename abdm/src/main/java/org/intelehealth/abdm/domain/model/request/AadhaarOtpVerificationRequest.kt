@@ -17,11 +17,4 @@ data class AadhaarOtpVerificationRequest(
     @Expose
     var mobileNo: String? = null,
 
-    @SerializedName("scope")
-    @Expose
-    var scope: String? = null,
-
-    @SerializedName("authMethod")
-    @Expose
-    var authMethod: String? = null
 )

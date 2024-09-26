@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class EnrollAbhaAddressRequest(
     @SerializedName("txnId")
-    private val txnId: String? = null,
+    private val txnId: String,
     @SerializedName("abhaAddress")
-    private val abhaAddress: String? = null
+    private val abhaAddress: String,
 )
