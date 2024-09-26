@@ -1,10 +1,10 @@
 package org.intelehealth.app.utilities
 
 import android.app.AlarmManager
+import android.app.AlarmManager.AlarmClockInfo
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -16,9 +16,9 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.followup_notification.FollowUpNotificationDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.models.FollowUpNotificationShData
-import org.intelehealth.app.utilities.exception.DAOException
 import org.intelehealth.app.notificationScheduler.ScheduleNotificationReceiver
 import org.intelehealth.app.notificationScheduler.ScheduleNotificationWorker
+import org.intelehealth.app.utilities.exception.DAOException
 import java.util.concurrent.TimeUnit
 
 
@@ -32,13 +32,19 @@ class NotificationSchedulerUtils {
         fun scheduleFollowUpNotification(followUpNotificationData: FollowUpNotificationData) {
 
             try {
-                val followUpTime = DateAndTimeUtils.getTimeStampFromString(followUpNotificationData.value,"yyyy-MM-dd, 'Time: 'hh:mm a")
+                val followUpTime = DateAndTimeUtils.getTimeStampFromString(
+                    followUpNotificationData.value,
+                    "yyyy-MM-dd, 'Time: 'hh:mm a"
+                )
                 if (followUpTime > System.currentTimeMillis()) {
 
                     val followupDateTimeBefore24H =
                         followUpTime - TimeUnit.HOURS.toMillis(AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION)
 
-                    CustomLog.d("24_h_sub",""+followUpTime+"  "+TimeUnit.HOURS.toMillis(AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION)+"  "+followUpNotificationData.value+"  ")
+                    CustomLog.d(
+                        "24_h_sub",
+                        "" + followUpTime + "  " + TimeUnit.HOURS.toMillis(AppConstants.FOLLOW_UP_SCHEDULE_TWO_DURATION) + "  " + followUpNotificationData.value + "  "
+                    )
                     /**
                      * if followup date time is less than 24 h triggering the notification immediately
                      */
@@ -148,7 +154,7 @@ class NotificationSchedulerUtils {
             isFromBootComplete: Boolean,
             notificationData: FollowUpNotificationData,
         ) {
-            val triggerTime:Long = dateTime - TimeUnit.HOURS.toMillis(duration)
+            val triggerTime: Long = dateTime - TimeUnit.HOURS.toMillis(duration)
             if (triggerTime < System.currentTimeMillis()) return
             val intent = Intent(
                 IntelehealthApplication.getAppContext(),
@@ -176,12 +182,12 @@ class NotificationSchedulerUtils {
                     putExtra(BundleKeys.VISIT_UUI, notificationData.visitUuid)
                     putExtra(BundleKeys.NAME, notificationData.name)
                     putExtra(BundleKeys.NOTIFICATION_TRIGGER_TIME, triggerTime)
-                    putExtra("key",UuidGenerator().UuidGenerator())
+                    putExtra("key", UuidGenerator().UuidGenerator())
                 }
-            val requestCode = (System.currentTimeMillis()+duration).toInt()
+            val requestCode = intent.hashCode()
             val pendingIntent = PendingIntent.getBroadcast(
                 IntelehealthApplication.getAppContext(),
-                intent.hashCode(),
+                requestCode,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -198,7 +204,7 @@ class NotificationSchedulerUtils {
                 openMrsId = notificationData.openMrsId,
                 patientUid = notificationData.patientUid,
                 visitUuid = notificationData.visitUuid,
-                requestCode = /*requestCode.toString()*/intent.hashCode().toString()
+                requestCode = requestCode.toString()
             );
             if (!isFromBootComplete) {
                 FollowUpNotificationDAO().insertFollowupNotification(
@@ -206,8 +212,18 @@ class NotificationSchedulerUtils {
                 )
             }
 
-            CustomLog.d("TRIGGER_TIME", "" + triggerTime+" "+Gson().toJson(notificationData)+"  "+Gson().toJson(notification))
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            CustomLog.d(
+                "TRIGGER_TIME",
+                "" + triggerTime + " " + Gson().toJson(notificationData) + "  " + Gson().toJson(
+                    notification
+                )
+            )
+            alarmManager.setAlarmClock(
+                AlarmClockInfo(
+                    triggerTime,
+                    pendingIntent
+                ), pendingIntent
+            )
         }
 
         /**
@@ -221,7 +237,7 @@ class NotificationSchedulerUtils {
                 ScheduleNotificationReceiver::class.java
             )
             val notificationData = FollowUpNotificationDAO().getFollowupNotificationById(id)
-            if(notificationData != null){
+            if (notificationData != null) {
                 val pendingIntent = PendingIntent.getBroadcast(
                     IntelehealthApplication.getAppContext(),
                     notificationData.requestCode.toInt(),
