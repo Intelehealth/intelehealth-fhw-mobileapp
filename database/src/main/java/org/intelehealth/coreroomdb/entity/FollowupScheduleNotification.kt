@@ -15,15 +15,15 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity
-class FollowupScheduleNotification (
+class FollowupScheduleNotification(
     @PrimaryKey
-    @ColumnInfo("id") @SerializedName("id") val id: String,
+    @SerializedName("id") val id: String,
     @ColumnInfo("date_time") @SerializedName("date_time") var dateTime: String,
-    @ColumnInfo("duration") @SerializedName("duration") val duration: String,
-    @ColumnInfo("value") @SerializedName("value") var value: String,
-    @ColumnInfo("name") @SerializedName("name") val name: String,
+    @SerializedName("duration") val duration: String,
+    @SerializedName("value") var value: String,
+    @SerializedName("name") val name: String,
     @ColumnInfo("openmrs_id") @SerializedName("openmrs_id") val openmrsId: String,
     @ColumnInfo("patient_uuid") @SerializedName("patient_uuid") val patientUuid: String,
     @ColumnInfo("visit_uuid") @SerializedName("visit_uuid") val visitUuid: String,
     @ColumnInfo("request_code") @SerializedName("request_code") val requestCode: String
-): Parcelable
+) : Parcelable

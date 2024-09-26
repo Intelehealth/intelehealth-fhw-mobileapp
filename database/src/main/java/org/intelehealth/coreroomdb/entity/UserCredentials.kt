@@ -14,14 +14,12 @@ import kotlinx.parcelize.Parcelize
  **/
 
 @Parcelize
-@Entity (tableName = "tbl_user_credentials")
-data class UserCredentials (
+@Entity(tableName = "tbl_user_credentials")
+data class UserCredentials(
     @ColumnInfo("username") @SerializedName("username") var userName: String,
     @PrimaryKey
-    @ColumnInfo("password") @SerializedName("password") var password: String,
-    @ColumnInfo("creator_uuid_cred") @SerializedName("creator_uuid_cred")
-    var creatorUuidCred: String,
+    @SerializedName("password") var password: String,
+    @ColumnInfo("creator_uuid_cred") @SerializedName("creator_uuid_cred") var creatorUuidCred: String,
     @ColumnInfo("chwname") @SerializedName("chwname") var chwName: String,
-    @ColumnInfo("provider_uuid_cred") @SerializedName("provider_uuid_cred")
-    var providerUuidCred: String
+    @ColumnInfo("provider_uuid_cred") @SerializedName("provider_uuid_cred") var providerUuidCred: String
 ) : Parcelable

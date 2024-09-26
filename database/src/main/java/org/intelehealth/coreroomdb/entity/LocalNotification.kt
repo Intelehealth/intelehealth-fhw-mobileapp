@@ -1,6 +1,7 @@
 package org.intelehealth.coreroomdb.entity
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -15,14 +16,10 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_notifications")
 data class LocalNotification(
     @PrimaryKey
-    @SerializedName("uuid")
-    var uuid: String? = null,
-    @SerializedName("description")
-    var description: String? = null,
-    @SerializedName("notification_type")
-    var notificationType: String? = null,
-    @SerializedName("obs_server_modified_date")
+    @SerializedName("uuid") var uuid: String? = null,
+    @SerializedName("description") var description: String? = null,
+    @ColumnInfo("notification_type") @SerializedName("notification_type") var notificationType: String? = null,
+    @ColumnInfo("obs_server_modified_date") @SerializedName("obs_server_modified_date")
     var obsServerModifiedDate: String? = null,
-    @SerializedName("isdeleted")
-    var deleted: Boolean = false,
+    @ColumnInfo("isdeleted") @SerializedName("isdeleted") var deleted: Boolean = false,
 ) : Parcelable
