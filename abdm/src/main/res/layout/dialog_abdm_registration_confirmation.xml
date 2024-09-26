@@ -2,13 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5dp"
-        app:cardCornerRadius="@dimen/_16dp"
-        app:cardElevation="@dimen/_16dp">
+        android:background="@color/white"
+    >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -64,7 +63,7 @@
                 app:layout_constraintEnd_toEndOf="@id/dialog_subtitle"
                 app:layout_constraintStart_toStartOf="@+id/dialog_subtitle"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_subtitle"
-                 >
+                >
 
                 <include
                     android:id="@+id/btnYes"

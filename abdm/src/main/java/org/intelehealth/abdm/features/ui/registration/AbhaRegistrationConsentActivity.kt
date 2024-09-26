@@ -37,6 +37,9 @@ class AbhaRegistrationConsentActivity :
     }
 
     override fun setClickListener() {
+        binding.toolbar.ivBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
         binding.btnDecline.btnDecline.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -58,10 +61,6 @@ class AbhaRegistrationConsentActivity :
 
     override fun initBinding() = ActivityAbhaRegistrationConsentBinding.inflate(layoutInflater)
     override fun onOptionChecked(model: RegistrationConsent) {
-        if (registrationConsentAdapter.areAllItemsChecked()) {
-            binding.btnAccept.btnActive.isEnabled = true
-        } else {
-            binding.btnAccept.btnActive.isEnabled = true
-        }
+        binding.btnAccept.btnActive.isEnabled = registrationConsentAdapter.areAllItemsChecked()
     }
 }

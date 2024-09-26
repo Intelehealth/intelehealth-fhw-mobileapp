@@ -38,5 +38,8 @@
     <string name="entered_aadhaar_or_mobile_number_is_incorrect">Entered Aadhaar or mobile number is incorrect.</string>
     <string name="please_enter_valid_otp">Please enter valid otp</string>
     <string name="please_select_abha_address">Please select ABHA address.</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="enter_12_digits">Enter 12 digits</string>
+    <string name="aadhaar_number_is_not_valid">AADHAAR number is not valid</string>
 
 </resources>

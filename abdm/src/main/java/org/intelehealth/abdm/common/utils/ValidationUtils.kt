@@ -9,4 +9,14 @@ object ValidationUtils {
         val matcher = pattern.matcher(input)
         return matcher.matches()
     }
+
+    fun isValidAadhaar(num: String): Boolean {
+        var c = 0
+        val myArray = VerifyAadhaarAlgorithm.StringToReversedIntArray(num)
+        for (i in myArray.indices) {
+            c = VerifyAadhaarAlgorithm.d[c][VerifyAadhaarAlgorithm.p[i % 8][myArray[i]]]
+        }
+
+        return (c == 0)
+    }
 }
