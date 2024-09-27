@@ -6,9 +6,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -28,13 +25,11 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.RtcEngine
-import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallConstants
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
 import org.intelehealth.klivekit.call.utils.CallMode
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.call.utils.CallNotificationHandler
-import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager

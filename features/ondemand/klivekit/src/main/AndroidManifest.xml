@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +26,18 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <application>
+<!--    Dynamic module setting start -->
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_video">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+    <!--    Dynamic module setting end -->
+
+    <application android:hasCode="false">
         <service android:name=".service.ForegroundService" />
 
         <service

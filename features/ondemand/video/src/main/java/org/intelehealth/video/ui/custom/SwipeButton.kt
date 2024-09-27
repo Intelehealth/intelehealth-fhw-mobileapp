@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.video.R
+import org.intelehealth.video.databinding.AnimCallActionButtonBinding
 
 /**
  * Created by Vaghela Mithun R. on 19-12-2023 - 19:14.

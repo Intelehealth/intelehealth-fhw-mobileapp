@@ -17,7 +17,6 @@ import org.intelehealth.config.data.ConfigRepository
 import org.intelehealth.config.network.WebClient
 import org.intelehealth.config.network.provider.WebClientProvider
 import org.intelehealth.config.room.ConfigDatabase
-import org.intelehealth.core.network.helper.NetworkHelper
 
 /**
  * Created by Vaghela Mithun R. on 12-04-2024 - 13:17.
@@ -31,7 +30,7 @@ class ConfigSyncWorker(
     override suspend fun doWork(): Result {
         var workerResult = Result.failure()
         val webClient: WebClient = WebClientProvider.getApiClient()
-        val networkHelper = NetworkHelper(ctx)
+        val networkHelper = org.intelehealth.core.network.helper.NetworkHelper(ctx)
         val dataSource = ConfigDataSource(webClient, networkHelper)
         val database = ConfigDatabase.getInstance(ctx)
         withContext(Dispatchers.IO) {

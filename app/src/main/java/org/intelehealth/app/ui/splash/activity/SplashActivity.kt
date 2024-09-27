@@ -45,10 +45,10 @@ import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.worker.ConfigSyncWorker
-import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
+import org.intelehealth.core.ui.viewholder.BaseViewHolder
+import org.intelehealth.core.utils.extensions.showToast
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
-import org.intelehealth.klivekit.utils.extensions.showToast
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -56,7 +56,7 @@ import org.intelehealth.klivekit.utils.extensions.showToast
  * Mob   : +919727206702
  **/
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListener {
+class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.BaseViewHolder.ViewHolderClickListener {
     private lateinit var binding: ActivitySplashBinding
     private lateinit var adapter: LanguageAdapter
 

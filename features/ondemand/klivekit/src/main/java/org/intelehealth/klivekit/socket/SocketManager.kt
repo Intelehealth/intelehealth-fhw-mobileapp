@@ -1,8 +1,5 @@
 package org.intelehealth.klivekit.socket
 
-import android.app.ActivityManager
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -17,7 +14,6 @@ import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.

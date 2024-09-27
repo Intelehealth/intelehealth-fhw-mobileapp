@@ -1,8 +1,8 @@
 package org.intelehealth.video.data
 
 import androidx.lifecycle.asLiveData
-import org.intelehealth.klivekit.room.dao.RtcCallLogDao
-import org.intelehealth.video.model.RtcCallLog
+import org.intelehealth.klivekit.room.dao.VideoCallLogDao
+import org.intelehealth.video.model.VideoCallLog
 import org.intelehealth.video.utils.CallStatus
 
 
@@ -11,8 +11,8 @@ import org.intelehealth.video.utils.CallStatus
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class CallLogRepository(private val callLogDao: RtcCallLogDao) {
-    suspend fun saveLog(callLog: RtcCallLog) = callLogDao.addCallLog(callLog)
+class CallLogRepository(private val callLogDao: VideoCallLogDao) {
+    suspend fun saveLog(callLog: VideoCallLog) = callLogDao.addCallLog(callLog)
 
     fun getCallLogs() = callLogDao.getAll().asLiveData()
 

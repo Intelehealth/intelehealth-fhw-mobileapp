@@ -15,16 +15,12 @@ import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.ui.language.activity.LanguageActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDAChatActivity;
-import org.intelehealth.app.webrtc.notification.AppNotification;
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository;
 import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory;
 import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
-import org.intelehealth.klivekit.model.ChatMessage;
-import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.core.socket.SocketManager;
 
 import java.util.UUID;
 
@@ -33,14 +29,14 @@ import java.util.UUID;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class BaseActivity extends LanguageActivity implements SocketManager.NotificationListener {
+public class BaseActivity extends LanguageActivity  {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SocketManager.getInstance().setNotificationListener(this);
+//        SocketManager.getInstance().setNotificationListener(this);
         loadFeatureActiveStatus();
     }
 
@@ -58,29 +54,29 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         });
     }
 
-    @Override
-    public void showNotification(@NonNull ChatMessage chatMessage) {
-        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
-            RtcArgs args = new RtcArgs();
-            args.setPatientName(chatMessage.getPatientName());
-            args.setPatientId(chatMessage.getPatientId());
-            args.setVisitId(chatMessage.getVisitId());
-            args.setNurseId(chatMessage.getToUser());
-            args.setDoctorUuid(chatMessage.getFromUser());
-            try {
-                String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
-                new AppNotification.Builder(this)
-                        .title(title)
-                        .body(chatMessage.getMessage())
-                        .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
-                        .send();
-
-                saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    @Override
+//    public void showNotification(@NonNull ChatMessage chatMessage) {
+//        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
+//            RtcArgs args = new RtcArgs();
+//            args.setPatientName(chatMessage.getPatientName());
+//            args.setPatientId(chatMessage.getPatientId());
+//            args.setVisitId(chatMessage.getVisitId());
+//            args.setNurseId(chatMessage.getToUser());
+//            args.setDoctorUuid(chatMessage.getFromUser());
+//            try {
+//                String title = new ProviderDAO().getProviderName(args.getDoctorUuid(), ProviderDTO.Columns.USER_UUID.value);
+//                new AppNotification.Builder(this)
+//                        .title(title)
+//                        .body(chatMessage.getMessage())
+//                        .pendingIntent(IDAChatActivity.getPendingIntent(this, args))
+//                        .send();
+//
+//                saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
+//            } catch (DAOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 
     private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
         RTCConnectionDTO rtcDto = new RTCConnectionDTO();
@@ -90,14 +86,14 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         new RTCConnectionDAO().insert(rtcDto);
     }
 
-    @Override
-    public void saveTheDoctor(@NonNull ChatMessage chatMessage) {
-        try {
-            saveChatInfoLog(chatMessage.getVisitId(), chatMessage.getFromUser());
-        } catch (DAOException e) {
-            Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
-        }
-    }
+//    @Override
+//    public void saveTheDoctor(@NonNull ChatMessage chatMessage) {
+//        try {
+//            saveChatInfoLog(chatMessage.getVisitId(), chatMessage.getFromUser());
+//        } catch (DAOException e) {
+//            Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
+//        }
+//    }
 
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         featureActiveStatus = activeStatus;

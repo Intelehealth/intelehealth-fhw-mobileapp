@@ -8,7 +8,6 @@ import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.receiver.FCMNotificationReceiver
 import org.intelehealth.fcm.FBMessageService
-import org.intelehealth.klivekit.utils.FirebaseUtils
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:16.
@@ -21,12 +20,12 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
         Timber.d { "onNewToke ---> $token" }
         // save fcm reg. token for chat (Video)
         val sessionManager = SessionManager(this)
-        FirebaseUtils.saveToken(
-            this,
-            sessionManager.providerID,
-            token,
-            sessionManager.appLanguage
-        )
+//        FirebaseUtils.saveToken(
+//            this,
+//            sessionManager.providerID,
+//            token,
+//            sessionManager.appLanguage
+//        )
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

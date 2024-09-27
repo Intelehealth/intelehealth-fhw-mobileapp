@@ -9,7 +9,7 @@ import android.os.CountDownTimer
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import org.intelehealth.core.extensions.hide
+import org.intelehealth.core.utils.extensions.hide
 
 /**
  * Created by Vaghela Mithun R. on 07-06-2023 - 19:19.

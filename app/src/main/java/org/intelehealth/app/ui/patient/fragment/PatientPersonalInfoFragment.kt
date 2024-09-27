@@ -8,8 +8,6 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,8 +15,6 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
@@ -29,7 +25,6 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -37,10 +32,10 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.core.registry.PermissionRegistry
-import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
+import org.intelehealth.core.utils.registry.PermissionRegistry
+import org.intelehealth.core.utils.registry.PermissionRegistry.Companion.CAMERA
+import org.intelehealth.core.utils.utility.DateTimeUtils
 import org.intelehealth.ihutils.ui.CameraActivity
-import org.intelehealth.klivekit.utils.DateTimeUtils
 import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
@@ -59,7 +54,10 @@ class PatientPersonalInfoFragment :
     private lateinit var binding: FragmentPatientPersonalInfoOldDesignBinding
     var selectedDate = Calendar.getInstance().timeInMillis
     private val permissionRegistry by lazy {
-        PermissionRegistry(requireContext(), requireActivity().activityResultRegistry)
+        org.intelehealth.core.utils.registry.PermissionRegistry(
+            requireContext(),
+            requireActivity().activityResultRegistry
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

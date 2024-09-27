@@ -16,9 +16,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
+import org.intelehealth.core.utils.extensions.appName
+import org.intelehealth.core.utils.extensions.span
+import org.intelehealth.video.R
+import org.intelehealth.video.model.CallArgs
 import org.intelehealth.video.utils.CallConstants.ACTION_ACCEPT
 import org.intelehealth.video.utils.CallConstants.ACTION_DECLINE
 import org.intelehealth.video.utils.CallConstants.ACTION_HANG_UP
+import org.intelehealth.video.utils.CallConstants.MAX_INT
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,11 +64,11 @@ object CallNotificationHandler {
      * @return PendingIntent type of ChatCallBroadCastReceiver intent
      */
     private fun getDeclineAction(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_DECLINE.span(android.R.color.holo_red_light, context),
-        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
             callAction = CallAction.DECLINE
         })
     ).build()
@@ -75,11 +80,11 @@ object CallNotificationHandler {
      * @return PendingIntent type of ChatCallBroadCastReceiver intent
      */
     private fun getAcceptAction(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_ACCEPT.span(android.R.color.holo_green_dark, context),
-        IntentUtils.getPendingActivityIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingActivityIntent(context, messageBody.apply {
             callAction = CallAction.ACCEPT
         })
     ).build()
@@ -90,11 +95,11 @@ object CallNotificationHandler {
      *
      * */
     private fun getHangUpAction(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ): NotificationCompat.Action = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_HANG_UP,
-        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
             callAction = CallAction.HANG_UP
             callStatus = CallStatus.ON_GOING
         })
@@ -108,7 +113,7 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun outGoingCallNotificationBuilder(
-        messageBody: RtcArgs, context: Context
+        messageBody: CallArgs, context: Context
     ): NotificationCompat.Builder {
 
         return NotificationCompat.Builder(context, getChannelId(context))
@@ -130,11 +135,11 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun getIncomingNotificationBuilder(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ): NotificationCompat.Builder {
         com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
-        val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
-        val notificationIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
+        val lockScreenIntent = CallIntentUtils.getPendingActivityIntent(context, messageBody)
+        val notificationIntent = CallIntentUtils.getPendingActivityIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -158,12 +163,12 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     fun getOnGoingCallNotificationBuilder(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ): NotificationCompat.Builder {
 
         messageBody.notificationTime = SystemClock.elapsedRealtime().toString()
         messageBody.callStatus = CallStatus.ON_GOING
-        val notificationIntent = IntentUtils.getOnGoingPendingActivityIntent(context, messageBody)
+        val notificationIntent = CallIntentUtils.getOnGoingPendingActivityIntent(context, messageBody)
 //        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         Timber.d("Local time date ***** ${messageBody.notificationTime}")
@@ -196,7 +201,7 @@ object CallNotificationHandler {
             lightColor = Color.GRAY
             enableVibration(false)
             setShowBadge(true)
-            description = getApplicationName(context)
+            description = context.appName()
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             setBypassDnd(true)
             importance = NotificationManager.IMPORTANCE_HIGH
@@ -213,7 +218,7 @@ object CallNotificationHandler {
      * @return NotificationCompat.Builder
      */
     private fun buildMissedCallNotification(
-        context: Context, messageBody: RtcArgs
+        context: Context, messageBody: CallArgs
     ): NotificationCompat.Builder {
         val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         messageBody.notificationTime = sdf.format(Date())
@@ -225,12 +230,12 @@ object CallNotificationHandler {
             .setColor(ContextCompat.getColor(context, R.color.red))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_MISSED_CALL).setAutoCancel(true)
-            .setContentIntent(IntentUtils.getCallLogPendingIntent(context, messageBody))
+            .setContentIntent(CallIntentUtils.getCallLogPendingIntent(context, messageBody))
             .setSilent(true)
 //            .addAction(getCallAction(context, messageBody))
     }
 
-    fun notifyMissedCall(context: Context, messageBody: RtcArgs) {
+    fun notifyMissedCall(context: Context, messageBody: CallArgs) {
 
         val notificationManager = getNotificationManager(context)
         messageBody.notificationId = Random(System.currentTimeMillis()).nextInt(MAX_INT)

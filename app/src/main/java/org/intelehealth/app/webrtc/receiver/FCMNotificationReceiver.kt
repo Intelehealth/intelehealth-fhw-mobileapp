@@ -3,7 +3,6 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -20,17 +19,11 @@ import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.webrtc.activity.IDAVideoActivity
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
 import org.intelehealth.config.room.ConfigDatabase
+import org.intelehealth.core.utils.extensions.fromJson
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
-import org.intelehealth.klivekit.call.utils.CallHandlerUtils
-import org.intelehealth.klivekit.call.utils.CallMode
-import org.intelehealth.klivekit.call.utils.CallType
-import org.intelehealth.klivekit.call.utils.IntentUtils
-import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.utils.extensions.fromJson
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -49,25 +42,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
                 checkVideoActiveStatus(context) {
-                    Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
-                        nurseName = sessionManager.chwname
-                        callType = CallType.VIDEO
-                        url = BuildConfig.LIVE_KIT_URL
-                        socketUrl =
-                            BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
-                        PatientsDAO().getPatientName(roomId).apply {
-                            patientName = get(0).name
-                        }
-                    }.also { arg ->
-                        Timber.tag(TAG).d("onMessageReceived: $arg")
-                        if (isAppInForeground()) {
-                            arg.callMode = CallMode.INCOMING
-                            CallHandlerUtils.saveIncomingCall(context, arg)
-                            context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
-                        } else {
-                            CallHandlerUtils.operateIncomingCall(it, arg)
-                        }
-                    }
+
                 }
             } else {
                 if(data.isNotEmpty() && notification == null){

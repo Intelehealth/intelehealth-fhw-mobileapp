@@ -4,80 +4,80 @@ import java.text.SimpleDateFormat
 android {
     def client = "client"
     def server = "server"
-    flavorDimensions =  [client, server]
+    flavorDimensions = [client, server]
 
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm")
     def date = df.format(new Date())
 
     productFlavors {
 
-        create("ida") {
-            dimension = client
+        ida {
+            dimension client
             isDefault = true
             archivesBaseName = "intelehealth-" + versionName + " - " + date
         }
 
-        create("namma") {
-            dimension = client
-            applicationId = "org.intelehealth.nak"
-            versionCode = 2
-            versionName = '1.1'
+        namma {
+            dimension client
+            applicationId "org.intelehealth.nak"
+            versionCode 2
+            versionName '1.1'
             archivesBaseName = "intelehealth_nak-" + versionName + " - " + date
         }
 
-        create("kf") {
-            dimension= client
-            applicationId = "org.intelehealth.kf"
-            versionCode = 2
-            versionName = '1.0.1'
+        kf {
+            dimension client
+            applicationId "org.intelehealth.kf"
+            versionCode 2
+            versionName '1.0.1'
             archivesBaseName = "intelehealth_kf-" + versionName + " - " + date
         }
 
-        create("biocon") {
-            dimension = client
-            applicationId = "org.intelehealth.biocon"
-            versionCode = 1
-            versionName = '1.0'
+        biocon {
+            dimension client
+            applicationId "org.intelehealth.biocon"
+            versionCode 1
+            versionName '1.0'
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
         }
 
-        create("bmgf") {
-            dimension = client
-            applicationId = "org.intelehealth.bmgf"
-            versionCode = 1
-            versionName = '1.0'
+        bmgf {
+            dimension client
+            applicationId "org.intelehealth.bmgf"
+            versionCode 1
+            versionName '1.0'
             archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
         }
 
-        create("nas") {
-            dimension = client
-            applicationId = "org.intelehealth.nas"
-            versionCode = 1
-            versionName = '1.0'
+        nas {
+            dimension client
+            applicationId "org.intelehealth.nas"
+            versionCode 1
+            versionName '1.0'
             archivesBaseName = "intelehealth_nas-" + versionName + " - " + date
         }
 
-        create("unicef") {
-            dimension = client
-            applicationId = 'org.intelehealth.unicef'
-            versionCode = 45
-            versionName = '5.1.1'
+        unicef {
+            dimension client
+            applicationId 'org.intelehealth.unicef'
+            versionCode 45
+            versionName '5.1.1'
             archivesBaseName = "intelehealth_unicef-" + versionName + " - " + date
         }
 
         // This flavor used to handle different type of endpoint
-        create("dev") {
-            dimension = server
+        dev {
+            dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "false"
         }
 
-        create("staging") {
-            dimension = server
+        staging {
+            dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
 
-        create("production") {
-            dimension = server
+        production {
+            dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
         }
     }

@@ -7,21 +7,19 @@ import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.MediaPlayer
 import com.github.ajalt.timberkt.Timber
-import org.intelehealth.video.room.WebRtcDatabase
-import org.intelehealth.klivekit.R
-import org.intelehealth.klivekit.RtcEngine
-import org.intelehealth.klivekit.call.CallLogHandler
-import org.intelehealth.klivekit.call.CallServiceWorker
-import org.intelehealth.klivekit.call.data.CallLogRepository
-import org.intelehealth.klivekit.call.model.RtcCallLog
-import org.intelehealth.klivekit.call.notification.CallReceiver
-import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
-import org.intelehealth.klivekit.data.PreferenceHelper
-import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.klivekit.socket.SocketManager
-import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.core.socket.SocketManager
+import org.intelehealth.core.utils.helper.PreferenceHelper
+import org.intelehealth.core.utils.utility.RTC_ARGS
+import org.intelehealth.video.CallLogHandler
 import org.intelehealth.video.CallServiceWorker
+import org.intelehealth.video.R
+import org.intelehealth.video.RtcEngine
+import org.intelehealth.video.data.CallLogRepository
+import org.intelehealth.video.model.CallArgs
+import org.intelehealth.video.model.VideoCallLog
+import org.intelehealth.video.notification.CallReceiver
 import org.intelehealth.video.notification.HeadsUpNotificationService
+import org.intelehealth.video.room.CallDatabase
 
 /**
  * Created by Vaghela Mithun R. on 8/28/2021.
@@ -34,10 +32,10 @@ object CallHandlerUtils {
     /**
      * Operate all incoming, outgoing and ongoing call action
      * @param context Context of current scope
-     * @param callArgs an instance of RtcArgs to send with intent
+     * @param callArgs an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun notifyCallNotification(callArgs: RtcArgs, context: Context) {
+    fun notifyCallNotification(callArgs: CallArgs, context: Context) {
         Timber.d { "notifyCallNotification Url: ${callArgs.toJson()}" }
         context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         if (callArgs.isIncomingCall() && callArgs.isMissedCall()) {
@@ -58,25 +56,25 @@ object CallHandlerUtils {
     /**
      * Operate all incoming, outgoing and ongoing call action
      * @param context Context of current scope
-     * @param callArgs an instance of RtcArgs to send with intent
+     * @param callArgs an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateIncomingCall(context: Context, callArgs: RtcArgs) {
+    fun operateIncomingCall(context: Context, callArgs: CallArgs) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
         callArgs.callMode = CallMode.INCOMING
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
     }
 
-    fun saveIncomingCall(context: Context, callArgs: RtcArgs) {
+    fun saveIncomingCall(context: Context, callArgs: CallArgs) {
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
     }
 
     private fun getCallLogHandler(context: Context) = CallLogHandler(
-        CallLogRepository(WebRtcDatabase.getInstance(context).rtcCallLogDao()), PreferenceHelper(context)
+        CallLogRepository(CallDatabase.getInstance(context).rtcCallLogDao()), PreferenceHelper(context)
     )
 
-    private fun generateCallLog(callArgs: RtcArgs, context: Context) = RtcCallLog(
+    private fun generateCallLog(callArgs: CallArgs, context: Context) = VideoCallLog(
         callerName = callArgs.doctorName!!,
         callerId = callArgs.doctorId!!,
         calleeId = callArgs.nurseId!!,
@@ -96,23 +94,23 @@ object CallHandlerUtils {
     /**
      * Operate all incoming, outgoing and ongoing call action
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param messageBody an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun operateCallAction(messageBody: RtcArgs, context: Context) {
+    fun operateCallAction(messageBody: CallArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
     /**
      * An action for decline while receive any incoming call
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param messageBody an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun declineCall(messageBody: RtcArgs, context: Context) {
+    fun declineCall(messageBody: CallArgs, context: Context) {
         Timber.d { "Call declined **** ${messageBody.callStatus}" }
 //        if (messageBody.isAttendedCall() or messageBody.isCallOnGoing()) {
 //            messageBody.messageType = CALL_NONE
@@ -132,22 +130,22 @@ object CallHandlerUtils {
     /**
      * An action for hangup running call
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param messageBody an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun hangUpCall(messageBody: RtcArgs, context: Context) {
+    fun hangUpCall(messageBody: CallArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
 
-    fun finishedCall(messageBody: RtcArgs, context: Context) {
+    fun finishedCall(messageBody: CallArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
 //            messageBody.callStatus = CALL_FINISHED
             putExtra(RTC_ARGS, messageBody)
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -155,27 +153,27 @@ object CallHandlerUtils {
     /**
      * An action to perform after call time out
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param messageBody an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun callTimedOut(messageBody: RtcArgs, context: Context) {
+    fun callTimedOut(messageBody: CallArgs, context: Context) {
 //        messageBody.callStatus = CALL_TIMED_OUT
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
     /**
      * An action to perform after call time out
      * @param context Context of current scope
-     * @param messageBody an instance of RtcArgs to send with intent
+     * @param messageBody an instance of CallArgs to send with intent
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
-    fun callMissed(messageBody: RtcArgs, context: Context) {
+    fun callMissed(messageBody: CallArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
-            action = IntentUtils.getCallReceiverAction(context)
+            action = CallIntentUtils.getCallReceiverAction(context)
         })
     }
 
@@ -186,7 +184,7 @@ object CallHandlerUtils {
      * @return MediaPlayer
      */
     fun playRingtoneInEarPiece(
-        context: Context, audioManager: AudioManager, messageBody: RtcArgs
+        context: Context, audioManager: AudioManager, messageBody: CallArgs
     ) {
 
         mediaPlayer = MediaPlayer.create(context, R.raw.ring_ring)

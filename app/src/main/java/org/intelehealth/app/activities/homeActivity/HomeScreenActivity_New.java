@@ -76,7 +76,6 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -105,11 +104,9 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -122,13 +119,10 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
-import org.intelehealth.klivekit.data.PreferenceHelper;
-import org.intelehealth.klivekit.utils.FirebaseUtils;
-import org.intelehealth.klivekit.utils.Manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -193,9 +187,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
     private void saveToken() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
-        // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+//        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
+//        // save fcm reg. token for chat (Video)
+//        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
     @Override
@@ -1010,8 +1004,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
             finish();
         } else if (itemId == R.id.menu_view_call_log) {
-            Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
+//            startActivity(intent);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);

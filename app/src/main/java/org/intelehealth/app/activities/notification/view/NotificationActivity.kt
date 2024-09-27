@@ -27,7 +27,7 @@ import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.ToastUtil
-import org.intelehealth.klivekit.data.PreferenceHelper
+import org.intelehealth.core.utils.helper.PreferenceHelper
 
 
 /**
