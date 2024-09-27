@@ -1,0 +1,51 @@
+
+android {
+    def client = "client"
+    def server = "server"
+    flavorDimensions = [client, server]
+
+    productFlavors {
+
+        ida {
+            dimension client
+            isDefault = true
+        }
+
+        namma {
+            dimension client
+        }
+
+        kf {
+            dimension client
+        }
+
+        biocon {
+            dimension client
+        }
+
+        bmgf {
+            dimension client
+        }
+
+        nas {
+            dimension client
+        }
+
+        unicef {
+            dimension client
+        }
+
+        // This flavor used to handle different type of endpoint
+        dev {
+            dimension server
+        }
+
+        staging {
+            dimension server
+        }
+
+        production {
+            dimension server
+        }
+    }
+}

@@ -82,7 +82,7 @@ android {
         }
     }
 
-    applicationVariants.all {
+    applicationVariants.configureEach {
         def name = it.name
         def domain
 

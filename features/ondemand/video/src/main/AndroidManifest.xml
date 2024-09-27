@@ -2,6 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution">
 
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"
+        android:minSdkVersion="34" />
+    <uses-permission
+        android:name="android.permission.MANAGE_OWN_CALLS"
+        android:minSdkVersion="34" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!--    Dynamic module setting start -->
     <dist:module
         dist:instant="false"
         dist:title="@string/title_video">
@@ -10,5 +36,40 @@
         </dist:delivery>
         <dist:fusing dist:include="true" />
     </dist:module>
-    <application android:hasCode="false" />
+    <!--    Dynamic module setting end -->
+
+    <application android:hasCode="false">
+        <service android:name=".service.ForegroundService" />
+
+        <service
+            android:name=".call.notification.HeadsUpNotificationService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
+
+        <receiver
+            android:name=".call.notification.CallReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="${applicationId}.CALL_RECEIVER_ACTION" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".call.ui.activity.VideoCallActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:taskAffinity=""
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".chat.ui.activity.ChatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+    </application>
 </manifest>

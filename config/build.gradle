@@ -6,6 +6,8 @@ plugins {
 //    id 'com.google.devtools.ksp'
 }
 
+apply from: "../whitelabel.gradle"
+
 android {
     namespace 'org.intelehealth.config'
     compileSdk 34

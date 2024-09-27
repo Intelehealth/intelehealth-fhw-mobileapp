@@ -28,6 +28,7 @@ import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.RTC_DATA
 import org.intelehealth.core.utils.registry.PermissionRegistry
 import org.intelehealth.core.utils.registry.allGranted
 import org.intelehealth.core.utils.utility.RTC_ARGS
+import org.intelehealth.features.ondemand.mediator.activity.BaseSplitCompActivity
 import org.intelehealth.video.R
 import org.intelehealth.video.RtcEngine
 import org.intelehealth.video.model.CallArgs
@@ -46,7 +47,7 @@ import java.util.Calendar
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class CoreVideoCallActivity : AppCompatActivity() {
+abstract class CoreVideoCallActivity : BaseSplitCompActivity() {
 
     protected lateinit var args: CallArgs
     private var isDeclined: Boolean = false

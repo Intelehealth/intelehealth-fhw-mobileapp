@@ -7,16 +7,16 @@ android{
             }
         }
 
-        biocon {
-            res {
-                srcDirs 'src\\biocon\\res'
-            }
-        }
-
-        namma {
-            res {
-                srcDirs 'src\\namma\\res'
-            }
-        }
+//        biocon {
+//            res {
+//                srcDirs 'src\\biocon\\res'
+//            }
+//        }
+//
+//        namma {
+//            res {
+//                srcDirs 'src\\namma\\res'
+//            }
+//        }
     }
 }

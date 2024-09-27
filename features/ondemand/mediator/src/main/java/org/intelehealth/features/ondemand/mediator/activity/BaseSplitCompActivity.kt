@@ -1,5 +1,7 @@
 package org.intelehealth.features.ondemand.mediator.activity
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitcompat.SplitCompat
 
 /**
@@ -7,4 +9,11 @@ import com.google.android.play.core.splitcompat.SplitCompat
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class BaseSplitCompActivity {}
+open class BaseSplitCompActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        SplitCompat.installActivity(this)
+    }
+
+}

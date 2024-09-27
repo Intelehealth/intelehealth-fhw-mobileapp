@@ -4,7 +4,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: "kotlin-kapt"
-apply from: "resdir.gradle"
+//apply from: "resdir.gradle"
 apply from: "whitelabel.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -79,7 +79,7 @@ android {
         jvmTarget = '17'
     }
 
-    dynamicFeatures = [':features:ondemand:video']
+    dynamicFeatures = [':features:ondemand:call']
 }
 dependencies {
 //    implementation project(':features:ondemand:klivekit')

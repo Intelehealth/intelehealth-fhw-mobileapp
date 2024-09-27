@@ -1075,4 +1075,5 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
     <string name="title_video">Video Feature</string>
+    <string name="title_call">Live Video</string>
 </resources>
