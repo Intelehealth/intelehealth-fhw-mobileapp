@@ -160,11 +160,7 @@ class AadhaarCardVerificationViewModel @Inject constructor(
                 verifyAadhaarOtpUseCase(authToken, apiRequest)) {
                 is ApiResult.Success -> {
                     transactionId = apiResult.data.txnId ?: ""
-                    _verifyAadhaarOtpState.postValue(
-                        VerifyAadhaarOtpViewState.OpenSelectAbhaScreen(
-                            apiResult.data
-                        )
-                    )
+
                     val otpResponse = apiResult.data
                     val mobile: String = otpResponse.abhaProfile?.mobile ?: ""
                     val isMobileEmpty = TextUtils.isEmpty(mobile)
