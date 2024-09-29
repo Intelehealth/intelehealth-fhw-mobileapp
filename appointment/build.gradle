@@ -1,13 +1,15 @@
 plugins {
-    id 'com.android.dynamic-feature'
+    //id 'com.android.dynamic-feature'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 android {
     namespace 'com.intelehealth.appointment'
     compileSdk 34
 
     defaultConfig {
-        minSdk 24
+        minSdk 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -17,18 +19,86 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+   /* def client = "client"
+    def server = "server"
+    flavorDimensions = [client, server]
+    productFlavors {
+
+        ida {
+            dimension client
+            isDefault = true
+        }
+
+        namma {
+            dimension client
+        }
+
+        kf {
+            dimension client
+
+        }
+
+        biocon {
+            dimension client
+
+        }
+
+        bmgf {
+            dimension client
+
+        }
+
+        nas {
+            dimension client
+
+        }
+            // This flavor used to handle different type of endpoint
+            dev {
+                dimension server
+                buildConfigField "boolean", "ACTIVE_CRASH", "false"
+            }
+
+            staging {
+                dimension server
+                buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            }
+
+            production {
+                dimension server
+                buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            }
+        }*/
 }
 
-dependencies {
-    implementation project(":app")
-    implementation 'androidx.core:core-ktx:1.13.1'
-    implementation 'androidx.room:room-runtime:2.6.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    dependencies {
+        //implementation project(":app")
+        implementation 'androidx.core:core-ktx:1.13.1'
+        implementation 'androidx.room:room-runtime:2.6.1'
+        testImplementation 'junit:junit:4.13.2'
+        androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
-    //Retrofit
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-gson:2.9.0'
-    api "com.squareup.okhttp3:logging-interceptor:4.10.0"
-}
+        //Retrofit
+        api 'com.squareup.retrofit2:retrofit:2.9.0'
+        api 'com.squareup.retrofit2:converter-gson:2.9.0'
+        api "com.squareup.okhttp3:logging-interceptor:4.10.0"
+        implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
+
+        implementation "com.google.dagger:hilt-android:2.48"
+        kapt "com.google.dagger:hilt-compiler:2.48"
+
+        //coroutins
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+        implementation "androidx.preference:preference-ktx:1.1.1"
+
+        implementation 'androidx.multidex:multidex:2.0.1'
+    }

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,7 +17,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-//import com.intelehealth.appointment.AppointmentBuilder;
+import com.intelehealth.appointment.AppointmentBuilder;
 import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
@@ -35,11 +34,13 @@ import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
+@HiltAndroidApp
 public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
@@ -79,7 +80,20 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
-        //new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004");
+        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004");
+       /* Class<?> clazz = null;
+        try {
+
+            clazz = Class.forName("com.intelehealth.appointment.AppointmentBuilder$Builder");
+            java.lang.reflect.Constructor<?> constructor = clazz.getConstructor(String.class);
+            constructor.newInstance(BuildConfig.SERVER_URL + ":3004");
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)

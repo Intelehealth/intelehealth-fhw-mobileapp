@@ -1,11 +1,12 @@
-package org.intelehealth.config.network
+package com.intelehealth.appointment.data.remote
 
-import com.intelehealth.appointment.network.request.CancelRequest
-import com.intelehealth.appointment.network.response.AppointmentDetailsResponse
-import com.intelehealth.appointment.network.response.AppointmentListingResponse
-import com.intelehealth.appointment.network.response.CancelResponse
-import com.intelehealth.appointment.network.response.SlotInfoResponse
+import com.intelehealth.appointment.data.remote.request.CancelRequest
+import com.intelehealth.appointment.data.remote.response.AppointmentDetailsResponse
+import com.intelehealth.appointment.data.remote.response.AppointmentListingResponse
+import com.intelehealth.appointment.data.remote.response.CancelResponse
+import com.intelehealth.appointment.data.remote.response.SlotInfoResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -32,9 +33,9 @@ interface AppointmentWebClient {
     ): Call<SlotInfoResponse?>?
 
     @GET("api/appointment/getSlots?")
-    fun getSlotsAll(
+    suspend fun getSlotsAll(
         @Query("fromDate") mSelectedStartDate: String?,
         @Query("toDate") mSelectedEndDate: String?,
         @Query("locationUuid") locationUuid: String?
-    ): Call<AppointmentListingResponse?>?
+    ): Response<AppointmentListingResponse>?
 }

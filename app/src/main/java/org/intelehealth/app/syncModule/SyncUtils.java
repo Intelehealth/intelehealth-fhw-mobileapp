@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.work.WorkManager;
 
+import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
+import com.intelehealth.appointment.di.AppModule;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -22,8 +25,12 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
-public class SyncUtils {
+import javax.inject.Inject;
 
+import dagger.hilt.EntryPoints;
+import dagger.hilt.android.AndroidEntryPoint;
+
+public class SyncUtils {
 
     private static final String TAG = SyncUtils.class.getSimpleName();
 

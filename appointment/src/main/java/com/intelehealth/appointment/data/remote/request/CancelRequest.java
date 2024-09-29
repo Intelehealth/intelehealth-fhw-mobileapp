@@ -1,4 +1,4 @@
-package com.intelehealth.appointment.network.request;
+package com.intelehealth.appointment.data.remote.request;
 
 import com.google.gson.annotations.SerializedName;
 

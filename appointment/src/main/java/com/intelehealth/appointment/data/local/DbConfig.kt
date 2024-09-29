@@ -5,6 +5,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.intelehealth.appointment.data.local.dao.AppointmentDao
+import com.intelehealth.appointment.data.local.entity.Appointments
 import java.util.Locale
 
 /**
@@ -13,16 +15,16 @@ import java.util.Locale
  **/
 @Database(
     entities = [
-
+        Appointments::class
     ],
     version = 1,
     exportSchema = false
 )
 abstract class DbConfig : RoomDatabase() {
 
-/*    abstract fun configDao(): ConfigDao
+    abstract fun appointmentsDao(): AppointmentDao
 
-    abstract fun specializationDao(): SpecializationDao
+    /*abstract fun specializationDao(): SpecializationDao
 
     abstract fun languageDao(): LanguageDao
 
@@ -34,30 +36,6 @@ abstract class DbConfig : RoomDatabase() {
 
     companion object {
 
-        @Volatile
-        private var INSTANCE: DbConfig? = null
-
-        @VisibleForTesting
-        private val DATABASE_NAME = "appointment-db"
-
-        @JvmStatic
-        fun getInstance(context: Context): DbConfig =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context.applicationContext).also {
-                    INSTANCE = it
-                }
-            }
-
-        /**
-         * Set up the database configuration.
-         * The SQLite database is only created when it's accessed for the first time.
-         */
-        private fun buildDatabase(appContext: Context): DbConfig {
-            val databaseName = "${appContext.packageName}.$DATABASE_NAME"
-            return Room.databaseBuilder(appContext, DbConfig::class.java, databaseName)
-                .fallbackToDestructiveMigration()
-                .build()
-        }
 
         private fun getAppName(context: Context) = getApplicationName(context).let {
             return@let it.replace(" ", "-").lowercase(Locale.getDefault())

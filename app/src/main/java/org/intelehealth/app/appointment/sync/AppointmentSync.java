@@ -2,10 +2,16 @@ package org.intelehealth.app.appointment.sync;
 
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.room.util.DBUtil;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
+import com.intelehealth.appointment.data.local.DbConfig;
+import com.intelehealth.appointment.data.remote.AppointmentWebClient;
+import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.app.AppConstants;
@@ -21,10 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class AppointmentSync {
+
     private static final String TAG = "AppointmentSync";
 
     public static void getAppointments(Context context) {
@@ -37,7 +46,10 @@ public class AppointmentSync {
         String baseurl = sessionManager.getServerUrl() + ":3004";
         Timber.tag(TAG).d("URL =>%s", BuildConfig.SERVER_URL);
         Timber.tag(TAG).d("Session URL =>%s", sessionManager.getServerUrl());
-        ApiClientAppointment.getInstance(baseurl).getApi()
+        AppointmentSyncRepo appointmentSyncRepo = new AppointmentSyncRepo();
+        appointmentSyncRepo.fetchAppointmentAndUpdate(selectedStartDate,selectedEndDate,new SessionManager(context).getLocationUuid());
+
+        /*ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
@@ -58,7 +70,7 @@ public class AppointmentSync {
                             }
                         }
 
-                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
+                        *//*if (slotInfoResponse.getCancelledAppointments() != null) {
                             if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
                                 for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
                                     try {
@@ -70,7 +82,7 @@ public class AppointmentSync {
                                 }
                             }
                         } else {
-                        }*/
+                        }*//*
                         CustomLog.v(TAG, "getAppointments done!");
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE);
@@ -88,7 +100,7 @@ public class AppointmentSync {
                         //log out operation if response code is 401
                         new NavigationUtils().logoutOperation(context,t);
                     }
-                });
+                });*/
 
     }
 }
