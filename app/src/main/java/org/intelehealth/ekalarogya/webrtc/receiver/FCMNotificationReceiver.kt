@@ -106,10 +106,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     ) {
         val messageTitle = notification!!.title
         val messageBody = notification.body
+        val clickAction: String? = data[FcmConstants.INTENT_CLICK_ACTION]
         val notificationIntent = Intent(context, HomeActivity::class.java).also {
-            when (notification.clickAction) {
+            when (clickAction) {
                 FcmConstants.FCM_PLUGIN_HOME_ACTIVITY -> {
-                    it.putExtra(FcmConstants.INTENT_CLICK_ACTION, notification.clickAction)
+                    it.putExtra(FcmConstants.INTENT_CLICK_ACTION, clickAction)
                     it.putExtra(
                         AppConstants.INTENT_VISIT_UUID,
                         data[AppConstants.INTENT_VISIT_UUID]
