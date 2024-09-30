@@ -19,7 +19,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_dr_speciality")
 data class DrSpeciality(
     @PrimaryKey
-    @SerializedName("uuid") var uuid: String? = null,
+    @SerializedName("uuid") var uuid: String,
     @ColumnInfo("provideruuid") @SerializedName("provideruuid") var providerUuid: Int = 0,
     @ColumnInfo("attributetypeuuid") @SerializedName("attributetypeuuid") var attributeTypeUuid: String? = null,
     @SerializedName("value") var value: String? = null,

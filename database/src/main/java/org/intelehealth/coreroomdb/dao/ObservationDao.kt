@@ -18,10 +18,10 @@ interface ObservationDao : CoreDao<Observation> {
     @Query("SELECT * FROM tbl_obs WHERE uuid = :uuid")
     fun getObservationByUuid(uuid: String): LiveData<Observation>
 
-    @Query("SELECT * FROM tbl_obs WHERE encounterUuid = :encounterId")
+    @Query("SELECT * FROM tbl_obs WHERE encounteruuid = :encounterId")
     fun getObservationByEncounterId(encounterId: String): LiveData<List<Observation>>
 
-    @Query("SELECT * FROM tbl_obs WHERE conceptUuid = :conceptId")
+    @Query("SELECT * FROM tbl_obs WHERE conceptuuid = :conceptId")
     fun getObservationByConceptId(conceptId: String): LiveData<List<Observation>>
 
     @Query("SELECT * FROM tbl_obs WHERE creator = :creatorId")
@@ -33,10 +33,10 @@ interface ObservationDao : CoreDao<Observation> {
     @Query("UPDATE tbl_obs SET sync = :isSync WHERE uuid = :uuid")
     suspend fun updateSyncStatus(uuid: String, isSync: Boolean)
 
-    @Query("UPDATE tbl_obs SET obsServerModifiedDate = :obsModifiedDate WHERE uuid = :uuid")
+    @Query("UPDATE tbl_obs SET obsservermodifieddate = :obsModifiedDate WHERE uuid = :uuid")
     suspend fun updateServerModifiedDate(obsModifiedDate: String, uuid: String)
 
-    @Query("UPDATE tbl_obs SET modifiedDate = :modifiedDate WHERE uuid = :uuid")
+    @Query("UPDATE tbl_obs SET modified_date = :modifiedDate WHERE uuid = :uuid")
     suspend fun updateModifiedDate(modifiedDate: String, uuid: String)
 
     @Query("UPDATE tbl_obs SET value = :value WHERE uuid = :uuid")

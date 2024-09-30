@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_image_records")
 data class MediaRecord(
     @PrimaryKey
-    @SerializedName("uuid") var uuid: String? = null,
+    @SerializedName("uuid") var uuid: String,
     @ColumnInfo("patientuuid") @SerializedName("patientuuid") var patientUuid: String? = null,
     @ColumnInfo("visituuid") @SerializedName("visituuid") var visitUuid: String? = null,
     @ColumnInfo("encounteruuid") @SerializedName("encounteruuid") var encounterUuid: String? = null,

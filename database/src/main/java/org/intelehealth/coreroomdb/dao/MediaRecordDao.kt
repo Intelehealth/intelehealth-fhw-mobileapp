@@ -18,15 +18,15 @@ interface MediaRecordDao : CoreDao<MediaRecord> {
     @Query("SELECT * FROM tbl_image_records WHERE uuid = :uuid")
     fun getMediaRecordByUuid(uuid: String): LiveData<MediaRecord>
 
-    @Query("SELECT * FROM tbl_image_records WHERE visitUuid = :visitId")
+    @Query("SELECT * FROM tbl_image_records WHERE visituuid = :visitId")
     fun getMediaRecordByVisitId(visitId: String): LiveData<List<MediaRecord>>
 
-    @Query("SELECT * FROM tbl_image_records WHERE patientUuid = :patientId")
+    @Query("SELECT * FROM tbl_image_records WHERE patientuuid = :patientId")
     fun getMediaRecordByPatientId(patientId: String): LiveData<List<MediaRecord>>
 
-    @Query("SELECT * FROM tbl_image_records WHERE encounterUuid = :encounterId")
+    @Query("SELECT * FROM tbl_image_records WHERE encounteruuid = :encounterId")
     fun getMediaRecordByEncounterId(encounterId: String): LiveData<List<MediaRecord>>
 
-    @Query("SELECT * FROM tbl_image_records WHERE imageType = :imageType")
+    @Query("SELECT * FROM tbl_image_records WHERE image_type = :imageType")
     fun getMediaRecordByImageType(imageType: String): LiveData<List<MediaRecord>>
 }

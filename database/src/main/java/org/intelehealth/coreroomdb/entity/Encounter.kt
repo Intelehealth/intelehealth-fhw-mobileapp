@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_encounter")
 data class Encounter(
     @PrimaryKey
-    @SerializedName("uuid") private var uuid: String? = null,
+    @SerializedName("uuid") var uuid: String,
     @ColumnInfo("visituuid") @SerializedName("visituuid") var visitUuid: String? = null,
     @ColumnInfo("encounter_type_uuid") @SerializedName("encounter_type_uuid") var encounterTypeUuid: String? = null,
     @ColumnInfo("encounter_time") @SerializedName("encounter_time") var encounterTime: String? = null,

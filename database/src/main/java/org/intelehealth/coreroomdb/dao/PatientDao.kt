@@ -18,16 +18,16 @@ interface PatientDao : CoreDao<Patient> {
     @Query("SELECT * FROM tbl_patient WHERE uuid = :uuid")
     fun getPatientByUuid(uuid: String): LiveData<Patient>
 
-    @Query("SELECT * FROM tbl_patient WHERE openMrsId = :openMrsId")
+    @Query("SELECT * FROM tbl_patient WHERE openmrs_id = :openMrsId")
     fun getPatientByOpenMrsId(openMrsId: String): LiveData<List<Patient>>
 
-    @Query("SELECT * FROM tbl_patient WHERE phoneNumber = :phoneNumber")
+    @Query("SELECT * FROM tbl_patient WHERE phone_number = :phoneNumber")
     fun getPatientByPhoneNumber(phoneNumber: String): LiveData<List<Patient>>
 
-    @Query("SELECT * FROM tbl_patient WHERE cityVillage = :city")
+    @Query("SELECT * FROM tbl_patient WHERE city_village = :city")
     fun getCityPatients(city: String): LiveData<List<Patient>>
 
-    @Query("SELECT * FROM tbl_patient WHERE stateProvince = :state")
+    @Query("SELECT * FROM tbl_patient WHERE state_province = :state")
     fun getStatePatients(state: String): LiveData<List<Patient>>
 
     @Query("SELECT * FROM tbl_patient WHERE country = :country")
@@ -36,10 +36,10 @@ interface PatientDao : CoreDao<Patient> {
     @Query("SELECT * FROM tbl_patient WHERE gender = :gender")
     fun getGenderWisePatients(gender: String): LiveData<List<Patient>>
 
-    @Query("SELECT * FROM tbl_patient WHERE postalCode = :postalCode")
+    @Query("SELECT * FROM tbl_patient WHERE postal_code = :postalCode")
     fun getPostalCodeWisePatients(postalCode: String): LiveData<List<Patient>>
 
-    @Query("SELECT * FROM tbl_patient WHERE creatorUuid = :creatorId")
+    @Query("SELECT * FROM tbl_patient WHERE creatoruuid = :creatorId")
     fun getPatientByCreatorId(creatorId: String): LiveData<List<Patient>>
 
     @Query("SELECT * FROM tbl_patient WHERE caste = :cast")
@@ -48,22 +48,22 @@ interface PatientDao : CoreDao<Patient> {
     @Query("SELECT * FROM tbl_patient WHERE dead = :dead")
     fun getDeadPatients(dead: String): LiveData<List<Patient>>
 
-    @Query("UPDATE tbl_patient SET openMrsId = :openMrsId WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET openmrs_id = :openMrsId WHERE uuid = :uuid")
     suspend fun updateOpenMrsId(uuid: String, openMrsId: String)
 
-    @Query("UPDATE tbl_patient SET firstName = :firstName WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET first_name = :firstName WHERE uuid = :uuid")
     suspend fun updateFirstName(uuid: String, firstName: Boolean)
 
-    @Query("UPDATE tbl_patient SET middleName = :middleName WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET middle_name = :middleName WHERE uuid = :uuid")
     suspend fun updateMiddleName(middleName: String, uuid: String)
 
-    @Query("UPDATE tbl_patient SET lastName = :lastName WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET last_name = :lastName WHERE uuid = :uuid")
     suspend fun updateLastName(lastName: String, uuid: String)
 
-    @Query("UPDATE tbl_patient SET dateOfBirth = :dob WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET date_of_birth = :dob WHERE uuid = :uuid")
     suspend fun updateDob(uuid: String, dob: String)
 
-    @Query("UPDATE tbl_patient SET phoneNumber = :phoneNumber WHERE uuid = :uuid")
+    @Query("UPDATE tbl_patient SET phone_number = :phoneNumber WHERE uuid = :uuid")
     suspend fun updatePhoneNumber(uuid: String, phoneNumber: String)
 
     @Query("UPDATE tbl_patient SET address1 = :address1 WHERE uuid = :uuid")

@@ -12,6 +12,6 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_uuid_dictionary")
 data class Concept(
     @PrimaryKey
-    @SerializedName("uuid") var uuid: String? = null,
+    @SerializedName("uuid") var uuid: String,
     @SerializedName("name") var name: String? = null
 ) : Parcelable

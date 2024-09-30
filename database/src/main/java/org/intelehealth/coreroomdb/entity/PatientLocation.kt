@@ -13,10 +13,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "tbl_location")
 data class PatientLocation(
-    @SerializedName("name") private var name: String? = null,
+    @SerializedName("name") var name: String,
     @PrimaryKey
-    @ColumnInfo("locationuuid") @SerializedName("locationuuid") private val locationUuid: String? = null,
-    @SerializedName("retired") private val retired: Int? = null,
+    @ColumnInfo("locationuuid") @SerializedName("locationuuid") val locationUuid: String,
+    @SerializedName("retired") val retired: Int? = null,
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
     var voided: Int = 0,
     var sync: Boolean = false

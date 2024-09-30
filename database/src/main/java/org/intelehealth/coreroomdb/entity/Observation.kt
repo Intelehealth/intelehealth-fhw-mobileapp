@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_obs")
 data class Observation(
     @PrimaryKey
-    @SerializedName("uuid") private var uuid: String? = null,
+    @SerializedName("uuid") var uuid: String,
     @ColumnInfo("encounteruuid") @SerializedName("encounteruuid") var encounterUuid: String? = null,
     @ColumnInfo("conceptuuid") @SerializedName("conceptuuid") var conceptUuid: String? = null,
     @SerializedName("value") var value: String? = null,

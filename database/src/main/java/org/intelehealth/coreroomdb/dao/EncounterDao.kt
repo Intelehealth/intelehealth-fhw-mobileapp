@@ -18,21 +18,21 @@ interface EncounterDao : CoreDao<Encounter> {
     @Query("SELECT * FROM tbl_encounter WHERE uuid = :uuid")
     fun getEncounterByUuid(uuid: String): LiveData<Encounter>
 
-    @Query("SELECT * FROM tbl_encounter WHERE visitUuid = :visitId")
+    @Query("SELECT * FROM tbl_encounter WHERE visituuid = :visitId")
     fun getEncounterByVisitId(visitId: String): LiveData<List<Encounter>>
 
-    @Query("SELECT * FROM tbl_encounter WHERE providerUuid = :providerId")
+    @Query("SELECT * FROM tbl_encounter WHERE provider_uuid = :providerId")
     fun getEncounterByProviderId(providerId: String): LiveData<List<Encounter>>
 
-    @Query("SELECT * FROM tbl_encounter WHERE encounterTypeUuid = :encounterTypeId")
+    @Query("SELECT * FROM tbl_encounter WHERE encounter_type_uuid = :encounterTypeId")
     fun getEncounterByTypeId(encounterTypeId: String): LiveData<List<Encounter>>
 
-    @Query("SELECT * FROM tbl_encounter WHERE visitUuid = :visitId AND providerUuid = :providerId")
+    @Query("SELECT * FROM tbl_encounter WHERE visituuid = :visitId AND provider_uuid = :providerId")
     fun getProviderVisitEncounters(visitId: String, providerId: String): LiveData<List<Encounter>>
 
-    @Query("SELECT * FROM tbl_encounter WHERE visitUuid = :visitId AND encounterTypeUuid = :encounterTypeId")
+    @Query("SELECT * FROM tbl_encounter WHERE visituuid = :visitId AND encounter_type_uuid = :encounterTypeId")
     fun getVisitEncounterByTypeId(visitId: String, encounterTypeId: String): LiveData<List<Encounter>>
 
-    @Query("SELECT * FROM tbl_encounter WHERE visitUuid = :visitId AND providerUuid = :providerId AND encounterTypeUuid = :encounterTypeId")
+    @Query("SELECT * FROM tbl_encounter WHERE visituuid = :visitId AND provider_uuid = :providerId AND encounter_type_uuid = :encounterTypeId")
     fun getProviderVisitEncounterByTypeId(visitId: String, providerId: String, encounterTypeId: String): LiveData<List<Encounter>>
 }
