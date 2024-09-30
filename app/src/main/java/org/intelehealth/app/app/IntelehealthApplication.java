@@ -87,7 +87,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
-        //new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
+        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();

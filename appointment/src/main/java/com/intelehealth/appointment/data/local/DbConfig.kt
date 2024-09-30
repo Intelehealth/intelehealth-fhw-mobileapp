@@ -1,10 +1,8 @@
 package com.intelehealth.appointment.data.local
 
 import android.content.Context
-import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -66,20 +64,18 @@ abstract class DbConfig : RoomDatabase() {
                 .addCallback(object : Callback() {
                 override fun onOpen(db: SupportSQLiteDatabase) {
                     attach(
-                        "app-module-db",
-                        "/data/data/org.intelehealth.app/databases/ida-localrecords.db"
+                        "ida-localrecords",
+                        "/data/data/org.intelehealth.app/databases"
                     )
                     super.onOpen(db)
                 }
             })
-
-                .fallbackToDestructiveMigration()
                 .build()
         }
 
         private fun attach(databaseName: String, databasePath: String) {
-            val sql = ("ATTACH DATABASE '" + databasePath + databaseName
-                    + "' AS \"" + databaseName + "\";")
+
+            val sql = "ATTACH DATABASE '$databasePath/$databaseName.db' AS \"ida_localrecords\";"
             INSTANCE!!.mDatabase!!.execSQL(sql)
         }
 
