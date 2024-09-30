@@ -38,9 +38,12 @@ data class Appointments(
         fun toAppointments(it: MutableList<AppointmentInfo>): List<Appointments> {
             val list = mutableListOf<Appointments>()
             it.forEach {
-                val rescheduledSize: Int = it.rescheduledAppointments.size
-                val rescheduledAppointmentsModel: com.intelehealth.appointment.data.remote.response.RescheduledAppointmentsModel? =
-                    it.rescheduledAppointments[rescheduledSize - 1]
+                var rescheduledAppointmentsModel: com.intelehealth.appointment.data.remote.response.RescheduledAppointmentsModel? = null
+                if (it.rescheduledAppointments != null && it.rescheduledAppointments.size > 0) {
+                    val rescheduledSize: Int = it.rescheduledAppointments.size
+                    rescheduledAppointmentsModel =
+                        it.rescheduledAppointments[rescheduledSize - 1]
+                }
 
                 list.add(Appointments(
                     uuid = it.uuid,
@@ -73,6 +76,39 @@ data class Appointments(
                 ))
             }
             return list
+        }
+
+        fun toAppointment(it: AppointmentInfo): Appointments {
+
+                return  Appointments(
+                    uuid = it.uuid,
+                    appointment_id = it.id,
+                    slot_day = it.slotDay,
+                    slot_date = it.slotDate,
+                    slot_js_date = it.slotJsDate,
+                    slot_duration = it.slotDuration,
+                    slot_duration_unit = it.slotDurationUnit,
+                    slot_time = it.slotTime,
+                    speciality = it.speciality,
+                    user_uuid = it.userUuid,
+                    dr_name = it.drName,
+                    visit_uuid = it.visitUuid,
+                    patient_id = it.patientId,
+                    patient_name = it.patientName,
+                    open_mrs_id = it.openMrsId,
+                    status = it.status,
+                    location_uuid = "",
+                    hw_uuid = "",
+                    reason = "",
+                    created_at = it.createdAt,
+                    updated_at = it.updatedAt,
+                    prev_slot_day = it.slotDay,
+                    prev_slot_date = it.slotDate,
+                    prev_slot_time = it.slotTime,
+                    voided = "",
+                    sync = true
+
+                )
         }
     }
 }

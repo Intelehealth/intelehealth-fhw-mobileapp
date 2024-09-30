@@ -1,13 +1,17 @@
 package com.intelehealth.appointment.data.local
 
 import android.content.Context
+import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
+import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.intelehealth.appointment.data.local.dao.AppointmentDao
 import com.intelehealth.appointment.data.local.entity.Appointments
 import java.util.Locale
+
 
 /**
  * Created by Tanvir Hasan. on 25-09-2024 - 15:46.
@@ -34,6 +38,8 @@ abstract class DbConfig : RoomDatabase() {
 
     abstract fun featureActiveStatusDao(): FeatureActiveStatusDao*/
 
+
+
     companion object {
 
         @Volatile
@@ -56,9 +62,25 @@ abstract class DbConfig : RoomDatabase() {
          */
         private fun buildDatabase(appContext: Context): DbConfig {
             val databaseName = "${appContext.packageName}.$DATABASE_NAME"
-            return Room.databaseBuilder(appContext, DbConfig::class.java, databaseName)
+            return  INSTANCE ?: databaseBuilder(appContext, DbConfig::class.java, databaseName)
+                .addCallback(object : Callback() {
+                override fun onOpen(db: SupportSQLiteDatabase) {
+                    attach(
+                        "app-module-db",
+                        "/data/data/org.intelehealth.app/databases/ida-localrecords.db"
+                    )
+                    super.onOpen(db)
+                }
+            })
+
                 .fallbackToDestructiveMigration()
                 .build()
+        }
+
+        private fun attach(databaseName: String, databasePath: String) {
+            val sql = ("ATTACH DATABASE '" + databasePath + databaseName
+                    + "' AS \"" + databaseName + "\";")
+            INSTANCE!!.mDatabase!!.execSQL(sql)
         }
 
         private fun getAppName(context: Context) = getApplicationName(context).let {

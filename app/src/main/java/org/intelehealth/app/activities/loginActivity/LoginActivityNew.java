@@ -597,7 +597,7 @@ public class LoginActivityNew extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
+                        //new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
                         UserLoginTask(username, password);
                     }
 
