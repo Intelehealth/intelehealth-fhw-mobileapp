@@ -33,6 +33,18 @@ public class ObsDTO {
     @Expose
     private String comments;
 
+    public String getInterpretation() {
+        return interpretation;
+    }
+
+    public void setInterpretation(String interpretation) {
+        this.interpretation = interpretation;
+    }
+
+    @SerializedName("interpretation")
+    @Expose
+    private String interpretation;
+
     public String getUuid() {
         return uuid;
     }

@@ -15,9 +15,22 @@ public class Ob {
     @Expose
     private String value;
 
+    public String getInterpretation() {
+        return interpretation;
+    }
+
+    public void setInterpretation(String interpretation) {
+        this.interpretation = interpretation;
+    }
+
     @SerializedName("comments")
     @Expose
     private String comments;
+
+    @SerializedName("interpretation")
+    @Expose
+    private String interpretation;
+
 
     public String getUuid() {
         return uuid;

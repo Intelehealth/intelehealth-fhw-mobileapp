@@ -175,6 +175,7 @@ public class PatientsFrameJson {
                             ob.setConcept(obs.getConceptuuid());
                             ob.setValue(obs.getValue());
                             ob.setComments(obs.getComments());
+                            ob.setInterpretation(obs.getInterpretation());
                             obsList.add(ob);
                             CustomLog.d("OBS: ", "OBS: " + new Gson().toJson(ob));
                         }

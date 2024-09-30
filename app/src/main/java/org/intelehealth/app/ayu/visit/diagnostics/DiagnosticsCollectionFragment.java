@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -67,7 +68,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private FragmentDiagnosticsCollectionBinding mBinding;
 
     public DiagnosticsCollectionFragment() {
-        // Required empty public constructor
     }
 
 
@@ -113,13 +113,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
         mBinding.tvGlucoseRandomError.setVisibility(View.GONE);
         mBinding.tvGlucoseFastingError.setVisibility(View.GONE);
-        mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
+        //mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
         mBinding.etvPostPrandialError.setVisibility(View.GONE);
         mBinding.etvUricAcidError.setVisibility(View.GONE);
         mBinding.etvCholestrolError.setVisibility(View.GONE);
         mBinding.tvHemoglobinError.setVisibility(View.GONE);
 
-        mBinding.etvNonFastingGlucose.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvNonFastingGlucose));
+        //mBinding.etvNonFastingGlucose.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvNonFastingGlucose));
         mBinding.etvGlucoseRandom.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseRandom));
         mBinding.etvGlucoseFasting.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseFasting));
         mBinding.etvPostPrandial.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvPostPrandial));
@@ -156,48 +156,39 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     }
 
     private void updateUI() {
-       /* mBinding.llGlucoseRandomContainer.setVisibility(View.GONE);
+        mBinding.llGlucoseRandomContainer.setVisibility(View.GONE);
         mBinding.llGlusoseFastingContainer.setVisibility(View.GONE);
-        mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
+        //mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
         mBinding.llPostPrandialContainer.setVisibility(View.GONE);
         mBinding.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.llUricAcidContainer.setVisibility(View.GONE);
         mBinding.llCholestrolContainer.setVisibility(View.GONE);
-*/
 
         for (Diagnostics diagnostics : mPatientDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
+
             if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
                 mBinding.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
                 mBinding.llGlucoseRandomContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvGlucoseRandomLbl);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {
                 mBinding.llGlusoseFastingContainer.setVisibility(View.VISIBLE);
                 mBinding.llGlusoseFastingContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvGlusoseFastingLbl);
-            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
+            }/* else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
                 mBinding.llNonFastingContainer.setVisibility(View.VISIBLE);
                 mBinding.llNonFastingContainer.setTag(diagnostics);
                 appendMandatorySing(diagnostics.isMandatory(), mBinding.tvNonFastingLbl);
-            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR)) {
+            }*/ else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR)) {
                 mBinding.llPostPrandialContainer.setVisibility(View.VISIBLE);
                 mBinding.llPostPrandialContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvPostPrandialLbl);
-
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.HEAMOGLOBIN)) {
                 mBinding.llHemoglobinContainer.setVisibility(View.VISIBLE);
                 mBinding.llHemoglobinContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvHemoglobinLbl);
-
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.URIC_ACID)) {
                 mBinding.llUricAcidContainer.setVisibility(View.VISIBLE);
                 mBinding.llUricAcidContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvUricAcidLbl);
-
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mBinding.llCholestrolContainer.setVisibility(View.VISIBLE);
                 mBinding.llCholestrolContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvCholestrolLbl);
             }
         }
     }
@@ -275,7 +266,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             }
         }
 
-        String nonFastingGlucose = mBinding.etvNonFastingGlucose.getText().toString().trim();
+       /* String nonFastingGlucose = mBinding.etvNonFastingGlucose.getText().toString().trim();
         if (!nonFastingGlucose.isEmpty()) {
             if ((Double.parseDouble(nonFastingGlucose) > Double.parseDouble(AppConstants.MAXIMUM_GLUCOSE_NON_FASTING)) ||
                     (Double.parseDouble(nonFastingGlucose) < Double.parseDouble(AppConstants.MINIMUM_GLUCOSE_NON_FASTING))) {
@@ -289,7 +280,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
                 mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
-        }
+        }*/
 
         String postPrandial = mBinding.etvPostPrandial.getText().toString().trim();
         if (!postPrandial.isEmpty()) {
@@ -379,12 +370,12 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             boolean isValid = isValidaForm();
             Log.d(TAG, "onClick: btn_submit clicked- " + isValid);//validate
 
-            setDisabledSubmit(!isValid);
             if (isValid) {
                 isDataReadyForSaving();
                 mActionListener.onProgress(100);
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, mIsEditMode, results);
             }
+            setDisabledSubmit(!isValid);
         }
     }
 
@@ -403,8 +394,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             if (results.getBloodGlucoseFasting() != null && !results.getBloodGlucoseFasting().isEmpty())
                 mBinding.etvGlucoseFasting.setText(results.getBloodGlucoseFasting());
 
-            if (results.getBloodGlucoseNonFasting() != null && !results.getBloodGlucoseNonFasting().isEmpty())
-                mBinding.etvNonFastingGlucose.setText(results.getBloodGlucoseNonFasting());
+//            if (results.getBloodGlucoseNonFasting() != null && !results.getBloodGlucoseNonFasting().isEmpty())
+//                mBinding.etvNonFastingGlucose.setText(results.getBloodGlucoseNonFasting());
 
             if (results.getBloodGlucosePostPrandial() != null && !results.getBloodGlucosePostPrandial().isEmpty())
                 mBinding.etvPostPrandial.setText(results.getBloodGlucosePostPrandial());
@@ -449,10 +440,10 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if (value != null && !value.isEmpty())
                     mBinding.etvGlucoseFasting.setText(value);
                 break;
-            case UuidDictionary.BLOOD_GLUCOSE: //Pulse
+           /* case UuidDictionary.BLOOD_GLUCOSE: //Pulse
                 if (value != null && !value.isEmpty())
                     mBinding.etvNonFastingGlucose.setText(value);
-                break;
+                break;*/
             case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL: //Pulse
                 if (value != null && !value.isEmpty())
                     mBinding.etvPostPrandial.setText(value);
@@ -483,7 +474,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
             results.setBloodGlucoseRandom((mBinding.etvGlucoseRandom.getText().toString()));
             results.setBloodGlucoseFasting((mBinding.etvGlucoseFasting.getText().toString()));
-            results.setBloodGlucoseNonFasting((mBinding.etvNonFastingGlucose.getText().toString()));
+            //results.setBloodGlucoseNonFasting((mBinding.etvNonFastingGlucose.getText().toString()));
             results.setBloodGlucosePostPrandial((mBinding.etvPostPrandial.getText().toString()));
             results.setHemoglobin((mBinding.etvHemoglobin.getText().toString()));
             results.setUricAcid((mBinding.etvUricAcid.getText().toString()));
@@ -511,7 +502,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucoseRandom());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -524,7 +515,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucoseFasting());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -537,11 +528,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucosePostPrandial());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
 
-                diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
+              /*  diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseNonFasting().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
@@ -550,9 +541,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucoseNonFasting());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
-                }
+                }*/
 
                 diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
                 if ((diagnostics != null && diagnostics.isMandatory()) || !results.getUricAcid().isEmpty()) {
@@ -563,7 +554,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getUricAcid());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -576,7 +567,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getCholesterol());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -589,7 +580,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getHemoglobin());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
                     obsDAO.updateObs(obsDTO);
                 }
                 //making flag to false in the encounter table so it will sync again
@@ -601,121 +592,132 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-            } catch (DAOException dao) {
-                FirebaseCrashlytics.getInstance().recordException(dao);
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                e.printStackTrace();
+                Log.d(TAG, "isDataReadyForSaving: diagnostics exec in: " + e.getLocalizedMessage());
             }
         } else {
-            ObsDAO.deleteExistingDiagnosticsDataIfExists(visitUuid);
+            try {
+                ObsDAO.deleteExistingDiagnosticsDataIfExists(visitUuid);
 
-            Diagnostics diagnostics = (Diagnostics) mBinding.llGlucoseRandomContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getBloodGlucoseRandom().isEmpty())) {
-
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.PULSE);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucoseRandom());
-
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                Diagnostics diagnostics = (Diagnostics) mBinding.llGlucoseRandomContainer.getTag();
+                if (diagnostics != null && !results.getBloodGlucoseRandom().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.PULSE);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBloodGlucoseRandom());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
-            }
 
-            diagnostics = (Diagnostics) mBinding.llGlusoseFastingContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getBloodGlucoseFasting().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucoseFasting());
+                diagnostics = (Diagnostics) mBinding.llGlusoseFastingContainer.getTag();
 
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                if (diagnostics != null && !results.getBloodGlucoseFasting().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBloodGlucoseFasting());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
-            }
 
-            diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getBloodGlucoseNonFasting().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucoseNonFasting());
+                /*diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
+                Log.d(TAG, "isDataReadyForSaving: kz NonFasting : "+results.getBloodGlucoseNonFasting());
+                Log.d(TAG, "isDataReadyForSaving: diagnostics : "+diagnostics);
 
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                if (diagnostics != null && !results.getBloodGlucoseNonFasting().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBloodGlucoseNonFasting());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    Log.d(TAG, "isDataReadyForSaving: NonFasting : " + obsDTO);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                }*/
+                diagnostics = (Diagnostics) mBinding.llPostPrandialContainer.getTag();
+
+                if (diagnostics != null && !results.getBloodGlucosePostPrandial().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBloodGlucosePostPrandial());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
-            }
-            diagnostics = (Diagnostics) mBinding.llPostPrandialContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getBloodGlucosePostPrandial().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGlucosePostPrandial());
+                diagnostics = (Diagnostics) mBinding.llHemoglobinContainer.getTag();
 
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                if (diagnostics != null && !results.getHemoglobin().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getHemoglobin());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
-            }
-            diagnostics = (Diagnostics) mBinding.llHemoglobinContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getHemoglobin().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getHemoglobin());
-
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                diagnostics = (Diagnostics) mBinding.llCholestrolContainer.getTag();
+                if (diagnostics != null && !results.getCholesterol().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getCholesterol());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
-            }
-            diagnostics = (Diagnostics) mBinding.llCholestrolContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getCholesterol().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getCholesterol());
-
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
+                if (diagnostics != null && !results.getUricAcid().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getUricAcid());
+                    obsDTO.setInterpretation(AppConstants.OBS_TYPE_DIAGNOSTICS);
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
-            if ((diagnostics != null && diagnostics.isMandatory()) || (diagnostics != null && !results.getUricAcid().isEmpty())) {
-                obsDTO = new ObsDTO();
-                //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                obsDTO.setConceptuuid(diagnostics.getUuid());
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getUricAcid());
-
-                try {
-                    obsDAO.insertObs(obsDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-            }
-
         }
         return true;
     }
