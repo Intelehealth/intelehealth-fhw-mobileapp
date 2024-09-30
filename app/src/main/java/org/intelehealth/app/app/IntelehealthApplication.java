@@ -80,7 +80,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
-        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004");
        /* Class<?> clazz = null;
         try {
 
@@ -100,6 +99,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();

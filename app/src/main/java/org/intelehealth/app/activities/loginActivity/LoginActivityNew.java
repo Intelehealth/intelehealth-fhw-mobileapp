@@ -33,6 +33,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.intelehealth.appointment.AppointmentBuilder;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -596,6 +597,7 @@ public class LoginActivityNew extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
                         UserLoginTask(username, password);
                     }
 

@@ -11,6 +11,7 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 import com.intelehealth.appointment.data.local.DbConfig;
 import com.intelehealth.appointment.data.remote.AppointmentWebClient;
+import com.intelehealth.appointment.data.remote.provider.WebClientProvider;
 import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 
 import org.intelehealth.app.BuildConfig;
@@ -46,7 +47,7 @@ public class AppointmentSync {
         String baseurl = sessionManager.getServerUrl() + ":3004";
         Timber.tag(TAG).d("URL =>%s", BuildConfig.SERVER_URL);
         Timber.tag(TAG).d("Session URL =>%s", sessionManager.getServerUrl());
-        AppointmentSyncRepo appointmentSyncRepo = new AppointmentSyncRepo();
+        AppointmentSyncRepo appointmentSyncRepo = new AppointmentSyncRepo(WebClientProvider.INSTANCE.getApiClient(), DbConfig.getInstance(context));
         appointmentSyncRepo.fetchAppointmentAndUpdate(selectedStartDate,selectedEndDate,new SessionManager(context).getLocationUuid());
 
         /*ApiClientAppointment.getInstance(baseurl).getApi()

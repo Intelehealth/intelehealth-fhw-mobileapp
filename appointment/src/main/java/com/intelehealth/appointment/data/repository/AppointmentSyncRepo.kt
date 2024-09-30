@@ -2,9 +2,11 @@ package com.intelehealth.appointment.data.repository
 
 import android.content.Context
 import android.content.Intent
+import android.webkit.WebViewClient
 import com.intelehealth.appointment.data.local.DbConfig
 import com.intelehealth.appointment.data.local.entity.Appointments
 import com.intelehealth.appointment.data.remote.AppointmentWebClient
+import com.intelehealth.appointment.data.remote.provider.WebClientProvider
 import com.intelehealth.appointment.data.remote.response.AppointmentListingResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -13,12 +15,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AppointmentSyncRepo @Inject constructor() {
-    @Inject
-    lateinit var appointmentWebClient: AppointmentWebClient
-    @Inject
-    lateinit var dbConfig: DbConfig
+class AppointmentSyncRepo(
+    private var appointmentWebClient: AppointmentWebClient,
+    private var dbConfig: DbConfig
+) {
 
 
     fun fetchAppointmentAndUpdate(startDate:String,endDate:String, locationId:String){

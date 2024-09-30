@@ -48,6 +48,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.intelehealth.appointment.AppointmentBuilder;
 import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
@@ -461,6 +462,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
                         TestSetup(urlString, username, password, admin_password,location);
                     }
 

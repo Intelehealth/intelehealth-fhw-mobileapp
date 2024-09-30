@@ -9,8 +9,4 @@ interface CoreDao<T> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(data: T)
-
-    suspend fun getAllRecord(): List<T>
-
-    suspend fun getRecord(key: String): T
 }
