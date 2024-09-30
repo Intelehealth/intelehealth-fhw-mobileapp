@@ -25,6 +25,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="123456" />
 
+    <include
+        android:id="@+id/resendLayout"
+        layout="@layout/layout_resend_otp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        app:layout_constraintEnd_toEndOf="@id/otpBox"
+        app:layout_constraintStart_toStartOf="@id/otpBox"
+        app:layout_constraintTop_toBottomOf="@+id/otpBox" />
+
 
     <include
         android:id="@+id/btnVerifyOtp"
@@ -34,6 +44,6 @@
         android:layout_marginTop="@dimen/_16dp"
         app:layout_constraintEnd_toEndOf="@+id/otpBox"
         app:layout_constraintStart_toStartOf="@+id/otpBox"
-        app:layout_constraintTop_toBottomOf="@+id/otpBox" />
+        app:layout_constraintTop_toBottomOf="@+id/resendLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,5 +41,11 @@
     <string name="error_field_required">This field is required</string>
     <string name="enter_12_digits">Enter 12 digits</string>
     <string name="aadhaar_number_is_not_valid">AADHAAR number is not valid</string>
-
+    <string name="no_otp_received">Didn\\\'t receive OTP?</string>
+    <string name="resend_otp_in">Resend in</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 10 mins.</string>
+    <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
+    <string name="resend_otp"><font color='#2E1E91'>Resend</font></string>
+    <string name="seconds">seconds</string>
+    <string name="otp_sent_to_your_registered_mobile_number">OTP sent to your registered mobile number</string>
 </resources>
