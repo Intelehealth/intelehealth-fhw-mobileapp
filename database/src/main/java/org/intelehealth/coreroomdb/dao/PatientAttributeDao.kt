@@ -9,7 +9,7 @@ interface PatientAttributeDao : CoreDao<PatientAttribute> {
     @Query("SELECT * FROM tbl_patient_attribute WHERE patientUuid = :patientUuid")
     fun getAttributesByPatientUuid(patientUuid: String): LiveData<List<PatientAttribute>>
 
-    @Query("SELECT * FROM tbl_patient_attribute WHERE patientUuid = :patientUuid AND personAttributeTypeUuid = :personAttributeTypeUuid")
+    @Query("SELECT * FROM tbl_patient_attribute WHERE patientUuid = :patientUuid AND person_attribute_type_uuid = :personAttributeTypeUuid")
     fun getAttributesByPatientUuidAndPersonAttributeTypeUuid(
         patientUuid: String,
         personAttributeTypeUuid: String

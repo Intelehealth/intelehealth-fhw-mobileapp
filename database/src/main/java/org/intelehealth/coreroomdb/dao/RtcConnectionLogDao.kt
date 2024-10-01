@@ -6,7 +6,7 @@ import org.intelehealth.coreroomdb.entity.RtcConnectionLog
 
 interface RtcConnectionLogDao : CoreDao<RtcConnectionLog> {
 
-    @Query("SELECT * FROM tbl_rtc_connection_log WHERE visitUuid = :visitUuid")
+    @Query("SELECT * FROM tbl_rtc_connection_log WHERE visit_uuid = :visitUuid")
     fun getConnectionLogByVisitUuid(visitUuid: String): LiveData<List<RtcConnectionLog>>
 
 }
