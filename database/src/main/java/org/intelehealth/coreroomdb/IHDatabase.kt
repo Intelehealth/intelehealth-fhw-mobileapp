@@ -31,13 +31,12 @@ abstract class IHDatabase: RoomDatabase() {
     abstract fun mediaRecordDao(): MediaRecordDao
     abstract fun observationDao(): ObservationDao
     abstract fun patientDao(): PatientDao
-    //  abstract fun coreDao(): CoreDao<T>
 
     companion object {
         @Volatile
         private var INSTANCE: IHDatabase? = null
      //   private val DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db"
-        private val DATABASE_NAME = "localrecords.db"
+        private val DATABASE_NAME = "-localrecords.db"
 
         /**
          * Get the singleton instance of the database.
