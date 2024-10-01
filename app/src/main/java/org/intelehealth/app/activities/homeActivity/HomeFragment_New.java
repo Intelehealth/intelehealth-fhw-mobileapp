@@ -19,6 +19,8 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,11 @@ import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.LifecycleObserver;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.intelehealth.appointment.callback.DataStatus;
+import com.intelehealth.appointment.data.local.DbConfig;
+import com.intelehealth.appointment.data.provider.AppointmentRepoProvider;
+import com.intelehealth.appointment.data.provider.WebClientProvider;
+import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
@@ -440,19 +447,36 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     @SuppressLint("SetTextI18n")
     private void getUpcomingAppointments() {
-        Executors.newSingleThreadExecutor().execute(() -> {
+        AppointmentSyncRepo appointmentSyncRepo = AppointmentRepoProvider.INSTANCE.getRepo(WebClientProvider.INSTANCE.getApiClient(), DbConfig.getInstance(getActivity()));
+        appointmentSyncRepo.getUpcomingCount(new DataStatus() {
+            @Override
+            public void success(@NonNull String msg) {
+                if (mUpcomingAppointmentCountTextView != null) {
+                    Activity activity = getActivity();
+                    if (isAdded() && activity != null) {
+                        activity.runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(msg + " " + activity.getString(R.string.upcoming)));
+                    }
+                }
+            }
+
+            @Override
+            public void failed(@NonNull String error) {
+
+            }
+        });
+/*        Executors.newSingleThreadExecutor().execute(() -> {
             //recyclerview for upcoming appointments
-            /*int totalUpcomingApps = 0;
+            *//*int totalUpcomingApps = 0;
             //SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String currentDate = dateFormat1.format(new Date());
             String endDate = dateFormat1.format(DateUtils.addYears(new Date(), 1));
 
             List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersV1(currentDate, endDate, "");
-            List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();*/
+            List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();*//*
 
             try {
-               /* if (appointmentInfoList.size() > 0) {
+               *//* if (appointmentInfoList.size() > 0) {
                     for (int i = 0; i < appointmentInfoList.size(); i++) {
                         AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -470,7 +494,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     totalUpcomingApps = upcomingAppointmentsList.size();
                 } else {
                     totalUpcomingApps = 0;
-                }*/
+                }*//*
 
                 int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
                 ;
@@ -483,7 +507,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        });*/
     }
 
     public void countStrPendingFollowupVisits() {

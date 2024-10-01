@@ -18,6 +18,10 @@ import androidx.multidex.MultiDexApplication;
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.intelehealth.appointment.AppointmentBuilder;
+import com.intelehealth.appointment.data.local.DbConfig;
+import com.intelehealth.appointment.data.provider.AppointmentRepoProvider;
+import com.intelehealth.appointment.data.provider.WebClientProvider;
+import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
@@ -88,6 +92,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
         new AppointmentBuilder.Builder(BuildConfig.SERVER_URL + ":3004",sessionManager.getJwtAuthToken());
+        AppointmentSyncRepo appointmentSyncRepo = AppointmentRepoProvider.INSTANCE.getRepo(WebClientProvider.INSTANCE.getApiClient(), DbConfig.getInstance(getAppContext()));
+        appointmentSyncRepo.attachAppModuleDb(getAppContext());
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();

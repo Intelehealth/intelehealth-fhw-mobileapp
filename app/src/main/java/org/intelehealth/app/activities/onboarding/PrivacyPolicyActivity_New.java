@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -19,6 +20,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
+import com.intelehealth.appointment.callback.DataStatus;
+import com.intelehealth.appointment.data.local.DbConfig;
+import com.intelehealth.appointment.data.provider.WebClientProvider;
+import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;

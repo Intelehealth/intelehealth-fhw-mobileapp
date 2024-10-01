@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.intelehealth.appointment.callback.DataStatus;
 import com.intelehealth.appointment.data.local.DbConfig;
 import com.intelehealth.appointment.data.remote.AppointmentWebClient;
-import com.intelehealth.appointment.data.remote.provider.WebClientProvider;
+import com.intelehealth.appointment.data.provider.WebClientProvider;
 import com.intelehealth.appointment.data.repository.AppointmentSyncRepo;
 
 import org.intelehealth.app.BuildConfig;

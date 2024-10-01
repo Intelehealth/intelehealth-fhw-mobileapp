@@ -1,4 +1,4 @@
-package com.intelehealth.appointment.data.remote.provider
+package com.intelehealth.appointment.data.provider
 
 import com.google.gson.Gson
 import com.intelehealth.appointment.AppointmentBuilder
