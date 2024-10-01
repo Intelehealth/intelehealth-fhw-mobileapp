@@ -18,21 +18,21 @@ interface AppointmentDao : CoreDao<Appointment> {
     @Query("SELECT * FROM tbl_appointments WHERE uuid = :uuid AND voided == 0")
     fun getByUuid(uuid: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE appointmentId = :appointmentId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE appointment_id = :appointmentId AND voided == 0")
     fun getByAppointmentId(appointmentId: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE patientId = :patientId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE patient_id = :patientId AND voided == 0")
     fun getByPatientId(patientId: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE hwUuid = :hwId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE hw_uuid = :hwId AND voided == 0")
     fun getByHWId(hwId: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE updatedAt = :userId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE updated_at = :userId AND voided == 0")
     fun getByUserId(userId: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE visitUuid = :visitId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE visit_uuid = :visitId AND voided == 0")
     fun getByVisitId(visitId: String): LiveData<Appointment>
 
-    @Query("SELECT * FROM tbl_appointments WHERE openMrsId = :openMrsId AND voided == 0")
+    @Query("SELECT * FROM tbl_appointments WHERE open_mrs_id = :openMrsId AND voided == 0")
     fun getByOpenMrsId(openMrsId: String): LiveData<Appointment>
 }

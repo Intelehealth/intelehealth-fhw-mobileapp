@@ -18,12 +18,12 @@ interface LocalNotificationDao : CoreDao<LocalNotification> {
     @Query("SELECT * FROM tbl_notifications WHERE uuid = :uuid")
     fun getNotificationByUuid(uuid: String): LiveData<LocalNotification>
 
-    @Query("SELECT * FROM tbl_notifications WHERE notificationType = :type")
+    @Query("SELECT * FROM tbl_notifications WHERE notification_type = :type")
     fun getNotificationByType(type: String): LiveData<LocalNotification>
 
-    @Query("UPDATE tbl_notifications SET deleted = 1 WHERE uuid = :uuid")
+    @Query("UPDATE tbl_notifications SET isdeleted = 1 WHERE uuid = :uuid")
     suspend fun deleteByUuid(uuid: String)
 
-    @Query("UPDATE tbl_notifications SET deleted = 1 WHERE notificationType = :type")
+    @Query("UPDATE tbl_notifications SET isdeleted = 1 WHERE notification_type = :type")
     suspend fun deleteByType(type: String)
 }

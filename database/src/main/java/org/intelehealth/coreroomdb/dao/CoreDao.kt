@@ -15,8 +15,8 @@ interface CoreDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(items: List<T>)
 
-    @Delete
-    suspend fun clear()
+   /* @Delete
+    suspend fun clear()*/
 
     fun getAll(): LiveData<List<T>>
 

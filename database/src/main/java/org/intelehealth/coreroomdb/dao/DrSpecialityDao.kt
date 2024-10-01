@@ -18,9 +18,9 @@ interface DrSpecialityDao : CoreDao<DrSpeciality> {
     @Query("SELECT * FROM tbl_dr_speciality WHERE uuid = :uuid")
     fun getSpecialityByUuid(uuid: String): LiveData<DrSpeciality>
 
-    @Query("SELECT * FROM tbl_dr_speciality WHERE providerUuid = :providerId")
+    @Query("SELECT * FROM tbl_dr_speciality WHERE provideruuid = :providerId")
     fun getSpecialityByProviderId(providerId: String): LiveData<DrSpeciality>
 
-    @Query("SELECT * FROM tbl_dr_speciality WHERE attributeTypeUuid = :attrTypeId")
+    @Query("SELECT * FROM tbl_dr_speciality WHERE attributetypeuuid = :attrTypeId")
     fun getSpecialityByAttrTypeId(attrTypeId: String): LiveData<DrSpeciality>
 }
