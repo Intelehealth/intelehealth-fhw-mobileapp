@@ -114,6 +114,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.intelehealth.appointment.features.schedule_appointment.ScheduleAppointmentActivity;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -2714,7 +2715,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 return;
             }
 
-            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+            /*Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+            in.putExtra("visitUuid", visitUuid);
+            in.putExtra("patientUuid", patientUuid);
+            in.putExtra("patientName", patientName);
+            in.putExtra("appointmentId", 0);
+            in.putExtra("actionTag", "new_schedule");
+            in.putExtra("openMrsId", patient.getOpenmrs_id());
+            in.putExtra("speciality", speciality_selected);
+            in.putExtra("requestCode", AppConstants.EVENT_APPOINTMENT_BOOKING_FROM_VISIT_SUMMARY);
+            mStartForScheduleAppointment.launch(in);*/
+            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity.class);
             in.putExtra("visitUuid", visitUuid);
             in.putExtra("patientUuid", patientUuid);
             in.putExtra("patientName", patientName);

@@ -28,16 +28,20 @@ class AppointmentSyncRepo(
         dataStatus: DataStatus
     ) {
         CoroutineScope(Dispatchers.Default).launch {
-            appointmentWebClient.getSlotsAll(startDate, endDate, locationId)?.let {
-                if (it.isSuccessful) {
-                    it.body()?.let { it1 ->
-                        saveData(it1.data)
-                        saveData(it1.cancelledAppointments)
-                        dataStatus.success("Success")
+            try {
+                appointmentWebClient.getSlotsAll(startDate, endDate, locationId)?.let {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            saveData(it1.data)
+                            saveData(it1.cancelledAppointments)
+                            dataStatus.success("Success")
+                        }
+                    } else {
+                        dataStatus.failed(it.code().toString())
                     }
-                } else {
-                    dataStatus.failed(it.code().toString())
                 }
+            }catch (e:Exception){
+
             }
         }
     }

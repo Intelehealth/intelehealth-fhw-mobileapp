@@ -1,0 +1,10 @@
+<resources>
+    <string name="schedule_appointment">Schedule appointment</string>
+    <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
+    <string name="pick_time_slot">Pick a time slot</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="evening">Evening</string>
+    <string name="book_appointment">Book appointment</string>
+    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+</resources>
