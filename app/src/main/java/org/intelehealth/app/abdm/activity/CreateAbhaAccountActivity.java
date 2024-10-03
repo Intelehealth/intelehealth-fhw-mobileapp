@@ -16,6 +16,7 @@ import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,15 +61,12 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 
-public class CreateAbhaActivity extends AppCompatActivity {
+public class CreateAbhaAccountActivity extends AppCompatActivity {
 
-    private final Context context = CreateAbhaActivity.this;
-
+    private final Context context = CreateAbhaAccountActivity.this;
     public static final String TAG = AadharMobileVerificationActivity.class.getSimpleName();
     ActivityCreateAbhaBinding binding;
     private String accessToken = "";
-
-
     public static final String BEARER_AUTH = "Bearer ";
     private CustomProgressDialog cpd;
     SnackbarUtils snackbarUtils;
@@ -83,7 +81,7 @@ public class CreateAbhaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateAbhaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        WindowsUtils.setStatusBarColor(CreateAbhaActivity.this);  // changing status bar color
+        WindowsUtils.setStatusBarColor(CreateAbhaAccountActivity.this);  // changing status bar color
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(context);
@@ -138,6 +136,22 @@ public class CreateAbhaActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setOnClickListener(v -> {
+
+        });
+
+        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+            {
+                ConsentDialog consentDialog = new ConsentDialog();
+                consentDialog.setListeners(isCheck -> binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
+                consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
+            }
+            binding.sendOtpBtn.setEnabled(isChecked);
+                }
+        );
+
     }
 
     private void checkInternetConnection() {

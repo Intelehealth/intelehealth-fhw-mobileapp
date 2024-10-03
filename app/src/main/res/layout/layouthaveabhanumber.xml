@@ -113,7 +113,7 @@
                             android:background="@drawable/textbox_outline"
                             android:hint="@string/enter_your_aadhar_card_number"
                             android:imeOptions="actionNext"
-                            android:inputType="number"
+                            android:inputType="numberPassword"
                             android:maxLength="12"
                             android:padding="14dp"
                             android:singleLine="true"

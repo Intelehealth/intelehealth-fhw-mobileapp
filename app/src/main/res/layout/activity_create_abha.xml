@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,15 +45,14 @@
                 android:id="@+id/sub_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_action_bar"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="26dp"
-                android:layout_below="@+id/ll_action_bar"
+                android:gravity="top"
                 android:text="@string/verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy"
                 android:textAppearance="@style/sub_title"
                 android:textColor="@null"
-                android:textSize="@null"
-                android:gravity="top"
-                />
+                android:textSize="@null" />
 
             <ImageView
                 android:id="@+id/imgview"
@@ -70,16 +69,15 @@
                 android:id="@+id/we_will_sen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginHorizontal="10dp"
                 android:layout_below="@+id/imgview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:text="@string/we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number"
                 android:textAppearance="@style/we_will_sen"
                 android:textColor="@null"
-                android:textSize="@null"
-                />
+                android:textSize="@null" />
 
             <FrameLayout
                 android:id="@+id/fl_aadhar_mobile"
@@ -90,8 +88,7 @@
 
                 <include
                     android:id="@+id/layout_doNotHaveABHANumber"
-                    layout="@layout/layout_donothaveabha"
-                    />
+                    layout="@layout/layout_donothaveabha" />
 
 
             </FrameLayout>
@@ -100,38 +97,37 @@
                 android:id="@+id/fl_otpBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/fl_aadhar_mobile"
-                android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_20dp"
-                >
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <com.mukesh.OtpView
                     android:id="@+id/otpBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
                     android:inputType="number"
                     android:itemBackground="@color/fade_color"
-                    app:OtpLineColor="@color/colorPrimaryDark"
-                    android:focusableInTouchMode="true"
-                    app:OtpItemCount="6"
-                    app:OtpViewType="line"
-                    android:textColor="@color/colorPrimaryDark"
                     android:paddingBottom="@dimen/margin_20dp"
-                    tools:text="123456"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    app:OtpItemCount="6"
+                    app:OtpLineColor="@color/colorPrimaryDark"
+                    app:OtpViewType="line"
+                    tools:text="123456" />
             </FrameLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_resendOTP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:orientation="horizontal"
+                android:layout_below="@+id/fl_otpBox"
                 android:layout_alignStart="@id/fl_otpBox"
-                android:layout_below="@+id/fl_otpBox">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/resendTxt"
@@ -145,8 +141,8 @@
                     android:id="@+id/resendBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/resendTxt"
                     android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
+                    android:layout_toEndOf="@+id/resendTxt"
                     android:text="@string/resend_otp_in"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/common_label_text_size" />
@@ -157,22 +153,20 @@
                 android:id="@+id/ll_resend_counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_below="@+id/rl_resendOTP"
                 android:layout_alignStart="@id/fl_otpBox"
                 android:layout_alignEnd="@id/fl_otpBox"
                 android:layout_marginTop="@dimen/margin_10"
-                >
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/tv_resend_counter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/lite_red"
-                    android:textSize="@dimen/txtsize_patdetail_14sp"
                     android:text="@string/maximum_number_of_retries_exceeded_please_try_again_after_10_mins"
-                    />
+                    android:textColor="@color/lite_red"
+                    android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             </LinearLayout>
 
@@ -181,15 +175,16 @@
                 android:id="@+id/sendOtpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_resend_counter"
+                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/ui2_common_primary_bg_with_state"
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:drawableTint="@color/iconTintWhite"
-                android:layout_below="@+id/ll_resend_counter"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:layout_centerHorizontal="true"
                 android:paddingStart="@dimen/common_button_padding_left"
+                android:enabled="false"
                 android:paddingTop="@dimen/common_button_padding_top"
                 android:paddingEnd="@dimen/common_button_padding_right"
                 android:paddingBottom="@dimen/common_button_padding_bottom"

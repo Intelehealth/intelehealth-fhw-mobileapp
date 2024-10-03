@@ -15,14 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardVerificationActivity;
-import org.intelehealth.app.abdm.activity.ConsentActivity;
-import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.abdm.activity.CreateAbhaAccountActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -66,46 +61,32 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         });
 
         //show button if it's from add patient
-        if(!intentType.equalsIgnoreCase("doNotNavigateFurther")){
+        if (!intentType.equalsIgnoreCase("doNotNavigateFurther")) {
             findViewById(R.id.layout_button_privacy).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             findViewById(R.id.layout_button_privacy).setVisibility(View.GONE);
         }
 
         btn_accept_privacy.setOnClickListener(v -> {
-            if(intentType.equalsIgnoreCase("doNotNavigateFurther")){
+            if (intentType.equalsIgnoreCase("doNotNavigateFurther")) {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
-            }else {
+            } else {
                 patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
                         getString(R.string.abha), getString(R.string.do_you_have_your_abha_number),
                         getResources().getString(R.string.yes), getResources().getString(R.string.no),
-                        new DialogUtils.CustomDialogListener() {
-                            @Override
-                            public void onDialogActionDone(int action) {
-                                //  Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class); // todo: testing purpose -> comment later.
-                                //  Intent intent = new Intent(context, AccountSelectionLoginActivity.class); // todo: testing purpose -> comment later.
-
-                                Intent intent;
-                                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                    intent = new Intent(context, AbhaCardVerificationActivity.class);
-                                    intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
-                                }
-                                else {
-                                    intent = new Intent(context, ConsentActivity.class);
-                                    intent.putExtra(hasABHA, false);  // ie. Aadhar AND Mobile api to call. // here Aadhar api is used.
-                                 //   intent.putExtra(ABHA_CONSENT, true);
-                                }
-
-                                startActivity(intent);
-                              //  finish();
+                        action -> {
+                            Intent intent;
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                intent = new Intent(context, AbhaCardVerificationActivity.class);
+                                intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
+                            } else {
+                                intent = new Intent(context, CreateAbhaAccountActivity.class);
                             }
+                            startActivity(intent);
+
                         });
 
-                //  Intent intent = new Intent(this, IdentificationActivity_New.class);
-               /* Intent intent = new Intent(this, ConsentActivity.class);
-                startActivity(intent);
-                finish();*/
             }
         });
 

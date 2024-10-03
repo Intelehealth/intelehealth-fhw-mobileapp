@@ -1,114 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_doNotHaveABHANumber"
-    android:layout_marginHorizontal="@dimen/margin_20dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_20dp">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/countrycode_spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:gravity="center_vertical"
+                            app:ccp_countryPreference="in,us"
+                            app:ccp_autoFormatNumber="true"
+                            app:ccp_textSize="16sp"
+                            />
+        -->
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_15"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/transparent">
 
-            <!--
-                            <com.hbb20.CountryCodePicker
-                                android:id="@+id/countrycode_spinner"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="10dp"
-                                android:gravity="center_vertical"
-                                app:ccp_countryPreference="in,us"
-                                app:ccp_autoFormatNumber="true"
-                                app:ccp_textSize="16sp"
-                                />
-            -->
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/aadharNoBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                app:hintEnabled="false"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@android:color/transparent">
+                android:background="@drawable/textbox_outline"
+                android:hint="@string/enter_your_aadhar_card_number"
+                android:imeOptions="actionNext"
+                android:inputType="numberPassword"
+                android:maxLength="12"
+                android:padding="14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColor="@null"
+                android:textColorHint="@color/hint_color"
+                android:textSize="@null" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/aadharNoBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/textbox_outline"
-                    android:inputType="number"
-                    android:hint="@string/enter_your_aadhar_card_number"
-                    android:imeOptions="actionNext"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:singleLine="true"
-                    android:maxLength="12"
-                    />
-
-                <TextView
-                    android:id="@+id/aadhar_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@color/red"
-                    android:textSize="@null"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/aadhar_error"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textview_mobile_no_note"
-                android:layout_marginTop="@dimen/spinner_countries_margin_top"
-                android:layout_toEndOf="@+id/countrycode_spinner_forgot"
-                app:hintEnabled="false">
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="@null"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mobileNoBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/textbox_outline"
-                    android:hint="@string/enter_mobile_no"
-                    android:imeOptions="actionDone"
-                    android:lineSpacingExtra="3sp"
-                    android:textColor="@null"
-                    android:textSize="@null"
-                    android:textAppearance="@style/type_mobile_no"
-                    android:textColorHint="@color/hint_color"
-                    android:padding="14dp"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/mobile_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/hamburger_margin_start"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:textAppearance="@style/registr_error_msg"
-                    android:textColor="@color/red"
-                    android:textSize="@null"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_mobile_no_note"
+            android:layout_marginTop="@dimen/spinner_countries_margin_top"
+            android:layout_toEndOf="@+id/countrycode_spinner_forgot"
+            app:hintEnabled="false">
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mobileNoBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/textbox_outline"
+                android:hint="@string/enter_mobile_no"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:lineSpacingExtra="3sp"
+                android:maxLength="10"
+                android:padding="14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColor="@null"
+                android:textColorHint="@color/hint_color"
+                android:textSize="@null" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/mobile_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="@null"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/cvTermsAndCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_10"
+            android:textColor="@color/primary_text"
+            android:text="@string/i_agree_terms_amp_conditions" />
+
+    </LinearLayout>
 
 </FrameLayout>

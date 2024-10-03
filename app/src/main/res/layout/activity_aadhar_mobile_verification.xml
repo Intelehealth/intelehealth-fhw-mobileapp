@@ -86,20 +86,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/we_will_sen"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="8dp">
 
                 <include
                     android:id="@+id/layout_doNotHaveABHANumber"
                     layout="@layout/layout_donothaveabha"
                     android:visibility="gone"
-                    tools:visibility="gone"
-                    />
+                    tools:visibility="gone" />
 
                 <include
                     android:id="@+id/layout_haveABHANumber"
                     layout="@layout/layouthaveabhanumber"
                     android:visibility="visible"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
             </FrameLayout>
 

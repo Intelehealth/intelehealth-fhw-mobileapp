@@ -55,7 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".abdm.activity.CreateAbhaActivity"
+            android:name=".abdm.activity.CreateAbhaAccountActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -81,11 +81,7 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".abdm.activity.ConsentActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
