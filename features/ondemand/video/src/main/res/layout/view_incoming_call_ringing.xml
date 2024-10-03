@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/caller_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/std_16dp"
+            android:layout_marginTop="@dimen/action_btn_min_width"
+            android:layout_marginEnd="@dimen/std_16dp"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/std_16dp"
+            android:text="Doctor"
+            android:textColor="@color/gray_5"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/calling_hints_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/caller_name_tv"
+            android:layout_centerHorizontal="true"
+            android:text="Calling"
+            android:textColor="@color/gray_3"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/ripple_background_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rb_color="#0099CC"
+            app:rb_duration="3000"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="6">
+
+            <TextView
+                android:id="@+id/tvCallerIdentity"
+                android:layout_width="@dimen/std_72dp"
+                android:layout_height="@dimen/std_72dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rounded_blue_bg_shape"
+                android:gravity="center"
+                android:text="A"
+                android:textColor="@color/white"
+                android:textSize="@dimen/std_36sp"
+                android:textStyle="bold" />
+        </com.skyfishjy.library.RippleBackground>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true">
+
+            <org.intelehealth.klivekit.call.ui.custom.SwipeButton
+                android:id="@+id/fabDeclineCall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                app:animDelay="1000"
+                app:animDistance="-50"
+                app:arrowVisibility="false"
+                app:btnColor="@color/red"
+                app:btnIcon="@drawable/ic_call_end"
+                app:btnSize="@dimen/video_call_action_btn_min_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fabAcceptCall"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <org.intelehealth.klivekit.call.ui.custom.SwipeButton
+                android:id="@+id/fabAcceptCall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/action_btn_min_width"
+                android:contentDescription="@string/accept"
+                android:src="@drawable/ic_call_accept"
+                app:backgroundTint="@color/green"
+                app:btnSize="@dimen/video_call_action_btn_min_size"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fabDeclineCall"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@null" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

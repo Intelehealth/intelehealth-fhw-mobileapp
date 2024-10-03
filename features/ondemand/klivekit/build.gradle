@@ -1,10 +1,11 @@
 plugins {
-    id 'com.android.library'
+//    id 'com.android.library'
+    id 'com.android.dynamic-feature'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
-//    id 'com.android.dynamic-feature'
+
 //    id("com.google.devtools.ksp")
 }
 
@@ -49,7 +50,7 @@ android {
 
 dependencies {
 
-//    implementation project(':app')
+    implementation project(':app')
     api 'androidx.core:core-ktx:1.13.1'
     api 'androidx.appcompat:appcompat:1.7.0'
     api 'com.google.android.material:material:1.12.0'

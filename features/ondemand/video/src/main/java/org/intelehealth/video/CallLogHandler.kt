@@ -1,12 +1,12 @@
 package org.intelehealth.video
 
-import com.codeglo.coyamore.data.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import org.intelehealth.core.utils.helper.PreferenceHelper
 import org.intelehealth.video.data.CallLogRepository
-import org.intelehealth.video.model.RtcCallLog
+import org.intelehealth.video.model.VideoCallLog
 import org.intelehealth.video.utils.CallStatus
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class CallLogHandler @Inject constructor(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    fun saveLog(callLog: RtcCallLog) {
+    fun saveLog(callLog: VideoCallLog) {
         scope.launch {
             callLogRepository.saveLog(callLog)
         }

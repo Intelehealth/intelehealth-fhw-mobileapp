@@ -32,8 +32,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.intelehealth.core.extensions.flatMapLatestOrNull
-import org.intelehealth.core.extensions.hide
+import org.intelehealth.core.utils.extensions.flatMapLatestOrNull
+import org.intelehealth.core.utils.extensions.hide
 import org.intelehealth.video.RtcEngine
 import org.intelehealth.video.utils.AudioType
 import kotlin.coroutines.coroutineContext

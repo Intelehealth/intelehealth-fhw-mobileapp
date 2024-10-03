@@ -1,0 +1,24 @@
+<resources>
+    <dimen name="stander_padding">16dp</dimen>
+    <dimen name="normal_padding">8dp</dimen>
+    <dimen name="std_20sp">20sp</dimen>
+    <dimen name="action_btn_min_width">36dp</dimen>
+    <dimen name="action_bar_size">76dp</dimen>
+    <dimen name="doctor_image_size">124dp</dimen>
+    <dimen name="std_12dp">12dp</dimen>
+    <dimen name="date_header_text_siz">16sp</dimen>
+    <dimen name="call_status_icon_size">16dp</dimen>
+    <dimen name="flag_icon_size">24dp</dimen>
+    <dimen name="fabDefaultSize">48dp</dimen>
+    <dimen name="video_call_action_btn_min_size">56dp</dimen>
+    <dimen name="std_72dp">72dp</dimen>
+    <dimen name="std_36sp">36sp</dimen>
+    <dimen name="std_16dp">16dp</dimen>
+    <dimen name="rtc_partner_profile_size">84dp</dimen>
+    <dimen name="std_48dp">48dp</dimen>
+    <dimen name="std_24sp">24sp</dimen>
+    <dimen name="rtc_self_view_width">124dp</dimen>
+    <dimen name="rtc_self_view_height">152dp</dimen>
+    <dimen name="std_8dp">8dp</dimen>
+    <dimen name="std_24dp">24dp</dimen>
+</resources>

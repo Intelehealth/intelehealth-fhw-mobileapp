@@ -1,0 +1,119 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+android {
+    def client = "client"
+    def server = "server"
+    flavorDimensions = [client, server]
+
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm")
+    def date = df.format(new Date())
+
+    productFlavors {
+
+        ida {
+            dimension client
+            isDefault = true
+            ext.arcBaseName = "intelehealth-" + versionName + " - " + date
+        }
+
+        namma {
+            dimension client
+            ext.appId = "org.intelehealth.nak"
+            ext.vCode = 2
+            ext.vName = '1.1'
+            ext.arcBaseName = "intelehealth_nak-" + versionName + " - " + date
+//            applicationId "org.intelehealth.nak"
+//            versionCode 2
+//            versionName '1.1'
+//            archivesBaseName = "intelehealth_nak-" + versionName + " - " + date
+
+        }
+
+        kf {
+            dimension client
+            ext.appId = "org.intelehealth.kf"
+            ext.vCode = 2
+            ext.vName = '1.0.1'
+            ext.arcBaseName = "intelehealth_kf-" + versionName + " - " + date
+//            applicationId "org.intelehealth.kf"
+//            versionCode 2
+//            versionName '1.0.1'
+//            archivesBaseName = "intelehealth_kf-" + versionName + " - " + date
+        }
+
+        biocon {
+            dimension client
+            ext.appId = "org.intelehealth.biocon"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_biocon-" + versionName + " - " + date
+        }
+
+        bmgf {
+            dimension client
+            ext.appId = "org.intelehealth.bmgf"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_bmgf-" + versionName + " - " + date
+
+//            ext.appId "org.intelehealth.bmgf"
+//            versionCode 1
+//            versionName '1.0'
+//            archivesBaseName = "intelehealth_bmgf-" + versionName + " - " + date
+        }
+
+        nas {
+            dimension client
+            ext.appId = "org.intelehealth.nas"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_nas-" + versionName + " - " + date
+//            ext.appId "org.intelehealth.nas"
+//            versionCode 1
+//            versionName '1.0'
+//            archivesBaseName = "intelehealth_nas-" + versionName + " - " + date
+        }
+
+        unicef {
+            dimension client
+            ext.appId = "org.intelehealth.unicef"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_unicef-" + versionName + " - " + date
+//            ext.applicationId 'org.intelehealth.unicef'
+//            versionCode 45
+//            versionName '5.1.1'
+//            archivesBaseName = "intelehealth_unicef-" + versionName + " - " + date
+        }
+
+        kcdo {
+            dimension client
+            ext.appId = "org.intelehealth.kcdo"
+            ext.vCode = 1
+            ext.vName = '1.0'
+            ext.arcBaseName = "intelehealth_kcdo-" + versionName + " - " + date
+//            applicationId 'org.intelehealth.kcdo'
+//            versionCode 65
+//            versionName '5.0'
+//            archivesBaseName = "intelehealth_kcdo-" + versionName + " - " + date
+        }
+
+        // This flavor used to handle different type of endpoint
+        dev {
+            dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "false"
+        }
+
+        staging {
+            dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
+        }
+
+        production {
+            dimension server
+            buildConfigField "boolean", "ACTIVE_CRASH", "true"
+        }
+    }
+
+}

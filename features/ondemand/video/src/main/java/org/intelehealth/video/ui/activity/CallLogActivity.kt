@@ -1,7 +1,7 @@
 package org.intelehealth.video.ui.activity
 
 import android.os.Bundle
-import org.intelehealth.video.model.RtcCallLog
+import org.intelehealth.video.model.VideoCallLog
 
 /**
  * Created by Vaghela Mithun R. on 16-10-2023 - 12:41.
@@ -14,7 +14,7 @@ class CallLogActivity : CoreCallLogActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onLogs(logs: List<RtcCallLog>) {
+    override fun onLogs(logs: List<VideoCallLog>) {
 
     }
 }

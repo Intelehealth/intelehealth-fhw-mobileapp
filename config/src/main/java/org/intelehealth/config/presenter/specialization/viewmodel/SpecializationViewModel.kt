@@ -1,7 +1,7 @@
 package org.intelehealth.config.presenter.specialization.viewmodel
 
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import org.intelehealth.core.ui.viewmodel.BaseViewModel
 
 /**
  * Created by Vaghela Mithun R. on 12-04-2024 - 12:56.

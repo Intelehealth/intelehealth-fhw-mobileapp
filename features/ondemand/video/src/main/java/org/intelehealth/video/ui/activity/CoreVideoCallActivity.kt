@@ -10,8 +10,6 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
-import com.codeglo.coyamore.data.PreferenceHelper
-import com.codeglo.coyamore.data.PreferenceHelper.Companion.RTC_DATA
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
@@ -21,16 +19,19 @@ import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.VideoTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.intelehealth.common.socket.SocketManager
-import org.intelehealth.core.extensions.showToast
-import org.intelehealth.core.extensions.viewModelByFactory
-import org.intelehealth.core.registry.PermissionRegistry
-import org.intelehealth.core.registry.allGranted
-import org.intelehealth.core.utility.RTC_ARGS
-import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.common.socket.SocketViewModel
+import org.intelehealth.core.socket.SocketManager
+import org.intelehealth.core.socket.SocketViewModel
+import org.intelehealth.core.utils.extensions.showToast
+import org.intelehealth.core.utils.extensions.viewModelByFactory
+import org.intelehealth.core.utils.helper.PreferenceHelper
+import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.RTC_DATA
+import org.intelehealth.core.utils.registry.PermissionRegistry
+import org.intelehealth.core.utils.registry.allGranted
+import org.intelehealth.core.utils.utility.RTC_ARGS
+import org.intelehealth.features.ondemand.mediator.activity.BaseSplitCompActivity
 import org.intelehealth.video.R
 import org.intelehealth.video.RtcEngine
+import org.intelehealth.video.model.CallArgs
 import org.intelehealth.video.notification.HeadsUpNotificationService
 import org.intelehealth.video.ui.viewmodel.CallViewModel
 import org.intelehealth.video.ui.viewmodel.VideoCallViewModel
@@ -46,35 +47,35 @@ import java.util.Calendar
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class CoreVideoCallActivity : AppCompatActivity() {
+abstract class CoreVideoCallActivity : BaseSplitCompActivity() {
 
-    protected lateinit var args: RtcArgs
+    protected lateinit var args: CallArgs
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
-        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, CallArgs::class.java)
                 ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
-        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, CallArgs::class.java)
                 ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
-        SocketViewModel(args)
+        SocketViewModel()
     }
 
     /**
      * getting args from shared pref
      * if in case rtc args is null
      */
-    private fun getDataFromSharedPref(): RtcArgs {
+    private fun getDataFromSharedPref(): CallArgs {
         val preferenceHelper = PreferenceHelper(RtcEngine.appContext)
         val messageBody = preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, "")
         if (messageBody.isEmpty()) {
             throw NullPointerException("arg is null!")
         } else {
-            return Gson().fromJson(messageBody, RtcArgs::class.java)
+            return Gson().fromJson(messageBody, CallArgs::class.java)
         }
     }
 
@@ -139,10 +140,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
 
-    private fun preventDuplicationData(newRtcData: RtcArgs) {
+    private fun preventDuplicationData(newRtcData: CallArgs) {
         val oldRtcData: String? = preferenceHelper.get(RTC_DATA, null)
         oldRtcData?.let {
-            val previouse = Gson().fromJson(it, RtcArgs::class.java)
+            val previouse = Gson().fromJson(it, CallArgs::class.java)
             previouse?.let {
                 if (it.appToken.equals(newRtcData.appToken)) finish()
                 else preferenceHelper.save(RTC_DATA, Gson().toJson(newRtcData))
@@ -262,23 +263,25 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
 
     private fun observerSocketEvent() {
-        socketViewModel.connect()
-        socketViewModel.eventNoAnswer.observe(this) {
-            val reason = getString(R.string.no_answer_from, args.doctorName)
-            if (it) sayBye(reason)
-        }
+        args.socketUrl?.let {
+            socketViewModel.connect(it)
+            socketViewModel.eventNoAnswer.observe(this) {
+                val reason = getString(R.string.no_answer_from, args.doctorName)
+                if (it) sayBye(reason)
+            }
 //        socketViewModel.eventBye.observe(this) { if (it) sayBye() }
-        lifecycleScope.launch {
-            delay(1000)
-            Timber.e { "Socket connected =>${socketViewModel.isConnected()}" }
+            lifecycleScope.launch {
+                delay(1000)
+                Timber.e { "Socket connected =>${socketViewModel.isConnected()}" }
+            }
         }
     }
 
     private fun extractRtcParams() {
-        setupRtcArgsSharedPref()
+        setupCallArgsSharedPref()
         intent ?: return
         if (intent.hasExtra(RTC_ARGS)) {
-            IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)?.let {
+            IntentCompat.getParcelableExtra(intent, RTC_ARGS, CallArgs::class.java)?.let {
                 args = it
                 Timber.d { "Args => ${Gson().toJson(args)}" }
                 Timber.e { "Room Token : ${args.appToken}" }
@@ -302,12 +305,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     /**
      * setting up rtc args if its empty
      */
-    private fun setupRtcArgsSharedPref() {
+    private fun setupCallArgsSharedPref() {
         val intent = intent ?: Intent()
         if (!intent.hasExtra(RTC_ARGS)) {
             intent.putExtra(
                 RTC_ARGS,
-                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), CallArgs::class.java)
             )
         }
     }

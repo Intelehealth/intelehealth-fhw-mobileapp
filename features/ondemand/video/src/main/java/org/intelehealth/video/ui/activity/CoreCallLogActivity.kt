@@ -2,10 +2,10 @@ package org.intelehealth.video.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import org.intelehealth.core.extensions.viewModelByFactory
+import org.intelehealth.core.utils.extensions.viewModelByFactory
 import org.intelehealth.video.data.CallLogRepository
-import org.intelehealth.video.model.RtcCallLog
-import org.intelehealth.video.room.WebRtcDatabase
+import org.intelehealth.video.model.VideoCallLog
+import org.intelehealth.video.room.CallDatabase
 import org.intelehealth.video.ui.viewmodel.CallLogViewModel
 
 /**
@@ -15,7 +15,7 @@ import org.intelehealth.video.ui.viewmodel.CallLogViewModel
  **/
 abstract class CoreCallLogActivity : AppCompatActivity() {
     private val callLogViewModel: CallLogViewModel by viewModelByFactory {
-        CallLogViewModel(CallLogRepository(WebRtcDatabase.getInstance(this).rtcCallLogDao()))
+        CallLogViewModel(CallLogRepository(CallDatabase.getInstance(this).rtcCallLogDao()))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ abstract class CoreCallLogActivity : AppCompatActivity() {
         setupActionBar()
     }
 
-    abstract fun onLogs(logs: List<RtcCallLog>)
+    abstract fun onLogs(logs: List<VideoCallLog>)
 
     fun clearLog() = callLogViewModel.clearLogs()
 

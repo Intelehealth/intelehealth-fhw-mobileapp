@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
 import org.intelehealth.app.R
-import org.intelehealth.klivekit.utils.DateTimeUtils
+import org.intelehealth.core.utils.utility.DateTimeUtils
 import java.util.Calendar
 import java.util.TimeZone
 

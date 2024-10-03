@@ -3,11 +3,9 @@ package org.intelehealth.klivekit.call.utils
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
@@ -68,7 +66,7 @@ object CallNotificationHandler {
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_DECLINE.span(android.R.color.holo_red_light, context),
-        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
             callAction = CallAction.DECLINE
         })
     ).build()
@@ -84,7 +82,7 @@ object CallNotificationHandler {
     ) = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_ACCEPT.span(android.R.color.holo_green_dark, context),
-        IntentUtils.getPendingActivityIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingActivityIntent(context, messageBody.apply {
             callAction = CallAction.ACCEPT
         })
     ).build()
@@ -99,7 +97,7 @@ object CallNotificationHandler {
     ): NotificationCompat.Action = NotificationCompat.Action.Builder(
         android.R.drawable.ic_menu_call,
         ACTION_HANG_UP,
-        IntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
+        CallIntentUtils.getPendingBroadCastIntent(context, messageBody.apply {
             callAction = CallAction.HANG_UP
             callStatus = CallStatus.ON_GOING
         })
@@ -138,8 +136,8 @@ object CallNotificationHandler {
         context: Context, messageBody: RtcArgs
     ): NotificationCompat.Builder {
         com.github.ajalt.timberkt.Timber.d { "getIncomingNotificationBuilder -> url = ${messageBody.url}" }
-        val lockScreenIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
-        val notificationIntent = IntentUtils.getPendingActivityIntent(context, messageBody)
+        val lockScreenIntent = CallIntentUtils.getPendingActivityIntent(context, messageBody)
+        val notificationIntent = CallIntentUtils.getPendingActivityIntent(context, messageBody)
 
         return NotificationCompat.Builder(context, getChannelId(context))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -168,7 +166,7 @@ object CallNotificationHandler {
 
         messageBody.notificationTime = SystemClock.elapsedRealtime().toString()
         messageBody.callStatus = CallStatus.ON_GOING
-        val notificationIntent = IntentUtils.getOnGoingPendingActivityIntent(context, messageBody)
+        val notificationIntent = CallIntentUtils.getOnGoingPendingActivityIntent(context, messageBody)
 //        val notificationIntent = IntentUtils.getPendingBroadCastIntent(context, messageBody)
 
         Timber.d("Local time date ***** ${messageBody.notificationTime}")
@@ -230,7 +228,7 @@ object CallNotificationHandler {
             .setColor(ContextCompat.getColor(context, R.color.red))
             .setSmallIcon(messageBody.notificationIcon)
             .setCategory(NotificationCompat.CATEGORY_MISSED_CALL).setAutoCancel(true)
-            .setContentIntent(IntentUtils.getCallLogPendingIntent(context, messageBody))
+            .setContentIntent(CallIntentUtils.getCallLogPendingIntent(context, messageBody))
             .setSilent(true)
 //            .addAction(getCallAction(context, messageBody))
     }

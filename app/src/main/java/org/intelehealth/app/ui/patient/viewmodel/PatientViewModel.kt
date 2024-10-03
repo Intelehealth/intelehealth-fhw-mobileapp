@@ -14,7 +14,7 @@ import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import org.intelehealth.core.ui.viewmodel.BaseViewModel
 
 /**
  * Created by Vaghela Mithun R. on 02-07-2024 - 13:49.

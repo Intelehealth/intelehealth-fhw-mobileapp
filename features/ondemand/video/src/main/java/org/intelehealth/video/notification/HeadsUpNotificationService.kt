@@ -6,9 +6,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -27,9 +24,17 @@ import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.emitter.Emitter
+import org.intelehealth.core.socket.SocketManager
+import org.intelehealth.core.utils.extensions.startSupportedForeground
+import org.intelehealth.core.utils.helper.PreferenceHelper
+import org.intelehealth.core.utils.utility.RTC_ARGS
+import org.intelehealth.video.RtcEngine
+import org.intelehealth.video.model.CallArgs
+import org.intelehealth.video.utils.CallConstants
 import org.intelehealth.video.utils.CallHandlerUtils
 import org.intelehealth.video.utils.CallMode
 import org.intelehealth.video.utils.CallNotificationHandler
+import org.intelehealth.video.utils.CallStatus
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -49,7 +54,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     private lateinit var countDownTimer: CountDownTimer
     private var isTimerRunning = false
     private var sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-    private var rtcArgs: RtcArgs? = null
+    private var rtcArgs: CallArgs? = null
     private var isDuplicateCancelEvent = false
 
     //[0] initial delay then subsequent vibrate & pause
@@ -134,7 +139,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             setVibrateorNormalRinger()
-            rtcArgs = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+            rtcArgs = IntentCompat.getParcelableExtra(intent, RTC_ARGS, CallArgs::class.java)
             rtcArgs?.let {
                 it.notificationId = notificationId
                 Timber.d { "Message call type **** ${it.callType}" }
@@ -207,7 +212,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         return CallNotificationHandler.getNotificationChannel(context, priority)
     }
 
-    private fun showOutGoingNotification(context: Context, messageBody: RtcArgs) {
+    private fun showOutGoingNotification(context: Context, messageBody: CallArgs) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(getNotificationChannel(context, 2))
@@ -231,7 +236,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
 
-    private fun showOnGoingCallNotification(messageBody: RtcArgs) {
+    private fun showOnGoingCallNotification(messageBody: CallArgs) {
         Timber.d { "showAcceptedCallNotification" }
         destroySetting()
 
@@ -258,7 +263,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
         }
     }
 
-    private fun showIncomingCallNotification(messageBody: RtcArgs) {
+    private fun showIncomingCallNotification(messageBody: CallArgs) {
         Timber.d { "showIncomingCallNotification -> url = ${messageBody.url}" }
         messageBody.notificationId = notificationId
         messageBody.callMode = CallMode.INCOMING
@@ -298,7 +303,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
 
-    private fun playRingtoneInEarpiece(messageBody: RtcArgs) {
+    private fun playRingtoneInEarpiece(messageBody: CallArgs) {
         CallHandlerUtils.playRingtoneInEarPiece(this, audioManager, messageBody)
     }
 
@@ -383,7 +388,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
     }
 
 
-    private fun countDownTimer(messageBody: RtcArgs) {
+    private fun countDownTimer(messageBody: CallArgs) {
 
         Timber.d { "Counterdown ***** " }
 
@@ -402,7 +407,7 @@ class HeadsUpNotificationService : Service(), SensorEventListener {
 
 
     //timeout
-    private fun sendCallTimedOutToBackend(messageBody: RtcArgs) {
+    private fun sendCallTimedOutToBackend(messageBody: CallArgs) {
         stopSelf()
 //        messageBody.callMode = CallMode.OUTGOING
 //        messageBody.callStatus = CallStatus.MISSED

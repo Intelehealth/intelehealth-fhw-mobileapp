@@ -6,6 +6,9 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.ConnectOptions
 import io.livekit.android.room.Room
+import org.intelehealth.core.utils.helper.PreferenceHelper
+import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.RTC_CONFIG
+import org.intelehealth.klivekit.provider.LiveKitProvider
 import org.intelehealth.video.ui.activity.CallLogActivity
 import org.intelehealth.video.ui.activity.VideoCallActivity
 
@@ -59,7 +62,7 @@ class RtcEngine private constructor(
                 socketUrl = this@Builder.socketUrl,
                 callIntentClass = (this@Builder.callIntentClass
                     ?: VideoCallActivity::class.java).name,
-                chatIntentClass = (this@Builder.chatIntentClass ?: ChatActivity::class.java).name,
+                chatIntentClass = (this@Builder.chatIntentClass ?: VideoCallActivity::class.java).name,
                 callLogIntentClass = (this@Builder.callLogIntentClass
                     ?: CallLogActivity::class.java).name,
             )

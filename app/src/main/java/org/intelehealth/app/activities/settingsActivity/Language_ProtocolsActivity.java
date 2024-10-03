@@ -47,7 +47,7 @@ import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.ActiveLanguage;
-import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder;
+import org.intelehealth.core.ui.viewholder.BaseViewHolder;
 
 import java.io.File;
 import java.util.List;

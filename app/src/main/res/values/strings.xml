@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+
     //Generic
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>
@@ -1075,4 +1075,5 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
     <string name="title_video">Video Feature</string>
+    <string name="title_call">Live Video</string>
 </resources>

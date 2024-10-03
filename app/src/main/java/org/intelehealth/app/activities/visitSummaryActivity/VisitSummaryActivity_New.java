@@ -161,7 +161,6 @@ import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -176,7 +175,6 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
 import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
@@ -190,7 +188,6 @@ import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
-import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -382,27 +379,27 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
 
     public void startTextChat(View view) {
-        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
-            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
-        RtcArgs args = new RtcArgs();
-        if (rtcConnectionDTO != null) {
-            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
-            args.setPatientId(patientUuid);
-            args.setPatientName(patientName);
-            args.setVisitId(visitUUID);
-            args.setNurseId(encounterDTO.getProvideruuid());
-            IDAChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
-        } else {
-            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
-        }
+//        if (!CheckInternetAvailability.isNetworkAvailable(this)) {
+//            Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUUID);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUUID);
+//        RtcArgs args = new RtcArgs();
+//        if (rtcConnectionDTO != null) {
+//            args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+//            args.setPatientId(patientUuid);
+//            args.setPatientName(patientName);
+//            args.setVisitId(visitUUID);
+//            args.setNurseId(encounterDTO.getProvideruuid());
+//            IDAChatActivity.startChatActivity(VisitSummaryActivity_New.this, args);
+//        } else {
+//            //chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//            Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override

@@ -9,8 +9,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.hasKeyWithValueOfType
 import com.google.gson.Gson
-import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.video.utils.IntentUtils
+import org.intelehealth.video.model.CallArgs
+import org.intelehealth.video.utils.CallIntentUtils
 
 
 /**
@@ -23,8 +23,8 @@ class CallServiceWorker(private val context: Context, private val workerParams: 
     override fun doWork(): Result {
         if (inputData.hasKeyWithValueOfType<String>(CALL_SERVICE_ARGS)) {
             val args = inputData.getString(CALL_SERVICE_ARGS)
-            val data: RtcArgs = Gson().fromJson(args, RtcArgs::class.java)
-            IntentUtils.getHeadsUpNotificationServiceIntent(data, context).also {
+            val data: CallArgs = Gson().fromJson(args, CallArgs::class.java)
+            CallIntentUtils.getHeadsUpNotificationServiceIntent(data, context).also {
                 ContextCompat.startForegroundService(context, it)
             }
         }
@@ -34,7 +34,7 @@ class CallServiceWorker(private val context: Context, private val workerParams: 
     companion object {
         private const val CALL_SERVICE_TAG = "call_start_service"
         private const val CALL_SERVICE_ARGS = "call_service_args"
-        fun startCallServiceWorker(messageBody: RtcArgs, context: Context) {
+        fun startCallServiceWorker(messageBody: CallArgs, context: Context) {
             Data.Builder().apply {
                 val args = Gson().toJson(messageBody)
                 putString(CALL_SERVICE_ARGS, args)

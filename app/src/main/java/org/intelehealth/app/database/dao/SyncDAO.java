@@ -1,6 +1,7 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.klivekit.data.PreferenceHelper.CONFIG_VERSION;
+
+import static org.intelehealth.core.utils.helper.PreferenceHelper.CONFIG_VERSION;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +35,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
-import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.intelehealth.core.utils.helper.PreferenceHelper;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;

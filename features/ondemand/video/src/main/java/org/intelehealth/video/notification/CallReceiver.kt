@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.IntentCompat
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.core.utils.extensions.printExtra
+import org.intelehealth.core.utils.utility.RTC_ARGS
+import org.intelehealth.video.model.CallArgs
 import org.intelehealth.video.utils.CallHandlerUtils
 
 
@@ -25,7 +28,7 @@ class CallReceiver : BroadcastReceiver() {
         intent.printExtra()
         if (intent.hasExtra(RTC_ARGS)) {
             Timber.d { "handleReceivedIntentData executed" }
-            val args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+            val args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, CallArgs::class.java)
             args?.let {
                 CallHandlerUtils.notifyCallNotification(args, context)
             }

@@ -2,7 +2,7 @@ package org.intelehealth.config.presenter.fields.viewmodel
 
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.utility.FieldGroup
-import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import org.intelehealth.core.ui.viewmodel.BaseViewModel
 
 /**
  * Created by Vaghela Mithun R. on 12-04-2024 - 12:56.

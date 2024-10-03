@@ -1,7 +1,7 @@
 package org.intelehealth.klivekit.httpclient
 
+import com.android.volley.BuildConfig
 import okhttp3.OkHttpClient
-import org.intelehealth.klivekit.BuildConfig
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
