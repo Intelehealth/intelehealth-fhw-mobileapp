@@ -5,7 +5,8 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: "kotlin-kapt"
 //apply from: "resdir.gradle"
-apply from: "whitelabel.gradle"
+apply from: "${rootProject.projectDir}/whitelabel.gradle"
+apply from: "${rootProject.projectDir}/varients.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -80,12 +81,14 @@ android {
     }
 
     dynamicFeatures = [':features:ondemand:call']
+    
 }
 dependencies {
 //    implementation project(':features:ondemand:klivekit')
     api project(':fcm')
     api project(':config')
     api project(':core:socket')
+    api(project(":resources"))
     api project(":features:ondemand:mediator")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.7.0'
