@@ -221,5 +221,8 @@ public class AppConstants {
     public static String getAppMarketUrl(Context context) {
         return "market://details?id=" + context.getApplicationContext().getPackageName();
     }
+
+    public static final String INTENT_SERVER_URL = "server_url";
+
 }
 

@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -92,6 +93,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -103,7 +105,7 @@ import io.reactivex.schedulers.Schedulers;
 public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "SetupActivityNew";
     private List<Location> mLocations = new ArrayList<>();
-    private boolean isLocationFetched;
+    private boolean isLocationSurveyCompleted = false;
     AutoCompleteTextView autotvLocations;
     TextInputEditText etUsername, etPassword, etAdminPassword, etServer;
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -128,8 +130,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     Button btnSetup;
     NetworkUtils networkUtils;
 
-    CustomProgressDialog cpd;
+    private boolean isUrlValid = false;
+    private String baseUrl = null;
 
+    CustomProgressDialog cpd;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,8 +169,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         tipWindow = new TooltipWindow(SetupActivityNew.this);
 
         autotvLocations.setOnClickListener(v -> {
-            Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
-            startActivity(intent);
+            if (isUrlValid) {
+                Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
+                intent.putExtra(AppConstants.INTENT_SERVER_URL, baseUrl);
+                startActivity(intent);
+            } else {
+                displayCheckUrlToast();
+            }
         });
 
         ImageView ivBackArrow = findViewById(R.id.iv_back_arrow);
@@ -287,6 +297,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         return context;
     }
 
+    public void displayCheckUrlToast() {
+        Toast.makeText(context, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
@@ -304,6 +318,22 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     class MyTextWatcher implements TextWatcher {
         EditText editText;
 
+        Runnable userStoppedTyping = () -> {
+            if (this.editText.getId() == R.id.et_server) {
+                Pattern urlPattern = Pattern.compile("^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\\.(?:[a-z]{2,})$");
+                String url = this.editText.getText().toString().trim();
+
+                if (!urlPattern.matcher(url).matches()) {
+                    isUrlValid = false;
+                    baseUrl = null;
+                    displayCheckUrlToast();
+                } else {
+                    baseUrl = url;
+                    isUrlValid = true;
+                }
+            }
+        };
+
         MyTextWatcher(EditText editText) {
             this.editText = editText;
         }
@@ -315,7 +345,9 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            if (this.editText.getId() == R.id.et_server) {
+                isLocationSurveyCompleted = false;
+            }
         }
 
         @Override
@@ -346,6 +378,9 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 } else {
                     serverErrorTextView.setVisibility(View.GONE);
                 }
+
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler.postDelayed(userStoppedTyping, 1500);
             }
         }
     }
