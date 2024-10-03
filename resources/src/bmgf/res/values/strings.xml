@@ -14,7 +14,7 @@
     <string name="patient_visit_sent">Patient\'s visit has been successfully saved.</string>
     <string name="visit_data_failed">Visit successfully saved!</string>
     <string name="visit_uploaded_failed">Patient\'s visit has been successfully saved.</string>
-<!--    <string name="visit_left_action_btn_label">@string/preview</string>-->
-<!--    <string name="visit_right_action_btn_label">@string/save_visit_button</string>-->
-<!--    <string name="visit_save_and_upload_status">@string/visit_saving</string>-->
+    <string name="visit_left_action_btn_label">@string/preview</string>
+    <string name="visit_right_action_btn_label">@string/save_visit_button</string>
+    <string name="visit_save_and_upload_status">@string/visit_saving</string>
 </resources>

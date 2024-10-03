@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Intelehealth</string>
     <string name="intro_title_1">Who are we?</string>
     <string name="intro_tagline_1">Intelehealth is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
     <string name="intro_title_2">Take patient visits</string>

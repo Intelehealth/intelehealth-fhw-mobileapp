@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+
     //Generic
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>

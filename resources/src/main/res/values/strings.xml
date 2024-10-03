@@ -82,4 +82,7 @@
     <string name="call_swipe_up">Swipe Up</string>
     <string name="release_now">Release Now</string>
     <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+    <string name="preview">Preview</string>
+    <string name="save_visit_button">Save visit</string>
+    <string name="visit_saving">Saving…</string>
 </resources>
