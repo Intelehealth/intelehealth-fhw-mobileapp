@@ -1,7 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -22,7 +22,7 @@ public class FileUtils {
     public static String TAG = FileUtils.class.getSimpleName();
 
     public static String readFile(String FILENAME, Context context) {
-        Log.i(TAG, "Reading from file");
+        CustomLog.i(TAG, "Reading from file");
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER + File.separator + FILENAME);
@@ -38,7 +38,7 @@ public class FileUtils {
                 s += readstring;
             }
             InputRead.close();
-            Log.i("FILEREAD>", s);
+            CustomLog.i("FILEREAD>", s);
             return s;
 
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class FileUtils {
     }
 
     public static String readFileRoot(String FILENAME, Context context) {
-        Log.i(TAG, "Reading from file - "+FILENAME);
+        CustomLog.i(TAG, "Reading from file - "+FILENAME);
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + File.separator + FILENAME);
@@ -65,7 +65,7 @@ public class FileUtils {
                 s += readstring;
             }
             InputRead.close();
-            Log.i("FILEREAD>", s);
+            CustomLog.i("FILEREAD>", s);
             return s;
 
         } catch (Exception e) {

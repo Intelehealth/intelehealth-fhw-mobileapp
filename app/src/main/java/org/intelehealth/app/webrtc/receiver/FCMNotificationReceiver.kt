@@ -3,17 +3,26 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.models.FollowUpNotificationData
+import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity
+import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
+import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
@@ -34,32 +43,61 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         notification: RemoteMessage.Notification?,
         data: HashMap<String, String>
     ) {
-        Timber.tag(TAG).d("onMessageReceived: ")
+        Timber.tag(TAG).d("onMessageReceived: $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
-
-                Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
-                    nurseName = sessionManager.chwname
-                    callType = CallType.VIDEO
-                    url = BuildConfig.LIVE_KIT_URL
-                    socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
-                    PatientsDAO().getPatientName(roomId).apply {
-                        patientName = get(0).name
-                    }
-                }.also { arg ->
-                    Timber.tag(TAG).d("onMessageReceived: $arg")
-                    if (isAppInForeground()) {
-                        arg.callMode = CallMode.INCOMING
-                        CallHandlerUtils.saveIncomingCall(context, arg)
-                        context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
-                    } else {
-                        CallHandlerUtils.operateIncomingCall(it, arg)
+                checkVideoActiveStatus(context) {
+                    Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
+                        nurseName = sessionManager.chwname
+                        callType = CallType.VIDEO
+                        url = BuildConfig.LIVE_KIT_URL
+                        socketUrl =
+                            BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                        PatientsDAO().getPatientName(roomId).apply {
+                            patientName = get(0).name
+                        }
+                    }.also { arg ->
+                        Timber.tag(TAG).d("onMessageReceived: $arg")
+                        if (isAppInForeground()) {
+                            arg.callMode = CallMode.INCOMING
+                            CallHandlerUtils.saveIncomingCall(context, arg)
+                            context.startActivity(IntentUtils.getCallActivityIntent(arg, context))
+                        } else {
+                            CallHandlerUtils.operateIncomingCall(it, arg)
+                        }
                     }
                 }
             } else {
-                parseMessage(notification, context)
+                if(data.isNotEmpty() && notification == null){
+                    sendNotificationFromBody(data,context)
+                    if((data["title"]?:"").lowercase().contains("prescription")){
+                        NotificationSchedulerUtils.scheduleFollowUpNotification(
+                                FollowUpNotificationData(
+                                        value = data["followupDatetime"] ?: "",
+                                        name = data["patientFirstName"] + " " + data["patientLastName"],
+                                        openMrsId = data["patientOpenMrsId"] ?: "",
+                                        patientUid = data["patientUuid"] ?: "",
+                                        visitUuid = data["visitUuid"] ?: "",
+                                )
+                        )
+                    }
+
+                }else{
+                    parseMessage(notification, context)
+                }
+
+            }
+        }
+    }
+
+    private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
+        val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        scope.launch {
+            FeatureActiveStatusRepository(dao).apply {
+                if (getRecord().videoSection) block.invoke()
             }
         }
     }
@@ -134,6 +172,26 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 //        }
 //        notificationManager.notify(1, notificationBuilder.build())
     }
+
+    private fun sendNotificationFromBody(data: HashMap<String, String>?, context: Context) {
+        val messageTitle = data?.get("title")
+        val messageBody = data?.get("body")
+        val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                NotificationUtils.getPendingIntentFlag()
+        )
+
+        FcmNotification.Builder(context)
+                .channelName("IDA4")
+                .title(messageTitle ?: "Intelehealth")
+                .content(messageBody ?: "")
+                .smallIcon(R.mipmap.ic_launcher)
+                .contentIntent(pendingIntent)
+                .build().startNotify() }
 
     companion object {
         const val TAG = "FCMNotificationReceiver"

@@ -30,7 +30,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -44,19 +44,18 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -78,23 +77,26 @@ import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -133,6 +135,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private Context context;
 
     @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null && !activeStatus.getChatSection()) {
+            findViewById(R.id.fabStartChat).setVisibility(View.GONE);
+        } else findViewById(R.id.fabStartChat).setVisibility(View.VISIBLE);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(VisitDetailsActivity.this);
@@ -154,7 +164,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             gender = intent.getStringExtra("gender");
             dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : " + age);
+            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
 
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
@@ -190,7 +200,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        Log.v("VD", "vd_pat_phone: " + pat_phoneno);
+        CustomLog.v("VD", "vd_pat_phone: " + pat_phoneno);
 
         // Fetching dr details from Local db.
         drDetails = fetchDrDetailsFromLocalDb(visitID);
@@ -198,7 +208,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            Log.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -239,7 +249,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     .skipMemoryCache(true)
                     .into(profile_image);
         } else {
-            profile_image.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.avatar1));
+            profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
         }
 
         // visit summary - start
@@ -293,7 +303,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
                 presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_icon));
+                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
             }
 
 /*
@@ -357,8 +367,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 timeText = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
             presc_time.setText(timeText);
-            presc_time.setTextColor(ContextCompat.getColor(this,R.color.red));
-            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.prescription_red_icon));
+            presc_time.setTextColor(ContextCompat.getColor(this, R.color.red));
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_red_icon));
         }
         // presc block - end
 
@@ -383,7 +393,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
         if (chief_complaint_value == null)
             chief_complaint_value = getChiefComplaint(visitID);
-        Log.v(TAG, "chief_Complaint: " + chief_complaint_value);
+        CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
 
         /*if (chief_complaint_value != null) {
             int first = chief_complaint_value.indexOf("<b>");
@@ -454,7 +464,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
-                Log.v(TAG, chief_complaint_value);
+                CustomLog.v(TAG, chief_complaint_value);
                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                 String[] spt = chief_complaint_value.split("►");
@@ -481,7 +491,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 chief_complaint_txt.setText(stringBuilder.toString());
             }
         }
-        chief_complaint_txt.setTextColor(ContextCompat.getColor(this,R.color.headline_text_color));
+        chief_complaint_txt.setTextColor(ContextCompat.getColor(this, R.color.headline_text_color));
         chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
         //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
@@ -495,20 +505,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         visit_startTime = findViewById(R.id.visit_startTime);
 
         if (visit_startDate != null) {
-            Log.v("Followup", "actual date: " + visit_startDate);
+            CustomLog.v("Followup", "actual date: " + visit_startDate);
 
             // Time - start
             String startTime = DateAndTimeUtils.date_formatter(visit_startDate,
                     "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                     "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
-            Log.v("SearchPatient", "date: " + startTime);
+            CustomLog.v("SearchPatient", "date: " + startTime);
             visit_startTime.setText(startTime);
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 visit_startDate = StringUtils.en__hi_dob(visit_startDate);
-            Log.v("Followup", "foramted date: " + visit_startDate);
+            CustomLog.v("Followup", "foramted date: " + visit_startDate);
             visit_startDate_txt.setText(visit_startDate);
         }
 
@@ -561,7 +571,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 yes_no_followup_relative.setVisibility(View.GONE);
             }
 
-            Log.v("vd", "vd: " + followup_info);
+            CustomLog.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);
             yes_no_followup_relative.setVisibility(View.GONE);
@@ -597,7 +607,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Sync Done!");
+                CustomLog.v(TAG, "Sync Done!");
                 refresh.clearAnimation();
                 syncAnimator.cancel();
                 recreate();
@@ -749,7 +759,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                     String chiefComplain = "";
                                     visitValue = visitValue.replaceAll("<.*?>", "");
                                     System.out.println(visitValue);
-                                    Log.v(TAG, visitValue);
+                                    CustomLog.v(TAG, visitValue);
                                     //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
                                     String[] spt = visitValue.split("►");
@@ -796,7 +806,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -879,11 +889,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -1031,15 +1041,16 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         }
         idCursor1.close();
 
-        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
-        intent2.putExtra("patientUuid", patientDTO.getUuid());
-        intent2.putExtra("ScreenEdit", "personal_edit");
-        intent2.putExtra("patient_detail", true);
-
-        Bundle args = new Bundle();
-        args.putSerializable("patientDTO", (Serializable) patientDTO);
-        intent2.putExtra("BUNDLE", args);
-        startActivity(intent2);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+//        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
+//        intent2.putExtra("patientUuid", patientDTO.getUuid());
+//        intent2.putExtra("ScreenEdit", "personal_edit");
+//        intent2.putExtra("patient_detail", true);
+//
+//        Bundle args = new Bundle();
+//        args.putSerializable("patientDTO", (Serializable) patientDTO);
+//        intent2.putExtra("BUNDLE", args);
+//        startActivity(intent2);
     }
 
     public void syncNow(View view) {

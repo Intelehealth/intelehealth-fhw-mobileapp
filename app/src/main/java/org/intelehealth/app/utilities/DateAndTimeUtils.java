@@ -2,13 +2,15 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -79,7 +81,7 @@ public class DateAndTimeUtils {
 
         SessionManager sessionManager = new SessionManager(context);
         String language = sessionManager.getAppLanguage();
-        Log.d("LANG", "LANG: " + sessionManager.getAppLanguage());
+        CustomLog.d("LANG", "LANG: " + sessionManager.getAppLanguage());
 
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -116,8 +118,8 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
-        Log.d(TAG, "getAge_FollowUp: s: " + s);
-        Log.d("TAG", "getAge_FollowUp: s : " + s);
+        CustomLog.d(TAG, "getAge_FollowUp: s: " + s);
+        CustomLog.d("TAG", "getAge_FollowUp: s : " + s);
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -147,7 +149,7 @@ public class DateAndTimeUtils {
         if (period.getValue(0) > 0) {  // o index -> years
             tyears = String.valueOf(period.getValue(0));
             age = tyears;
-            Log.d("TAG", "getAge_FollowUp: s : " + age);
+            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
         } else {
             age = "0";
         }
@@ -311,7 +313,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
-        Log.e(TAG, "getFormatedDateOfBirthAsView - " + oldformatteddate);
+        CustomLog.e(TAG, "getFormatedDateOfBirthAsView - " + oldformatteddate);
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = null;
@@ -416,7 +418,7 @@ public class DateAndTimeUtils {
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
             FirebaseCrashlytics.getInstance().recordException(ex);
-            Log.v("SearchPatient", "date_ex: " + ex);
+            CustomLog.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
     }
@@ -437,7 +439,7 @@ public class DateAndTimeUtils {
             long now = System.currentTimeMillis();
             CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
             time = String.valueOf(ago);
-            Log.v("TimeAgo", "TimeAgo: " + time);
+            CustomLog.v("TimeAgo", "TimeAgo: " + time);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -546,7 +548,7 @@ public class DateAndTimeUtils {
     public static String getCurrentDateNew() {
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
-        Log.d("TAG", "getCurrentDateNew: fDate : " + fDate);
+        CustomLog.d("TAG", "getCurrentDateNew: fDate : " + fDate);
         return fDate;
     }
 
@@ -564,7 +566,7 @@ public class DateAndTimeUtils {
     public static String getDisplayDateAndTime(String dateTime, Context context) {
         SessionManager sessionManager = new SessionManager(context);
         String language = sessionManager.getAppLanguage();
-        Log.d(TAG, "getDisplayDateAndTime: dateTime : " + dateTime);
+        CustomLog.d(TAG, "getDisplayDateAndTime: dateTime : " + dateTime);
         String finalDate = "";
         String hourFormated = "";
         String textTime;
@@ -722,7 +724,7 @@ public class DateAndTimeUtils {
     }
 
     public static String getDateWithDayAndMonthFromDDMMFormat(String date) {
-        Log.d(TAG, "getDateWithDayAndMonthFromDDMMFormat: date : " + date);
+        CustomLog.d(TAG, "getDateWithDayAndMonthFromDDMMFormat: date : " + date);
         String finalDate = "";
         if (date != null && !date.isEmpty()) {
             String[] dateSplit = date.split("/");
@@ -855,7 +857,7 @@ public class DateAndTimeUtils {
     }
 
     public static String convertDateToYyyyMMddFormat(String dateToConvert) {
-        Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
+        CustomLog.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
         java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
         // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
@@ -873,7 +875,7 @@ public class DateAndTimeUtils {
 
     @NonNull
     public static String convertDateToDdMmYyyyHhMmFormat(String dateToConvert, String time) {
-        Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
+        CustomLog.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
         java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
@@ -1005,9 +1007,9 @@ public class DateAndTimeUtils {
 
     public static String[] findDate(String str, String strPattern) {
         //23-JUN-1996
-        Log.v("UTILS", "findDate - " + str);
+        CustomLog.v("UTILS", "findDate - " + str);
         str = str.replaceAll("<.*?>", "");
-        Log.v("UTILS", "findDate celan html- " + str);
+        CustomLog.v("UTILS", "findDate celan html- " + str);
         String result = "";
         Pattern pattern = Pattern.compile(strPattern);
         Matcher matcher = pattern.matcher(str);
@@ -1017,7 +1019,7 @@ public class DateAndTimeUtils {
             stringBuilder.append(matcher.group());
         }
         result = stringBuilder.toString();
-        Log.v("UTILS", "findDate - " + result);
+        CustomLog.v("UTILS", "findDate - " + result);
         if (!result.isEmpty()) {
             return result.split(",");
         } else {
@@ -1028,7 +1030,7 @@ public class DateAndTimeUtils {
 
     public static String formatInLocalDateForDDMMMYYYY(String inputDate, String localeCode) {
         String dateFormatted = "";
-        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + inputDate);
+        CustomLog.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + inputDate);
         //input date must be in dd/mm/yyyy format
         if (inputDate != null && !inputDate.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy", new Locale("en"));
@@ -1042,7 +1044,7 @@ public class DateAndTimeUtils {
             dateFormatted = sdf2.format(d);
 
         }
-        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + dateFormatted);
+        CustomLog.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + dateFormatted);
         return dateFormatted;
     }
 
@@ -1128,4 +1130,35 @@ public class DateAndTimeUtils {
         }
     }
 
+    public static long getTimeStampFromString(String dateString, String format){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+
+        try {
+            Date date = dateFormat.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static String parseDateTimeToDateTime(String input) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a", Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH);
+
+        try {
+            Date date = inputFormat.parse(input);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            CustomLog.e("ERRRR", e.getMessage() != null ? e.getMessage() : "");
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getDateTimeFromTimestamp(long currentTimeMillis, String format) {
+        SimpleDateFormat simpleFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        Date date = new Date(currentTimeMillis);
+        return simpleFormat.format(date);
+    }
 }

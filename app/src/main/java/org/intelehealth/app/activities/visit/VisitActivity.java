@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
@@ -94,7 +94,7 @@ public class VisitActivity extends BaseActivity implements
                     int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                     if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
                             flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
-                            Log.v(TAG, "Sync Done!");
+                            CustomLog.v(TAG, "Sync Done!");
                             if (!isFinishing()) {
                                 refresh.clearAnimation();
                                 syncAnimator.cancel();
@@ -228,7 +228,7 @@ public class VisitActivity extends BaseActivity implements
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
         } else {
@@ -263,14 +263,14 @@ public class VisitActivity extends BaseActivity implements
 
     @Override
     public void receivedCount(int count) {
-        Log.v(TAG, "receivedCount: " + count);
+        CustomLog.v(TAG, "receivedCount: " + count);
         //tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
         updateCounts(true);
     }
 
     @Override
     public void pendingCount(int count) {
-        Log.v(TAG, "pendingCount: " + count);
+        CustomLog.v(TAG, "pendingCount: " + count);
         //tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
         updateCounts(false);
     }

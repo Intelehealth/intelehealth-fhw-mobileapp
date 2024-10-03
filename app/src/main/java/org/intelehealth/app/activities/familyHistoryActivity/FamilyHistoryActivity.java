@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -154,7 +154,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
-            Log.v(TAG, new_result);
+            CustomLog.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
 
 
@@ -307,7 +307,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-        Log.i(TAG, "onChildClick: ");
+        CustomLog.i(TAG, "onChildClick: ");
         clickedNode.toggleSelected();
         if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
             familyHistoryMap.getOption(groupPosition).setSelected(true);
@@ -323,7 +323,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
         if (!filePath.exists()) {
             boolean res = filePath.mkdirs();
-            Log.i("RES>", "" + filePath + " -> " + res);
+            CustomLog.i("RES>", "" + filePath + " -> " + res);
         }
 
         imageName = UUID.randomUUID().toString();

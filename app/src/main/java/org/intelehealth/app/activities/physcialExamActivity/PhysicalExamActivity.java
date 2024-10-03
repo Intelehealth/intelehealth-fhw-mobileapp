@@ -24,7 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,16 +174,16 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         }
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
-            Log.d(TAG, "No additional exams were triggered");
+            CustomLog.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
         } else {
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
-            Log.d(TAG, selectedExamsList.toString());
+            CustomLog.d(TAG, selectedExamsList.toString());
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
-            Log.d(TAG, selectedExamsList.toString());
+            CustomLog.d(TAG, selectedExamsList.toString());
             for (String string : selectedExamsList)
-                Log.d(TAG, string);
+                CustomLog.d(TAG, string);
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -259,7 +259,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
          */
       /*
       Commented to avoid crash...
-        Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
+        CustomLog.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
 
         mgender = fetch_gender(patientUuid);
 
@@ -282,7 +282,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     }
 
     private boolean insertDb(String value) {
-        Log.i(TAG, "insertDb: ");
+        CustomLog.i(TAG, "insertDb: ");
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
@@ -334,7 +334,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent.putExtra("hasPrescription", "false");
 
                 for (String exams : selectedExamsList) {
-                    Log.i(TAG, "onClick:++ " + exams);
+                    CustomLog.i(TAG, "onClick:++ " + exams);
                 }
                 // intent.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent);
@@ -365,7 +365,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
         Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
-        //Log.d("Clicked", question.language());
+        //CustomLog.d("Clicked", question.language());
         question.toggleSelected();
         if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
             physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
@@ -380,7 +380,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             if (question.getInputType().equals("camera")) {
                 if (!filePath.exists()) {
                     boolean res = filePath.mkdirs();
-                    Log.i("RES>", "" + filePath + " -> " + res);
+                    CustomLog.i("RES>", "" + filePath + " -> " + res);
                 }
                 imageName = UUID.randomUUID().toString();
                 Node.handleQuestion(question, this, adapter, filePath.toString(), imageName);
@@ -455,7 +455,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 physicalExamMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
+                CustomLog.i(TAG, mCurrentPhotoPath);
                 physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
                 updateImageDatabase();
 

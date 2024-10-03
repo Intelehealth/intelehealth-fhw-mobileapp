@@ -42,7 +42,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,7 +80,6 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.adapter.PrescribedMedicineAdapter;
 import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
@@ -103,23 +102,26 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AppointmentUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,6 +140,7 @@ import java.util.Objects;
  */
 @SuppressLint("Range")
 public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+    private static final String TAG = "PrescriptionActivity";
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
@@ -207,6 +210,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         setDataToView();
         expandableCardVisibilityHandling();
     }
+
+    private FeatureActiveStatus mFeatureActiveStatus;
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
+        }
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -324,7 +338,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
             age = intent.getStringExtra("age");
-            Log.d("TAG", "getAge_FollowUp: s : " + age);
+            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
             vitalsUUID = intent.getStringExtra("encounterUuidVitals");
@@ -334,8 +348,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             intentTag = intent.getStringExtra("tag");
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
-                Timber.tag(PrescriptionActivity.class.getSimpleName()).d("has prescription main::%s", hasPrescription);
+                CustomLog.d(PrescriptionActivity.class.getSimpleName(),"has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
+                CustomLog.e(TAG,e.getMessage());
                 throw new RuntimeException(e);
             }
             queryData(String.valueOf(patientUuid));
@@ -427,6 +442,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         });
 
@@ -546,6 +562,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
+                CustomLog.e(TAG,e.getMessage());
             }
         }
     }
@@ -591,9 +608,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
@@ -622,7 +639,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -768,7 +785,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " " + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -833,9 +850,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_downloadBtn(view, webview_heightContent);
                 mWebView = null;
             }
@@ -903,6 +920,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -986,10 +1004,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
 
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -1064,7 +1082,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             doctorSign = details.getTextOfSign();
 
             sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
-            Log.v("signurl", "signurl: " + sign_url);
+            CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
 
@@ -1208,14 +1226,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.e("TAG", "parseDoctorDetails : " + dbValue);
+        CustomLog.e("TAG", "parseDoctorDetails : " + dbValue);
         Gson gson = new Gson();
         details = gson.fromJson(dbValue, ClsDoctorDetails.class);
 
         if (details == null) {
             return;
         }
-        Log.e("TAG", "TEST VISIT: " + details.toString());
+        CustomLog.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
@@ -1224,6 +1242,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
@@ -1302,14 +1321,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             case UuidDictionary.JSV_MEDICATIONS: {
-                Log.i("TAG", "parse_va: " + value);
-                Log.i("TAG", "parseData: rx" + rxReturned);
+                CustomLog.i("TAG", "parse_va: " + value);
+                CustomLog.i("TAG", "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty() && !rxReturned.contains(value)) {
                     rxReturned = rxReturned + "\n" + value;
                 } else {
                     rxReturned = value;
                 }
-                Log.i("TAG", "parseData: rxfin" + rxReturned);
+                CustomLog.i("TAG", "parseData: rxfin" + rxReturned);
 //                medication_txt.setText(Html.fromHtml(getMedicationData()));
                 setMedicationAdapter();
                 //checkForDoctor();
@@ -1318,16 +1337,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
                     adviceReturned = adviceReturned + "\n" + value;
-                    Log.d("GAME", "GAME: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
-                    Log.d("GAME", "GAME_2: " + adviceReturned);
+                    CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }*/
                 //medicalAdviceTextView.setText(adviceReturned);
-                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
 
                 int j = adviceReturned.indexOf('<');
                 int i = adviceReturned.lastIndexOf('>');
@@ -1337,12 +1356,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     medicalAdvice_HyperLink = "";
                 }
 
-                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
+                CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                 if (!medicalAdvice_string.equalsIgnoreCase(""))
                     advice_txt.setText(medicalAdvice_string);
-                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
+                CustomLog.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
                  * variable a contains the hyperlink sent from webside.
@@ -1356,7 +1375,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
+                CustomLog.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());*/
                 //checkForDoctor();
                 break;
             }
@@ -1430,7 +1449,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
                 followup_date_txt.setText(followUpDate_format);
-                Log.v("Prescriotion", "followUpDate - " + followUpDate);
+                CustomLog.v("Prescriotion", "followUpDate - " + followUpDate);
 
                 if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
@@ -1448,7 +1467,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             default:
-                Log.i("TAG", "parseData: " + value);
+                CustomLog.i("TAG", "parseData: " + value);
                 break;
         }
     }
@@ -1578,14 +1597,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // handle - start
     private void handleMessage(Intent msg) {
-        Log.i("TAG", "handleMessage: Entered");
+        CustomLog.i("TAG", "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = 0;
         if (data != null) {
             check = data.getInt("Restart");
         }
         if (check == 100) {
-            Log.i("TAG", "handleMessage: 100");
+            CustomLog.i("TAG", "handleMessage: 100");
             diagnosisReturned = "";
             rxReturned = "";
             testsReturned = "";
@@ -1608,7 +1627,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             visitCursor.close();
 
         } else if (check == 200) {
-            Log.i("TAG", "handleMessage: 200");
+            CustomLog.i("TAG", "handleMessage: 200");
             String[] columns = {"concept_id"};
             String orderBy = "visit_id";
 
@@ -1626,19 +1645,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 switch (dbConceptID) {
                     //case values for each prescription
                     case UuidDictionary.TELEMEDICINE_DIAGNOSIS:
-                        Log.i("TAG", "found diagnosis");
+                        CustomLog.i("TAG", "found diagnosis");
                         break;
                     case UuidDictionary.JSV_MEDICATIONS:
-                        Log.i("TAG", "found medications");
+                        CustomLog.i("TAG", "found medications");
                         break;
                     case UuidDictionary.MEDICAL_ADVICE:
-                        Log.i("TAG", "found medical advice");
+                        CustomLog.i("TAG", "found medical advice");
                         break;
                     case UuidDictionary.ADDITIONAL_COMMENTS:
-                        Log.i("TAG", "found additional comments");
+                        CustomLog.i("TAG", "found additional comments");
                         break;
                     case UuidDictionary.REQUESTED_TESTS:
-                        Log.i("TAG", "found tests");
+                        CustomLog.i("TAG", "found tests");
                         break;
                     default:
                 }
@@ -1701,6 +1720,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
     }
 
@@ -1812,7 +1832,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     }
                 }
                 default -> {
-                   flag = 0;
+                    flag = 0;
                 }
             }
         }
@@ -1900,6 +1920,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        CustomLog.e(TAG,e.getMessage());
                     }
                 }
                 downloadDoctorDetails();
@@ -1911,6 +1932,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         } catch (DAOException e) {
             e.printStackTrace();
+            CustomLog.e(TAG,e.getMessage());
         }
     }
     // downlaod presc - end
@@ -1955,7 +1977,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + openmrsID_txt.getText().toString());
-                    Log.v("whatsappMessage", whatsappMessage);
+                    CustomLog.v("whatsappMessage", whatsappMessage);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)));
 
@@ -2009,7 +2031,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                            Dialog.dismiss();
                         }
                     });
 
@@ -2078,7 +2100,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 //            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
 //                    new DialogInterface.OnClickListener() {
 //                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
+//                            Dialog.dismiss();
 //                        }
 //                    });
 //
@@ -2108,9 +2130,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+                CustomLog.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: " + webview_heightContent);
+                CustomLog.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob_Button(view, webview_heightContent);
                 mWebView = null;
             }
@@ -2178,6 +2200,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -2239,6 +2262,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    CustomLog.e(TAG,e.getMessage());
                 }
             }
 
@@ -2309,7 +2333,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             String val = mChiefComplainList.get(i).trim();
             val = val.replaceAll("<.*?>", "");
-            Log.v("mChiefComplainList", "CC - " + val);
+            CustomLog.v("mChiefComplainList", "CC - " + val);
             if (!val.toLowerCase().contains("h/o specific illness")) {
                 if (!stringBuilder.toString().isEmpty()) {
                     stringBuilder.append(",");
@@ -2360,10 +2384,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                             advice_doctor__.lastIndexOf("Doctor_") + 9).toString();
 
             advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         } else {
             advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
-            Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
+            CustomLog.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }*/
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -2438,7 +2462,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             doctorSign = details.getTextOfSign();
 
             sign_url = BuildConfig.SERVER_URL + "/ds/" + details.getUuid() + "_sign.png";
-            Log.v("signurl", "signurl: " + sign_url);
+            CustomLog.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + details.getRegistrationNumber() : "";
 
@@ -2450,7 +2474,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2519,7 +2543,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(docName);
-        Log.d("webview content height", "webview content height: " + contentHeight);
+        CustomLog.d("webview content height", "webview content height: " + contentHeight);
 
         if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
@@ -2562,7 +2586,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         } else {
             String jobName = getString(R.string.app_name) + getResources().getString(R.string._visit_summary);
 
-            Log.d("PrintPDF", "PrintPDF");
+            CustomLog.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
@@ -2775,11 +2799,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        Log.d("TAG", "updateUIForInternetAvailability: ");
+        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -2868,15 +2892,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         idCursor1.close();
 
-        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
-        intent2.putExtra("patientUuid", patientDTO.getUuid());
-        intent2.putExtra("ScreenEdit", "personal_edit");
-        intent2.putExtra("patient_detail", true);
-
-        Bundle args = new Bundle();
-        args.putSerializable("patientDTO", (Serializable) patientDTO);
-        intent2.putExtra("BUNDLE", args);
-        startActivity(intent2);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+//        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
+//        intent2.putExtra("patientUuid", patientDTO.getUuid());
+//        intent2.putExtra("ScreenEdit", "personal_edit");
+//        intent2.putExtra("patient_detail", true);
+//
+//        Bundle args = new Bundle();
+//        args.putSerializable("patientDTO", (Serializable) patientDTO);
+//        intent2.putExtra("BUNDLE", args);
+//        startActivity(intent2);
     }
 
     private void setMedicationAdapter() {

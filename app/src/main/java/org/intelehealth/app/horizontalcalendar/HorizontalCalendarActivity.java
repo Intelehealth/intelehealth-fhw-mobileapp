@@ -1,7 +1,7 @@
 package org.intelehealth.app.horizontalcalendar;
 
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,8 +79,8 @@ public class HorizontalCalendarActivity extends BaseActivity {
     private void getAllDatesOfSelectedMonth(Calendar calendar,
                                             boolean isCurrentMonth,
                                             String selectedMonth, String selectedYear, String selectedMonthForDays) {
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : "+selectedMonth);
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : "+selectedYear);
+        CustomLog.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : "+selectedMonth);
+        CustomLog.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : "+selectedYear);
 
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDay;
@@ -119,7 +119,7 @@ public class HorizontalCalendarActivity extends BaseActivity {
                 }
 
             } catch (ParseException e) {
-                Log.d(TAG, "getAllDatesOfSelectedMonth: e : " + e.getLocalizedMessage());
+                CustomLog.d(TAG, "getAllDatesOfSelectedMonth: e : " + e.getLocalizedMessage());
                 e.printStackTrace();
             }
         }

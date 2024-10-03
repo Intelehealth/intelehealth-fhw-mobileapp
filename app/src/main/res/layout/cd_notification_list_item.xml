@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fu_cardview_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/card_padding"
+    android:layout_marginTop="@dimen/card_padding"
+    android:layout_marginBottom="@dimen/card_padding"
+    app:cardCornerRadius="@dimen/margin_10"
+    app:cardElevation="@dimen/card_padding">
+
+    <com.zerobranch.layout.SwipeLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/space_10dp"
+        app:draggedItem="@id/scroll_relative"
+        app:isEnabledSwipe="true"
+        app:isFreeDragAfterOpen="true"
+        app:rightItem="@id/delete_relative"
+        app:swipeDirection="left">
+
+        <RelativeLayout
+            android:id="@+id/delete_relative"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/light_red"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/delete_imgview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_delete_red_icon"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/scroll_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/selector_color_notification"
+            android:padding="@dimen/fu_margin_start">
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="@dimen/search_add_btn_height"
+                android:layout_height="@dimen/search_add_btn_height"
+                android:layout_alignParentTop="true"
+                android:background="@null"
+                android:src="@drawable/ic_green_calenar_icon"
+                tools:ignore="ContentDescription" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/search_presTag_margin_top"
+                android:layout_toEndOf="@+id/profile">
+
+                <!-- Label -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:minLines="2"
+                    android:text="@string/notifi_card_title"
+                    android:textColor="@color/header_subtitle_color"
+                    android:textSize="@dimen/fu_male_textsize" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvTitle"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:text="@string/open_prescription"
+                    android:textColor="#1B163A"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </com.zerobranch.layout.SwipeLayout>
+</androidx.cardview.widget.CardView>
+
+
+
+
+
+

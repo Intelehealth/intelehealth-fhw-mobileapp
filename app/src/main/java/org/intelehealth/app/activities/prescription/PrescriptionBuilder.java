@@ -17,6 +17,7 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,8 @@ public class PrescriptionBuilder {
     JSONObject obj;
     String disclaimerStr = "";
     private static String mFileName = CONFIG_FILE_NAME;
+    private FeatureActiveStatus mFeatureActiveStatus;
+
     public PrescriptionBuilder(AppCompatActivity activityContext) {
         this.activityContext = activityContext;
     }
@@ -40,8 +43,10 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
-            ClsDoctorDetails details
+            ClsDoctorDetails details,
+            FeatureActiveStatus featureActiveStatus
     ) {
+        mFeatureActiveStatus = featureActiveStatus;
         String prescriptionHTML = "";
         String headingDocTypeTag = "<!doctype html>";
         String headingHTMLLangTag = "<html lang=\"en\">";
@@ -78,7 +83,7 @@ public class PrescriptionBuilder {
 
         String finalDisclaimerString;
         String closingDivTag = "</div>";
-        String openingDivTag= "<div>";
+        String openingDivTag = "<div>";
 
         String divClassDisclaimerTag =
                 "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
@@ -270,6 +275,7 @@ public class PrescriptionBuilder {
     }
 
     private String generateVitalsData(VitalsObject vitalsData) {
+        if (!mFeatureActiveStatus.getVitalSection())  return "";
         String finalVitalsData = "";
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
         String openingDataSectionTag = "<div class=\"data-section\">\n";
@@ -305,10 +311,10 @@ public class PrescriptionBuilder {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                   vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_c), !TextUtils.isEmpty(vitalsData.getTemperature()) ? vitalsData.getTemperature().toString() : "");
+                    vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_c), !TextUtils.isEmpty(vitalsData.getTemperature()) ? vitalsData.getTemperature().toString() : "");
                 } else if (obj.getBoolean("mFahrenheit")) {
 
-                  vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_f) , !TextUtils.isEmpty(vitalsData.getTemperature()) ? convertCtoF(vitalsData.getTemperature()) : "");
+                    vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getResources().getString(R.string.prescription_temp_f), !TextUtils.isEmpty(vitalsData.getTemperature()) ? convertCtoF(vitalsData.getTemperature()) : "");
                 }
             }
         } catch (Exception e) {
@@ -355,7 +361,7 @@ public class PrescriptionBuilder {
         return listOpeningTag
                 + divListItemOpeningTag
                 + labelOpeningTag
-                + label + (label.endsWith(":") ? " ":": ")
+                + label + (label.endsWith(":") ? " " : ": ")
                 + labelClosingTag
                 + divListItemContentOpeningTag
                 + newValue
@@ -935,7 +941,7 @@ public class PrescriptionBuilder {
         if (!followUpData.equalsIgnoreCase("")) {
             //added these logic to handle array indexOutOfBound exception
             String date = "";
-            if(followUpArrayData.length > 0){
+            if (followUpArrayData.length > 0) {
                 date = followUpArrayData[0];
             }
             divSectionContentOpeningTag = divSectionContentOpeningTag
@@ -952,9 +958,9 @@ public class PrescriptionBuilder {
 
                 //added these logic to handle array indexOutOfBound exception
                 String time = "";
-                if(followUpArrayData.length > 1){
-                    if(followUpArrayData[1].contains("Time:")){
-                        if(followUpArrayData[1].split("Time:").length > 1){
+                if (followUpArrayData.length > 1) {
+                    if (followUpArrayData[1].contains("Time:")) {
+                        if (followUpArrayData[1].split("Time:").length > 1) {
                             time = followUpArrayData[1].split("Time:")[1];
                         }
                     }
@@ -974,9 +980,9 @@ public class PrescriptionBuilder {
             if (followUpData.contains("Remark:")) {
                 //added these logic to handle array indexOutOfBound exception
                 String remarks = "";
-                if(followUpArrayData.length > 2){
-                    if(followUpArrayData[2].contains("Remark:")){
-                        if(followUpArrayData[2].split("Remark:").length > 1){
+                if (followUpArrayData.length > 2) {
+                    if (followUpArrayData[2].contains("Remark:")) {
+                        if (followUpArrayData[2].split("Remark:").length > 1) {
                             remarks = followUpArrayData[2].split("Remark:")[1];
                         }
                     }

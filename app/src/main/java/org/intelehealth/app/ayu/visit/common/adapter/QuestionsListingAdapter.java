@@ -12,7 +12,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,12 +87,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private String engineVersion = "3.0";
 
     public String getEngineVersion() {
-        Log.v(TAG, "engineVersion - " + engineVersion);
+        CustomLog.v(TAG, "engineVersion - " + engineVersion);
         return engineVersion;
     }
 
     public void setEngineVersion(String engineVersion) {
-        Log.v(TAG, "setEngineVersion - " + engineVersion);
+        CustomLog.v(TAG, "setEngineVersion - " + engineVersion);
         if (engineVersion == null) return;
         this.engineVersion = engineVersion;
     }
@@ -103,21 +103,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (mIsForPhysicalExam) {
             final String parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
-            Log.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
+            CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
 
         }
 
-        Log.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
-        Log.v("showCameraView", "addImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
+        CustomLog.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        CustomLog.v("showCameraView", "addImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
         VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700, mIsEditMode, false);
     }
 
     public void removeImageInLastNode(int nodeIndex, int imageIndex, String imageName) {
-        Log.v("showCameraView", "removeImageInLastNode nodeIndex - " + nodeIndex);
-        Log.v("showCameraView", "removeImageInLastNode imageIndex - " + imageIndex);
-        Log.v("showCameraView", "removeImageInLastNode imageName - " + imageName);
-        Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(nodeIndex)));
+        CustomLog.v("showCameraView", "removeImageInLastNode nodeIndex - " + nodeIndex);
+        CustomLog.v("showCameraView", "removeImageInLastNode imageIndex - " + imageIndex);
+        CustomLog.v("showCameraView", "removeImageInLastNode imageName - " + imageName);
+        CustomLog.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(nodeIndex)));
         if (mItemList.get(nodeIndex).getImagePathList() != null && mItemList.get(nodeIndex).getImagePathList().size() > 0)
             mItemList.get(nodeIndex).getImagePathList().remove(imageIndex);
         for (int i = 0; i < mItemList.get(nodeIndex).getOptionsList().size(); i++) {
@@ -135,7 +135,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void setAssociateSymptomsLoaded(boolean mIsAssociateSymptomsLoaded) {
-        Log.v(TAG, "setAssociateSymptomsLoaded()");
+        CustomLog.v(TAG, "setAssociateSymptomsLoaded()");
         this.mIsAssociateSymptomsLoaded = mIsAssociateSymptomsLoaded;
     }
 
@@ -179,19 +179,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void setRootNodeIndex(int rootIndex) {
-        Log.v(TAG, "setRootNodeIndex()");
+        CustomLog.v(TAG, "setRootNodeIndex()");
         mRootIndex = rootIndex;
     }
 
     public void setAssociateSymptomNestedQueryFlag(boolean isAssociateSymptom) {
-        Log.v(TAG, "setAssociateSymptomNestedQueryFlag()");
+        CustomLog.v(TAG, "setAssociateSymptomNestedQueryFlag()");
         mIsAssociateSymptomsNestedQuery = isAssociateSymptom;
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
     public void addItem(Node node, String engineVersion) {
-        Log.v(TAG, "addItem() engineVersion - " + engineVersion);
+        CustomLog.v(TAG, "addItem() engineVersion - " + engineVersion);
         mItemList.add(node);
         int key = mItemList.size() - 1;
         if (!mIndexMappingHashMap.containsKey(key)) mIndexMappingHashMap.put(key, mRootIndex);
@@ -204,7 +204,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             mMindMapVersionMappingHashMap.put(key, engineVersion);
         }
 
-        Log.v(TAG, "mIndexMappingHashMap - " + new Gson().toJson(mIndexMappingHashMap));
+        CustomLog.v(TAG, "mIndexMappingHashMap - " + new Gson().toJson(mIndexMappingHashMap));
         notifyItemInserted(key);
     }
 
@@ -239,8 +239,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int rawPosition) {
         if (holder instanceof GenericViewHolder) {
-            Log.v("showCameraView", "onBindViewHolder - " + rawPosition);
-            Log.v("showCameraView", "onBindViewHolder - " + mIndexMappingHashMap);
+            CustomLog.v("showCameraView", "onBindViewHolder - " + rawPosition);
+            CustomLog.v("showCameraView", "onBindViewHolder - " + mIndexMappingHashMap);
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(genericViewHolder.getAbsoluteAdapterPosition());
             genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
@@ -249,8 +249,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             genericViewHolder.tvQuestionCounter.setText("");
             String id = mItemList.get(genericViewHolder.index).getId();
-            Log.v(TAG, "ID - " + id);
-            Log.v(TAG, "mLoadedIds - " + mLoadedIds.contains(id)+ " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
+            CustomLog.v(TAG, "ID - " + id);
+            CustomLog.v(TAG, "mLoadedIds - " + mLoadedIds.contains(id)+ " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             Handler handler = new Handler();
             if (!mLoadedIds.contains(id)) {
 
@@ -278,7 +278,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void setData(int position, GenericViewHolder genericViewHolder) {
-        Log.v(TAG, "setData");
+        CustomLog.v(TAG, "setData");
         genericViewHolder.otherContainerLinearLayout.removeAllViews();
         genericViewHolder.singleComponentContainer.removeAllViews();
         genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
@@ -364,8 +364,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
             String type = genericViewHolder.node.getInputType();
-            Log.v(TAG, "onBindViewHolder Type - " + type);
-            Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+            CustomLog.v(TAG, "onBindViewHolder Type - " + type);
+            CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
             if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                 type = "options";
             }
@@ -404,7 +404,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "onBindViewHolder 2");
+                    CustomLog.v("showCameraView", "onBindViewHolder 2");
                     showCameraView(mItemList.get(position), genericViewHolder, position);
                     break;
 
@@ -418,7 +418,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         }
         if (!mItemList.get(position).getImagePathList().isEmpty()) {
-            Log.v(TAG, "found images");
+            CustomLog.v(TAG, "found images");
             showCameraView(mItemList.get(position), genericViewHolder, position);
         }
     }
@@ -703,77 +703,77 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         i10.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
 
         if (range == 0) {
-            tv0.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv0.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv0.setTextSize(16);
             tv0.setTypeface(tv0.getTypeface(), Typeface.BOLD);
 
-            i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
 
         } else if (range == 1) {
-            tv1.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv1.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv1.setTextSize(16);
             tv1.setTypeface(tv1.getTypeface(), Typeface.BOLD);
 
-            i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 2) {
-            tv2.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv2.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv2.setTextSize(16);
             tv2.setTypeface(tv2.getTypeface(), Typeface.BOLD);
 
-            i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 3) {
-            tv3.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv3.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv3.setTextSize(16);
             tv3.setTypeface(tv3.getTypeface(), Typeface.BOLD);
 
-            i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 4) {
-            tv4.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv4.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv4.setTextSize(16);
             tv4.setTypeface(tv4.getTypeface(), Typeface.BOLD);
 
-            i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 5) {
-            tv5.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv5.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv5.setTextSize(16);
             tv5.setTypeface(tv5.getTypeface(), Typeface.BOLD);
 
-            i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 6) {
-            tv6.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv6.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv6.setTextSize(16);
             tv6.setTypeface(tv6.getTypeface(), Typeface.BOLD);
 
-            i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 7) {
-            tv7.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv7.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv7.setTextSize(16);
             tv7.setTypeface(tv7.getTypeface(), Typeface.BOLD);
 
-            i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 8) {
-            tv8.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv8.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv8.setTextSize(16);
             tv8.setTypeface(tv8.getTypeface(), Typeface.BOLD);
 
-            i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 9) {
-            tv9.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv9.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv9.setTextSize(16);
             tv9.setTypeface(tv9.getTypeface(), Typeface.BOLD);
 
-            i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 10) {
-            tv10.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary1));
+            tv10.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
             tv10.setTextSize(16);
             tv10.setTypeface(tv10.getTypeface(), Typeface.BOLD);
 
-            i10.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary1));
+            i10.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         }
     }
 
     private void showAssociateSymptoms(Node node, GenericViewHolder holder, int position) {
-        Log.v(TAG, "showAssociateSymptoms()");
+        CustomLog.v(TAG, "showAssociateSymptoms()");
         holder.nestedRecyclerView.removeAllViews();
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
@@ -820,7 +820,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(mContext, mRecyclerView, recyclerView, node.getOptionsList(), mIsEditMode, new AssociateSymptomsQueryAdapter.AssociateSymptomsOnItemSelection() {
             @Override
             public void onSelect(Node data) {
-                Log.v(TAG, new Gson().toJson(data));
+                CustomLog.v(TAG, new Gson().toJson(data));
                 mItemList.get(position).setSelected(false);
                 mItemList.get(position).setDataCaptured(false);
                 //VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode);
@@ -828,7 +828,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
                         //if (mIsEditMode) mItemList.get(position).setDataCaptured(true);
                         mItemList.get(position).setSelected(true);
-                        Log.v(TAG, "updated associate symptoms selected status");
+                        CustomLog.v(TAG, "updated associate symptoms selected status");
                     }
                 }
                 AdapterUtils.setToDefault(submitButton);
@@ -862,15 +862,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Timber.tag(TAG).d("Single size=>%s", holder.singleComponentContainer.getChildCount());
         if (!tag) holder.singleComponentContainer.removeAllViews();
 
-        Log.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
-        Log.v(TAG, "showOptionsDataV2 options - " + options.size());
-        Log.v(TAG, "showOptionsDataV2 index - " + index);
-        Log.v(TAG, "showOptionsDataV2 isSuperNested - " + isSuperNested);
+        CustomLog.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
+        CustomLog.v(TAG, "showOptionsDataV2 options - " + options.size());
+        CustomLog.v(TAG, "showOptionsDataV2 index - " + index);
+        CustomLog.v(TAG, "showOptionsDataV2 isSuperNested - " + isSuperNested);
         if (!isSuperNested && options != null && options.size() == 1
                 && options.get(0).getInputType() != null
                 && !options.get(0).getInputType().isEmpty()
                 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
-            Log.v(TAG, "showOptionsDataV2 single option");
+            CustomLog.v(TAG, "showOptionsDataV2 single option");
             /*if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
             else
@@ -887,7 +887,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
                 type = "options";
             }
-            Log.v(TAG, "Type - " + type);
+            CustomLog.v(TAG, "Type - " + type);
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
@@ -925,7 +925,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData 1");
+                    CustomLog.v("showCameraView", "showOptionsData 1");
                     showCameraView(options.get(0), holder, index);
                     break;
 
@@ -971,7 +971,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             //if (isSuperNested) {
             boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
-            Log.v(TAG, "showOptionsDataV2 havingNestedQuestion - " + havingNestedQuestion);
+            CustomLog.v(TAG, "showOptionsDataV2 havingNestedQuestion - " + havingNestedQuestion);
 
                 /*//holder.superNestedContainerLinearLayout.removeAllViews();
                 View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
@@ -1024,11 +1024,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     mItemList.get(Math.max(holder.getAbsoluteAdapterPosition(), 0)).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (!node.isSelected()) return;
                     holder.isParallelMultiNestedNode = false;
                     if (selectedNode != null) {
@@ -1041,7 +1041,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
                     if (isSkipped) {
                         if (options.size() == 1) {
-                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
+                            CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
                             selectedNode.setSelected(false);
@@ -1056,10 +1056,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     }
 
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode.isContainsTheQuestionBeforeOptions() - " + selectedNode.isContainsTheQuestionBeforeOptions());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect holder.isParallelMultiNestedNode - " + holder.isParallelMultiNestedNode);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect isLastNodeSubmit - " + isLastNodeSubmit);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode.isContainsTheQuestionBeforeOptions() - " + selectedNode.isContainsTheQuestionBeforeOptions());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect holder.isParallelMultiNestedNode - " + holder.isParallelMultiNestedNode);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect isLastNodeSubmit - " + isLastNodeSubmit);
 
                     if (holder.isParallelMultiNestedNode && !isLastNodeSubmit) {
                         holder.selectedNestedOptionIndex += 1;
@@ -1107,17 +1107,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (!havingNestedQuestion) {
                 havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             }
-            Log.v(TAG, "havingNestedQuestion - " + havingNestedQuestion);
-            Log.v(TAG, "isRootNodeQuestion - " + isRootNodeQuestion);
-            Log.v(TAG, "Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType() - " + (Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()));
-            Log.v(TAG, "selectedNode.isContainsTheQuestionBeforeOptions() - " + (selectedNode.isContainsTheQuestionBeforeOptions()));
+            CustomLog.v(TAG, "havingNestedQuestion - " + havingNestedQuestion);
+            CustomLog.v(TAG, "isRootNodeQuestion - " + isRootNodeQuestion);
+            CustomLog.v(TAG, "Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType() - " + (Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()));
+            CustomLog.v(TAG, "selectedNode.isContainsTheQuestionBeforeOptions() - " + (selectedNode.isContainsTheQuestionBeforeOptions()));
             if (!isRootNodeQuestion && (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType())) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
 
                 if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
-                    Log.v(TAG, "options - " + (new Gson().toJson(options)));
+                    CustomLog.v(TAG, "options - " + (new Gson().toJson(options)));
 
                     if (mIsEditMode) {
                         for (int i = 0; i < options.size(); i++) {
@@ -1125,7 +1125,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                     } else if (holder.selectedNestedOptionIndex > 0) {
                         holder.selectedNestedOptionIndex = 0;
-                        Log.v(TAG, "holder.selectedNestedOptionIndex 1 - " + (holder.selectedNestedOptionIndex));
+                        CustomLog.v(TAG, "holder.selectedNestedOptionIndex 1 - " + (holder.selectedNestedOptionIndex));
                         holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
                        /* for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                             if (options.size() < i) {
@@ -1155,7 +1155,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
             }*/ else {
                 //holder.nextRelativeLayout.setVisibility(View.GONE);
-                Log.v(TAG, "showOptionsDataV2 multiple option");
+                CustomLog.v(TAG, "showOptionsDataV2 multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);
                 holder.recyclerView.setVisibility(View.VISIBLE);
                 holder.nestedRecyclerView.setVisibility(View.GONE);
@@ -1201,14 +1201,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 // Avoid the duplicate options asking to user in connected questions
                 //**************
                 String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
-                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+                CustomLog.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
                 if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
                     int sourceIndex = 0;
                     Node toCompareWithNode = null;
                     for (int i = 0; i < mItemList.size(); i++) {
                         if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
                             toCompareWithNode = mItemList.get(i);
-                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                            CustomLog.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
                             break;
                         }
                     }
@@ -1262,9 +1262,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                             type = "options";
                         }
-                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
-                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
-                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
 
                         boolean foundUserInputs = false;
                         for (int i = 0; i < options.size(); i++) {
@@ -1274,7 +1274,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     break;
                             }
                         }
-                        Log.v(TAG, "foundUserInputs - " + foundUserInputs);
+                        CustomLog.v(TAG, "foundUserInputs - " + foundUserInputs);
 
                         if (!node.isSelected()) {
                             node.unselectAllNestedNode();
@@ -1305,8 +1305,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                         isNothingNestedOpen = options.get(i).isTerminal();
 
                                 }
-                                Log.v(TAG, "isNothingNestedOpen - " + isNothingNestedOpen);
-                                Log.v(TAG, "isRequiredToShowParentActionButtons - " + isRequiredToShowParentActionButtons);
+                                CustomLog.v(TAG, "isNothingNestedOpen - " + isNothingNestedOpen);
+                                CustomLog.v(TAG, "isRequiredToShowParentActionButtons - " + isRequiredToShowParentActionButtons);
 
                                 if (mItemList.get(index).isMultiChoice()) {
                                     if (isNothingNestedOpen || isRequiredToShowParentActionButtons) {
@@ -1383,8 +1383,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             }
                             if (mIsFromAssociatedSymptoms) {
-                                Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
-                                Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+                                CustomLog.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+                                CustomLog.v(TAG, "optionsChipsGridAdapter - index - " + index);
                             }
                             /*AdapterUtils.setToDefault(holder.submitButton);
                             AdapterUtils.setToDefault(holder.skipButton);*/
@@ -1506,7 +1506,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // openCamera(context, imagePath, imageName);
-                                Log.v("showCameraView", "showOptionsData 2");
+                                CustomLog.v("showCameraView", "showOptionsData 2");
                                 showCameraView(node, holder, index);
                                 break;
 
@@ -1571,12 +1571,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
         holder.singleComponentContainer.removeAllViews();
-        Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
-        Log.v(TAG, "showOptionsData options - " + options.size());
-        Log.v(TAG, "showOptionsData index - " + index);
-        Log.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
+        CustomLog.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
+        CustomLog.v(TAG, "showOptionsData options - " + options.size());
+        CustomLog.v(TAG, "showOptionsData index - " + index);
+        CustomLog.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
         if (!isSuperNested && options != null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
-            Log.v(TAG, "showOptionsData single option");
+            CustomLog.v(TAG, "showOptionsData single option");
             /*if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
             else
@@ -1593,7 +1593,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
                 type = "options";
             }
-            Log.v(TAG, "Type - " + type);
+            CustomLog.v(TAG, "Type - " + type);
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
@@ -1629,7 +1629,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "camera":
                     // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData 1");
+                    CustomLog.v("showCameraView", "showOptionsData 1");
                     showCameraView(options.get(0), holder, index);
                     break;
 
@@ -1673,7 +1673,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             //if (isSuperNested) {
             boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
-            Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
+            CustomLog.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
 
                 /*//holder.superNestedContainerLinearLayout.removeAllViews();
                 View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
@@ -1720,11 +1720,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, mItemList.get(holder.getAbsoluteAdapterPosition()).isRequired(), new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                    /* if(parentNode.isHavingNestedQuestion()) {
                         boolean isMoreNestedLevel = true;
                         for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
@@ -1752,7 +1752,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
                     if (isSkipped) {
                         if (options.size() == 1) {
-                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
+                            CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
                             mItemList.get(index).setSelected(false);
                             mItemList.get(index).setDataCaptured(false);
                             selectedNode.setSelected(false);
@@ -1767,7 +1767,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     }
 
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
+                    CustomLog.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
                     if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                     else {
@@ -1837,7 +1837,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
             }*/ else {
                 //holder.nextRelativeLayout.setVisibility(View.GONE);
-                Log.v(TAG, "showOptionsData multiple option");
+                CustomLog.v(TAG, "showOptionsData multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);
                 holder.recyclerView.setVisibility(View.VISIBLE);
                 holder.nestedRecyclerView.setVisibility(View.GONE);
@@ -1876,14 +1876,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 // Avoid the duplicate options asking to user in connected questions
                 //**************
                 String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
-                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+                CustomLog.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
                 if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
                     int sourceIndex = 0;
                     Node toCompareWithNode = null;
                     for (int i = 0; i < mItemList.size(); i++) {
                         if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
                             toCompareWithNode = mItemList.get(i);
-                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                            CustomLog.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
                             break;
                         }
                     }
@@ -1914,9 +1914,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                             type = "options";
                         }
-                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
-                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
-                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        CustomLog.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
                         if (!type.isEmpty() && node.isSelected()) {
 
                             holder.singleComponentContainer.removeAllViews();
@@ -1950,8 +1950,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             }
                             if (mIsFromAssociatedSymptoms) {
-                                Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
-                                Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+                                CustomLog.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+                                CustomLog.v(TAG, "optionsChipsGridAdapter - index - " + index);
                             }
                             /*AdapterUtils.setToDefault(holder.submitButton);
                             AdapterUtils.setToDefault(holder.skipButton);*/
@@ -2053,7 +2053,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // openCamera(context, imagePath, imageName);
-                                Log.v("showCameraView", "showOptionsData 2");
+                                CustomLog.v("showCameraView", "showOptionsData 2");
                                 showCameraView(node, holder, index);
                                 break;
 
@@ -2084,11 +2084,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void showCameraView(Node node, GenericViewHolder holder, int index) {
         Node parentNode = mItemList.get(index);
-        Log.v("showCameraView", "QLA parentNode" + new Gson().toJson(parentNode));
-        Log.v("showCameraView", "QLA " + new Gson().toJson(node));
-        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(parentNode.getImagePathList()));
-        Log.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured());
-        Log.v("showCameraView", "QLA ImagePathList isImageUploaded - " + parentNode.isImageUploaded());
+        CustomLog.v("showCameraView", "QLA parentNode" + new Gson().toJson(parentNode));
+        CustomLog.v("showCameraView", "QLA " + new Gson().toJson(node));
+        CustomLog.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(parentNode.getImagePathList()));
+        CustomLog.v("showCameraView", "QLA ImagePathList isDataCaptured - " + parentNode.isDataCaptured());
+        CustomLog.v("showCameraView", "QLA ImagePathList isImageUploaded - " + parentNode.isImageUploaded());
         holder.otherContainerLinearLayout.removeAllViews();
 //        if (!parentNode.isMultiChoice())
         holder.submitButton.setVisibility(View.GONE);
@@ -2146,12 +2146,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
 
         if (parentNode.getImagePathList().isEmpty()) {
-            Log.v("showCameraView", "QLA Images check - empty");
+            CustomLog.v("showCameraView", "QLA Images check - empty");
             newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.GONE);
             imagesRcv.setVisibility(View.GONE);
         } else {
-            Log.v("showCameraView", "QLA Images check - having data");
+            CustomLog.v("showCameraView", "QLA Images check - having data");
             newImageCaptureLinearLayout.setVisibility(View.GONE);
             submitButton.setVisibility(View.VISIBLE);
             imagesRcv.setVisibility(View.VISIBLE);
@@ -2180,7 +2180,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             });
             imagesRcv.setAdapter(imageGridAdapter);
             imageGridAdapter.addNull();
-            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+            CustomLog.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
             if (node.getImagePathList().size() >= 4) {
                 imagesRcv.smoothScrollToPosition(imagesRcv.getAdapter().getItemCount() - 1);
             }
@@ -2189,8 +2189,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         holder.otherContainerLinearLayout.addView(view);
         holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
-        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
-        Log.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
+        CustomLog.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        CustomLog.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
     }
 
 
@@ -2202,7 +2202,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
      * @param index
      */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
-        Log.v(TAG, "addDurationView - " + new Gson().toJson(node));
+        CustomLog.v(TAG, "addDurationView - " + new Gson().toJson(node));
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
@@ -2378,8 +2378,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (isParentNodeIsMandatory)
             skipButton.setVisibility(View.GONE);
         holder.singleComponentContainer.addView(view);
-        Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
-        Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
+        CustomLog.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
+        CustomLog.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
     }
 
     private void showNumberListing(final TextView textView, String title, int i, int max) {
@@ -2568,7 +2568,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
 
-        Log.v(TAG, "addTextEnterView");
+        CustomLog.v(TAG, "addTextEnterView");
 //        boolean tag = false;
 //        if (holder.singleComponentContainer.getTag() != null) {
 //            tag = (boolean) holder.singleComponentContainer.getTag();

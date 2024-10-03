@@ -10,13 +10,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -72,7 +73,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:", "VALUES: " + values);
+            CustomLog.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -134,7 +135,7 @@ public class EncounterDAO {
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
-        Log.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
+        CustomLog.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -142,9 +143,9 @@ public class EncounterDAO {
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
-                Log.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                CustomLog.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
-                Log.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                CustomLog.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
@@ -155,7 +156,7 @@ public class EncounterDAO {
         db.endTransaction();
 
         Gson gson = new Gson();
-        Log.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
+        CustomLog.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -247,6 +248,7 @@ public class EncounterDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         ContentValues values = new ContentValues();
@@ -276,7 +278,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
+            CustomLog.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 
@@ -515,7 +517,7 @@ public class EncounterDAO {
                             "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
                     new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            //Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
+            //CustomLog.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
             if (idCursor.getCount() > 0) {
                 return true;
             }
@@ -578,7 +580,7 @@ public class EncounterDAO {
                     do {
                         try {
                             complaintValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                            Log.v("Followup", "chiefcomplaint: " + complaintValue);
+                            CustomLog.v("Followup", "chiefcomplaint: " + complaintValue);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -631,7 +633,7 @@ public class EncounterDAO {
                 do {
                     try {
                         modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
-                        Log.v("modifiedDate", "modifiedDate: " + modifiedDate);
+                        CustomLog.v("modifiedDate", "modifiedDate: " + modifiedDate);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -666,7 +668,7 @@ public class EncounterDAO {
                 do {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
-                        Log.v("modifiedDate", "uuid: " + uuid);
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -701,7 +703,7 @@ public class EncounterDAO {
                 do {
                     try {
                         uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
-                        Log.v("modifiedDate", "uuid: " + uuid);
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -784,7 +786,7 @@ public class EncounterDAO {
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 modifiedTime = idCursor.getString(idCursor.getColumnIndexOrThrow("obsservermodifieddate"));
-                Log.d(TAG, "getPrescriptionReceivedTime:modifiedTime :  " + modifiedTime);
+                CustomLog.d(TAG, "getPrescriptionReceivedTime:modifiedTime :  " + modifiedTime);
 
             }
         }
@@ -824,5 +826,83 @@ public class EncounterDAO {
         //  db.close();
 
         return encounterDTO;
+    }
+
+
+    public static ArrayList<FollowUpNotificationData> getFollowUpDateListFromConceptId() throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        String followUpDateConcept = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
+
+        ArrayList<FollowUpNotificationData> list = new ArrayList<>();
+
+        try {
+
+            String vitalsQ = "(obs.conceptuuid =  "+"'" + UuidDictionary.HEIGHT  + "' or " +
+                    "obs.conceptuuid =  "+"'" + UuidDictionary.WEIGHT  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.DIASTOLIC_BP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.SYSTOLIC_BP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.TEMPERATURE  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.SPO2  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.BLOOD_GROUP  + "' or" +
+                    " obs.conceptuuid =  "+"'" + UuidDictionary.RESPIRATORY   +"') ";
+
+            String query = """
+                    select p.uuid,p.openmrs_id,p.first_name || " " || p.last_name as name,p.gender,e.encounter_type_uuid,v.uuid as visitUuid,
+                    obs.conceptuuid,obs.encounteruuid,obs.value from tbl_obs as obs,
+                      tbl_encounter as e on obs.encounteruuid = e.uuid,\s
+                      tbl_visit as v on e.visituuid = v.uuid,
+                      tbl_patient as p on v.patientuuid = p.uuid
+                     where v.enddate IS NULL and obs.conceptuuid = \s""" + "'" + followUpDateConcept + "'";
+
+
+            Cursor idCursor = db.rawQuery(query, new String[]{});
+
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    String vitalEncounterUuid = "";
+                    String visitUid = idCursor.getString(idCursor.getColumnIndexOrThrow("visitUuid"));
+                    String vitalEncounterQuery = " " +
+                            "select obs.encounteruuid from tbl_obs as obs, " +
+                            "tbl_encounter as e on obs.encounteruuid = e.uuid,  " +
+                            "tbl_visit as v on e.visituuid = v.uuid, " +
+                            "tbl_patient as p on v.patientuuid = p.uuid " +
+                            "where v.enddate IS NULL and  " +
+                            " v.uuid = "+"'"+visitUid+"' and "+vitalsQ;
+
+                    Cursor cursor = db.rawQuery(vitalEncounterQuery, new String[]{});
+                    if (cursor.getCount() != 0) {
+                        while (cursor.moveToNext()) {
+                            vitalEncounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("encounteruuid"));
+                        }
+                    }
+
+                    list.add(new FollowUpNotificationData(
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("name")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("gender")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")),
+                            visitUid,
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")),
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")),
+                            vitalEncounterUuid,
+                            idCursor.getString(idCursor.getColumnIndexOrThrow("value")) == null ? "" : idCursor.getString(idCursor.getColumnIndexOrThrow("value"))
+                    ));
+
+                    cursor.close();
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return list;
     }
 }

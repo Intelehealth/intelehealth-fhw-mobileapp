@@ -15,7 +15,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,7 +197,7 @@ public class VisitReceivedFragment extends Fragment {
         fetchOlderData();
 
         int totalCounts = totalCounts_recent + totalCounts_older;
-        Log.d("rece", "defaultData: received" + totalCounts);
+        CustomLog.d("rece", "defaultData: received" + totalCounts);
 
 //        thisMonths_Visits();
         if (mlistener != null)
@@ -350,7 +350,7 @@ public class VisitReceivedFragment extends Fragment {
 
         //
         recent_older_visibility(mRecentList, mOlderList);
-        Log.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
+        CustomLog.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
 
         recent_adapter = new VisitAdapter(getActivity(), mRecentList);
         recycler_recent.setNestedScrollingEnabled(false);
@@ -367,7 +367,7 @@ public class VisitReceivedFragment extends Fragment {
      * @param query
      */
     private void searchOperation(String query) {
-        Log.v("Search", "Search Word: " + query);
+        CustomLog.v("Search", "Search Word: " + query);
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
@@ -552,7 +552,7 @@ public class VisitReceivedFragment extends Fragment {
             List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 mRecentList.addAll(tempList);
-                Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + mRecentList.size());
+                CustomLog.d("TAG", "setRecentMoreDataIntoRecyclerView: " + mRecentList.size());
                 recent_adapter.list.addAll(tempList);
                 recent_adapter.notifyDataSetChanged();
                 recentStart = recentEnd;
@@ -574,7 +574,7 @@ public class VisitReceivedFragment extends Fragment {
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 mOlderList.addAll(tempList);
-                Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + mOlderList.size());
+                CustomLog.d("TAG", "setOlderMoreDataIntoRecyclerView: " + mOlderList.size());
                 older_adapter.list.addAll(tempList);
                 older_adapter.notifyDataSetChanged();
                 olderStart = olderEnd;

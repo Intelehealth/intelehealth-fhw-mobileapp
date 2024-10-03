@@ -3,6 +3,8 @@ package org.intelehealth.app.webrtc.service
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.receiver.FCMNotificationReceiver
 import org.intelehealth.fcm.FBMessageService
@@ -28,6 +30,22 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        val startHour = 21 // 9:00 PM
+        val startMinute = 0
+        val endHour = 6 // 6:00 AM
+        val endMinute = 0
+
+        if (sessionManager.isBlackout && NotificationUtils.isWithinRestrictedTime(
+                startHour,
+                startMinute,
+                endHour,
+                endMinute
+            )
+        ) {
+            // Do not show notification
+            return
+        }
         super.onMessageReceived(message)
         Timber.d { "Remote message ${Gson().toJson(message)}" }
     }

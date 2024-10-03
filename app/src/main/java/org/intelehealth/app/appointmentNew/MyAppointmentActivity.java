@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,7 +60,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     private HashMap<Integer, UpdateFragmentOnEvent> mUpdateFragmentOnEventHashMap = new HashMap<>();
 
     public void initUpdateFragmentOnEvent(int tab, UpdateFragmentOnEvent listener) {
-        Log.v(TAG, "initUpdateFragmentOnEvent");
+        CustomLog.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEventHashMap.put(tab, listener);
 
     }
@@ -83,7 +83,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
     }
 
     private void loadAllAppointments() {
-        Log.v(TAG, "loadAllAppointments");
+        CustomLog.v(TAG, "loadAllAppointments");
         String baseurl = BuildConfig.SERVER_URL + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
@@ -97,7 +97,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                         if (response.body() == null) return;
-                        Log.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
+                        CustomLog.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();
@@ -131,13 +131,13 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                         }*/
 
                         //getAppointments();
-                        Log.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
+                        CustomLog.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
                         Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
                     }
 
                     @Override
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
+                        CustomLog.v("onFailure", t.getMessage());
                         Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_FAILED);
                         //log out operation if response code is 401
                         new NavigationUtils().logoutOperation(MyAppointmentActivity.this,t);
@@ -209,7 +209,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-              /*  Log.d(TAG, "onTabSelected:position : : " + tab.getPosition());
+              /*  CustomLog.d(TAG, "onTabSelected:position : : " + tab.getPosition());
                 if (fromFragment != null && !fromFragment.isEmpty() && fromFragment.equals("today")) {
                     if (tab.getPosition() == 0) {
                         tab.setText("Today's (" + totalCount + ")");
@@ -248,7 +248,7 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
                     switch (item.getItemId()) {
                         case R.id.bottom_nav_home_menu:
-                           /* Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                           /* CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                             fragment = new HomeFragment_New();
                             loadFragment(fragment);*/
@@ -277,9 +277,9 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
     @Override
     public void updateCount(String whichFrag, int count) {
-        //  Log.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
+        //  CustomLog.d(TAG, "updateCount:selected tab : " + tabLayout.getSelectedTabPosition());
 
-        //  Log.d(TAG, "updateCount: count : " + count);
+        //  CustomLog.d(TAG, "updateCount: count : " + count);
 
      /*   fromFragment = whichFrag;
         totalCount = count;*/

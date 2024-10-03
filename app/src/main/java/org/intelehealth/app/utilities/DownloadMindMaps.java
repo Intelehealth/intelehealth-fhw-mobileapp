@@ -2,7 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.R;
 
@@ -51,7 +51,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         String destinationFilePath = "";
         try {
             URL url = new URL(args[0]);
-            Log.d("MindMapDownloadTask", "url=" + url);
+            CustomLog.d("MindMapDownloadTask", "url=" + url);
             destinationFilePath = args[1];
 
             connection = (HttpURLConnection) url.openConnection();
@@ -65,7 +65,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
             //Download Zip
             input = connection.getInputStream();
 
-            Log.d("MindMapDownloadTask", "destinationFilePath=" + destinationFilePath);
+            CustomLog.d("MindMapDownloadTask", "destinationFilePath=" + destinationFilePath);
             new File(destinationFilePath).createNewFile();
             output = new FileOutputStream(destinationFilePath);
 
@@ -103,8 +103,8 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         File f = new File(destinationFilePath);
 
-        Log.d("MindMapDownloadTask", "f.getParentFile().getPath()=" + f.getParentFile().getPath());
-        Log.d("MindMapDownloadTask", "f.getName()=" + f.getName().replace(".zip", ""));
+        CustomLog.d("MindMapDownloadTask", "f.getParentFile().getPath()=" + f.getParentFile().getPath());
+        CustomLog.d("MindMapDownloadTask", "f.getName()=" + f.getName().replace(".zip", ""));
 
         unpackZip(destinationFilePath);
         return context.getResources().getString(R.string.protocols_downloaded_successfully);
@@ -116,7 +116,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         if (alertDialog != null)
             alertDialog.dismiss();
-        Log.e("MindMapDownloadTask", "Successfully get MindMap URL"+s);
+        CustomLog.e("MindMapDownloadTask", "Successfully get MindMap URL"+s);
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
               //  ((SetupActivity)context).showMindmapFailedAlert();    // Prajwal - commenting this line as it is using old java context. Not sure on what change is needed so commenting it out.
@@ -130,7 +130,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         }
         //Check is there any existing mindmaps are present, if yes then delete.
         File mindMapZip = new File(context.getFilesDir().getAbsolutePath(), "mindmaps.zip");
-        Log.e("MindMap Zip=", "" + mindMapZip.exists());
+        CustomLog.e("MindMap Zip=", "" + mindMapZip.exists());
         if (mindMapZip.exists()) {
             mindMapZip.delete();
         }
@@ -139,7 +139,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        Log.e("------>>>",values[0]+"");
+        CustomLog.e("------>>>",values[0]+"");
     }
 
 //    private boolean unpackZip(String filePath) {

@@ -2,7 +2,7 @@ package org.intelehealth.app.appointment.sync;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
@@ -28,7 +28,7 @@ public class AppointmentSync {
     private static final String TAG = "AppointmentSync";
 
     public static void getAppointments(Context context) {
-        Log.v(TAG, "getAppointments");
+        CustomLog.v(TAG, "getAppointments");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
@@ -50,7 +50,7 @@ public class AppointmentSync {
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
                             try {
-                                Log.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
+                                CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
                                 appointmentDAO.insert(slotInfoResponse.getData().get(i));
                             } catch (DAOException e) {
                                 e.printStackTrace();
@@ -70,7 +70,7 @@ public class AppointmentSync {
                             }
                         } else {
                         }*/
-                        Log.v(TAG, "getAppointments done!");
+                        CustomLog.v(TAG, "getAppointments done!");
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -83,7 +83,7 @@ public class AppointmentSync {
 
                     @Override
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v(TAG, t.getMessage());
+                        CustomLog.v(TAG, t.getMessage());
                         //log out operation if response code is 401
                         new NavigationUtils().logoutOperation(context,t);
                     }

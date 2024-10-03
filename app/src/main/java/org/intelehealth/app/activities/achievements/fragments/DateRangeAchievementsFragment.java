@@ -9,9 +9,13 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +33,11 @@ import org.intelehealth.app.models.ObsImageModel.Encounter;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -120,7 +127,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         String date = textView.getText().toString();
         Calendar calendar = DateAndTimeUtils.convertStringToCalendarObject(date, "dd MMM, yyyy", sessionManager.getAppLanguage());
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.datepicker, (datePicker, year, month, day) -> {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), R.style.datepicker, (datePicker, year, month, day) -> {
             Calendar newDate = Calendar.getInstance();
             newDate.set(Calendar.YEAR, year);
             newDate.set(Calendar.MONTH, month);
@@ -132,13 +139,26 @@ public class DateRangeAchievementsFragment extends Fragment {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
-        if(value.equalsIgnoreCase("startDate"))
+        if (value.equalsIgnoreCase("startDate"))
             datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
-        else if(value.equalsIgnoreCase("endDate")) {
+        else if (value.equalsIgnoreCase("endDate")) {
             datePicker.setMaxDate(System.currentTimeMillis());
             datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
         }
+
         datePickerDialog.show();
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(
+                        ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorPrimary
+                        )
+                ); // Change to your desired color
+
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+
     }
 
     private void fetchAndSetUIData() {
@@ -182,30 +202,88 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setVisitsEndedInRange() {
-        int numberOfVisitsEnded = 0;
+        //int numberOfVisitsEnded = 0;
 
-        List<EncounterDTO> encounterDTOList = new ArrayList<>();
-        String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
+        String startDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvStartDate.getText().toString(), "dd MMM, yyyy"), "yyyy-MM-dd");
+        String endDate = DateAndTimeUtils.getDateTimeFromTimestamp(DateAndTimeUtils.getTimeStampFromString(tvEndDate.getText().toString(), "dd MMM, yyyy"), "yyyy-MM-dd");
+
+        //normally sqlite doesn't support filter for "MMM d, yyyy" this date format
+        //that's why here added two logics for date filter
+        //if sync status = 1 then the date format is "MMM d, yyyy"
+        //and sync status = 0 then the date format is "yyyy-MM-dd"
+
+        //ex date if sync is 1: Sep 1, 2024
+        //ex date if sync is 0: 2024-09-01
+
+        //whenever we substr(v.enddate, 5, 2) sometimes the result is like "1," for (Sep 1, 2024)  and "11" for (Sep 11, 2024)
+        //here to check "," exist or not, added instr function
+        //if the function returns 0 then we are taking substr(v.enddate, 5, 2). output will be like "11" Ex date:Sep 11, 2024
+        //if the function returns > 0 then we are taking substr(v.enddate, 5, 1). output will be like "1" Ex date:Sep 1, 2024
+        String formattedDay = "(CASE " +
+                "WHEN instr(substr(v.enddate, 5, 2), ',') > 0 THEN substr(v.enddate, 5, 1) " +
+                "ELSE substr(v.enddate, 5, 2) " +
+                "END)";
+
+        //as we know sqlite doesn't support "Sep 11, 2024" this format for filter
+        //we are formatting month and year here to "yyyy-MM-dd" this format
+        //converting month text to digit
+        String formattedEndDate = "(CASE WHEN v.sync = 1 THEN REPLACE((substr(v.enddate, 8, 5) || '-' || " +
+                "(CASE substr(v.enddate, 1, 3) " +
+                "WHEN 'Jan' THEN '01' " +
+                "WHEN 'Feb' THEN '02' " +
+                "WHEN 'Mar' THEN '03' " +
+                "WHEN 'Apr' THEN '04' " +
+                "WHEN 'May' THEN '05' " +
+                "WHEN 'Jun' THEN '06' " +
+                "WHEN 'Jul' THEN '07' " +
+                "WHEN 'Aug' THEN '08' " +
+                "WHEN 'Sep' THEN '09' " +
+                "WHEN 'Oct' THEN '10' " +
+                "WHEN 'Nov' THEN '11' " +
+                "WHEN 'Dec' THEN '12' " +
+                "END) || '-' || " +
+                //checking length of the formatted date here
+                //if length is 1 then adding another 0 before the digit
+                //if length is more than 1, that means it's in correct format
+                "CASE WHEN LENGTH(" + formattedDay + ") = 1 THEN '0'||" + formattedDay + " ELSE " + formattedDay + " END ),' ','') else substr(v.enddate,1,10) END)";
+
+        //if the end date is "Sep 11, 2024" then the final output will be "11-09-2024" for formattedEndDate
+
+        String visitEndedQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter as e, tbl_visit as v " +
+                "WHERE e.visituuid = v.uuid AND e.provider_uuid = ? " +
+                "AND e.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "' " +
+                "AND " + formattedEndDate + " >= '" + startDate + "' and " + formattedEndDate + "<= '" + endDate + "'";
+
+        CustomLog.d("visitEndedQuery", "" + visitEndedQuery);
+
+        //String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangePatientsCreatedCursor = db.rawQuery(visitEndedQuery, new String[]{sessionManager.getProviderID()});
 
-        if (rangePatientsCreatedCursor.moveToFirst()) {
+        rangePatientsCreatedCursor.moveToFirst();
+        String count = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndex(rangePatientsCreatedCursor.getColumnName(0)));
+
+
+        /*if (rangePatientsCreatedCursor.moveToFirst()) {
             do {
                 String visitUuid = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("visituuid"));
-                String encounterTime = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("modified_date"));
+                //String encounterTime = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("modified_date"));
                 EncounterDTO encounterDTO = new EncounterDTO();
                 encounterDTO.setVisituuid(visitUuid);
-                encounterDTO.setEncounterTime(encounterTime);
+                //encounterDTO.setEncounterTime(encounterTime);
                 encounterDTOList.add(encounterDTO);
+
+                CustomLog.d("VISIT_UID",""+visitUuid);
+
             } while (rangePatientsCreatedCursor.moveToNext());
 
             if (!encounterDTOList.isEmpty()) {
                 numberOfVisitsEnded = countVisitsEndedBetweenRange(encounterDTOList);
             }
         }
-
-        int finalCount = numberOfVisitsEnded;
-        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+*/
+        //int finalCount = numberOfVisitsEnded;
+        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(count));
         rangePatientsCreatedCursor.close();
     }
 

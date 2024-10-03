@@ -31,6 +31,7 @@ import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.enums.AppointmentTabType
 import org.intelehealth.app.shared.BaseActivity
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
@@ -278,7 +279,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     )
                 }
             } catch (e: Exception) {
-                Log.d("EEEEE", "" + e.message)
+                CustomLog.d("EEEEE", "" + e.message)
             }
         }
         onStartUpcoming = true
@@ -295,7 +296,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     )
                 }
             } catch (e: Exception) {
-                Log.d("EEEEE", "" + e.message)
+                CustomLog.d("EEEEE", "" + e.message)
             }
         }
         onStartPast = true
@@ -308,7 +309,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     loadingDialog.dismiss()
                 }
             } catch (e: Exception) {
-                Log.d("EEEEE", "" + e.message)
+                CustomLog.d("EEEEE", "" + e.message)
             }
         }
 
@@ -321,7 +322,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                     loadingDialog.dismiss()
                 }
             } catch (e: Exception) {
-                Log.d("EEEEE_DIS", "" + e.message)
+                CustomLog.d("EEEEE_DIS", "" + e.message)
             }
         }
 

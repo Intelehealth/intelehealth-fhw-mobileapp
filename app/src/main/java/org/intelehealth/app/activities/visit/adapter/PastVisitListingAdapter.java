@@ -2,7 +2,7 @@ package org.intelehealth.app.activities.visit.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +37,7 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList = itemList;
         mOnItemSelected = onItemSelected;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
-        Log.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
+        CustomLog.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
+        CustomLog.v("ImageGridAdapter", "onBindViewHolder - " + position);
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
 

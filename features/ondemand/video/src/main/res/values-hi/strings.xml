@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
+    <string name="settings_name" translatable="false">ऐपआरटीसी सेटिंग्स</string>
+    <string name="disconnect_call">कॉल डिस्कनेक्ट करें</string>
+    <string name="room_description">
+        कृपया एक कमरे का नाम दर्ज करें। कमरे के नाम सभी के साथ साझा किए जाते हैं, इसलिए सोचें
+         कुछ अनोखा और किसी मित्र को भेजें।
+    </string>
+    <string name="favorites">पसंदीदा</string>
+    <string name="no_favorites">कोई पसंदीदा नहीं</string>
+    <string name="invalid_url_title">असामान्य यूआरएल</string>
+    <string name="invalid_url_text">आपके द्वारा दर्ज किए गए URL या कमरे के नाम के परिणामस्वरूप एक अमान्य URL हो गया: %1$s
+    </string>
+    <string name="channel_error_title">संपर्क त्रुटि</string>
+    <string name="connecting_to">को जोड़ रहा: %1$s</string>
+    <string name="missing_url">गंभीर गड़बड़ी: कनेक्ट करने के लिए यूआरएल मौजूद नहीं है.</string>
+    <string name="camera2_texture_only_error">Camera2 केवल बनावट को कैप्चर करने का समर्थन करता है। या तो कैमरा 2 को अक्षम करें या विकल्पों में बनावट को कैप्चर करना सक्षम करें।</string>
+    <string name="ok">ठीक है</string>
+    <string name="switch_camera">फ्रंट/बैक कैमरा स्विच करें</string>
+    <string name="capture_format_change_text">कैप्चर प्रारूप बदलने के लिए स्लाइड करें</string>
+    <string name="muted">म्यूट किए गए</string>
+    <string name="toggle_debug">डीबग दृश्य टॉगल करें</string>
+    <string name="toggle_mic">माइक्रोफ़ोन चालू/बंद टॉगल करें</string>
+    <string name="action_settings">समायोजन</string>
+    <string name="action_loopback">लूपबैक कनेक्शन</string>
+    <string name="connect_description">कमरे से जुड़ें</string>
+    <string name="add_favorite_description">पसंदीदा जोड़ें</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+
+    <string name="video_on_lbl">वीडियो चालू!</string>
+    <string name="video_off_lbl">वीडियो बंद!</string>
+    <string name="call_end_lbl">कॉल समाप्त!</string>
+    <string name="audio_off_lbl">ऑडियो बंद!</string>
+    <string name="audio_on_lbl">ऑडियो चालू!</string>
+    <string name="video_on_off_button">वीडियो चालू/बंद बटन</string>
+    <string name="call_end_button">कॉल एंड बटन</string>
+    <string name="audio_on_off_button">ऑडियो चालू / बंद बटन</string>
+    <string name="you">आप</string>
+    <string name="start_call_now">अभी कॉल शुरू करें</string>
+    <string name="start_txt_chat_now">अभी टेक्स्ट चैट शुरू करें</string>
+    <string name="connecting">कनेक्ट हो रहा है...</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
+    <string name="you_have_no_messages_start_sending_messages_now">आपके लिए कोई सन्देश नहीं है! अभी संदेश भेजना शुरू करें।</string>
+    <string name="empty_message_txt">कृपया अपना संदेश लिखें!</string>
+    <string name="loading">लोड हो रहा है...</string>
+    <string name="video_call">वीडियो कॉल</string>
+    <string name="please_wait_for_doctor">कृपया डॉक्टर की उपलब्धता की प्रतीक्षा करें।</string>
+    <string name="call_end_aler_txt">क्या आप वीडियो कॉल समाप्त करना चाहते हैं?</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+
+    <string name="type_text_here_str">यहाँ टाइप करें ...</string>
+
+    <string name="take_photo_lbl">फोटो लो</string>
+    <string name="choose_from_gallery_lbl">गैलरी से चयन करो</string>
+    <string name="cancel_lbl">रद्द करना</string>
+    <string name="max_doc_size_toast">अधिकतम दस्तावेज़ आकार 512 KB है</string>
+    <string name="choose_documents">दस्तावेज़ चुनें</string>
+    <string name="read">पढ़ लिया</string>
+    <string name="sent">भेजा</string>
+    <string name="max_5_image">आप प्रति एक मामले में अधिकतम 5 छवियाँ भेज सकते हैं</string>
+    <string name="max_2_image">आप प्रति एक मामले में अधिकतम 2 छवियाँ भेज सकते हैं</string>
+    <string name="select">चयन करें</string>
+    <string name="select_spinner">चयन करें</string>
+    <string name="camera_permission_denied">कैमरे की अनुमति अस्वीकृत!</string>
+    <string name="unable_to_pick_data">गैलरी डेटा चुनने में असमर्थ!</string>
+    <string name="max_doc_size_toast_mb">अधिकतम दस्तावेज़ आकार 1 एमबी है</string>
+    <string name="doctor_annotation">डॉ</string>
+    <string name="disconnected">संपर्क विच्छेदित!</string>
+    <string name="enter_room_id">कृपया कमरा-आईडी दर्ज करें</string>
+    <string name="permission_denied">अनुमति अस्वीकृत\n</string>
+
+    <!--  New  -->
+
+    <string name="flip_camera">फ्लिप कैमरा</string>
+    <string name="msg_delivered">वितरित</string>
+    <string name="sending">भेजा जा रहा है</string>
+    <string name="incoming_voice_call">इनकमिंग वॉयस कॉल</string>
+    <string name="incoming_call">इनकमिंग कॉल</string>
+    <string name="doctor_profile_picture">डॉक्टर प्रोफ़ाइल चित्र</string>
+    <string name="poor_connection">ख़राब कनेक्शन</string>
+    <string name="remote_participant_mic_off_status">रिमोट प्रतिभागी माइक बंद स्थिति</string>
+    <string name="sender_image">प्रेषक छवि</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+</resources>

@@ -15,6 +15,6 @@ fun AppCompatActivity.showToast(message: String) {
     Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 }
 
-fun AppCompatActivity.showToast(message: String, @StringRes resId: Int) {
+fun AppCompatActivity.showToast(@StringRes resId: Int) {
     Toast.makeText(applicationContext, getString(resId), Toast.LENGTH_SHORT).show()
 }

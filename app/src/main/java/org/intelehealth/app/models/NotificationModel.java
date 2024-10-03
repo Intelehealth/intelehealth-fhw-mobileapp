@@ -28,14 +28,7 @@ public class NotificationModel {
     private String openmrsID;
     private String isDeleted;
 
-    // firstname and lastname not in table bt just fetched to store value before storing in desc table.
 
-
-//    public NotificationModel(String first_name, String last_name, String obs_server_modified_date) {
-//        this.first_name = first_name;
-//        this.last_name = last_name;
-//        this.obs_server_modified_date = obs_server_modified_date;
-//    }
 
 
     public String getUuid() {

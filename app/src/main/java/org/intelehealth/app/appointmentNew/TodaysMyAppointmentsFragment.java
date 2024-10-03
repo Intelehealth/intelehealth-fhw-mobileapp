@@ -14,7 +14,7 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -106,12 +106,12 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         ((MyAppointmentActivityNew) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
+                CustomLog.v(TAG, "onStart");
             }
 
             @Override
             public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
+                CustomLog.v(TAG, "onFinished");
                 initLimits();
                 getAppointments();
             }
@@ -522,7 +522,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
-                    Log.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
+                    CustomLog.d(TAG, "getDataForCompletedAppointments:  receivedtime : " + prescReceivedTime);
 
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         completedAppointmentInfoList.get(i).setPresc_received_time(prescReceivedTime);
@@ -647,7 +647,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                CustomLog.v("onFailure", t.getMessage());
                 //log out operation if response code is 401
                 new NavigationUtils().logoutOperation(getActivity(), t);
             }

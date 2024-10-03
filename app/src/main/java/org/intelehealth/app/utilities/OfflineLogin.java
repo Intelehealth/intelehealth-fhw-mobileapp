@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Toast;
 
 
@@ -91,16 +91,16 @@ public class OfflineLogin {
 
         editor.commit();
 
-        Log.i(TAG, "Created Offline Login!");
-        Log.i(TAG, "Username: " + username);
-        Log.i(TAG, "Salt: " + random_salt);
-        Log.i(TAG, "Password Hash: " + hash);
+        CustomLog.i(TAG, "Created Offline Login!");
+        CustomLog.i(TAG, "Username: " + username);
+        CustomLog.i(TAG, "Salt: " + random_salt);
+        CustomLog.i(TAG, "Password Hash: " + hash);
     }
 
     // this was already not being used anywhere so commented it as this class is also used in new ui so not deleting it.
 /*
     public void login(String username, String password) {
-        Log.i(TAG, "Checking Offline Login!");
+        CustomLog.i(TAG, "Checking Offline Login!");
         if (mSharedPreference.contains(mContext.getString(R.string.offline_login_username_key)) &&
                 mSharedPreference.contains(mContext.getString(R.string.offline_login_salt_key)) &&
                 mSharedPreference.contains(mContext.getString(R.string.offline_login_password_key))) {
@@ -108,14 +108,14 @@ public class OfflineLogin {
             String stored_username = mSharedPreference.getString(mContext.getString(R.string.offline_login_username_key), null);
 
             if (stored_username != null) {
-                Log.i(TAG, "Username: " + username);
-                Log.i(TAG, "Stored Username: " + stored_username);
+                CustomLog.i(TAG, "Username: " + username);
+                CustomLog.i(TAG, "Stored Username: " + stored_username);
                 String stored_password = mSharedPreference.getString(mContext.getString(R.string.offline_login_password_key), null);
                 String stored_salt = mSharedPreference.getString(mContext.getString(R.string.offline_login_salt_key), null);
 
                 if (stored_password != null && stored_salt != null) {
-                    Log.i(TAG, "Stored Salt: " + stored_salt);
-                    Log.i(TAG, "Stored Password : " + stored_password);
+                    CustomLog.i(TAG, "Stored Salt: " + stored_salt);
+                    CustomLog.i(TAG, "Stored Password : " + stored_password);
                     StringEncryption stringEncryption = new StringEncryption();
                     String hash = null;
                     try {
@@ -123,7 +123,7 @@ public class OfflineLogin {
                     } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
-                    Log.i(TAG, "Hashed Password : " + hash);
+                    CustomLog.i(TAG, "Hashed Password : " + hash);
                     if (hash != null && stored_password.equals(hash) && stored_username.equals(username)) {
                         Toast.makeText(mContext, mContext.getString(R.string.success_offline_login), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(mContext, HomeActivity.class);
@@ -149,7 +149,7 @@ public class OfflineLogin {
 
     public void invalidateLoginCredentials() {
         mSharedPreference.edit().clear().apply();
-        Log.i(TAG, mContext.getString(R.string.invalidate_offline_login));
+        CustomLog.i(TAG, mContext.getString(R.string.invalidate_offline_login));
     }
 
     public Boolean getOfflineLoginStatus() {
@@ -177,10 +177,10 @@ public class OfflineLogin {
         {
             //String user_decode = c.getString(c.getColumnIndexOrThrow("username"));
             String pass_decode = c.getString(c.getColumnIndexOrThrow("password"));
-            Log.d("pass_read", "pass_read"+pass_decode);
+            CustomLog.d("pass_read", "pass_read"+pass_decode);
 
             try {
-                Log.d("MICE", "MICE: "+getSalt_DATA());
+                CustomLog.d("MICE", "MICE: "+getSalt_DATA());
                 //hash_de_email = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + user_decode);
                 hash_de_password = StringEncryption.convertToSHA256(getSalt_DATA() + password);
 
@@ -188,16 +188,16 @@ public class OfflineLogin {
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-            Log.d("HASH","HASH: "+hash_de_password);
+            CustomLog.d("HASH","HASH: "+hash_de_password);
         }
         else
         {
-            Log.d("OFFLINE_C_EMPTY", "OFFLINE_C_EMPTY : "+c);
+            CustomLog.d("OFFLINE_C_EMPTY", "OFFLINE_C_EMPTY : "+c);
         }
         c.close();
 
         String[] cols = {username,hash_de_password};
-        Log.d("Column","Column: "+username+" "+hash_de_password);
+        CustomLog.d("Column","Column: "+username+" "+hash_de_password);
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
@@ -214,8 +214,8 @@ public class OfflineLogin {
            chw_name = cursor.getString(cursor.getColumnIndexOrThrow("chwname"));
             provider_uuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid_cred"));
             creator_uuid = cursor.getString(cursor.getColumnIndexOrThrow("creator_uuid_cred"));
-           // Log.d("OFF_USER","DB_DATA"+user+" "+pass);
-            Log.d("OFF_USER","DB_DATA"+user+" "+pass+" " +chw_name+" "+provider_uuid+" "+creator_uuid);
+           // CustomLog.d("OFF_USER","DB_DATA"+user+" "+pass);
+            CustomLog.d("OFF_USER","DB_DATA"+user+" "+pass+" " +chw_name+" "+provider_uuid+" "+creator_uuid);
 
 
            sessionManager.setProviderID(provider_uuid);
@@ -249,7 +249,7 @@ public class OfflineLogin {
             while ((mLine = reader.readLine()) != null) {
                 //process line
                 salt = mLine;
-                Log.d("SA", "SA " + salt);
+                CustomLog.d("SA", "SA " + salt);
             }
         } catch (Exception e) {
             //log the exception

@@ -4,6 +4,8 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -217,9 +219,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.patient.activity.PatientRegistrationActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.visit.VisitDetailsActivity"
@@ -275,7 +288,7 @@
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
@@ -431,6 +444,8 @@
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

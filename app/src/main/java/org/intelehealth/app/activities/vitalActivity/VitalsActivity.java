@@ -1,53 +1,9 @@
 package org.intelehealth.app.activities.vitalActivity;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Objects;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.models.VitalsObject;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.ConfigUtils;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VitalsActivity extends AppCompatActivity {
-    private static final String TAG = VitalsActivity.class.getSimpleName();
+  /*  private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";
     private String patientGender = "";
@@ -484,7 +440,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI", "BMI: " + mBMI.getText().toString());
+            CustomLog.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
@@ -506,7 +462,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            CustomLog.d("BMI","BMI: "+mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else  {
             // do nothing
@@ -902,7 +858,7 @@ public class VitalsActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-              /*  Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+              *//*  Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -913,7 +869,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
-                startActivity(intent);*/
+                startActivity(intent);*//*
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
@@ -1042,7 +998,7 @@ public class VitalsActivity extends AppCompatActivity {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
+            CustomLog.i(TAG, "uploadTemperatureInC: " + cTemp);
             DecimalFormat dtime = new DecimalFormat("#.##");
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.valueOf(cTemp);
@@ -1064,6 +1020,6 @@ public class VitalsActivity extends AppCompatActivity {
         result = String.valueOf(b);
         return result;
 
-    }
+    }*/
 
 }

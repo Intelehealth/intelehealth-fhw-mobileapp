@@ -14,7 +14,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +69,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
 
         CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this, this);
       customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
-     //  Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
+     //  CustomLog.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
       //  showDatePicker(this);
 
     }
@@ -93,7 +93,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
                 //tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
-                Log.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
+                CustomLog.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
                    // enableDisablePreviousButton(false);
 
@@ -291,8 +291,8 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
                     break;
 
             }
-            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedYearModel : " + spinnerSelectedYearModel.getYear());
-            Log.d(TAG, "fillDatesMonthsWise: spinnerSelectedMonthModel : " + spinnerSelectedMonthModel.getMonthNo());
+            CustomLog.d(TAG, "fillDatesMonthsWise: spinnerSelectedYearModel : " + spinnerSelectedYearModel.getYear());
+            CustomLog.d(TAG, "fillDatesMonthsWise: spinnerSelectedMonthModel : " + spinnerSelectedMonthModel.getMonthNo());
 
             //calculate total days for recyclerview
             int totalViewDays = monthTotalDays + noOfPrevMonthDaysRequired;
@@ -389,7 +389,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
             rvCalendarView.setLayoutManager(new GridLayoutManager(this, 7));
             rvCalendarView.setAdapter(new CalendarviewNewAdapter(this, listOfDates,calendarModel1 -> {
                 int date = calendarModel1.getDate();
-                Log.d(TAG, "selected from adapter fillDatesMonthsWise: date : "+date);
+                CustomLog.d(TAG, "selected from adapter fillDatesMonthsWise: date : "+date);
              /*   String month = calendarModel1.getSelectedMonthForDays();
                 String year = calendarModel1.getSelectedYear();
 
@@ -398,7 +398,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
 
 
         } else {
-            Log.d(TAG, "fillDatesMonthsWise: models are null");
+            CustomLog.d(TAG, "fillDatesMonthsWise: models are null");
         }
 
 
@@ -437,16 +437,16 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
 
     @Override
     public void getSelectedDate(String selectedDate, String whichDate) {
-        Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
+        CustomLog.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
 
             String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
             if (!selectedDate.isEmpty()) {
                 String[] splitedDate = selectedDate.split("/");
                 tv_selected_date_demo.setText(dateToshow1);
-                Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
+                CustomLog.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
 
             } else {
-                Log.d(TAG, "onClick: date empty");
+                CustomLog.d(TAG, "onClick: date empty");
             }
 
     }
@@ -607,12 +607,12 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
                 String[] dateSplit = formateDate.split("/");
 
                 //tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: tvSelectedMonthYear : " + selectedNextMonth + ", " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: currentMonth : " + currentMonth);
-                Log.d(TAG, "getNextMonthDates: currentYear : " + currentYear);
-                Log.d(TAG, "getNextMonthDates: selectedMonthYear : " + selectedMonthYear);
-                Log.d(TAG, "getNextMonthDates: selectedNextMonth : " + selectedNextMonth);
-                Log.d(TAG, "getNextMonthDates: selectedNextMonthnew : " + dateSplit[1]);
+                CustomLog.d(TAG, "getNextMonthDates: tvSelectedMonthYear : " + selectedNextMonth + ", " + selectedMonthYear);
+                CustomLog.d(TAG, "getNextMonthDates: currentMonth : " + currentMonth);
+                CustomLog.d(TAG, "getNextMonthDates: currentYear : " + currentYear);
+                CustomLog.d(TAG, "getNextMonthDates: selectedMonthYear : " + selectedMonthYear);
+                CustomLog.d(TAG, "getNextMonthDates: selectedNextMonth : " + selectedNextMonth);
+                CustomLog.d(TAG, "getNextMonthDates: selectedNextMonthnew : " + dateSplit[1]);
 
                 if (dateSplit[1].equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
                     // getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);

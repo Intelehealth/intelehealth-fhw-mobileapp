@@ -1,5 +1,6 @@
 package org.intelehealth.core.registry
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultRegistry
@@ -39,7 +40,7 @@ class PermissionRegistry constructor(
 
     private val getPermission = registry.register(REGISTRY_KEY, RequestPermission()) { result ->
         grantedPermissions[permissions[0]] = result
-        if (!result) showDeclineDialog()
+        if (!result) showDeclineDialog(permissions[0])
         else {
             granted.postValue(grantedPermissions)
         }
@@ -91,14 +92,37 @@ class PermissionRegistry constructor(
         granted = MutableLiveData();
     }
 
-    private fun showDeclineDialog() {
+    private fun showDeclineDialog(permission: String) {
 //        AlertDialog.Builder(context).apply {
 //            setMessage(R.string.permission_decline_alert)
 //            setNeutralButton(R.string.ok) { dialog, which -> dialog!!.dismiss() }
 //        }.show()
+//
+//        MaterialAlertDialogBuilder(context).apply {
+//
+//        }
+//
+//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+//        alertdialogBuilder.setMessage(R.string.reject_permission_results)
+//        alertdialogBuilder.setPositiveButton(
+//            R.string.retry_again
+//        ) { dialogInterface, i -> checkPerm() }
+//        alertdialogBuilder.setNegativeButton(
+//            R.string.ok_close_now
+//        ) { dialogInterface, i -> activity!!.finish() }
+//        val alertDialog = alertdialogBuilder.create()
+//        alertDialog.show()
+//        val positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+//        val negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+//        positiveButton.setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        negativeButton.setTextColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        IntelehealthApplication.setAlertDialogCustomTheme(activity, alertDialog)
     }
 
     companion object {
         private const val REGISTRY_KEY = "permission_registry_key"
+        const val CAMERA = Manifest.permission.CAMERA
     }
 }

@@ -2,7 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -58,6 +58,7 @@ public class PatientsFrameJson {
             appointmentRequestList = new AppointmentDAO().getUnsyncedAppointments();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
         List<VisitDTO> visitDTOList = visitsDAO.unsyncedVisits();
         List<EncounterDTO> encounterDTOList = encounterDAO.unsyncedEncounters();
@@ -100,6 +101,7 @@ public class PatientsFrameJson {
                     attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    CustomLog.e(TAG,e.getMessage());
                 }
 
 
@@ -154,14 +156,14 @@ public class PatientsFrameJson {
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
             //  encounterProvider.setProvider(session.getProviderID());
             encounterProvider.setProvider(encounterDTO.getProvideruuid());
-            Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
+            CustomLog.d("DTO", "DTO:frame " + encounterProvider.getProvider());
             encounterProviderList.add(encounterProvider);
             encounter.setEncounterProviders(encounterProviderList);
 
             if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
                 List<Ob> obsList = new ArrayList<>();
                 List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-                Log.d("OBS: ", "OBS: obsDTOList" + new Gson().toJson(obsDTOList));
+                CustomLog.d("OBS: ", "OBS: obsDTOList" + new Gson().toJson(obsDTOList));
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
@@ -174,7 +176,7 @@ public class PatientsFrameJson {
                             ob.setValue(obs.getValue());
                             ob.setComments(obs.getComments());
                             obsList.add(ob);
-                            Log.d("OBS: ", "OBS: " + new Gson().toJson(ob));
+                            CustomLog.d("OBS: ", "OBS: " + new Gson().toJson(ob));
                         }
                     }
                 }
@@ -197,10 +199,11 @@ public class PatientsFrameJson {
             providerDetailsDTOList = providerDAO.unsyncedProviderDetails(session.getProviderID());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG,e.getMessage());
         }
 
         if (providerDetailsDTOList != null && providerDetailsDTOList.size() > 0) {
-            Log.d(TAG, "frameJson:providerDetailsDTOList size:  " + providerDetailsDTOList.size());
+            CustomLog.d(TAG, "frameJson:providerDetailsDTOList size:  " + providerDetailsDTOList.size());
             for (ProviderDTO providerDTO : providerDetailsDTOList) {
                 Provider provider = new Provider();
                 // if (visitDTO.getAttributes().size() > 0) {
@@ -223,7 +226,7 @@ public class PatientsFrameJson {
 
             }
         } else {
-            Log.d("TAG", "frameJson:providerDetailsDTOList is null  ");
+            CustomLog.d("TAG", "frameJson:providerDetailsDTOList is null  ");
         }
 
 
@@ -236,7 +239,7 @@ public class PatientsFrameJson {
 
         Gson gson = new Gson();
         String value = gson.toJson(pushRequestApiCall);
-        Log.d("OBS: ", "OBS: " + value);
+        CustomLog.d("OBS: ", "OBS: " + value);
 
 
         return pushRequestApiCall;

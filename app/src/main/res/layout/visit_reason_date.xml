@@ -63,7 +63,7 @@
             android:paddingHorizontal="@dimen/margin_8"
             android:paddingVertical="@dimen/margin_4"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimary1"
+            android:textColor="@color/colorPrimary"
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>

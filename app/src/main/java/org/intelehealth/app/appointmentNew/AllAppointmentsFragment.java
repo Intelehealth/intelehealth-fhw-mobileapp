@@ -21,7 +21,7 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -141,12 +141,12 @@ public class AllAppointmentsFragment extends Fragment {
         ((MyAppointmentActivityNew) getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
-                Log.v(TAG, "onStart");
+                CustomLog.v(TAG, "onStart");
             }
 
             @Override
             public void onFinished(int eventFlag) {
-                Log.v(TAG, "onFinished");
+                CustomLog.v(TAG, "onFinished");
                 initLimits();
                 getAppointments();
             }
@@ -910,7 +910,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private String getPatientProfile(String patientUuid) {
-        Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
+        CustomLog.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String imagePath = "";
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ",

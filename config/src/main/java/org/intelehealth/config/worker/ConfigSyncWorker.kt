@@ -6,13 +6,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.intelehealth.config.data.ConfigDataSource
@@ -20,12 +17,7 @@ import org.intelehealth.config.data.ConfigRepository
 import org.intelehealth.config.network.WebClient
 import org.intelehealth.config.network.provider.WebClientProvider
 import org.intelehealth.config.room.ConfigDatabase
-import org.intelehealth.config.utility.WORKER_RESULT
 import org.intelehealth.core.network.helper.NetworkHelper
-import org.intelehealth.core.network.state.Result.Error
-import org.intelehealth.core.network.state.Result.Success
-import org.intelehealth.core.network.state.Result.Fail
-import org.intelehealth.core.network.state.Result.Loading
 
 /**
  * Created by Vaghela Mithun R. on 12-04-2024 - 13:17.

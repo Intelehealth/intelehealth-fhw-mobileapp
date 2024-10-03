@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">No answer from %1$s</string>
+    <string name="call_canceled_by">Call end by %1$s</string>
+    <string name="call_rejected_by">Call rejected by %1$s</string>
+    <string name="call_time_up">Call time up</string>
+    <string name="left_the_call">Call left by %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">Call disconnected due to not initiated</string>
+    <string name="reason_duplicated_identity">Call disconnected due to duplicated identity</string>
+    <string name="reason_server_shutdown">Call disconnected due to server shutdown</string>
+    <string name="reason_participant_removed">Call disconnected due to participant removed</string>
+    <string name="reason_room_deleted">Call disconnected due to room not found</string>
+    <string name="reason_state_mismatch">Call disconnected due to room mismatch</string>
+    <string name="reason_join_failure">Call disconnected due to fail to join room</string>
+    <string name="reason_unknown">Call disconnected due to fail to unknown reason</string>
+
+    <string name="call_missed">Missed Call</string>
+    <string name="call_outgoing">Outgoing Call</string>
+    <string name="call_ongoing">Ongoing call</string>
+    <string name="call_unknown">Unknown</string>
+    <string name="call_incoming">Incoming Call</string>
+    <string name="calling">Calling</string>
+    <string name="call_logs">Call Logs</string>
+
+    <string name="an_hour_ago">An hr ago</string>
+    <string name="hours_ago">%1$s hrs ago</string>
+    <string name="a_min_ago">A min ago</string>
+    <string name="mins_ago">%1$s mins ago</string>
+    <string name="a_second_ago">A sec ago</string>
+    <string name="seconds_ago">%1$s secs ago</string>
+    <string name="today">Today</string>
+    <string name="today_at">Today at</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="yesterday_at">Yesterday at</string>
+    <string name="now">Now</string>
+
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="hang_up">Hang Up</string>
+</resources>

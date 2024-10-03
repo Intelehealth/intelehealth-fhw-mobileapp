@@ -651,11 +651,11 @@
                                     android:layout_marginEnd="@dimen/margin_8"
                                     android:layout_weight="1"
                                     android:background="@drawable/ui2_common_primary_bg"
-                                    android:backgroundTint="@color/light_red"
+                                    android:backgroundTint="@color/colorAccentLightCard"
                                     android:lineHeight="@dimen/button_line_height"
                                     android:padding="@dimen/fu_margin_start"
                                     android:text="@string/cancel"
-                                    android:textColor="@color/red"
+                                    android:textColor="@color/colorAccent"
                                     android:textSize="@dimen/txtsize_patdetail_14sp"
                                     android:textStyle="bold" />
 
@@ -938,6 +938,7 @@
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabStartChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

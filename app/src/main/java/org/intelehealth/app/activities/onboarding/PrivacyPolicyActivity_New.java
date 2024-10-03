@@ -9,28 +9,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;

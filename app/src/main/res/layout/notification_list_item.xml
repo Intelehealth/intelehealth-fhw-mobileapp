@@ -43,7 +43,7 @@
             android:id="@+id/scroll_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/selector_color_notification"
             android:padding="@dimen/fu_margin_start"
 
              >
@@ -97,6 +97,7 @@
 
 
                         <TextView
+                            android:id="@+id/button_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

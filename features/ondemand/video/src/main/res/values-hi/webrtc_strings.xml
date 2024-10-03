@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">कोई जवाब नहीं मिला %1$s</string>
+    <string name="call_canceled_by">कॉल समाप्त हो गया %1$s</string>
+    <string name="call_rejected_by">कॉल अस्वीकृत किया गया %1$s</string>
+    <string name="call_time_up">कॉल का समय ख़तम</string>
+    <string name="left_the_call">कॉल दिया गया %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">कॉल प्रारंभ न होने के कारण कट हो गई</string>
+    <string name="reason_duplicated_identity">गलत पहचान के कारण कॉल काट दी गई</string>
+    <string name="reason_server_shutdown">सर्वर बंद होने के कारण कॉल कट गई</string>
+    <string name="reason_participant_removed">प्रतिभागी को हटा दिए जाने के कारण कॉल कट हो गई</string>
+    <string name="reason_room_deleted">कमरा न मिलने के कारण कॉल कट गई</string>
+    <string name="reason_state_mismatch">गलत रूम होने के कारण कॉल कट हो गई</string>
+    <string name="reason_join_failure">रूम ज्वाइन न कर पाने के कारण कॉल डिसकनेक्ट हो गई</string>
+    <string name="reason_unknown">अज्ञात कारण से कॉल कट गया</string>
+
+    <string name="call_missed">मिस्ड कॉल</string>
+    <string name="call_outgoing">आउटगोइंग कॉल</string>
+    <string name="call_ongoing">चालू कॉल</string>
+    <string name="call_unknown">अज्ञात</string>
+    <string name="call_incoming">इनकमिंग कॉल</string>
+    <string name="calling">कॉलिंग</string>
+    <string name="call_logs">कॉल लॉग्स</string>
+
+    <string name="an_hour_ago">एक घंटा पहले</string>
+    <string name="hours_ago">%1$s घंटे पहले</string>
+    <string name="a_min_ago">एक मिनट पहले</string>
+    <string name="mins_ago">%1$s मिनट पहले</string>
+    <string name="a_second_ago">एक सेकंड पहले</string>
+    <string name="seconds_ago">%1$s सेकंड पहले</string>
+    <string name="today">आज</string>
+    <string name="today_at">आज पर</string>
+    <string name="yesterday">कल</string>
+    <string name="yesterday_at">कल पर</string>
+    <string name="now">अब</string>
+
+    <string name="decline">गिरावट</string>
+    <string name="accept">स्वीकार करें</string>
+    <string name="hang_up">रख दो</string>
+</resources>

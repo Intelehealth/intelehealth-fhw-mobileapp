@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,9 +64,9 @@ public class ProviderAttributeLIstDAO {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {
-                    Log.d("SPECI", "SIZEXXX: " + createdRecordsCount);
+                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
                 } else {
-                    Log.d("SPECI", "SIZEXXX: " + createdRecordsCount);
+                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
                 }
 
             }

@@ -1,7 +1,7 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.gson.Gson;
 
@@ -38,15 +38,15 @@ public class NodeAdapterUtils {
      * @param toCompareWithNode
      */
     public static void updateForHideShowFlag(Context context, Node targetNode, Node toCompareWithNode) {
-        Log.v(TAG, "updateForHideShowFlag - " + new Gson().toJson(toCompareWithNode));
+        CustomLog.v(TAG, "updateForHideShowFlag - " + new Gson().toJson(toCompareWithNode));
         if (targetNode == null || toCompareWithNode == null) return;
         for (int i = 0; i < toCompareWithNode.getOptionsList().size(); i++) {
             boolean isSelected = toCompareWithNode.getOptionsList().get(i).isSelected();
             String text = toCompareWithNode.getOptionsList().get(i).getText();
-            Log.v(TAG, "updateForHideShowFlag text   - " + text + " - isSelected - " + isSelected);
+            CustomLog.v(TAG, "updateForHideShowFlag text   - " + text + " - isSelected - " + isSelected);
             for (int j = 0; j < targetNode.getOptionsList().size(); j++) {
                 if (text.equals(targetNode.getOptionsList().get(j).getText())) {
-                    Log.v(TAG, "updateForHideShowFlag match found!");
+                    CustomLog.v(TAG, "updateForHideShowFlag match found!");
                     targetNode.getOptionsList().get(j).setNeedToHide(isSelected);
                 }
             }

@@ -56,7 +56,6 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
@@ -69,7 +68,8 @@
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/btn_submit"

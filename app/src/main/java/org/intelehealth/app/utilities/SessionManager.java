@@ -3,7 +3,7 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
 
@@ -11,12 +11,14 @@ import java.util.Set;
 
 public class SessionManager {
     // Shared preferences file name
+    public static SessionManager instance;
     private static final String PREF_NAME = "Intelehealth";
     private static final String VISIT_ID = "visitID";
     private static final String BASE_URL = "base_url";
     private static final String ENCODED = "encoded";
     private static final String PULL_EXECUTED_TIME = "pullexecutedtime";
     private static final String KEY_PREF_SETUP_COMPLETE = "setup";
+    private static final String KEY_BLACKOUT = "blackout";
     private static final String APP_LANGUAGE = "Language";
     private static final String SESSION_ID = "sessionid";
     private static final String CREATOR_ID = "creatorid";
@@ -71,6 +73,7 @@ public class SessionManager {
     public static final String PRIVACY_POLICY = "PRIVACY_POLICY";
     public static final String TERMS_OF_USE = "TERMS_OF_USE";
     public static final String PERSONAL_DATA_PROCESSING_POLICY = "PERSONAL_DATA_PROCESSING_POLICY";
+    private static final String CUSTOM_LOG_VERSION = "custom_log_version";
 
 
     // LogCat tag
@@ -90,6 +93,11 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public static SessionManager getInstance(Context context) {
+        if (instance == null) instance = new SessionManager(context);
+        return instance;
     }
 
     public String getPreviousSearchQuery() {
@@ -161,6 +169,15 @@ public class SessionManager {
 
     public void setSetupComplete(Boolean setupComplete) {
         editor.putBoolean(KEY_PREF_SETUP_COMPLETE, setupComplete);
+        editor.commit();
+    }
+
+    public boolean isBlackout() {
+        return pref.getBoolean(KEY_BLACKOUT, false);
+    }
+
+    public void setBlackout(Boolean blackout) {
+        editor.putBoolean(KEY_BLACKOUT, blackout);
         editor.commit();
     }
 
@@ -297,13 +314,13 @@ public class SessionManager {
     }
 
     public void setLicenseKey(String licenseKey) {
-        Log.e("MindMapURL", "setLicenseKey - "+licenseKey);
+        CustomLog.e("MindMapURL", "setLicenseKey - " + licenseKey);
         editor.putString(LICENSE_KEY, licenseKey);
         editor.commit();
     }
 
     public void deleteLicensekey() {
-        Log.e("MindMapURL", "deleteLicensekey - ");
+        CustomLog.e("MindMapURL", "deleteLicensekey - ");
         editor.remove(LICENSE_KEY);
         editor.commit();
     }
@@ -404,7 +421,8 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getLastSyncDateTime() {
+    public String
+    getLastSyncDateTime() {
         return pref.getString(LAST_SYNC_SUCCESS_DATE_TIME, "- - - -");
     }  //getting the sync value  and time and saving in the sharedpref
 
@@ -554,6 +572,7 @@ public class SessionManager {
 
     /**
      * Handling appointment result here
+     *
      * @return
      */
 
@@ -569,6 +588,7 @@ public class SessionManager {
     /**
      * setting webview html here
      * to support offline
+     *
      * @param key
      * @return
      */
@@ -577,8 +597,20 @@ public class SessionManager {
         return pref.getString(key, "");
     }
 
-    public void setHtml(String key,String html) {
+    public void setHtml(String key, String html) {
         editor.putString(key, html);
         editor.commit();
+    }
+
+    /**
+     * custom logger version
+     */
+    public void setCustomLogVersion(String version) {
+        editor.putString(CUSTOM_LOG_VERSION, version);
+        editor.commit();
+    }
+
+    public String getCustomLogVersion() {
+        return pref.getString(CUSTOM_LOG_VERSION,"");
     }
 }

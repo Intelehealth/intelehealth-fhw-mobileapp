@@ -2,7 +2,7 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -337,7 +338,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
         try {
             String[] temp = null;
-            Log.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
+            CustomLog.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
             if (!sessionManager.getLicenseKey().isEmpty()) {
                 File base_dir = new File(requireActivity().getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
                 File[] files = base_dir.listFiles();
@@ -351,6 +352,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
+                Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
                 reasonData.setReasonName(fileName);
                 reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));

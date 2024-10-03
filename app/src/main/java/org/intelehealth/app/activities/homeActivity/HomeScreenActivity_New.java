@@ -17,6 +17,7 @@ import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.usage.UsageStats;
@@ -38,9 +39,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +56,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -101,9 +105,11 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -117,6 +123,7 @@ import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
@@ -182,6 +189,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HELP = "TAG_HELP";
     private NotificationReceiver notificationReceiver;
 
+    private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
+
+
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
@@ -191,7 +201,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v(TAG, "onNewIntent");
+        CustomLog.v(TAG, "onNewIntent");
 //        catchFCMMessageData();
     }
 
@@ -202,7 +212,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //            Bundle remoteMessage = getIntent().getExtras();
 //            try {
 //                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-//                    //Log.d(TAG, "actionType : TEXT_CHAT");
+//                    //CustomLog.d(TAG, "actionType : TEXT_CHAT");
 //                    String fromUUId = remoteMessage.getString("toUser");
 //                    String toUUId = remoteMessage.getString("fromUser");
 //                    String patientUUid = remoteMessage.getString("patientId");
@@ -229,7 +239,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //                    startActivity(chatIntent);
 //
 //                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-//                    //Log.d(TAG, "actionType : VIDEO_CALL");
+//                    //CustomLog.d(TAG, "actionType : VIDEO_CALL");
 //                    Intent in = new Intent(this, CompleteActivity.class);
 //                    String roomId = remoteMessage.getString("roomId");
 //                    String doctorName = remoteMessage.getString("doctorName");
@@ -286,7 +296,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private UpdateFragmentOnEvent mUpdateFragmentOnEvent;
 
     public void initUpdateFragmentOnEvent(UpdateFragmentOnEvent listener) {
-        Log.v(TAG, "initUpdateFragmentOnEvent");
+        CustomLog.v(TAG, "initUpdateFragmentOnEvent");
         mUpdateFragmentOnEvent = listener;
     }
 
@@ -322,8 +332,55 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         backPress();
         initUI();
         clickListeners();
+
+        //checking alerm parmission added or not
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            setupAlarmPermissionLauncher();
+            checkAlarmAndReminderPermission();
+        }
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
     }
+
+    private void checkAlarmAndReminderPermission() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                scheduleExactAlarmPermissionLauncher.launch(intent);
+            }
+        }
+    }
+    private void setupAlarmPermissionLauncher() {
+        scheduleExactAlarmPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        if (!alarmManager.canScheduleExactAlarms()) {
+                            String message = getString(R.string.required_alarm_and_reminder_permission);
+                            String title = getString(R.string.error);
+                            String action = getString(R.string.button_allow);
+                            String cancel = getString(R.string.cancel);
+                            new DialogUtils().showCommonDialog(
+                                    this, R.drawable.close_patient_svg, title,
+                                    message, false, action, cancel,
+                                    new DialogUtils.CustomDialogListener() {
+                                        @Override
+                                        public void onDialogActionDone(int action) {
+                                            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                                                finish();
+                                            } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                                checkAlarmAndReminderPermission();
+                                            }
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+        );
+    }
+
 
     private void clickListeners() {
         Intent intent_exit = getIntent();
@@ -558,7 +615,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         ivHamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: icon clicked");
+                CustomLog.d(TAG, "onClick: icon clicked");
                 mDrawerLayout.openDrawer(GravityCompat.START);
 
             }
@@ -651,7 +708,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void checkForInternet() {
         boolean result = NetworkConnection.isOnline(this);
-        Log.d(TAG, "checkForInternet: result : " + result);
+        CustomLog.d(TAG, "checkForInternet: result : " + result);
     }
 
     /**
@@ -671,8 +728,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        Timber.tag(TAG).d("backStackEntryCount %s", backStackEntryCount);
-        Log.v(TAG, "backStackEntryCount - " + backStackEntryCount);
+        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
             // finish();
@@ -721,7 +778,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return "";
         }
         String topFragment = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        Log.v(TAG, topFragment);
+        CustomLog.v(TAG, topFragment);
         return topFragment;
 
     }
@@ -852,6 +909,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onDestroy() {
         super.onDestroy();
         notificationReceiver.unregisterModuleBReceiver(this);
+        scheduleExactAlarmPermissionLauncher.unregister();
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
@@ -921,6 +979,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        if (mNavigationView != null) {
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+        }
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass = null;
@@ -986,7 +1052,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
-        Log.d(TAG, "check11onResume: home");
+        CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
@@ -997,7 +1063,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
         firstLogin = getIntent().getStringExtra("firstLogin");
-        Log.d(TAG, "onCreate: firstLogin : " + firstLogin);
+        CustomLog.d(TAG, "onCreate: firstLogin : " + firstLogin);
         if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
@@ -1057,7 +1123,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             @Override
             public void onError(Throwable e) {
-                Log.e("Error", "" + e);
+                CustomLog.e("Error", "" + e);
             }
         }));
 
@@ -1081,7 +1147,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     }
                 }
 
-                Log.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
+                CustomLog.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
                 if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
                         mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
@@ -1219,7 +1285,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             switch (item.getItemId()) {
                 case R.id.bottom_nav_home_menu:
-                    Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
+                    CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
@@ -1330,12 +1396,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
-        Log.d(TAG, "profilePicDownloaded: ");
+        CustomLog.d(TAG, "profilePicDownloaded: ");
         SessionManager sessionManager = new SessionManager(HomeScreenActivity_New.this);
         UrlModifiers urlModifiers = new UrlModifiers();
         String uuid = sessionManager.getProviderID();
         String url = urlModifiers.getProviderProfileImageUrl(uuid);
-        Log.d(TAG, "profilePicDownloaded:: url : " + url);
+        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
 
 
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PROVIDER_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -1343,7 +1409,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
             @Override
             public void onNext(ResponseBody file) {
-                Log.d(TAG, "onNext: ");
+                CustomLog.d(TAG, "onNext: ");
                 DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
                 downloadFilesUtils.saveToDisk(file, uuid);
             }
@@ -1515,7 +1581,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 // FCM A added action received
                 String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
                 ivNotificationIcon.setVisibility(View.VISIBLE);
-                preferenceHelper.save(PreferenceHelper.IS_NOTIFICATION,true);
+                preferenceHelper.save(PreferenceHelper.IS_NOTIFICATION, true);
             }
         }
 

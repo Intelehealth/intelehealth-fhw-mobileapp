@@ -1,7 +1,7 @@
 package org.intelehealth.app.activities.setupActivity;
 
 import android.content.Context;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

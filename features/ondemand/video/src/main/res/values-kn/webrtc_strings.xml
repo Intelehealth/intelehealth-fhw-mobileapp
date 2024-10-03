@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">ಕರೆಯಿಂದ ಉತ್ತರವಿಲ್ಲ %1$s</string>
+    <string name="call_canceled_by">ಯಾರಿಂದ ಕರೆ ಕೊನೆಗೊಂಡಿತು %1$s</string>
+    <string name="call_rejected_by">ಯಾರಿಂದ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ %1$s</string>
+    <string name="call_time_up">ಕರೆ ಮಾಡುವ ಸಮಯ ಮುಗಿದಿದೆ</string>
+    <string name="left_the_call">ಯಾರು ಕರೆ ಬಿಟ್ಟರು %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">ಪ್ರಾರಂಭಿಸದ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_duplicated_identity">ನಕಲಿ ಗುರುತಿನ ಕಾರಣದಿಂದ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_server_shutdown">ಸರ್ವರ್ ಸ್ಥಗಿತಗೊಂಡ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_participant_removed">ಭಾಗವಹಿಸುವವರನ್ನು ತೆಗೆದುಹಾಕಿದ್ದರಿಂದ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_room_deleted">ರೂಮ್ ಸಿಗದ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_state_mismatch">ಕೊಠಡಿ ಹೊಂದಿಕೆಯಾಗದ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_join_failure">ಕೋಣೆಗೆ ಸೇರಲು ವಿಫಲವಾದ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+    <string name="reason_unknown">ಅಜ್ಞಾತ ಕಾರಣದಿಂದ ವಿಫಲವಾದ ಕಾರಣ ಕರೆ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</string>
+
+    <string name="call_missed">ತಪ್ಪಿದ ಕರೆ</string>
+    <string name="call_outgoing">ಹೊರಹೋಗುವ ಕರೆ</string>
+    <string name="call_ongoing">ನಡೆಯುತ್ತಿರುವ ಕರೆ</string>
+    <string name="call_unknown">ಅಪರಿಚಿತ ಕರೆ</string>
+    <string name="call_incoming">ಒಳಬರುವ ಕರೆ</string>
+    <string name="call_logs">ಕರೆ ದಾಖಲೆಗಳು</string>
+    <string name="calling">ಕರೆಯುತ್ತಿದೆ</string>
+
+    <string name="an_hour_ago">ಒಂದು ಗಂಟೆ ಹಿಂದೆ</string>
+    <string name="hours_ago">%1$s ಗಂಟೆಗಳ ಹಿಂದೆ</string>
+    <string name="a_min_ago">ಒಂದು ನಿಮಿಷದ ಹಿಂದೆ</string>
+    <string name="mins_ago">%1$s ನಿಮಿಷಗಳ ಹಿಂದೆ</string>
+    <string name="a_second_ago">ಒಂದು ಸೆಕೆಂಡ್ ಹಿಂದೆ</string>
+    <string name="seconds_ago">%1$s ಸೆಕೆಂಡುಗಳ ಹಿಂದೆ</string>
+    <string name="today">ಇಂದು</string>
+    <string name="today_at">ಈ ದಿನ</string>
+    <string name="yesterday">ನಿನ್ನೆ</string>
+    <string name="yesterday_at">ನಿನ್ನೆಯ ದಿನ</string>
+    <string name="now">ಈಗ</string>
+
+    <string name="decline">ನಿರಾಕರಿಸು</string>
+    <string name="accept">ಸ್ವೀಕರಿಸು</string>
+    <string name="hang_up">ಸ್ಥಗಿತಗೊಳಿಸಿ</string>
+</resources>

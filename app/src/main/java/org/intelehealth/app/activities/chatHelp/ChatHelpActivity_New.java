@@ -25,7 +25,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -143,7 +143,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     private void fillDataInList() {
         String outgoingMsg = etSendMessage.getText().toString();
         // SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm a");
-        //  Log.d(TAG, "fillDataInList: formatDate : " + formatDate);
+        //  CustomLog.d(TAG, "fillDataInList: formatDate : " + formatDate);
 
 
         ChatHelpModel c1 = new ChatHelpModel("", outgoingMsg, "",
@@ -161,7 +161,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
         rvChatSupport.setAdapter(chatHelpAdapter_new);
 
-        Log.d(TAG, "fillDataInList: chattingDetailsList size  :" + chattingDetailsList.size());
+        CustomLog.d(TAG, "fillDataInList: chattingDetailsList size  :" + chattingDetailsList.size());
 
         etSendMessage.setText("");
     }
@@ -171,7 +171,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         ivSendAttachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: ivSendAttachment");
+                CustomLog.d(TAG, "onClick: ivSendAttachment");
                 layoutMediaOptions.setVisibility(View.VISIBLE);
             }
         });
@@ -228,9 +228,9 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) {
                 Uri selectedImage = result.getData().getData();
-                Log.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
+                CustomLog.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
                 if (selectedImage.toString().toLowerCase().contains("image") || selectedImage.toString().toLowerCase().contains(".jpeg") || selectedImage.toString().toLowerCase().contains(".jpg")) {
-                    Log.d(TAG, "onActivityResult: im image if");
+                    CustomLog.d(TAG, "onActivityResult: im image if");
                     //handle image
                     String[] filePath = {MediaStore.Images.Media.DATA};
                     Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -239,7 +239,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                     String picturePath = c.getString(columnIndex);
                     c.close();
                     //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    Log.v("path", picturePath + "");
+                    CustomLog.v("path", picturePath + "");
 
                     // copy & rename the file
                     String finalImageName = UUID.randomUUID().toString();
@@ -249,7 +249,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                 } else if (selectedImage.toString().toLowerCase().contains("video") || selectedImage.toString().toLowerCase().contains(".mp4")) {
                     //handle video
                     String filemanagerstring = selectedImage.getPath();
-                    Log.d(TAG, "onActivityResult: video result : " + filemanagerstring);
+                    CustomLog.d(TAG, "onActivityResult: video result : " + filemanagerstring);
 
                     // MEDIA GALLERY
                     String selectedImagePath = getPath(selectedImage);
@@ -260,7 +260,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                                 false, false, false, selectedImagePath,
                                 "");
                         chattingDetailsList.add(c1);
-                        Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                        CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
                         chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
                         rvChatSupport.setAdapter(chatHelpAdapter_new);
                     }
@@ -276,9 +276,9 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         if (result.getResultCode() == RESULT_OK) {
             Uri uri = result.getData().getData();
             String selectedDocPath = getPathNew(uri);
-            Log.d(TAG, "onActivityResult: src file path : " + selectedDocPath);
+            CustomLog.d(TAG, "onActivityResult: src file path : " + selectedDocPath);
             String filename = selectedDocPath.substring(selectedDocPath.lastIndexOf("/") + 1);
-            Log.d(TAG, "onActivityResult: filename  : " + filename);
+            CustomLog.d(TAG, "onActivityResult: filename  : " + filename);
 
             ChatHelpModel c1 = new ChatHelpModel("", "", "",
                     getCurrentTime(), "", false,
@@ -287,7 +287,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                     false, false, false, selectedDocPath,
                     "");
             chattingDetailsList.add(c1);
-            Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+            CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
             chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
             rvChatSupport.setAdapter(chatHelpAdapter_new);
         }
@@ -326,7 +326,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     }
 
     private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         try {
 
 
@@ -335,7 +335,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                 try {
                     long length = photo.length();
                     length = length / 1024;
-                    Log.e("------->>>>", length + "");
+                    CustomLog.e("------->>>>", length + "");
                 } catch (Exception e) {
                     System.out.println("File not found : " + e.getMessage() + e);
                 }
@@ -345,7 +345,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                         false, false, false, false,
                         false, false, false, picturePath, "");
                 chattingDetailsList.add(c1);
-                Log.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
+                CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
                 chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
                 rvChatSupport.setAdapter(chatHelpAdapter_new);
                 //chatHelpAdapter_new.add(c1);
@@ -353,7 +353,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
             }
 
         } catch (Exception e) {
-            Log.d(TAG, "saveImage: exception : " + e.getLocalizedMessage());
+            CustomLog.d(TAG, "saveImage: exception : " + e.getLocalizedMessage());
         }
     }
 
@@ -521,7 +521,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     }
 
     private void openDocument(String mediaPath) {
-        Log.d(TAG, "openDocument: mediaPath : "+mediaPath);
+        CustomLog.d(TAG, "openDocument: mediaPath : "+mediaPath);
      /*   File file = new File(Environment.getExternalStorageDirectory(),
                 mediaPath);
         Uri path = Uri.fromFile(file);

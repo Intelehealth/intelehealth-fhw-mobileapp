@@ -8,13 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +78,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 
     private LanguageAdapter languageAdapter;
     private ActiveLanguage selectedLanguage;
+    private SwitchCompat switchNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,12 +125,18 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
         btRefresh = findViewById(R.id.refresh);
         mLangTextView = findViewById(R.id.lang_spinner_txt);
+        switchNotification = findViewById(R.id.switchNotification);
         clickListeners();
 
         Intent intent = getIntent();
         if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("language updated")) {
             showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
         }
+        switchNotification.setChecked(sessionManager.isBlackout());
+
+       switchNotification .setOnCheckedChangeListener((buttonView, isChecked) -> {
+           sessionManager.setBlackout(isChecked);
+       });
     }
 
 //    public Context setLocale(Context context) {
@@ -478,12 +487,12 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
                     //  customProgressDialog.dismiss();
                     if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        CustomLog.e("MindMapURL", "Successfully get MindMap URL");
                         mTask = new DownloadMindMaps(context, alertDialog, "home", true);
                         mindmapURL = res.getMindmap().trim();
                         sessionManager.setLicenseKey(key);
-                        Log.e("MindMapURL", "Successfully get MindMap URL"+mindmapURL);
-                        Log.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
+                        CustomLog.e("MindMapURL", "Successfully get MindMap URL"+mindmapURL);
+                        CustomLog.e("MindMapURL", "Successfully get MindMap URL"+sessionManager.getLicenseKey());
                         /**
                          * Showing snackbar custom view on success of Protocols udpated...
                          */
@@ -510,47 +519,47 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
                 }
             });
         } catch (IllegalArgumentException e) {
-            Log.e("TAG", "changeApiBaseUrl: " + e.getMessage());
-            Log.e("TAG", "changeApiBaseUrl: " + e.getStackTrace());
+            CustomLog.e("TAG", "changeApiBaseUrl: " + e.getMessage());
+            CustomLog.e("TAG", "changeApiBaseUrl: " + e.getStackTrace());
         }
     }
 
     private void checkExistingMindMaps() {
         //Check is there any existing mindmaps are present, if yes then delete.
         File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
-        Log.e("TAG", "Engines folder=" + engines.exists());
+        CustomLog.e("TAG", "Engines folder=" + engines.exists());
         if (engines.exists()) {
             engines.delete();
         }
         File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
-        Log.e("TAG", "Logo folder=" + logo.exists());
+        CustomLog.e("TAG", "Logo folder=" + logo.exists());
         if (logo.exists()) {
             logo.delete();
         }
         File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
-        Log.e("TAG", "physExam.json=" + physicalExam.exists());
+        CustomLog.e("TAG", "physExam.json=" + physicalExam.exists());
         if (physicalExam.exists()) {
             physicalExam.delete();
         }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
-        Log.e("TAG", "famHist.json=" + familyHistory.exists());
+        CustomLog.e("TAG", "famHist.json=" + familyHistory.exists());
         if (familyHistory.exists()) {
             familyHistory.delete();
         }
         File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
-        Log.e("TAG", "patHist.json=" + pastMedicalHistory.exists());
+        CustomLog.e("TAG", "patHist.json=" + pastMedicalHistory.exists());
         if (pastMedicalHistory.exists()) {
             pastMedicalHistory.delete();
         }
         File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
-        Log.e("TAG", "config.json=" + config.exists());
+        CustomLog.e("TAG", "config.json=" + config.exists());
         if (config.exists()) {
             config.delete();
         }
 
         //Start downloading mindmaps
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
-        Log.e("DOWNLOAD", "isSTARTED");
+        CustomLog.e("DOWNLOAD", "isSTARTED");
     }
 
     void handleBackPress() {

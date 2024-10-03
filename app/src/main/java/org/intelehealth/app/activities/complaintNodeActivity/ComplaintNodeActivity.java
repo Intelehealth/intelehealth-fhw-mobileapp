@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,7 +60,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class ComplaintNodeActivity extends BaseActivity {
-    final String TAG = "Complaint Node Activity";
+   /* final String TAG = "Complaint Node Activity";
 
     String patientUuid;
     String visitUuid;
@@ -122,7 +122,7 @@ public class ComplaintNodeActivity extends BaseActivity {
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
+        CustomLog.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
@@ -181,7 +181,7 @@ public class ComplaintNodeActivity extends BaseActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (currentFile != null) {
-                    Log.i(TAG, currentFile.toString());
+                    CustomLog.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
 
                     complaints.add(currentNode);
@@ -274,7 +274,7 @@ public class ComplaintNodeActivity extends BaseActivity {
             }
         }
 
-      /*  listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
+      *//*  listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
                 R.layout.list_item_subquestion,
                 complaints);
 
@@ -289,7 +289,7 @@ public class ComplaintNodeActivity extends BaseActivity {
                 listAdapter.notifyDataSetChanged();
                 //The adapter needs to be notified every time a knowledgeEngine is clicked to ensure proper display of selected nodes.
             }
-        });*/
+        });*//*
 
         listAdapter
                 = new ComplaintNodeListAdapter(this, complaints);
@@ -318,9 +318,9 @@ public class ComplaintNodeActivity extends BaseActivity {
 
     }
 
-    /**
+    *//**
      * Method to confirm all the complaints that were selected, and ensure that the conversation with the patient is thorough.
-     */
+     *//*
     public void confirmComplaints() {
 
         final ArrayList<String> selection = new ArrayList<>();
@@ -452,5 +452,5 @@ public class ComplaintNodeActivity extends BaseActivity {
                 R.anim.bottom_up);
         v.startAnimation(bottomUp);
 
-    }
+    }*/
 }

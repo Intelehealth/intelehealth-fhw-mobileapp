@@ -1,6 +1,6 @@
 package org.intelehealth.app.utilities;
 
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Pair;
 
 
@@ -35,23 +35,23 @@ public class DownloadFilesUtils {
                 int count;
                 int progress = 0;
                 long fileSize = body.contentLength();
-                Log.d(TAG, "File Size=" + fileSize);
+                CustomLog.d(TAG, "File Size=" + fileSize);
                 while ((count = inputStream.read(data)) != -1) {
                     outputStream.write(data, 0, count);
                     progress += count;
                     Pair<Integer, Long> pairs = new Pair<>(progress, fileSize);
-                    Log.d(TAG, "Progress: " + progress + "/" + fileSize + " >>>> " + (float) progress / fileSize);
+                    CustomLog.d(TAG, "Progress: " + progress + "/" + fileSize + " >>>> " + (float) progress / fileSize);
                 }
 
                 outputStream.flush();
 
-                Log.d(TAG, destinationFile.getParent());
+                CustomLog.d(TAG, destinationFile.getParent());
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
-                Log.d(TAG, "Failed to save the file!");
+                CustomLog.d(TAG, "Failed to save the file!");
                 return;
             } finally {
                 if (inputStream != null) inputStream.close();
@@ -59,7 +59,7 @@ public class DownloadFilesUtils {
             }
         } catch (IOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            Log.d(TAG, "Failed to save the file!");
+            CustomLog.d(TAG, "Failed to save the file!");
             return;
         }
     }

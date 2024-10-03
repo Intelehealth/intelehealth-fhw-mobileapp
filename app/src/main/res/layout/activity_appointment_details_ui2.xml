@@ -189,28 +189,28 @@
 
                 <LinearLayout
                     android:id="@+id/llPriorityTagAppointmentDetails"
-                    android:contentDescription="Appointment Details Screen Priority Tag Linear Layout"
-                    android:layout_marginEnd="@dimen/cp_margin_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ui2_frame_priority"
                     android:layout_gravity="top"
+                    android:layout_marginEnd="@dimen/cp_margin_start"
+                    android:background="@drawable/ui2_frame_priority"
+                    android:contentDescription="Appointment Details Screen Priority Tag Linear Layout"
                     android:visibility="gone"
-                    tools:visibility="visible" >
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/fu_priority_tag"
-                        android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:lineSpacingExtra="0sp"
                         android:text="@string/priority"
-                        android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textAllCaps="true"
+                        android:textColor="@color/white"
                         android:textSize="10sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -698,7 +698,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:src="@drawable/ui2_ic_prescription_red" />
+                    android:src="@drawable/prescription_icon" />
 
                 <!-- label-text -->
                 <TextView

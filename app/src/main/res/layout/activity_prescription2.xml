@@ -1245,11 +1245,11 @@
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
-                android:backgroundTint="@color/colorPrimaryLightCard"
+                app:backgroundTint="@null"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/fu_margin_start"
                 android:text="@string/action_print"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold" />
 

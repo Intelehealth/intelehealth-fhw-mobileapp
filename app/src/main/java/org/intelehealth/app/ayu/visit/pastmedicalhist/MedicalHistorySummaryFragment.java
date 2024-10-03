@@ -7,7 +7,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +79,16 @@ public class MedicalHistorySummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        int index = status.getVitalSection() ? 4 : 3;
+        int total = status.getVitalSection() ? 4 : 3;
+        TextView tvTitle = view.findViewById(R.id.tv_sub_title);
+        tvTitle.setText(getString(R.string.ui2_medical_hist_title_text, index, total));
     }
 
     @Override
@@ -178,7 +190,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
-                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    CustomLog.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
 
 
@@ -194,13 +206,13 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();
-                        Log.v("K", "k - " + k);
-                        Log.v("V", "V - " + v);
+                        CustomLog.v("K", "k - " + k);
+                        CustomLog.v("V", "V - " + v);
                         if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
-                        if(v.endsWith(",")){
-                            v =  v.substring(0, v.length()-1);
+                        if (v.endsWith(",")) {
+                            v = v.substring(0, v.length() - 1);
                         }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k.isEmpty() ? v : k);
@@ -208,7 +220,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         visitSummaryDataList.add(summaryData);
                     } else {
                         boolean isOddSequence = qa.length % 2 != 0;
-                        Log.v("isOddSequence", qa.length+" = " + isOddSequence);
+                        CustomLog.v("isOddSequence", qa.length + " = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
@@ -218,7 +230,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                             for (int j = 0; j < qa.length; j++) {
                                 boolean isLastItem = j == qa.length - 1;
                                 String v1 = qa[j];
-                                Log.v("V", v1);
+                                CustomLog.v("V", v1);
                                 if (lastString.equals(v1)) continue;
                                 //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
@@ -229,8 +241,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                         v = v.split(":")[1];
                                     }
 
-                                    if(v.endsWith(",")){
-                                        v =  v.substring(0, v.length()-1);
+                                    if (v.endsWith(",")) {
+                                        v = v.substring(0, v.length() - 1);
                                     }
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(k1);
@@ -249,7 +261,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                             }
                         } else {
                             for (int j = 0; j < qa.length; j++) {
-                                Log.v("QA", "qa - " + qa[j]);
+                                CustomLog.v("QA", "qa - " + qa[j]);
                                 if (j == 0) {
                                     k1 = qa[j];
                                 } else {
@@ -260,8 +272,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
                             }
                             String v2 = stringBuilder.toString().trim();
-                            if(v2.endsWith(",")){
-                                v2 =  v2.substring(0, v2.length()-1);
+                            if (v2.endsWith(",")) {
+                                v2 = v2.substring(0, v2.length() - 1);
                             }
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(k1);

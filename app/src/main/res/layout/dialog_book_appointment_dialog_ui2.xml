@@ -59,13 +59,10 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/white_bg_button"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingTop="16dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="16dp"
                 android:text="@string/no"
                 android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/btn_yes_appointment"
@@ -74,10 +71,6 @@
                 android:layout_toEndOf="@id/button_no_appointment"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingTop="16dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="16dp"
                 android:text="@string/yes"
                 android:textSize="14sp" />
         </RelativeLayout>

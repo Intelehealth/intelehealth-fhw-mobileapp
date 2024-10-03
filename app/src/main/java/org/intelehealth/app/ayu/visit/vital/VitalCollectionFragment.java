@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,15 +48,24 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
+import org.intelehealth.config.presenter.fields.factory.PatientVitalViewModelFactory;
+import org.intelehealth.config.presenter.fields.viewmodel.PatientVitalViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.PatientVital;
+import org.intelehealth.config.utility.PatientVitalConfigKeys;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -71,8 +83,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     //private Spinner mHeightSpinner, mWeightSpinner;
     private EditText mHeightEditText, mWeightEditText;
     private TextView mBMITextView, mBmiStatusTextView;
-    private LinearLayout mBMILinearLayout;
-    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView;
+    //private LinearLayout mBMILinearLayout;
+    TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView, mBloodGroupErrorTextView;
     EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
 
@@ -88,6 +100,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private boolean mIsEditMode = false;
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
+    private View mRootView;
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
+
+    private List<PatientVital> mPatientVitalList;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -150,49 +166,50 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_vital_collection, container, false);
-        Log.v("float_ageYear_Month", float_ageYear_Month + "");
+        mRootView = inflater.inflate(R.layout.fragment_vital_collection, container, false);
+        CustomLog.v("float_ageYear_Month", float_ageYear_Month + "");
         //mHeightSpinner = view.findViewById(R.id.sp_height);
         //mWeightSpinner = view.findViewById(R.id.sp_weight);
 
-        mBloodGroupTextView = view.findViewById(R.id.tv_blood_group_spinner);
+        mBloodGroupTextView = mRootView.findViewById(R.id.tv_blood_group_spinner);
 
-        mHeightEditText = view.findViewById(R.id.etv_height);
-        mWeightEditText = view.findViewById(R.id.etv_weight);
+        mHeightEditText = mRootView.findViewById(R.id.etv_height);
+        mWeightEditText = mRootView.findViewById(R.id.etv_weight);
 
         mHeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         mWeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
 
-        mBMILinearLayout = view.findViewById(R.id.ll_bmi);
+        mBMICardView = mRootView.findViewById(R.id.ll_bmi);
         if (float_ageYear_Month <= 19)
-            mBMILinearLayout.setVisibility(View.GONE);
-        mBMITextView = view.findViewById(R.id.tv_bmi_value);
-        mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);
+            mBMICardView.setVisibility(View.GONE);
+        mBMITextView = mRootView.findViewById(R.id.tv_bmi_value);
+        mBmiStatusTextView = mRootView.findViewById(R.id.tv_bmi_status);
 
-        mBpSysEditText = view.findViewById(R.id.etv_bp_sys);
-        mBpDiaEditText = view.findViewById(R.id.etv_bp_dia);
+        mBpSysEditText = mRootView.findViewById(R.id.etv_bp_sys);
+        mBpDiaEditText = mRootView.findViewById(R.id.etv_bp_dia);
 
-        mSpo2EditText = view.findViewById(R.id.etv_spo2);
-        mPulseEditText = view.findViewById(R.id.etv_pulse);
-        mRespEditText = view.findViewById(R.id.etv_respiratory_rate);
-        mTemperatureEditText = view.findViewById(R.id.etv_temperature);
+        mSpo2EditText = mRootView.findViewById(R.id.etv_spo2);
+        mPulseEditText = mRootView.findViewById(R.id.etv_pulse);
+        mRespEditText = mRootView.findViewById(R.id.etv_respiratory_rate);
+        mTemperatureEditText = mRootView.findViewById(R.id.etv_temperature);
         mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         // errors
-        mHeightErrorTextView = view.findViewById(R.id.tv_height_error);
-        mWeightErrorTextView = view.findViewById(R.id.tv_weight_error);
+        mHeightErrorTextView = mRootView.findViewById(R.id.tv_height_error);
+        mWeightErrorTextView = mRootView.findViewById(R.id.tv_weight_error);
 
-        mBpSysErrorTextView = view.findViewById(R.id.etv_bp_sys_error);
-        mBpDiaErrorTextView = view.findViewById(R.id.etv_bp_dia_error);
+        mBpSysErrorTextView = mRootView.findViewById(R.id.etv_bp_sys_error);
+        mBpDiaErrorTextView = mRootView.findViewById(R.id.etv_bp_dia_error);
 
-        mSpo2ErrorTextView = view.findViewById(R.id.etv_spo2_error);
+        mSpo2ErrorTextView = mRootView.findViewById(R.id.etv_spo2_error);
 
-        mPulseErrorTextView = view.findViewById(R.id.etv_pulse_error);
+        mPulseErrorTextView = mRootView.findViewById(R.id.etv_pulse_error);
 
-        mRespErrorTextView = view.findViewById(R.id.etv_respiratory_rate_error);
+        mRespErrorTextView = mRootView.findViewById(R.id.etv_respiratory_rate_error);
 
-        mTemperatureErrorTextView = view.findViewById(R.id.etv_temperature_error);
+        mTemperatureErrorTextView = mRootView.findViewById(R.id.etv_temperature_error);
+        mBloodGroupErrorTextView = mRootView.findViewById(R.id.tv_blood_group_error);
 
         mHeightErrorTextView.setVisibility(View.GONE);
         mWeightErrorTextView.setVisibility(View.GONE);
@@ -202,6 +219,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mPulseErrorTextView.setVisibility(View.GONE);
         mRespErrorTextView.setVisibility(View.GONE);
         mTemperatureErrorTextView.setVisibility(View.GONE);
+        mBloodGroupErrorTextView.setVisibility(View.GONE);
 
         mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));
         mWeightEditText.addTextChangedListener(new MyTextWatcher(mWeightEditText));
@@ -213,9 +231,28 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespEditText.addTextChangedListener(new MyTextWatcher(mRespEditText));
         mTemperatureEditText.addTextChangedListener(new MyTextWatcher(mTemperatureEditText));
 
-        mSubmitButton = view.findViewById(R.id.btn_submit);
+        mSubmitButton = mRootView.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(this);
         mSubmitButton.setClickable(true);
+        mHeightCardView = mRootView.findViewById(R.id.ll_height_container);
+
+        mWeightCardView = mRootView.findViewById(R.id.ll_weight_container);
+
+        mBMICardView = mRootView.findViewById(R.id.ll_bmi);
+
+        mSBPCardView = mRootView.findViewById(R.id.ll_sbp_container);
+
+        mDBPCardView = mRootView.findViewById(R.id.ll_dbp_container);
+
+        mPulseCardView = mRootView.findViewById(R.id.ll_pulse_container);
+
+        mTemperatureCardView = mRootView.findViewById(R.id.ll_temperature_container);
+
+        mSpo2CardView = mRootView.findViewById(R.id.ll_spo2_container);
+
+        mRespiratoryCardView = mRootView.findViewById(R.id.ll_respiratory_rate_container);
+
+        mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
 
 
         //showHeightListing();
@@ -270,6 +307,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mBloodGroupTextView.setText(data.getTitle());
                         //as we are saving code not text for blood group
                         mBloodGroupTextView.setTag(data.getObject().toString());
+                        boolean isValid = isValidaForm();
+                        setDisabledSubmit(!isValid);
                     }
                 });
                 recyclerView.setAdapter(dialogListAdapter);
@@ -278,7 +317,116 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
         });
 
-        return view;
+        return mRootView;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //config viewmodel initialization
+        PatientVitalRepository repository = new PatientVitalRepository(ConfigDatabase.getInstance(requireActivity()).patientVitalDao());
+        PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
+        PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
+        //requireActivity();
+        patientVitalViewModel.getAllEnabledLiveFields()
+                .observe(requireActivity(), it -> {
+                            mPatientVitalList = it;
+                            //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
+                            updateUI();
+                        }
+                );
+    }
+
+    private void updateUI() {
+        mHeightCardView.setVisibility(View.GONE);
+        mWeightCardView.setVisibility(View.GONE);
+        mBMICardView.setVisibility(View.GONE);
+        mSBPCardView.setVisibility(View.GONE);
+        mDBPCardView.setVisibility(View.GONE);
+        mPulseCardView.setVisibility(View.GONE);
+        mTemperatureCardView.setVisibility(View.GONE);
+        mSpo2CardView.setVisibility(View.GONE);
+        mRespiratoryCardView.setVisibility(View.GONE);
+        mBloodGroupCardView.setVisibility(View.GONE);
+        /*if (float_ageYear_Month <= 19)
+            bmiLinearLayout.setVisibility(View.GONE);
+        else
+            bmiLinearLayout.setVisibility(View.VISIBLE);*/
+
+        for (PatientVital patientVital : mPatientVitalList) {
+            CustomLog.v(TAG,patientVital.getName() + "\t" + patientVital.getVitalKey());
+
+            if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.HEIGHT)) {
+                mHeightCardView.setVisibility(View.VISIBLE);
+                mHeightCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_height_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
+                mWeightCardView.setVisibility(View.VISIBLE);
+                mWeightCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_wight_lbl));
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
+                mBMICardView.setVisibility(View.VISIBLE);
+                mBMICardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_bmi_lbl));
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
+                mSBPCardView.setVisibility(View.VISIBLE);
+                mSBPCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_bp_sys_lbl));
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
+                mDBPCardView.setVisibility(View.VISIBLE);
+                mDBPCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_bp_dia_lbl));
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
+                mPulseCardView.setVisibility(View.VISIBLE);
+                mPulseCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_pulse_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
+                mTemperatureCardView.setVisibility(View.VISIBLE);
+                mTemperatureCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_temperature_lbl));
+
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
+                mSpo2CardView.setVisibility(View.VISIBLE);
+                mSpo2CardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_spo2_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.RESPIRATORY_RATE)) {
+                mRespiratoryCardView.setVisibility(View.VISIBLE);
+                mRespiratoryCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_respiratory_rate_lbl));
+            } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BLOOD_TYPE)) {
+                mBloodGroupCardView.setVisibility(View.VISIBLE);
+                mBloodGroupCardView.setTag(patientVital);
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_blood_group_lbl));
+            }
+        }
+        LinearLayout otherBlockLinearLayout = mRootView.findViewById(R.id.ll_other_info_block_container);
+        otherBlockLinearLayout.setVisibility(countVisible(otherBlockLinearLayout) == 1 ? View.GONE : View.VISIBLE);
+
+        LinearLayout patientVitalBlockLinearLayout = mRootView.findViewById(R.id.ll_patient_vital_block_container);
+        patientVitalBlockLinearLayout.setVisibility(countVisible(patientVitalBlockLinearLayout) == 1 ? View.GONE : View.VISIBLE);
+
+
+    }
+
+    private void appendMandatorySing(boolean isMandatory, TextView textView) {
+        if (isMandatory) {
+            textView.append("*");
+        }
+    }
+
+    private int countVisible(ViewGroup myLayout) {
+        if (myLayout == null) return 0;
+        int count = 0;
+        for (int i = 0; i < myLayout.getChildCount(); i++) {
+            if (myLayout.getChildAt(i).getVisibility() == View.VISIBLE)
+                count++;
+        }
+        return count;
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -313,141 +461,122 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private boolean isValidaForm() {
         boolean isValid = true;
 
-        //if (editText.getId() == R.id.etv_pulse) {
-        String pulseVal = mPulseEditText.getText().toString().trim();
-        if (pulseVal.isEmpty()) {
-                    /*mPulseErrorTextView.setVisibility(View.VISIBLE);
-                    mPulseErrorTextView.setText(getString(R.string.error_field_required));
-                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-            mPulseErrorTextView.setVisibility(View.GONE);
-            mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
+        //if (editText.getId() == R.id.etv_height) {
+        String heightVal = mHeightEditText.getText().toString().trim();
+
+        String weight = mWeightEditText.getText().toString().trim();
+        if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
+            mHeightErrorTextView.setText(getString(R.string.error_field_required));
+            mHeightErrorTextView.setVisibility(View.VISIBLE);
+            //mHeightEditText.requestFocus();
+            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
         } else {
-            if ((Double.parseDouble(pulseVal) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                    (Double.parseDouble(pulseVal) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-
-                mPulseErrorTextView.setText(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
-                mPulseErrorTextView.setVisibility(View.VISIBLE);
-                mPulseEditText.requestFocus();
-                mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
-                return false;
-            } else {
-                mPulseErrorTextView.setVisibility(View.GONE);
-                mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
-            }
-
+            mHeightErrorTextView.setVisibility(View.GONE);
+            mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
-        // } 
+        if (mHeightCardView.getTag() != null) {
+            if (heightVal.isEmpty()) {
+                if (weight.isEmpty()) {
+                    mHeightErrorTextView.setVisibility(View.GONE);
+                    mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                } else {
+                    mHeightErrorTextView.setVisibility(View.VISIBLE);
+                    mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                    mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
+                }
+            } else {
+                if ((Double.parseDouble(heightVal) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) ||
+                        (Double.parseDouble(heightVal) < Double.parseDouble(AppConstants.MINIMUM_HEIGHT))) {
+                    //et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
 
-        //if (editText.getId() == R.id.etv_temperature) {
-        String temperatureVal = mTemperatureEditText.getText().toString().trim();
-        if (temperatureVal.isEmpty()) {
-                    /*mTemperatureErrorTextView.setVisibility(View.VISIBLE);
-                    mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
-                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-            mTemperatureErrorTextView.setVisibility(View.GONE);
-            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
-        } else {
-            if (configUtils.celsius()) {
-                if ((Double.parseDouble(temperatureVal) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
-                        (Double.parseDouble(temperatureVal) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
-                    //et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                    mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
-                    mTemperatureEditText.requestFocus();
-                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    mHeightErrorTextView.setText(getString(R.string.height_error, AppConstants.MINIMUM_HEIGHT, AppConstants.MAXIMUM_HEIGHT));
+                    mHeightErrorTextView.setVisibility(View.VISIBLE);
+                    mHeightEditText.requestFocus();
+                    mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                     return false;
 
                 } else {
-                    mTemperatureErrorTextView.setVisibility(View.GONE);
-                    mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mHeightErrorTextView.setVisibility(View.GONE);
+                    mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (configUtils.fahrenheit()) {
-                if ((Double.parseDouble(temperatureVal) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
-                        (Double.parseDouble(temperatureVal) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
-                    mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
-                    mTemperatureEditText.requestFocus();
-                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                    return false;
+            }
+            heightvalue = heightVal;
+            calculateBMI();
+        }
+        //}
 
+        //if (editText.getId() == R.id.etv_weight) {
+        String wightVal = mWeightEditText.getText().toString().trim();
+        String height = mHeightEditText.getText().toString().trim();
+        if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
+            mWeightErrorTextView.setText(getString(R.string.error_field_required));
+            mWeightErrorTextView.setVisibility(View.VISIBLE);
+            //mWeightEditText.requestFocus();
+            mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        } else {
+            mWeightErrorTextView.setVisibility(View.GONE);
+            mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+        if (mWeightCardView.getTag() != null) {
+            if (wightVal.isEmpty()) {
+                if (height.isEmpty()) {
+                    mWeightErrorTextView.setVisibility(View.GONE);
+                    mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 } else {
-                    mTemperatureErrorTextView.setVisibility(View.GONE);
-                    mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mWeightErrorTextView.setVisibility(View.VISIBLE);
+                    mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
                 }
-            }
-
-        }
-        //}
-
-        //if (editText.getId() == R.id.etv_spo2) {
-        String spo2Val = mSpo2EditText.getText().toString().trim();
-        if (spo2Val.isEmpty()) {
-                    /*mSpo2ErrorTextView.setVisibility(View.VISIBLE);
-                    mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
-                    mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-            mSpo2ErrorTextView.setVisibility(View.GONE);
-            mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
-        } else {
-            if ((Double.parseDouble(spo2Val) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
-                    (Double.parseDouble(spo2Val) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
-                mSpo2ErrorTextView.setText(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
-                mSpo2ErrorTextView.setVisibility(View.VISIBLE);
-                mSpo2EditText.requestFocus();
-                mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                return false;
-
             } else {
-                mSpo2ErrorTextView.setVisibility(View.GONE);
-                mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
+                if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
+                        (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
+                    //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                    mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    mWeightErrorTextView.setVisibility(View.VISIBLE);
+                    mWeightEditText.requestFocus();
+                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
+                } else {
+                    mWeightErrorTextView.setVisibility(View.GONE);
+                    mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+
             }
-
-        }
-        //}
-
-        // if (editText.getId() == R.id.etv_respiratory_rate) {
-        String respRateVal = mRespEditText.getText().toString().trim();
-
-        if (respRateVal.isEmpty()) {
-                    /*mRespErrorTextView.setVisibility(View.VISIBLE);
-                    mRespErrorTextView.setText(getString(R.string.error_field_required));
-                    mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-            mRespErrorTextView.setVisibility(View.GONE);
-            mRespEditText.setBackgroundResource(R.drawable.edittext_border);
-        } else {
-            if ((Double.parseDouble(respRateVal) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
-                    (Double.parseDouble(respRateVal) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
-                mRespErrorTextView.setText(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
-                mRespErrorTextView.setVisibility(View.VISIBLE);
-                mRespEditText.requestFocus();
-                mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                return false;
-
-            } else {
-                mRespErrorTextView.setVisibility(View.GONE);
-                mRespEditText.setBackgroundResource(R.drawable.edittext_border);
-            }
-
+            weightvalue = wightVal;
+            calculateBMI();
         }
         // }
+
 
         //if (editText.getId() == R.id.etv_bp_sys) {
         String bpSysVal = mBpSysEditText.getText().toString().trim();
 
         String bpDia = mBpDiaEditText.getText().toString().trim();
         if (bpSysVal.isEmpty()) {
-            if (bpDia.isEmpty()) {
-                mBpSysErrorTextView.setVisibility(View.GONE);
-                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            } else {
-                mBpSysErrorTextView.setVisibility(View.VISIBLE);
+            if (mSBPCardView.getTag() != null && ((PatientVital) mSBPCardView.getTag()).isMandatory()) {
                 mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+                mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                //mBpSysEditText.requestFocus();
                 mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
-                mBpDiaErrorTextView.setVisibility(View.GONE);
-                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
                 return false;
+            } else {
+                if (bpDia.isEmpty()) {
+                    mBpSysErrorTextView.setVisibility(View.GONE);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                } else {
+                    mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                    mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+                    mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    mBpDiaErrorTextView.setVisibility(View.GONE);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                    return false;
+                }
             }
         } else {
             if ((Double.parseDouble(bpSysVal) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
@@ -497,14 +626,22 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String bpSys = mBpSysEditText.getText().toString().trim();
 
         if (bpDiaVal.isEmpty()) {
-            if (bpSys.isEmpty()) {
-                mBpDiaErrorTextView.setVisibility(View.GONE);
-                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            } else {
-                mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+            if (mDBPCardView.getTag() != null && ((PatientVital) mDBPCardView.getTag()).isMandatory()) {
                 mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
+                mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                //mBpDiaEditText.requestFocus();
                 mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 return false;
+            } else {
+                if (bpSys.isEmpty()) {
+                    mBpDiaErrorTextView.setVisibility(View.GONE);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                } else {
+                    mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                    mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
+                    mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
+                }
             }
         } else {
             if ((Double.parseDouble(bpDiaVal) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
@@ -540,72 +677,175 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
         // }
 
-        //if (editText.getId() == R.id.etv_height) {
-        String heightVal = mHeightEditText.getText().toString().trim();
 
-        String weight = mWeightEditText.getText().toString().trim();
-        if (heightVal.isEmpty()) {
-            if (weight.isEmpty()) {
-                mHeightErrorTextView.setVisibility(View.GONE);
-                mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            } else {
-                mHeightErrorTextView.setVisibility(View.VISIBLE);
-                mHeightErrorTextView.setText(getString(R.string.error_field_required));
-                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+        //if (editText.getId() == R.id.etv_pulse) {
+        String pulseVal = mPulseEditText.getText().toString().trim();
+        if (pulseVal.isEmpty()) {
+            if (mPulseCardView.getTag() != null && ((PatientVital) mPulseCardView.getTag()).isMandatory()) {
+                mPulseErrorTextView.setText(getString(R.string.error_field_required));
+                mPulseErrorTextView.setVisibility(View.VISIBLE);
+                //mPulseEditText.requestFocus();
+                mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 return false;
+            } else {
+                    /*mPulseErrorTextView.setVisibility(View.VISIBLE);
+                    mPulseErrorTextView.setText(getString(R.string.error_field_required));
+                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                mPulseErrorTextView.setVisibility(View.GONE);
+                mPulseEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+        } else {
+            if ((Double.parseDouble(pulseVal) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
+                    (Double.parseDouble(pulseVal) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+
+                mPulseErrorTextView.setText(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                mPulseErrorTextView.setVisibility(View.VISIBLE);
+                mPulseEditText.requestFocus();
+                mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                return false;
+            } else {
+                mPulseErrorTextView.setVisibility(View.GONE);
+                mPulseEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+        }
+        // } 
+
+        //if (editText.getId() == R.id.etv_temperature) {
+        String temperatureVal = mTemperatureEditText.getText().toString().trim();
+        if (temperatureVal.isEmpty()) {
+            if (mTemperatureCardView.getTag() != null && ((PatientVital) mTemperatureCardView.getTag()).isMandatory()) {
+                mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
+                mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                // mTemperatureEditText.requestFocus();
+                mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                    /*mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                mTemperatureErrorTextView.setVisibility(View.GONE);
+                mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
         } else {
-            if ((Double.parseDouble(heightVal) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) ||
-                    (Double.parseDouble(heightVal) < Double.parseDouble(AppConstants.MINIMUM_HEIGHT))) {
-                //et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+            if (configUtils.celsius()) {
+                if ((Double.parseDouble(temperatureVal) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
+                        (Double.parseDouble(temperatureVal) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
+                    //et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                    mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    mTemperatureEditText.requestFocus();
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
 
-                mHeightErrorTextView.setText(getString(R.string.height_error, AppConstants.MINIMUM_HEIGHT, AppConstants.MAXIMUM_HEIGHT));
-                mHeightErrorTextView.setVisibility(View.VISIBLE);
-                mHeightEditText.requestFocus();
-                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                return false;
+                } else {
+                    mTemperatureErrorTextView.setVisibility(View.GONE);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
+            } else if (configUtils.fahrenheit()) {
+                if ((Double.parseDouble(temperatureVal) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
+                        (Double.parseDouble(temperatureVal) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                    mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    mTemperatureEditText.requestFocus();
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    return false;
 
-            } else {
-                mHeightErrorTextView.setVisibility(View.GONE);
-                mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                } else {
+                    mTemperatureErrorTextView.setVisibility(View.GONE);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                }
             }
+
         }
-        heightvalue = heightVal;
-        calculateBMI();
         //}
 
-        //if (editText.getId() == R.id.etv_weight) {
-        String wightVal = mWeightEditText.getText().toString().trim();
-        String height = mHeightEditText.getText().toString().trim();
-
-        if (wightVal.isEmpty()) {
-            if (height.isEmpty()) {
-                mWeightErrorTextView.setVisibility(View.GONE);
-                mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            } else {
-                mWeightErrorTextView.setVisibility(View.VISIBLE);
-                mWeightErrorTextView.setText(getString(R.string.error_field_required));
-                mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+        //if (editText.getId() == R.id.etv_spo2) {
+        String spo2Val = mSpo2EditText.getText().toString().trim();
+        if (spo2Val.isEmpty()) {
+            if (mSpo2CardView.getTag() != null && ((PatientVital) mSpo2CardView.getTag()).isMandatory()) {
+                mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
+                mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                //mSpo2EditText.requestFocus();
+                mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 return false;
+            } else {
+                    /*mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                    mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
+                    mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                mSpo2ErrorTextView.setVisibility(View.GONE);
+                mSpo2EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
         } else {
-            if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
-                    (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
-                //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
-                mWeightErrorTextView.setVisibility(View.VISIBLE);
-                mWeightEditText.requestFocus();
-                mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            if ((Double.parseDouble(spo2Val) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
+                    (Double.parseDouble(spo2Val) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
+                mSpo2ErrorTextView.setText(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                mSpo2EditText.requestFocus();
+                mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 return false;
+
             } else {
-                mWeightErrorTextView.setVisibility(View.GONE);
-                mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                mSpo2ErrorTextView.setVisibility(View.GONE);
+                mSpo2EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
 
         }
-        weightvalue = wightVal;
-        calculateBMI();
+        //}
+
+        // if (editText.getId() == R.id.etv_respiratory_rate) {
+        String respRateVal = mRespEditText.getText().toString().trim();
+
+        if (respRateVal.isEmpty()) {
+            if (mRespiratoryCardView.getTag() != null && ((PatientVital) mRespiratoryCardView.getTag()).isMandatory()) {
+                mRespErrorTextView.setText(getString(R.string.error_field_required));
+                mRespErrorTextView.setVisibility(View.VISIBLE);
+                //mRespEditText.requestFocus();
+                mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                    /*mRespErrorTextView.setVisibility(View.VISIBLE);
+                    mRespErrorTextView.setText(getString(R.string.error_field_required));
+                    mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                mRespErrorTextView.setVisibility(View.GONE);
+                mRespEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        } else {
+            if ((Double.parseDouble(respRateVal) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
+                    (Double.parseDouble(respRateVal) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
+                mRespErrorTextView.setText(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                mRespErrorTextView.setVisibility(View.VISIBLE);
+                mRespEditText.requestFocus();
+                mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+
+            } else {
+                mRespErrorTextView.setVisibility(View.GONE);
+                mRespEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+        }
         // }
+
+
+        String bloodGroup = mBloodGroupTextView.getText().toString().trim();
+
+        if (mBloodGroupCardView.getTag() != null && ((PatientVital) mBloodGroupCardView.getTag()).isMandatory() && bloodGroup.isEmpty()) {
+            mBloodGroupErrorTextView.setText(getString(R.string.error_field_required));
+            mBloodGroupErrorTextView.setVisibility(View.VISIBLE);
+            //mPulseEditText.requestFocus();
+            mBloodGroupTextView.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        } else {
+                    /*mPulseErrorTextView.setVisibility(View.VISIBLE);
+                    mPulseErrorTextView.setText(getString(R.string.error_field_required));
+                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+            mBloodGroupErrorTextView.setVisibility(View.GONE);
+            mBloodGroupTextView.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        }
+
 
         return isValid;
     }
@@ -626,7 +866,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         if (view.getId() == R.id.btn_submit) {//validate
             mSubmitButton.setClickable(false);
-            if (validateTable()) {
+            boolean isValid = isValidaForm();
+            setDisabledSubmit(!isValid);
+            if (isValid) {
+                isDataReadyForSaving();
                 mActionListener.onProgress(100);
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
             }
@@ -806,7 +1049,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         double bmi_value = numerator / denominator;
         DecimalFormat df = new DecimalFormat("0.00");
         mBMITextView.setText(df.format(bmi_value) + " kg/m");
-        Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
+        CustomLog.d("BMI", "BMI: " + mBMITextView.getText().toString());
         //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
         BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -825,7 +1068,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMITextView.setText(df.format(bmi_value) + " kg/m");
-            Log.d("BMI", "BMI: " + mBMITextView.getText().toString());
+            CustomLog.d("BMI", "BMI: " + mBMITextView.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
 
             BMIStatus bmiStatus = getBmiStatus(bmi_value);
@@ -860,8 +1103,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 heightvalue = value;
                 //mHeightTextView.setText(value);
                 if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
-                    //Log.v(TAG, "getHeight - " + results.getHeight());
-                    //Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                    //CustomLog.v(TAG, "getHeight - " + results.getHeight());
+                    //CustomLog.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
                     //mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " " + getResources().getString(R.string.cm)), true);
                     mHeightEditText.setText(heightvalue);
                 }
@@ -926,49 +1169,70 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public boolean validateTable() {
-        boolean cancel = false;
+    public boolean isDataReadyForSaving() {
+        /*boolean cancel = false;
         View focusView = null;
 
         String height = heightvalue;
         String weight = weightvalue;
-
-        if (!isPatientAdult() && weight.isEmpty()) {
-            mWeightErrorTextView.setVisibility(View.VISIBLE);
-            mWeightErrorTextView.setText(getString(R.string.error_field_required_non_adult));
-            //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
+        if (mHeightLinearLayout.getTag() != null && ((PatientVital) mHeightLinearLayout.getTag()).isMandatory()) {
+            if (height.isEmpty()) {
+                mHeightErrorTextView.setVisibility(View.VISIBLE);
+                mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHeightErrorTextView.setVisibility(View.GONE);
+                //mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+        }
+        if (mWeightLinearLayout.getTag() != null && ((PatientVital) mWeightLinearLayout.getTag()).isMandatory()) {
+            //if (!isPatientAdult() && weight.isEmpty()) {
+            if (weight.isEmpty()) {
+                mWeightErrorTextView.setVisibility(View.VISIBLE);
+                //mWeightErrorTextView.setText(getString(R.string.error_field_required_non_adult));
+                mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mWeightErrorTextView.setVisibility(View.GONE);
+                //mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
         }
 
-        if (!weight.isEmpty() && height.isEmpty()) {
-            mHeightErrorTextView.setVisibility(View.VISIBLE);
-            mHeightErrorTextView.setText(getString(R.string.error_field_required));
-            //mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
-        } else {
-            mHeightErrorTextView.setVisibility(View.GONE);
-            //mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-            mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+           *//* if (!weight.isEmpty() && height.isEmpty()) {
+                mHeightErrorTextView.setVisibility(View.VISIBLE);
+                mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mHeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mHeightErrorTextView.setVisibility(View.GONE);
+                //mHeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
 
-        if (!height.isEmpty() && weight.isEmpty()) {
-            mWeightErrorTextView.setVisibility(View.VISIBLE);
-            mWeightErrorTextView.setText(getString(R.string.error_field_required));
-            //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
-        } else {
-            mWeightErrorTextView.setVisibility(View.GONE);
-            //mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
-            mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+            if (!height.isEmpty() && weight.isEmpty()) {
+                mWeightErrorTextView.setVisibility(View.VISIBLE);
+                mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                //mWeightSpinner.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            } else {
+                mWeightErrorTextView.setVisibility(View.GONE);
+                //mWeightSpinner.setBackgroundResource(R.drawable.edittext_border);
+                mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }*//*
+
 
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
-        /*values.add(mHeight);
-        values.add(mWeight);*/
+        *//*values.add(mHeight);
+        values.add(mWeight);*//*
 
         values.add(mBpSysEditText); //0
         values.add(mBpDiaEditText); // 1
@@ -996,12 +1260,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         mPulseErrorTextView.setVisibility(View.GONE);
-                        mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
+                        mPulseEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                     }
 //       }
                 } else {
                     mPulseErrorTextView.setVisibility(View.GONE);
-                    mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mPulseEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
 
             } else if (i == 0) {
@@ -1020,7 +1284,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         //mBpSysErrorTextView.setVisibility(View.GONE);
-                        //mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
+                        //mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                         String bpDia = mBpDiaEditText.getText().toString().trim();
                         if (bpDia.isEmpty()) {
                             mBpSysErrorTextView.setVisibility(View.GONE);
@@ -1043,7 +1307,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 //       }
                 } else {
                     mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
 
             } else if (i == 1) {
@@ -1061,7 +1325,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         //mBpDiaErrorTextView.setVisibility(View.GONE);
-                        //mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
+                        //mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                         String bpSys = mBpSysEditText.getText().toString().trim();
                         if (bpSys.isEmpty()) {
                             mBpDiaErrorTextView.setVisibility(View.GONE);
@@ -1084,12 +1348,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 //       }
                 } else {
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
 
             } else if (i == 5) {
+                PatientVital patientVital = (PatientVital) mTemperatureLinearLayout.getTag();
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
+                if (patientVital != null && patientVital.isMandatory()) {
+                    mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
+                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    mTemperatureEditText.requestFocus();
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    cancel = true;
+                    break;
+                }
                 if (!abc1.isEmpty() && !abc1.equals("0.0")) {
                     if (configUtils.celsius()) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
@@ -1103,7 +1376,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                             break;
                         } else {
                             mTemperatureErrorTextView.setVisibility(View.GONE);
-                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                         }
                     } else if (configUtils.fahrenheit()) {
                         if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
@@ -1117,12 +1390,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                             break;
                         } else {
                             mTemperatureErrorTextView.setVisibility(View.GONE);
-                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                         }
                     }
                 } else {
                     mTemperatureErrorTextView.setVisibility(View.GONE);
-                    mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             } else if (i == 4) {
                 EditText et = values.get(i);
@@ -1139,12 +1412,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         mRespErrorTextView.setVisibility(View.GONE);
-                        mRespEditText.setBackgroundResource(R.drawable.edittext_border);
+                        mRespEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                     }
 //       }
                 } else {
                     mRespErrorTextView.setVisibility(View.GONE);
-                    mRespEditText.setBackgroundResource(R.drawable.edittext_border);
+                    mRespEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             } else {
                 EditText et = values.get(i);
@@ -1161,12 +1434,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         mSpo2ErrorTextView.setVisibility(View.GONE);
-                        mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
+                        mSpo2EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                     }
 //       }
                 } else {
                     mSpo2ErrorTextView.setVisibility(View.GONE);
-                    mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
+                    mSpo2EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             }
         }
@@ -1187,12 +1460,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
             mBpDiaEditText.requestFocus();
             return false;
-        }
+        }*/
 
         try {
             if (results == null) {
                 results = new VitalsObject();
             }
+            String height = mHeightEditText.getText().toString().trim();
+            String weight = mWeightEditText.getText().toString().trim();
             if (!height.equals("")) {
                 results.setHeight(height);
             } else {
@@ -1237,90 +1512,127 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
 
             try {
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                if (results.getHeight().equals("")) {
-                    obsDTO.setValue("0");
-                } else {
-                    obsDTO.setValue(results.getHeight());
+                PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getHeight().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    if (results.getHeight().equals("")) {
+                        obsDTO.setValue("0");
+                    } else {
+                        obsDTO.setValue(results.getHeight());
+                    }
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+
+                    obsDAO.updateObs(obsDTO);
                 }
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mWeightCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getWeight().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getWeight());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.WEIGHT));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getWeight());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.WEIGHT));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mPulseCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getPulse().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.PULSE);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getPulse());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.PULSE);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getPulse());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mSBPCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getBpsys().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBpsys());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SYSTOLIC_BP));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBpsys());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SYSTOLIC_BP));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mDBPCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getBpdia().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBpdia());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBpdia());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mTemperatureCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getTemperature().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getTemperature());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getTemperature());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mRespiratoryCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getResp().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getResp());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getResp());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
+                    obsDAO.updateObs(obsDTO);
+                }
 
-                obsDAO.updateObs(obsDTO);
+                patientVital = (PatientVital) mSpo2CardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getSpo2().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getSpo2());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getSpo2());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
+                    obsDAO.updateObs(obsDTO);
+                }
+
+                patientVital = (PatientVital) mBloodGroupCardView.getTag();
+                if ((patientVital != null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getBloodGroup());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GROUP));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
 
 
-                obsDTO = new ObsDTO();
-                obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
-                obsDTO.setEncounteruuid(encounterVitals);
-                obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getBloodGroup());
-                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GROUP));
-
-
-                obsDAO.updateObs(obsDTO);
+                    obsDAO.updateObs(obsDTO);
+                }
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1348,118 +1660,155 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         } else {
             ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            if (results.getHeight().equals("")) {
-                obsDTO.setValue("0");
-            } else {
-                obsDTO.setValue(results.getHeight());
+            PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getHeight().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                if (results.getHeight().equals("")) {
+                    obsDTO.setValue("0");
+                } else {
+                    obsDTO.setValue(results.getHeight());
+                }
+
+                obsDTO.setUuid(AppConstants.NEW_UUID);
+
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO.setUuid(AppConstants.NEW_UUID);
+            patientVital = (PatientVital) mWeightCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getWeight().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getWeight());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getWeight());
+            patientVital = (PatientVital) mPulseCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getPulse().isEmpty())) {
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.PULSE);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getPulse());
+
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.PULSE);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getPulse());
+            patientVital = (PatientVital) mSBPCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBpsys().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBpsys());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBpsys());
+            patientVital = (PatientVital) mDBPCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBpdia().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBpdia());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBpdia());
+            patientVital = (PatientVital) mTemperatureCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getTemperature().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getTemperature());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getTemperature());
+            patientVital = (PatientVital) mRespiratoryCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getResp().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getResp());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getResp());
+            patientVital = (PatientVital) mSpo2CardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getSpo2().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getSpo2());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
 
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.SPO2);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getSpo2());
+            patientVital = (PatientVital) mBloodGroupCardView.getTag();
+            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBloodGroup().isEmpty())) {
+                obsDTO = new ObsDTO();
+                //obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
+                obsDTO.setConceptuuid(patientVital.getUuid());
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBloodGroup());
 
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-            }
-
-            obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
-            obsDTO.setEncounteruuid(encounterVitals);
-            obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getBloodGroup());
-
-            try {
-                obsDAO.insertObs(obsDTO);
-            } catch (DAOException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                try {
+                    obsDAO.insertObs(obsDTO);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
             }
         }
         return true;
@@ -1475,7 +1824,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     /*private String convertFtoC(String temperature) {
-        Log.i(TAG, "convertFtoC IN: " + temperature);
+        CustomLog.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
@@ -1486,7 +1835,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.format("%.1f", cTemp);
             //result = String.valueOf(cTemp);
-            Log.i(TAG, "convertFtoC OUT: " + result);
+            CustomLog.i(TAG, "convertFtoC OUT: " + result);
 
             return result;
         }
@@ -1495,7 +1844,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private String convertCtoF(String temperature) {
-        Log.i(TAG, "convertCtoF IN: " + temperature);
+        CustomLog.i(TAG, "convertCtoF IN: " + temperature);
 
         if (temperature == null) return "";
         String result = "";
@@ -1507,7 +1856,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         b = Double.parseDouble(dtime.format(b));
         result = String.format("%.1f", b);
         //result = String.valueOf(b);
-        Log.i(TAG, "convertCtoF OUT: " + result);
+        CustomLog.i(TAG, "convertCtoF OUT: " + result);
         return result;
 
     }*/

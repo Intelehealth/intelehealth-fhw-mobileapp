@@ -3,7 +3,7 @@ package org.intelehealth.app.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -14,7 +14,7 @@ public class CameraOpenRequestReceiver extends BroadcastReceiver {
     private static final String TAG = CameraOpenRequestReceiver.class.getSimpleName();
 
     public void onReceive(Context context, Intent intent) {
-        Log.v(TAG, "onReceive");
+        CustomLog.v(TAG, "onReceive");
         Intent cameraIntent = new Intent(context, CameraActivity.class);
         String imageName = UUID.randomUUID().toString();
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
