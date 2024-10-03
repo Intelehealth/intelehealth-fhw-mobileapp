@@ -157,5 +157,8 @@
     <!-- White labeling colors   -->
     <color name="colorPrimaryBlackOverlay">#33000000</color>
     <color name="colorAccentWhiteOverlay">#ccffffff</color>
+
+    <color name="colorPrimaryLightCard">#1a00CA04</color>
+    <color name="colorAccentLightCard">#1aF57F17</color>
     <!--END-->
 </resources>

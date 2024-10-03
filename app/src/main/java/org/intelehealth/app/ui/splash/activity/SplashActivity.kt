@@ -28,6 +28,7 @@ import androidx.transition.TransitionManager
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.intelehealth.appointment.AppointmentBuilder
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
@@ -122,6 +123,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         binding.btnNextToIntro.setOnClickListener {
             adapter.getList().find { it.selected }?.let {
                 sessionManager.appLanguage = it.code
+                AppointmentBuilder.SetLanguage(it.code)
                 setupLanguage()
                 Intent(this@SplashActivity, IntroScreensActivity_New::class.java).apply {
                     startActivity(this)

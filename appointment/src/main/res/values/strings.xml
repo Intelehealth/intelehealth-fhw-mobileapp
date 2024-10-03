@@ -7,4 +7,11 @@
     <string name="evening">Evening</string>
     <string name="book_appointment">Book appointment</string>
     <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+    <string name="at">at</string>
+    <string name="speciality_must_not_null">Speciality must not be null</string>
+    <string name="loading_slots">Loading slots...</string>
+    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
+
+    <string name="slot_info">Slot info</string>
+    <string name="minutes_txt">minutes</string>
 </resources>

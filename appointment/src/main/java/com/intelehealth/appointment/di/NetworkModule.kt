@@ -13,6 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 /**
  * Created By Tanvir Hasan
@@ -25,6 +26,7 @@ class NetworkModule {
      * retrofit instance
      */
     @Provides
+    @Named("AppointmentRetrofit")
     internal fun retrofit(@ApplicationContext context: Context, okHttpClient: OkHttpClient, coroutineCallAdapterFactory: CoroutineCallAdapterFactory, gsonConverterFactory: GsonConverterFactory, gson: Gson): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -34,18 +36,18 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
+    /*@Provides
     internal fun gsonConverterFactory(gson: Gson): GsonConverterFactory {
         return GsonConverterFactory.create(gson)
-    }
+    }*/
 
     @Provides
     internal fun  getCoroutineCallAdapterFactory (): CoroutineCallAdapterFactory {
         return CoroutineCallAdapterFactory()
     }
 
-    @Provides
+    /*@Provides
     internal fun gson(): Gson {
         return GsonBuilder().setLenient().serializeNulls().setPrettyPrinting().create()
-    }
+    }*/
 }

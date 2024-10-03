@@ -27,10 +27,10 @@ interface AppointmentWebClient {
 
     // https://uniceftraining.intelehealth.org:3004/api/appointment/getAppointmentSlots?fromDate=16/12/2021&toDate=31/12/2021&speciality=Neurologist
     @GET("api/appointment/getAppointmentSlots?")
-    fun getSlots(
+    suspend fun getSlots(
         @Query("fromDate") mSelectedStartDate: String?, @Query("toDate") mSelectedEndDate: String?,
         @Query("speciality") speciality: String?
-    ): Call<SlotInfoResponse?>?
+    ): Response<SlotInfoResponse?>?
 
     @GET("api/appointment/getSlots?")
     suspend fun getSlotsAll(

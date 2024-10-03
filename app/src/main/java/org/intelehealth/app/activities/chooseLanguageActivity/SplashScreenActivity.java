@@ -45,6 +45,7 @@ import androidx.transition.TransitionManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.intelehealth.appointment.AppointmentBuilder;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -478,7 +479,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void onSelect(JSONObject jsonObject, int index) {
                     try {
+                        String language = jsonObject.getString("code");
                         sessionManager.setAppLanguage(jsonObject.getString("code"));
+                        new AppointmentBuilder.SetLanguage(language);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

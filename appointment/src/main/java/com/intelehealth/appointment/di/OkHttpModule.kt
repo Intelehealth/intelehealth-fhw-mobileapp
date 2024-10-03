@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object OkHttpModule {
-    @Provides
+    /*@Provides
     internal fun okHttpClient(
         cache: Cache,
         interceptor: HttpLoggingInterceptor,
@@ -49,7 +49,7 @@ object OkHttpModule {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return loggingInterceptor
-    }
+    }*/
 
 /*    @Provides
     internal fun internetConnectionInterceptor() = NetworkConnectionInterceptor()*/

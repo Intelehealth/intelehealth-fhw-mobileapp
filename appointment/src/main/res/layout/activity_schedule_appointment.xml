@@ -150,6 +150,7 @@
                         android:id="@+id/rv_morning_time_slots"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:spanCount="3"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
@@ -172,6 +173,8 @@
                         android:id="@+id/rv_afternoon_time_slots"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:spanCount="3"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
                     <TextView
@@ -193,6 +196,8 @@
                         android:id="@+id/rv_evening_time_slots"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="3"
                         android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
                 </LinearLayout>
 

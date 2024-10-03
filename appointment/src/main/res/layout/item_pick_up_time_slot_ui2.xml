@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_time_slot"
+    android:layout_width="@dimen/tv_slot_width"
+    android:layout_height="@dimen/tv_slot_height"
+    android:layout_marginEnd="@dimen/tv_slot_margin_end"
+    android:layout_marginBottom="@dimen/tv_slot_margin_bottom"
+    android:background="@drawable/ui2_bg_disabled_time_slot"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/tv_slot_padding_all"
+    android:paddingTop="@dimen/tv_slot_padding_all"
+    android:paddingEnd="@dimen/tv_slot_padding_all"
+    android:paddingBottom="@dimen/tv_slot_padding_all">
+
+    <TextView
+        android:id="@+id/tvTime_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:hint="10:30 AM"
+        android:lineHeight="@dimen/tv_slot_time_line_height"
+        android:textColor="@color/selector_color_appointment_text_time"
+        android:textSize="@dimen/tv_slot_time_text_size1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDuration_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTime"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingHorizontal="8dip"
+        android:text="30 minutes"
+        android:textColor="@color/selector_color_appointment_text_time"
+        android:textSize="@dimen/tv_slot_time_duration"
+        android:textStyle="normal"
+        android:visibility="gone" />
+</LinearLayout>

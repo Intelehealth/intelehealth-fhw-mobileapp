@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.intelehealth.appointment.AppointmentBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -248,6 +249,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
         // Reset button.
         reset_btn.setOnClickListener(v -> {
             sessionManager.setAppLanguage("en");
+            new AppointmentBuilder.SetLanguage("en");
             setupLanguage();
 //            lang_spinner.setSelection(0, false);
 //            setLocale("en");
@@ -414,6 +416,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
             // setting app language here...
             if (selectedLanguage != null) {
                 sessionManager.setAppLanguage(selectedLanguage.getCode());
+                new AppointmentBuilder.SetLanguage(selectedLanguage.getCode());
                 mLangTextView.setText(selectedLanguage.getName());
                 setupLanguage();
             }
