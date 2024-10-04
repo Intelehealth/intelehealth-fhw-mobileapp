@@ -76,7 +76,6 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
-            values.put("interpretation", obsDTOS.getInterpretation());
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -105,7 +104,6 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
-            values.put("interpretation", obsDTO.getInterpretation());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
@@ -138,7 +136,6 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
-            values.put("interpretation", obsDTO.getInterpretation());
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
 
@@ -180,7 +177,6 @@ public class ObsDAO {
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "0");
                 values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
-                values.put("interpretation", ob.getInterpretation());
                 insertedCount = db.insert("tbl_obs", null, values);
             }
             db.setTransactionSuccessful();
@@ -211,7 +207,6 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                obsDTO.setInterpretation(idCursor.getString(idCursor.getColumnIndexOrThrow("interpretation")));
                 if (idCursor.getColumnIndex("comments") < 0) {
                     obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
                 } else {
@@ -458,8 +453,8 @@ public class ObsDAO {
         // In case the vitals encounter exists
         // delete all the entries which have encounteruuid
         if (doesVitalsEncounterExist) {
-            String deleteClause = "encounteruuid = ? and interpretation = ?";
-            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, AppConstants.OBS_TYPE_VITAL});
+            String deleteClause = "encounteruuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
         }
     }
 
@@ -480,8 +475,8 @@ public class ObsDAO {
         // In case the vitals encounter exists
         // delete all the entries which have encounteruuid
         if (doesVitalsEncounterExist) {
-            String deleteClause = "encounteruuid = ? and interpretation = ?";
-            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, AppConstants.OBS_TYPE_DIAGNOSTICS});
+            String deleteClause = "encounteruuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
         }
     }
 }
