@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="send_message">Send Message</string>
-    <string name="content_no_logs">No Calls</string>
-<!--    <string name="call_logs">Call Logs</string>-->
-</resources>

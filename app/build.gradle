@@ -80,7 +80,7 @@ android {
         jvmTarget = '17'
     }
 
-    dynamicFeatures = [':features:ondemand:call']
+    dynamicFeatures = [':features:ondemand:video']
     
 }
 dependencies {

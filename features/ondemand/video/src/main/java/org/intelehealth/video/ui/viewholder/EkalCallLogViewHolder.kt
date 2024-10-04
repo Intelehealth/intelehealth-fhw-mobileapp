@@ -1,8 +1,9 @@
-package org.intelehealth.app.webrtc.viewholder
+package org.intelehealth.video.ui.viewholder
 
-import org.intelehealth.app.databinding.RowItemEkalCallLogBinding
-import org.intelehealth.klivekit.call.model.RtcCallLog
-import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
+import org.intelehealth.core.ui.viewholder.BaseViewHolder
+import org.intelehealth.video.databinding.RowItemEkalCallLogBinding
+import org.intelehealth.video.model.VideoCallLog
+
 
 /**
  * Created by Vaghela Mithun R. on 23-10-2023 - 16:01.
@@ -11,7 +12,7 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
  **/
 class EkalCallLogViewHolder(private val binding: RowItemEkalCallLogBinding) :
     BaseViewHolder(binding.root) {
-    fun bind(callLog: RtcCallLog) {
+    fun bind(callLog: VideoCallLog) {
         binding.callLog = callLog
         binding.btnCallLogCallback.setOnClickListener(this)
         binding.btnCallLogChat.setOnClickListener(this)
