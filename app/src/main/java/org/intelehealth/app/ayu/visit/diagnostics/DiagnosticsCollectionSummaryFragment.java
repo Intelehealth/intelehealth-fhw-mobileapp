@@ -110,10 +110,11 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
         for (Diagnostics diagnostics : mDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
 
-            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
+          /*  if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
                 mBinding.llBloodGlucoseContainer.setVisibility(View.VISIBLE);
 
-            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
+            } else*/
+            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
                 mBinding.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
 
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {

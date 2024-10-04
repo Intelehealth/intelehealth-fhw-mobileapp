@@ -1,6 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSTICS;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
@@ -915,7 +914,7 @@ public class EncounterDAO {
         if(visitUUID != null) {
             final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
                     "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
-                    "encounter_type_uuid = ?", new String[]{visitUUID, DIAGNOSTICS});
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VITALS});
 
             if (cursor.moveToFirst()) {
                 do {

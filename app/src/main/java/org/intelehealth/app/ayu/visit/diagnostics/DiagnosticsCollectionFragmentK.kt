@@ -89,14 +89,14 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
         // Hide error messages
         mBinding.tvGlucoseRandomError.visibility = View.GONE
         mBinding.tvGlucoseFastingError.visibility = View.GONE
-        mBinding.tvNonFastingGlucoseError.visibility = View.GONE
+        //mBinding.tvNonFastingGlucoseError.visibility = View.GONE
         mBinding.etvPostPrandialError.visibility = View.GONE
         mBinding.etvUricAcidError.visibility = View.GONE
         mBinding.etvCholestrolError.visibility = View.GONE
         mBinding.tvHemoglobinError.visibility = View.GONE
 
 
-        mBinding.etvNonFastingGlucose.addTextChangedListener(MyTextWatcher(mBinding.etvNonFastingGlucose))
+        //mBinding.etvNonFastingGlucose.addTextChangedListener(MyTextWatcher(mBinding.etvNonFastingGlucose))
         mBinding.etvGlucoseRandom.addTextChangedListener(MyTextWatcher(mBinding.etvGlucoseRandom))
         mBinding.etvGlucoseFasting.addTextChangedListener(MyTextWatcher(mBinding.etvGlucoseFasting))
         mBinding.etvPostPrandial.addTextChangedListener(MyTextWatcher(mBinding.etvPostPrandial))
@@ -148,7 +148,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
             results.apply {
                 bloodGlucoseRandom = mBinding.etvGlucoseRandom.text.toString()
                 bloodGlucoseFasting = mBinding.etvGlucoseFasting.text.toString()
-                bloodGlucoseNonFasting = mBinding.etvNonFastingGlucose.text.toString()
+                //bloodGlucoseNonFasting = mBinding.etvNonFastingGlucose.text.toString()
                 bloodGlucosePostPrandial = mBinding.etvPostPrandial.text.toString()
                 hemoglobin = mBinding.etvHemoglobin.text.toString()
                 uricAcid = mBinding.etvUricAcid.text.toString()
@@ -209,13 +209,13 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                         it
                     )
                 }
-                results.bloodGlucoseNonFasting?.let {
+              /*  results.bloodGlucoseNonFasting?.let {
                     processDiagnostic(
                         mBinding.llNonFastingContainer.tag as? Diagnostics,
                         UuidDictionary.BLOOD_GLUCOSE,
                         it
                     )
-                }
+                }*/
                 results.uricAcid?.let {
                     processDiagnostic(
                         mBinding.llUricAcidContainer.tag as? Diagnostics,
@@ -263,13 +263,13 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                         it
                     )
                 }
-                results.bloodGlucoseNonFasting?.let {
+               /* results.bloodGlucoseNonFasting?.let {
                     processDiagnostic(
                         mBinding.llNonFastingContainer.tag as? Diagnostics,
                         UuidDictionary.BLOOD_GLUCOSE,
                         it
                     )
-                }
+                }*/
                 results.bloodGlucosePostPrandial?.let {
                     processDiagnostic(
                         mBinding.llPostPrandialContainer.tag as? Diagnostics,
@@ -389,7 +389,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
             }
         }
 
-        val nonFastingGlucose = mBinding.etvNonFastingGlucose.text.toString().trim()
+       /* val nonFastingGlucose = mBinding.etvNonFastingGlucose.text.toString().trim()
         if (nonFastingGlucose.isNotEmpty()) {
             val nonFastingValue = nonFastingGlucose.toDoubleOrNull()
             if (nonFastingValue != null && (nonFastingValue > AppConstants.MAXIMUM_GLUCOSE_NON_FASTING.toDouble() ||
@@ -409,7 +409,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                 mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.bg_input_fieldnew)
             }
         }
-
+*/
         val postPrandial = mBinding.etvPostPrandial.text.toString().trim()
         if (postPrandial.isNotEmpty()) {
             val postPrandialValue = postPrandial.toDoubleOrNull()

@@ -47,7 +47,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
-import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSTICS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -473,25 +472,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
         }
-        EncounterDAO encounterDAODiagnostics = new EncounterDAO();
-        EncounterDTO encounterDTODiagnostics = new EncounterDTO();
-        encounterDTODiagnostics.setUuid(UUID.randomUUID().toString());
-        Log.d(TAG, "startVisit: type enc -dia: " + encounterDAODiagnostics.getEncounterTypeUuid("DIAGNOSTICS"));
-        encounterDTODiagnostics.setEncounterTypeUuid(encounterDAODiagnostics.getEncounterTypeUuid("DIAGNOSTICS"));
-        encounterDTODiagnostics.setEncounterTime(thisDate);
-        encounterDTODiagnostics.setVisituuid(uuid);
-        encounterDTODiagnostics.setSyncd(false);
-        encounterDTODiagnostics.setProvideruuid(sessionManager.getProviderID());
-        CustomLog.d("DTO", "DTO:detail " + encounterDTODiagnostics.getProvideruuid());
-        encounterDTODiagnostics.setVoided(0);
-        encounterDTODiagnostics.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-        try {
-            encounterDAODiagnostics.createEncountersToDB(encounterDTODiagnostics);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG, e.getMessage());
-        }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
@@ -550,7 +530,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         intent2.putExtra("gender", mGender);
         intent2.putExtra("tag", "new");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-        intent2.putExtra("encounterUuidDiagnostics", encounterDTODiagnostics.getUuid());
         startActivity(intent2);
         finish();
     }
@@ -897,7 +876,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;
                     String encounterIDSelection = "visituuid = ?";
-                    String encounterDiagnosticsLocal = null;
 
                     String[] encounterIDArgs = {visit_id};
 
@@ -909,9 +887,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             }
                             if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                                 encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("DIAGNOSTICS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterDiagnosticsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                             }
 
                         } while (encounterCursor.moveToNext());
@@ -1032,7 +1007,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setChiefComplain(visitValue);
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                pastVisitData.setDiagnostics(encounterDiagnosticsLocal);
                                 mCurrentVisitDataList.add(pastVisitData);
                                 CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
@@ -1081,7 +1055,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         in.putExtra("encounterUuidAdultIntial", pastVisitData.getEncounterAdultInitial());
         in.putExtra("float_ageYear_Month", float_ageYear_Month);
         in.putExtra("tag", "VisitDetailsActivity");
-        in.putExtra("encounterUuidDiagnostics", pastVisitData.getDiagnostics());
         startActivity(in);
     }
 

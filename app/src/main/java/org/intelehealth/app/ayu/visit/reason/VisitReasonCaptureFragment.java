@@ -79,7 +79,6 @@ public class VisitReasonCaptureFragment extends Fragment {
     private List<String> mFinalEnabledMMList = new ArrayList<>();
     private List<ReasonData> mRawReasonDataList = new ArrayList<>();
     private boolean mIsEditMode = false;
-    private String encounterDiagnostics;
 
     public VisitReasonCaptureFragment() {
         // Required empty public constructor
@@ -107,7 +106,6 @@ public class VisitReasonCaptureFragment extends Fragment {
         fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
         fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
         fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
-        fragment.encounterDiagnostics = commonVisitData.getEncounterUuidDiagnostics();//intent.getStringExtra("encounterUuidVitals");
         return fragment;
     }
 

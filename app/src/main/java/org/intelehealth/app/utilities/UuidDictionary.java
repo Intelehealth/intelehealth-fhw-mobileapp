@@ -105,7 +105,6 @@ public class UuidDictionary {
     public static final String HEMOGLOBIN = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
     public static final String URIC_ACID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
     public static final String TOTAL_CHOLESTEROL = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
-    public static final String DIAGNOSTICS = "b1a8fab4-d79f-44e6-8a90-2ac5e7ecd4d3";
 
 
 

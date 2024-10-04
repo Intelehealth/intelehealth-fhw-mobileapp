@@ -216,6 +216,7 @@
                     </androidx.cardview.widget.CardView>
 
 
+<!--
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_non_fasting_container"
                         android:layout_width="match_parent"
@@ -268,6 +269,7 @@
                                 android:visibility="visible" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+-->
 
 
                     <androidx.cardview.widget.CardView

@@ -114,7 +114,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     QuestionsAdapter adapter;
     String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
-    private String encounterDiagnostics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +166,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
-            encounterDiagnostics = intent.getStringExtra("encounterUuidDiagnostics");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
             if (selectedExams != null)
@@ -333,7 +331,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
-                intent.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
 
                 for (String exams : selectedExamsList) {
                     CustomLog.i(TAG, "onClick:++ " + exams);
@@ -354,7 +351,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent1.putExtra("tag", intentTag);
                 intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("hasPrescription", "false");
-                intent1.putExtra("encounterUuidDiagnostics", encounterDiagnostics);
 
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
