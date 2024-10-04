@@ -3,10 +3,12 @@ package org.intelehealth.app.abdm.dialog
 import android.app.Dialog
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,7 +40,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private var txnId: String? = null
     private var onMobileEnrollCompleted: OnMobileEnrollCompleted? = null
     private var resendCounter = 2
-
+    private var countDownTimer: CountDownTimer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         snackBarUtils = SnackbarUtils()
@@ -47,7 +49,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
@@ -56,7 +58,8 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
             container,
             false
         )
-
+        resendOtp()
+        resendCounterAttemptsTextDisplay()
         binding.sendOtpBtn.setOnClickListener {
             if (binding.otpBox.text.isNullOrEmpty()) {
                 snackBarUtils?.showSnackLinearLayoutParentSuccess(
@@ -85,7 +88,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         binding.resendBtn.setOnClickListener {
             if (resendCounter != 0) {
                 resendCounter--
-
+                resendOtp()
                 resendCounterAttemptsTextDisplay()
                 callMobileVerificationApi()
             } else
@@ -236,6 +239,36 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         this.txnId = txnId
         this.onMobileEnrollCompleted = onMobileEnrollCompleted
     }
+
+
+    private fun resendOtp() {
+        binding.resendBtn.isEnabled = false
+        binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.medium_gray))
+
+        val resendTime = resources.getString(R.string.resend_otp_in)
+
+        if (countDownTimer != null) countDownTimer?.cancel() // reset any existing countdown.
+
+        countDownTimer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val time =
+                    resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
+                binding.resendBtn.text = time
+
+            }
+
+            override fun onFinish() {
+                if ( resendCounter != 0) {
+                    binding.resendBtn.isEnabled = true
+                    binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
+                }
+
+                binding.resendBtn.text = resources.getString(R.string.resend_otp)
+                if (cpd != null && cpd.isShowing) cpd.dismiss()
+            }
+        }.start()
+    }
+
 
     interface OnMobileEnrollCompleted {
         fun mobileRegistered(txnId: String?)

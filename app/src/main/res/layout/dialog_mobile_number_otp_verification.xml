@@ -38,7 +38,6 @@
         android:id="@+id/rl_resendOTP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40dp"
         android:orientation="horizontal"
        >
 
@@ -66,7 +65,6 @@
         android:id="@+id/ll_resend_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         tools:visibility="visible"
         android:layout_marginTop="@dimen/margin_10"
         >
@@ -98,7 +96,7 @@
         android:paddingTop="@dimen/common_button_padding_top"
         android:paddingEnd="@dimen/common_button_padding_right"
         android:paddingBottom="@dimen/common_button_padding_bottom"
-        android:text="@string/send_otp" />
+        android:text="@string/verify" />
 
 
 </LinearLayout>
