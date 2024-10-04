@@ -1,17 +1,21 @@
-package org.intelehealth.app.webrtc.adapter
+package org.intelehealth.video.ui.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.intelehealth.app.webrtc.viewholder.EkalCallLogViewHolder
+import org.intelehealth.video.ui.viewholder.EkalCallLogViewHolder
+import org.intelehealth.core.ui.adapter.BaseRecyclerViewAdapter
+import org.intelehealth.core.ui.viewholder.BaseViewHolder
+import org.intelehealth.video.databinding.RowItemEkalCallLogBinding
+import org.intelehealth.video.model.VideoCallLog
 
 /**
  * Created by Vaghela Mithun R. on 23-10-2023 - 15:59.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class CallLogAdapter(context: Context, list: List<RtcCallLog>) :
-    BaseRecyclerViewAdapter<RtcCallLog>(context, list.toMutableList()) {
+class CallLogAdapter(context: Context, list: List<VideoCallLog>) :
+    BaseRecyclerViewAdapter<VideoCallLog>(context, list.toMutableList()) {
     lateinit var clickListener : BaseViewHolder.ViewHolderClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

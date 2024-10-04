@@ -10,7 +10,7 @@ import org.intelehealth.core.utils.helper.PreferenceHelper
 import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.RTC_CONFIG
 import org.intelehealth.klivekit.provider.LiveKitProvider
 import org.intelehealth.video.ui.activity.CallLogActivity
-import org.intelehealth.video.ui.activity.VideoCallActivity
+import org.intelehealth.video.ui.activity.IDAVideoActivity
 
 /**
  * Created by Vaghela Mithun R. on 20-10-2023 - 15:54.
@@ -61,8 +61,8 @@ class RtcEngine private constructor(
                 callUrl = this@Builder.callUrl,
                 socketUrl = this@Builder.socketUrl,
                 callIntentClass = (this@Builder.callIntentClass
-                    ?: VideoCallActivity::class.java).name,
-                chatIntentClass = (this@Builder.chatIntentClass ?: VideoCallActivity::class.java).name,
+                    ?: IDAVideoActivity::class.java).name,
+                chatIntentClass = (this@Builder.chatIntentClass ?: IDAVideoActivity::class.java).name,
                 callLogIntentClass = (this@Builder.callLogIntentClass
                     ?: CallLogActivity::class.java).name,
             )

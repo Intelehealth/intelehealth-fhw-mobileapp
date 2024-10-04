@@ -29,8 +29,8 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private lateinit var binding: AnimCallActionButtonBinding
     lateinit var swipeEventListener: SwipeEventListener
     private var btnIcon: Int = R.drawable.ic_call_accept
-    private var btnColor: Int = R.color.green1
-    private var btnSize: Int = R.dimen.fabDefaultSize
+    private var btnColor: Int = org.intelehealth.resources.R.color.green1
+    private var btnSize: Int = org.intelehealth.resources.R.dimen.fabDefaultSize
     private var animDelay: Int = 500
     private var animDistance: Float = -150f
     private var arrowVisibility = true
@@ -53,7 +53,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     }
 
     private fun obtainAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        btnSize = resources.getDimensionPixelSize(R.dimen.fabDefaultSize)
+        btnSize = resources.getDimensionPixelSize(org.intelehealth.resources.R.dimen.fabDefaultSize)
         context.obtainStyledAttributes(attrs, R.styleable.SwipeButton, defStyleAttr, 0).apply {
             btnIcon = getResourceId(R.styleable.SwipeButton_btnIcon, btnIcon)
             btnColor = getResourceId(R.styleable.SwipeButton_btnColor, btnColor)
@@ -69,7 +69,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
     private fun init(context: Context) {
         LayoutInflater.from(context).let {
             binding = AnimCallActionButtonBinding.inflate(it, this, false)
-            binding.hint = context.resources.getString(R.string.call_swipe_up)
+            binding.hint = context.resources.getString(org.intelehealth.resources.R.string.call_swipe_up)
             startInfiniteBounceAnimation()
             binding.fabAction.setOnTouchListener(this)
 
@@ -107,7 +107,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                         .start()
                     if (::swipeEventListener.isInitialized) swipeEventListener.onSwipe(this)
                     if (swipe > MIN_SWIPE_DISTANCE)
-                        binding.tvSwipeHint.text = resources.getString(R.string.release_now)
+                        binding.tvSwipeHint.text = resources.getString(org.intelehealth.resources.R.string.release_now)
                 }
 
                 MotionEvent.ACTION_UP -> {
@@ -130,7 +130,7 @@ class SwipeButton : FrameLayout, View.OnTouchListener {
                 }
 
                 MotionEvent.ACTION_DOWN -> {
-                    binding.hint = context.resources.getString(R.string.call_swipe_up)
+                    binding.hint = context.resources.getString(org.intelehealth.resources.R.string.call_swipe_up)
                     binding.tvSwipeHint.isInvisible = false
                     binding.swipeUpIndicator.isVisible = false
                     bounceAnimator.pause()

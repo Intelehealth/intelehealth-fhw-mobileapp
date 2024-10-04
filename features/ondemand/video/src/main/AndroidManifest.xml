@@ -39,7 +39,6 @@
     <!--    Dynamic module setting end -->
 
     <application android:hasCode="false">
-        <service android:name=".service.ForegroundService" />
 
         <service
             android:name=".call.notification.HeadsUpNotificationService"

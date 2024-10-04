@@ -5,6 +5,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
 }
+apply("${rootProject.projectDir}/whitelabel.gradle")
+
 android {
     namespace = "org.intelehealth.video"
     compileSdk = 34
@@ -26,11 +28,19 @@ android {
         dataBinding = true
         buildConfig = true
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":core:socket"))
+//    implementation(project(":core"))
+//    implementation(project(":core:socket"))
     implementation("androidx.core:core-ktx:1.13.1")
     implementation(project(":app"))
     implementation(project(":features:ondemand:mediator"))

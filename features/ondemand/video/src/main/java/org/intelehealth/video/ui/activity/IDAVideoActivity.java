@@ -1,7 +1,6 @@
-package org.intelehealth.app.webrtc.activity;
+package org.intelehealth.video.ui.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -20,14 +19,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.R;
-import org.intelehealth.app.databinding.ActivityVideoCallBinding;
-import org.intelehealth.klivekit.call.ui.custom.SwipeButton;
-import org.intelehealth.klivekit.call.utils.CallType;
-import org.intelehealth.core.socket.model.RtcArgs;
-import org.intelehealth.klivekit.call.ui.activity.CoreVideoCallActivity;
-import org.intelehealth.klivekit.call.utils.CallMode;
-import org.intelehealth.klivekit.utils.RtcUtilsKt;
+import org.intelehealth.core.utils.utility.CoreConstantsKt;
+import org.intelehealth.video.R;
+import org.intelehealth.video.databinding.ActivityVideoCallBinding;
+import org.intelehealth.video.model.CallArgs;
+import org.intelehealth.video.ui.custom.SwipeButton;
+import org.intelehealth.video.utils.CallMode;
+import org.intelehealth.video.utils.CallType;
 
 import io.livekit.android.renderer.TextureViewRenderer;
 import io.livekit.android.room.participant.ConnectionQuality;
@@ -41,7 +39,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Mob   : +919727206702
  **/
 public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButton.SwipeEventListener {
-    public static void startVideoCallActivity(Context context, RtcArgs args) {
+    public static void startVideoCallActivity(Context context, CallArgs args) {
 
         CustomLog.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
         args.setUrl(BuildConfig.LIVE_KIT_URL);
@@ -49,7 +47,7 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
         Intent intent = new Intent(context, IDAVideoActivity.class);
-        intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
+        intent.putExtra(CoreConstantsKt.RTC_ARGS, args);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
@@ -94,8 +92,8 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     private void initView() {
         if (args != null && args.getDoctorName() != null) {
             String doctorName = args.getDoctorName();
-            if (!args.getDoctorName().startsWith(getString(R.string.doctor_annotation))) {
-                doctorName = getString(R.string.doctor_annotation) + doctorName;
+            if (!args.getDoctorName().startsWith(getString(org.intelehealth.app.R.string.doctor_annotation))) {
+                doctorName = getString(org.intelehealth.app.R.string.doctor_annotation) + doctorName;
             }
             CallMode callMode = CallMode.OUTGOING;
             if (args.isIncomingCall()) callMode = CallMode.INCOMING;
@@ -260,9 +258,9 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
 
     private Drawable getCurrentMicStatusIcon(boolean isMuted) {
         if (isMuted) {
-            return ContextCompat.getDrawable(this, org.intelehealth.klivekit.R.drawable.ic_mic_off);
+            return ContextCompat.getDrawable(this, R.drawable.ic_mic_off);
         } else {
-            return ContextCompat.getDrawable(this, org.intelehealth.klivekit.R.drawable.selector_active_speaker);
+            return ContextCompat.getDrawable(this, R.drawable.selector_active_speaker);
         }
     }
 
@@ -275,13 +273,8 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
 
     private void showAppClosingDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setMessage(org.intelehealth.klivekit.R.string.call_end_aler_txt)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sayBye("Call ended by you", null);
-                    }
-                }).setNegativeButton(R.string.no, null).create().show();
+                .setMessage(org.intelehealth.resources.R.string.call_end_aler_txt)
+                .setPositiveButton(org.intelehealth.app.R.string.yes, (dialog, which) -> sayBye("Call ended by you", null)).setNegativeButton(org.intelehealth.app.R.string.no, null).create().show();
     }
 
     @Override

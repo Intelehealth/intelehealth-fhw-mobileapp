@@ -5,14 +5,11 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.intelehealth.app.R
-import org.intelehealth.app.database.dao.VisitsDAO
-import org.intelehealth.app.databinding.ActivityCallLogBinding
-import org.intelehealth.app.webrtc.adapter.CallLogAdapter
-import org.intelehealth.klivekit.call.model.RtcCallLog
-import org.intelehealth.klivekit.call.ui.activity.CoreCallLogActivity
-import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder
-import org.intelehealth.core.socket.model.RtcArgs
+import org.intelehealth.core.ui.viewholder.BaseViewHolder
+import org.intelehealth.video.R
+import org.intelehealth.video.databinding.ActivityCallLogBinding
+import org.intelehealth.video.model.VideoCallLog
+import org.intelehealth.video.ui.adapter.CallLogAdapter
 
 /**
  * Created by Vaghela Mithun R. on 23-10-2023 - 14:44.
@@ -31,7 +28,7 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
         adapter.clickListener = this
     }
 
-    override fun onLogs(logs: List<RtcCallLog>) {
+    override fun onLogs(logs: List<VideoCallLog>) {
         binding.callLogContent.tvCallLogEmptyMessage.isVisible = false
         binding.callLogContent.rvCallLogs.apply {
             layoutManager = LinearLayoutManager(context)
@@ -63,13 +60,13 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
         }
     }
 
-    private fun startChatActivity(callLog: RtcCallLog) {
-        val args = RtcArgs()
-        args.doctorUuid = callLog.callerId
-        args.patientId = callLog.roomId
-        args.patientName = callLog.roomName
-        args.visitId = VisitsDAO().getVisitIdByPatientId(args.patientId)
-        args.nurseId = callLog.calleeId
-        IDAChatActivity.startChatActivity(this, args)
+    private fun startChatActivity(callLog: VideoCallLog) {
+//        val args = CallArgs()
+//        args.doctorUuid = callLog.callerId
+//        args.patientId = callLog.roomId
+//        args.patientName = callLog.roomName
+//        args.visitId = VisitsDAO().getVisitIdByPatientId(args.patientId)
+//        args.nurseId = callLog.calleeId
+//        IDAChatActivity.startChatActivity(this, args)
     }
 }
