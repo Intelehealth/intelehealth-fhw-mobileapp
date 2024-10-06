@@ -1,4 +1,4 @@
-package org.intelehealth.app.models.statewise_location;
+package org.intelehealth.ekalarogya.models.statewise_location;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

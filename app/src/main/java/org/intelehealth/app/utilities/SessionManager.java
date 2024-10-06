@@ -3,11 +3,14 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.BuildConfig;
 
 import java.util.Set;
+
+import kotlin.jvm.JvmStatic;
 
 public class SessionManager {
     // Shared preferences file name
@@ -75,6 +78,26 @@ public class SessionManager {
     public static final String PERSONAL_DATA_PROCESSING_POLICY = "PERSONAL_DATA_PROCESSING_POLICY";
     private static final String CUSTOM_LOG_VERSION = "custom_log_version";
 
+    private static final String COUNTRYNAME = "COUNTRYNAME";
+    private static final String STATENAME = "STATENAME";
+    private static final String DISTRICTNAME = "DISTRICTNAME";
+    private static final String SANCHNAME = "SANCHNAME";
+    private static final String VILLAGENAME = "VILLAGENAME";
+
+    private static final String SUB_CENTRE_DISTANCE = "SUB_CENTRE_DISTANCE";
+    private static final String PRIMARY_HEALTH_CENTRE_DISTANCE = "PRIMARY_HEALTH_CENTRE_DISTANCE";
+    private static final String COMMUNITY_HEALTH_CENTRE_DISTANCE = "COMMUNITY_HEALTH_CENTRE_DISTANCE";
+    private static final String DISTRICT_HOSPITAL_DISTANCE = "DISTRICT_HOSPITAL_DISTANCE";
+    private static final String MEDICAL_STORE_DISTANCE = "MEDICAL_STORE_DISTANCE";
+    private static final String PATHOLOGICAL_LAB_DISTANCE = "PATHOLOGICAL_LAB_DISTANCE";
+    private static final String PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE";
+    private static final String PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE = "PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE";
+    private static final String JAL_JEEVAN_YOJANA_SCHEME = "JAL_JEEVAN_YOJANA_SCHEME";
+
+    private static final String KEY_PREF_SECONDARY_LOCATION_UUID = "secondarylocationuuid";
+    private static final String KEY_PREF_CURRENT_LOCATION_UUID = "currentlocationuuid";
+    private static final String KEY_PREF_SECONDARY_LOCATION_NAME = "secondarylocationname";
+    private static final String KEY_PREF_CURRENT_LOCATION_NAME = "currentlocationname";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -557,6 +580,168 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getCountryName() {
+        return pref.getString(COUNTRYNAME, "");
+    }
+
+    public void setCountryName(String countryName) {
+        editor.putString(COUNTRYNAME, countryName);
+        editor.commit();
+    }
+
+    public String getStateName() {
+        return pref.getString(STATENAME, "");
+    }
+
+    public void setStateName(String stateName) {
+        editor.putString(STATENAME, stateName);
+        editor.commit();
+    }
+
+    public String getDistrictName() {
+        return pref.getString(DISTRICTNAME, "");
+    }
+
+    public void setDistrictName(String districtName) {
+        editor.putString(DISTRICTNAME, districtName);
+        editor.commit();
+    }
+
+    public String getSanchName() {
+        return pref.getString(SANCHNAME, "");
+    }
+
+    public void setSanchName(String sanchName) {
+        editor.putString(SANCHNAME, sanchName);
+        editor.commit();
+    }
+
+    public String getVillageName() {
+        return pref.getString(VILLAGENAME, "");
+    }
+
+    public void setVillageName(String villageName) {
+        editor.putString(VILLAGENAME, villageName);
+        editor.commit();
+    }
+
+    public String getSecondaryLocationName() {
+        return pref.getString(KEY_PREF_SECONDARY_LOCATION_NAME, "");
+    }
+
+    public void setSecondaryLocationName(String locationName) {
+        editor.putString(KEY_PREF_SECONDARY_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getSecondaryLocationUuid() {
+        return pref.getString(KEY_PREF_SECONDARY_LOCATION_UUID, "");
+    }
+
+    public void setSecondaryLocationUuid(String locationUuid) {
+        editor.putString(KEY_PREF_SECONDARY_LOCATION_UUID, locationUuid);
+        editor.commit();
+    }
+
+    public String getCurrentLocationName() {
+        return pref.getString(KEY_PREF_CURRENT_LOCATION_NAME, "");
+    }
+
+    public void setCurrentLocationName(String locationName) {
+        editor.putString(KEY_PREF_CURRENT_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getCurrentLocationUuid() {
+        return pref.getString(KEY_PREF_CURRENT_LOCATION_UUID, "");
+    }
+
+    public void setCurrentLocationUuid(String locationUuid) {
+        editor.putString(KEY_PREF_CURRENT_LOCATION_UUID, locationUuid);
+        editor.commit();
+    }
+
+    public String getSubCentreDistance() {
+        return pref.getString(SUB_CENTRE_DISTANCE, "");
+    }
+
+    public void setSubCentreDistance(String subCentreDistance) {
+        editor.putString(SUB_CENTRE_DISTANCE, subCentreDistance);
+        editor.commit();
+    }
+
+    public String getPrimaryHealthCentreDistance() {
+        return pref.getString(PRIMARY_HEALTH_CENTRE_DISTANCE, "");
+    }
+
+    public void setPrimaryHealthCentreDistance(String primaryHealthCentreDistance) {
+        editor.putString(PRIMARY_HEALTH_CENTRE_DISTANCE, primaryHealthCentreDistance);
+        editor.commit();
+    }
+
+    public String getCommunityHealthCentreDistance() {
+        return pref.getString(COMMUNITY_HEALTH_CENTRE_DISTANCE, "");
+    }
+
+    public void setCommunityHealthCentreDistance(String communityHealthCentreDistance) {
+        editor.putString(COMMUNITY_HEALTH_CENTRE_DISTANCE, communityHealthCentreDistance);
+        editor.commit();
+    }
+
+    public String getDistrictHospitalDistance() {
+        return pref.getString(DISTRICT_HOSPITAL_DISTANCE, "");
+    }
+
+    public void setDistrictHospitalDistance(String districtHospitalDistance) {
+        editor.putString(DISTRICT_HOSPITAL_DISTANCE, districtHospitalDistance);
+        editor.commit();
+    }
+
+    public String getMedicalStoreDistance() {
+        return pref.getString(MEDICAL_STORE_DISTANCE, "");
+    }
+
+    public void setMedicalStoreDistance(String medicalStoreDistance) {
+        editor.putString(MEDICAL_STORE_DISTANCE, medicalStoreDistance);
+        editor.commit();
+    }
+
+    public String getPathologicalLabDistance() {
+        return pref.getString(PATHOLOGICAL_LAB_DISTANCE, "");
+    }
+
+    public void setPathologicalLabDistance(String pathologicalLabDistance) {
+        editor.putString(PATHOLOGICAL_LAB_DISTANCE, pathologicalLabDistance);
+        editor.commit();
+    }
+
+    public String getPrivateClinicWithMbbsDoctorDistance() {
+        return pref.getString(PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE, "");
+    }
+
+    public void setPrivateClinicWithMbbsDoctorDistance(String privateClinicWithMbbsDoctorDistance) {
+        editor.putString(PRIVATE_CLINIC_WITH_MBBS_DOCTOR_DISTANCE, privateClinicWithMbbsDoctorDistance);
+        editor.commit();
+    }
+
+    public String getPrivateClinicWithAlternateDoctorDistance() {
+        return pref.getString(PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE, "");
+    }
+
+    public void setPrivateClinicWithAlternateDoctorDistance(String privateClinicWithAlternateDoctorDistance) {
+        editor.putString(PRIVATE_CLINIC_WITH_ALTERNATE_DOCTOR_DISTANCE, privateClinicWithAlternateDoctorDistance);
+        editor.commit();
+    }
+
+    public String getJalJeevanYojanaScheme() {
+        return pref.getString(JAL_JEEVAN_YOJANA_SCHEME, "");
+    }
+
+    public void setJalJeevanYojanaScheme(String jalJeevanYojanaScheme) {
+        editor.putString(JAL_JEEVAN_YOJANA_SCHEME, jalJeevanYojanaScheme);
+        editor.commit();
+    }
+
     /**
      * handling token here
      */
@@ -611,6 +796,6 @@ public class SessionManager {
     }
 
     public String getCustomLogVersion() {
-        return pref.getString(CUSTOM_LOG_VERSION,"");
+        return pref.getString(CUSTOM_LOG_VERSION, "");
     }
 }

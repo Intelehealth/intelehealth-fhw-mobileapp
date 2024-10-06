@@ -1,10 +1,7 @@
 package org.intelehealth.app.networkApiCalls;
 
 
-import com.google.gson.JsonObject;
-
 import org.intelehealth.app.activities.notification.NotificationResponse;
-import org.intelehealth.app.activities.notification.result.NotificationResult;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -32,11 +29,9 @@ import org.intelehealth.app.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
-import org.intelehealth.app.models.statewise_location.District_Sanch_Village;
-import org.intelehealth.app.models.statewise_location.State;
+import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
-import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -60,17 +55,20 @@ import retrofit2.http.Url;
 public interface ApiInterface {
 
 
-    //State-wise location
-    @GET("location?tag=State&v=custom:(uuid,display)")
-    Observable<State> STATE_OBSERVABLE();
-
-    //District-wise location
-    @GET("location/{state_uuid}?&v=custom:(uuid,display,childLocations:(uuid,display))")
-    Observable<District_Sanch_Village> DISTRICT_SANCH_VILLAGE_OBSERVABLE(@Path("state_uuid") String state_uuid, @Header("Authorization") String authHeader);
+//    //State-wise location
+//    @GET("location?tag=State&v=custom:(uuid,display)")
+//    Observable<State> STATE_OBSERVABLE();
+//
+//    //District-wise location
+//    @GET("location/{state_uuid}?&v=custom:(uuid,display,childLocations:(uuid,display))")
+//    Observable<District_Sanch_Village> DISTRICT_SANCH_VILLAGE_OBSERVABLE(@Path("state_uuid") String state_uuid, @Header("Authorization") String authHeader);
 
     @GET("location?tag=Login%20Location")
     Observable<Results<Location>> LOCATION_OBSERVABLE(@Query("v") String representation);
 
+    //-SetupLocation
+    @GET("getLocations")
+    Observable<Setup_LocationModel> SETUP_LOCATIONOBSERVABLE();
 
     @DELETE
     Call<Void> DELETE_ENCOUNTER(@Url String url,
