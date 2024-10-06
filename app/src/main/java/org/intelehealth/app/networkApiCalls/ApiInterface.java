@@ -19,6 +19,9 @@ import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
+import org.intelehealth.app.models.locationAttributes.pull.PullLocationAttributesRoot;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
@@ -32,6 +35,8 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -224,4 +229,17 @@ public interface ApiInterface {
 
     @GET("/api/mindmap/notifications")
     Single<NotificationResponse> fetchAllNotifications(@Header("Authorization") String authHeader, @Query("userId") String userId, @Query("page") String page, @Query("size") String size);
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<LocationAttributesResponse> PUSH_LOCATION_UUIDS(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body List<LocationAttributes> locationAttributeRequestList
+    );
+
+    @GET
+    Observable<PullLocationAttributesRoot> PULL_LOCATION_ATTRIBUTES(
+            @Url String url
+    );
 }

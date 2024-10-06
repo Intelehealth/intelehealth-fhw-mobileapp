@@ -224,5 +224,27 @@ public class AppConstants {
 
     public static final String INTENT_SERVER_URL = "server_url";
 
+    public static final String VILLAGE_TYPE_UUID = "b9d762cb-ea7f-4347-8d8b-f21ca908bf82";
+    public static final String DISTANCE_TO_SUB_CENTRE_UUID = "ff2b4105-608a-4ef9-b3b8-f57367f6c68d";
+    public static final String DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID = "dfe1dd68-c1e8-4a98-892f-152acc87bea4";
+    public static final String DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID = "c47db34b-c0ec-4045-9b05-7c6a0a9edcf3";
+    public static final String DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID = "b983240c-16e0-4eea-a878-9caf11fbdc95";
+    public static final String DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID = "84f40747-c8ac-4f53-81e8-cd3076bf4a06";
+    public static final String DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID = "143b1dd3-a21e-44bf-82fa-c3843a8dbd46";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID = "e9aa35b4-2c74-414d-b727-f80d217a78b1";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID = "0d7de309-05cf-433a-bb66-2be6d28ab4de";
+    public static final String JAL_JEEVAN_YOJANA_UUID = "0edf2076-0b94-45f7-845d-1918ed017ae7";
+    public static final String SECONDARY_VILLAGE_UUID = "b9d762cb-ea7f-4347-8d8b-f21ca908bf82";
+
+    public static final String DISTANCE_TO_SUB_CENTRE_UUID_TEXT = "distance_to_sub_centre";
+    public static final String DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT = "distance_to_primary_health_centre";
+    public static final String DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT = "distance_to_nearest_community_health_centre";
+    public static final String DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT = "distance_to_nearest_district_hospital";
+    public static final String DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT = "distance_to_nearest_medical_store";
+    public static final String DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT = "distance_to_nearest_pathological_lab";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT = "distance_to_nearest_private_clinic";
+    public static final String DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT = "distance_to_nearest_private_clinic_with_alternate_medicine";
+    public static final String JAL_JEEVAN_YOJANA_UUID_TEXT = "does_the_village_get_water_under_jal_jeevan_yojana_scheme";
+
 }
 

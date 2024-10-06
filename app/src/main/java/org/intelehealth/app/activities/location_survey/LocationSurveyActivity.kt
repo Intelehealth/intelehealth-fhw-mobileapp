@@ -7,9 +7,12 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.R
@@ -18,6 +21,8 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.database.dao.NewLocationDao
 import org.intelehealth.app.databinding.ActivityLocationSurveyBinding
 import org.intelehealth.app.models.Location
+import org.intelehealth.app.models.locationAttributes.pull.PullLocationAttributesData
+import org.intelehealth.app.models.locationAttributes.pull.PullLocationAttributesRoot
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel
 import org.intelehealth.app.networkApiCalls.ApiClient
 import org.intelehealth.app.networkApiCalls.ApiInterface
@@ -170,6 +175,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                     } else {
                         emptySpinner("sanch");
                     }
+                    unselectExistingRadioButtons()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -230,6 +236,9 @@ class LocationSurveyActivity : AppCompatActivity() {
                         } else {
                             emptySpinner("village");
                         }
+
+                        unselectExistingRadioButtons()
+                        fetchAndSetLocationAttributes(primaryVillageUuid)
                     }
                 }
 
@@ -483,7 +492,15 @@ class LocationSurveyActivity : AppCompatActivity() {
     }
 
     private fun unselectExistingRadioButtons() {
-        TODO("Not yet implemented")
+        binding?.cbScDistance?.clearCheck()
+        binding?.cbPhcDistance?.clearCheck()
+        binding?.cbChcDistance?.clearCheck()
+        binding?.cbDhDistance?.clearCheck()
+        binding?.cbMsDistance?.clearCheck()
+        binding?.cbPlDistance?.clearCheck()
+        binding?.cbPcDistance?.clearCheck()
+        binding?.cbPcamDistance?.clearCheck()
+        binding?.cbJjyDistance?.clearCheck()
     }
 
     private fun getLocationStringList(locationList: List<Location>): List<String> {
@@ -583,6 +600,102 @@ class LocationSurveyActivity : AppCompatActivity() {
 
         sessionManager?.jalJeevanYojanaScheme = jalJeevanYojana
 
+    }
+
+    private fun fetchAndSetLocationAttributes(villageUuid: String?) {
+        val finalURL = "https://${url}/locattribs/${villageUuid}"
+        val pullLocationAttributesRootObservable: Observable<PullLocationAttributesRoot> =
+            AppConstants.apiInterface.PULL_LOCATION_ATTRIBUTES(finalURL)
+
+        pullLocationAttributesRootObservable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<PullLocationAttributesRoot> {
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onComplete() {
+
+                }
+
+                override fun onNext(pullLocationAttributesRoot: PullLocationAttributesRoot) {
+                    if (pullLocationAttributesRoot.attributesDataList.isNotEmpty()) {
+                        setLocationData(pullLocationAttributesRoot.attributesDataList);
+                    }
+                }
+
+            })
+
+    }
+
+    private fun setLocationData(attributesDataList: List<PullLocationAttributesData>) {
+        for (data in attributesDataList) {
+            val distanceData: String = data.attributeValue
+
+            when (data.attributeName) {
+                AppConstants.DISTANCE_TO_SUB_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbScDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbPhcDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbChcDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbDhDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbMsDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbPlDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbPcDistance,
+                    distanceData
+                )
+
+                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbPcamDistance,
+                    distanceData
+                )
+
+                AppConstants.JAL_JEEVAN_YOJANA_UUID_TEXT -> checkChipInsideChipGroup(
+                    binding?.cbJjyDistance,
+                    distanceData
+                )
+            }
+        }
+    }
+
+    private fun checkChipInsideChipGroup(chipGroup: ChipGroup?, distanceText: String) {
+        chipGroup?.childCount?.let {
+            for (i in 0 until it) {
+                val currentChip: Chip = chipGroup.getChildAt(i) as Chip
+                if (currentChip.text.toString().equals(distanceText, ignoreCase = true)) {
+                    currentChip.isChecked = true
+                    break
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
