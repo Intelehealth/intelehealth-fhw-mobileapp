@@ -257,6 +257,23 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "request_code TEXT" +
             ")";
 
+    public static final String CREATE_LOCATION_NEW = "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+            "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "country TEXT," +
+            "state TEXT," +
+            "district TEXT," +
+            "tehsil TEXT," +
+            "village TEXT," +
+            "latitude TEXT," +
+            "longitude TEXT," +
+            "parent_location integer(11)," +
+            "locationuuid TEXT," +
+            "modified_date TEXT," +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
+            ")";
+
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -324,6 +341,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
+        db.execSQL(CREATE_LOCATION_NEW);
         uuidInsert(db);
         database = db;
 

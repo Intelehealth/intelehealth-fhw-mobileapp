@@ -18,6 +18,8 @@ import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.appointment.model.SlotInfo
+import org.intelehealth.app.appointmentNew.PickUpTimeSlotsAdapter.OnItemClickListener
 import org.intelehealth.app.database.dao.NewLocationDao
 import org.intelehealth.app.databinding.ActivityLocationSurveyBinding
 import org.intelehealth.app.models.Location
@@ -39,7 +41,7 @@ class LocationSurveyActivity : AppCompatActivity() {
     private var newLocationDao: NewLocationDao? = null
     private var selectedState: String? = ""
     private var selectedDistrict: String? = ""
-    private var selectedSanch: kotlin.String? = ""
+    private var selectedSanch: String? = ""
     private var selectedPrimaryVillage: String? = ""
     private var selectedSecondaryVillage: String? = ""
 
@@ -59,216 +61,173 @@ class LocationSurveyActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        binding?.autotvSelectState?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != 0) {
-                        selectedState = parent?.getItemAtPosition(position)?.toString()
-                        sessionManager?.stateName = selectedState
+        binding?.autotvSelectState?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                if (position != 0) {
+                    selectedState = parent?.getItemAtPosition(position)?.toString()
+                    sessionManager?.stateName = selectedState
 
-                        val districtLocationList: MutableList<String>? =
-                            newLocationDao?.getDistrictList(
-                                selectedState,
-                                this@LocationSurveyActivity
-                            )
+                    val districtLocationList: MutableList<String>? =
+                        newLocationDao?.getDistrictList(
+                            selectedState,
+                            this@LocationSurveyActivity
+                        )
 
-                        if (districtLocationList != null && districtLocationList.size > 1) {
-                            val adapter = LocationArrayAdapter(
-                                this@LocationSurveyActivity,
-                                districtLocationList
-                            )
+                    if (districtLocationList != null && districtLocationList.size > 1) {
+                        val adapter = LocationArrayAdapter(
+                            this@LocationSurveyActivity,
+                            districtLocationList
+                        )
 
-                            binding?.autotvSelectDistrict?.setEnabled(true)
-                            binding?.autotvSelectDistrict?.setAlpha(1.0f)
-                            binding?.autotvSelectDistrict?.setAdapter(adapter)
-                            isLocationFetched = true
-                        } else {
-                            emptySpinner("state");
-                        }
+                        binding?.autotvSelectDistrict?.setEnabled(true)
+                        binding?.autotvSelectDistrict?.setAlpha(1.0f)
+                        binding?.autotvSelectDistrict?.setAdapter(adapter)
+                        isLocationFetched = true
+                    } else {
+                        emptySpinner("state")
                     }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
 
-        binding?.autotvSelectDistrict?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != 0) {
-                        selectedDistrict = parent?.getItemAtPosition(position)?.toString()
-                        sessionManager?.districtName = selectedDistrict
+        binding?.autotvSelectDistrict?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                if (position != 0) {
+                    selectedDistrict = parent?.getItemAtPosition(position)?.toString()
+                    sessionManager?.districtName = selectedDistrict
 
-                        val sanchLocationList: MutableList<String>? =
-                            newLocationDao?.getSanchList(
-                                selectedState,
-                                selectedDistrict,
-                                this@LocationSurveyActivity
-                            )
+                    val sanchLocationList: MutableList<String>? =
+                        newLocationDao?.getSanchList(
+                            selectedState,
+                            selectedDistrict,
+                            this@LocationSurveyActivity
+                        )
 
-                        if (sanchLocationList != null && sanchLocationList.size > 1) {
-                            val adapter = LocationArrayAdapter(
-                                this@LocationSurveyActivity,
-                                sanchLocationList
-                            )
+                    if (sanchLocationList != null && sanchLocationList.size > 1) {
+                        val adapter = LocationArrayAdapter(
+                            this@LocationSurveyActivity,
+                            sanchLocationList
+                        )
 
-                            binding?.autotvSelectSanch?.setEnabled(true)
-                            binding?.autotvSelectSanch?.setAlpha(1.0f)
-                            binding?.autotvSelectSanch?.setAdapter(adapter)
-                            isLocationFetched = true
-                        } else {
-                            emptySpinner("district");
-                        }
+                        binding?.autotvSelectSanch?.setEnabled(true)
+                        binding?.autotvSelectSanch?.setAlpha(1.0f)
+                        binding?.autotvSelectSanch?.setAdapter(adapter)
+                        isLocationFetched = true
                     } else {
-                        emptySpinner("district");
+                        emptySpinner("district")
                     }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
+                } else {
+                    emptySpinner("district")
                 }
             }
 
-        binding?.autotvSelectSanch?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != 0) {
-                        selectedSanch = parent?.getItemAtPosition(position)?.toString()
-                        sessionManager?.sanchName = selectedSanch
+        binding?.autotvSelectSanch?.onItemClickListener = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position != 0) {
+                    selectedSanch = parent?.getItemAtPosition(position)?.toString()
+                    sessionManager?.sanchName = selectedSanch
 
-                        val primaryVillageLocationsList: MutableList<String>? =
-                            newLocationDao?.getVillageList(
-                                selectedState,
-                                selectedDistrict,
-                                selectedSanch,
-                                this@LocationSurveyActivity,
-                                "primary"
-                            )
+                    val primaryVillageLocationsList: MutableList<String>? =
+                        newLocationDao?.getVillageList(
+                            selectedState,
+                            selectedDistrict,
+                            selectedSanch,
+                            this@LocationSurveyActivity,
+                            "primary"
+                        )
 
-                        if (primaryVillageLocationsList != null && primaryVillageLocationsList.size > 1) {
-                            val adapter = LocationArrayAdapter(
-                                this@LocationSurveyActivity,
-                                primaryVillageLocationsList
-                            )
+                    if (primaryVillageLocationsList != null && primaryVillageLocationsList.size > 1) {
+                        val adapter = LocationArrayAdapter(
+                            this@LocationSurveyActivity,
+                            primaryVillageLocationsList
+                        )
 
-                            binding?.autotvSelectPrimaryVillage?.setEnabled(true)
-                            binding?.autotvSelectPrimaryVillage?.setAlpha(1.0f)
-                            binding?.autotvSelectPrimaryVillage?.setAdapter(adapter)
-                            isLocationFetched = true
-                        } else {
-                            emptySpinner("sanch");
-                        }
+                        binding?.autotvSelectPrimaryVillage?.setEnabled(true)
+                        binding?.autotvSelectPrimaryVillage?.setAlpha(1.0f)
+                        binding?.autotvSelectPrimaryVillage?.setAdapter(adapter)
+                        isLocationFetched = true
                     } else {
-                        emptySpinner("sanch");
+                        emptySpinner("sanch")
                     }
+                } else {
+                    emptySpinner("sanch")
+                }
+                unselectExistingRadioButtons()
+            }
+        }
+
+        binding?.autotvSelectPrimaryVillage?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
+                if (position != 0) {
+                    selectedPrimaryVillage = parent?.getItemAtPosition(position)?.toString()
+
+                    val primaryVillageUuid: String? = newLocationDao?.getVillageUuid(
+                        selectedState,
+                        selectedDistrict,
+                        selectedSanch,
+                        selectedPrimaryVillage
+                    )
+
+                    sessionManager?.villageName = selectedPrimaryVillage
+                    sessionManager?.currentLocationName = selectedPrimaryVillage
+                    sessionManager?.currentLocationUuid = primaryVillageUuid
+
+                    val tempPrimaryVillageHashMap: HashMap<String?, String?> = HashMap()
+                    tempPrimaryVillageHashMap[primaryVillageUuid] = selectedPrimaryVillage
+                    villageNameHashMap = tempPrimaryVillageHashMap
+
+                    val secondaryVillageLocationsList: MutableList<String>? =
+                        newLocationDao?.getVillageList(
+                            selectedState,
+                            selectedDistrict,
+                            selectedSanch,
+                            this@LocationSurveyActivity,
+                            "secondary"
+                        )
+
+                    secondaryVillageLocationsList?.removeAt(
+                        secondaryVillageLocationsList.indexOf(
+                            selectedPrimaryVillage
+                        )
+                    )
+
+                    if (secondaryVillageLocationsList != null && secondaryVillageLocationsList.size > 1) {
+                        val adapter = LocationArrayAdapter(
+                            this@LocationSurveyActivity,
+                            secondaryVillageLocationsList
+                        )
+
+                        binding?.autotvSelectSecondaryVillage?.setEnabled(true)
+                        binding?.autotvSelectSecondaryVillage?.setAlpha(1.0f)
+                        binding?.autotvSelectSecondaryVillage?.setAdapter(adapter)
+                        isLocationFetched = true
+                    } else {
+                        emptySpinner("village")
+                    }
+
                     unselectExistingRadioButtons()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    fetchAndSetLocationAttributes(primaryVillageUuid)
                 }
             }
 
-        binding?.autotvSelectPrimaryVillage?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != 0) {
-                        selectedPrimaryVillage = parent?.getItemAtPosition(position)?.toString()
+        binding?.autotvSelectSecondaryVillage?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
+                if (position != 0) {
+                    selectedSecondaryVillage = parent?.getItemAtPosition(position)?.toString()
+                    val secondaryVillageUuid: String? = newLocationDao?.getVillageUuid(
+                        selectedState,
+                        selectedDistrict,
+                        selectedSanch,
+                        selectedPrimaryVillage
+                    )
 
-                        val primaryVillageUuid: String? = newLocationDao?.getVillageUuid(
-                            selectedState,
-                            selectedDistrict,
-                            selectedSanch,
-                            selectedPrimaryVillage
-                        )
-
-                        sessionManager?.villageName = selectedPrimaryVillage
-                        sessionManager?.currentLocationName = selectedPrimaryVillage
-                        sessionManager?.currentLocationUuid = primaryVillageUuid
-
-                        val tempPrimaryVillageHashMap: HashMap<String?, String?> = HashMap()
-                        tempPrimaryVillageHashMap[primaryVillageUuid] = selectedPrimaryVillage
-                        villageNameHashMap = tempPrimaryVillageHashMap
-
-                        val secondaryVillageLocationsList: MutableList<String>? =
-                            newLocationDao?.getVillageList(
-                                selectedState,
-                                selectedDistrict,
-                                selectedSanch,
-                                this@LocationSurveyActivity,
-                                "secondary"
-                            )
-
-                        secondaryVillageLocationsList?.removeAt(
-                            secondaryVillageLocationsList.indexOf(
-                                selectedPrimaryVillage
-                            )
-                        )
-
-                        if (secondaryVillageLocationsList != null && secondaryVillageLocationsList.size > 1) {
-                            val adapter = LocationArrayAdapter(
-                                this@LocationSurveyActivity,
-                                secondaryVillageLocationsList
-                            )
-
-                            binding?.autotvSelectSecondaryVillage?.setEnabled(true)
-                            binding?.autotvSelectSecondaryVillage?.setAlpha(1.0f)
-                            binding?.autotvSelectSecondaryVillage?.setAdapter(adapter)
-                            isLocationFetched = true
-                        } else {
-                            emptySpinner("village");
-                        }
-
-                        unselectExistingRadioButtons()
-                        fetchAndSetLocationAttributes(primaryVillageUuid)
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-            }
-
-        binding?.autotvSelectSecondaryVillage?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != 0) {
-                        selectedSecondaryVillage = parent?.getItemAtPosition(position)?.toString()
-                        val secondaryVillageUuid: String? = newLocationDao?.getVillageUuid(
-                            selectedState,
-                            selectedDistrict,
-                            selectedSanch,
-                            selectedPrimaryVillage
-                        )
-
-                        sessionManager?.secondaryLocationName = selectedSecondaryVillage
-                        sessionManager?.secondaryLocationUuid = secondaryVillageUuid
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    sessionManager?.secondaryLocationName = selectedSecondaryVillage
+                    sessionManager?.secondaryLocationUuid = secondaryVillageUuid
+                    isLocationFetched = true
                 }
             }
     }
@@ -278,8 +237,8 @@ class LocationSurveyActivity : AppCompatActivity() {
     }
 
     private fun fetchLocations() {
-        isLocationFetched = false;
-        val baseUrl = "http://$url/openmrs/ws/rest/v1/";
+        isLocationFetched = false
+        val baseUrl = "https://$url:3004/api/openmrs/"
 
         if (URLUtil.isValidUrl(baseUrl) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(baseUrl)
@@ -315,11 +274,11 @@ class LocationSurveyActivity : AppCompatActivity() {
                                                 )
                                                 isLocationFetched = true
                                             } else {
-                                                emptySpinner("state");
+                                                emptySpinner("state")
                                             }
                                         }
                                 } catch (exception: DAOException) {
-                                    exception.printStackTrace();
+                                    exception.printStackTrace()
                                     isLocationFetched = false
                                 }
                             }
@@ -332,13 +291,13 @@ class LocationSurveyActivity : AppCompatActivity() {
                                     this@LocationSurveyActivity,
                                     getString(R.string.url_invalid),
                                     Toast.LENGTH_SHORT
-                                ).show();
+                                ).show()
                             } else {
                                 Toast.makeText(
                                     this@LocationSurveyActivity,
                                     e.localizedMessage,
                                     Toast.LENGTH_SHORT
-                                ).show();
+                                ).show()
                             }
                         }
 
@@ -347,14 +306,14 @@ class LocationSurveyActivity : AppCompatActivity() {
                         }
                     })
             } catch (exception: IllegalArgumentException) {
-                FirebaseCrashlytics.getInstance().recordException(exception);
+                FirebaseCrashlytics.getInstance().recordException(exception)
             }
         } else
             Toast.makeText(
                 this@LocationSurveyActivity,
                 getString(R.string.url_invalid),
                 Toast.LENGTH_SHORT
-            ).show();
+            ).show()
     }
 
     private fun emptySpinner(value: String) {
