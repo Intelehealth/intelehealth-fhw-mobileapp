@@ -45,6 +45,11 @@ class LocationSurveyActivity : AppCompatActivity() {
     private var villageNameHashMap: HashMap<String?, String?> = HashMap()
     private var sessionManager: SessionManager? = null
 
+    private var districtArrayAdapter: LocationArrayAdapter? = null
+    private var sanchArrayAdapter: LocationArrayAdapter? = null
+    private var primaryVillageArrayAdapter: LocationArrayAdapter? = null
+    private var secondaryVillageArrayAdapter: LocationArrayAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationSurveyBinding.inflate(layoutInflater)
@@ -57,6 +62,116 @@ class LocationSurveyActivity : AppCompatActivity() {
         initializeAutoTextViewDropDowns()
         fetchLocations()
     }
+
+    private fun setLocationDataIfPresent() {
+        if (sessionManager?.stateName?.isBlank() == false) {
+            binding?.autotvSelectState?.setText(sessionManager?.stateName, false)
+            binding?.autotvSelectState?.isEnabled = true
+        }
+
+        if (sessionManager?.districtName?.isBlank() == false) {
+            binding?.autotvSelectDistrict?.setText(sessionManager?.districtName, false)
+            binding?.autotvSelectDistrict?.isEnabled = true
+            binding?.autotvSelectDistrict?.setAdapter(getDistrictArrayAdapter())
+        }
+
+        if (sessionManager?.sanchName?.isBlank() == false) {
+            binding?.autotvSelectSanch?.setText(sessionManager?.sanchName, false)
+            binding?.autotvSelectSanch?.isEnabled = true
+            binding?.autotvSelectSanch?.setAdapter(getSanchArrayAdapter())
+        }
+
+        if (sessionManager?.currentLocationName?.isBlank() == false) {
+            binding?.autotvSelectPrimaryVillage?.setText(sessionManager?.currentLocationName, false)
+            binding?.autotvSelectPrimaryVillage?.isEnabled = true
+            binding?.autotvSelectPrimaryVillage?.setAdapter(getPrimaryVillageArrayAdapter())
+            fetchAndSetLocationAttributes(sessionManager?.currentLocationUuid)
+        }
+
+        if (sessionManager?.secondaryLocationName?.isBlank() == false) {
+            binding?.autotvSelectSecondaryVillage?.setText(
+                sessionManager?.secondaryLocationName,
+                false
+            )
+            binding?.autotvSelectSecondaryVillage?.isEnabled = true
+            binding?.autotvSelectSecondaryVillage?.setAdapter(getSecondaryVillageArrayAdapter())
+        }
+    }
+
+    private fun getDistrictArrayAdapter(): LocationArrayAdapter? {
+        val districtLocationList: MutableList<String>? =
+            newLocationDao?.getDistrictList(
+                sessionManager?.stateName,
+                this@LocationSurveyActivity
+            )
+
+        return if (districtLocationList != null && districtLocationList.size > 1) {
+            getLocationArrayAdapter(districtLocationList)
+        } else {
+            null
+        }
+    }
+
+    private fun getSanchArrayAdapter(): LocationArrayAdapter? {
+        val sanchLocationList: MutableList<String>? =
+            newLocationDao?.getSanchList(
+                sessionManager?.stateName,
+                sessionManager?.districtName,
+                this@LocationSurveyActivity
+            )
+
+        return if (sanchLocationList != null && sanchLocationList.size > 1) {
+            getLocationArrayAdapter(sanchLocationList)
+        } else {
+            null
+        }
+    }
+
+    private fun getPrimaryVillageArrayAdapter(): LocationArrayAdapter? {
+        val primaryVillageLocationsList: MutableList<String>? =
+            newLocationDao?.getVillageList(
+                sessionManager?.stateName,
+                sessionManager?.districtName,
+                sessionManager?.sanchName,
+                this@LocationSurveyActivity,
+                "primary"
+            )
+
+        return if (primaryVillageLocationsList != null && primaryVillageLocationsList.size > 1) {
+            getLocationArrayAdapter(primaryVillageLocationsList)
+        } else {
+            null
+        }
+    }
+
+    private fun getSecondaryVillageArrayAdapter(): LocationArrayAdapter? {
+        val secondaryVillageLocationsList: MutableList<String>? =
+            newLocationDao?.getVillageList(
+                sessionManager?.stateName,
+                sessionManager?.districtName,
+                sessionManager?.sanchName,
+                this@LocationSurveyActivity,
+                "secondary"
+            )
+
+        secondaryVillageLocationsList?.removeAt(
+            secondaryVillageLocationsList.indexOf(
+                sessionManager?.currentLocationName
+            )
+        )
+
+        return if (secondaryVillageLocationsList != null && secondaryVillageLocationsList.size > 1) {
+            getLocationArrayAdapter(secondaryVillageLocationsList)
+        } else {
+            null
+        }
+    }
+
+    private fun getLocationArrayAdapter(list: MutableList<String>?): LocationArrayAdapter =
+        LocationArrayAdapter(
+            this@LocationSurveyActivity,
+            list
+        )
 
     private fun initializeAutoTextViewDropDowns() {
         binding?.autotvSelectState?.isEnabled = false
@@ -73,26 +188,21 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedState = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.stateName = selectedState
 
-                    val districtLocationList: MutableList<String>? =
-                        newLocationDao?.getDistrictList(
-                            selectedState,
-                            this@LocationSurveyActivity
-                        )
+                    if (districtArrayAdapter == null) {
+                        districtArrayAdapter = getDistrictArrayAdapter()
+                    }
 
-                    if (districtLocationList != null && districtLocationList.size > 1) {
-                        val adapter = LocationArrayAdapter(
-                            this@LocationSurveyActivity,
-                            districtLocationList
-                        )
-
+                    if (districtArrayAdapter != null) {
                         setDropdownValuesToDefault("state")
                         binding?.autotvSelectDistrict?.setEnabled(true)
                         binding?.autotvSelectDistrict?.setAlpha(1.0f)
-                        binding?.autotvSelectDistrict?.setAdapter(adapter)
+                        binding?.autotvSelectDistrict?.setAdapter(districtArrayAdapter)
                         isLocationFetched = true
                     } else {
                         emptySpinner("state")
                     }
+                } else {
+                    sessionManager?.stateName = ""
                 }
             }
 
@@ -102,28 +212,21 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedDistrict = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.districtName = selectedDistrict
 
-                    val sanchLocationList: MutableList<String>? =
-                        newLocationDao?.getSanchList(
-                            selectedState,
-                            selectedDistrict,
-                            this@LocationSurveyActivity
-                        )
+                    if (sanchArrayAdapter == null) {
+                        sanchArrayAdapter = getSanchArrayAdapter()
+                    }
 
-                    if (sanchLocationList != null && sanchLocationList.size > 1) {
-                        val adapter = LocationArrayAdapter(
-                            this@LocationSurveyActivity,
-                            sanchLocationList
-                        )
-
+                    if (sanchArrayAdapter != null) {
                         setDropdownValuesToDefault("district")
                         binding?.autotvSelectSanch?.setEnabled(true)
                         binding?.autotvSelectSanch?.setAlpha(1.0f)
-                        binding?.autotvSelectSanch?.setAdapter(adapter)
+                        binding?.autotvSelectSanch?.setAdapter(sanchArrayAdapter)
                         isLocationFetched = true
                     } else {
                         emptySpinner("district")
                     }
                 } else {
+                    sessionManager?.districtName = ""
                     emptySpinner("district")
                 }
             }
@@ -134,30 +237,21 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedSanch = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.sanchName = selectedSanch
 
-                    val primaryVillageLocationsList: MutableList<String>? =
-                        newLocationDao?.getVillageList(
-                            selectedState,
-                            selectedDistrict,
-                            selectedSanch,
-                            this@LocationSurveyActivity,
-                            "primary"
-                        )
+                    if (primaryVillageArrayAdapter != null) {
+                        primaryVillageArrayAdapter = getPrimaryVillageArrayAdapter()
+                    }
 
-                    if (primaryVillageLocationsList != null && primaryVillageLocationsList.size > 1) {
-                        val adapter = LocationArrayAdapter(
-                            this@LocationSurveyActivity,
-                            primaryVillageLocationsList
-                        )
-
+                    if (primaryVillageArrayAdapter != null) {
                         setDropdownValuesToDefault("sanch")
                         binding?.autotvSelectPrimaryVillage?.setEnabled(true)
                         binding?.autotvSelectPrimaryVillage?.setAlpha(1.0f)
-                        binding?.autotvSelectPrimaryVillage?.setAdapter(adapter)
+                        binding?.autotvSelectPrimaryVillage?.setAdapter(primaryVillageArrayAdapter)
                         isLocationFetched = true
                     } else {
                         emptySpinner("sanch")
                     }
                 } else {
+                    sessionManager?.sanchName = ""
                     emptySpinner("sanch")
                 }
                 unselectExistingRadioButtons()
@@ -167,47 +261,32 @@ class LocationSurveyActivity : AppCompatActivity() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 if (position != 0) {
                     selectedPrimaryVillage = parent?.getItemAtPosition(position)?.toString()
-
-                    val primaryVillageUuid: String? = newLocationDao?.getVillageUuid(
-                        selectedState,
-                        selectedDistrict,
-                        selectedSanch,
-                        selectedPrimaryVillage
-                    )
-
                     sessionManager?.villageName = selectedPrimaryVillage
                     sessionManager?.currentLocationName = selectedPrimaryVillage
+
+
+                    val primaryVillageUuid: String? = newLocationDao?.getVillageUuid(
+                        sessionManager?.stateName,
+                        sessionManager?.districtName,
+                        sessionManager?.sanchName,
+                        sessionManager?.villageName
+                    )
+
                     sessionManager?.currentLocationUuid = primaryVillageUuid
 
                     val tempPrimaryVillageHashMap: HashMap<String?, String?> = HashMap()
                     tempPrimaryVillageHashMap[primaryVillageUuid] = selectedPrimaryVillage
                     villageNameHashMap = tempPrimaryVillageHashMap
 
-                    val secondaryVillageLocationsList: MutableList<String>? =
-                        newLocationDao?.getVillageList(
-                            selectedState,
-                            selectedDistrict,
-                            selectedSanch,
-                            this@LocationSurveyActivity,
-                            "secondary"
-                        )
+                    secondaryVillageArrayAdapter = getSecondaryVillageArrayAdapter()
 
-                    secondaryVillageLocationsList?.removeAt(
-                        secondaryVillageLocationsList.indexOf(
-                            selectedPrimaryVillage
-                        )
-                    )
-
-                    if (secondaryVillageLocationsList != null && secondaryVillageLocationsList.size > 1) {
-                        val adapter = LocationArrayAdapter(
-                            this@LocationSurveyActivity,
-                            secondaryVillageLocationsList
-                        )
-
+                    if (secondaryVillageArrayAdapter != null) {
                         setDropdownValuesToDefault("village")
                         binding?.autotvSelectSecondaryVillage?.setEnabled(true)
                         binding?.autotvSelectSecondaryVillage?.setAlpha(1.0f)
-                        binding?.autotvSelectSecondaryVillage?.setAdapter(adapter)
+                        binding?.autotvSelectSecondaryVillage?.setAdapter(
+                            secondaryVillageArrayAdapter
+                        )
                         isLocationFetched = true
                     } else {
                         emptySpinner("village")
@@ -215,6 +294,10 @@ class LocationSurveyActivity : AppCompatActivity() {
 
                     unselectExistingRadioButtons()
                     fetchAndSetLocationAttributes(primaryVillageUuid)
+                } else {
+                    sessionManager?.villageName = ""
+                    sessionManager?.currentLocationName = ""
+                    sessionManager?.currentLocationUuid = ""
                 }
             }
 
@@ -232,6 +315,9 @@ class LocationSurveyActivity : AppCompatActivity() {
                     sessionManager?.secondaryLocationName = selectedSecondaryVillage
                     sessionManager?.secondaryLocationUuid = secondaryVillageUuid
                     isLocationFetched = true
+                } else {
+                    sessionManager?.secondaryLocationName = ""
+                    sessionManager?.secondaryLocationUuid = ""
                 }
             }
     }
@@ -302,6 +388,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                                                     locationArrayAdapter
                                                 )
                                                 isLocationFetched = true
+                                                setLocationDataIfPresent()
                                             } else {
                                                 emptySpinner("state")
                                             }
@@ -451,11 +538,11 @@ class LocationSurveyActivity : AppCompatActivity() {
 
     private fun initializeButtons() {
         binding?.backBtn?.setOnClickListener {
-            finish()
+            storeSurveyDataAndGoBack()
         }
 
         binding?.btnBack?.setOnClickListener {
-            finish()
+            storeSurveyDataAndGoBack()
         }
 
         binding?.btnSave?.setOnClickListener {
@@ -556,7 +643,7 @@ class LocationSurveyActivity : AppCompatActivity() {
 
                 override fun onNext(pullLocationAttributesRoot: PullLocationAttributesRoot) {
                     if (pullLocationAttributesRoot.attributesDataList.isNotEmpty()) {
-                        setLocationData(pullLocationAttributesRoot.attributesDataList);
+                        setLocationSurveyData(pullLocationAttributesRoot.attributesDataList);
                     }
                 }
 
@@ -564,7 +651,7 @@ class LocationSurveyActivity : AppCompatActivity() {
 
     }
 
-    private fun setLocationData(attributesDataList: List<PullLocationAttributesData>) {
+    private fun setLocationSurveyData(attributesDataList: List<PullLocationAttributesData>) {
         for (data in attributesDataList) {
             val distanceData: String = data.attributeValue
 
