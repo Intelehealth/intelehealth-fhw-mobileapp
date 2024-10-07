@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.location_survey
 
 import android.os.Bundle
-import android.view.View
 import android.webkit.URLUtil
 import android.widget.AdapterView
 import android.widget.Toast
@@ -18,8 +17,6 @@ import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter
 import org.intelehealth.app.app.AppConstants
-import org.intelehealth.app.appointment.model.SlotInfo
-import org.intelehealth.app.appointmentNew.PickUpTimeSlotsAdapter.OnItemClickListener
 import org.intelehealth.app.database.dao.NewLocationDao
 import org.intelehealth.app.databinding.ActivityLocationSurveyBinding
 import org.intelehealth.app.models.Location
@@ -57,12 +54,21 @@ class LocationSurveyActivity : AppCompatActivity() {
         fetchIntentData()
         setListeners()
         initializeButtons()
+        initializeAutoTextViewDropDowns()
         fetchLocations()
+    }
+
+    private fun initializeAutoTextViewDropDowns() {
+        binding?.autotvSelectState?.isEnabled = false
+        binding?.autotvSelectDistrict?.isEnabled = false
+        binding?.autotvSelectSanch?.isEnabled = false
+        binding?.autotvSelectPrimaryVillage?.isEnabled = false
+        binding?.autotvSelectSecondaryVillage?.isEnabled = false
     }
 
     private fun setListeners() {
         binding?.autotvSelectState?.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
                 if (position != 0) {
                     selectedState = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.stateName = selectedState
@@ -79,6 +85,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                             districtLocationList
                         )
 
+                        setDropdownValuesToDefault("state")
                         binding?.autotvSelectDistrict?.setEnabled(true)
                         binding?.autotvSelectDistrict?.setAlpha(1.0f)
                         binding?.autotvSelectDistrict?.setAdapter(adapter)
@@ -108,6 +115,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                             sanchLocationList
                         )
 
+                        setDropdownValuesToDefault("district")
                         binding?.autotvSelectSanch?.setEnabled(true)
                         binding?.autotvSelectSanch?.setAlpha(1.0f)
                         binding?.autotvSelectSanch?.setAdapter(adapter)
@@ -120,13 +128,8 @@ class LocationSurveyActivity : AppCompatActivity() {
                 }
             }
 
-        binding?.autotvSelectSanch?.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+        binding?.autotvSelectSanch?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
                 if (position != 0) {
                     selectedSanch = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.sanchName = selectedSanch
@@ -146,6 +149,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                             primaryVillageLocationsList
                         )
 
+                        setDropdownValuesToDefault("sanch")
                         binding?.autotvSelectPrimaryVillage?.setEnabled(true)
                         binding?.autotvSelectPrimaryVillage?.setAlpha(1.0f)
                         binding?.autotvSelectPrimaryVillage?.setAdapter(adapter)
@@ -158,7 +162,6 @@ class LocationSurveyActivity : AppCompatActivity() {
                 }
                 unselectExistingRadioButtons()
             }
-        }
 
         binding?.autotvSelectPrimaryVillage?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -201,6 +204,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                             secondaryVillageLocationsList
                         )
 
+                        setDropdownValuesToDefault("village")
                         binding?.autotvSelectSecondaryVillage?.setEnabled(true)
                         binding?.autotvSelectSecondaryVillage?.setAlpha(1.0f)
                         binding?.autotvSelectSecondaryVillage?.setAdapter(adapter)
@@ -232,6 +236,32 @@ class LocationSurveyActivity : AppCompatActivity() {
             }
     }
 
+    private fun setDropdownValuesToDefault(changedField: String) {
+        when (changedField) {
+            "state" -> {
+                binding?.autotvSelectDistrict?.setText(resources.getString(R.string.select_district))
+                binding?.autotvSelectSanch?.setText(resources.getString(R.string.select_sanch))
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+            }
+
+            "district" -> {
+                binding?.autotvSelectSanch?.setText(resources.getString(R.string.select_sanch))
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+            }
+
+            "sanch" -> {
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+            }
+
+            "village" -> {
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
+            }
+        }
+    }
+
     private fun fetchIntentData() {
         url = intent.getStringExtra(AppConstants.INTENT_SERVER_URL)
     }
@@ -261,7 +291,6 @@ class LocationSurveyActivity : AppCompatActivity() {
                                         ?.let { stateLocations ->
 
                                             if (stateLocations.size != 0) {
-
                                                 val locationArrayAdapter = LocationArrayAdapter(
                                                     this@LocationSurveyActivity,
                                                     stateLocations
@@ -322,130 +351,74 @@ class LocationSurveyActivity : AppCompatActivity() {
         when (value) {
 
             "state" -> {
-                val listDistrict: MutableList<String> = ArrayList()
-                listDistrict.add(resources.getString(R.string.setup_select_district_str))
                 binding?.autotvSelectDistrict?.setEnabled(false)
                 binding?.autotvSelectDistrict?.setAlpha(0.4f)
-                val districtAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, listDistrict)
-                binding?.autotvSelectDistrict?.setAdapter(districtAdapter)
+                binding?.autotvSelectDistrict?.setText(resources.getString(R.string.select_district))
 
-                val sanchList: MutableList<String> = ArrayList()
-                sanchList.add(resources.getString(R.string.setup_select_sanch_str))
                 binding?.autotvSelectSanch?.setEnabled(false)
                 binding?.autotvSelectSanch?.setAlpha(0.4f)
-                val sanchAdapter = LocationArrayAdapter(this@LocationSurveyActivity, sanchList)
-                binding?.autotvSelectSanch?.setAdapter(sanchAdapter)
+                binding?.autotvSelectSanch?.setText(resources.getString(R.string.select_sanch))
 
-                val primaryVillageList: MutableList<String> = ArrayList()
-                primaryVillageList.add(resources.getString(R.string.setup_select_primary_village_str))
                 binding?.autotvSelectPrimaryVillage?.setEnabled(false)
                 binding?.autotvSelectPrimaryVillage?.setAlpha(0.4f)
-                val villageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, primaryVillageList)
-                binding?.autotvSelectPrimaryVillage?.setAdapter(villageAdapter)
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
 
-                val secondaryVillageList: MutableList<String> = ArrayList()
-                secondaryVillageList.add(resources.getString(R.string.setup_select_secondary_village_str))
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
-                val secondaryVillageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, secondaryVillageList)
-                binding?.autotvSelectSecondaryVillage?.setAdapter(secondaryVillageAdapter)
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
 
             }
 
             "district" -> {
-                val sanchList: MutableList<String> = ArrayList()
-                sanchList.add(resources.getString(R.string.setup_select_sanch_str))
                 binding?.autotvSelectSanch?.setEnabled(false)
                 binding?.autotvSelectSanch?.setAlpha(0.4f)
-                val sanchAdapter = LocationArrayAdapter(this@LocationSurveyActivity, sanchList)
-                binding?.autotvSelectSanch?.setAdapter(sanchAdapter)
+                binding?.autotvSelectSanch?.setText(resources.getString(R.string.select_sanch))
 
-                val primaryVillageList: MutableList<String> = ArrayList()
-                primaryVillageList.add(resources.getString(R.string.setup_select_primary_village_str))
                 binding?.autotvSelectPrimaryVillage?.setEnabled(false)
                 binding?.autotvSelectPrimaryVillage?.setAlpha(0.4f)
-                val villageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, primaryVillageList)
-                binding?.autotvSelectPrimaryVillage?.setAdapter(villageAdapter)
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
 
-                val secondaryVillageList: MutableList<String> = ArrayList()
-                secondaryVillageList.add(resources.getString(R.string.setup_select_secondary_village_str))
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
-                val secondaryVillageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, secondaryVillageList)
-                binding?.autotvSelectSecondaryVillage?.setAdapter(secondaryVillageAdapter)
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
             }
 
             "sanch" -> {
-                val primaryVillageList: MutableList<String> = ArrayList()
-                primaryVillageList.add(resources.getString(R.string.setup_select_primary_village_str))
                 binding?.autotvSelectPrimaryVillage?.setEnabled(false)
                 binding?.autotvSelectPrimaryVillage?.setAlpha(0.4f)
-                val villageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, primaryVillageList)
-                binding?.autotvSelectPrimaryVillage?.setAdapter(villageAdapter)
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
 
-                val secondaryVillageList: MutableList<String> = ArrayList()
-                secondaryVillageList.add(resources.getString(R.string.setup_select_secondary_village_str))
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
-                val secondaryVillageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, secondaryVillageList)
-                binding?.autotvSelectSecondaryVillage?.setAdapter(secondaryVillageAdapter)
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
             }
 
             "village" -> {
-                val secondaryVillageList: MutableList<String> = ArrayList()
-                secondaryVillageList.add(resources.getString(R.string.setup_select_secondary_village_str))
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
-                val secondaryVillageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, secondaryVillageList)
-                binding?.autotvSelectSecondaryVillage?.setAdapter(secondaryVillageAdapter)
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
             }
 
             else -> {
-                val stateList: MutableList<String> = ArrayList()
-                stateList.add(resources.getString(R.string.setup_select_state_str))
                 binding?.autotvSelectState?.setEnabled(false)
                 binding?.autotvSelectState?.setAlpha(0.4f)
-                val stateAdapter = LocationArrayAdapter(this@LocationSurveyActivity, stateList)
-                binding?.autotvSelectState?.setAdapter(stateAdapter)
+                binding?.autotvSelectState?.setText(resources.getString(R.string.select_state))
 
-                val listDistrict: MutableList<String> = ArrayList()
-                listDistrict.add(resources.getString(R.string.setup_select_district_str))
                 binding?.autotvSelectDistrict?.setEnabled(false)
                 binding?.autotvSelectDistrict?.setAlpha(0.4f)
-                val districtAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, listDistrict)
-                binding?.autotvSelectDistrict?.setAdapter(districtAdapter)
+                binding?.autotvSelectDistrict?.setText(resources.getString(R.string.select_district))
 
-                val sanchList: MutableList<String> = ArrayList()
-                sanchList.add(resources.getString(R.string.setup_select_sanch_str))
                 binding?.autotvSelectSanch?.setEnabled(false)
                 binding?.autotvSelectSanch?.setAlpha(0.4f)
-                val sanchAdapter = LocationArrayAdapter(this@LocationSurveyActivity, sanchList)
-                binding?.autotvSelectSanch?.setAdapter(sanchAdapter)
+                binding?.autotvSelectSanch?.setText(resources.getString(R.string.select_sanch))
 
-                val primaryVillageList: MutableList<String> = ArrayList()
-                primaryVillageList.add(resources.getString(R.string.setup_select_primary_village_str))
                 binding?.autotvSelectPrimaryVillage?.setEnabled(false)
                 binding?.autotvSelectPrimaryVillage?.setAlpha(0.4f)
-                val villageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, primaryVillageList)
-                binding?.autotvSelectPrimaryVillage?.setAdapter(villageAdapter)
+                binding?.autotvSelectPrimaryVillage?.setText(resources.getString(R.string.select_primary_village))
 
-                val secondaryVillageList: MutableList<String> = ArrayList()
-                secondaryVillageList.add(resources.getString(R.string.setup_select_secondary_village_str))
                 binding?.autotvSelectSecondaryVillage?.setEnabled(false)
                 binding?.autotvSelectSecondaryVillage?.setAlpha(0.4f)
-                val secondaryVillageAdapter =
-                    LocationArrayAdapter(this@LocationSurveyActivity, secondaryVillageList)
-                binding?.autotvSelectSecondaryVillage?.setAdapter(secondaryVillageAdapter)
+                binding?.autotvSelectSecondaryVillage?.setText(resources.getString(R.string.select_secondary_village))
             }
         }
     }
@@ -478,11 +451,11 @@ class LocationSurveyActivity : AppCompatActivity() {
 
     private fun initializeButtons() {
         binding?.backBtn?.setOnClickListener {
-            storeSurveyDataAndGoBack()
+            finish()
         }
 
         binding?.btnBack?.setOnClickListener {
-            storeSurveyDataAndGoBack()
+            finish()
         }
 
         binding?.btnSave?.setOnClickListener {
@@ -558,7 +531,6 @@ class LocationSurveyActivity : AppCompatActivity() {
             }
 
         sessionManager?.jalJeevanYojanaScheme = jalJeevanYojana
-
     }
 
     private fun fetchAndSetLocationAttributes(villageUuid: String?) {
