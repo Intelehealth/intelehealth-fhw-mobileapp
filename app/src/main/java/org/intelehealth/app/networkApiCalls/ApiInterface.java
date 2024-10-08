@@ -85,8 +85,7 @@ public interface ApiInterface {
                                         @Header("Authorization") String authHeader);
 
     @GET
-    Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
-                                                  @Header("Authorization") String authHeader);
+    Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader);
 
 
     @GET

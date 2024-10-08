@@ -188,9 +188,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedState = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.stateName = selectedState
 
-                    if (districtArrayAdapter == null) {
-                        districtArrayAdapter = getDistrictArrayAdapter()
-                    }
+                    districtArrayAdapter = getDistrictArrayAdapter()
 
                     if (districtArrayAdapter != null) {
                         setDropdownValuesToDefault("state")
@@ -212,9 +210,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedDistrict = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.districtName = selectedDistrict
 
-                    if (sanchArrayAdapter == null) {
-                        sanchArrayAdapter = getSanchArrayAdapter()
-                    }
+                    sanchArrayAdapter = getSanchArrayAdapter()
 
                     if (sanchArrayAdapter != null) {
                         setDropdownValuesToDefault("district")
@@ -237,9 +233,7 @@ class LocationSurveyActivity : AppCompatActivity() {
                     selectedSanch = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.sanchName = selectedSanch
 
-                    if (primaryVillageArrayAdapter != null) {
-                        primaryVillageArrayAdapter = getPrimaryVillageArrayAdapter()
-                    }
+                    primaryVillageArrayAdapter = getPrimaryVillageArrayAdapter()
 
                     if (primaryVillageArrayAdapter != null) {
                         setDropdownValuesToDefault("sanch")

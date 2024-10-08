@@ -506,7 +506,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     private void getJWTToken(String urlString, String username, String password, String admin_password) {
         cpd.show(getString(R.string.please_wait));
 
-        String finalURL = urlString.concat(":3030/auth/login");
+        String finalURL = "https://" + urlString.concat(":3030/auth/login");
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
@@ -548,11 +548,14 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD) {
         CustomLog.d(TAG, "TestSetup: ");
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
+        urlString = "https://" + urlString;
+
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
         CustomLog.d(TAG, "TestSetup: urlString : " + urlString);
         CustomLog.d(TAG, "TestSetup: encoded : " + encoded);
         CustomLog.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -579,6 +582,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
                                 UrlModifiers urlModifiers = new UrlModifiers();
                                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+                                url = "https://" + url;
 
                                 Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                                 loginProviderModelObservable
@@ -596,10 +600,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                                            sessionManager.setServerUrl(CLEAN_URL);
-                                                            sessionManager.setServerUrlRest(BASE_URL);
-                                                            sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
-                                                            sessionManager.setBaseUrl(BASE_URL);
+                                                            sessionManager.setServerUrl("https://" + CLEAN_URL);
+                                                            sessionManager.setServerUrlRest("https://" + BASE_URL);
+                                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                                            sessionManager.setBaseUrl("https://" + BASE_URL);
                                                             sessionManager.setSetupComplete(true);
                                                             sessionManager.setFirstTimeLaunch(false);
                                                             sessionManager.setFirstProviderLoginTime(AppConstants.dateAndTimeUtils.currentDateTime());
