@@ -193,7 +193,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:lineSpacingExtra="0sp"
-                    android:text="@string/error_location_not_selected"
+                    android:text="@string/please_select_all_the_required_fields"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="13sp"

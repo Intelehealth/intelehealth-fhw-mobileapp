@@ -1128,5 +1128,6 @@
     <string name="error_private_clinic_alternate_medicine_distance_not_selected">Please select the distance to the nearest private clinic with alternate medical practitioners</string>
     <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">Does this village get water under the Jal Jeevan Yojana scheme?*</string>
     <string name="error_jal_jeevan_yojana_not_selected">Please select whether the gets water under the Jal Jeevan Yojana scheme</string>
+    <string name="please_select_all_the_required_fields">Please select all required fields</string>
 
 </resources>

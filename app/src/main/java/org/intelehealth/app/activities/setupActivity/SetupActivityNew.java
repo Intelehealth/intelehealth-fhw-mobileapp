@@ -21,6 +21,9 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributeRequest;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Patterns;
@@ -114,7 +117,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     SessionManager sessionManager = null;
     String BASE_URL = "";
     private long createdRecordsCount = 0;
-    Location location = null;
     private RadioButton r1, r2;
     String key = null;
     String licenseUrl = null;
@@ -170,6 +172,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         autotvLocations.setOnClickListener(v -> {
             if (isUrlValid) {
+                mLocationErrorTextView.setVisibility(View.GONE);
                 Intent intent = new Intent(SetupActivityNew.this, LocationSurveyActivity.class);
                 intent.putExtra(AppConstants.INTENT_SERVER_URL, baseUrl);
                 startActivity(intent);
@@ -221,7 +224,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         if (isNetworkConnected()) {
             mNoInternetTextView.setVisibility(View.GONE);
-//            getLocationFromServer();
         }
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
@@ -395,12 +397,20 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         View focusView = null;
 
         // Check for a valid URL
-        if (TextUtils.isEmpty(serverURL)) {
+        if (TextUtils.isEmpty(serverURL) || !isUrlValid) {
             etServer.requestFocus();
             serverErrorTextView.setText(getString(R.string.error_field_required));
             serverErrorTextView.setVisibility(View.VISIBLE);
+            return;
         } else {
             serverErrorTextView.setVisibility(View.GONE);
+        }
+
+        if (!areLocationFieldsValid()) {
+            mLocationErrorTextView.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            mLocationErrorTextView.setVisibility(View.GONE);
         }
 
         if (URLUtil.isValidUrl(serverURL)) {
@@ -409,18 +419,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             serverErrorTextView.setVisibility(View.VISIBLE);
         } else {
             serverErrorTextView.setVisibility(View.GONE);
-        }
-
-        if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
-            autotvLocations.requestFocus();
-
-            mLocationErrorTextView.setVisibility(View.VISIBLE);
-            mLocationErrorTextView.setText(getString(R.string.error_location_not_selected));
-            autotvLocations.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return;
-        } else {
-            mLocationErrorTextView.setVisibility(View.GONE);
-            autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
         // Check for a valid username.
@@ -469,12 +467,9 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             etPassword.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (location != null) {
-            CustomLog.i(TAG, location.getDisplay());
-            //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+        if (areLocationFieldsValid()) {
             //getting jwt token here
-            getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password, location);
-            CustomLog.d(TAG, "attempting setup");
+            getJWTToken(baseUrl, userName, password, admin_password);
         }
     }
 
@@ -507,9 +502,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
      * @param username
      * @param password
      * @param admin_password
-     * @param location
      */
-    private void getJWTToken(String urlString, String username, String password, String admin_password, Location location) {
+    private void getJWTToken(String urlString, String username, String password, String admin_password) {
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = urlString.concat(":3030/auth/login");
@@ -535,7 +529,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                        TestSetup(urlString, username, password, admin_password, location);
+                        TestSetup(urlString, username, password, admin_password);
                     }
 
                     @Override
@@ -551,7 +545,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 });
     }
 
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD) {
         CustomLog.d(TAG, "TestSetup: ");
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
@@ -561,6 +555,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         CustomLog.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        uploadLocationData(CLEAN_URL);
 
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
         loginModelObservable
@@ -600,9 +596,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                                            sessionManager.setLocationName(location.getDisplay());
-                                                            sessionManager.setLocationUuid(location.getUuid());
-                                                            sessionManager.setLocationDescription(location.getDescription());
                                                             sessionManager.setServerUrl(CLEAN_URL);
                                                             sessionManager.setServerUrlRest(BASE_URL);
                                                             sessionManager.setServerUrlBase(CLEAN_URL + "/openmrs");
@@ -735,6 +728,37 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 });
 
 
+    }
+
+    private void uploadLocationData(String cleanUrl) {
+        String finalURL = "https://" + cleanUrl.concat(":3004/api/openmrs/location/").concat(sessionManager.getCurrentLocationUuid());
+        LocationAttributeRequest requestBody = getLocationAttributeRequestBody();
+
+        Observable<LocationAttributesResponse> pushLocationDataObservable = AppConstants.apiInterface.PUSH_LOCATION_UUIDS(finalURL, "Bearer " + sessionManager.getJwtAuthToken(), requestBody.getLocationAttributes());
+        pushLocationDataObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LocationAttributesResponse locationAttributesResponse) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD("TempLocation", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     /**
@@ -1016,6 +1040,146 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
         CustomLog.e("DOWNLOAD", "isSTARTED");
 
+    }
+
+    private boolean areLocationFieldsValid() {
+//        if (checkIfLocationValueEmpty(sessionManager.getStateName())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getDistrictName())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getSanchName())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getCurrentLocationName())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getSecondaryLocationName())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getSubCentreDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getPrimaryHealthCentreDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getCommunityHealthCentreDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getDistrictHospitalDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getMedicalStoreDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getPathologicalLabDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getPrivateClinicWithMbbsDoctorDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getPrivateClinicWithAlternateDoctorDistance())) {
+//            return false;
+//        }
+//
+//        if (checkIfLocationValueEmpty(sessionManager.getJalJeevanYojanaScheme())) {
+//            return false;
+//        }
+
+        return true;
+    }
+
+    private boolean checkIfLocationValueEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
+    private LocationAttributeRequest getLocationAttributeRequestBody() {
+        List<LocationAttributes> locationAttributes = new ArrayList<>();
+        LocationAttributes attribute;
+
+        // Village Type
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.VILLAGE_TYPE_UUID);
+        attribute.setValue("Primary");
+        locationAttributes.add(attribute);
+
+        // Distance To Sub Centre
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_SUB_CENTRE_UUID);
+        attribute.setValue(sessionManager.getSubCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Primary Healthcare
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID);
+        attribute.setValue(sessionManager.getPrimaryHealthCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Community Healthcare Centre
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID);
+        attribute.setValue(sessionManager.getCommunityHealthCentreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest District Hospital
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID);
+        attribute.setValue(sessionManager.getDistrictHospitalDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Medical Store
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID);
+        attribute.setValue(sessionManager.getMedicalStoreDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Nearest Pathological Lab
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID);
+        attribute.setValue(sessionManager.getPathologicalLabDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Private Clinic
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID);
+        attribute.setValue(sessionManager.getPrivateClinicWithMbbsDoctorDistance());
+        locationAttributes.add(attribute);
+
+        // Distance To Private Clinic With Alternate Medicine
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID);
+        attribute.setValue(sessionManager.getPrivateClinicWithAlternateDoctorDistance());
+        locationAttributes.add(attribute);
+
+        // Distance to Jal Jeevan Yojana
+        attribute = new LocationAttributes();
+        attribute.setAttributeType(AppConstants.JAL_JEEVAN_YOJANA_UUID);
+        attribute.setValue(sessionManager.getJalJeevanYojanaScheme());
+        locationAttributes.add(attribute);
+
+        // Set Secondary Village
+        attribute = new LocationAttributes();
+        attribute.setSecondaryVillageId(sessionManager.getSecondaryLocationUuid());
+        attribute.setAttributeType(AppConstants.SECONDARY_VILLAGE_UUID);
+        attribute.setValue("Secondary");
+        locationAttributes.add(attribute);
+
+        LocationAttributeRequest request = new LocationAttributeRequest();
+        request.setLocationAttributes(locationAttributes);
+        return request;
     }
 
     @Override
