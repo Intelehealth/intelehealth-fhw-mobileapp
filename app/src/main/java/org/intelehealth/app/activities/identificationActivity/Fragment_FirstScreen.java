@@ -629,8 +629,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             @Override
             public void onClick(View v) {
 //                mDOBPicker.show();
-                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
-                customCalendarViewUI2.showDatePicker(getActivity(), null);
+//                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
+//                customCalendarViewUI2.showDatePicker(getActivity(), null);
             }
         });
         // DOB - end
@@ -639,121 +639,125 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAgePicker = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogStyle);
-                mAgePicker.setTitle(R.string.identification_screen_prompt_age);
-
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
-                mAgePicker.setView(convertView);
-                NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-                NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-                NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
-                dayPicker.setVisibility(View.VISIBLE);
-                Button okButton = convertView.findViewById(R.id.button_ok_picker);
-                Button cancelButton = convertView.findViewById(R.id.btn_cancel_picker);
-                final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-                final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
-                final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
-                dayPicker.setVisibility(View.VISIBLE);
-
-                dayTv.setText(getString(R.string.days));
-                middleText.setText(getString(R.string.identification_screen_picker_years));
-                endText.setText(getString(R.string.identification_screen_picker_months));
-
-                yearPicker.setMinValue(0);
-                yearPicker.setMaxValue(100);
-                monthPicker.setMinValue(0);
-                monthPicker.setMaxValue(12);
-
-                dayPicker.setMinValue(0);
-                dayPicker.setMaxValue(31);
-
-                EditText yearText = yearPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-                EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-                EditText dayText = dayPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-
-                yearPicker.setValue(mAgeYears);
-                monthPicker.setValue(mAgeMonths);
-                dayPicker.setValue(mAgeDays);
-
-                AlertDialog alertDialog = mAgePicker.create();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                int width = getContext().getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-                //year
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeYears = Integer.valueOf(value);
-                    }
-                }, yearText);
-
-                //month
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeMonths = Integer.valueOf(value);
-                    }
-                }, monthText);
-
-                //day
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeDays = Integer.valueOf(value);
-                    }
-                }, dayText);
-
-                okButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String ageString = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-                        mAgeEditText.setText(ageString);
-
-                        mDOBErrorTextView.setVisibility(View.GONE);
-                        mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                        mAgeErrorTextView.setVisibility(View.GONE);
-                        mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
-                        calendar.add(Calendar.MONTH, -mAgeMonths);
-                        calendar.add(Calendar.YEAR, -mAgeYears);
-
-                        mDOBYear = calendar.get(Calendar.YEAR);
-                        mDOBMonth = calendar.get(Calendar.MONTH);
-                        mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
-                                Locale.ENGLISH);
-                        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy",
-                                Locale.ENGLISH);
-                        dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
-                        mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
-                        alertDialog.dismiss();
-                    }
-                });
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                alertDialog.show();
+//                openAgeSelectionDialog();
 //                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
             }
         });
 
         // Age - end
+    }
+
+    private void openAgeSelectionDialog() {
+        mAgePicker = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogStyle);
+        mAgePicker.setTitle(R.string.identification_screen_prompt_age);
+
+        final LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
+        mAgePicker.setView(convertView);
+        NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
+        NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+        NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+        dayPicker.setVisibility(View.VISIBLE);
+        Button okButton = convertView.findViewById(R.id.button_ok_picker);
+        Button cancelButton = convertView.findViewById(R.id.btn_cancel_picker);
+        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+        dayPicker.setVisibility(View.VISIBLE);
+
+        dayTv.setText(getString(R.string.days));
+        middleText.setText(getString(R.string.identification_screen_picker_years));
+        endText.setText(getString(R.string.identification_screen_picker_months));
+
+        yearPicker.setMinValue(0);
+        yearPicker.setMaxValue(100);
+        monthPicker.setMinValue(0);
+        monthPicker.setMaxValue(12);
+
+        dayPicker.setMinValue(0);
+        dayPicker.setMaxValue(31);
+
+        EditText yearText = yearPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+        EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+        EditText dayText = dayPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+
+        yearPicker.setValue(mAgeYears);
+        monthPicker.setValue(mAgeMonths);
+        dayPicker.setValue(mAgeDays);
+
+        AlertDialog alertDialog = mAgePicker.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        int width = getContext().getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        //year
+        EditTextUtils.returnEditextValues(new IReturnValues() {
+            @Override
+            public void onReturnValue(String value) {
+                mAgeYears = Integer.valueOf(value);
+            }
+        }, yearText);
+
+        //month
+        EditTextUtils.returnEditextValues(new IReturnValues() {
+            @Override
+            public void onReturnValue(String value) {
+                mAgeMonths = Integer.valueOf(value);
+            }
+        }, monthText);
+
+        //day
+        EditTextUtils.returnEditextValues(new IReturnValues() {
+            @Override
+            public void onReturnValue(String value) {
+                mAgeDays = Integer.valueOf(value);
+            }
+        }, dayText);
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ageString = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+                mAgeEditText.setText(ageString);
+
+                mDOBErrorTextView.setVisibility(View.GONE);
+                mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                mAgeErrorTextView.setVisibility(View.GONE);
+                mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
+                calendar.add(Calendar.MONTH, -mAgeMonths);
+                calendar.add(Calendar.YEAR, -mAgeYears);
+
+                mDOBYear = calendar.get(Calendar.YEAR);
+                mDOBMonth = calendar.get(Calendar.MONTH);
+                mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                        Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy",
+                        Locale.ENGLISH);
+                dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                String dobString = simpleDateFormat.format(dob.getTime());
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(simpleDateFormat1.format(dob.getTime()));
+                mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobString));
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    mDOBEditText.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(dobString)));
+                alertDialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void checkPerm() {

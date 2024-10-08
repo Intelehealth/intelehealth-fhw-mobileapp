@@ -90,6 +90,8 @@
                     android:hint="@string/enter_first_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
                     android:textColorHint="@color/edittext_hint_color"
@@ -139,6 +141,8 @@
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:paddingBottom="@dimen/margin_10"
                     android:textColorHint="@color/edittext_hint_color"
                     android:textSize="@dimen/edittext_textsize_16sp" />
@@ -186,6 +190,8 @@
                     android:background="@drawable/edittext_border"
                     android:hint="@string/enter_last_name"
                     android:inputType="textCapWords"
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingBottom="@dimen/margin_10"
@@ -244,6 +250,8 @@
                         android:drawableEnd="@drawable/gender_male_svg"
                         android:text="@string/male"
                         android:textSize="@dimen/select_language"
+                        android:enabled="false"
+                        android:textColor="@color/black"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                     <RadioButton
@@ -255,6 +263,8 @@
                         android:layout_weight="1"
                         android:drawableEnd="@drawable/gender_female_svg"
                         android:text="@string/female"
+                        android:enabled="false"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
@@ -267,6 +277,8 @@
                         android:drawableEnd="@drawable/gender_other_svg"
                         android:text="@string/other"
                         android:textSize="@dimen/select_language"
+                        android:enabled="false"
+                        android:textColor="@color/black"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                 </RadioGroup>
@@ -315,7 +327,8 @@
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:focusable="false"
                     android:hint="@string/enter_date_of_birth"
-                    android:inputType=""
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:maxLines="1"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
@@ -371,6 +384,8 @@
                     android:hint="@string/enter_age"
                     android:inputType=""
                     android:maxLines="1"
+                    android:clickable="false"
+                    android:cursorVisible="false"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16"
@@ -426,6 +441,7 @@
                         android:background="@drawable/edittext_border"
                         android:gravity="center_vertical"
                         app:ccp_countryPreference="us,in"
+                        app:ccp_clickable="false"
                         app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
 
                     <EditText
@@ -440,6 +456,8 @@
                         android:digits="1234567890"
                         android:hint="@string/phone_number"
                         android:inputType="number"
+                        android:clickable="false"
+                        android:cursorVisible="false"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/fu_card_margin_updown"
