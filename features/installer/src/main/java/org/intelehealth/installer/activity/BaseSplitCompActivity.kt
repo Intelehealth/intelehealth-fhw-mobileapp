@@ -1,4 +1,4 @@
-package org.intelehealth.features.ondemand.mediator.activity
+package org.intelehealth.installer.activity
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

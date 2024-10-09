@@ -3,6 +3,7 @@ package org.intelehealth.video.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.intelehealth.core.utils.extensions.viewModelByFactory
+import org.intelehealth.installer.activity.BaseSplitCompActivity
 import org.intelehealth.video.data.CallLogRepository
 import org.intelehealth.video.model.VideoCallLog
 import org.intelehealth.video.room.CallDatabase
@@ -13,7 +14,7 @@ import org.intelehealth.video.ui.viewmodel.CallLogViewModel
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class CoreCallLogActivity : AppCompatActivity() {
+abstract class CoreCallLogActivity : BaseSplitCompActivity() {
     private val callLogViewModel: CallLogViewModel by viewModelByFactory {
         CallLogViewModel(CallLogRepository(CallDatabase.getInstance(this).rtcCallLogDao()))
     }

@@ -7,7 +7,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
@@ -28,7 +27,7 @@ import org.intelehealth.core.utils.helper.PreferenceHelper.Companion.RTC_DATA
 import org.intelehealth.core.utils.registry.PermissionRegistry
 import org.intelehealth.core.utils.registry.allGranted
 import org.intelehealth.core.utils.utility.RTC_ARGS
-import org.intelehealth.features.ondemand.mediator.activity.BaseSplitCompActivity
+import org.intelehealth.installer.activity.BaseSplitCompActivity
 import org.intelehealth.video.R
 import org.intelehealth.video.RtcEngine
 import org.intelehealth.video.model.CallArgs

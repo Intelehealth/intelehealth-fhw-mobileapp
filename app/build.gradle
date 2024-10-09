@@ -90,6 +90,7 @@ dependencies {
     api project(':core:socket')
     api(project(":resources"))
     api project(":features:ondemand:mediator")
+    api project(":features:installer")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
