@@ -215,6 +215,7 @@
                                         <ImageView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:visibility="gone"
                                             android:layout_gravity="center_vertical"
                                             android:layout_marginStart="@dimen/fu_male_margin_start"
                                             android:layout_toEndOf="@id/textView_gender_value"
