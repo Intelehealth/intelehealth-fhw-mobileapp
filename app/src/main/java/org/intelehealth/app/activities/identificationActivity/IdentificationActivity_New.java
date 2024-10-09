@@ -54,15 +54,14 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 public class IdentificationActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    // ActivityIdentificationNewBinding binding;
-    Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
-    RelativeLayout relativeLayout;
-    LinearLayout linearLayout;
+
+
+
     SessionManager sessionManager = null;
     private static final String TAG = IdentificationActivity_New.class.getSimpleName();
     PatientDTO patientdto = new PatientDTO();
-    ImagesDAO imagesDAO = new ImagesDAO();
-    PatientsDAO patientsDAO = new PatientsDAO();
+
+
     Context context;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";

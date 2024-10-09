@@ -48,6 +48,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
@@ -175,7 +176,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeEditText = view.findViewById(R.id.age_edittext);
         mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
         mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
-        Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
+        Timber.tag("phone").v("phone value: %s", mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
@@ -224,6 +225,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     setAutoFillValuesViaMobile(abhaProfileResponse);
                     patientdto.setOpenmrsId(abhaProfileResponse.getOpenMrsId());
                     patientdto.setUuid(abhaProfileResponse.getUuiD());
+                    patientdto.getAbhaAddress();
+                    patientdto.getAddress1().equals("");
+
                 }
             }
         }
