@@ -12,6 +12,7 @@ import org.intelehealth.video.model.CallArgs
 import org.intelehealth.video.notification.CallReceiver
 import org.intelehealth.video.notification.HeadsUpNotificationService
 import org.intelehealth.video.ui.activity.CoreCallLogActivity
+import org.intelehealth.video.ui.activity.IDAVideoActivity
 import org.intelehealth.video.utils.CallConstants.MAX_INT
 import kotlin.random.Random
 
@@ -29,13 +30,14 @@ object CallIntentUtils {
      * @param messageBody an instance of CallNotificationMessageBody to send with intent
      * @return Intent ChatCallActivity intent to start
      */
-    fun getCallActivityIntent(messageBody: CallArgs, context: Context): Intent? {
-        return RtcEngine.getConfig(context)?.callIntentClass?.let {
-            val callClass: Class<*> = Class.forName(it)
-            return@let Intent(context, callClass).apply {
-                putExtra(RTC_ARGS, messageBody)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            }
+    fun getCallActivityIntent(messageBody: CallArgs, context: Context): Intent {
+//        return RtcEngine.getConfig(context)?.callIntentClass?.let {
+//            val callClass: Class<*> = Class.forName(it)
+//
+//        }
+        return Intent(context, IDAVideoActivity::class.java).apply {
+            putExtra(RTC_ARGS, messageBody)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
     }
 
@@ -160,13 +162,14 @@ object CallIntentUtils {
         flag: Int = getPendingIntentFlag()
     ): PendingIntent {
         Timber.d { "getPendingActivityIntent -> url = ${messageBody.url}" }
-        return getCallActivityIntent(messageBody, context)?.let {
+        return getCallActivityIntent(messageBody, context).let {
             return@let getPendingIntentWithParentStack(context, it)
-        } ?: PendingIntent.getActivity(
-            context, Random.nextInt(0, MAX_INT),
-            getCallActivityIntent(messageBody, context),
-            flag
-        )
+        }
+//            ?: PendingIntent.getActivity(
+//            context, Random.nextInt(0, MAX_INT),
+//            getCallActivityIntent(messageBody, context),
+//            flag
+//        )
     }
 
     fun getOnGoingPendingActivityIntent(

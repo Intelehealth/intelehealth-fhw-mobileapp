@@ -9,4 +9,5 @@ import android.content.Context
  **/
 interface VideoCallListener {
     fun onIncomingCall(context: Context?, data: HashMap<String, String>)
+    fun testMethod():String
 }
