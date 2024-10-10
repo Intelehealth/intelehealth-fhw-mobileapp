@@ -35,7 +35,7 @@ class BluetoothDeviceAdapter(private val mContext: Context, private val mList: L
         var view = convertView
 
         if (view == null) {
-            view = mInflater.inflate(R.layout.bluetooth_device_item, parent, false)
+            view = mInflater.inflate(R.layout.item_bluetooth_devices, parent, false)
             holder = ViewHolder()
             holder.tvName = view.findViewById(R.id.tv_bluetooth_device_name)
             view.tag = holder

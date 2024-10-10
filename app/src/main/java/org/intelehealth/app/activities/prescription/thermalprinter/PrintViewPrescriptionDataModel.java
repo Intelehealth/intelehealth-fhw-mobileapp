@@ -30,6 +30,62 @@ public class PrintViewPrescriptionDataModel {
     private ObsDTO resp;
     private ObsDTO spO2;
 
+    private ObsDTO bloodGlucoseRandom;
+    private ObsDTO bloodGlucoseFasting;
+    private ObsDTO bloodGlucosePostPrandial;
+
+    public ObsDTO getBloodGlucoseRandom() {
+        return bloodGlucoseRandom;
+    }
+
+    public void setBloodGlucoseRandom(ObsDTO bloodGlucoseRandom) {
+        this.bloodGlucoseRandom = bloodGlucoseRandom;
+    }
+
+    public ObsDTO getBloodGlucoseFasting() {
+        return bloodGlucoseFasting;
+    }
+
+    public void setBloodGlucoseFasting(ObsDTO bloodGlucoseFasting) {
+        this.bloodGlucoseFasting = bloodGlucoseFasting;
+    }
+
+    public ObsDTO getBloodGlucosePostPrandial() {
+        return bloodGlucosePostPrandial;
+    }
+
+    public void setBloodGlucosePostPrandial(ObsDTO bloodGlucosePostPrandial) {
+        this.bloodGlucosePostPrandial = bloodGlucosePostPrandial;
+    }
+
+    public ObsDTO getHemoglobin() {
+        return hemoglobin;
+    }
+
+    public void setHemoglobin(ObsDTO hemoglobin) {
+        this.hemoglobin = hemoglobin;
+    }
+
+    public ObsDTO getCholesterol() {
+        return cholesterol;
+    }
+
+    public void setCholesterol(ObsDTO cholesterol) {
+        this.cholesterol = cholesterol;
+    }
+
+    public ObsDTO getUricAcid() {
+        return uricAcid;
+    }
+
+    public void setUricAcid(ObsDTO uricAcid) {
+        this.uricAcid = uricAcid;
+    }
+
+    private ObsDTO hemoglobin;
+    private ObsDTO cholesterol;
+    private ObsDTO uricAcid;
+
     public String getVisitUuid() {
         return visitUuid;
     }

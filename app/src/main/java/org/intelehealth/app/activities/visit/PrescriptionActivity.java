@@ -199,6 +199,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private View hl_2;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     private String medicalAdvice;
+    ObsDTO bloodGlucoseRandom = new ObsDTO();
+    ObsDTO bloodGlucoseFasting = new ObsDTO();
+    ObsDTO bloodGlucosePostPrandial = new ObsDTO();
+    ObsDTO hemoglobin = new ObsDTO();
+    ObsDTO uricAcid = new ObsDTO();
+    ObsDTO cholesterol = new ObsDTO();
+    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,6 +374,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     }
 
+    @SuppressLint("LogNotTimber")
     private void setDataToView() {
         // settind data - start
         downloadPrescriptionDefault();
@@ -471,7 +479,20 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 prescriptionDataModel.setPrescription2(prescription2);
                 prescriptionDataModel.setBP(mBP);
                 prescriptionDataModel.setMedicalAdvice(medicalAdvice);
-                Log.d(TAG, "setDataToView: testsReturned  : " + testsReturned);
+                prescriptionDataModel.setBloodGlucoseRandom(bloodGlucoseRandom);
+                prescriptionDataModel.setBloodGlucoseFasting(bloodGlucoseFasting);
+                prescriptionDataModel.setBloodGlucosePostPrandial(bloodGlucosePostPrandial);
+                prescriptionDataModel.setHemoglobin(hemoglobin);
+                prescriptionDataModel.setUricAcid(uricAcid);
+                prescriptionDataModel.setCholesterol(cholesterol);
+
+                Log.d(TAG, "setDataToView: bloodGlucoseRandom  : " + new Gson().toJson(bloodGlucoseRandom));
+                Log.d(TAG, "setDataToView: bloodGlucoseFasting  : " + new Gson().toJson(bloodGlucoseFasting));
+                Log.d(TAG, "setDataToView: bloodGlucosePostPrandial  : " + new Gson().toJson(bloodGlucosePostPrandial));
+                Log.d(TAG, "setDataToView: hemoglobin  : " + new Gson().toJson(hemoglobin));
+                Log.d(TAG, "setDataToView: uricAcid  : " + new Gson().toJson(uricAcid));
+                Log.d(TAG, "setDataToView: cholesterol  : " + new Gson().toJson(cholesterol));
+
                 PrintViewPrescription printViewPrescription = new PrintViewPrescription(
                         PrescriptionActivity.this, details, patient, prescriptionDataModel, PrescriptionActivity.this);
                 try {
@@ -941,7 +962,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
-
+        mBloodGlucoseRandom = bloodGlucoseRandom.getValue();
+        mBloodGlucoseFasting = bloodGlucoseFasting.getValue();
+        mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
+        mHemoglobin = hemoglobin.getValue();
+        mCholesterol = cholesterol.getValue();
+        mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -1508,6 +1534,36 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
 
                 //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_RANDOM: // Glucose - Random
+            {
+                bloodGlucoseRandom.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL: // Glucose - Post-prandial
+            {
+                bloodGlucosePostPrandial.setValue(value);
+                break;
+            }
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING: // Glucose
+            {
+                bloodGlucoseFasting.setValue(value);
+                break;
+            }
+            case UuidDictionary.HEMOGLOBIN: // Hemoglobin
+            {
+                hemoglobin.setValue(value);
+                break;
+            }
+            case UuidDictionary.URIC_ACID: // Uric Acid
+            {
+                uricAcid.setValue(value);
+                break;
+            }
+            case UuidDictionary.TOTAL_CHOLESTEROL: // Cholestrol
+            {
+                cholesterol.setValue(value);
                 break;
             }
 
@@ -2223,7 +2279,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
-
+        mBloodGlucoseRandom = bloodGlucoseRandom.getValue();
+        mBloodGlucoseFasting = bloodGlucoseFasting.getValue();
+        mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
+        mHemoglobin = hemoglobin.getValue();
+        mCholesterol = cholesterol.getValue();
+        mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
             if (hasLicense) {
