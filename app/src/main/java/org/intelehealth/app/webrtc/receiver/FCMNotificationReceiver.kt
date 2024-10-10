@@ -24,6 +24,11 @@ import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.core.utils.extensions.fromJson
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
+import org.intelehealth.features.ondemand.mediator.VIDEO_CALL_IMPL_CLASS
+import org.intelehealth.features.ondemand.mediator.createInstance
+import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -32,34 +37,34 @@ import org.intelehealth.fcm.FcmNotification
  **/
 class FCMNotificationReceiver : FcmBroadcastReceiver() {
     override fun onMessageReceived(
-        context: Context?,
-        notification: RemoteMessage.Notification?,
-        data: HashMap<String, String>
+        context: Context?, notification: RemoteMessage.Notification?, data: HashMap<String, String>
     ) {
         Timber.tag(TAG).d("onMessageReceived: $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
+                // check video feature available
                 checkVideoActiveStatus(context) {
-
+                    val videoCallListener = createInstance<VideoCallListener>(VIDEO_CALL_IMPL_CLASS)
+                    videoCallListener?.onIncomingCall(context, data)
                 }
             } else {
-                if(data.isNotEmpty() && notification == null){
-                    sendNotificationFromBody(data,context)
-                    if((data["title"]?:"").lowercase().contains("prescription")){
+                if (data.isNotEmpty() && notification == null) {
+                    sendNotificationFromBody(data, context)
+                    if ((data["title"] ?: "").lowercase().contains("prescription")) {
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
-                                FollowUpNotificationData(
-                                        value = data["followupDatetime"] ?: "",
-                                        name = data["patientFirstName"] + " " + data["patientLastName"],
-                                        openMrsId = data["patientOpenMrsId"] ?: "",
-                                        patientUid = data["patientUuid"] ?: "",
-                                        visitUuid = data["visitUuid"] ?: "",
-                                )
+                            FollowUpNotificationData(
+                                value = data["followupDatetime"] ?: "",
+                                name = data["patientFirstName"] + " " + data["patientLastName"],
+                                openMrsId = data["patientOpenMrsId"] ?: "",
+                                patientUid = data["patientUuid"] ?: "",
+                                visitUuid = data["visitUuid"] ?: "",
+                            )
                         )
                     }
 
-                }else{
+                } else {
                     parseMessage(notification, context)
                 }
 
@@ -67,12 +72,21 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         }
     }
 
+    /**
+     * Check video feature is available
+     * Video feature is a dynamic module feature, it should be activated from admin side
+     * and downloaded from play store
+     */
     private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
+        // to check this module downloaded from play store
+        val dynamicModuleManager = DynamicModuleDownloadManager(context)
+        val module = context.resources.getString(R.string.title_video)
+        // to check activated from admin side
         val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         scope.launch {
             FeatureActiveStatusRepository(dao).apply {
-                if (getRecord().videoSection) block.invoke()
+                if (getRecord().videoSection && dynamicModuleManager.isModuleDownloaded(module)) block.invoke()
             }
         }
     }
@@ -105,19 +119,12 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            notificationIntent,
-            NotificationUtils.getPendingIntentFlag()
+            context, 0, notificationIntent, NotificationUtils.getPendingIntentFlag()
         )
 
-        FcmNotification.Builder(context)
-            .channelName("IDA4")
-            .title(messageTitle ?: "Intelehealth")
-            .content(messageBody ?: "")
-            .smallIcon(R.mipmap.ic_launcher)
-            .contentIntent(pendingIntent)
-            .build().startNotify()
+        FcmNotification.Builder(context).channelName("IDA4").title(messageTitle ?: "Intelehealth")
+            .content(messageBody ?: "").smallIcon(R.mipmap.ic_launcher).contentIntent(pendingIntent).build()
+            .startNotify()
 
 //        val channelId = "CHANNEL_ID"
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -154,19 +161,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                notificationIntent,
-                NotificationUtils.getPendingIntentFlag()
+            context, 0, notificationIntent, NotificationUtils.getPendingIntentFlag()
         )
 
-        FcmNotification.Builder(context)
-                .channelName("IDA4")
-                .title(messageTitle ?: "Intelehealth")
-                .content(messageBody ?: "")
-                .smallIcon(R.mipmap.ic_launcher)
-                .contentIntent(pendingIntent)
-                .build().startNotify() }
+        FcmNotification.Builder(context).channelName("IDA4").title(messageTitle ?: "Intelehealth")
+            .content(messageBody ?: "").smallIcon(R.mipmap.ic_launcher).contentIntent(pendingIntent).build()
+            .startNotify()
+    }
 
     companion object {
         const val TAG = "FCMNotificationReceiver"
