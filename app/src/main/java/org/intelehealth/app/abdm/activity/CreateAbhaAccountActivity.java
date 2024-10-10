@@ -142,13 +142,12 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         });
 
         binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-            {
-                ConsentDialog consentDialog = new ConsentDialog();
-                consentDialog.setListeners(isCheck -> binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
-                consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
-            }
-            binding.sendOtpBtn.setEnabled(isChecked);
+                    if (isChecked) {
+                        ConsentDialog consentDialog = new ConsentDialog();
+                        consentDialog.setListeners(isCheck -> binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
+                        consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
+                    }
+                    binding.sendOtpBtn.setEnabled(isChecked);
                 }
         );
 
@@ -588,9 +587,11 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         countDownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
-                binding.resendBtn.setText(time);
-                Timber.tag(TAG).d("onTick: %s", time);
+                if (resendCounter != 0) {
+                    String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
+                    binding.resendBtn.setText(time);
+                    Timber.tag(TAG).d("onTick: %s", time);
+                }
             }
 
             public void onFinish() {

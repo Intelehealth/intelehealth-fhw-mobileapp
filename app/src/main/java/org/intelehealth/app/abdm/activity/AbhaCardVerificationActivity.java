@@ -866,9 +866,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         countDownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
-                binding.resendBtn.setText(time);
-                Timber.tag(TAG).d("onTick: %s", time);
+                if (resendCounter != 0) {
+                    String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
+                    binding.resendBtn.setText(time);
+                    Timber.tag(TAG).d("onTick: %s", time);
+                }
             }
 
             public void onFinish() {

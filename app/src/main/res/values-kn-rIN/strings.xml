@@ -915,7 +915,7 @@
     <string name="aadhaar">AADHAAR</string>
     <string name="please_select_the_abha_account">Please select the ABHA account</string>
     <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
-    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 10 mins.</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retried exceeded. Please try again after 30 mins.</string>
     <string name="view_download_abha_card">View/Download ABHA card</string>
     <string name="session_expired_please_try_again">Session Expired. Please try again.</string>
     <string name="abha_consent_line1"><![CDATA[I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India <b>(“UIDAI”)</b>, and my demographic information for the purpose of\n creating an Ayushman Bharat Health Account number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b>. I authorize NHA to use my Aadhaar\n number / Virtual ID for performing Aadhaar based authentication with UIDAI as per the provisions of the Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits\n and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication.]]></string>

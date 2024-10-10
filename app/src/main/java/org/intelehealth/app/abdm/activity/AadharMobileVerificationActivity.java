@@ -1113,9 +1113,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         countDownTimer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
-                binding.resendBtn.setText(time);
-                Log.d(TAG, "onTick: " + time);
+                if (resendCounter != 0) {
+
+                    String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
+                    binding.resendBtn.setText(time);
+                    Log.d(TAG, "onTick: " + time);
+                }
+
             }
 
             public void onFinish() {

@@ -251,9 +251,12 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
 
         countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                val time =
-                    resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
-                binding.resendBtn.text = time
+                if (resendCounter!=0)
+                {
+                    val time =
+                        resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
+                    binding.resendBtn.text = time
+                }
 
             }
 
