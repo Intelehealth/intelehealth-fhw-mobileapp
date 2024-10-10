@@ -442,6 +442,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public void startVideoChat(View view) {
         Toast.makeText(this, getString(R.string.video_call_req_sent), Toast.LENGTH_SHORT).show();
     }
+
     private FeatureActiveStatus mFeatureActiveStatus;
 
     @Override
@@ -6156,33 +6157,44 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBinding.btnGenerateBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*  add this section after vitals diagnostics changes*//*
-               /* glucose = findViewById(R.id.textView_glucose_value);
-                glucoseRandom = findViewById(R.id.textView_glucose_random_value);
-                glucosePostPrandial = findViewById(R.id.textView_glucose_post_prandial_value);
-                glucoseFasting = findViewById(R.id.textView_glucose_value_fasting);
-                hemoglobin = findViewById(R.id.textView_hemoglobin_value);
-                uricAcid_textview = findViewById(R.id.textView_uricAcid_value);
-                totalCholesterol_textview = findViewById(R.id.textView_total_cholestrol_value);*/
                 String billEncounterUuid = billUtils.checkForOldBill();
                 if (!billEncounterUuid.equals("")) {
                     billUtils.fetchBillDetails(billEncounterUuid);
                 } else {
-                    boolean[] selected_tests = new boolean[8];
-                    /*  add this section after vitals diagnostics changes*/
-                  /* if (!glucose.getText().toString().isEmpty()) selected_tests[1] = true;
-                    if (!glucoseFasting.getText().toString().isEmpty()) selected_tests[2] = true;
-                    if (!glucosePostPrandial.getText().toString().isEmpty())
-                        selected_tests[3] = true;
-                    if (!glucoseRandom.getText().toString().isEmpty()) selected_tests[4] = true;
-                    if (!uricAcid_textview.getText().toString().isEmpty()) selected_tests[5] = true;
-                    if (!totalCholesterol_textview.getText().toString().isEmpty())
-                        selected_tests[6] = true;
-                    if (!hemoglobin.getText().toString().isEmpty()) selected_tests[7] = true;*/
-                    billUtils.showTestConfirmationCustomDialog(selected_tests);
+                    boolean[] selectedTests = new boolean[8];
+                    if (!mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString()))
+                        selectedTests[1] = false;//no use seen
+                    if (!mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString()))
+                        selectedTests[2] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewPostPrandialValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewPostPrandialValue.getText().toString()))
+                        selectedTests[3] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString()))
+                        selectedTests[4] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewUricAcidValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewUricAcidValue.getText().toString()))
+                        selectedTests[5] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewTotalCholestrolValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewTotalCholestrolValue.getText().toString()))
+                        selectedTests[6] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
+                        selectedTests[7] = true;
+                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
+                    billUtils.showTestConfirmationCustomDialog(selectedTests);
+
                 }
             }
         });
+
+    }
+
+    public boolean isNumeric(String input) {
+        if (input == null || input.isEmpty()) {
+            return false;
+        }
+        for (char c : input.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

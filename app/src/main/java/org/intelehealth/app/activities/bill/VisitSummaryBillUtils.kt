@@ -1,16 +1,16 @@
 package org.intelehealth.app.activities.bill
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.view.Window
-import android.widget.CheckBox
+import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.CompoundButton
-import android.widget.TextView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.EncounterDAO
+import org.intelehealth.app.databinding.ConfirmTestDialogBinding
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.utilities.UuidDictionary
 import java.text.SimpleDateFormat
@@ -135,48 +135,61 @@ class VisitSummaryBillUtils(
             mContext.getString(R.string.haemoglobin)
         )
 
-        val dialog = Dialog(mContext)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.confirm_test_dialog)
+        val dialogView = LayoutInflater.from(mContext).inflate(R.layout.confirm_test_dialog, null)
+        val binding = ConfirmTestDialogBinding.bind(dialogView)
+        val alertDialog = MaterialAlertDialogBuilder(mContext)
+            .setView(binding.root)
+            .setCancelable(false)
+            .create()
 
-        val glucoseFast = dialog.findViewById<CheckBox>(R.id.glucose_f_CB)
-        val glucoseNonFast = dialog.findViewById<CheckBox>(R.id.glucose_nf_CB)
-        val glucoseRand = dialog.findViewById<CheckBox>(R.id.glucose_ran_CB)
-        val glucosePpn = dialog.findViewById<CheckBox>(R.id.glucose_ppn_CB)
-        val bp = dialog.findViewById<CheckBox>(R.id.bp_CB)
-        val haemoglobin = dialog.findViewById<CheckBox>(R.id.haemoglobin_CB)
-        val uricAcid = dialog.findViewById<CheckBox>(R.id.uric_acid_CB)
-        val cholesterol = dialog.findViewById<CheckBox>(R.id.cholesterol_CB)
-        val okDialog = dialog.findViewById<TextView>(R.id.dialog_ok_button)
-        val cancelDialog = dialog.findViewById<TextView>(R.id.dialog_cancel_button)
+        alertDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+        alertDialog.setOnShowListener {
+            val displayMetrics = mContext.resources.displayMetrics
+            val width = (displayMetrics.widthPixels * 0.85).toInt()  // 85% of screen width
+            val height = (displayMetrics.heightPixels * 0.70).toInt()  // 70% of screen height
 
-        glucoseNonFast.isChecked = checkedTests[1]
-        glucoseFast.isChecked = checkedTests[2]
-        glucosePpn.isChecked = checkedTests[3]
-        glucoseRand.isChecked = checkedTests[4]
-        uricAcid.isChecked = checkedTests[5]
-        cholesterol.isChecked = checkedTests[6]
-        haemoglobin.isChecked = checkedTests[7]
+            alertDialog.window?.setLayout(
+                width,
+                height  // Set height to 70% of screen
+            )
+        }
 
-        bp.setOnClickListener { view ->
+        alertDialog.window
+            ?.setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
+       /* binding.glucoseNfCB.isChecked = checkedTests[1]
+        binding.glucoseFCB.isChecked = checkedTests[2]
+        binding.glucosePpnCB.isChecked = checkedTests[3]
+        binding.glucoseRanCB.isChecked = checkedTests[4]
+        binding.uricAcidCB.isChecked = checkedTests[5]
+        binding.cholesterolCB.isChecked = checkedTests[6]
+        binding.haemoglobinCB.isChecked = checkedTests[7]
+*/
+        if (checkedTests[1]) binding.glucoseNfCB.isChecked = true
+        if (checkedTests[2]) binding.glucoseFCB.isChecked = true
+        if (checkedTests[3]) binding.glucosePpnCB.isChecked = true
+        if (checkedTests[4]) binding.glucoseRanCB.isChecked = true
+        if (checkedTests[5]) binding.uricAcidCB.isChecked = true
+        if (checkedTests[6]) binding.cholesterolCB.isChecked = true
+        if (checkedTests[7]) binding.haemoglobinCB.isChecked = true
+
+        binding.bpCB.setOnClickListener { view ->
             checkedTests[0] = (view as CompoundButton).isChecked
         }
 
-        okDialog.setOnClickListener {
+        binding.btnOkTests.setOnClickListener {
             for (i in checkedTests.indices) {
                 if (checkedTests[i]) selectedTests.add(testNames[i])
             }
             receiptNum = generateReceiptNum()
             receiptDate = fetchSystemDateForBill()
             passIntent(selectedTests)
+            alertDialog.dismiss()
         }
 
-        cancelDialog.setOnClickListener {
-            dialog.dismiss()
+        binding.btnCancelTests.setOnClickListener {
+            alertDialog.dismiss()
         }
-
-        dialog.show()
+        alertDialog.show()
     }
 
     private fun passIntent(selectedTests: ArrayList<String>) {

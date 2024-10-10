@@ -1,113 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="15dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+  >
 
-    <TextView
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:text="@string/confirm_tests"/>
+        app:cardElevation="@dimen/hamburger_margin_start">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/bp_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/visit_summary_bp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/glucose_nf_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/blood_glucose_non_fasting" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/glucose_f_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/blood_glucose_fasting" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="@string/confirm_tests"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/glucose_ppn_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/blood_glucose_post_prandial" />
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/bp_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/visit_summary_bp"
+                    android:textColor="@color/textview_color" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/glucose_ran_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/blood_glucose_random" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/uric_acid_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/uric_acid" />
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/glucose_nf_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/blood_glucose_non_fasting"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color"
+                    android:visibility="gone" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/glucose_f_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:button="@drawable/selector_checkbox_button"
+                    android:enabled="false"
+                    android:text="@string/blood_glucose_fasting" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/glucose_ppn_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/blood_glucose_post_prandial" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/glucose_ran_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/blood_glucose_random" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/uric_acid_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/uric_acid" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cholesterol_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/total_cholestrol" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/haemoglobin_CB"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/haemoglobin" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:foregroundGravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_cancel_tests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/ui2_common_primary_bg_disabled"
+                        android:padding="@dimen/margin_12"
+                        android:text="@string/cancel"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/common_label_text_size" />
+
+                    <Button
+                        android:id="@+id/btn_ok_tests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/ui2_common_primary_bg"
+                        android:padding="@dimen/margin_12"
+                        android:text="@string/okay"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_label_text_size" />
+
+                </LinearLayout>
 
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cholesterol_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/total_cholestrol" />
+            </LinearLayout>
+        </ScrollView>
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/haemoglobin_CB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:enabled="false"
-        android:text="@string/haemoglobin" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_gravity="end">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ok"
-            android:padding="8dp"
-            android:layout_alignParentEnd="true"
-            android:textSize="15sp"
-            android:fontFamily="@font/lato_regular"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/dialog_ok_button"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:padding="8dp"
-            android:textSize="15sp"
-            android:fontFamily="@font/lato_regular"
-            android:layout_marginEnd="25dp"
-            android:layout_toStartOf="@id/dialog_ok_button"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/dialog_cancel_button"/>
-    </RelativeLayout>
-
-
-</LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
