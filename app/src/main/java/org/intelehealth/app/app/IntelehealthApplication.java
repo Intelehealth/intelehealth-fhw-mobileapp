@@ -13,7 +13,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.play.core.splitcompat.SplitCompatApplication;
@@ -74,6 +73,7 @@ public class IntelehealthApplication extends SplitCompatApplication implements D
     public void onCreate() {
         super.onCreate();
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
+        new CoreConfig.Builder(BuildConfig.SERVER_URL + ":3004");   // TODO: here instead we can use SOCKET_URL to get the port as well.
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)
