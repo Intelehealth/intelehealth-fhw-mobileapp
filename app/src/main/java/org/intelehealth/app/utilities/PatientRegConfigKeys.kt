@@ -21,7 +21,7 @@ class PatientRegConfigKeys {
         const val GUARDIAN_TYPE = "p_guardian_type"
         const val EM_CONTACT_NAME = "p_emergency_contact_name"
         const val EM_CONTACT_NUMBER = "p_emergency_contact_number"
-        const val EM_CONTACT_TYPE = "p_contact_type"
+        const val EM_CONTACT_TYPE = "p_emergency_contact_type"
 
         //ADDRESS
         const val POSTAL_CODE = "a_postal_address"

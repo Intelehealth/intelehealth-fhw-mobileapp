@@ -89,6 +89,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
                 android:paddingHorizontal="4dp"

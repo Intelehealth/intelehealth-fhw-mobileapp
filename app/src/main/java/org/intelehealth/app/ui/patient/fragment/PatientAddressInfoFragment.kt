@@ -168,6 +168,17 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.autoCompleteState.setText(state.toString(), false)
                     setupDistricts(state)
                 }
+            }else {
+                val defaultValue = getString(R.string.default_state)
+                //Timber.d { "default $defaultValue index[${adapter.getPosition(defaultValue).}]" }
+//            binding.autoCompleteCountry.setSelection(adapter.getPosition(defaultValue))
+                val state = LanguageUtils.getState(defaultValue)
+
+                if (state != null) {
+                    patient.stateprovince = state.state
+                    binding.autoCompleteState.setText(state.toString(), false)
+                    setupDistricts(state)
+                }
             }
 
             binding.autoCompleteState.setOnItemClickListener { adapterView, _, i, _ ->
