@@ -814,14 +814,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
                 editAddDocs.setVisibility(View.VISIBLE);*/
-                editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
+                editVitals.setVisibility(View.GONE);
+                editComplaint.setVisibility(View.GONE);
                 //cc_details_edit.setVisibility(View.VISIBLE);
                 //ass_symp_edit.setVisibility(View.VISIBLE);
-                editPhysical.setVisibility(View.VISIBLE);
-                editFamHist.setVisibility(View.VISIBLE);
-                editMedHist.setVisibility(View.VISIBLE);
-                editAddDocs.setVisibility(View.VISIBLE);
+                editPhysical.setVisibility(View.GONE);
+                editFamHist.setVisibility(View.GONE);
+                editMedHist.setVisibility(View.GONE);
+                editAddDocs.setVisibility(View.GONE);
 
                 add_additional_doc.setVisibility(View.VISIBLE);
 

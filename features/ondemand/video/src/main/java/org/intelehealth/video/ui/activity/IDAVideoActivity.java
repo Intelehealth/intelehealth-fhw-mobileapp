@@ -19,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.core.utils.utility.CoreConstantsKt;
+import org.intelehealth.core.utils.utility.RtcUtilsKt;
 import org.intelehealth.video.R;
 import org.intelehealth.video.databinding.ActivityVideoCallBinding;
 import org.intelehealth.video.model.CallArgs;
@@ -47,7 +47,8 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
         args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
         Intent intent = new Intent(context, IDAVideoActivity.class);
-        intent.putExtra(CoreConstantsKt.RTC_ARGS, args);
+        //intent.putExtra(CoreConstantsKt.RTC_ARGS, args);
+        intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }

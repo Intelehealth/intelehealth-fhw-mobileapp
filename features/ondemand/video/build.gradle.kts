@@ -1,9 +1,9 @@
 plugins {
     id("com.android.dynamic-feature")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 apply("${rootProject.projectDir}/whitelabel.gradle")
 
