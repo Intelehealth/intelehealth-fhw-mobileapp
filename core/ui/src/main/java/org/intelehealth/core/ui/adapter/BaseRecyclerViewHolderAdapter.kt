@@ -40,8 +40,10 @@ abstract class BaseRecyclerViewHolderAdapter<I, VH : ViewHolder>(
     }
 
     fun updateItems(newItems: MutableList<I>) {
-        items = newItems;
-        notifyItemRangeChanged(0, items.size)
+        notifyItemRangeRemoved(0, itemCount)
+        items.clear()
+        items.addAll(newItems)
+        notifyItemRangeInserted(0, items.size)
     }
 
     fun getItem(position: Int) = items.get(position)

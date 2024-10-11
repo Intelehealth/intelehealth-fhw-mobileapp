@@ -35,7 +35,8 @@ android {
             ext.appId = "org.intelehealth.kf"
             ext.vCode = 2
             ext.vName = '1.0.1'
-            ext.arcBaseName = "intelehealth_kf-" + versionName + " - " + date
+//            ext.arcBaseName = "intelehealth_kf-" + versionName + " - " + date
+            project.ext.set("archivesBaseName","intelehealth_kf-" + versionName + " - " + date)
 //            applicationId "org.intelehealth.kf"
 //            versionCode 2
 //            versionName '1.0.1'
@@ -80,7 +81,8 @@ android {
             ext.appId = "org.intelehealth.unicef"
             ext.vCode = 1
             ext.vName = '1.0'
-            ext.arcBaseName = "intelehealth_unicef-" + versionName + " - " + date
+            project.ext.set("archivesBaseName","intelehealth_unicef-" + versionName + " - " + date)
+//            ext.arcBaseName = "intelehealth_unicef-" + versionName + " - " + date
 //            ext.applicationId 'org.intelehealth.unicef'
 //            versionCode 45
 //            versionName '5.1.1'
