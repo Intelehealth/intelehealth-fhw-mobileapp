@@ -318,7 +318,8 @@ public class Fragment_ThirdScreen extends Fragment {
      * fetching reg config from local db
      */
     private void fetchRegConfig() {
-        regFieldViewModel.fetchOtherRegFields().observe(getViewLifecycleOwner(), it -> {
+        regFieldViewModel.fetchOtherRegFields();
+        regFieldViewModel.getOtherSectionFieldsLiveData().observe(getViewLifecycleOwner(), it -> {
                     patientRegistrationFields = it;
                     configAllFields();
                     updateUiFromSecondAndThirdFrag();

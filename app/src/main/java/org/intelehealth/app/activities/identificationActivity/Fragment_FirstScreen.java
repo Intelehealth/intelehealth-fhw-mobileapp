@@ -416,7 +416,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
      * fetching reg config from local db
      */
     private void fetchRegConfig() {
-        regFieldViewModel.fetchPersonalRegFields().observe(getViewLifecycleOwner(), it -> {
+        regFieldViewModel.fetchPersonalRegFields();
+        regFieldViewModel.getPersonalSectionFieldsLiveData().observe(getViewLifecycleOwner(), it -> {
                     Timber.tag(TAG).d("Personal %s", new Gson().toJson(it));
                     patientRegistrationFields = it;
                     updateUiFromSecondFrag();

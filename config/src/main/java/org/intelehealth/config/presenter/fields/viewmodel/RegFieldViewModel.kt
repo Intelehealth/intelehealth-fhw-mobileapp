@@ -1,6 +1,11 @@
 package org.intelehealth.config.presenter.fields.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
+import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.config.utility.FieldGroup
 import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
 
@@ -10,6 +15,15 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  * Mob   : +919727206702
  **/
 class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewModel() {
+    private var personalSectionFieldsData = MutableLiveData<List<PatientRegistrationFields>>()
+    val personalSectionFieldsLiveData: LiveData<List<PatientRegistrationFields>> get() = personalSectionFieldsData
+
+    private var addressSectionFieldsData = MutableLiveData<List<PatientRegistrationFields>>()
+    val addressSectionFieldsLiveData: LiveData<List<PatientRegistrationFields>> get() = addressSectionFieldsData
+
+    private var otherSectionFieldsData = MutableLiveData<List<PatientRegistrationFields>>()
+    val otherSectionFieldsLiveData: LiveData<List<PatientRegistrationFields>> get() = otherSectionFieldsData
+
     fun fetchEnabledPersonalRegFields() = repository.getAllEnabledGroupField(FieldGroup.PERSONAL)
 
     fun fetchEnabledAddressRegFields() = repository.getAllEnabledGroupField(FieldGroup.ADDRESS)
@@ -18,9 +32,24 @@ class RegFieldViewModel(private val repository: RegFieldRepository) : BaseViewMo
 
     fun fetchEnabledAllRegFields() = repository.getAllEnabledLiveFields()
 
-    fun fetchPersonalRegFields() = repository.getGroupFields(FieldGroup.PERSONAL)
+    fun fetchPersonalRegFields() {
+        viewModelScope.launch {
+            val personalFields = repository.getGroupFields(FieldGroup.PERSONAL)
+            personalSectionFieldsData.postValue(personalFields)
+        }
+    }
 
-    fun fetchAddressRegFields() = repository.getGroupFields(FieldGroup.ADDRESS)
+    fun fetchAddressRegFields() {
+        viewModelScope.launch {
+            val addressFields = repository.getGroupFields(FieldGroup.ADDRESS)
+            addressSectionFieldsData.postValue(addressFields)
+        }
+    }
 
-    fun fetchOtherRegFields() = repository.getGroupFields(FieldGroup.OTHER)
+    fun fetchOtherRegFields() {
+        viewModelScope.launch {
+            val otherFields = repository.getGroupFields(FieldGroup.OTHER)
+            otherSectionFieldsData.postValue(otherFields)
+        }
+    }
 }

@@ -589,7 +589,8 @@ public class Fragment_SecondScreen extends Fragment {
      * fetching reg config from local db
      */
     private void fetchRegConfig() {
-        regFieldViewModel.fetchAddressRegFields().observe(getViewLifecycleOwner(), it -> {
+        regFieldViewModel.fetchAddressRegFields();
+        regFieldViewModel.getAddressSectionFieldsLiveData().observe(getViewLifecycleOwner(), it -> {
             patientRegistrationFields = it;
             configAllFields();
             updateUiFromFirstAndSecondFrag();
