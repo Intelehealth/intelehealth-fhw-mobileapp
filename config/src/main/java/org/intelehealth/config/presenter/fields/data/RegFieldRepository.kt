@@ -9,7 +9,7 @@ import org.intelehealth.config.utility.FieldGroup
  * Mob   : +919727206702
  **/
 open class RegFieldRepository(private val regFieldDao: PatientRegFieldDao) {
-    fun getGroupFields(group: FieldGroup) = regFieldDao.getGroupLiveField(group.value)
+    suspend fun getGroupFields(group: FieldGroup) = regFieldDao.getGroupFields(group.value)
 
     suspend fun getAllRecord() = regFieldDao.getAllRecord()
 

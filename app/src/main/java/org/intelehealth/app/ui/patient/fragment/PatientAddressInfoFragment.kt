@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -12,7 +11,6 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
@@ -74,11 +72,12 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
-        fetchPersonalInfoConfig()
+        fetchAddressInfoConfig()
     }
 
-    private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchAddressRegFields().observe(viewLifecycleOwner) {
+    private fun fetchAddressInfoConfig() {
+        patientViewModel.fetchAddressRegFields()
+        patientViewModel.addressSectionFieldsLiveData.observe(viewLifecycleOwner) {
             binding.addressInfoConfig = PatientRegFieldsUtils.buildPatientAddressInfoConfig(it)
             Timber.d { "Address Config => ${Gson().toJson(binding.addressInfoConfig)}" }
             binding.addOnRebindCallback(onRebindCallback)
@@ -168,7 +167,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.autoCompleteState.setText(state.toString(), false)
                     setupDistricts(state)
                 }
-            }else {
+            } else {
                 val defaultValue = getString(R.string.default_state)
                 //Timber.d { "default $defaultValue index[${adapter.getPosition(defaultValue).}]" }
 //            binding.autoCompleteCountry.setSelection(adapter.getPosition(defaultValue))
@@ -220,9 +219,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             val bPostalCode = if (it.postalCode!!.isEnabled && it.postalCode!!.isMandatory) {
                 binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
                     binding.textInputLayPostalCode.validateDigit(
-                        binding.textInputPostalCode,
-                        R.string.postal_code_6_dig_invalid_txt,
-                        6
+                        binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
                     )
                 )
 
@@ -231,31 +228,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             val bCountry = if (it.country!!.isEnabled && it.country!!.isMandatory) {
                 binding.textInputLayCountry.validateDropDowb(
-                    binding.autoCompleteCountry,
-                    error
+                    binding.autoCompleteCountry, error
                 )
             } else true
 
             val bState = if (it.state!!.isEnabled && it.state!!.isMandatory) {
                 binding.textInputLayState.validateDropDowb(
-                    binding.autoCompleteState,
-                    error
+                    binding.autoCompleteState, error
                 )
             } else true
 
             val bDistrict = if (it.district!!.isEnabled && it.district!!.isMandatory) {
                 binding.textInputLayDistrict.validateDropDowb(
-                    binding.autoCompleteState,
-                    error
+                    binding.autoCompleteState, error
                 )
             } else true
 
             val bCityVillage = if (it.cityVillage!!.isEnabled && it.cityVillage!!.isMandatory) {
                 binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error).and(
                     binding.textInputLayCityVillage.validateDigit(
-                        binding.textInputCityVillage,
-                        R.string.error_field_valid_village_required,
-                        3
+                        binding.textInputCityVillage, R.string.error_field_valid_village_required, 3
                     )
                 )
             } else true
@@ -270,8 +262,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
 
-            if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
-                    .and(bAddress1).and(bAddress2)
+            if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage).and(bAddress1)
+                    .and(bAddress2)
             ) block.invoke()
         }
     }

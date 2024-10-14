@@ -2,7 +2,6 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.OnRebindCallback
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -55,11 +54,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
-        fetchPersonalInfoConfig()
+        fetchOtherInfoConfig()
     }
 
-    private fun fetchPersonalInfoConfig() {
-        patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
+    private fun fetchOtherInfoConfig() {
+        patientViewModel.fetchOtherRegFields()
+        patientViewModel.otherSectionFieldsLiveData.observe(viewLifecycleOwner) {
             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
             setupSocialCategory()
             setupEducations()
