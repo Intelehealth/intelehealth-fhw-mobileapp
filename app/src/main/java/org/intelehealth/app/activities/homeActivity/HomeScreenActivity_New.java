@@ -13,6 +13,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
+import static org.intelehealth.features.ondemand.mediator.OnDemandMediatorKt.VIDEO_CALL_IMPL_CLASS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -42,7 +43,9 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,6 +126,9 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
+import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener;
+import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -344,6 +350,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
+
     private void setupAlarmPermissionLauncher() {
         scheduleExactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -722,7 +729,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
         CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
@@ -977,7 +984,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
-            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+            String moduleName = getString(R.string.module_video);
+            boolean hasInstalled = DynamicModuleDownloadManager.getInstance(this).isModuleDownloaded(moduleName);
+            boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
+            mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(callLogVisibility);
         }
     }
 
@@ -1004,8 +1014,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
             finish();
         } else if (itemId == R.id.menu_view_call_log) {
-//            Intent intent = new Intent(HomeScreenActivity_New.this, IDACallLogActivity.class);
-//            startActivity(intent);
+            OnDemandIntentUtils.INSTANCE.startCallLog(HomeScreenActivity_New.this);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);

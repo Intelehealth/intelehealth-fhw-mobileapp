@@ -79,8 +79,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
      */
     private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
         // to check this module downloaded from play store
-        val dynamicModuleManager = DynamicModuleDownloadManager(context)
-        val module = context.resources.getString(R.string.title_video)
+        val dynamicModuleManager = DynamicModuleDownloadManager.getInstance(context)
+        val module = context.resources.getString(R.string.module_video)
         // to check activated from admin side
         val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)

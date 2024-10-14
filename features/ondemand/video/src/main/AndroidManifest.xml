@@ -30,7 +30,7 @@
     <!--    Dynamic module setting start -->
     <dist:module
         dist:instant="false"
-        dist:title="@string/title_video">
+        dist:title="@string/module_video">
         <dist:delivery>
             <dist:on-demand />
         </dist:delivery>

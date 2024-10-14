@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -36,6 +37,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
 import org.intelehealth.core.utils.helper.PreferenceHelper;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -113,15 +115,25 @@ public class SyncDAO {
     }
 
     private void saveConfig(ConfigResponse response) {
-        CustomLog.d(TAG,"saveConfig");
+        CustomLog.d(TAG, "saveConfig");
         PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
         int version = helper.get(CONFIG_VERSION, 0);
-        CustomLog.d(TAG,"saveConfig old version => %s", version);
+        CustomLog.d(TAG, "saveConfig old version => %s", version);
         if (version > 0 && response.getVersion() > version) {
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
-            CustomLog.d(TAG,"saveConfig new version => %s", response.getVersion());
+            checkModuleActiveStatusAndDownload(response.getPatientVisitSummery().getVideoSection());
+            CustomLog.d(TAG, "saveConfig new version => %s", response.getVersion());
         } else helper.save(CONFIG_VERSION, response.getVersion());
+    }
+
+    private void checkModuleActiveStatusAndDownload(boolean isActive) {
+        Context context = IntelehealthApplication.getAppContext();
+        DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(context);
+        String module = context.getString(R.string.module_video);
+        if (isActive && !manager.isModuleDownloaded(module)) {
+            manager.downloadDynamicModule(module, null);
+        }
     }
 
     public boolean pullData_Background(final Context context, int pageNo) {
@@ -189,7 +201,7 @@ public class SyncDAO {
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
@@ -278,7 +290,7 @@ public class SyncDAO {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     if (sync) {
                         int nextPageNo = response.body().getData().getPageNo();
@@ -582,7 +594,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -591,7 +603,7 @@ public class SyncDAO {
                                         visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -601,7 +613,7 @@ public class SyncDAO {
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG,e.getMessage());
+                                        CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
 
@@ -612,7 +624,7 @@ public class SyncDAO {
                                         appointmentDAO.updateAppointmentSync(visitUuid, sync);
                                     } catch (DAOException exception) {
                                         FirebaseCrashlytics.getInstance().recordException(exception);
-                                        CustomLog.e(TAG,exception.getMessage());
+                                        CustomLog.e(TAG, exception.getMessage());
                                     }
                                 }
 
@@ -626,7 +638,7 @@ public class SyncDAO {
                                         } catch (DAOException e) {
                                             e.printStackTrace();
                                             FirebaseCrashlytics.getInstance().recordException(e);
-                                            CustomLog.e(TAG,e.getMessage());
+                                            CustomLog.e(TAG, e.getMessage());
                                         }
                                     }
                                 }
@@ -642,7 +654,7 @@ public class SyncDAO {
 
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
+                                CustomLog.e(TAG, e.getMessage());
                             }
 
                         }

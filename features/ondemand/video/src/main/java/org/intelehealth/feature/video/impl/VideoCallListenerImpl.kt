@@ -20,7 +20,7 @@ import org.intelehealth.feature.video.utils.CallType
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class VideoCallListenerImpl: VideoCallListener {
+class VideoCallListenerImpl : VideoCallListener {
     override fun onIncomingCall(context: Context?, data: HashMap<String, String>) {
         context?.let {
             val sessionManager = SessionManager(context)
@@ -28,8 +28,7 @@ class VideoCallListenerImpl: VideoCallListener {
                 nurseName = sessionManager.chwname
                 callType = CallType.VIDEO
                 url = BuildConfig.LIVE_KIT_URL
-                socketUrl =
-                    BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
+                socketUrl = BuildConfig.SOCKET_URL + "?userId=" + nurseId + "&name=" + nurseName
                 PatientsDAO().getPatientName(roomId).apply {
                     patientName = get(0).name
                 }
@@ -48,7 +47,13 @@ class VideoCallListenerImpl: VideoCallListener {
 
     override fun testMethod() = TAG
 
-    companion object{
+    override fun startCallLogActivity(context: Context?) {
+        Intent(context, IDACallLogActivity::class.java).apply {
+            context.startActivity(this)
+        }
+    }
+
+    companion object {
         const val TAG = "VideoCallListenerImpl"
     }
 }

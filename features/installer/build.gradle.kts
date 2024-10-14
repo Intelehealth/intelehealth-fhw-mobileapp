@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
-
+apply("${rootProject.projectDir}/whitelabel.gradle")
 android {
     namespace = "org.intelehealth.installer"
     compileSdk = 34
@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    api(project(":resources"))
     implementation("com.google.android.play:feature-delivery:2.1.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")

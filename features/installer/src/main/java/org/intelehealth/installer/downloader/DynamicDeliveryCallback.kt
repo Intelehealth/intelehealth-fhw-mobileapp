@@ -6,7 +6,7 @@ package org.intelehealth.installer.downloader
  * Mob   : +919727206702
  **/
 interface DynamicDeliveryCallback {
-    fun onDownloading()
+    fun onDownloading(percentage: Int)
     fun onDownloadCompleted()
     fun onInstallSuccess()
     fun onFailed(errorMessage: String)

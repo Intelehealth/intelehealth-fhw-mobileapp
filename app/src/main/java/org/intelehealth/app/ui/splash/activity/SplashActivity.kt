@@ -8,12 +8,15 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -49,6 +52,8 @@ import org.intelehealth.core.ui.viewholder.BaseViewHolder
 import org.intelehealth.core.utils.extensions.showToast
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
+import org.intelehealth.installer.helper.DownloadProgressNotificationHelper
 
 /**
  * Created by Vaghela Mithun R. on 15-04-2024 - 11:28.
@@ -56,10 +61,11 @@ import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
  * Mob   : +919727206702
  **/
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.BaseViewHolder.ViewHolderClickListener {
+class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListener {
     private lateinit var binding: ActivitySplashBinding
     private lateinit var adapter: LanguageAdapter
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -71,6 +77,8 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
         initLanguageList()
 
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
+
+        DynamicModuleDownloadManager.getInstance(this).showDownloadingNotification()
     }
 
     private fun loadConfig() {
@@ -97,8 +105,7 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
         val action = getString(R.string.retry_again)
         val cancel = getString(R.string.cancel)
         DialogUtils().showCommonDialog(
-            this, R.drawable.close_patient_svg, title,
-            message, false, action, cancel
+            this, R.drawable.close_patient_svg, title, message, false, action, cancel
         ) {
             if (it == CustomDialogListener.NEGATIVE_CLICK) finish()
             else if (it == CustomDialogListener.POSITIVE_CLICK) loadConfig()
@@ -146,8 +153,7 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
             val title = getString(R.string.new_update_available)
             val action = getString(R.string.update)
             DialogUtils().showCommonDialog(
-                this, R.drawable.close_patient_svg, title,
-                message, true, action, ""
+                this, R.drawable.close_patient_svg, title, message, true, action, ""
             ) {
                 try {
                     startActivity(getAppIntent(AppConstants.getAppMarketUrl(this@SplashActivity)))
@@ -161,8 +167,7 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
     }
 
     private fun getAppIntent(url: String) = Intent(
-        Intent.ACTION_VIEW,
-        Uri.parse(url)
+        Intent.ACTION_VIEW, Uri.parse(url)
     )
 
     private fun checkPerm() {
@@ -212,28 +217,24 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
     private fun checkAndRequestPermissions(): Boolean {
         val listPermissionsNeeded: MutableList<String> = ArrayList()
         val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        val getAccountPermission =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
+        val getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
         var writeExternalStoragePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             writeExternalStoragePermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-            val notificationPermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            val notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val fullScreenIntent =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT)
+            val fullScreenIntent = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FULL_SCREEN_INTENT)
             if (fullScreenIntent != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.USE_FULL_SCREEN_INTENT)
             }
         }
-        val phoneStatePermission =
-            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+        val phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
@@ -254,9 +255,7 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(
-                this,
-                listPermissionsNeeded.toTypedArray(),
-                GROUP_PERMISSION_REQUEST
+                this, listPermissionsNeeded.toTypedArray(), GROUP_PERMISSION_REQUEST
             )
             return false
         }
@@ -286,29 +285,26 @@ class SplashActivity : LanguageActivity(), org.intelehealth.core.ui.viewholder.B
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    showToast(resources.getString(R.string.login_failed))
-                }
+        BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                showToast(resources.getString(R.string.login_failed))
+            }
 
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    showToast(resources.getString(R.string.login_successfully))
-                    navigateToNextActivity()
-                }
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                showToast(resources.getString(R.string.login_successfully))
+                navigateToNextActivity()
+            }
 
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    showToast(resources.getString(R.string.login_failed))
-                }
-            }).apply {
-            PromptInfo.Builder()
-                .setTitle(resources.getString(R.string.intelehealth_login))
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                showToast(resources.getString(R.string.login_failed))
+            }
+        }).apply {
+            PromptInfo.Builder().setTitle(resources.getString(R.string.intelehealth_login))
                 .setSubtitle(resources.getString(R.string.touch_fingerprint))
-                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
-                .build().also {
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK).build().also {
                     authenticate(it)
                 }
         }

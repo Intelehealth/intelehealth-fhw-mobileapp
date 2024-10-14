@@ -82,7 +82,7 @@ android {
 //    dynamicFeatures = [':features:ondemand:chat', ':features:ondemand:video']
 
 //    dynamicFeatures = [':features:ondemand:video']
-    
+
 }
 dependencies {
 //    implementation project(':features:ondemand:klivekit')
