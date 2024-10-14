@@ -4,9 +4,13 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.intelehealth.core.network.model.Location
 import org.intelehealth.core.network.model.LoginModel
+import org.intelehealth.core.network.model.PushRequestApiCall
 import org.intelehealth.core.network.model.Resource
 import org.intelehealth.core.network.model.ResponseModel
 import org.intelehealth.core.network.model.Results
+import org.intelehealth.coreroomdb.entity.ObsJsonResponse
+import org.intelehealth.coreroomdb.entity.Observation
+import org.intelehealth.coreroomdb.entity.PatientProfile
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -57,7 +61,7 @@ interface CoreApiClient {
         @Url url: String,
         @Header("Authorization") authHeader: String,
         @Body pushRequestApiCall: PushRequestApiCall
-    ): Response<PushResponseApiCall>
+    ): Response<PushRequestApiCall>
 
     @GET
     suspend fun downloadPersonProfilePicture(
@@ -86,7 +90,7 @@ interface CoreApiClient {
         @Url url: String,
         @Header("Authorization") authHeader: String,
         @Part image: MultipartBody.Part,
-        @Part("json") obsJsonRequest: ObsPushDTO
+        @Part("json") obsJsonRequest: Observation
     ): Response<ObsJsonResponse>
 
     @DELETE

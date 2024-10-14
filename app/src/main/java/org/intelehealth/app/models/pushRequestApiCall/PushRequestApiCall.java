@@ -38,6 +38,7 @@ public class PushRequestApiCall {
     @Expose
     private List<Provider> providers = null;
 
+
     public List<BookAppointmentRequest> getAppointments() {
         return appointments;
     }
