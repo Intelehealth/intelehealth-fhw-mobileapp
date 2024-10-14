@@ -5,12 +5,15 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -83,25 +86,128 @@ interface CoreApiClient {
                                      )
     : Response<ObsJsonResponse>
 
+    @DELETE
+    suspend fun deleteObsImage(@Url url: String, @Header("Authorization") authHeader: String)
+
+    @GET("/api/mindmap/download")
+    suspend fun downloadMindMap(@Query("key") licenseKey: String) : Response<DownloadMindMapRes>
+
+    @GET("/intelehealth/app_update.json")
+    suspend fun checkAppUpdate() : Response<CheckAppUpdateRes>
+
+    @POST("/openmrs/ws/rest/v1/password")
+    suspend fun changePassword(
+        @Body modelChangePassword: ChangePasswordModel_New,
+        @Header("Authorization") authHeader: String)
+    : Response<ResponseBody>
+
+    @POST("/api/auth/requestOtp")
+    @Headers("Accept: application/json")
+    suspend fun requestOTP(
+        @Body modelRequestOTPParams: RequestOTPParamsModel_New)
+    : Response<ForgotPasswordApiResponseModel_New>
+
+    @POST("/api/auth/verifyOtp")
+    @Headers("Accept: application/json")
+    suspend fun verifyOTP(
+        @Body modelOtpVerificationParams: OTPVerificationParamsModel_New)
+    : Response<ForgotPasswordApiResponseModel_New>
 
 
+    @POST("/api/auth/resetPassword/{userUuid}")
+    suspend fun resetPassword(
+        @Path("userUuid") userUuid: String,
+        @Body modelChangePassword: ChangePasswordParamsModel_New
+    ) : Response<ResetPasswordResModel_New>
 
 
+    @POST
+    suspend fun uploadProviderProfilePicture(
+        @Url url: String,
+        @Body providerProfile: ProviderProfile,
+        @Header("Authorization") authHeader: String
+    ) : Response<ResponseBody>
 
 
+    @GET
+    suspend fun downloadProviderProfilePicture(
+        @Url url: String,
+        @Header ("Authorization") authHeader: String
+    ) : Response<ResponseBody>
+
+    /*@GET
+    Observable<Profile> PROVIDER_PROFILE_DETAILS_DOWNLOAD(@Url String url,
+    @Header("Authorization") String authHeader);*/
+
+    @GET
+    suspend fun downloadProviderProfileDetails(
+        @Url url: String,
+        @Header ("Authorization") authHeader: String
+    ) : Response<Profile>
 
 
+    @POST("/openmrs/ws/rest/v1/person/{userUuid}")
+    suspend fun updateProfileAge(
+        @Path ("userUuid") userUuid: String,
+        @Body profileUpdateAge: ProfileUpdateAge,
+        @Header ("Authorization") authHeader: String
+    ) : Response<ResponseBody>
 
 
+    @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
+    suspend fun createProfileAttribute(
+        @Path ("userUuid") userUuid: String,
+        @Body profileCreateAttribute: ProfileCreateAttribute,
+        @Header ("Authorization") authHeader: String
+    ) : Response<ResponseBody>
 
 
+    @POST("attribute/{attributeUuid}")
+    suspend fun updateProfileAttribute(
+        @Path ("attributeUuid") attributeUuid: String,
+        @Body profileUpdateAttribute: ProfileUpdateAttribute,
+        @Header ("Authorization") authHeader: String
+    ) : Response<ResponseBody>
 
 
+    @POST
+    @Headers("Accept: application/json")
+    suspend fun authLoginJwtApi(
+        @Url url: String,
+        @Body authJWTBody: AuthJWTBody
+    ) : Response<AuthJWTResponse>
 
 
+    /**
+     * getting html here like privacy policy, terms of service
+     *
+     * @param url
+     * @return
+     */
+    @GET
+    suspend fun getHtml(@Url url: String) : Response<ResponseBody>
 
 
+    @DELETE("/api/mindmap/clearAll/{id}")
+    suspend fun clearAllNotifications(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String)
+    : Response<ResponseBody>
 
 
+    @PUT("/api/mindmap/acknowledge/{id}")
+    suspend fun notificationsAcknowledge(
+        @Header ("Authorization") authHeader: String,
+        @Path ("id") id: String
+    ) : Response<ResponseBody>
+
+
+    @GET("/api/mindmap/notifications")
+    suspend fun fetchAllNotifications(
+        @Header ("Authorization") authHeader: String,
+        @Query("userId") userId: String,
+        @Query("page") page: String,
+        @Query("size") size: String
+    ) : Response<NotificationResponse>
 
 }
