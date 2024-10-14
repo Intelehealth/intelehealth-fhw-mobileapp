@@ -2,6 +2,11 @@ package org.intelehealth.core.network
 
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import org.intelehealth.core.network.model.Location
+import org.intelehealth.core.network.model.LoginModel
+import org.intelehealth.core.network.model.Resource
+import org.intelehealth.core.network.model.ResponseModel
+import org.intelehealth.core.network.model.Results
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -34,7 +39,7 @@ interface CoreApiClient {
     @GET
     suspend fun pullApiDetails(
         @Url url: String, @Header("Authorization") authHeader: String
-    ): Response<ResponseDTO>
+    ): Response<ResponseModel>
 
     @GET
     suspend fun fetchLoginDetails(
@@ -44,7 +49,7 @@ interface CoreApiClient {
     @GET
     suspend fun fetchLoginProviderDetails(
         @Url url: String, @Header("Authorization") authHeader: String
-    ): Response<LoginProviderModel>
+    ): Response<List<Resource>>
 
     @POST
     @Headers("Accept: application/json")
