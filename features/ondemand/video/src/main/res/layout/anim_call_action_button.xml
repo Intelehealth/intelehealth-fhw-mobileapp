@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <org.intelehealth.video.ui.custom.SwipeUpIndicator
+        <org.intelehealth.feature.video.ui.custom.SwipeUpIndicator
             android:id="@+id/swipeUpIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

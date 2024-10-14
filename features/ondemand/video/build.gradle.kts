@@ -8,7 +8,7 @@ plugins {
 apply("${rootProject.projectDir}/whitelabel.gradle")
 
 android {
-    namespace = "org.intelehealth.video"
+    namespace = "org.intelehealth.feature.video"
     compileSdk = 34
 
     defaultConfig {

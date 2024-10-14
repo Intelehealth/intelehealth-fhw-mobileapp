@@ -163,15 +163,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-<!--        <activity-->
-<!--            android:name=".activities.identificationActivity.IdentificationActivity_New"-->
-<!--            android:exported="false"-->
-<!--            android:theme="@style/AppTheme.NoActionBar"-->
-<!--            android:windowSoftInputMode="adjustResize">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
         <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
@@ -208,19 +199,8 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity
-            android:name="org.intelehealth.MediatorTestActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 <!--        <activity-->
-<!--            android:name=".ui.splash.activity.SplashActivity"-->
+<!--            android:name="org.intelehealth.MediatorTestActivity"-->
 <!--            android:exported="true"-->
 <!--            android:theme="@style/AppTheme.NoActionBar"-->
 <!--            android:windowSoftInputMode="adjustPan">-->
@@ -230,6 +210,17 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity>-->
+        <activity
+            android:name=".ui.splash.activity.SplashActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.patient.activity.PatientRegistrationActivity"
             android:exported="true"

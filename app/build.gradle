@@ -79,6 +79,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+//    dynamicFeatures = [':features:ondemand:chat', ':features:ondemand:video']
 
 //    dynamicFeatures = [':features:ondemand:video']
     
