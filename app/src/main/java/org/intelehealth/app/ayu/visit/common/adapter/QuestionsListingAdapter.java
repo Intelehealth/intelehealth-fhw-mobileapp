@@ -12,7 +12,10 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+
+import org.intelehealth.app.models.uploadSurvey.Ob;
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +74,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -250,7 +261,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestionCounter.setText("");
             String id = mItemList.get(genericViewHolder.index).getId();
             CustomLog.v(TAG, "ID - " + id);
-            CustomLog.v(TAG, "mLoadedIds - " + mLoadedIds.contains(id)+ " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
+            CustomLog.v(TAG, "mLoadedIds - " + mLoadedIds.contains(id) + " \t Node findDisplay -  " + genericViewHolder.node.findDisplay());
             Handler handler = new Handler();
             if (!mLoadedIds.contains(id)) {
 
@@ -646,47 +657,47 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         ImageView i10 = view.findViewById(R.id.n10_imv);
 
         // set default values
-        tv0.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv0.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv0.setTextSize(14);
         tv0.setTypeface(tv0.getTypeface(), Typeface.NORMAL);
 
-        tv1.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv1.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv1.setTextSize(14);
         tv1.setTypeface(tv1.getTypeface(), Typeface.NORMAL);
 
-        tv2.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv2.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv2.setTextSize(14);
         tv2.setTypeface(tv2.getTypeface(), Typeface.NORMAL);
 
-        tv3.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv3.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv3.setTextSize(14);
         tv3.setTypeface(tv3.getTypeface(), Typeface.NORMAL);
 
-        tv4.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv4.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv4.setTextSize(14);
         tv4.setTypeface(tv4.getTypeface(), Typeface.NORMAL);
 
-        tv5.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv5.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv5.setTextSize(14);
         tv5.setTypeface(tv5.getTypeface(), Typeface.NORMAL);
 
-        tv6.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv6.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv6.setTextSize(14);
         tv6.setTypeface(tv6.getTypeface(), Typeface.NORMAL);
 
-        tv7.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv7.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv7.setTextSize(14);
         tv7.setTypeface(tv7.getTypeface(), Typeface.NORMAL);
 
-        tv8.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv8.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv8.setTextSize(14);
         tv8.setTypeface(tv8.getTypeface(), Typeface.NORMAL);
 
-        tv9.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv9.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv9.setTextSize(14);
         tv9.setTypeface(tv9.getTypeface(), Typeface.NORMAL);
 
-        tv10.setTextColor(ContextCompat.getColor(mContext,R.color.gray_3));
+        tv10.setTextColor(ContextCompat.getColor(mContext, R.color.gray_3));
         tv10.setTextSize(14);
         tv10.setTypeface(tv10.getTypeface(), Typeface.NORMAL);
 
@@ -703,68 +714,68 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         i10.setColorFilter(ContextCompat.getColor(mContext, R.color.gray_3));
 
         if (range == 0) {
-            tv0.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv0.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv0.setTextSize(16);
             tv0.setTypeface(tv0.getTypeface(), Typeface.BOLD);
 
             i0.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
 
         } else if (range == 1) {
-            tv1.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv1.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv1.setTextSize(16);
             tv1.setTypeface(tv1.getTypeface(), Typeface.BOLD);
 
             i1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 2) {
-            tv2.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv2.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv2.setTextSize(16);
             tv2.setTypeface(tv2.getTypeface(), Typeface.BOLD);
 
             i2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 3) {
-            tv3.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv3.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv3.setTextSize(16);
             tv3.setTypeface(tv3.getTypeface(), Typeface.BOLD);
 
             i3.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 4) {
-            tv4.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv4.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv4.setTextSize(16);
             tv4.setTypeface(tv4.getTypeface(), Typeface.BOLD);
 
             i4.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 5) {
-            tv5.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv5.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv5.setTextSize(16);
             tv5.setTypeface(tv5.getTypeface(), Typeface.BOLD);
 
             i5.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 6) {
-            tv6.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv6.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv6.setTextSize(16);
             tv6.setTypeface(tv6.getTypeface(), Typeface.BOLD);
 
             i6.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 7) {
-            tv7.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv7.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv7.setTextSize(16);
             tv7.setTypeface(tv7.getTypeface(), Typeface.BOLD);
 
             i7.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 8) {
-            tv8.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv8.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv8.setTextSize(16);
             tv8.setTypeface(tv8.getTypeface(), Typeface.BOLD);
 
             i8.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 9) {
-            tv9.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv9.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv9.setTextSize(16);
             tv9.setTypeface(tv9.getTypeface(), Typeface.BOLD);
 
             i9.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary));
         } else if (range == 10) {
-            tv10.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary));
+            tv10.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             tv10.setTextSize(16);
             tv10.setTypeface(tv10.getTypeface(), Typeface.BOLD);
 
@@ -800,7 +811,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         public void onFinish() {
                             mItemList.get(position).setDataCaptured(true);
                             mOnItemSelection.onAllAnswered(true);
-
+                            CustomLog.d("ANSWARE_RESULT",new Gson().toJson(mItemList));
                         }
                     });
                 } else {
@@ -824,15 +835,40 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mItemList.get(position).setSelected(false);
                 mItemList.get(position).setDataCaptured(false);
                 //VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300, mIsEditMode);
-                for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
+                /*for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
                         //if (mIsEditMode) mItemList.get(position).setDataCaptured(true);
                         mItemList.get(position).setSelected(true);
                         CustomLog.v(TAG, "updated associate symptoms selected status");
                     }
-                }
-                AdapterUtils.setToDefault(submitButton);
-                AdapterUtils.setToDefault(holder.submitButton);
+                }*/
+
+                //handling the heavy operation in background thread
+                updateStatus(position, node)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Boolean>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                AdapterUtils.setToDefault(submitButton);
+                                AdapterUtils.setToDefault(holder.submitButton);
+                            }
+                        });
                 //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
             }
         });
@@ -850,6 +886,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.addView(view);
         //recyclerView.scrollToPosition(0);
     }
+
+    Observable<Boolean> updateStatus(int position, Node node) {
+        return Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
+                    if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
+                        //if (mIsEditMode) mItemList.get(position).setDataCaptured(true);
+                        mItemList.get(position).setSelected(true);
+                        CustomLog.v(TAG, "updated associate symptoms selected status");
+                    }
+                }
+                emitter.onComplete();
+            }
+        });
+    }
+
+    ;
 
     private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
         //holder.nextRelativeLayout.setVisibility(View.GONE);
@@ -2249,7 +2303,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
-        numberRangeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
+        numberRangeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.popup_menu_background));
 
 
         numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -2284,7 +2338,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);
-        durationTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext,R.drawable.popup_menu_background));
+        durationTypeSpinner.setPopupBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.popup_menu_background));
 
         durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
