@@ -90,7 +90,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     /** Install all features deferred. */
-    private fun installAllFeaturesDeferred(modules: List<String>, callback: DynamicDeliveryCallback?) {
+    fun installAllFeaturesDeferred(modules: List<String>, callback: DynamicDeliveryCallback?) {
         val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
         splitInstallManager.registerListener(listener)
 //        val modules = listOf(moduleKotlin, moduleJava, moduleAssets, moduleNative)
@@ -106,7 +106,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     /** Request uninstall of all features. */
-    private fun requestUninstall() {
+    fun requestUninstall() {
 
         Log.d(
             TAG, "Requesting uninstall of all modules. This will happen at some point in the future."
@@ -119,11 +119,12 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     /** Request uninstall of all features. */
-    private fun requestUninstall(modules: List<String>) {
+    fun requestUninstall(modules: List<String>) {
         splitInstallManager.deferredUninstall(modules).addOnSuccessListener {
             Log.d(TAG, "Uninstalling $modules")
         }
     }
+
 
     private fun handleInstallFailure(errorCode: Int, callback: DynamicDeliveryCallback?) {
         when (errorCode) {
