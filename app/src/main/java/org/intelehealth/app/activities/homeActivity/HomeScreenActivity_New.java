@@ -1014,7 +1014,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
             finish();
         } else if (itemId == R.id.menu_view_call_log) {
-            OnDemandIntentUtils.INSTANCE.startCallLog(HomeScreenActivity_New.this);
+            OnDemandIntentUtils.startCallLog(HomeScreenActivity_New.this);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);

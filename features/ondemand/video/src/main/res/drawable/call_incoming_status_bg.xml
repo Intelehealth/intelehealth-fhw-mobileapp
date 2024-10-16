@@ -3,7 +3,7 @@
     android:shape="oval">
     <solid android:color="@color/colorReceivedCallBg" />
     <stroke
-        android:width="@dimen/rippleStrokeWidth"
+        android:width="2dp"
         android:color="@color/colorIncomingCall" />
 
 </shape>

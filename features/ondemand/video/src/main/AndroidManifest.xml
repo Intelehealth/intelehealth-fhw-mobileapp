@@ -41,12 +41,12 @@
     <application android:hasCode="false">
 
         <service
-            android:name=".call.notification.HeadsUpNotificationService"
+            android:name=".notification.HeadsUpNotificationService"
             android:exported="false"
             android:foregroundServiceType="phoneCall" />
 
         <receiver
-            android:name=".call.notification.CallReceiver"
+            android:name=".notification.CallReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -55,7 +55,7 @@
         </receiver>
 
         <activity
-            android:name=".call.ui.activity.VideoCallActivity"
+            android:name=".ui.activity.IDAVideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -65,10 +65,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".chat.ui.activity.ChatActivity"
+            android:name=".ui.activity.IDACallLogActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        <activity-->
+<!--            android:name=".chat.ui.activity.ChatActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/AppTheme.NoActionBar"-->
+<!--            android:windowSoftInputMode="stateAlwaysHidden" />-->
     </application>
 </manifest>

@@ -16,6 +16,7 @@ object OnDemandIntentUtils {
         return Intent()
     }
 
+    @JvmStatic
     fun startCallLog(context: Context?) {
         val listener = createInstance<VideoCallListener>(VIDEO_CALL_IMPL_CLASS)
         listener?.startCallLogActivity(context)

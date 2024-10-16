@@ -1,6 +1,7 @@
 package org.intelehealth.feature.video.impl
 
 import android.content.Context
+import android.content.Intent
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
@@ -10,6 +11,7 @@ import org.intelehealth.core.utils.extensions.fromJson
 import org.intelehealth.fcm.utils.NotificationHandler.isAppInForeground
 import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener
 import org.intelehealth.feature.video.model.CallArgs
+import org.intelehealth.feature.video.ui.activity.IDACallLogActivity
 import org.intelehealth.feature.video.utils.CallHandlerUtils
 import org.intelehealth.feature.video.utils.CallIntentUtils
 import org.intelehealth.feature.video.utils.CallMode
@@ -49,7 +51,7 @@ class VideoCallListenerImpl : VideoCallListener {
 
     override fun startCallLogActivity(context: Context?) {
         Intent(context, IDACallLogActivity::class.java).apply {
-            context.startActivity(this)
+            context?.startActivity(this)
         }
     }
 
