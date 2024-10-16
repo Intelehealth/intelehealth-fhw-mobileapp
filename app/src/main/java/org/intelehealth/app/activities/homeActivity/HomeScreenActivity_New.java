@@ -669,7 +669,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
+        tvAppVersion.setText("Dynamic Version::" + BuildConfig.VERSION_NAME);
+
 
         setLocale(HomeScreenActivity_New.this);
 

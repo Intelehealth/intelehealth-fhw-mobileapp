@@ -66,7 +66,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         }.start()
     }
 
-    private fun initiNotification() {
+    private fun initNotification() {
         downloadProgressHelper.setTitle("Intelehealth")
         downloadProgressHelper.setContent("Downloading...")
         downloadProgressHelper.startNotifying()
@@ -74,7 +74,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
 
     fun downloadDynamicModule(moduleName: String, callback: DynamicDeliveryCallback?) {
         val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
-
+        initNotification()
         val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
         splitInstallManager.registerListener(listener)
 
@@ -94,7 +94,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
         splitInstallManager.registerListener(listener)
 //        val modules = listOf(moduleKotlin, moduleJava, moduleAssets, moduleNative)
-        initiNotification()
+        initNotification()
         splitInstallManager.deferredInstall(modules).addOnSuccessListener {
 
         }.addOnFailureListener { e ->

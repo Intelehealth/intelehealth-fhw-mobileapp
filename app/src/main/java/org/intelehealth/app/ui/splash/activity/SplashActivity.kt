@@ -78,7 +78,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
 
-        DynamicModuleDownloadManager.getInstance(this).showDownloadingNotification()
+//        DynamicModuleDownloadManager.getInstance(this).showDownloadingNotification()
     }
 
     private fun loadConfig() {
