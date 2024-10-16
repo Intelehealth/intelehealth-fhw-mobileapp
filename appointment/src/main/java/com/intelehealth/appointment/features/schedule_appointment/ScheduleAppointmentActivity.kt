@@ -2,22 +2,27 @@ package com.intelehealth.appointment.features.schedule_appointment
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.intelehealth.appointment.AppointmentBuilder
 import com.intelehealth.appointment.R
 import com.intelehealth.appointment.data.remote.response.SlotInfo
 import com.intelehealth.appointment.databinding.ActivityScheduleAppointmentBinding
+import com.intelehealth.appointment.features.horizontalcalendar.CalendarModel
+import com.intelehealth.appointment.features.horizontalcalendar.HorizontalCalendarViewAdapter
 import com.intelehealth.appointment.utils.CommonKeys
 import com.intelehealth.appointment.utils.DateAndTimeUtils
 import com.intelehealth.appointment.utils.IntentKeys
 import com.intelehealth.appointment.utils.StringUtils
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -67,7 +72,7 @@ class ScheduleAppointmentActivity : AppCompatActivity() {
         binding.viewModel = scheduleAppointmentViewModel
         setupAnimator()
         getIntentData()
-        populateCalenderData()
+        //populateCalenderData()
         observers()
         binding.toolbarScheduleAppointments.imageviewIsInternetCommon.setOnClickListener {
             scheduleAppointmentViewModel.sync()
@@ -80,16 +85,16 @@ class ScheduleAppointmentActivity : AppCompatActivity() {
 
     private fun populateCalenderData() {
         calendarInstance = Calendar.getInstance()
-        currentMonth = calendarInstance.getActualMaximum(Calendar.MONTH)
-        currentYear = calendarInstance.get(Calendar.YEAR)
+        currentMonth = calendarInstance!!.getActualMaximum(Calendar.MONTH)
+        currentYear = calendarInstance!!.get(Calendar.YEAR)
         monthToCompare = currentMonth.toString()
         yearToCompare = currentYear.toString()
         val month_date = SimpleDateFormat("MMMM", Locale.ENGLISH)
-        var month_name = month_date.format(calendarInstance.getTime())
+        var month_name = month_date.format(calendarInstance!!.getTime())
         if (AppointmentBuilder.language.equals("hi", ignoreCase = true)) month_name =
            StringUtils.en__hi_dob(month_name)
-        tvSelectedMonthYear.setText("$month_name, $currentYear")
-        currentMonth = calendarInstance.get(Calendar.MONTH) + 1
+        binding.tvSelectedMonthYear.text = "$month_name, $currentYear"
+        currentMonth = calendarInstance!!.get(Calendar.MONTH) + 1
         monthToCompare = currentMonth.toString()
 
         if (monthToCompare == currentMonth.toString() && yearToCompare == currentYear.toString()) {
@@ -98,22 +103,216 @@ class ScheduleAppointmentActivity : AppCompatActivity() {
             enableDisablePreviousButton(true)
         }
         getAllDatesOfSelectedMonth(
-            calendarInstance,
+            calendarInstance!!,
             true,
             currentMonth.toString(),
             currentYear.toString(),
             currentMonth.toString()
         )
 
-        ivNextMonth.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.ivNextMonth1.setOnClickListener(View.OnClickListener { v: View? ->
             //get next months dates for horizontal calendar view
             getNextMonthDates()
         })
-        ivPrevMonth.setOnClickListener(View.OnClickListener { v: View? ->
+        binding.ivPrevMonth1.setOnClickListener(View.OnClickListener { v: View? ->
             //get this months dates for horizontal calendar view
             getPreviousMonthDates()
         })
     }
+
+    private fun getPreviousMonthDates() {
+        calendarInstance!!.add(Calendar.MONTH, -1)
+        val nowCalendar = Calendar.getInstance()
+        if (nowCalendar[Calendar.YEAR] <= calendarInstance!![Calendar.YEAR] && nowCalendar[Calendar.MONTH] > calendarInstance!![Calendar.MONTH]) {
+            calendarInstance!!.add(Calendar.MONTH, 1)
+            enableDisablePreviousButton(false)
+            return
+        }
+        val monthNameNEw = calendarInstance!!.time
+        var date: Date? = null
+        val formatter = SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH)
+        try {
+            date = formatter.parse(monthNameNEw.toString())
+            val formateDate = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date)
+
+            val dateSplit = formateDate.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+            yearToCompare = dateSplit[2]
+            monthToCompare = dateSplit[1]
+            val monthYear: Array<String?> =
+                DateAndTimeUtils.getMonthAndYearFromGivenDate(
+                    formateDate
+                )
+
+            if (monthYear.size > 0) {
+                var selectedPrevMonth = monthYear[0]
+                val selectedPrevMonthYear = monthYear[1]
+                if (AppointmentBuilder.language
+                        .equals("hi", ignoreCase = true)
+                ) selectedPrevMonth =
+                    StringUtils.en__hi_dob(selectedPrevMonth)
+                binding.tvSelectedMonthYear.setText("$selectedPrevMonth, $selectedPrevMonthYear")
+                if (calendarInstance!![Calendar.MONTH] + 1 == currentMonth && calendarInstance!![Calendar.YEAR] == currentYear) {
+                    enableDisablePreviousButton(false)
+
+                    getAllDatesOfSelectedMonth(
+                        calendarInstance!!,
+                        true,
+                        monthToCompare,
+                        selectedPrevMonthYear!!,
+                        monthToCompare
+                    )
+                } else {
+                    enableDisablePreviousButton(true)
+
+                    getAllDatesOfSelectedMonth(
+                        calendarInstance!!,
+                        false,
+                        monthToCompare,
+                        selectedPrevMonthYear!!,
+                        monthToCompare
+                    )
+                }
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
+
+
+    private fun getNextMonthDates() {
+        enableDisablePreviousButton(true)
+
+        calendarInstance!!.add(Calendar.MONTH, 1)
+        val monthNameNEw = calendarInstance!!.time
+        var date: Date? = null
+        val formatter = SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH)
+        try {
+            date = formatter.parse(monthNameNEw.toString())
+            val formateDate = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date)
+            val monthYear: Array<String?> =
+                DateAndTimeUtils.getMonthAndYearFromGivenDate(
+                    formateDate
+                )
+            var selectedNextMonth: String
+            val selectedMonthYear: String
+
+            if (monthYear.size > 0) {
+                selectedNextMonth = monthYear[0].toString()
+                selectedMonthYear = monthYear[1].toString()
+                val dateSplit = formateDate.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                if (AppointmentBuilder.language
+                        .equals("hi", ignoreCase = true)
+                ) selectedNextMonth =
+                    StringUtils.en__hi_dob(selectedNextMonth)
+                binding.tvSelectedMonthYear.setText("$selectedNextMonth, $selectedMonthYear")
+                getAllDatesOfSelectedMonth(
+                    calendarInstance!!,
+                    calendarInstance!![Calendar.MONTH] + 1 == currentMonth && calendarInstance!![Calendar.YEAR] == currentYear,
+                    selectedNextMonth,
+                    selectedMonthYear,
+                    dateSplit[1]
+                )
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    }
+
+
+    private fun enableDisablePreviousButton(wantToEnable: Boolean) {
+        //for enable and disable previous month button if month is less than current month
+        if (wantToEnable) {
+            binding.ivPrevMonth1.setEnabled(true)
+            binding.ivPrevMonth1.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimary),
+                PorterDuff.Mode.SRC_IN
+            )
+        } else {
+            binding.ivPrevMonth1.setEnabled(false)
+            binding.ivPrevMonth1.setColorFilter(
+                ContextCompat.getColor(this, R.color.font_black_3),
+                PorterDuff.Mode.SRC_IN
+            )
+        }
+    }
+    private fun getAllDatesOfSelectedMonth(
+        calendar: Calendar,
+        isCurrentMonth: Boolean,
+        selectedMonth: String,
+        selectedYear: String,
+        selectedMonthForDays: String
+    ) {
+        val lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val currentDay = if (isCurrentMonth) {
+            calendar[Calendar.DAY_OF_MONTH]
+        } else {
+            1
+        }
+        val daysLeft = lastDay - currentDay
+
+        var calendarModel: CalendarModel
+        val inFormat = SimpleDateFormat("dd-MM-yyyy")
+        val outFormat = SimpleDateFormat("EEEE")
+
+        val listOfDates: MutableList<CalendarModel> = ArrayList<CalendarModel>()
+        for (i in currentDay..lastDay) {
+            try {
+                val inputDate = "$i-$selectedMonthForDays-$selectedYear"
+                val date = inFormat.parse(inputDate)
+                if (date != null) {
+                    val dayForDate = outFormat.format(date)
+                    val dayForDateFinal = dayForDate.substring(0, 3)
+
+                    if (i == currentDay) {
+                        calendarModel = CalendarModel(
+                            dayForDateFinal,
+                            i,
+                            currentDay,
+                            true,
+                            selectedMonth,
+                            selectedYear,
+                            false,
+                            selectedMonthForDays
+                        )
+                    } else {
+                        calendarModel = CalendarModel(
+                            dayForDateFinal,
+                            i,
+                            currentDay,
+                            false,
+                            selectedMonth,
+                            selectedYear,
+                            false,
+                            selectedMonthForDays
+                        )
+                    }
+
+                    listOfDates.add(calendarModel)
+                } else {
+                }
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+        }
+
+        //  HorizontalCalendarViewAdapter horizontalCalendarViewAdapter = new HorizontalCalendarViewAdapter(this, listOfDates,this);
+        binding.rvHorizontalCal.setAdapter(
+            HorizontalCalendarViewAdapter(
+                this,
+                listOfDates,
+                 HorizontalCalendarViewAdapter.OnItemClickListener { calendarModel1: CalendarModel ->
+                    val date: Int = calendarModel1.getDate()
+                    val month: String = calendarModel1.getSelectedMonthForDays()
+                    val year: String = calendarModel1.getSelectedYear()
+                    mSelectedStartDate = "$date/$month/$year"
+                    mSelectedEndDate = "$date/$month/$year"
+                    scheduleAppointmentViewModel.getSlots(mSelectedStartDate,mSelectedEndDate,speciality!!,isRescheduled)
+                })
+        )
+    }
+
 
     private fun observers() {
         scheduleAppointmentViewModel.mutableSlotList.observe(this) {
