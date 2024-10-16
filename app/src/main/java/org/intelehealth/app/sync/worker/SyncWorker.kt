@@ -14,11 +14,13 @@ import org.intelehealth.app.sync.data.SyncDataSource
 import org.intelehealth.app.sync.data.SyncRepository
 import org.intelehealth.app.sync.network.WebClient
 import org.intelehealth.app.sync.network.provider.WebClientProvider
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.core.network.helper.NetworkHelper
 import org.intelehealth.coreroomdb.IHDatabase
 
 class SyncWorker(
     private val ctx: Context,
+    private val sessionManager: SessionManager,
     private val params: WorkerParameters
 ) : CoroutineWorker(ctx, params) {
 
@@ -30,8 +32,11 @@ class SyncWorker(
         val database = IHDatabase.getInstance(ctx)
 
         withContext(Dispatchers.IO) {
-            val syncRepository = SyncRepository(database, dataSource, this)
-            syncRepository.pullAndSaveData("", "") {
+            val syncRepository = SyncRepository(database, dataSource, sessionManager, this)
+            syncRepository.pullAndSaveData(
+                sessionManager.locationUuid,
+                sessionManager.lastPulledDateTime
+            ) {
                 workerResult = if (it.isSuccess()) Result.success() else Result.failure()
             }
         }

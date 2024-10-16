@@ -1,6 +1,7 @@
 package org.intelehealth.app.sync.network
 
 import org.intelehealth.app.models.dto.ResponseDTO
+import org.intelehealth.app.sync.network.response.SyncResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -11,6 +12,6 @@ interface WebClient {
     suspend fun pullData(
         @Path("location_uuid") locationUuid: String,
         @Path("pull_executed_time") pullExecutedTime: String
-    ): Response<ResponseDTO>
+    ): Response<SyncResponse>
 
 }
