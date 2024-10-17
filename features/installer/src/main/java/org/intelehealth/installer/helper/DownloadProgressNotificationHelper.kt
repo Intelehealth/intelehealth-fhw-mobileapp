@@ -60,7 +60,7 @@ class DownloadProgressNotificationHelper private constructor(context: Context) {
     fun startNotifying() =
         notificationManager.notify(DYNAMIC_MODULE_DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
 
-    fun cancelNotification() = notificationManager.cancel(DYNAMIC_MODULE_DOWNLOAD_NOTIFICATION_ID)
+    private fun cancelNotification() = notificationManager.cancel(DYNAMIC_MODULE_DOWNLOAD_NOTIFICATION_ID)
 
     fun cancelWithDelay(milli: Long) {
         Thread(Runnable {

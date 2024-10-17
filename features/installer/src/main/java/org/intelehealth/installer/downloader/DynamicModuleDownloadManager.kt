@@ -43,6 +43,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     fun isModuleDownloaded(moduleName: String): Boolean {
+        println("${TAG}=>isModuleDownloaded=>$moduleName")
         return splitInstallManager.installedModules.contains(moduleName)
     }
 
@@ -67,6 +68,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     private fun initNotification() {
+        println("${TAG}=>initNotification")
         downloadProgressHelper.setTitle("Intelehealth")
         downloadProgressHelper.setContent("Downloading...")
         downloadProgressHelper.startNotifying()
@@ -74,6 +76,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
 
     fun downloadDynamicModule(moduleName: String, callback: DynamicDeliveryCallback?) {
         val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
+        println("${TAG}=>downloadDynamicModule=>$moduleName")
         initNotification()
         val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
         splitInstallManager.registerListener(listener)
@@ -122,6 +125,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     fun requestUninstall(modules: List<String>) {
         splitInstallManager.deferredUninstall(modules).addOnSuccessListener {
             Log.d(TAG, "Uninstalling $modules")
+            println("${TAG}=>Uninstalling $modules")
         }
     }
 
@@ -129,31 +133,37 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     private fun handleInstallFailure(errorCode: Int, callback: DynamicDeliveryCallback?) {
         when (errorCode) {
             SplitInstallErrorCode.NETWORK_ERROR -> {
+                println("${TAG}=>NETWORK_ERROR")
                 callback?.onFailed("No internet found")
                 cancelNotificationWithMessage("No internet found")
             }
 
             SplitInstallErrorCode.MODULE_UNAVAILABLE -> {
+                println("${TAG}=>MODULE_UNAVAILABLE")
                 callback?.onFailed("Module unavailable")
                 cancelNotificationWithMessage("Module unavailable")
             }
 
             SplitInstallErrorCode.ACTIVE_SESSIONS_LIMIT_EXCEEDED -> {
+                println("${TAG}=>ACTIVE_SESSIONS_LIMIT_EXCEEDED")
                 callback?.onFailed("Active session limit exceeded")
                 cancelNotificationWithMessage("Active session limit exceeded")
             }
 
             SplitInstallErrorCode.INSUFFICIENT_STORAGE -> {
+                println("${TAG}=>INSUFFICIENT_STORAGE")
                 callback?.onFailed("Insufficient storage")
                 cancelNotificationWithMessage("Insufficient storage")
             }
 
             SplitInstallErrorCode.PLAY_STORE_NOT_FOUND -> {
+                println("${TAG}=>PLAY_STORE_NOT_FOUND")
                 callback?.onFailed("Google Play Store Not Found!")
                 cancelNotificationWithMessage("Google Play Store Not Found!")
             }
 
             else -> {
+                println("${TAG}=>Something went wrong! Try again later")
                 callback?.onFailed("Something went wrong! Try again later")
                 cancelNotificationWithMessage("Something went wrong! Try again later")
             }
@@ -165,28 +175,33 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
             when (state.status()) {
                 SplitInstallSessionStatus.DOWNLOADING -> {
                     val percentage = (state.bytesDownloaded() * 100) / state.totalBytesToDownload()
+                    println("${TAG}=>DOWNLOADING=>$percentage")
                     callback?.onDownloading(percentage.toInt())
                     downloadProgressHelper.updateProgress(percentage.toInt())
                 }
 
                 SplitInstallSessionStatus.DOWNLOADED -> {
+                    println("${TAG}=>DOWNLOADED")
                     callback?.onDownloadCompleted()
                     downloadProgressHelper.setContent("Installing...")
                     downloadProgressHelper.completeProgress()
                 }
 
                 SplitInstallSessionStatus.INSTALLED -> {
+                    println("${TAG}=>INSTALLED")
                     Log.d(TAG, "Dynamic Module downloaded")
                     callback?.onInstallSuccess()
                     cancelNotificationWithMessage("Installation complete")
                 }
 
                 SplitInstallSessionStatus.FAILED -> {
+                    println("${TAG}=>FAILED")
                     callback?.onFailed("Installation failed")
                     cancelNotificationWithMessage("Installation failed")
                 }
 
                 SplitInstallSessionStatus.CANCELED -> {
+                    println("${TAG}=>CANCELED")
                     callback?.onFailed("Installation Cancelled")
                     cancelNotificationWithMessage("Installation Cancelled")
                 }

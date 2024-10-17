@@ -38,6 +38,7 @@ import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
 import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -116,7 +117,9 @@ public class SyncDAO {
         PreferenceHelper helper = new PreferenceHelper(IntelehealthApplication.getAppContext());
         int version = helper.get(CONFIG_VERSION, 0);
         CustomLog.d(TAG, "saveConfig old version => %s", version);
+        System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>saveConfig");
         if (version > 0 && response.getVersion() > version) {
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>Config version " + response.getVersion() + ">" + version);
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
             checkModuleActiveStatusAndDownload(response.getPatientVisitSummery().getVideoSection());
@@ -126,11 +129,15 @@ public class SyncDAO {
 
     private void checkModuleActiveStatusAndDownload(boolean isActive) {
         Context context = IntelehealthApplication.getAppContext();
+        System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>checkModuleActiveStatusAndDownload");
         DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(context);
         String module = context.getString(R.string.module_video);
+        System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>isActive=>" + isActive);
         if (isActive && !manager.isModuleDownloaded(module)) {
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>Downloading");
             manager.downloadDynamicModule(module, null);
         } else if (!isActive && manager.isModuleDownloaded(module)) {
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>uninstalling");
             List<String> modules = new ArrayList<>();
             modules.add(module);
             manager.requestUninstall(modules);

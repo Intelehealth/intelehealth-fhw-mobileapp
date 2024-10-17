@@ -129,6 +129,7 @@ import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener;
 import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -986,8 +987,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
             String moduleName = getString(R.string.module_video);
-            boolean hasInstalled = DynamicModuleDownloadManager.getInstance(this).isModuleDownloaded(moduleName);
+            boolean hasInstalled = DynamicModuleDownloadManager.getInstance(this.getBaseContext()).isModuleDownloaded(moduleName);
             boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>hasInstalled=>" + hasInstalled);
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>activeStatus.getVideoSection()=>" + activeStatus.getVideoSection());
+            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>callLogVisibility=>" + callLogVisibility);
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(callLogVisibility);
         }
     }
