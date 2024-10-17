@@ -122,6 +122,13 @@ class PatientRepository(
                     patient.providerUUID
                 )
             )
+            add(
+                createPatientAttribute(
+                    patient.uuid,
+                    PatientAttributesDTO.Column.HOUSEHOLD_NUMBER.value,
+                    patient.householdNumber
+                )
+            )
         }
 
     private fun createPatientAttribute(

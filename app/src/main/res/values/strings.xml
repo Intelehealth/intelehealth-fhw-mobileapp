@@ -49,6 +49,9 @@
     <string name="identification_screen_text_months"> months</string>
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_prompt_block">Block</string>
+    <string name="identification_screen_prompt_household_no">Household Number</string>
+    <string name="identification_screen_prompt_other_block">Other Block</string>
 
     //Active Patients Screen
 
@@ -1100,5 +1103,12 @@
     <string name="uric_acid_error">Uric acid should be in between %1$s and %2$s</string>
     <string name="cholestrol_acid_error">Total cholestrol should be in between %1$s and %2$s</string>
     <string name="reason">Reason</string>
+    <string name="hint_drop_down_block">Select Block</string>
+    <string name="block">Block</string>
+    <string name="enter_household_number">Enter household number</string>
+    <string name="household_no">Household Number</string>
+    <string name="hint_drop_down_village">Select Village</string>
+    <string name="enter_block">Enter Block</string>
+    <string name="other_block">Other Block</string>
 
 </resources>

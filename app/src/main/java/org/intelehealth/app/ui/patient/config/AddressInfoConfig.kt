@@ -15,4 +15,6 @@ class AddressInfoConfig {
     var cityVillage: PatientRegistrationFields? = null
     var address1: PatientRegistrationFields? = null
     var address2: PatientRegistrationFields? = null
+    var block: PatientRegistrationFields? = null
+    var householdNumber: PatientRegistrationFields? = null
 }
