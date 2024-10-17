@@ -55,6 +55,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -73,6 +74,7 @@ public class LoginActivityNew extends AppCompatActivity {
     private static final String TAG = "LoginActivityNew";
     TextInputEditText etUsername, etPassword;
     SessionManager sessionManager = null;
+    PreferenceHelper preferenceHelper = null; //klivekit shared pref
     Context context;
     private OfflineLogin offlineLogin = null;
     CustomProgressDialog cpd;
@@ -96,6 +98,7 @@ public class LoginActivityNew extends AppCompatActivity {
 
         context = LoginActivityNew.this;
         sessionManager = new SessionManager(context);
+        preferenceHelper = new PreferenceHelper(context);
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
 
@@ -596,6 +599,8 @@ public class LoginActivityNew extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        preferenceHelper.save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
+
                         UserLoginTask(username, password);
                     }
 

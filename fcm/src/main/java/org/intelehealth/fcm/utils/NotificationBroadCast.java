@@ -13,6 +13,7 @@ public class NotificationBroadCast {
         // Perform initialization tasks for Module A
         Intent intent = new Intent(CUSTOM_ACTION);
         intent.putExtra(FCM_MODULE, "fcm");
+        intent.setPackage("org.intelehealth.app");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 }
