@@ -307,6 +307,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             PromptInfo.Builder()
                 .setTitle(resources.getString(R.string.intelehealth_login))
                 .setSubtitle(resources.getString(R.string.touch_fingerprint))
+                .setNegativeButtonText(resources.getString(R.string.cancel))
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
                 .build().also {
                     authenticate(it)
