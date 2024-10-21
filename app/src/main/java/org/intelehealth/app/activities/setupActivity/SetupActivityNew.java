@@ -80,6 +80,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -461,6 +462,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
+                        new PreferenceHelper(SetupActivityNew.this).save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password,location);
                     }
 

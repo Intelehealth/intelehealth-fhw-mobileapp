@@ -161,11 +161,13 @@ public class DownloadService extends IntentService {
 
         Intent intent = new Intent(AppConstants.MESSAGE_PROGRESS);
         intent.putExtra("download", download);
+        intent.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
 
 
         Intent i = new Intent();
         i.setAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+        i.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         sendBroadcast(i);
 
 

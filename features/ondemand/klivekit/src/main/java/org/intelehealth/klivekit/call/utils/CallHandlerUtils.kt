@@ -102,6 +102,7 @@ object CallHandlerUtils {
     fun operateCallAction(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -138,6 +139,7 @@ object CallHandlerUtils {
     fun hangUpCall(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -147,6 +149,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
 //            messageBody.callStatus = CALL_FINISHED
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -162,6 +165,7 @@ object CallHandlerUtils {
 //        messageBody.callStatus = CALL_TIMED_OUT
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -175,6 +179,7 @@ object CallHandlerUtils {
     fun callMissed(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
