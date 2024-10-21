@@ -222,7 +222,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
                 }
 
                 SplitInstallSessionStatus.FAILED -> {
-                    println("${TAG}=>FAILED")
+                    println("${TAG}=>FAILED=> code ${state.errorCode()}")
                     callback?.onFailed("Installation failed")
                     cancelNotificationWithMessage("Installation failed")
                 }
@@ -244,7 +244,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
                 }
 
                 SplitInstallSessionStatus.PENDING -> {
-                    println("${TAG}=>PENDING")
+                    println("${TAG}=>PENDING=> code ${state.errorCode()}")
                     cancelNotificationWithMessage("Pending")
                 }
 
