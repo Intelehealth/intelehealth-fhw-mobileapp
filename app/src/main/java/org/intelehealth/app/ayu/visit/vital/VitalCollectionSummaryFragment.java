@@ -37,8 +37,6 @@ import org.intelehealth.config.utility.PatientVitalConfigKeys;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VitalCollectionSummaryFragment#newInstance} factory method to

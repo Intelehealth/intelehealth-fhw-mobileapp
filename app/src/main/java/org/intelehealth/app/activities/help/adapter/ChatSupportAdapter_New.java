@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.help.adapter;
 
 import android.content.Context;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.models.DocumentObject;
 
 public class ChatSupportAdapter_New extends RecyclerView.Adapter<ChatSupportAdapter_New.MyViewHolder> {
     Context context;

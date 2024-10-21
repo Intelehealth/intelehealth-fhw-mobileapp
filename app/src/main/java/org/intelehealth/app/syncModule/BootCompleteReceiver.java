@@ -3,12 +3,9 @@ package org.intelehealth.app.syncModule;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
-
-import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -17,7 +14,6 @@ import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.FollowUpNotificationShData;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationSchedulerUtils;
-import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.List;
 

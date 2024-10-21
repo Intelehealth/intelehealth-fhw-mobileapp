@@ -13,7 +13,6 @@ import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
-import static org.intelehealth.features.ondemand.mediator.OnDemandMediatorKt.VIDEO_CALL_IMPL_CLASS;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -126,7 +125,6 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.core.utils.helper.PreferenceHelper;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
-import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener;
 import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
@@ -670,7 +668,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        tvAppVersion.setText("Dynamic Version::" + BuildConfig.VERSION_NAME);
+        tvAppVersion.setText("Dynamic: Version Name " + BuildConfig.VERSION_NAME + " Code " + BuildConfig.VERSION_CODE);
 
 
         setLocale(HomeScreenActivity_New.this);
@@ -987,10 +985,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
             String moduleName = getString(R.string.module_video);
-            boolean hasInstalled = DynamicModuleDownloadManager.getInstance(this.getBaseContext()).isModuleDownloaded(moduleName);
+            boolean hasInstalled = manager.isModuleDownloaded(moduleName);
             boolean callLogVisibility = activeStatus.getVideoSection() && hasInstalled;
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>hasInstalled=>" + hasInstalled);
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>activeStatus.getVideoSection()=>" + activeStatus.getVideoSection());
+
             System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>callLogVisibility=>" + callLogVisibility);
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(callLogVisibility);
         }

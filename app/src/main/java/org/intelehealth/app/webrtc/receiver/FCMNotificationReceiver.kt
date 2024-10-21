@@ -5,15 +5,12 @@ import android.content.Context
 import android.content.Intent
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
-import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
@@ -21,13 +18,11 @@ import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
 import org.intelehealth.config.room.ConfigDatabase
-import org.intelehealth.core.utils.extensions.fromJson
 import org.intelehealth.fcm.FcmBroadcastReceiver
 import org.intelehealth.fcm.FcmNotification
 import org.intelehealth.features.ondemand.mediator.VIDEO_CALL_IMPL_CLASS
 import org.intelehealth.features.ondemand.mediator.createInstance
 import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener
-import org.intelehealth.features.ondemand.mediator.utils.OnDemandIntentUtils
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
 
 /**

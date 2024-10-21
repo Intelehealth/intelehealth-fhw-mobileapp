@@ -1,7 +1,5 @@
 package org.intelehealth.app.utilities;
 
-import android.util.Log;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 

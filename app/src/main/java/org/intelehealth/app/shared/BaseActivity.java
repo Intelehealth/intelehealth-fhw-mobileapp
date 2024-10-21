@@ -21,6 +21,8 @@ import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusVi
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.core.socket.SocketManager;
+import org.intelehealth.installer.downloader.DynamicDeliveryCallback;
+import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 
 import java.util.UUID;
 
@@ -29,13 +31,15 @@ import java.util.UUID;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class BaseActivity extends LanguageActivity  {
+public class BaseActivity extends LanguageActivity implements DynamicDeliveryCallback {
     private static final String TAG = "BaseActivity";
     private FeatureActiveStatus featureActiveStatus;
+    protected DynamicModuleDownloadManager manager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        manager = DynamicModuleDownloadManager.getInstance(this);
 //        SocketManager.getInstance().setNotificationListener(this);
         loadFeatureActiveStatus();
     }
@@ -98,5 +102,37 @@ public class BaseActivity extends LanguageActivity  {
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         featureActiveStatus = activeStatus;
         Timber.tag(TAG).d("Active feature status=>%s", new Gson().toJson(activeStatus));
+    }
+
+    @Override
+    protected void onResume() {
+        manager.registerListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        manager.unregisterListener();
+        super.onPause();
+    }
+
+    @Override
+    public void onDownloading(int percentage) {
+
+    }
+
+    @Override
+    public void onDownloadCompleted() {
+
+    }
+
+    @Override
+    public void onInstallSuccess() {
+
+    }
+
+    @Override
+    public void onFailed(@NonNull String errorMessage) {
+
     }
 }

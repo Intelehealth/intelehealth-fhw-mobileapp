@@ -1,12 +1,7 @@
 package org.intelehealth.app.activities.notification.repository
 
 import android.annotation.SuppressLint
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.activities.notification.NotificationResponse
@@ -20,11 +15,7 @@ import org.intelehealth.app.networkApiCalls.ApiClient
 import org.intelehealth.app.networkApiCalls.ApiInterface
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
-import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.utilities.exception.DAOException
-import retrofit2.Response
-import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,7 +29,8 @@ class NotificationRepository {
     private val notificationDao = NotificationDAO()
     private val syncUtils = SyncUtils()
     private val apiService = ApiClient.createService(ApiInterface::class.java)
-    private var sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+    private var sessionManager =
+        SessionManager(IntelehealthApplication.getAppContext())
 
     init {
         ApiClient.changeApiBaseUrl(BuildConfig.SOCKET_URL)

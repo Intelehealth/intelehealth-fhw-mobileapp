@@ -199,17 +199,17 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
-<!--        <activity-->
-<!--            android:name="org.intelehealth.MediatorTestActivity"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/AppTheme.NoActionBar"-->
-<!--            android:windowSoftInputMode="adjustPan">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name="org.intelehealth.DynamicModuleDownloadingActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
@@ -378,26 +378,26 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-<!--        <activity-->
-<!--            android:name=".webrtc.activity.IDAChatActivity"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/AppThemeMaterialNew"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-<!--        <activity-->
-<!--            android:name=".webrtc.activity.IDAVideoActivity"-->
-<!--            android:excludeFromRecents="true"-->
-<!--            android:exported="true"-->
-<!--            android:launchMode="singleTask"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:showOnLockScreen="true"-->
-<!--            android:taskAffinity=""-->
-<!--            android:theme="@style/AppThemeMaterialNew"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-<!--        <activity-->
-<!--            android:name=".webrtc.activity.IDACallLogActivity"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/AppThemeMaterialNew"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDAChatActivity"-->
+        <!--            android:exported="true"-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDAVideoActivity"-->
+        <!--            android:excludeFromRecents="true"-->
+        <!--            android:exported="true"-->
+        <!--            android:launchMode="singleTask"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:showOnLockScreen="true"-->
+        <!--            android:taskAffinity=""-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
+        <!--        <activity-->
+        <!--            android:name=".webrtc.activity.IDACallLogActivity"-->
+        <!--            android:exported="true"-->
+        <!--            android:theme="@style/AppThemeMaterialNew"-->
+        <!--            android:windowSoftInputMode="adjustPan" />-->
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
@@ -448,7 +448,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver"/>
+        <receiver android:name=".notificationScheduler.ScheduleNotificationReceiver" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

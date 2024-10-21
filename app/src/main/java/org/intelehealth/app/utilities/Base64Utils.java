@@ -3,7 +3,6 @@ package org.intelehealth.app.utilities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;

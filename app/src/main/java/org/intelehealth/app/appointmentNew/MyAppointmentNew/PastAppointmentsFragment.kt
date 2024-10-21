@@ -1,16 +1,13 @@
 package org.intelehealth.app.appointmentNew.MyAppointmentNew
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.LocaleList
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -22,11 +19,8 @@ import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -48,12 +42,10 @@ import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.enums.DataLoadingType
 import org.intelehealth.app.utilities.CustomLog
-import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.ToastUtil.showShortToast
-import org.intelehealth.app.utilities.constatnt.BundleConstants
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

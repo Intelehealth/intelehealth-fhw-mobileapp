@@ -1,14 +1,9 @@
 package android.print;
 
-import android.os.Build;
 import android.os.CancellationSignal;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintDocumentInfo;
+
 import org.intelehealth.app.utilities.CustomLog;
-import org.intelehealth.app.utilities.PublicDirFileSaverUtils;
 
 import java.io.File;
 

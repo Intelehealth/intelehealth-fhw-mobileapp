@@ -31,6 +31,7 @@ import androidx.transition.TransitionManager
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import org.intelehealth.DynamicModuleDownloadingActivity
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
@@ -318,10 +319,10 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             finish()
         } else {
             Logger.logD(TAG, "Starting home")
-            val intent = Intent(this, HomeScreenActivity_New::class.java)
-            intent.putExtra("from", "splash")
-            intent.putExtra("username", "")
-            intent.putExtra("password", "")
+            val intent = Intent(this, DynamicModuleDownloadingActivity::class.java)
+//            intent.putExtra("from", "splash")
+//            intent.putExtra("username", "")
+//            intent.putExtra("password", "")
             startActivity(intent)
             finish()
         }

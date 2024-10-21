@@ -1,7 +1,5 @@
 package org.intelehealth.app.shared.builder;
 
-import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
-
 import org.intelehealth.app.utilities.CustomLog;
 
 /**

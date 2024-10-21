@@ -1,13 +1,11 @@
 package org.intelehealth.app.activities.visit;
 
-import static org.intelehealth.app.database.dao.VisitsDAO.allNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,11 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
-import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseActivity;

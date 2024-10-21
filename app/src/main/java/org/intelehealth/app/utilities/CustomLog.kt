@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import com.github.ajalt.timberkt.Timber.tag
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.app.IntelehealthApplication
@@ -164,7 +163,8 @@ class CustomLog {
         var sm: SessionManager? = null
         private fun getSessionManager(): SessionManager {
             if(sm == null){
-                sm = SessionManager(IntelehealthApplication.getAppContext())
+                sm =
+                    SessionManager(IntelehealthApplication.getAppContext())
             }
             return sm as SessionManager
         }

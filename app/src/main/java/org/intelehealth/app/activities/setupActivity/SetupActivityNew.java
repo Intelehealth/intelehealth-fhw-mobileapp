@@ -18,6 +18,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.DynamicModuleDownloadingActivity;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -36,13 +38,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -53,10 +51,7 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
-import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New;
-import org.intelehealth.app.activities.forgotPasswordNew.ResetPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -591,10 +586,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                     }
                                                     CustomLog.i(TAG, "onPostExecute: Parse init");
                                                     sessionManager.setIsLoggedIn(true);
+                                                    Intent intent = new Intent(SetupActivityNew.this, DynamicModuleDownloadingActivity.class);
 
-                                                    Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
-                                                    intent.putExtra("setup", true);
-                                                    intent.putExtra("firstLogin", "firstLogin");
+//                                                    Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+//                                                    intent.putExtra("setup", true);
+//                                                    intent.putExtra("firstLogin", "firstLogin");
 
                                                     //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {

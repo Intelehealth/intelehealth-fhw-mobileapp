@@ -1,8 +1,6 @@
 package org.intelehealth.app.ui.custom;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
@@ -10,13 +8,9 @@ import android.util.AttributeSet;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.R;
 
 import androidx.annotation.NonNull;
@@ -24,10 +18,6 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.intelehealth.app.utilities.CustomLog;
-
-import java.lang.reflect.Field;
 
 /**
  * Created by Vaghela Mithun R. on 01-06-2023 - 15:13.

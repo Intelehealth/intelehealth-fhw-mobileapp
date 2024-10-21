@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
-import org.intelehealth.app.utilities.CustomLog;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

@@ -3,7 +3,7 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import org.intelehealth.app.utilities.CustomLog;
+
 
 import org.intelehealth.app.BuildConfig;
 

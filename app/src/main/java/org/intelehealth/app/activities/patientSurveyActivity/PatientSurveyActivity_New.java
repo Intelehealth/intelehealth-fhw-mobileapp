@@ -1,6 +1,5 @@
 package org.intelehealth.app.activities.patientSurveyActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;

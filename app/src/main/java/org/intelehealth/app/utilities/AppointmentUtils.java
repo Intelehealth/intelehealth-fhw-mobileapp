@@ -1,7 +1,5 @@
 package org.intelehealth.app.utilities;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.CancelRequest;

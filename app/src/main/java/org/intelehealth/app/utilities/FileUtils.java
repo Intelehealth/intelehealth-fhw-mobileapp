@@ -1,7 +1,6 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
-import org.intelehealth.app.utilities.CustomLog;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;

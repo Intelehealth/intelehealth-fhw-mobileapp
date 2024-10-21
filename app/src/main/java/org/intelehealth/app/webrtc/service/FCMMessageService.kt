@@ -29,7 +29,8 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        val sessionManager =
+            SessionManager(IntelehealthApplication.getAppContext())
         val startHour = 21 // 9:00 PM
         val startMinute = 0
         val endHour = 6 // 6:00 AM

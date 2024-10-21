@@ -25,7 +25,6 @@ import org.intelehealth.feature.video.ui.custom.SwipeButton;
 import org.intelehealth.feature.video.R;
 import org.intelehealth.feature.video.databinding.ActivityVideoCallBinding;
 import org.intelehealth.feature.video.model.CallArgs;
-import org.intelehealth.feature.video.ui.custom.SwipeButton;
 import org.intelehealth.feature.video.utils.CallMode;
 import org.intelehealth.feature.video.utils.CallType;
 

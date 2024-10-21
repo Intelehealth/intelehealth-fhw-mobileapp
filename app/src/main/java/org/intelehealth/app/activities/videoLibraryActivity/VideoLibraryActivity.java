@@ -7,7 +7,6 @@ import android.os.Environment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;

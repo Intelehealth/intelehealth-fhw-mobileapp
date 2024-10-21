@@ -1,6 +1,5 @@
 package org.intelehealth.app.utilities;
 
-import org.intelehealth.app.utilities.CustomLog;
 import android.util.Pair;
 
 

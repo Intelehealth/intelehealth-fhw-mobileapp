@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.intelehealth.app.utilities.CustomLog;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -28,7 +27,6 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -37,7 +35,6 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
 import org.intelehealth.core.utils.helper.PreferenceHelper;
-import org.intelehealth.installer.downloader.DynamicModuleDownloadManager;
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManagerKt;
 
 import java.text.ParsePosition;
@@ -118,31 +115,18 @@ public class SyncDAO {
         int version = helper.get(CONFIG_VERSION, 0);
         CustomLog.d(TAG, "saveConfig old version => %s", version);
         System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>saveConfig");
+        CustomLog.d(DynamicModuleDownloadManagerKt.TAG, "=>saveConfig");
         if (version > 0 && response.getVersion() > version) {
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>Config version " + response.getVersion() + ">" + version);
+//            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>Config version " + response.getVersion() + ">" + version);
+//            CustomLog.d(DynamicModuleDownloadManagerKt.TAG, "=>Config version " + response.getVersion() + ">" + version);
             ConfigRepository repository = new ConfigRepository(IntelehealthApplication.getAppContext());
             repository.saveAllConfig(response, () -> Unit.INSTANCE);
-            checkModuleActiveStatusAndDownload(response.getPatientVisitSummery().getVideoSection());
-            CustomLog.d(TAG, "saveConfig new version => %s", response.getVersion());
+//            boolean videoActiveStatus = response.getWebrtcSection() && response.getWebrtcStatus().getVideo();
+//            checkModuleActiveStatusAndDownload(videoActiveStatus);
+//            CustomLog.d(TAG, "saveConfig new version => %s", response.getVersion());
         } else helper.save(CONFIG_VERSION, response.getVersion());
     }
 
-    private void checkModuleActiveStatusAndDownload(boolean isActive) {
-        Context context = IntelehealthApplication.getAppContext();
-        System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>checkModuleActiveStatusAndDownload");
-        DynamicModuleDownloadManager manager = DynamicModuleDownloadManager.getInstance(context);
-        String module = context.getString(R.string.module_video);
-        System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>isActive=>" + isActive);
-        if (isActive && !manager.isModuleDownloaded(module)) {
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>Downloading");
-            manager.downloadDynamicModule(module, null);
-        } else if (!isActive && manager.isModuleDownloaded(module)) {
-            System.out.println(DynamicModuleDownloadManagerKt.TAG + "=>uninstalling");
-            List<String> modules = new ArrayList<>();
-            modules.add(module);
-            manager.requestUninstall(modules);
-        }
-    }
 
     public boolean pullData_Background(final Context context, int pageNo) {
 

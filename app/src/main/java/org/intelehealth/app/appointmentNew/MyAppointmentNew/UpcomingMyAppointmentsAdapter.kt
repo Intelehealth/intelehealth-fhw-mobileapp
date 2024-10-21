@@ -44,7 +44,8 @@ class UpcomingMyAppointmentsAdapter(
     var context: Context,
     var appointmentInfoList: List<AppointmentInfo>,
 ) : RecyclerView.Adapter<UpcomingMyAppointmentsAdapter.MyViewHolder>() {
-    var sessionManager: SessionManager = SessionManager(context)
+    var sessionManager: SessionManager =
+        SessionManager(context)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

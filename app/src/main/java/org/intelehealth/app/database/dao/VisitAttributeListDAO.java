@@ -13,7 +13,6 @@ import org.intelehealth.app.utilities.CustomLog;
 import java.util.List;
 import java.util.UUID;
 
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.exception.DAOException;

@@ -2,7 +2,6 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import org.intelehealth.app.utilities.CustomLog;
 
 import org.intelehealth.app.R;
 

@@ -25,7 +25,7 @@ android {
         targetSdk 34
 //        versionCode 65
 //        versionName '5.0'
-        versionCode 67
+        versionCode 75
         versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
@@ -46,6 +46,7 @@ android {
                 abortOnError false
             }
             minifyEnabled true
+//            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

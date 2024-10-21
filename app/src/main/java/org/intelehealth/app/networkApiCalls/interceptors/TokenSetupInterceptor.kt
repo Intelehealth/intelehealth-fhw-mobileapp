@@ -1,6 +1,5 @@
 package org.intelehealth.app.networkApiCalls.interceptors
 
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -17,7 +16,8 @@ import java.io.IOException
  */
 class TokenSetupInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val sessionManager = SessionManager(IntelehealthApplication.getAppContext())
+        val sessionManager =
+            SessionManager(IntelehealthApplication.getAppContext())
         val request = chain.request()
         //Not going to add token on some api
         //that's why added the logic

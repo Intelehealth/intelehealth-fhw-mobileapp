@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New
@@ -16,8 +15,6 @@ import org.intelehealth.app.database.dao.notification.NotificationDAO
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.utilities.BundleKeys
-import org.intelehealth.app.utilities.NotificationUtils
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.fcm.utils.NotificationBroadCast
 
 class ScheduleNotificationReceiver : BroadcastReceiver() {

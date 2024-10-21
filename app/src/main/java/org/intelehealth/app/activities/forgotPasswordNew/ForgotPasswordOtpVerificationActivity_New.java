@@ -18,7 +18,6 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;

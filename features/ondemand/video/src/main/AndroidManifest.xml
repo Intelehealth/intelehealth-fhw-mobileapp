@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution">
 
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,7 +43,8 @@
     </dist:module>
     <!--    Dynamic module setting end -->
 
-    <application android:hasCode="false">
+    <application android:hasCode="false"
+        tools:ignore="MissingApplicationIcon">
 
         <service
             android:name=".notification.HeadsUpNotificationService"

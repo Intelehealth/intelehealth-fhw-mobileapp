@@ -6,7 +6,6 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,8 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.horizontalcalendar.CalendarModel;
-import org.intelehealth.app.horizontalcalendar.HorizontalCalendarViewAdapter;
 
 import java.util.Calendar;
 import java.util.List;

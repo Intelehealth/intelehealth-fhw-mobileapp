@@ -1,6 +1,5 @@
 package org.intelehealth.app.utilities
 
-import android.R.attr.mimeType
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
@@ -11,7 +10,6 @@ import android.provider.MediaStore
 import org.intelehealth.app.app.IntelehealthApplication
 import java.io.File
 import java.io.FileOutputStream
-import java.io.FileWriter
 import java.io.IOException
 import java.io.OutputStream
 

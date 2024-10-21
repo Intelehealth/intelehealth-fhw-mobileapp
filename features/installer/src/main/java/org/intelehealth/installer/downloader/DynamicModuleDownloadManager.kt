@@ -33,6 +33,11 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
     private var mySessionId = 0
+    private var callback: DynamicDeliveryCallback? = null
+
+    private val listener by lazy {
+        SplitInstallStateUpdatedListener { state -> handleInstallStates(state) }
+    }
 
     private val splitInstallManager by lazy {
         SplitInstallManagerFactory.create(context)
@@ -74,38 +79,60 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         downloadProgressHelper.startNotifying()
     }
 
-    fun downloadDynamicModule(moduleName: String, callback: DynamicDeliveryCallback?) {
+    fun downloadDynamicModule(moduleName: String) {
         val request = SplitInstallRequest.newBuilder().addModule(moduleName).build()
         println("${TAG}=>downloadDynamicModule=>$moduleName")
         initNotification()
-        val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
-        splitInstallManager.registerListener(listener)
+
+
+//        splitInstallManager.sessionStates.addOnSuccessListener {
+//            println("${TAG}=>sessionStates=>Success")
+//        }.addOnFailureListener {
+//            println("${TAG}=>sessionStates=>Failure")
+//        }.addOnCanceledListener {
+//            println("${TAG}=>sessionStates=>Canceled")
+//        }.addOnCompleteListener {
+//            println("${TAG}=>sessionStates=>Complete")
+//        }
 
         splitInstallManager.startInstall(request).addOnSuccessListener { sessionId ->
             mySessionId = sessionId
         }.addOnFailureListener { e ->
             Log.d(TAG, "Exception: $e")
-            handleInstallFailure((e as SplitInstallException).errorCode, callback)
+            handleInstallFailure((e as SplitInstallException).errorCode)
         }
+    }
 
+    fun registerListener(callback: DynamicDeliveryCallback?) {
+        this.callback = callback
+        splitInstallManager.registerListener(listener)
+    }
+
+    fun unregisterListener() {
         splitInstallManager.unregisterListener(listener)
-
     }
 
     /** Install all features deferred. */
     fun installAllFeaturesDeferred(modules: List<String>, callback: DynamicDeliveryCallback?) {
-        val listener = SplitInstallStateUpdatedListener { state -> handleInstallStates(state, callback) }
-        splitInstallManager.registerListener(listener)
+
+//        splitInstallManager.sessionStates.addOnSuccessListener {
+//            println("${TAG}=>sessionStates=>Success")
+//        }.addOnFailureListener {
+//            println("${TAG}=>sessionStates=>Failure")
+//        }.addOnCanceledListener {
+//            println("${TAG}=>sessionStates=>Canceled")
+//        }.addOnCompleteListener {
+//            println("${TAG}=>sessionStates=>Complete")
+//        }
 //        val modules = listOf(moduleKotlin, moduleJava, moduleAssets, moduleNative)
         initNotification()
         splitInstallManager.deferredInstall(modules).addOnSuccessListener {
 
         }.addOnFailureListener { e ->
             Log.d(TAG, "Exception: $e")
-            handleInstallFailure((e as SplitInstallException).errorCode, callback)
+            handleInstallFailure((e as SplitInstallException).errorCode)
         }
 
-        splitInstallManager.unregisterListener(listener)
     }
 
     /** Request uninstall of all features. */
@@ -130,7 +157,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
     }
 
 
-    private fun handleInstallFailure(errorCode: Int, callback: DynamicDeliveryCallback?) {
+    private fun handleInstallFailure(errorCode: Int) {
         when (errorCode) {
             SplitInstallErrorCode.NETWORK_ERROR -> {
                 println("${TAG}=>NETWORK_ERROR")
@@ -170,12 +197,12 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         }
     }
 
-    private fun handleInstallStates(state: SplitInstallSessionState, callback: DynamicDeliveryCallback?) {
+    private fun handleInstallStates(state: SplitInstallSessionState) {
         if (state.sessionId() == mySessionId) {
             when (state.status()) {
                 SplitInstallSessionStatus.DOWNLOADING -> {
                     val percentage = (state.bytesDownloaded() * 100) / state.totalBytesToDownload()
-                    println("${TAG}=>DOWNLOADING=>$percentage")
+                    println("${TAG}=>DOWNLOADING percentage => $percentage")
                     callback?.onDownloading(percentage.toInt())
                     downloadProgressHelper.updateProgress(percentage.toInt())
                 }
@@ -204,6 +231,31 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
                     println("${TAG}=>CANCELED")
                     callback?.onFailed("Installation Cancelled")
                     cancelNotificationWithMessage("Installation Cancelled")
+                }
+
+                SplitInstallSessionStatus.CANCELING -> {
+                    println("${TAG}=>CANCELING")
+                    cancelNotificationWithMessage("Installation Cancelled")
+                }
+
+                SplitInstallSessionStatus.INSTALLING -> {
+                    println("${TAG}=>INSTALLING")
+                    cancelNotificationWithMessage("Installing...")
+                }
+
+                SplitInstallSessionStatus.PENDING -> {
+                    println("${TAG}=>PENDING")
+                    cancelNotificationWithMessage("Pending")
+                }
+
+                SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
+                    println("${TAG}=>REQUIRES_USER_CONFIRMATION")
+                    cancelNotificationWithMessage("Require user confirmation")
+                }
+
+                SplitInstallSessionStatus.UNKNOWN -> {
+                    println("${TAG}=>UNKNOWN")
+                    cancelNotificationWithMessage("Unknown=>${state.errorCode()}")
                 }
             }
         }

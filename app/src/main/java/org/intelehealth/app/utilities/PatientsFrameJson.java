@@ -2,7 +2,6 @@ package org.intelehealth.app.utilities;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;

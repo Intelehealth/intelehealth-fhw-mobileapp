@@ -2,16 +2,12 @@ package org.intelehealth.app.activities.onboarding;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.LocaleList;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.WebView;
@@ -21,20 +17,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public class TermsAndConditionsActivity_New extends AppCompatActivity implements WebViewStatus {
     private static final String TAG = "TermsAndConditionsActiv";

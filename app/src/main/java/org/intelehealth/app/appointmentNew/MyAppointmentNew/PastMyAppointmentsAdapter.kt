@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -23,7 +22,6 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.appointment.model.AppointmentInfo
 import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity
-import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -43,7 +41,8 @@ class PastMyAppointmentsAdapter(
     var context: Context,
     private var appointmentInfoList: List<AppointmentInfo>,
 ) : RecyclerView.Adapter<PastMyAppointmentsAdapter.MyViewHolder?>() {
-    var sessionManager: SessionManager = SessionManager(context)
+    var sessionManager: SessionManager =
+        SessionManager(context)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

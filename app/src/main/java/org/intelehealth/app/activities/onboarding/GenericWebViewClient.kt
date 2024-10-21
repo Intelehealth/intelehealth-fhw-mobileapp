@@ -9,7 +9,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import org.intelehealth.app.R
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.SessionManager

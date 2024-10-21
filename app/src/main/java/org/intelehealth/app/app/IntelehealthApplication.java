@@ -13,7 +13,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.play.core.splitcompat.SplitCompatApplication;
