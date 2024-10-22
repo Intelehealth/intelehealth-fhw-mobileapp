@@ -62,16 +62,10 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
         val builder = AlertDialog.Builder(mContext)
         builder.setView(view).setCancelable(true)
         val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
-        //val width = requireContext().resources.getDimensionPixelSize(R.dimen.internet_dialog_width1) // set width to your dialog.
-        //dialog.window?.setLayout(100, WindowManager.LayoutParams.WRAP_CONTENT)
-      /*  dialog.setOnShowListener {
-            val window = dialog.window
-            window?.setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,  // Custom width (e.g., WRAP_CONTENT or MATCH_PARENT)
-                600  // Custom height (in pixels)
-            )
-        }*/
+        dialog.window?.apply {
+            setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
+            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+        }
 
         return dialog
     }
@@ -200,6 +194,13 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
                     tvFoundDeviceEmpty.visibility = View.VISIBLE
                 }
             }
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            val width = requireContext().resources.getDimensionPixelSize(R.dimen.internet_dialog_width)  // Set width of the dialog
+            setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)  // Set width and height
         }
     }
 }
