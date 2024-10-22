@@ -51,7 +51,10 @@ object CallHandlerUtils {
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
-            CallServiceWorker.startCallServiceWorker(callArgs, context)
+//            CallServiceWorker.startCallServiceWorker(callArgs, context)
+            IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
+                ContextCompat.startForegroundService(context, it)
+            }
         }
     }
 

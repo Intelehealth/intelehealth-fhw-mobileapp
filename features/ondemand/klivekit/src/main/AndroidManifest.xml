@@ -26,7 +26,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
-        <service android:name=".service.ForegroundService" />
 
         <service
             android:name=".call.notification.HeadsUpNotificationService"
