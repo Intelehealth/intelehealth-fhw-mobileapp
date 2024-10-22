@@ -363,7 +363,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ addressInfoConfig.address2.mandatory ? @string/corresponding_address_1 + ` *` : @string/corresponding_address_1}"
+                        android:text="@{ addressInfoConfig.address2.mandatory ? @string/corresponding_address_2 + ` *` : @string/corresponding_address_2}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/corresponding_address_2" />

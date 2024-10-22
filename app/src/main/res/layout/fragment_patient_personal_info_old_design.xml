@@ -583,7 +583,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
+                        android:text="@{ personalConfig.emergencyContactType.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/contact_type_non_required" />
