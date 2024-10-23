@@ -203,6 +203,7 @@ class PatientPersonalInfoFragment :
 
     private fun savePatient() {
         patient.apply {
+            bindGenderValue()
             firstname = binding.textInputETFName.text?.toString()
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
@@ -245,14 +246,18 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        binding.toggleGender.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.toggleGender.addOnButtonCheckedListener { _, checkedId, _ ->
             binding.tvGenderError.isVisible = false
-            patient.gender = when (checkedId) {
-                R.id.btnMale -> "M"
-                R.id.btnFemale -> "F"
-                R.id.btnOther -> "O"
-                else -> "O"
-            }
+            bindGenderValue()
+        }
+    }
+
+    private fun bindGenderValue(){
+        patient.gender = when (binding.toggleGender.checkedButtonId) {
+            R.id.btnMale -> "M"
+            R.id.btnFemale -> "F"
+            R.id.btnOther -> "O"
+            else -> "O"
         }
     }
 
