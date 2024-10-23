@@ -13,6 +13,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ListView
 import android.widget.ProgressBar
@@ -42,7 +43,8 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
     private lateinit var foundDeviceAdapter: BluetoothDeviceAdapter
     private lateinit var pairedDeviceList: MutableList<BluetoothDevice>
     private lateinit var foundDeviceList: MutableList<BluetoothDevice>
-    private var mSearchInited = false // true if the search button has been pressed and data initialized
+    private var mSearchInited =
+        false // true if the search button has been pressed and data initialized
     private var mRegistered = false // true if the receiver is registered
     private var isHidePairedDevList = false // true if the paired device list is hidden
 
@@ -58,15 +60,23 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
         setListener()
         initData()
         val builder = AlertDialog.Builder(mContext)
-        builder.setView(view).setCancelable(true).setNegativeButton(R.string.cancel, null)
-        return builder.create()
+        builder.setView(view).setCancelable(true)
+        val dialog = builder.create()
+        dialog.window?.apply {
+            setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
+            addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+        }
+
+        return dialog
     }
 
     private fun initView(view: View) {
         lvPairedDevices = view.findViewById(R.id.lv_dialog_choose_bluetooth_device_paired_devices)
-        tvPairedDeviceEmpty = view.findViewById(R.id.tv_dialog_choose_bluetooth_device_paired_devices_empty)
+        tvPairedDeviceEmpty =
+            view.findViewById(R.id.tv_dialog_choose_bluetooth_device_paired_devices_empty)
         lvFoundDevices = view.findViewById(R.id.lv_dialog_choose_bluetooth_device_found_devices)
-        tvFoundDeviceEmpty = view.findViewById(R.id.tv_dialog_choose_bluetooth_device_found_devices_empty)
+        tvFoundDeviceEmpty =
+            view.findViewById(R.id.tv_dialog_choose_bluetooth_device_found_devices_empty)
         tvSearchDevice = view.findViewById(R.id.tv_dialog_choose_bluetooth_device_search_device)
         progressBar = view.findViewById(R.id.pb_dialog_choose_bluetooth_device_progress_bar)
         btnHide = view.findViewById(R.id.btn_hide)
@@ -91,7 +101,12 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
                 }
                 mSearchInited = true
             }
-            ContextCompat.registerReceiver(mContext, mBluetoothReceiver!!, mBluetoothIntentFilter!!, ContextCompat.RECEIVER_NOT_EXPORTED)
+            ContextCompat.registerReceiver(
+                mContext,
+                mBluetoothReceiver!!,
+                mBluetoothIntentFilter!!,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
             mRegistered = true
             mBluetoothAdapter.startDiscovery()
         }
@@ -159,7 +174,8 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             if (BluetoothDevice.ACTION_FOUND == action) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                val device =
+                    intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 val devType = device?.bluetoothClass?.majorDeviceClass
                 if (devType != BluetoothClass.Device.Major.IMAGING) {
                     return
@@ -178,6 +194,13 @@ class BluetoothDeviceChooseDialog : DialogFragment() {
                     tvFoundDeviceEmpty.visibility = View.VISIBLE
                 }
             }
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            val width = requireContext().resources.getDimensionPixelSize(R.dimen.internet_dialog_width)  // Set width of the dialog
+            setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)  // Set width and height
         }
     }
 }

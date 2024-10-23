@@ -124,7 +124,7 @@
     <string name="confirm_button">Confirm</string>
     <string name="enter_reason">Enter Reason</string>
     <string name="print_button">Print</string>
-    <string name="enter_reason_toast">Enter reason for not paying bill.</string>
+    <string name="enter_reason_toast">Enter reason for not paying bill</string>
     <string name="bill_generated_success">Bill generated successfully!</string>
     <string name="select_payment_information">Payment Information is not selected.</string>
     <string name="download_bill">First download the bill to share.</string>
@@ -157,15 +157,15 @@
     <string name="blood_glucose_random">Random Blood Sugar (RBS) (mg/dl)</string>
     <string name="blood_glucose_post_prandial">Post Prandial Blood Sugar (PPBS) (mg/dl)</string>
     <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
-    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
+    <string name="haemoglobin">Hemoglobin (mg/dL)</string>
     <string name="visit_summary_button_download">Download</string>
 
-    <!-- Thermal Printers -->
+    <!-- Thermal Printer -->
     <string name="please_connect">Select Available Device</string>
     <string name="disconnect">Disconnect</string>
     <string name="connect">Connect</string>
     <string name="view_print">View/Print</string>
-    <string name="printing">Printing...</string>
+    <string name="printing">Printing</string>
     <string name="paired_devices">Paired</string>
     <string name="tip_have_no_paired_device">No paired device</string>
     <string name="tip_have_no_found_bluetooth_device">No Device</string>
@@ -186,5 +186,6 @@
     <string name="_main_connected">" connect success"</string>
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">" disconnected"</string>
+    <string name="prescription_printing">The prescription is being printed</string>
 
 </resources>

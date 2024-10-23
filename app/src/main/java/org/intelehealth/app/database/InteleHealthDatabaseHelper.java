@@ -138,7 +138,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "em_contact_num TEXT," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
-            "sync TEXT DEFAULT 'false' " +
+            "sync TEXT DEFAULT 'false', " +
+            "address3 TEXT" +
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
@@ -300,6 +301,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('b1a8fab4-d79f-44e6-8a90-2ac5e7ecd4d3','DIAGNOSTICS')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('be8e386b-ca22-447d-82a1-b80366e5f848','ATTRIBUTE_HOUSEHOLD_NUMBER')");
 
         }
     }

@@ -10,8 +10,8 @@
 <!--    <color name="colorGreenLightCard">#F1FBF7</color>-->
 
     <color name="colorPrimary">#2E1E91</color>
-    <color name="colorPrimaryDark">#201560</color>
-    <color name="colorAccent">#F57F17</color>
+    <color name="colorPrimaryDark">#21166a</color>
+    <color name="colorAccent">#3F9600</color>
     <color name="color_splash_bg">@color/colorPrimary</color>
     <color name="color_tagline_text">@color/white</color>
     <color name="colorPrimaryLightCard">#1a00CA04</color>

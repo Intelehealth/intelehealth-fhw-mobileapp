@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,21 +18,20 @@
         android:orientation="vertical">
 
         <!--        bluetooth option - start-->
-        <TextView
+        <Button
             android:id="@+id/tv_device_selected"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/button_bg_rounded_stroke"
+            android:background="@drawable/ui2_common_grey_bg_rounded"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:padding="10dp"
+            android:padding="8dp"
             android:tag="-1"
             android:text="@string/please_connect"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_label_text_size" />
 
         <ProgressBar
             android:id="@+id/pb_connect"
@@ -49,24 +47,29 @@
 
             <Button
                 android:id="@+id/btn_disConnect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:enabled="false"
-                android:text="@string/disconnect"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btn_connect"
+                style="@style/CustomButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/ui2_common_primary_bg"
+                android:background="@drawable/disconnect_button_background_selector"
+                android:enabled="false"
+                android:textSize="@dimen/common_label_text_size"
+                android:text="@string/disconnect"
+                android:textColor="@color/disconnect_button_text_selector" />
+
+            <Button
+                android:id="@+id/btn_connect"
+                style="@style/CustomButtonStyle"
+                android:textSize="@dimen/common_label_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_background_selector"
+                android:enabled="false"
                 android:text="@string/connect"
-                android:textColor="@color/white" />
+                android:textColor="@color/button_text_selector" />
 
         </LinearLayout>
         <!--        end-->
@@ -75,7 +78,9 @@
             android:id="@+id/finalBillCV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/dash_border"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
@@ -94,9 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:paddingBottom="100dp"
-                android:layout_marginTop="10dp">
+                android:paddingBottom="70dp">
 
                 <!--                    <TextView-->
                 <!--                        android:layout_width="wrap_content"-->
@@ -107,15 +112,17 @@
                 <!--                        android:text="Intelehealth"/>-->
 
                 <TextView
+                    style="@style/DefaultTextviewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/intelehealth"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <TextView
+                    style="@style/DefaultTextviewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -142,6 +149,7 @@
                             android:layout_marginBottom="5dp">
 
                             <TextView
+                                style="@style/DefaultTextviewStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -150,12 +158,13 @@
 
                             <TextView
                                 android:id="@+id/paymentStatus"
+                                style="@style/DefaultTextviewStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:gravity="center"
                                 android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/button_bg_rounded_stroke"
+                                android:gravity="center"
                                 android:padding="4dp"
                                 android:text="@string/paid"
                                 android:textSize="12sp"
@@ -166,6 +175,7 @@
 
                         <TextView
                             android:id="@+id/patientDetailsTV"
+                            style="@style/DefaultTextviewStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -177,9 +187,9 @@
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="100dp"
-                        android:layout_weight="0.7"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
+                        android:layout_weight="0.7"
                         android:src="@drawable/intelehealth_stamp" />
 
                 </LinearLayout>
@@ -189,16 +199,17 @@
                     android:id="@+id/consultation_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/consultation_TV"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -224,13 +235,13 @@
                     android:id="@+id/follow_up_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/follow_up_TV"
@@ -259,13 +270,13 @@
                     android:id="@+id/glucose_nf_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/glucose_nf_TV"
@@ -280,10 +291,10 @@
                     <TextView
                         android:id="@+id/glucose_nf_chargesTV"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
-                        android:layout_gravity="center_vertical"
                         android:paddingEnd="5dp"
                         android:text="15.00"
                         android:textSize="14sp" />
@@ -294,13 +305,13 @@
                     android:id="@+id/glucose_f_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/glucose_f_TV"
@@ -309,7 +320,6 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
-                        android:minLines="2"
                         android:text="@string/blood_glucose_fasting"
                         android:textSize="14sp" />
 
@@ -319,7 +329,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
-                        android:layout_gravity="center_vertical"
                         android:paddingEnd="5dp"
                         android:text="10.00"
                         android:textSize="14sp" />
@@ -327,22 +336,23 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/glucose_ppn_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
-                    android:id="@+id/glucose_ppn_chargesCV"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/glucose_ppn_TV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
                         android:text="@string/blood_glucose_post_prandial"
@@ -352,9 +362,9 @@
                         android:id="@+id/glucose_ppn_chargesTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
-                        android:layout_gravity="center_vertical"
                         android:paddingEnd="5dp"
                         android:text="15.00"
                         android:textSize="14sp" />
@@ -364,13 +374,13 @@
                     android:id="@+id/glucose_ran_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/glucose_ran_TV"
@@ -386,9 +396,9 @@
                         android:id="@+id/glucose_ran_chargesTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
-                        android:layout_gravity="center_vertical"
                         android:paddingEnd="5dp"
                         android:text="10.00"
                         android:textSize="14sp" />
@@ -398,19 +408,20 @@
                     android:id="@+id/uric_acid_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/uric_acid_TV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
                         android:text="@string/uric_acid"
@@ -431,19 +442,20 @@
                     android:id="@+id/cholestrol_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/cholestrol_TV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
                         android:text="@string/total_cholestrol"
@@ -464,13 +476,13 @@
                     android:id="@+id/haemeo_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/haemeo_TV"
@@ -479,6 +491,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
+
                         android:text="@string/haemoglobin"
                         android:textSize="14sp" />
 
@@ -497,12 +510,12 @@
                     android:id="@+id/bp_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:animateLayoutChanges="true"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/bp_TV"
@@ -511,6 +524,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_bold"
                         android:paddingStart="5dp"
+
                         android:text="@string/visit_summary_bp"
                         android:textSize="14sp" />
 
@@ -536,11 +550,11 @@
                     android:id="@+id/total_chargesCV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <TextView
@@ -604,206 +618,323 @@
             android:id="@+id/paying_billTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/lato_regular"
             android:text="@string/patient_paying"
-            android:textSize="16sp" />
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/common_label_text_size" />
 
         <RadioGroup
             android:id="@+id/radioGrp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
             <RadioButton
                 android:id="@+id/yes_pay_bill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="30dp"
+                android:button="@drawable/selector_radio_button"
                 android:fontFamily="@font/lato_regular"
-                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/yes"
-                android:textSize="16sp" />
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_button_text_size" />
 
             <RadioButton
                 android:id="@+id/no_pay_bill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:button="@drawable/selector_radio_button"
                 android:fontFamily="@font/lato_regular"
-                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/no"
-                android:textSize="16sp" />
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/common_button_text_size" />
 
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_title_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="@dimen/margin_5"
+            android:fontFamily="@font/lato_regular"
+            android:lineSpacingExtra="1sp"
+            android:paddingEnd="8dp"
+            android:text="@string/reason"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/common_label_text_size"
+            android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reasonTIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:visibility="gone"
             app:counterEnabled="true"
             app:counterMaxLength="1000"
-            tools:visibility="visible">
+            app:counterTextAppearance="@dimen/common_sub_info_text_size"
+            app:counterTextColor="@color/edittext_hint_color"
+            app:hintEnabled="false"
+            tools:visibility="gone">
 
+            <!--   <EditText
+                   android:id="@+id/reasonET"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="@string/enter_reason"
+                   android:maxLength="1000" />-->
             <EditText
                 android:id="@+id/reasonET"
+                style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_reason"
-                android:maxLength="1000" />
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/input_edittext_border"
+                android:hint="@string/reason"
+                android:inputType="textMultiLine"
+                android:maxLength="1000"
+                android:maxLines="5"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <TextView
+            android:id="@+id/tv_reason_error_not_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/this_field_is_mandatory"
+            android:textAppearance="@style/registr_error_msg"
+            android:textColor="@color/red"
+            android:textSize="@null"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/button_confirm_bill"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/padding_card"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:paddingVertical="10dp"
+            android:text="@string/confirm_button"
+            android:textColor="@android:color/white" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:paddingVertical="10dp"
-                    android:text="@string/confirm_button"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <Button
             android:id="@+id/button_print"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/padding_card"
-            android:visibility="gone"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            tools:visibility="visible">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:text="@string/print_button"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:text="@string/print_button"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="15dp"
-                    android:paddingVertical="10dp"
-                    app:srcCompat="@drawable/ic_baseline_local_printshop_30">
-
-                </ImageView>
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <Button
             android:id="@+id/button_download"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            tools:visibility="visible">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:text="@string/visit_summary_button_download"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:text="@string/visit_summary_button_download"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="5dp"
-                    app:srcCompat="@drawable/ic_cloud_download"></ImageView>
-
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <Button
             android:id="@+id/button_share"
+            style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            tools:visibility="visible">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
-
-                <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:text="@string/share"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+        <!--
+                <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/button_confirm_bill"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center_horizontal"
-                    android:text="@string/share"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/padding_card"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary">
+
+                        <Button
+                            style="@style/CustomButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/ui2_common_primary_bg"
+                            android:letterSpacing="0.06"
+                            android:paddingVertical="10dp"
+                            android:text="@string/confirm_button"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+        -->
+
+
+        <!--    <androidx.cardview.widget.CardView
+             android:id="@+id/button_print"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:visibility="gone"
+             app:cardCornerRadius="5dp"
+             app:cardElevation="2dp"
+             app:cardUseCompatPadding="true"
+             tools:visibility="visible">
+
+          <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@color/colorPrimary">
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:fontFamily="@font/lato_regular"
+                     android:textStyle="bold"
+                     android:letterSpacing="0.06"
+                     android:background="@drawable/ui2_common_primary_bg"
+                     android:gravity="center_horizontal"
+                     android:text="@string/print_button"
+                     android:textSize="@dimen/common_button_text_size"
+                     android:textAlignment="center"
+                     android:textColor="@android:color/white" />
+
+                 <ImageView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentStart="true"
+                     android:layout_marginStart="15dp"
+                     android:paddingVertical="10dp"
+                     app:srcCompat="@drawable/ic_baseline_local_printshop_30">
+
+                 </ImageView>
+             </RelativeLayout>
+        </androidx.cardview.widget.CardView>-->
+
+        <!--  <androidx.cardview.widget.CardView
+              android:id="@+id/button_download"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:visibility="gone"
+              app:cardCornerRadius="5dp"
+              app:cardElevation="2dp"
+              app:cardUseCompatPadding="true"
+              tools:visibility="visible">
+
+              <RelativeLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/colorPrimary">
+
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_centerVertical="true"
+                      android:fontFamily="@font/lato_regular"
+                      android:gravity="center_horizontal"
+                      android:text="@string/visit_summary_button_download"
+                      android:textStyle="bold"
+                      android:letterSpacing="0.06"
+                      android:textAlignment="center"
+                      android:textColor="@android:color/white"
+                      android:textSize="@dimen/common_button_text_size"/>
+
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentStart="true"
+                      android:layout_marginStart="5dp"
+                      app:srcCompat="@drawable/ic_cloud_download"/>
+
+              </RelativeLayout>
+          </androidx.cardview.widget.CardView>-->
+
+        <!--
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/button_share"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="15dp"
-                    android:paddingVertical="10dp"
-                    app:srcCompat="@drawable/ic_baseline_share_24"></ImageView>
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    tools:visibility="visible">
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/lato_regular"
+                            android:gravity="center_horizontal"
+                            android:text="@string/share"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            android:letterSpacing="0.06"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:paddingVertical="10dp"
+                            app:srcCompat="@drawable/ic_baseline_share_24"/>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+        -->
 
 
     </LinearLayout>

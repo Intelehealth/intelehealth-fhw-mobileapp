@@ -820,6 +820,7 @@
     <dimen name="text_size_title">20sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
+    <dimen name="bluetooth_dialog_height">250dp</dimen>
 
 
 </resources>

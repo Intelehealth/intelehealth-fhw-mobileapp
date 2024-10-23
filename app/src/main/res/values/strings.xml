@@ -49,6 +49,9 @@
     <string name="identification_screen_text_months"> months</string>
     <string name="identification_screen_picker_years">years</string>
     <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_prompt_block">Block</string>
+    <string name="identification_screen_prompt_household_no">Household Number</string>
+    <string name="identification_screen_prompt_other_block">Other Block</string>
 
     //Active Patients Screen
 
@@ -1077,27 +1080,35 @@
     <string name="blood_glucose_random">Random Blood Sugar (RBS) (mg/dl)</string>
     <string name="blood_glucose_post_prandial">Post Prandial Blood Sugar (PPBS) (mg/dl)</string>
     <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
-    <string name="haemoglobin">Haemoglobin (mg/dL)</string>
+    <string name="haemoglobin">Hemoglobin (mg/dL)</string>
     <string name="diagnostics">Diagnostics</string>
     <string name="uric_acid">Uric Acid</string>
     <string name="total_cholestrol">Total Cholesterol</string>
-    <string name="glucose_random_eg">E.g., 30</string>
-    <string name="glucose_fasting_eg">E.g., 30</string>
-    <string name="glucose_post_prandial_eg">E.g., 70</string>
-    <string name="hemoglobin_eg">E.g., 4 mg/dL</string>
-    <string name="cholestrol_eg">E.g., 70</string>
+    <string name="glucose_random_eg">E.g., 100</string>
+    <string name="glucose_fasting_eg">E.g., 70</string>
+    <string name="glucose_post_prandial_eg">E.g., 120</string>
+    <string name="hemoglobin_eg">E.g., 10 mg/dL</string>
+    <string name="cholestrol_eg">E.g., 100</string>
     <string name="blood_glucose_non_fasting">Blood Glucose (Non-Fasting)</string>
     <string name="glucose_non_fasting_eg">E.g., 60</string>
-    <string name="uric_acid_eg">E.g., 2</string>
+    <string name="uric_acid_eg">E.g., 7</string>
     <string name="cholesterol_eg">E.g., 100</string>
     <string name="glucose_random_error">Random Blood Sugar (RBS) should be in between %1$s and %2$s</string>
     <string name="glucose_fasting_error">Fasting Blood Sugar (FBS) should be in between %1$s and %2$s</string>
     <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="post_prandial_error">Post Prandial Blood Sugar should be in between %1$s and %2$s</string>
-    <string name="hemoglobin_error">Haemoglobin should be in between %1$s and %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="_diagnostics_summary">2/5. Diagnostics summary</string>
     <string name="diagnostics_section">%1$d/%2$d Diagnostics</string>
     <string name="uric_acid_error">Uric acid should be in between %1$s and %2$s</string>
     <string name="cholestrol_acid_error">Total cholestrol should be in between %1$s and %2$s</string>
+    <string name="reason">Reason</string>
+    <string name="hint_drop_down_block">Select Block</string>
+    <string name="block">Block</string>
+    <string name="enter_household_number">Enter household number</string>
+    <string name="household_no">Household Number</string>
+    <string name="hint_drop_down_village">Select Village</string>
+    <string name="enter_block">Enter Block</string>
+    <string name="other_block">Other Block</string>
 
 </resources>

@@ -33,7 +33,6 @@ class PatientViewModel(
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
 
-
     fun loadPatientDetails(
         patientId: String
     ) = executeLocalQuery {
@@ -56,4 +55,9 @@ class PatientViewModel(
         } ?: false
     }.asLiveData()
 
+    private val _addressInfoConfigCityVillageEnabled = MutableLiveData<Boolean>()
+    val addressInfoConfigCityVillageEnabled: LiveData<Boolean> get() = _addressInfoConfigCityVillageEnabled
+    fun setCityVillageEnabled(enabled: Boolean) {
+        _addressInfoConfigCityVillageEnabled.value = enabled
+    }
 }

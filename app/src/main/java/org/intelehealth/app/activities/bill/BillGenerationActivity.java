@@ -11,6 +11,9 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +35,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -43,6 +47,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -51,6 +56,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -76,12 +82,9 @@ public class BillGenerationActivity extends BaseActivity {
     private String patientDetails;
     private String receiptNum = "XXXXX";
     private String billDateString = "DD MM YYYY";
-    private LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV,
-            cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
-    private CardView confirmBillCV, printCV, downloadCV, shareCV, finalBillCV;
-    private TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV,
-            glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV,
-            uricAcidChargeTV, totalAmountTV, payingBillTV, tv_device_selected;
+    private LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
+    private CardView finalBillCV;
+    private TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV;
     private Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
     private String paymentStatus = "";
@@ -110,6 +113,9 @@ public class BillGenerationActivity extends BaseActivity {
     //private ESCFontTypeEnum curESCFontType = null;
     private Object configObj;
     private String appLanguage;
+    private Button buttonSelectDevices;
+    private Button confirmBillCV, printCV, downloadCV, shareCV;
+    private TextView titleReason, tvErrorReason;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +131,6 @@ public class BillGenerationActivity extends BaseActivity {
         View toolbar = findViewById(R.id.toolbar_common);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ivBack.setVisibility(View.GONE);
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.home_icon));
         ivIsInternet.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +140,7 @@ public class BillGenerationActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        ivBack.setVisibility(View.GONE);
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -142,14 +148,39 @@ public class BillGenerationActivity extends BaseActivity {
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-            bmpPrintWidth = 40;
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-            bmpPrintWidth = 50;
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) bmpPrintWidth = 40;
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) bmpPrintWidth = 50;
         //editText
         not_paying_reasonTIL = findViewById(R.id.reasonTIL);
         not_paying_reasonET = findViewById(R.id.reasonET);
+        titleReason = findViewById(R.id.tv_title_reason);
+        not_paying_reasonET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    if (TextUtils.isEmpty(not_paying_reasonET.getText().toString())) {
+                        tvErrorReason.setVisibility(View.VISIBLE);
+                        not_paying_reasonET.setBackgroundDrawable(ContextCompat.getDrawable(BillGenerationActivity.this, R.drawable.input_field_error_bg_ui2));
+                        return;
+                    } else {
+                        tvErrorReason.setVisibility(View.GONE);
+                        not_paying_reasonET.setBackgroundDrawable(ContextCompat.getDrawable(BillGenerationActivity.this, R.drawable.bg_input_fieldnew));
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         //radioButton
         yes = findViewById(R.id.yes_pay_bill);
         no = findViewById(R.id.no_pay_bill);
@@ -170,11 +201,12 @@ public class BillGenerationActivity extends BaseActivity {
         totalAmountTV = findViewById(R.id.total_chargesTV);
         payingBillTV = findViewById(R.id.paying_billTV);
         paymentStatusTV = findViewById(R.id.paymentStatus);
-        tv_device_selected = findViewById(R.id.tv_device_selected);
+        buttonSelectDevices = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
         btn_disConnect = findViewById(R.id.btn_disConnect);
         pb_connect = findViewById(R.id.pb_connect);
         padd = findViewById(R.id.padd);
+        tvErrorReason = findViewById(R.id.tv_reason_error_not_pay);
 
         //cardViews
         consultCV = findViewById(R.id.consultation_chargesCV);
@@ -213,11 +245,7 @@ public class BillGenerationActivity extends BaseActivity {
             tvTitle.setText(patientName + " : " + receiptNum);
         }
         Log.d(TAG, "kk05initViews: patientName : " + patientName);
-        patientDetails = getString(R.string.receipt_no) + receiptNum + "\n" + getString(R.string.client_name) +
-                patientName + "\n" + getString(R.string.client_id) + patientOpenID + "\n" + getString(R.string.visit_id) +
-                patientHideVisitID + "\n" + getString(R.string.contact_no) + patientPhoneNum
-                + "\n" + getString(R.string.client_village_name) + patientVillage + "\n" +
-                getString(R.string.date_bill) + billDateString;
+        patientDetails = getString(R.string.receipt_no) + receiptNum + "\n" + getString(R.string.client_name) + patientName + "\n" + getString(R.string.client_id) + patientOpenID + "\n" + getString(R.string.visit_id) + patientHideVisitID + "\n" + getString(R.string.contact_no) + patientPhoneNum + "\n" + getString(R.string.client_village_name) + patientVillage + "\n" + getString(R.string.date_bill) + billDateString;
 
         patientDetailsTV.setText(patientDetails);
         manageCardView(selectedTests);
@@ -261,7 +289,7 @@ public class BillGenerationActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (!yes.isChecked() && !no.isChecked()) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(BillGenerationActivity.this);
+                  /*  MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(BillGenerationActivity.this);
                     alertDialogBuilder.setTitle(R.string.error);
                     alertDialogBuilder.setMessage(R.string.select_payment_information);
                     alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -275,13 +303,18 @@ public class BillGenerationActivity extends BaseActivity {
 
                     Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    IntelehealthApplication.setAlertDialogCustomTheme(BillGenerationActivity.this, alertDialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(BillGenerationActivity.this, alertDialog);*/
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(BillGenerationActivity.this, 0, getResources().getString(R.string.error), getResources().getString(R.string.select_payment_information), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), action -> {
+                    });
                     return;
                 }
                 if (no.isChecked() && not_paying_reasonTIL.getVisibility() == View.VISIBLE) {
                     if (not_paying_reasonET.getText().toString().isEmpty()) {
-                        not_paying_reasonET.setError(getResources().getString(R.string.error_field_required));
-                        Toast.makeText(BillGenerationActivity.this, getString(R.string.enter_reason_toast), Toast.LENGTH_LONG).show();
+                        tvErrorReason.setVisibility(View.VISIBLE);
+                        tvErrorReason.setText(getString(R.string.enter_reason_toast));
+                        //not_paying_reasonET.setError(getResources().getString(R.string.error_field_required));
+                        // Toast.makeText(BillGenerationActivity.this, getString(R.string.enter_reason_toast), Toast.LENGTH_LONG).show();
                         return;
                     } else {
                         not_paying_reason = not_paying_reasonET.getText().toString();
@@ -303,8 +336,10 @@ public class BillGenerationActivity extends BaseActivity {
                     payingBillTV.setVisibility(View.GONE);
                     radioGroup.setVisibility(View.GONE);
                     confirmBillCV.setVisibility(View.GONE);
-                    if (not_paying_reasonTIL.getVisibility() == View.VISIBLE)
+                    if (not_paying_reasonTIL.getVisibility() == View.VISIBLE) {
                         not_paying_reasonTIL.setVisibility(View.GONE);
+                        titleReason.setVisibility(View.GONE);
+                    }
                     printCV.setVisibility(View.VISIBLE);
                     downloadCV.setVisibility(View.VISIBLE);
                     shareCV.setVisibility(View.VISIBLE);
@@ -379,8 +414,7 @@ public class BillGenerationActivity extends BaseActivity {
         if (success) {
             success = createObs(encounter_uuid);
         }
-        if (success)
-            success = syncUtils.syncForeground("bill");
+        if (success) success = syncUtils.syncForeground("bill");
         return success;
     }
 
@@ -411,10 +445,8 @@ public class BillGenerationActivity extends BaseActivity {
         on the server is accessed under this concept name "Billing Visit Type Consultation".
          */
 
-        if (visitType.equalsIgnoreCase("Consultation"))
-            obsDTO.setValue(visitType + " - 15");
-        else
-            obsDTO.setValue(visitType + " - 10");
+        if (visitType.equalsIgnoreCase("Consultation")) obsDTO.setValue(visitType + " - 15");
+        else obsDTO.setValue(visitType + " - 10");
         obsDTO.setUuid(AppConstants.NEW_UUID);
 
         try {
@@ -597,10 +629,7 @@ public class BillGenerationActivity extends BaseActivity {
             Toast.makeText(BillGenerationActivity.this, getString(R.string.download_bill), Toast.LENGTH_LONG).show();
             return;
         }
-        Uri uri = FileProvider.getUriForFile(
-                this,
-                getPackageName() + ".fileprovider",
-                file);
+        Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -623,48 +652,54 @@ public class BillGenerationActivity extends BaseActivity {
             followUpChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
-      /*   if (glucoseRCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
-            price = getPrice(price, price.indexOf('.'));
+        if (glucoseRCV.getVisibility() == View.VISIBLE) {
+            //String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Random)");
+            // price = getPrice(price, price.indexOf('.'));
+            String price = "15";
             glucoseRChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (glucoseFCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
-            price = getPrice(price, price.indexOf('.'));
+            //String price = conceptAttributeListDAO.getConceptPrice("Blood Glucose (Fasting)");
+            //price = getPrice(price, price.indexOf('.'));
+            String price = "15";
             glucoseFChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (glucosePPNCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
-            price = getPrice(price, price.indexOf('.'));
+            //String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar ( Post-prandial)");
+            //price = getPrice(price, price.indexOf('.'));
+            String price = "15";
             glucosePPNChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
-        if (glucoseNFCV.getVisibility() == View.VISIBLE) {
+       /* if (glucoseNFCV.getVisibility() == View.VISIBLE) {
             String price = conceptAttributeListDAO.getConceptPrice("Blood Sugar (Non-Fasting)");
             price = getPrice(price, price.indexOf('.'));
             glucoseNFChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
-        }
+        }*/
         if (uricAcidCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
-            price = getPrice(price, price.indexOf('.'));
+            //String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+            //price = getPrice(price, price.indexOf('.'));
+            String price = "30";
             uricAcidChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (haemoglobinCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
-            price = getPrice(price, price.indexOf('.'));
+            //String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
+            //price = getPrice(price, price.indexOf('.'));
+            String price = "20";
             haemoglobinChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
         }
         if (cholesterolCV.getVisibility() == View.VISIBLE) {
-            String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
-            price = getPrice(price, price.indexOf('.'));
+            //String price = conceptAttributeListDAO.getConceptPrice("TOTAL CHOLESTEROL");
+            // price = getPrice(price, price.indexOf('.'));
+            String price = "80";
             cholesterolChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
-        }*/
+        }
         if (bpCV.getVisibility() == View.VISIBLE) {
             //String price = conceptAttributeListDAO.getConceptPrice("BP Test");
             String price = "5";
@@ -723,12 +758,15 @@ public class BillGenerationActivity extends BaseActivity {
             if (checked) {
                 paymentStatus = "Paid";
                 not_paying_reasonTIL.setVisibility(View.GONE);
+                titleReason.setVisibility(View.GONE);
                 not_paying_reasonET.setText("");
             }
         } else if (id == R.id.no_pay_bill) {
             if (checked) {
                 paymentStatus = "Unpaid";
                 not_paying_reasonTIL.setVisibility(View.VISIBLE);
+                titleReason.setVisibility(View.VISIBLE);
+
             }
         }
     }
@@ -780,8 +818,7 @@ public class BillGenerationActivity extends BaseActivity {
 
         String fName = patientName + "_" + patientOpenID + "_" + billDateString + ".pdf";
         File filePath = new File(path, fName);
-        if (!filePath.exists())
-            filePath.mkdirs();
+        if (!filePath.exists()) filePath.mkdirs();
 
         String finalPath = path + fName;
         finalBillPath = finalPath;
@@ -809,10 +846,7 @@ public class BillGenerationActivity extends BaseActivity {
         File file = new File(path);
         if (file.exists()) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = FileProvider.getUriForFile(
-                    this,
-                    getPackageName() + ".fileprovider",
-                    file);
+            Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
             intent.setDataAndType(uri, "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             try {
@@ -1049,8 +1083,7 @@ public class BillGenerationActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                android.app.AlertDialog.Builder dialog =
-                        new android.app.AlertDialog.Builder(BillGenerationActivity.this);
+                android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(BillGenerationActivity.this);
                 dialog.setTitle("Please connect device");
                 dialog.setMessage(msg);
                 dialog.setNegativeButton(R.string.cancel, null);

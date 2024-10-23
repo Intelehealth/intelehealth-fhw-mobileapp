@@ -56,6 +56,7 @@ import com.rt.printerlibrary.utils.FuncUtils;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.UnsupportedEncodingException;
@@ -104,6 +105,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
         ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         tvTitle.setText(getString(R.string.view_print));
+        ivBack.setVisibility(View.VISIBLE);
         ivBack.setOnClickListener(v -> onBackPressed());
         ivIsInternet.setVisibility(View.GONE);
 
@@ -286,7 +288,10 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
                     Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
                     if (rtPrinter.getPrinterInterface() != null) {
-                        // If without selecting Bluetooth user click Print button crash happens so added this condition.
+                        DialogUtils dialogUtils = new DialogUtils();
+                        dialogUtils.showCommonDialog(TextPrintESCActivity.this, R.drawable.ui2_bell_icon_primary, getResources().getString(R.string.printing), getResources().getString(R.string.prescription_printing), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), action -> {
+                        });
+                     /*   // If without selecting Bluetooth user click Print button crash happens so added this condition.
                         rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
 
                         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(TextPrintESCActivity.this);
@@ -305,7 +310,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
                         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);
+                        IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);*/
                     } else {
                         Toast.makeText(TextPrintESCActivity.this, getResources().getString
                                 (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
@@ -347,7 +352,9 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
         tvDeviceSelected.setText(getString(R.string.please_connect));
         tvDeviceSelected.setTag(BaseEnum.NO_DEVICE);
-        setPrintEnable(false);
+        //setPrintEnable(false);
+        btnConnect.setEnabled(false);
+        btnDisConnect.setEnabled(false);
     }
 
     @Override
@@ -468,7 +475,8 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
     private void doConnect() {
 
         if (Integer.parseInt(tvDeviceSelected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
-            showAlertDialog(getString(R.string.main_pls_choose_device));
+            Toast.makeText(this, "Please select device", Toast.LENGTH_SHORT).show();
+            //  showAlertDialog(getString(R.string.main_pls_choose_device));
             return;
         }
 

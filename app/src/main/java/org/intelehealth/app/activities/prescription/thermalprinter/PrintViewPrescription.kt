@@ -183,7 +183,12 @@ class PrintViewPrescription(
     }
 
     private fun formatDiagnostics(): String {
-        return "<b id=\"diagnostics_heading\">* Diagnostics</b><br><id=\"diagnostics\" style=\"font-size:12pt;margin:0px; padding: 0px;\">-Glucose (Random): 101 <br> -Glucose (Fasting): 102 <br> -Glucose (Post-Prandial): 103 <br> -HGB: 104 <br> -Uric Acid: 105 <br> -Total Cholesterol: 106 <br><br>"
+        return "<b id=\"diagnostics_heading\">* Diagnostics</b><br><id=\"diagnostics\" " +
+                "style=\"font-size:12pt;margin:0px; padding: 0px;\">-Glucose (Random):" +
+                " ${dataModel.bloodGlucoseRandom.value ?: ""} <br> -Glucose (Fasting): ${dataModel.bloodGlucoseFasting.value ?: ""} " +
+                "<br> -Glucose (Post-Prandial): " +
+                "${dataModel.bloodGlucosePostPrandial.value ?: ""} <br> -HGB: ${dataModel.hemoglobin.value ?: ""} <br> -Uric Acid:" +
+                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br><br>"
     }
 
     private fun formatDiagnosis(): String {

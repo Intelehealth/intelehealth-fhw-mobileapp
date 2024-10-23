@@ -168,12 +168,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv, householdNumber, block;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr;
+            educationTr, economicCategoryTr, blockTr, householdNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -574,6 +574,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
         addressTwoTr = findViewById(R.id.tr_address_2);
+        blockTr = findViewById(R.id.block_tr);
+        householdNumberTr = findViewById(R.id.household_no_tr);
 
         nidTr = findViewById(R.id.nid_tr);
         occupationTr = findViewById(R.id.occupation_tr);
@@ -588,6 +590,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
+        block = findViewById(R.id.block);
+        householdNumber = findViewById(R.id.household_number);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -825,6 +829,23 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 false,
                                 fields,
                                 economicCategoryTr,
+                                null,
+                                null,
+                                null
+                        );
+                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        blockTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                householdNumberTr,
                                 null,
                                 null,
                                 null
@@ -1077,7 +1098,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1103,6 +1124,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1150,6 +1172,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HouseHold")) {
+                    patientDTO.setHouseholdNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1806,6 +1831,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
+        }
+
+        if (patientDTO.getAddress3() == null || patientDTO.getAddress3().equals("")) { //
+            block.setText(getResources().getString(R.string.no_address_added));
+        } else {
+            block.setText(patientDTO.getAddress3());
+        }
+
+        if (patientDTO.getHouseholdNumber() != null && !patientDTO.getHouseholdNumber().equals("")) {
+            householdNumber.setText(patientDTO.getHouseholdNumber());
+        } else {
+            householdNumber.setText(getString(R.string.not_provided));
         }
     }
 

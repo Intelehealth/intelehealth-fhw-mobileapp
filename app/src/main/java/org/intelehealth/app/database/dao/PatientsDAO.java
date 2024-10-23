@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +135,7 @@ public class PatientsDAO {
             values.put("contact_type", patientDTO.getContactType());
             values.put("em_contact_name", patientDTO.getEmContactName());
             values.put("em_contact_num", patientDTO.getEmContactNumber());
+            values.put("address3", patientDTO.getAddress3());
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
@@ -411,6 +415,7 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
+        Log.d(TAG, "insertPatientAttributes:attrs kz :  "+new Gson().toJson(patientAttributesDTOS));
         if (patientAttributesDTOS == null) return false;
         boolean isInserted = true;
         ContentValues values = new ContentValues();
