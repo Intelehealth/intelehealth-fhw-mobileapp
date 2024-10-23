@@ -43,7 +43,7 @@ dependencies {
         )
     }
 
-    val hiltVersion = "2.47"
+    val hiltVersion = "2.49"
     api("com.google.dagger:hilt-android:$hiltVersion")
     annotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")

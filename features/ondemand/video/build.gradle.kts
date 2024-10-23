@@ -52,8 +52,8 @@ dependencies {
     api("androidx.core:core-ktx:1.13.1")
     api("androidx.appcompat:appcompat:1.7.0")
     api("com.google.android.material:material:1.12.0")
-    api("androidx.activity:activity-ktx:1.9.2")
-    api("androidx.fragment:fragment-ktx:1.8.3")
+    api("androidx.activity:activity-ktx:1.9.3")
+    api("androidx.fragment:fragment-ktx:1.8.4")
     // WebRtc
     api("io.livekit:livekit-android:1.5.2")
     api("com.google.protobuf:protobuf-javalite:3.23.3")
@@ -103,7 +103,7 @@ dependencies {
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    val hiltVersion = "2.47"
+    val hiltVersion = "2.49"
     api("com.google.dagger:hilt-android:$hiltVersion")
     annotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")

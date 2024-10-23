@@ -225,6 +225,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
                     println("${TAG}=>FAILED=> code ${state.errorCode()}")
                     callback?.onFailed("Installation failed")
                     cancelNotificationWithMessage("Installation failed")
+                    handleInstallFailure(state.errorCode())
                 }
 
                 SplitInstallSessionStatus.CANCELED -> {

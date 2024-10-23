@@ -15,8 +15,8 @@ buildscript {
         classpath 'com.google.gms:google-services:4.4.2'  // Google Services plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.9.10"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.8.1"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.9.24"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.8.3"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.47'
     }
 }
