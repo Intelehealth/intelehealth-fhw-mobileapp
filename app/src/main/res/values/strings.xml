@@ -1075,5 +1075,6 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
     <string name="title_chat">Chat</string>
+    <string name="title_dynamicfeature">Dynamic Test Module</string>
 
 </resources>

@@ -10,8 +10,8 @@ import android.util.Log
  **/
 
 const val TAG = "OnDemandMediator"
-const val VIDEO_CALL_IMPL_CLASS = "org.intelehealth.video.impl.VideoCallListenerImpl"
-
+const val VIDEO_CALL_IMPL_CLASS = "org.intelehealth.app.feature.video.impl.VideoCallListenerImpl"
+const val TEST_IMPL_CLASS = "org.intelehealth.dynamicfeature.TestModuleImpl"
 inline fun <reified T> createInstance(implClass: String): T? {
     try {
         return Class.forName(implClass).getConstructor().newInstance() as T

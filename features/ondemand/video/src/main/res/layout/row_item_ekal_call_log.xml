@@ -7,7 +7,7 @@
 
         <variable
             name="callLog"
-            type="org.intelehealth.feature.video.model.VideoCallLog" />
+            type="org.intelehealth.app.feature.video.model.VideoCallLog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

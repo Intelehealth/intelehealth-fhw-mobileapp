@@ -8,7 +8,7 @@ plugins {
 apply("${rootProject.projectDir}/whitelabel.gradle")
 
 android {
-    namespace = "org.intelehealth.feature.video"
+    namespace = "org.intelehealth.app.feature.video"
     compileSdk = 34
 
     defaultConfig {
@@ -68,8 +68,8 @@ dependencies {
     api("androidx.preference:preference-ktx:1.2.1")
 
     // Coroutines for execute concurrent tasks
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+//    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+//    api("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     // Timber logging
     api("com.github.ajalt:timberkt:1.5.1")

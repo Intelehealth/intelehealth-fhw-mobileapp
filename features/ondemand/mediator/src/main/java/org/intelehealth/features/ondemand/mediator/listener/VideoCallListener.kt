@@ -10,5 +10,7 @@ import android.content.Context
 interface VideoCallListener {
     fun onIncomingCall(context: Context?, data: HashMap<String, String>)
     fun startCallLogActivity(context: Context?)
-    fun testMethod():String
+    fun testMethod(): String {
+        return "Listener"
+    }
 }

@@ -11,6 +11,10 @@ import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.CustomLog.Companion.d
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 import org.intelehealth.config.worker.ConfigSyncWorker
+import org.intelehealth.features.ondemand.mediator.TEST_IMPL_CLASS
+import org.intelehealth.features.ondemand.mediator.VIDEO_CALL_IMPL_CLASS
+import org.intelehealth.features.ondemand.mediator.createInstance
+import org.intelehealth.features.ondemand.mediator.listener.VideoCallListener
 import org.intelehealth.installer.downloader.DynamicModuleDownloadManager
 
 /**
@@ -37,7 +41,7 @@ class DynamicModuleDownloadingActivity : BaseActivity() {
     override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
         super.onFeatureActiveStatusLoaded(activeStatus)
         activeStatus?.let {
-            val moduleName = getString(R.string.module_video)
+            val moduleName = "dynamicfeature" //getString(R.string.title_dynamicfeature)
             val hasInstalled = manager.isModuleDownloaded(moduleName)
 
             println("$TAG =>hasInstalled=>$hasInstalled")
@@ -71,13 +75,15 @@ class DynamicModuleDownloadingActivity : BaseActivity() {
 
     override fun onInstallSuccess() {
         super.onInstallSuccess()
-        binding.txtDownloadStatus.text = "Installed"
-        val intent = Intent(this, DynamicModuleDownloadingActivity::class.java)
-        intent.putExtra("from", "splash")
-        intent.putExtra("username", "")
-        intent.putExtra("password", "")
-        startActivity(intent)
-        finish()
+        val videoCallListener = createInstance<VideoCallListener>(TEST_IMPL_CLASS)
+        binding.txtDownloadStatus.text = videoCallListener?.testMethod()
+//        binding.txtDownloadStatus.text = "Installed"
+//        val intent = Intent(this, DynamicModuleDownloadingActivity::class.java)
+//        intent.putExtra("from", "splash")
+//        intent.putExtra("username", "")
+//        intent.putExtra("password", "")
+//        startActivity(intent)
+//        finish()
     }
 
     override fun onFailed(errorMessage: String) {

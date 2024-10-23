@@ -62,7 +62,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true">
 
-            <org.intelehealth.feature.video.ui.custom.SwipeButton
+            <org.intelehealth.app.feature.video.ui.custom.SwipeButton
                 android:id="@+id/fabDeclineCall"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -80,7 +80,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <org.intelehealth.feature.video.ui.custom.SwipeButton
+            <org.intelehealth.app.feature.video.ui.custom.SwipeButton
                 android:id="@+id/fabAcceptCall"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

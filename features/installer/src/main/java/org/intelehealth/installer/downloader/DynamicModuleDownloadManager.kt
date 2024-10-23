@@ -201,10 +201,14 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
         if (state.sessionId() == mySessionId) {
             when (state.status()) {
                 SplitInstallSessionStatus.DOWNLOADING -> {
-                    val percentage = (state.bytesDownloaded() * 100) / state.totalBytesToDownload()
-                    println("${TAG}=>DOWNLOADING percentage => $percentage")
-                    callback?.onDownloading(percentage.toInt())
-                    downloadProgressHelper.updateProgress(percentage.toInt())
+                    if (state.bytesDownloaded() > 0 && state.totalBytesToDownload() > 0) {
+                        val percentage = (state.bytesDownloaded() * 100) / state.totalBytesToDownload()
+                        println("${TAG}=>DOWNLOADING percentage => $percentage")
+                        callback?.onDownloading(percentage.toInt())
+                        downloadProgressHelper.updateProgress(percentage.toInt())
+                    }
+                    println("${TAG}=>DOWNLOADING totalBytesToDownload => ${state.totalBytesToDownload()}")
+
                 }
 
                 SplitInstallSessionStatus.DOWNLOADED -> {

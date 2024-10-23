@@ -61,7 +61,7 @@
         </receiver>
 
         <activity
-            android:name=".ui.activity.IDAVideoActivity"
+            android:name="org.intelehealth.app.feature.video.ui.activity.IDAVideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
