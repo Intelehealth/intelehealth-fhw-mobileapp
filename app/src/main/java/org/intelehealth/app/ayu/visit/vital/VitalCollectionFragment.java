@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -329,13 +330,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         PatientVitalViewModelFactory factory = new PatientVitalViewModelFactory(repository);
         PatientVitalViewModel patientVitalViewModel = new ViewModelProvider(this, factory).get(PatientVitalViewModel.class);
         //requireActivity();
-        patientVitalViewModel.getAllEnabledLiveFields()
+        /*patientVitalViewModel.getAllEnabledLiveFields()
                 .observe(requireActivity(), it -> {
                             mPatientVitalList = it;
                             //Timber.tag(TAG).v(new Gson().toJson(mPatientVitalList));
                             updateUI();
                         }
-                );
+                );*/
+        CoroutineProvider.usePatientVitalScope(
+                LifecycleOwnerKt.getLifecycleScope(this),
+                patientVitalViewModel,
+                data -> {
+                    mPatientVitalList = (List<PatientVital>) data;
+                    updateUI();
+                }
+        );
     }
 
     private void updateUI() {

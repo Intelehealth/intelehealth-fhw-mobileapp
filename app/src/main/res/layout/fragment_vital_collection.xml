@@ -52,18 +52,21 @@
                 android:textSize="@dimen/common_label_text_size"
                 android:textStyle="normal" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/ll_weight_height_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ll_height_container"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="5"
                     android:visibility="visible"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
@@ -142,8 +145,9 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ll_weight_container"
-                    android:layout_width="0dip"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="5"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="true"
@@ -221,7 +225,7 @@
 
 
                 </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/ll_bmi"
@@ -298,18 +302,21 @@
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/ll_sbp_dbp_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
                     android:layout_marginTop="@dimen/margin_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_sbp_container"
-                        android:layout_width="0dip"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0dp"
                         app:cardUseCompatPadding="true"
@@ -364,8 +371,9 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_dbp_container"
-                        android:layout_width="0dip"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0dp"
                         app:cardUseCompatPadding="true"
@@ -419,7 +427,7 @@
                                 android:visibility="visible" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ll_pulse_container"
