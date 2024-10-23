@@ -437,8 +437,10 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setGramPanchayatAdapter(List<GramPanchayat> gramPanchayats) {
         Log.v(TAG, "setGramPanchayatAdapter =>" + new Gson().toJson(gramPanchayats));
-        GramPanchayat defaultGP = new GramPanchayat(getResources().getString(R.string.select_spinner), null, null);
-        gramPanchayats.add(0, defaultGP);
+        if (gramPanchayats.size() > 0 && !Objects.equals(gramPanchayats.get(0).getName(), getResources().getString(R.string.select_spinner))) {
+            GramPanchayat defaultGP = new GramPanchayat(getResources().getString(R.string.select_spinner), null, null);
+            gramPanchayats.add(0, defaultGP);
+        }
 //        String[] gpList = new String[gramPanchayats.size() + 1];
 //        gpList[0] = getResources().getString(R.string.select_spinner);
 //        for (int i = 1; i <= gramPanchayats.size(); i++) {
@@ -466,7 +468,8 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setVillageAdapter(List<Village> villages) {
         Log.v(TAG, "setVillageAdapter =>" + new Gson().toJson(villages));
-        villages.add(0, new Village(getResources().getString(R.string.select_spinner), null));
+        if (villages.size() > 0 && !Objects.equals(villages.get(0).getName(), getResources().getString(R.string.select_spinner)))
+            villages.add(0, new Village(getResources().getString(R.string.select_spinner), null));
 //        String[] gpList = new String[villages.size() + 1];
 //        gpList[0] = getResources().getString(R.string.select_spinner);
 //        for (int i = 1; i <= villages.size(); i++) {
