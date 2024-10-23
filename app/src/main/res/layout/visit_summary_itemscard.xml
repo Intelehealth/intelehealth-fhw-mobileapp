@@ -685,6 +685,7 @@
                                     android:textSize="@dimen/find_patient_hint_size" />
                             </LinearLayout>
 
+<!--
                             <LinearLayout
                                 android:id="@+id/ll_glucose_non_fasting"
                                 android:layout_width="match_parent"
@@ -716,6 +717,7 @@
                                     android:textColor="@color/textview_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
                             </LinearLayout>
+-->
 
 
                             <LinearLayout

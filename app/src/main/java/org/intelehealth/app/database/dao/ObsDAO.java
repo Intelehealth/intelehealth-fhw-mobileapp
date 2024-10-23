@@ -1,6 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSTICS;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
@@ -466,7 +465,7 @@ public class ObsDAO {
 
         // Check if the vitals encounter exists
         // If it does,fetch the vitals encounter
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, DIAGNOSTICS});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, ENCOUNTER_VITALS});
         if (cursor.moveToFirst()) {
             doesVitalsEncounterExist = true;
             encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));

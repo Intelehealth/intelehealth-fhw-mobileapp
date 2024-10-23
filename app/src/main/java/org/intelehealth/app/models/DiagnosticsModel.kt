@@ -7,5 +7,5 @@ class DiagnosticsModel (
     var bloodGlucosePostPrandial: String? = null,
     var hemoglobin: String? = null,
     var uricAcid: String? = null,
-    var cholesterol: String? = null
+    var cholesterol: String? = null,
 )

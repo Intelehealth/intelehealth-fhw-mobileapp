@@ -76,14 +76,6 @@ public class PastVisitData implements Parcelable {
         this.encounterAdultInitial = encounterAdultInitial;
     }
 
-    public String getDiagnostics() {
-        return diagnostics;
-    }
-
-    public void setDiagnostics(String diagnostics) {
-        this.diagnostics = diagnostics;
-    }
-
     @Override
     public int describeContents() {
         return 0;

@@ -163,13 +163,13 @@ public class VisitDiagnosticsSummary {
                 mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.setText(fastingGlucose.getValue());
             }
         }
-        if (nonFastingGlucose.getValue() != null) {
+        /*if (nonFastingGlucose.getValue() != null) {
             if (nonFastingGlucose.getValue().trim().isEmpty() || nonFastingGlucose.getValue().trim().equals("0")) {
                 mBinding.layoutVisitSummarySections.textViewGlucoseNonFasting.setText(context.getResources().getString(R.string.no_information));
             } else {
                 mBinding.layoutVisitSummarySections.textViewGlucoseNonFasting.setText(nonFastingGlucose.getValue());
             }
-        }
+        }*/
         if (postPrandialGlucose.getValue() != null) {
             if (postPrandialGlucose.getValue().trim().isEmpty() || postPrandialGlucose.getValue().trim().equals("0")) {
                 mBinding.layoutVisitSummarySections.textViewPostPrandialValue.setText(context.getResources().getString(R.string.no_information));
@@ -204,7 +204,7 @@ public class VisitDiagnosticsSummary {
     private void updateUIOfDiagnostics() {
         mBinding.layoutVisitSummarySections.llGlucoseRandomContainer.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llGlucoseFastingContainer.setVisibility(View.GONE);
-        mBinding.layoutVisitSummarySections.llGlucoseNonFasting.setVisibility(View.GONE);
+        //mBinding.layoutVisitSummarySections.llGlucoseNonFasting.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llPostPrandialContainer.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llUricAcidContainer.setVisibility(View.GONE);
@@ -213,9 +213,10 @@ public class VisitDiagnosticsSummary {
         for (Diagnostics diagnostics : diagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
 
-            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
+           /* if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
                 mBinding.layoutVisitSummarySections.llGlucoseNonFasting.setVisibility(View.VISIBLE);
-            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
+            } else */
+            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
                 mBinding.layoutVisitSummarySections.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {
                 mBinding.layoutVisitSummarySections.llGlucoseFastingContainer.setVisibility(View.VISIBLE);
