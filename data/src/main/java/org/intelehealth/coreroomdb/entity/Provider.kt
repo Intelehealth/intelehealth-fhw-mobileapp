@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tbl_provider")
 data class Provider(
     @PrimaryKey
-    @SerializedName("uuid") var uuid: String,
+    @SerializedName(value = "uuid", alternate = arrayOf("providerid")) var uuid: String,
     @SerializedName("identifier") var identifier: String? = null,
     @ColumnInfo("given_name") @SerializedName("given_name") var givenName: String? = null,
     @ColumnInfo("family_name") @SerializedName("family_name") var familyName: String? = null,
@@ -27,3 +27,4 @@ data class Provider(
     @ColumnInfo("modified_date") @SerializedName("modified_date") val modifiedDate: String? = null,
     var sync: Boolean = false,
 ) : Parcelable
+

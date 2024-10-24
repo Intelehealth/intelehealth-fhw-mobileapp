@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -38,3 +39,13 @@ data class Patient(
     @SerializedName("voided") val voided: Int = 0,
     @SerializedName("sync") val sync: Boolean = false,
 ) : Parcelable
+
+data class PatientProfile(
+    @SerializedName("person")
+    @Expose
+    val person: String,
+
+    @SerializedName("base64EncodedImage")
+    @Expose
+    val base64EncodedImage: String
+)

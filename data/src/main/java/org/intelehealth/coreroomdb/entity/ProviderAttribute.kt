@@ -12,8 +12,15 @@ import kotlinx.parcelize.Parcelize
 data class ProviderAttribute(
     @PrimaryKey
     @SerializedName("uuid") var uuid: String,
-    @ColumnInfo("provider_uuid") @SerializedName("provider_uuid") val providerUuid: String? = null,
-    @ColumnInfo("provider_attribute_type_uuid") @SerializedName("provider_attribute_type_uuid") val providerAttrTypeUuid: String? = null,
+
+    @ColumnInfo("provider_uuid")
+    @SerializedName("provider_uuid", alternate = ["provideruuid"])
+    val providerUuid: String? = null,
+
+    @ColumnInfo("provider_attribute_type_uuid")
+    @SerializedName("provider_attribute_type_uuid", alternate = ["attributetypeuuid"])
+    val providerAttrTypeUuid: String? = null,
+
     @SerializedName("value") val value: String? = null,
     @SerializedName("voided") val voided: Int = 0,
     @SerializedName("sync") var sync: Boolean = false
