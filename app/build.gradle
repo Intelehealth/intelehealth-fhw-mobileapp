@@ -95,7 +95,7 @@ android {
     }
 //    dynamicFeatures = [':features:ondemand:chat', ':features:ondemand:video']
 
-    dynamicFeatures = [':features:ondemand:video', ':features:ondemand:dynamicfeature']
+    dynamicFeatures = [':features:ondemand:video']
 
 }
 dependencies {
