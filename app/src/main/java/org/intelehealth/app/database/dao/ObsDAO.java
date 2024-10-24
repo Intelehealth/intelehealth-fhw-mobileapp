@@ -4,6 +4,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMP
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.app.utilities.UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -76,6 +77,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
+            values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -104,6 +106,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
+            values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
@@ -136,7 +139,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
-
+            values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
 
             db.setTransactionSuccessful();
@@ -453,8 +456,8 @@ public class ObsDAO {
         // In case the vitals encounter exists
         // delete all the entries which have encounteruuid
         if (doesVitalsEncounterExist) {
-            String deleteClause = "encounteruuid = ?";
-            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
+            String deleteClause = "encounteruuid = ? AND conceptsetuuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, UuidDictionary.OBS_TYPE_VITAL_SET});
         }
     }
 
@@ -475,8 +478,8 @@ public class ObsDAO {
         // In case the vitals encounter exists
         // delete all the entries which have encounteruuid
         if (doesVitalsEncounterExist) {
-            String deleteClause = "encounteruuid = ?";
-            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
+            String deleteClause = "encounteruuid = ? AND conceptsetuuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, OBS_TYPE_DIAGNOSTICS_SET});
         }
     }
 }

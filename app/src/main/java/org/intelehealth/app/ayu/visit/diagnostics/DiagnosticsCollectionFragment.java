@@ -502,7 +502,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucoseRandom());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -515,7 +516,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucoseFasting());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -528,7 +530,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getBloodGlucosePostPrandial());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -554,7 +557,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getUricAcid());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -567,7 +571,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getCholesterol());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
 
@@ -580,7 +585,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setValue(results.getHemoglobin());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     obsDAO.updateObs(obsDTO);
                 }
                 //making flag to false in the encounter table so it will sync again
@@ -609,7 +615,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucoseRandom());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {
@@ -626,7 +633,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucoseFasting());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {
@@ -662,7 +670,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getBloodGlucosePostPrandial());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {
@@ -678,7 +687,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getHemoglobin());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {
@@ -693,7 +703,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getCholesterol());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {
@@ -708,7 +719,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getUricAcid());
-                    
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
                     try {
                         obsDAO.insertObs(obsDTO);
                     } catch (DAOException e) {

@@ -178,8 +178,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
             "sync TEXT DEFAULT 'false', " +
-            "comments TEXT " +
-            ")";
+            "comments TEXT, " +
+            "conceptsetuuid TEXT)";
 
     SessionManager sessionManager = null;
 

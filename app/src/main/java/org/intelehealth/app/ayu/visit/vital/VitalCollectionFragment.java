@@ -1525,6 +1525,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1538,6 +1539,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getWeight());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.WEIGHT));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1551,6 +1553,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getPulse());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1564,6 +1567,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getBpsys());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SYSTOLIC_BP));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1577,6 +1581,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getBpdia());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIASTOLIC_BP));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1590,6 +1595,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getTemperature());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1603,6 +1609,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getResp());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1616,6 +1623,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getSpo2());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1629,7 +1637,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setValue(results.getBloodGroup());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOOD_GROUP));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
-
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
                 }
@@ -1674,7 +1682,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
 
                 obsDTO.setUuid(AppConstants.NEW_UUID);
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1691,7 +1699,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getWeight());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
+
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1709,7 +1718,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getPulse());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1726,7 +1735,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpsys());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1743,7 +1752,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpdia());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1760,7 +1769,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getTemperature());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1777,7 +1786,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getResp());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1794,7 +1803,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getSpo2());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);
@@ -1811,7 +1820,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBloodGroup());
-                
+                obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
                     obsDAO.insertObs(obsDTO);

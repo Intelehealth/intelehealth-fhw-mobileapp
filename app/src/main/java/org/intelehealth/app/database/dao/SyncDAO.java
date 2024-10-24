@@ -133,6 +133,7 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
+        Log.d(TAG, "pullData_Background: encoded : "+encoded);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
                 sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
                 "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
