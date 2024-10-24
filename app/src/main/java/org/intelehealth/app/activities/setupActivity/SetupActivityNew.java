@@ -924,10 +924,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     private void getMindmapDownloadURL(String url) {
         customProgressDialog.show(getString(R.string.please_wait));
+        String encoded1 = sessionManager.getJwtAuthToken();
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, "Bearer "+encoded1);
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

@@ -122,7 +122,7 @@ public interface ApiInterface {
 
 
     @GET("/api/mindmap/download")
-    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey,@Header("Authorization") String authHeader);
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
