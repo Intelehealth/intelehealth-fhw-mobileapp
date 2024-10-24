@@ -38,6 +38,8 @@ data class Patient(
     @SerializedName("dateCreated") val dateCreated: String? = null,
     @SerializedName("voided") val voided: Int = 0,
     @SerializedName("sync") val sync: Boolean = false,
+    @ColumnInfo("abha_number") @SerializedName("abha_number") val abhaNumber: String? = null,
+    @ColumnInfo("abha_address") @SerializedName("abha_address") val abhaAddress: String? = null,
 ) : Parcelable
 
 data class PatientProfile(

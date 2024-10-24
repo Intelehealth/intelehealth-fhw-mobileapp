@@ -61,6 +61,6 @@ open class Resource (
 
     @SerializedName("links")
     @Expose
-    var links: List<Link> = ArrayList<Link>()
+    var links: List<Link> = arrayListOf()
 
 ) : Serializable

@@ -26,6 +26,7 @@ data class Observation(
     @ColumnInfo("modified_date") @SerializedName("modified_date") var modifiedDate: String? = null,
     @ColumnInfo("created_date") @SerializedName("created_date") var createdDate: String? = null,
     @SerializedName("sync") var sync: Boolean = false,
+    @ColumnInfo("concept_set_uuid") @SerializedName("conceptsetuuid") var conceptSetUuid: String? = null,
 ) : Parcelable
 
 data class ObsJsonResponse(
