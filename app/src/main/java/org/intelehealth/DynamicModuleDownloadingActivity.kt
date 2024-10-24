@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.databinding.ActivityDynamicModuleDownloadingBinding
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.CustomLog.Companion.d
@@ -41,7 +42,7 @@ class DynamicModuleDownloadingActivity : BaseActivity() {
     override fun onFeatureActiveStatusLoaded(activeStatus: FeatureActiveStatus?) {
         super.onFeatureActiveStatusLoaded(activeStatus)
         activeStatus?.let {
-            val moduleName = "dynamicfeature" //getString(R.string.title_dynamicfeature)
+            val moduleName = "video" //getString(R.string.title_dynamicfeature)
             val hasInstalled = manager.isModuleDownloaded(moduleName)
 
             println("$TAG =>hasInstalled=>$hasInstalled")
@@ -75,15 +76,13 @@ class DynamicModuleDownloadingActivity : BaseActivity() {
 
     override fun onInstallSuccess() {
         super.onInstallSuccess()
-        val videoCallListener = createInstance<VideoCallListener>(TEST_IMPL_CLASS)
-        binding.txtDownloadStatus.text = videoCallListener?.testMethod()
-//        binding.txtDownloadStatus.text = "Installed"
-//        val intent = Intent(this, DynamicModuleDownloadingActivity::class.java)
-//        intent.putExtra("from", "splash")
-//        intent.putExtra("username", "")
-//        intent.putExtra("password", "")
-//        startActivity(intent)
-//        finish()
+        binding.txtDownloadStatus.text = "Installed"
+        val intent = Intent(this, HomeScreenActivity_New::class.java)
+        intent.putExtra("from", "splash")
+        intent.putExtra("username", "")
+        intent.putExtra("password", "")
+        startActivity(intent)
+        finish()
     }
 
     override fun onFailed(errorMessage: String) {

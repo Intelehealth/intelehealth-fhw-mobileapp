@@ -208,7 +208,7 @@ class DynamicModuleDownloadManager private constructor(context: Context) {
                         downloadProgressHelper.updateProgress(percentage.toInt())
                     }
                     println("${TAG}=>DOWNLOADING totalBytesToDownload => ${state.totalBytesToDownload()}")
-
+                    println("${TAG}=>DOWNLOADING bytesDownloaded => ${state.bytesDownloaded()}")
                 }
 
                 SplitInstallSessionStatus.DOWNLOADED -> {
