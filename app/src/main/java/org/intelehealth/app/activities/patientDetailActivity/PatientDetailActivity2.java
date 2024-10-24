@@ -630,9 +630,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      */
     private void configAllFields() {
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-        int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
-        int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
-        int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+        boolean isGuardianRequire = false;
+        if (ymdData.length > 2) {
+            int mAgeYears = ymdData[0] != null && !ymdData[0].isEmpty() ? Integer.parseInt(ymdData[0]) : 0;
+            int mAgeMonths = ymdData[1] != null && !ymdData[1].isEmpty() ? Integer.parseInt(ymdData[1]) : 0;
+            int mAgeDays = ymdData[2] != null && !ymdData[2].isEmpty() ? Integer.parseInt(ymdData[2]) : 0;
+            isGuardianRequire = AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays);
+        }
 
         for (PatientRegistrationFields fields : patientAllFields) {
             switch (fields.getIdKey()) {
@@ -661,7 +665,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         null
                 );
                 case PatientRegConfigKeys.GUARDIAN_TYPE -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                    if (isGuardianRequire) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
@@ -673,7 +677,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                 }
                 case PatientRegConfigKeys.GUARDIAN_NAME -> {
-                    if (AgeUtils.INSTANCE.isGuardianRequired(mAgeYears, mAgeMonths, mAgeDays)) {
+                    if (isGuardianRequire) {
                         PatientRegFieldsUtils.INSTANCE.configField(
                                 false,
                                 fields,
