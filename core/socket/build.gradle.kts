@@ -7,6 +7,7 @@ plugins {
 }
 
 apply("${rootProject.projectDir}/whitelabel.gradle")
+apply("${rootProject.projectDir}/variants.gradle")
 
 android {
     namespace = "org.intelehealth.core.socket"

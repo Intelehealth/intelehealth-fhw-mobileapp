@@ -6,7 +6,7 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: "kotlin-kapt"
 //apply from: "resdir.gradle"
 apply from: "${rootProject.projectDir}/whitelabel.gradle"
-apply from: "${rootProject.projectDir}/varients.gradle"
+apply from: "${rootProject.projectDir}/variants.gradle"
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 

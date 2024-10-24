@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 apply("${rootProject.projectDir}/whitelabel.gradle")
+apply("${rootProject.projectDir}/variants.gradle")
+
 android {
     namespace = "org.intelehealth.core.utils"
     compileSdk = 34

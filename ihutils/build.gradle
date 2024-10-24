@@ -3,7 +3,7 @@ plugins {
 }
 
 apply from: "../whitelabel.gradle"
-
+apply from: "../variants.gradle"
 android {
     compileSdk 34
 

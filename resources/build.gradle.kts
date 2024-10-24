@@ -5,6 +5,7 @@ plugins {
 
 apply("${rootProject.projectDir}/whitelabel.gradle")
 apply("resdir.gradle")
+apply("${rootProject.projectDir}/variants.gradle")
 
 android {
     namespace = "org.intelehealth.resources"

@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
 }
 apply from: "../whitelabel.gradle"
+apply from: "../variants.gradle"
 
 android {
     namespace 'org.intelehealth.coreroomdb'

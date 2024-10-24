@@ -1,55 +1,63 @@
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-
 android {
 
-    productFlavors.each { flavor->
-        if (flavor.hasProperty('appId') && isApplicationProject()) {
+    productFlavors.each { flavor ->
+        if (flavor.hasProperty('appId') && isApplicationModule()) {
             flavor.applicationId = flavor.appId
             flavor.versionCode = flavor.vCode
             flavor.versionName = flavor.vName
         }
     }
 
-    applicationVariants.configureEach { varient -> // 3
-
-        def name = varient.name
-        def domain
-
-        if (name.contains("ida")) {
-            domain = "IDA"
-        } else if (name.contains("namma")) {
-            domain = "NAMMA"
-        } else if (name.contains("kf")) {
-            domain = "KF"
-        } else if (name.contains("biocon")) {
-            domain = "BIOCON"
-        } else if (name.contains("bmgf")) {
-            domain = "BMGF"
-        } else if (name.contains("nas")) {
-            domain = "NAS"
-        } else if (name.contains("unicef")) {
-            domain = "UNICEF"
-        } else if (name.contains("kcdo")) {
-            domain = "KCDO"
-        } else {
-            domain = "IDA"
+    if (isApplicationModule()) {
+        applicationVariants.configureEach { variant -> // 3
+            configureVariantFields(variant)
         }
-
-        // Specific values
-        if (name.contains("Dev")) {
-            domain = domain.concat("_").concat("DEV")
-        } else if (name.contains("Staging")) {
-            domain = domain.concat("_").concat("STAGE")
-        } else if (name.contains("Production")) {
-            domain = domain.concat("_").concat("PROD")
+    } else {
+        androidComponents {
+            libraryVariants.configureEach {variant ->
+                configureVariantFields(variant)
+            }
         }
-
-        buildVariantConfigField(domain, varient)
     }
 }
 
-def isApplicationProject() { // 4
+def configureVariantFields(variant) {
+    def name = variant.name
+    def domain
+
+    if (name.contains("ida")) {
+        domain = "IDA"
+    } else if (name.contains("namma")) {
+        domain = "NAMMA"
+    } else if (name.contains("kf")) {
+        domain = "KF"
+    } else if (name.contains("biocon")) {
+        domain = "BIOCON"
+    } else if (name.contains("bmgf")) {
+        domain = "BMGF"
+    } else if (name.contains("nas")) {
+        domain = "NAS"
+    } else if (name.contains("unicef")) {
+        domain = "UNICEF"
+    } else if (name.contains("kcdo")) {
+        domain = "KCDO"
+    } else {
+        domain = "IDA"
+    }
+
+    // Specific values
+    if (name.contains("Dev")) {
+        domain = domain.concat("_").concat("DEV")
+    } else if (name.contains("Staging")) {
+        domain = domain.concat("_").concat("STAGE")
+    } else if (name.contains("Production")) {
+        domain = domain.concat("_").concat("PROD")
+    }
+
+    buildVariantConfigField(domain, variant)
+}
+
+def isApplicationModule() { // 4
     return project.android.class.simpleName.startsWith('BaseAppModuleExtension')
 }
 
