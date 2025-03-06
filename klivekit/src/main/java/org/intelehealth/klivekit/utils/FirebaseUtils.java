@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.ajalt.timberkt.Timber;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +19,8 @@ public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
     public static void saveToken(Context context, String userUUID, String fcmToken, String lang) {
-        Log.v(TAG, userUUID);
-        Log.v(TAG, fcmToken);
+        Timber.tag(TAG).v(userUUID);
+        Timber.tag(TAG).v(fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Start the queue
@@ -34,17 +35,17 @@ public class FirebaseUtils {
             inputJsonObject.put("locale", lang);
 
             String url = Constants.SAVE_FCM_TOKEN_URL;
-            Log.v(TAG, url);
-            Log.v(TAG, inputJsonObject.toString());
+            Timber.tag(TAG).v(url);
+            Timber.tag(TAG).v(inputJsonObject.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.v(TAG, "saveToken -response - " + response.toString());
+                    Timber.tag(TAG).v("saveToken -response - " + response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.v(TAG, "saveToken - onErrorResponse - " + error.getMessage());
+                    Timber.tag(TAG).v("saveToken - onErrorResponse - " + error.getMessage());
 
                 }
             });
