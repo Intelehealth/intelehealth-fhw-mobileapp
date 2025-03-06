@@ -8,10 +8,9 @@ import okhttp3.Response
 import org.intelehealth.klivekit.BuildConfig
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
 
-class AuthInterceptor @Inject constructor(private val preferenceHelper: PreferenceHelper) :
+class AuthInterceptor (private val preferenceHelper: PreferenceHelper) :
     Interceptor {
     private val token: String? = preferenceHelper.get(AUTH_TOKEN)
 

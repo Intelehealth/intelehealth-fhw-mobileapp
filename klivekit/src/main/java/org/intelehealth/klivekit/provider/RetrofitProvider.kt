@@ -1,7 +1,6 @@
 package org.intelehealth.klivekit.provider
 
 import com.google.gson.Gson
-import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.intelehealth.klivekit.BuildConfig

@@ -8,14 +8,13 @@ import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.data.PreferenceHelper
-import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 20-10-2023 - 16:55.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class CallLogHandler @Inject constructor(
+class CallLogHandler (
     private val callLogRepository: CallLogRepository,
     private val preferenceHelper: PreferenceHelper
 ) {
