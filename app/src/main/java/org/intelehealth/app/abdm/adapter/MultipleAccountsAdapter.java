@@ -50,7 +50,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
         } else {
             holder.tvAbhaAddress.setText(account.getPreferredAbhaAddress());
         }
-        holder.tvFullname.setText(account.getName());
+        holder.tvFullname.setText(account.getName() + ", " + account.getGender());
 
         holder.itemView.setOnClickListener(v -> {
             if (checkedPosition == -1) {

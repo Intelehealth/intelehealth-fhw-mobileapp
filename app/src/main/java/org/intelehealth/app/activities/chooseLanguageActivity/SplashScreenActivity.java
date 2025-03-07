@@ -142,7 +142,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
 //        TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+//        initFirebaseRemoteConfig();
 
         if (sessionManager.isFirstTimeLaunch()) {
             checkPerm();

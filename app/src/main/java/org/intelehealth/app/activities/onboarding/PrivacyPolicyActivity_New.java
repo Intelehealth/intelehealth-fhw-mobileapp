@@ -11,13 +11,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AbhaCardVerificationActivity;
 import org.intelehealth.app.abdm.activity.CreateAbhaAccountActivity;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -72,23 +80,45 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             } else {
-                patientRegistrationDialog(context, getDrawable(R.drawable.dialog_icon_complete),
-                        getString(R.string.abha), getString(R.string.do_you_have_your_abha_number),
-                        getResources().getString(R.string.yes), getResources().getString(R.string.no),
-                        action -> {
-                            Intent intent;
-                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                intent = new Intent(context, AbhaCardVerificationActivity.class);
-                                intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
-                            } else {
-                                intent = new Intent(context, CreateAbhaAccountActivity.class);
-                            }
-                            startActivity(intent);
-
-                        });
-
+                showABHADialog();
             }
         });
+
+    }
+
+    private void showABHADialog() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_abha_creation, null);
+        alertdialogBuilder.setView(convertView);
+        Button positive_btn = convertView.findViewById(R.id.yes_abha_btn);
+        Button create_abha_btn = convertView.findViewById(R.id.create_abha_btn);
+        Button continue_without_abha_btn = convertView.findViewById(R.id.continue_without_abha_btn);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        create_abha_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CreateAbhaAccountActivity.class);
+            startActivity(intent);
+        });
+
+        continue_without_abha_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, IdentificationActivity_New.class);
+            startActivity(intent);
+            finish();
+        });
+
+        positive_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AbhaCardVerificationActivity.class);
+            intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
+            startActivity(intent);
+        });
+
+        alertDialog.show();
 
     }
 

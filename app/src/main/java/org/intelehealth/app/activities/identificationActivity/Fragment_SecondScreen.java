@@ -209,16 +209,19 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         mPostalCodeEditText.setText(abhaProfileResponse.getPincode());
+        mPostalCodeEditText.setEnabled(false);
 
         // State
         mStateNameSpinner.setVisibility(View.GONE);
         mStateEditText.setVisibility(View.VISIBLE);
         mStateEditText.setText(abhaProfileResponse.getStateName());
+        mStateEditText.setEnabled(false);
 
         // District
         mDistrictNameSpinner.setVisibility(View.GONE);
         mDistrictET.setVisibility(View.VISIBLE);
         mDistrictET.setText(abhaProfileResponse.getDistrictName());
+        mDistrictET.setEnabled(false);
 
         // City/Village/Town
         String village_town = (abhaProfileResponse.getTownName() != null) ?
@@ -234,25 +237,30 @@ public class Fragment_SecondScreen extends Fragment {
 
 
         mAddress1EditText.setText(abhaProfileResponse.getAddress());
+        mAddress1EditText.setEnabled(false);
     }
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mPostalCodeEditText.setText(otpVerificationResponse.getABHAProfile().getPinCode());
+        mPostalCodeEditText.setEnabled(false);
 
         // State
         mStateNameSpinner.setVisibility(View.GONE);
         mStateEditText.setVisibility(View.VISIBLE);
         mStateEditText.setText(otpVerificationResponse.getABHAProfile().getStateName());
+        mStateEditText.setEnabled(false);
 
         // District
         mDistrictNameSpinner.setVisibility(View.GONE);
         mDistrictET.setVisibility(View.VISIBLE);
         mDistrictET.setText(otpVerificationResponse.getABHAProfile().getDistrictName());
+        mDistrictET.setEnabled(false);
 
         // City/Village/Town
         //  mCityVillageET.setText(village_town); // todo: handle this.
 
         mAddress1EditText.setText(otpVerificationResponse.getABHAProfile().getAddress());
+        mAddress1EditText.setEnabled(false);
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -638,7 +646,6 @@ public class Fragment_SecondScreen extends Fragment {
                             mStateNameSpinner.setSelection(itemPosition);
                         } else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
-                        mStateNameSpinner.setEnabled(false);
 
                     } else {
                         mIsIndiaSelected = false;
@@ -724,7 +731,6 @@ public class Fragment_SecondScreen extends Fragment {
 
         mDistrictNameSpinner.setAdapter(districtAdapter);
         mDistrictNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mDistrictNameSpinner.setEnabled(false);
     }
 
     private void onBackInsertIntoPatientDTO() {
@@ -934,7 +940,8 @@ public class Fragment_SecondScreen extends Fragment {
             if (patient_detail) {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
-            } else {
+            }
+            else {
                 // Bundle data
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("patientDTO", (Serializable) patientDTO);
@@ -954,6 +961,7 @@ public class Fragment_SecondScreen extends Fragment {
                 bundle.putString("txnId", txnId);
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
+                Log.d(TAG, "onPatientCreateClicked: " + patientDTO.toString());
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frame_firstscreen, fragment_thirdScreen)

@@ -275,13 +275,21 @@ public class Fragment_ThirdScreen extends Fragment {
 
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         mAbhaNumberEditText.setText(abhaProfileResponse.getABHANumber());
-        mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
+        mAbhaNumberEditText.setEnabled(false);
+        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx"))
+            mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress() + "@sbx");
+        else
+            mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
 
     }
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
-        mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
+        mAbhaNumberEditText.setEnabled(false);
+        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx"))
+            mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
+        else
+            mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -564,7 +572,10 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
+        if(!mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+            patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
+        else
+            patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
@@ -597,7 +608,10 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
+        if(!mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+            patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
+        else
+            patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
         patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));

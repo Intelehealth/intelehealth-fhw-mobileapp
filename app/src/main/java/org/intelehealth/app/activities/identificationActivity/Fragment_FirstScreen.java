@@ -205,7 +205,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 patient_detail = getArguments().getBoolean("patient_detail");
             if (getArguments().containsKey("accessToken"))
                 accessToken = getArguments().getString("accessToken");
-            if (getArguments().containsKey("xToken"))
+             if (getArguments().containsKey("xToken"))
                 xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
@@ -230,6 +230,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
                 }
             }
+
         }
 
        /* // todo: uncomment later - start
@@ -334,22 +335,40 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         mFirstNameEditText.setText(otpVerificationResponse.getABHAProfile().getFirstName());
+        mFirstNameEditText.setEnabled(false);
         mMiddleNameEditText.setText(otpVerificationResponse.getABHAProfile().getMiddleName());
+        mMiddleNameEditText.setEnabled(false);
         mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
+        mLastNameEditText.setEnabled(false);
 
         if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("M"))
+        {
             mGenderMaleRadioButton.setChecked(true);
-        else if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("F"))
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
+        else if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("F")){
             mGenderFemaleRadioButton.setChecked(true);
-        else
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
+        else {
             mGenderOthersRadioButton.setChecked(true);
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
 
         // dob and age
         setAbhaDOBToEditText(otpVerificationResponse.getABHAProfile().getDob());    // aadhar -> 25-08-1978
 
         // mobile no.
-        if (otpVerificationResponse.getABHAProfile().getMobile() != null)
+        if (otpVerificationResponse.getABHAProfile().getMobile() != null) {
             mPhoneNumberEditText.setText(otpVerificationResponse.getABHAProfile().getMobile());
+            mPhoneNumberEditText.setEnabled(false);
+        }
     }
 
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
@@ -361,22 +380,39 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         }
 
         mFirstNameEditText.setText(abhaProfileResponse.getFirstName());
+        mFirstNameEditText.setEnabled(false);
         mMiddleNameEditText.setText(abhaProfileResponse.getMiddleName());
+        mMiddleNameEditText.setEnabled(false);
         mLastNameEditText.setText(abhaProfileResponse.getLastName());
+        mLastNameEditText.setEnabled(false);
 
-        if (abhaProfileResponse.getGender().equalsIgnoreCase("M"))
+        if (abhaProfileResponse.getGender().equalsIgnoreCase("M")) {
             mGenderMaleRadioButton.setChecked(true);
-        else if (abhaProfileResponse.getGender().equalsIgnoreCase("F"))
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
+        else if (abhaProfileResponse.getGender().equalsIgnoreCase("F")) {
             mGenderFemaleRadioButton.setChecked(true);
-        else
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
+        else {
             mGenderOthersRadioButton.setChecked(true);
+            mGenderMaleRadioButton.setEnabled(false);
+            mGenderFemaleRadioButton.setEnabled(false);
+            mGenderOthersRadioButton.setEnabled(false);
+        }
 
         // dob and age
         setAbhaDOBToEditText(abhaProfileResponse.getDayOfBirth(), abhaProfileResponse.getMonthOfBirth(), abhaProfileResponse.getYearOfBirth());
 
         // mobile no.
-        if (abhaProfileResponse.getMobile() != null)
+        if (abhaProfileResponse.getMobile() != null) {
             mPhoneNumberEditText.setText(abhaProfileResponse.getMobile());
+            mPhoneNumberEditText.setEnabled(false);
+        }
     }
 
     private void displayAbhaProfilePhotoAndStoreInFile(String profileImage) {
@@ -399,6 +435,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mCurrentPhotoPath = cameraUtils.compressImageAndSave(decodedByte);
 
         patient_imgview.setImageBitmap(decodedByte);
+        patient_imgview.setClickable(false);
+        patient_imgview.setEnabled(false);
     }
 
     private void setAbhaAgeToEditText(String dob) {
@@ -408,12 +446,14 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         int mAgeDays = Integer.parseInt(ymdData[2]);
         String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
         mAgeEditText.setText(age);
+        mAgeEditText.setEnabled(false);
     }
 
     private void setAbhaDOBToEditText(String day, String month, String year) {
         dobToDb = year + "-" + month + "-" + day;
         Log.d(TAG, "setAutoFillValuesViaMobile: " + dobToDb);   // 1998-07-01
         mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
+        mDOBEditText.setEnabled(false);
 
         // age
         setAbhaAgeToEditText(dobToDb);
@@ -429,6 +469,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         dobToDb = dob;
         Log.d(TAG, "setAutoFillValuesViaAadhar: " + dobToDb);   // 1998-07-01
         mDOBEditText.setText(DateAndTimeUtils.getDisplayDateForApp(dobToDb));
+        mDOBEditText.setEnabled(false);
 
         // age
         setAbhaAgeToEditText(dobToDb);
@@ -604,7 +645,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         patient_imgview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                checkPerm();
+                checkPerm();
             }
         });
 
@@ -633,8 +674,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             @Override
             public void onClick(View v) {
 //                mDOBPicker.show();
-//                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
-//                customCalendarViewUI2.showDatePicker(getActivity(), null);
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
+                customCalendarViewUI2.showDatePicker(getActivity(), null);
             }
         });
         // DOB - end
@@ -643,7 +684,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mAgeEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                openAgeSelectionDialog();
+                openAgeSelectionDialog();
 //                IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
             }
         });
@@ -1022,10 +1063,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             ImagesDAO imagesDAO = new ImagesDAO();
 
-            if (patient_detail) {
+             if (patient_detail) {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientdto, patientdto.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientdto.getPatientPhoto(), patientdto.getUuid());
-            } else {
+            }
+            else {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("patientDTO", (Serializable) patientdto);
                 bundle.putBoolean("fromFirstScreen", true);

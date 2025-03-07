@@ -124,6 +124,7 @@ public class DialogUtils {
 
         alertDialog.show();
     }
+
     public static void showOKDialog(Context context, Drawable drawable, String title,
                                                  String subTitle, String okBtnTxt,
                                                  CustomDialogListener customDialogListener) {
