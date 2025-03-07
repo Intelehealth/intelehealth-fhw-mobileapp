@@ -63,12 +63,14 @@ object CallHandlerUtils {
      */
     fun operateIncomingCall(context: Context, callArgs: RtcArgs) {
         Timber.d { "operateIncomingCall ->Url = ${callArgs.url}" }
+        Timber.d { "operateIncomingCall Url: ${callArgs.toJson()}" }
         callArgs.callMode = CallMode.INCOMING
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
         notifyCallNotification(callArgs, context)
     }
 
     fun saveIncomingCall(context: Context, callArgs: RtcArgs) {
+        Timber.d { "saveIncomingCall Url: ${callArgs.toJson()}" }
         getCallLogHandler(context).saveLog(generateCallLog(callArgs, context))
     }
 
