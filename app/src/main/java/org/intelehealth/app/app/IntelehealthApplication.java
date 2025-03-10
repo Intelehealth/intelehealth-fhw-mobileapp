@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -44,6 +46,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private static String androidId;
     private Activity currentActivity;
     SessionManager sessionManager;
+
+    public MutableLiveData<Boolean> isSync = new MutableLiveData<Boolean>(false);
 
     public static Context getAppContext() {
         return mContext;

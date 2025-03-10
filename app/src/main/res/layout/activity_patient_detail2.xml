@@ -144,16 +144,35 @@
                             android:textColor="@color/textview_color"
                             android:textSize="@dimen/txtsize_patdetail_16sp" />
 
-                        <TextView
-                            android:id="@+id/openmrsID_txt"
+                        <FrameLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_4"
-                            android:gravity="center_vertical"
-                            android:text="@string/patient_not_registered"
-                            android:textAppearance="@style/caption_fu_openmrsId"
-                            android:textColor="@null"
-                            android:textSize="@dimen/find_patient_hint_size" />
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/openmrsID_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_4"
+                                android:gravity="center_vertical"
+                                android:visibility="gone"
+                                android:text="@string/patient_not_registered"
+                                android:textAppearance="@style/caption_fu_openmrsId"
+                                android:textColor="@null"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                            <ProgressBar
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/openMrsProgress"
+                                android:layout_marginTop="@dimen/margin_4"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:max="100"
+                                android:progress="45"/>
+                        </FrameLayout>
+
+
+
+
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

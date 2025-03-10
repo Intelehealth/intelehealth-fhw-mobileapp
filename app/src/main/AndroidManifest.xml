@@ -448,6 +448,13 @@
             <intent-filter>
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
+        </receiver>
+        <receiver
+            android:exported="false"
+            android:name=".activities.patientDetailActivity.PatientDetailActivity2$SyncBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="org.intelehealth.app.SYNC_NOTIFY_INTENT_ACTION" />
+            </intent-filter>
         </receiver> <!-- <service -->
         <!-- android:name=".services.firebase_services.MyFirebaseMessagingService" -->
         <!-- android:exported="false"> -->

@@ -583,7 +583,7 @@ public class SyncDAO {
 
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
-
+                                IntelehealthApplication.getInstance().isSync.postValue(true);
                                 Intent broadcast = new Intent();
                                 broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
                                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);

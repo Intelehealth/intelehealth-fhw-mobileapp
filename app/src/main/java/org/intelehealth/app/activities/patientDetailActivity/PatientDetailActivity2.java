@@ -75,6 +75,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -82,6 +83,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,6 +118,7 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -168,6 +171,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
+    private ProgressBar openMrsProgress;
     private boolean hasLicense = false;
     //SQLiteDatabase db = null;
     private PatientDTO patientDTO;
@@ -220,6 +224,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         context = PatientDetailActivity2.this;
+
 
         networkUtils = new NetworkUtils(this, this);
         //In case of crash still the org should hold the current lang fix.
@@ -515,6 +520,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+
     }
 
     @Override
@@ -544,7 +550,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
         super.onResume();
+
         try {
+            IntelehealthApplication.getInstance().isSync.observe(this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean isSync) {
+                    if (isSync) {
+                        Logger.logD("Update data",isSync.toString());
+                        setDisplay(patientDTO.getUuid());
+                        IntelehealthApplication.getInstance().isSync.postValue(false);
+                    }
+                }
+            });
             setDisplay(patientDTO.getUuid());
         } catch (Exception e) {
             e.printStackTrace();
@@ -648,6 +665,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         profile_image = findViewById(R.id.profile_image);
         name_txtview = findViewById(R.id.name_txtview);
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
+        openMrsProgress = findViewById(R.id.openMrsProgress);
 
         patientname = findViewById(R.id.name);
         gender = findViewById(R.id.gender);
@@ -1045,6 +1063,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setting openmrs id
         if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty() && !patientDTO.getOpenmrsId().equalsIgnoreCase("NA")) {
             openmrsID_txt.setText(patientDTO.getOpenmrsId());
+            openmrsID_txt.setVisibility(View.VISIBLE);
+            openMrsProgress.setVisibility(View.GONE);
+
         }
 
         // setTitle(patientDTO.getOpenmrs_id());
@@ -1903,5 +1924,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         }
     }
+
 
 }
