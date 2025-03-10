@@ -62,8 +62,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -83,6 +86,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,6 +94,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -136,6 +141,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -143,6 +149,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -346,7 +353,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         btnViewAbhaCard.setOnClickListener(v -> {
+           String filename = patientDTO.getAbhaNumber();
+            String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/Intelehealth_AbhaCard/";
+            File filePath = new File(imagePath);
+            if (!filePath.exists()) {
+                filePath.mkdirs();
+            }
+
+            File imageFile = new File(imagePath, filename + ".png");
+            if (imageFile.exists()) {
+                Log.d("TAG", "File already exists: " + imageFile.getAbsolutePath());
+                openImageFile(imageFile);
+                return;
+            }
             viewDownloadABHACard();
+
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -1925,5 +1946,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
+
+    private void openImageFile(File imageFile) {
+        MediaScannerConnection.scanFile(context, new String[] { imageFile.getAbsolutePath() }, null,
+                (path, uri) -> {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, "image/*");
+                    context.startActivity(intent);
+                });
+
+    }
 
 }
