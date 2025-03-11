@@ -173,8 +173,8 @@ public class ProviderDAO extends BaseDao{
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
         //if db in transaction then return null
-        if (db.inTransaction()) return null;
-        db.beginTransaction();
+      /*  Commented while sync issue due to db locked exception if (db.inTransaction()) return null;
+       db.beginTransaction();*/
 
         try {
             String query = "select * from tbl_provider where uuid = ?";
@@ -199,12 +199,12 @@ public class ProviderDAO extends BaseDao{
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return providerDTO;

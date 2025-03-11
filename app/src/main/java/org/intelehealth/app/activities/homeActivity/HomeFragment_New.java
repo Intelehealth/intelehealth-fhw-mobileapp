@@ -229,7 +229,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
-        String language = sessionManager.getAppLanguage();
+        /*String language = sessionManager.getAppLanguage(); //as locale already set
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -238,8 +238,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             requireActivity().getResources().updateConfiguration(config, requireActivity().getResources().getDisplayMetrics());
         }
 
-        sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
-
+       sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
+*/
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
         DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
