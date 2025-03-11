@@ -683,4 +683,21 @@
         <item name="android:textColor">@color/textview_color</item>
         <item name="android:fontFamily">@font/lato_regular</item>
     </style>
+    <style name="Theme.IDA.TextAppearance.ScreenTitle" parent="Theme.IDA.TextAppearance.Primary">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="Theme.IDA.TextAppearance.Primary" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/dm_sans</item>
+    </style>
+
+    <style name="Theme.IDA.TextAppearance.Secondary" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:fontFamily">@font/dm_sans</item>
+    </style>
+    <style name="Theme.IDA.TextAppearance.Label" parent="Theme.IDA.TextAppearance.Secondary">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -1733,6 +1733,12 @@
     <string name="appointment_reschedule_for_notification">Appointment rescheduled for %1$s</string>
     <string name="appointment_cancelled_for_notification">Appointment cancelled for %1$s</string>
     <string name="lbl_retry">Retry</string>
+    <string name="sync_completed_message">Sync completed</string>
+    <string name="welcome_message">Welcome! %1$s</string>
+    <string name="sync_wait_message">Please wait for the sync to complete</string>
+    <string name="syncing">Syncing</string>
+    <string name="sync_progress_percentage">%1$d%%</string>
+    <string name="sync_completed">Sync completed</string>
 
 
 
