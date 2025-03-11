@@ -48,6 +48,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -59,6 +60,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,6 +124,9 @@ public class Fragment_ThirdScreen extends Fragment {
     private AbhaProfileResponse abhaProfileResponse;
     private String accessToken, xToken, txnId;
 
+    private LinearLayout linearAbhaNo, linearAbhaAddress;
+    private String blockCharacterSet_ABHA_Address = "@";
+
 
     @Nullable
     @Override
@@ -171,6 +176,14 @@ public class Fragment_ThirdScreen extends Fragment {
 
         mAbhaAddressEditText = view.findViewById(R.id.abhaAddress_editText);
         mAbhaAddressErrorTextView = view.findViewById(R.id.abhaAddress_error);
+        linearAbhaNo = view.findViewById(R.id.linear_abhaNo);
+        linearAbhaAddress = view.findViewById(R.id.linear_abhaAddress);
+
+        if(!sessionManager.doCreateABHA())
+        {
+            linearAbhaNo.setVisibility(View.GONE);
+            linearAbhaAddress.setVisibility(View.GONE);
+        }
 
         mOccupationEditText = view.findViewById(R.id.occupation_editText);
         mCasteSpinner = view.findViewById(R.id.caste_spinner);
@@ -273,10 +286,20 @@ public class Fragment_ThirdScreen extends Fragment {
         });
     }
 
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && blockCharacterSet_ABHA_Address.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         mAbhaNumberEditText.setText(abhaProfileResponse.getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx"))
+        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx") && !abhaProfileResponse.getPreferredAbhaAddress().isEmpty())
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress() + "@sbx");
         else
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
@@ -286,7 +309,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx"))
+        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx") && !otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty())
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
         else
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
@@ -334,6 +357,18 @@ public class Fragment_ThirdScreen extends Fragment {
         }
     }
 
+    public int countChar(String str, char c)
+    {
+        int count = 0;
+
+        for(int i=0; i < str.length(); i++)
+        {    if(str.charAt(i) == c)
+            count++;
+        }
+
+        return count;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -343,13 +378,42 @@ public class Fragment_ThirdScreen extends Fragment {
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
-            onBackInsertIntoPatientDTO();
+            if(!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@')>1)
+            {
+                mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
+                mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
+                return;
+            }
+            else if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+            {
+                mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
+                mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
+                return;
+            }
+            else {
+                mAbhaAddressErrorTextView.setVisibility(View.GONE);
+                onBackInsertIntoPatientDTO();
+            }
         });
 
         frag3_btn_next.setOnClickListener(v -> {
-//                Intent intent = new Intent(getActivity(), PatientDetailActivity2.class);
-//                startActivity(intent);
-            onPatientCreateClicked();
+            if(!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@')>1)
+            {
+                mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
+                mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
+                return;
+
+            }
+            else if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+            {
+                mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
+                mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
+                return;
+            }
+            else {
+                mAbhaAddressErrorTextView.setVisibility(View.GONE);
+                onPatientCreateClicked();
+            }
         });
 
         // caste spinner
@@ -412,8 +476,10 @@ public class Fragment_ThirdScreen extends Fragment {
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().isEmpty())
             mNationalIDEditText.setText(patientDTO.getNationalID());
 
-        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().isEmpty())
+        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().isEmpty() && !patientDTO.getAbhaNumber().equals("NA")) {
             mAbhaNumberEditText.setText(patientDTO.getAbhaNumber());
+            mAbhaNumberEditText.setEnabled(false);
+        }
 
         if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().isEmpty())
             mAbhaAddressEditText.setText(patientDTO.getAbhaAddress());
@@ -572,7 +638,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        if(!mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+        if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
         else
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
@@ -608,7 +674,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        if(!mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+        if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
         else
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());

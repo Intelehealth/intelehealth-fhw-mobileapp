@@ -147,6 +147,7 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/trAbhaNo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2">
@@ -175,6 +176,7 @@
                         android:textSize="14sp" />
                 </TableRow>
                 <TableRow
+                    android:id="@+id/trAbhaAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2">

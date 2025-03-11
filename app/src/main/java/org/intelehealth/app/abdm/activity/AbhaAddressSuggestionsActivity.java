@@ -8,8 +8,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +58,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private OTPVerificationResponse otpVerificationResponse;
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
+    private String blockCharacterSet_ABHA_Address = "@";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
             Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getCheckedChipId());
             String selectedChip = chip != null ? chip.getText().toString() : "";
-            String abhaAddress = Objects.requireNonNull(binding.etAbhaAddress.getText()).toString();
+            EditText abhaAddressET = binding.etAbhaAddress;
+            abhaAddressET.setFilters(new InputFilter[]{filter});
+            String abhaAddress = Objects.requireNonNull(abhaAddressET.getText()).toString();
 
             if (TextUtils.isEmpty(selectedChip) && TextUtils.isEmpty(abhaAddress)) {
                 Toast.makeText(context, getString(R.string.please_select_abha_address), Toast.LENGTH_SHORT).show();
@@ -98,6 +104,16 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         });
 
      }
+
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if (source != null && blockCharacterSet_ABHA_Address.contains(("" + source))) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     private boolean isValidAbhaAddress(String text) {
         if (text.length() < 8) {

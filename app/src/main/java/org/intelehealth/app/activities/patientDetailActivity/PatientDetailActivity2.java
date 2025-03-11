@@ -198,6 +198,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private AbhaProfileResponse abhaProfileResponse;
     private String accessToken, xToken, txnId, SCOPE;
 
+    private TableRow trAbhaAddress, trAbhaNo;
+
 
     @Override
     public void onBackPressed() {
@@ -437,7 +439,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             String X_TOKEN = BEARER_AUTH + otpVerificationResponse.getTokens().getToken();
             callGETAbhaCardApi(X_TOKEN, accessToken, patientAbhaNumber.getText().toString());
             Timber.tag(TAG).d("viewDownloadABHACard: %s", X_TOKEN + " and " + patientAbhaNumber);
-        } else if (abhaProfileResponse!=null && abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
+        } else if (abhaProfileResponse != null && abhaProfileResponse.getToken() != null && !abhaProfileResponse.getToken().isEmpty() &&
                 patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
             callGETAbhaCardApi(BEARER + abhaProfileResponse.getToken(), accessToken, patientAbhaNumber.getText().toString());
         } else if (xToken != null && !xToken.isEmpty() && patientAbhaNumber != null && !patientAbhaNumber.getText().toString().isEmpty()) {
@@ -666,6 +668,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientNationalID = findViewById(R.id.national_ID);
         patientAbhaNumber = findViewById(R.id.abhaNo);
         patientAbhaAddress = findViewById(R.id.abhaAddress);
+        trAbhaAddress = findViewById(R.id.trAbhaAddress);
+        trAbhaNo = findViewById(R.id.trAbhaNo);
+
         patientoccupation = findViewById(R.id.occupation);
         patientcaste = findViewById(R.id.caste);
         patienteducation = findViewById(R.id.education);
@@ -917,7 +922,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1" , "address2", "city_village", "state_province",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo", "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
@@ -1539,10 +1544,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting abha number value
-        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().equals("")) {
+        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().equals("") && !patientDTO.getAbhaNumber().equals("NA")) {
             patientAbhaNumber.setText(patientDTO.getAbhaNumber());
         } else {
             patientAbhaNumber.setText(getResources().getString(R.string.not_provided));
+            btnViewAbhaCard.setVisibility(View.GONE);
+            trAbhaAddress.setVisibility(View.GONE);
+            trAbhaNo.setVisibility(View.GONE);
         }
 
         // setting abha address value

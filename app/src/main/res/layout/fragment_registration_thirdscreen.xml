@@ -162,7 +162,8 @@
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
                     android:textSize="@dimen/edittext_textsize_16sp"
-                    ndroid:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    />
 
                 <TextView
                     android:id="@+id/abhaAddress_error"

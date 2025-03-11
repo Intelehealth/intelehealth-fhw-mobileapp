@@ -63,6 +63,7 @@ public class SessionManager {
     public static final String ABHA_LOGIN = "abha_login";
     public static final String AADHAAR_LOGIN = "aadhaar_login";
     public static final String MOBILE_LOGIN = "mobile_login";
+    public static final String CREATE_ABHA = "create_abha";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -152,6 +153,15 @@ public class SessionManager {
 
     public void setSetupComplete(Boolean setupComplete) {
         editor.putBoolean(KEY_PREF_SETUP_COMPLETE, setupComplete);
+        editor.commit();
+    }
+
+    public boolean doCreateABHA() {
+        return pref.getBoolean(CREATE_ABHA, true);
+    }
+
+    public void setCreateAbha(Boolean createAbha) {
+        editor.putBoolean(CREATE_ABHA, createAbha);
         editor.commit();
     }
 
