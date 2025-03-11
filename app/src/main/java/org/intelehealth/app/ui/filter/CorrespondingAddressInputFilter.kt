@@ -6,7 +6,7 @@ import android.text.Spanned
 // Filter to allow Characters, Digits, Special Characters, and Emojis
 class CorrespondingAddressInputFilter : InputFilter {
 
-    private val allowedChars = "[a-zA-Z0-9\\s!@#$%^&*()_+\\-=\\[\\]{}|;':\",./<>?]"
+    private val allowedChars = "[\\p{L}0-9.,\\-\\s]"
 
     override fun filter(
         source: CharSequence,
@@ -16,9 +16,9 @@ class CorrespondingAddressInputFilter : InputFilter {
         dstart: Int,
         dend: Int
     ): CharSequence {
-        val input = source.subSequence(start, end)
-        val filteredInput = input.filter { it.toString().matches(allowedChars.toRegex()) }
+        val filteredInput = source.subSequence(start, end).filter {
+            Character.isLetterOrDigit(it) || it in listOf('.', ',', '-', ' ')
+        }
         return filteredInput
     }
-
 }
