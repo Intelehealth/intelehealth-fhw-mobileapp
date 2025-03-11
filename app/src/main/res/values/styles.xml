@@ -572,7 +572,6 @@
 
     <style name="AppTheme.InputBox.Name" parent="AppTheme.InputBox">
         <item name="android:maxLength">25</item>
-        <item name="android:digits">@string/validation_latter_only</item>
         <item name="android:inputType">textCapWords</item>
     </style>
 
