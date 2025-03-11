@@ -3,7 +3,7 @@ package org.intelehealth.app.ui.filter
 import android.text.InputFilter
 import android.text.Spanned
 
-class AllowAllCharactersInputFilter : InputFilter {
+class AllowAllLettersInputFilter : InputFilter {
 
     override fun filter(
         source: CharSequence,
