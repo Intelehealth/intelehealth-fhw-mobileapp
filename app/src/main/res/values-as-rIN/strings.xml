@@ -453,9 +453,9 @@
     <string name="intro_tagline_3">কম সম্পদৰ পৰিৱেশৰ বাবে ডিজাইন কৰা ক্লাউড-ভিত্তিক অ\'পেন চৌর্ছ প্লেটফৰ্মে এটা কাষ্টমাইজড ৰূপায়ণ কৌশলৰ সৈতে সংযুক্ত কৰি প্ৰভাৱশালী স্বাস্থ্য ফলাফলৰ বাবে এটা ডিজিটেল স্বাস্থ্য সমাধান সৃষ্টি কৰে</string>
     <string name="hello_i_am_ayu">নমস্কাৰ, মই এ ৱাই ইউ,</string>
     <string name="ayu_intro">এজন ডিজিটেল স্বাস্থ্য সহায়ক।\nআৰম্ভ কৰোঁ আহক!</string>
-    <string name="agree_to_terms"><font color='#2F1E91'><u>চৰ্ত আৰু নিয়ম</u></font> and <font color='#2F1E91'><u>গোপনীয়তা নীতিৰ</u></font> সৈতে সন্মত হওক</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>চৰ্ত আৰু নিয়ম</u></font> and <font color='#2F1E91'><u>গোপনীয়তা নীতি</u></font> সৈতে সন্মত হওক</string>
     <string name="setup">ছেটআপ</string>
-    <string name="terms_and_conditions">চৰ্তাৱলী</string>
+    <string name="terms_and_conditions">চৰ্ত আৰু নিয়ম</string>
     <string name="privacy_policy">গোপনীয়তা নীতি</string>
     <string name="decline">অস্বীকাৰ কৰা</string>
     <string name="accept_new">গ্ৰহণ কৰা</string>

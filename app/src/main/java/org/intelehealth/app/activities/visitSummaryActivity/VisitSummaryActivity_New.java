@@ -1457,7 +1457,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaintLocalString));
+                    complaintText.setText(Html.fromHtml(complaintLocalString.isEmpty() ? complaint.getValue() : complaintLocalString));
                 }
                 complaintText.setEnabled(false);
 
@@ -1607,7 +1607,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                 if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(physicalExamLocaleString));
+                    physicalText.setText(Html.fromHtml(physicalExamLocaleString.isEmpty() ? phyExam.getValue() : physicalExamLocaleString));
                 physicalText.setEnabled(false);
 
                 /*physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1753,7 +1753,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patientHistoryLocaleString));
+                    historyText.setText(Html.fromHtml(patientHistoryLocaleString.isEmpty() ? patHistory.getValue() : patientHistoryLocaleString));
                 historyText.setEnabled(false);
 
                 /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1891,7 +1891,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
+                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString.isEmpty() ? famHistory.getValue() : familyHistoryLocaleString));
                 famHistText.setEnabled(false);
 
                 /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
