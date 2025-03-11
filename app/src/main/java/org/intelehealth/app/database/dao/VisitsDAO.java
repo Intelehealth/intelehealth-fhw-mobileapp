@@ -1054,7 +1054,7 @@ public class VisitsDAO extends BaseDao{
     //sometimes app crash cause of db lock
     //that's why added the retry mechanism whenever db will be lock
     int getVisitCount = 0;
-    public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
+    public int getVisitCountsByStatusOld(boolean isForReceivedPrescription) {
         int count = 0;
         //we are retrying db operation for 5 times
         if(getVisitCount > 5) return 0;
@@ -1154,6 +1154,60 @@ public class VisitsDAO extends BaseDao{
         values.put("sync", visitDTO.getSyncd().toString());
         Log.d(TAG, "createVisitMap: sync : "+visitDTO.getSyncd().toString());
         return values;
+    }
+    public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
+        int count = 0;
+
+        // Retry logic: Attempt DB operation up to 5 times
+        for (int attempt = 0; attempt < 5; attempt++) {
+            try {
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                String query;
+
+                if (isForReceivedPrescription) {
+                    query = "SELECT COUNT(DISTINCT p.openmrs_id) " +
+                            "FROM tbl_patient p " +
+                            "JOIN tbl_visit v ON p.uuid = v.patientuuid " +
+                            "JOIN tbl_encounter e ON v.uuid = e.visituuid " +
+                            "JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                            "WHERE e.encounter_type_uuid = ? " +
+                            "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "AND o.voided = 0";
+                } else {
+                    query = "SELECT COUNT(DISTINCT p.openmrs_id) FROM tbl_patient p " +
+                            "JOIN tbl_visit v ON p.uuid = v.patientuuid " +
+                            "JOIN tbl_encounter e ON v.uuid = e.visituuid " +
+                            "JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                            "WHERE (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "AND o.voided = 0";
+                }
+
+                try (Cursor cursor = db.rawQuery(query, isForReceivedPrescription ? new String[]{ENCOUNTER_VISIT_COMPLETE} : new String[]{})) {
+                    if (cursor.moveToFirst()) {
+                        count = cursor.getInt(0); // Fetch the count
+                    }
+                }
+
+                // Reset retry count after success
+                getVisitCount = 0;
+                break; // Exit loop after successful execution
+
+            } catch (Exception e) {
+                CustomLog.e(TAG, "DB error: " + e.getMessage());
+                FirebaseCrashlytics.getInstance().recordException(e);
+
+                if (attempt == 4) { // Last attempt failed
+                    return 0;
+                }
+
+                try {
+                    Thread.sleep(2000); // Wait before retry
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }
+
+        return count;
     }
 
 }

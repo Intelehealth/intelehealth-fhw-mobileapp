@@ -11,7 +11,9 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
@@ -94,6 +96,21 @@ public class VisitActivity extends BaseActivity implements
                     int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                     if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
                             flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+                        if (!isFinishing()) {
+                            refresh.clearAnimation();
+                            if (syncAnimator != null) syncAnimator.cancel();
+                        }
+                        // Delay tab layout update slightly
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
+                    }
+                }
+
+           /* @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.hasExtra("JOB")) {
+                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
                             CustomLog.v(TAG, "Sync Done!");
                             if (!isFinishing()) {
                                 refresh.clearAnimation();
@@ -101,7 +118,7 @@ public class VisitActivity extends BaseActivity implements
                             }
                             configureTabLayout();
                     }
-                }
+                }*/
 
                 //just stopping the progressbar here if sync is failed
                 if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
@@ -128,11 +145,12 @@ public class VisitActivity extends BaseActivity implements
         syncAnimator.setInterpolator(new LinearInterpolator());
     }
 
-    @Override
+   /* @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
-    }
+    }*/
 
+/*
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -151,6 +169,7 @@ public class VisitActivity extends BaseActivity implements
         res.updateConfiguration(conf, dm);
         return context;
     }
+*/
 
     @Override
     protected void onDestroy() {
@@ -160,51 +179,31 @@ public class VisitActivity extends BaseActivity implements
     }
 
     public void configureTabLayout() {
-        if(refreshCount > 0) return;
-        tabLayout = findViewById(R.id.tablayout_appointments);
-        viewPager = findViewById(R.id.pager_appointments);
-        VisitPagerAdapter adapter = new VisitPagerAdapter(VisitActivity.this);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(currentTabPos,false);
+        if (refreshCount > 0) return; // Prevent unnecessary updates
 
-        new TabLayoutMediator(tabLayout, viewPager,
-                (TabLayout.Tab tab, int position) -> {
-                    if (position == 0)
-                        tab.setText(getResources().getString(R.string.received)).setIcon(R.drawable.presc_tablayout_icon);
-                    else
-                        tab.setText(getResources().getString(R.string.pending)).setIcon(R.drawable.presc_tablayout_icon);
+        if (tabLayout == null) tabLayout = findViewById(R.id.tablayout_appointments);
+        if (viewPager == null) viewPager = findViewById(R.id.pager_appointments);
 
-                }
-        ).attach();
+        if (viewPager.getAdapter() == null) {
+            VisitPagerAdapter adapter = new VisitPagerAdapter(this);
+            viewPager.setAdapter(adapter);
 
-        int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
-        viewPager.setOffscreenPageLimit(limit);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                currentTabPos = tab.getPosition();
-            }
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> tab.setText(getResources().getString(
+                                    position == 0 ? R.string.received : R.string.pending))
+                            .setIcon(R.drawable.presc_tablayout_icon)
+            ).attach();
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-
-        });
-
-        String language = sessionManager.getAppLanguage();
-        if (!language.equalsIgnoreCase("")) {
+            viewPager.setOffscreenPageLimit(1); // Optimize memory usage
+        }
+          /*String language = sessionManager.getAppLanguage();
+      if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        }
+        }*/
 
         hideProgressbar();
         refreshCount++;
@@ -212,7 +211,7 @@ public class VisitActivity extends BaseActivity implements
 
     }
 
-    private void updateCounts(boolean isForReceivedPrescription) {
+   /* private void updateCounts(boolean isForReceivedPrescription) {
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
             runOnUiThread(() -> {
@@ -225,7 +224,7 @@ public class VisitActivity extends BaseActivity implements
 
         });
     }
-
+*/
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
@@ -320,5 +319,18 @@ public class VisitActivity extends BaseActivity implements
         }
     }
 
+    private void updateCounts(boolean isForReceivedPrescription) {
+        new Thread(() -> {
+            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+            runOnUiThread(() -> {
+                if (isForReceivedPrescription)
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                            getResources().getString(R.string.received) + "\t(" + count + ")");
+                else
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                            getResources().getString(R.string.pending) + "\t(" + count + ")");
+            });
+        }).start();
+    }
 
 }

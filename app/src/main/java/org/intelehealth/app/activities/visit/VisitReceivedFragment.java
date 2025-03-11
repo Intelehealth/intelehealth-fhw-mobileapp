@@ -91,7 +91,7 @@ public class VisitReceivedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_visit_received, container, false);
         initUI(view);
-        setLocale(getContext());
+        //setLocale(getContext());
         mlistener = (VisitCountInterface) getActivity();
         return view;
     }
@@ -104,7 +104,7 @@ public class VisitReceivedFragment extends Fragment {
         visitData();
     }
 
-    public Context setLocale(Context context) {
+   /* public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
         Resources res = context.getResources();
@@ -121,7 +121,7 @@ public class VisitReceivedFragment extends Fragment {
         }
         res.updateConfiguration(conf, dm);
         return context;
-    }
+    }*/
 
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
