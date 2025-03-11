@@ -5592,7 +5592,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 reports_relative.setVisibility(View.VISIBLE);
                 denies_relative.setVisibility(View.VISIBLE);
 
-                valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
+                valueArray = value.split("\\s*►<b>\\s*" + Node.ASSOCIATE_SYMPTOMS + "\\s*</b>:\\s*<br/>\\s*");    // NAS-881 : this regex expression removes any extra spaces before and after the words. Here for the NAS 3.0 data the space was not matchign due to which it was not spillting the string.
                 isAssociateSymptomFound = valueArray.length >= 2;
                 CustomLog.v(TAG, "complaint: " + valueArray[0]);
                 CustomLog.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
