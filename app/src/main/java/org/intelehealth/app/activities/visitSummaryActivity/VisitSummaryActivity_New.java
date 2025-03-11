@@ -65,6 +65,7 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -165,6 +166,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.filter.LettersNumbersSelectedSymbolsInputFilter;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -2617,8 +2619,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
 
+
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+        etAdditionalNotesVS.setFilters(new InputFilter[]{new LettersNumbersSelectedSymbolsInputFilter()});
         etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

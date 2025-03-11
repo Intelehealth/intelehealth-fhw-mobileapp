@@ -4,9 +4,7 @@ import android.text.InputFilter
 import android.text.Spanned
 
 // Filter to allow Characters, Digits, Special Characters, and Emojis
-class CorrespondingAddressInputFilter : InputFilter {
-
-    private val allowedChars = "[\\p{L}0-9.,\\-\\s]"
+class LettersNumbersSelectedSymbolsInputFilter : InputFilter {
 
     override fun filter(
         source: CharSequence,
