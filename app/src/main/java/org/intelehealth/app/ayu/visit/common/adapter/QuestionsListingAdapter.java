@@ -1395,7 +1395,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 } else {
                                     holder.submitButton.setVisibility(View.GONE);
-
+                                    holder.nestedRecyclerViewContainerLinerLayout.removeAllViews();
                                    /* new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
@@ -1421,6 +1421,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                         mItemList.get(index).getOptionsList().get(i).unselectAllNestedNode();
                                     }
                                 }
+                                holder.nestedRecyclerViewContainerLinerLayout.removeAllViews();
                             } else {
                                 if (isRequiredToShowParentActionButtons) {
                                     if (!mItemList.get(index).isEnableExclusiveOption()) {

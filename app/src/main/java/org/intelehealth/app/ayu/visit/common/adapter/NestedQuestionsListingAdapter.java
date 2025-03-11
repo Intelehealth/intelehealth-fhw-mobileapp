@@ -1013,6 +1013,17 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                 holder.submitButton.setVisibility(View.GONE);
                                 mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index), false);
                                 AdapterUtils.setToDisable(holder.skipButton);
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (!options.get(i).getId().equals(node.getId())) {
+                                        options.get(i).unselectAllNestedNode();
+                                    }
+                                }
+                                for (int i = 0; i < mItemList.size(); i++) {  // Note: here if the node - Option A is selected than for those which are not selected those nested questions will be removed making the previous options to disapper in case of single choice options. - Prajwal
+                                    if (!mItemList.get(i).isSelected()) { // here, all those that are not selected nested - options those will be removed thus, keeping only the current selection options - nested options visible.
+                                        mItemList.remove(i);
+                                        notifyItemRemoved(i);
+                                    }
+                                }
                             }
 
                             if (mItemList.get(index).isRequired()) {
@@ -1033,7 +1044,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                         for (int i = 0; i < mItemList.size(); i++) {
                                             Node n = mItemList.get(i);
                                             CustomLog.v(TAG, node.getText() + "## n ## " + n.getText());
-                                            if (node.getText().equalsIgnoreCase(n.getText())) {
+                                            if (node.getId().equalsIgnoreCase(n.getId())) {
                                                 found = true;
                                                 // remove all the next nodes of the selected node - nested options.
                                                 //while (mItemList.size() > i) {
@@ -1044,7 +1055,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                             }
                                         }
                                         if (!found)
-                                            notifyItemChanged(index);
+                                            notifyDataSetChanged();
+                                            //notifyItemChanged(index);
                                     }
                                 }
                             }, 100);

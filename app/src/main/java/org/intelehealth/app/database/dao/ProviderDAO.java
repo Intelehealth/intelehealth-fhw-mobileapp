@@ -6,20 +6,17 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import org.intelehealth.app.utilities.CustomLog;
-
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ProviderDTO;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProviderDAO {
     private static final String TAG = "ProviderDAO";
@@ -203,7 +200,7 @@ public class ProviderDAO {
     public ProviderDTO getProviderInfo(String uuid) throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         ProviderDTO providerDTO = null;
-
+        CustomLog.e("TAG", "getProviderInfo uuid: " + uuid);
         db.beginTransaction();
         try {
             String query = "select * from tbl_provider where uuid = ?";

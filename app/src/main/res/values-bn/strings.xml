@@ -433,7 +433,7 @@
 
     <string name="hello_i_am_ayu">হ্যালো আমি আয়ু</string>
     <string name="ayu_intro">একটি ডিজিটাল স্বাস্থ্য সহকারী.\nশুরু করা যাক!</string>
-    <string name="agree_to_terms"><font color='#2F1E91'><u>শর্তাবলী</u></font> এবং <font color='#2F1E91'><u>গোপনীয়তা নীতিতে</u></font> সম্মত হন</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>শর্তাবলী</u></font> এবং <font color='#2F1E91'><u>গোপনীয়তা নীতি</u></font> সম্মত হন</string>
     <string name="setup">সেটআপ</string>
     <string name="terms_and_conditions">শর্তাবলী</string>
     <string name="privacy_policy">গোপনীয়তা নীতি</string>
