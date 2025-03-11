@@ -132,7 +132,7 @@ public class SyncDAO {
                              responseDTO.getData().getVisitAttributeList().size());
 
             //downloading images if not found
-            downloadPatientImages(responseDTO.getData().getPatientDTO());
+            downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
@@ -191,7 +191,7 @@ public class SyncDAO {
     public void profilePicDownloaded(PatientDTO model) {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
-        Logger.logD("TAG", "profileimage url" + url);
+        //Logger.logD("TAG", "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload
                 = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
                 (url, "Basic " + sessionManager.getEncoded());
