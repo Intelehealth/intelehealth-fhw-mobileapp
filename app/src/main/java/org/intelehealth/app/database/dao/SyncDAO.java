@@ -132,7 +132,7 @@ public class SyncDAO {
                              responseDTO.getData().getVisitAttributeList().size());
 
             //downloading images if not found
-            downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue
+            //downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue //as per dicscussed with Mithun commenting this code due sync load - In dsm 11 march 2025
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
