@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
@@ -63,11 +63,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
-        tools:replace="allowBackup" >
+        tools:replace="allowBackup">
+        <activity
+            android:name=".ui.initialsync.InitialSyncActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.draftsurvey.DraftSurveyActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity"
             android:exported="true"
@@ -103,7 +108,7 @@
             android:name=".profile.MyProfileActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -116,7 +121,7 @@
             android:name=".activities.chatHelp.ChatHelpActivity_New"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -125,7 +130,7 @@
             android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" >
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -133,7 +138,7 @@
         <activity
             android:name=".activities.aboutus.AboutUsActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -141,7 +146,7 @@
         <activity
             android:name=".activities.settingsActivity.Language_ProtocolsActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -149,14 +154,14 @@
         <activity
             android:name=".activities.patientSurveyActivity.PatientSurveyActivity_New"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".horizontalcalendar.HorizontalCalendarActivity"
-            android:exported="true" >
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -165,7 +170,7 @@
             android:name=".activities.visit.PrescriptionActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" >
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -174,7 +179,7 @@
             android:name=".activities.visit.EndVisitActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" >
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -183,7 +188,7 @@
             android:name=".activities.visit.VisitActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" >
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -192,7 +197,7 @@
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -201,7 +206,7 @@
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" >
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -210,7 +215,7 @@
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -254,7 +259,7 @@
             android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -265,7 +270,7 @@
             android:name=".ui.patient.activity.PatientRegistrationActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -312,7 +317,7 @@
             android:name=".activities.homeActivity.HomeScreenActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="FCM_PLUGIN_HOME_ACTIVITY" />
 
@@ -349,7 +354,7 @@
         <receiver
             android:name=".services.CameraOpenRequestReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION" />
             </intent-filter>
@@ -415,7 +420,7 @@
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -448,7 +453,7 @@
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -466,7 +471,7 @@
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -481,7 +486,7 @@
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
             android:name=".webrtc.service.FCMMessageService"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -489,7 +494,7 @@
 
         <receiver
             android:name=".webrtc.receiver.FCMNotificationReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
             </intent-filter>
@@ -522,7 +527,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="org.intelehealth.nas.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
