@@ -46,7 +46,10 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.se.omapi.Session;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -1136,13 +1139,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getEmailId()) ? getString(R.string.dr_email) + details.getEmailId() : "") + "</span><br>" + "</div>";
         }
 
+        String bmiValue = (!TextUtils.isEmpty(mBMI)) ? mBMI : "";
+        String bmiColor = getBmiColor(mBMI);
+        String formattedBmi = "<span style=\"color: " + bmiColor + ";\">" + bmiValue + "</span>";
+
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                     /* doctorDetailStr +*/
                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
-                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                    doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", formattedBmi, (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(ft): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
@@ -1172,6 +1179,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
+    }
+
+    private String getBmiColor(String mbmi) {
+        double bmi = Double.parseDouble(mbmi);
+
+        if (bmi < 18.50) {
+            return String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.ui2_bmi1_ekal)));
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            return String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.ui2_bmi2_ekal)));
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            return String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.ui2_bmi3_ekal)));
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            return String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.ui2_bmi4_ekal)));
+        } else if (bmi > 30) {
+            return String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.ui2_bmi5_ekal)));
+        }
+
+        return "#000000";
     }
 
     // presc create - end
@@ -2229,6 +2254,51 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         } else {
             return dto.getValue();
         }
+    }
+
+    private void setBmiStatus(TextView bmiTextView, String mbmi) {
+        double bmi = Double.parseDouble(mbmi);
+        bmiTextView.setText(bmi + " " + getResources().getString(R.string.kg_m));
+        if (bmi < 18.50) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi1_ekal));
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi2_ekal));
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi3_ekal));
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi4_ekal));
+        } else if (bmi > 30) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi5_ekal));
+        }
+    }
+
+    private void setBpStatus(TextView bpTextView, String mSys, String mDia) {
+        int sys = Integer.parseInt(mSys);
+        int dia = Integer.parseInt(mDia);
+
+        int sysColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+        int diaColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+
+        if (sys >= 90 && sys < 120) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys1_ekal);
+        } else if (sys >= 120 && sys <= 139) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys2_ekal);
+        }
+
+        if (dia < 80) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia1_ekal);
+        } else if (dia >= 80 && dia <= 99) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia2_ekal);
+        }
+
+        bpTextView.setText(mSys + "/" + mDia);
+        bpTextView.setTextColor(sysColor);
+
+        SpannableString spannableString = new SpannableString(mSys + "/" + mDia);
+        spannableString.setSpan(new ForegroundColorSpan(sysColor), 0, mSys.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(diaColor), mSys.length() + 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        bpTextView.setText(spannableString);
     }
 
     public String checkAndReturnTemperatureValue(ObsDTO dto) {

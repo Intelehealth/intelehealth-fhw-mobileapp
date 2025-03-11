@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,6 +36,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.model.BMIStatus;
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -204,16 +209,21 @@ public class VitalCollectionSummaryFragment extends Fragment {
             else
                 ((TextView) view.findViewById(R.id.tv_weight)).setText(getString(R.string.ui2_no_information));
 
-            if (mVitalsObject.getBmi() != null && !mVitalsObject.getBmi().isEmpty())
-                ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " " + getResources().getString(R.string.kg_m));
-            else
+            TextView bmiTextView = view.findViewById(R.id.tv_bmi);
+            if (mVitalsObject.getBmi() != null && !mVitalsObject.getBmi().isEmpty()){
+                setBmiStatus(bmiTextView);
+            } else {
                 ((TextView) view.findViewById(R.id.tv_bmi)).setText(getString(R.string.ui2_no_information));
+            }
 
-
-            if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty())
-                ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
-            else
+            TextView bpTextView = view.findViewById(R.id.tv_bp);
+            if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty() &&
+                    mVitalsObject.getBpdia() != null && !mVitalsObject.getBpdia().isEmpty()){
+                setBpStatus(bpTextView);
+            } else {
                 ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
+            }
+
             if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
                 ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
             else
@@ -334,6 +344,51 @@ public class VitalCollectionSummaryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void setBmiStatus(TextView bmiTextView) {
+        double bmi = Double.parseDouble(mVitalsObject.getBmi());
+        bmiTextView.setText(bmi + " " + getResources().getString(R.string.kg_m));
+        if (bmi < 18.50) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi1_ekal));
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi2_ekal));
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi3_ekal));
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi4_ekal));
+        } else if (bmi > 30) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi5_ekal));
+        }
+    }
+
+    private void setBpStatus(TextView bpTextView) {
+        int sys = Integer.parseInt(mVitalsObject.getBpsys());
+        int dia = Integer.parseInt(mVitalsObject.getBpdia());
+
+        int sysColor = ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal);
+        int diaColor = ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal);
+
+        if (sys >= 90 && sys < 120) {
+            sysColor = ContextCompat.getColor(requireActivity(), R.color.ui2_sys1_ekal);
+        } else if (sys >= 120 && sys <= 139) {
+            sysColor = ContextCompat.getColor(requireActivity(), R.color.ui2_sys2_ekal);
+        }
+
+        if (dia < 80) {
+            diaColor = ContextCompat.getColor(requireActivity(), R.color.ui2_dia1_ekal);
+        } else if (dia >= 80 && dia <= 99) {
+            diaColor = ContextCompat.getColor(requireActivity(), R.color.ui2_dia2_ekal);
+        }
+
+        bpTextView.setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
+        bpTextView.setTextColor(sysColor);
+
+        SpannableString spannableString = new SpannableString(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
+        spannableString.setSpan(new ForegroundColorSpan(sysColor), 0, mVitalsObject.getBpsys().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(diaColor), mVitalsObject.getBpsys().length() + 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        bpTextView.setText(spannableString);
     }
 
     private void saveSevikaVisitAndProceed() {
