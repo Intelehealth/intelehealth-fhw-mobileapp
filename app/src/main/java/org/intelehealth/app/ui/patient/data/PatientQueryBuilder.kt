@@ -51,20 +51,4 @@ class PatientQueryBuilder : QueryBuilder() {
        return "(SELECT value FROM tbl_patient_attribute WHERE patientuuid = P.uuid " +
                "AND person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master WHERE name = '" + attrName + "')) "
    }
-
-    fun buildPatientSurveyAttributesDetailsQuery(patientId: String): String {
-        return select(
-            buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSE_STRUCTURE.value) + " AS HouseStructure, " +
-                    buildPatientAttributesQuery(PatientAttributesDTO.Column.RESULT_OF_VISIT.value) + " AS ResultOfVisit, " +
-                    buildPatientAttributesQuery(PatientAttributesDTO.Column.NAME_OF_PRIMARY_RESPONDENT.value) + " AS NamePrimaryRespondent, " +
-                    buildPatientAttributesQuery(PatientAttributesDTO.Column.REPORT_DATE_OF_PATIENT_CREATED.value) + " AS `ReportDate of patient created`, " +
-                    buildPatientAttributesQuery(PatientAttributesDTO.Column.HOUSEHOLD_NUMBER_OF_SURVEY.value) + " AS HouseholdNumber, " +
-                    buildPatientAttributesQuery(PatientAttributesDTO.Column.REPORT_DATE_OF_SURVEY_STARTED.value) + " AS `ReportDate of survey started`"
-        )
-            .from("tbl_patient P")
-            .where("P.uuid = '$patientId' AND P.voided = '0'")
-            .groupBy("P.uuid")
-            .build()
-    }
-
 }

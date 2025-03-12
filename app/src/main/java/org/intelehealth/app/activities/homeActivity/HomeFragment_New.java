@@ -21,8 +21,11 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +74,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HomeFragment_New extends BaseFragment implements NetworkUtils.InternetCheckUpdateInterface, LifecycleObserver {
@@ -85,6 +89,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
     private int todaysCount = 0;
     private int tomorrowsCount = 0;
+    private HomeScreenQueriesRepository repository;
+    private ExecutorService executorService;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -92,6 +98,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
     }
 
+/*
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -110,12 +117,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         res.updateConfiguration(conf, dm);
         return context;
     }
+*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
         networkUtils = new NetworkUtils(requireActivity(), this);
-        setLocale(getContext());
+        repository = new HomeScreenQueriesRepository();
+        executorService = Executors.newSingleThreadExecutor();
+
+        //setLocale(getContext());
 
         ((HomeScreenActivity_New) requireActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
             @Override
@@ -140,8 +151,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-        CustomLog.d("Test1","Tanvir");
-        CustomLog.d("Test2","Tanvir2");
+        CustomLog.d("Test1", "Tanvir");
+        CustomLog.d("Test2", "Tanvir2");
 
         return view;
     }
@@ -304,11 +315,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         Executors.newSingleThreadExecutor().execute(() -> {
-            int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-            int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-//            int countReceivedPrescription = getCurrentMonthsVisits(true);
-
+            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
+            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
+            //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
+           // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
             if (isAdded()) {
@@ -324,13 +335,23 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
-        new Thread(() -> {
+        executorService.execute(() -> {
+            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+            int countPendingCloseVisits = repository.getRecentNotEndedVisits(db).size()
+                    + repository.getOlderNotEndedVisits(db).size();
+            if (isAdded()) {
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(
+                        activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)
+                ));
+            }
+        });
+        /*new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
             if (isAdded()) {
                 activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
 
             }
-        }).start();
+        }).start();*/
 
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -375,7 +396,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onResume() {
         super.onResume();
-        setLocale(getContext());
+        //setLocale(getContext());
         initUI();
 
     }
@@ -466,21 +487,35 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     totalUpcomingApps = 0;
                 }*/
 
-                int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
-                ;
+               /* int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
+
                 if (mUpcomingAppointmentCountTextView != null) {
                     Activity activity = getActivity();
                     if (isAdded() && activity != null) {
                         activity.runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + activity.getString(R.string.upcoming)));
                     }
-                }
+                }*/
+                executorService.execute(() -> {
+                    HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+                    int finalTotalUpcomingApps = repository.getUpcomingAppointmentCount(db);
+
+                    if (mUpcomingAppointmentCountTextView != null) {
+                        Activity activity = getActivity();
+                        if (isAdded() && activity != null) {
+                            activity.runOnUiThread(() ->
+                                    mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + activity.getString(R.string.upcoming))
+                            );
+                        }
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void countStrPendingFollowupVisits() {
+    public void countStrPendingFollowupVisitsOld() {
         List<FollowUpModel> modelList = new ArrayList<>();
 
         Date todayssDate = DateAndTimeUtils.getCurrentDateWithoutTime();
@@ -501,11 +536,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 + "a.uuid = c.visit_uuid AND   " +
                 "a.patientuuid = b.uuid AND "
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                +"AND o.voided='0' and "
+                + "AND o.voided='0' and "
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        CustomLog.d("COUNT_QUERY",query);
+        CustomLog.d("COUNT_QUERY", query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
@@ -516,22 +551,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
 //                    CustomLog.v(TAG, "value_text - " + value_text);
 //                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
-                        modelList.add(new FollowUpModel(visitUuid,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                                ))); // ie. visit is emergency visit.
+                    modelList.add(new FollowUpModel(visitUuid,
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                            cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                            true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                            ))); // ie. visit is emergency visit.
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -560,6 +595,57 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         super.onFeatureStatusLoaded(status);
         view.findViewById(R.id.cardView4_appointment)
                 .setVisibility(status.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
+    }
+
+    public void countStrPendingFollowupVisits() {
+        Date todaysDate = DateAndTimeUtils.getCurrentDateWithoutTime();
+        Calendar c = Calendar.getInstance();
+        c.setTime(todaysDate);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrowsDate = c.getTime();
+
+        String todaysDateStr = new SimpleDateFormat("yyyy-MM-dd").format(todaysDate);
+        String tomorrowsDateStr = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
+
+        // Optimized SQL Query
+        String query = "SELECT DATE(SUBSTR(o.value, 1, 10)) AS followup_date " +
+                "FROM tbl_visit a " +
+                "JOIN tbl_patient b ON a.patientuuid = b.uuid " +
+                "JOIN tbl_encounter d ON a.uuid = d.visituuid " +
+                "JOIN tbl_obs o ON d.uuid = o.encounteruuid " +
+                "JOIN tbl_visit_attribute c ON a.uuid = c.visit_uuid " +
+                "WHERE o.conceptuuid = ? " +
+                "AND o.voided = '0' " +
+                "AND o.value IS NOT NULL " +
+                "GROUP BY a.patientuuid " +
+                "HAVING LOWER(SUBSTR(o.value, 1, 10)) IS NOT NULL " +
+                "AND LOWER(SUBSTR(o.value, 1, 10)) != 'no' " +
+                "AND SUBSTR(o.value, 1, 10) != ''";
+
+        CustomLog.d("COUNT_QUERY", query);
+
+        Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+
+        todaysCount = 0;
+        tomorrowsCount = 0;
+
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    String followupDate = cursor.getString(cursor.getColumnIndexOrThrow("followup_date")).substring(0, 10).trim();
+                    if (followupDate.equals(todaysDateStr)) {
+                        todaysCount++;
+                    } else if (followupDate.equals(tomorrowsDateStr)) {
+                        tomorrowsCount++;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Error processing follow-up visit count: " + e.getMessage());
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
     }
 }
 
