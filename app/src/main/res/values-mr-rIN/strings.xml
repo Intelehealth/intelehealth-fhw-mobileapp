@@ -1360,7 +1360,7 @@
     <string name="change_lang">भाषा आणि प्रोटोकॉल बदला</string>
     <string name="please_enter_the_value">कृपया मूल्य प्रविष्ट करा</string>
     <string name="hello_i_am_ayu">नमस्कार, मी आयु आहे,</string>
-    <string name="agree_to_terms">अटी आणि शर्ती आणि गोपनीयता धोरणास सहमती द्या</string>
+    <string name="agree_to_terms">अटी आणि शर्ती आणि गोपनीयता धोरण सहमती द्या</string>
     <string name="terms_and_conditions">अटी आणि शर्ती</string>
     <string name="setup_new">सेटअप</string>
     <string name="one_time_setup">कृपया तुमची एकदा\nसेटअप क्रियाकलाप पूर्ण करा</string>
@@ -1483,7 +1483,7 @@
     <string name="kg_m">किलो/मी</string>
     <string name="bpm">बीपीएम</string>
     <string name="breaths_min">श्वास/मि</string>
-    <string name="five_presc_received">%1$sप्रिस्क्रिप्शन मिळाले</string>
+    <string name="five_presc_received">%1$s प्रिस्क्रिप्शन मिळाले</string>
     <string name="work_in_progress">काम चालू आहे..</string>
     <string name="prescription_available_for_notification">%1$s साठी प्रिस्क्रिप्शन उपलब्ध आहे</string>
     <string name="click_notification_to_see">सूचना पाहण्यासाठी क्लिक करा!</string>
@@ -1503,4 +1503,12 @@
     <string name="your_patient_score">तुमचा रुग्ण\nसमाधान स्कोअर</string>
     <string name="your_time_spent_today">तुम्ही आज घालवलेला वेळ</string>
     <string name="total_time_spent">एकूण घालवलेला वेळ</string>
+    <string name="lbl_retry">पुन्हा प्रयत्न करा</string>
+    <string name="sync_completed_message">सिंक पूर्ण झाले</string>
+    <string name="welcome_message">स्वागत आहे! %1$s</string>
+    <string name="sync_wait_message">सिंक पूर्ण होण्यासाठी कृपया प्रतीक्षा करा</string>
+    <string name="syncing">सिंक होत आहे</string>
+    <string name="sync_progress_percentage">%1$d%% प्रगती</string>
+    <string name="sync_completed">सिंक पूर्ण झाले</string>
+
 </resources>

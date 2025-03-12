@@ -741,7 +741,7 @@
     <string name="why_intelehealth_exist_ans">Team at Intelehealth has a vision of \"Health for all\". Thus, Intelehealth exists to keep this vision of universal health coverage alive. It strive to achieve that every single citizen in this world should be able to receive the health services they need, when and where they need them, without facing any financial hardship.</string>
     <string name="how_intelehealth_help">How intelehealth help patients?</string>
     <string name="how_intelehealth_help_ans">Our Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare. Using app, the HWs are able to capture details of patient\'s medication history, diagnostics, prescriptions and treatment. All these details our then shared with the remote doctors to provide consultation. It helps in saving patients from traveling miles for healthcare.</string>
-    <string name="how_to_register">नवीन रुग्णाची नोंदणी कशी करावी?</string>
+    <string name="how_to_register">How to register new patient?</string>
     <string name="how_to_register_ans">To register a patient, click on the \"Add Patient\" tab on the home scree. Read out the privacy policy to the patient. If they accept, fill out all the details to successfully register a patient.</string>
     <string name="how_to_add_new_visit">How to add a new visit?</string>
     <string name="how_to_add_new_visit_ans">Once the patient is registered, on patient details screen, click \"Start Visit\" button to create a new visit for the patient.</string>
