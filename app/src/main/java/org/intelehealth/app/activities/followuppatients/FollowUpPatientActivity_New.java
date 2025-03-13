@@ -128,6 +128,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private RelativeLayout parentLay;
     private boolean isFullyLoaded = false;
     private boolean isPageLoading = false;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,22 +169,21 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     }
 
     private void initializeRecyclerView(LinearLayoutManager linearLayoutManager) {
-        rv_month.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mBodyNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (finalMonthsFollowUpDates != null && finalMonthsFollowUpDates.size() == 0) {
-                    isFullyLoaded = true;
-                    return;
+            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    if (finalMonthsFollowUpDates != null && finalMonthsFollowUpDates.size() == 0) {
+                        isFullyLoaded = true;
+                        return;
+                    }
+
+                    if (!isPageLoading && !isFullyLoaded && linearLayoutManager.findLastVisibleItemPosition() == othersAdapter.getItemCount() - 1) {
+                        Toast.makeText(FollowUpPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                        fetchAndSegregateData(DataLoadingType.PAGINATION);
+
+                    }
                 }
-                if (!isPageLoading && !isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        linearLayoutManager.findLastVisibleItemPosition() == othersAdapter.getItemCount() - 1) {
-
-                    Toast.makeText(FollowUpPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                    fetchAndSegregateData(DataLoadingType.PAGINATION);
-
-                }
-
             }
         });
     }
@@ -276,11 +276,20 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             scrollChips.setVisibility(View.GONE);
         }
 
-        toolbar_title.setText(new StringBuilder()
-                .append(getString(R.string.label))
-                .append(" (")
-                .append(PatientsDAO.getAllFollowupPatientCount())
-                .append(")"));
+        compositeDisposable.add(PatientsDAO.getAllFollowupPatientCount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(count -> {
+                            toolbar_title.setText(new StringBuilder()
+                                    .append(getString(R.string.label))
+                                    .append(" (")
+                                    .append(count)
+                                    .append(")"));
+                        },
+                        err -> {
+
+                        }));
+
 
         ImageButton ibButtonBack = findViewById(R.id.vector);
 
@@ -611,8 +620,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     AlertDialog commonLoadingDialog;
 
     private void fetchAndSegregateData(DataLoadingType dataLoadingType) {
-        CompositeDisposable compositeDisposable = new CompositeDisposable();
-
         if (dataLoadingType == DataLoadingType.INITIAL) {
             finalMonthsFollowUpDates.clear();
             if (commonLoadingDialog == null) {
@@ -639,9 +646,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         }
                                         shouldShowNoDataTextViewForAllRecyclerViews(true);
                                     } else {
-                                        Log.d("CCCC",""+filterType);
                                         if (filterType != FollowupFilterTypeEnum.NONE) {
-                                            Log.d("CCCC","CC1");
                                             finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                             shouldShowNoDataTextViewForAllRecyclerViews(false);
 
@@ -658,7 +663,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                             }
                                             isPageLoading = false;
                                         } else {
-                                            Log.d("CCCC","CC2");
                                             finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                             mTodayRelativeLayout.setVisibility(View.VISIBLE);
                                             mWeekRelativeLayout.setVisibility(View.VISIBLE);
@@ -677,7 +681,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                             tomorrowssFollowUpDates.addAll(result.second);
                                                             setTodaysDatesInRecyclerView(todaysFollowUpDates);
                                                             setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
-                                                        }else {
+                                                        } else {
                                                             completedRecyclerViews.incrementAndGet();
                                                             completedRecyclerViews.incrementAndGet();
                                                         }
@@ -689,90 +693,25 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                         }
                                                         isPageLoading = false;
                                                     }, throwable -> {
-                                                        //
+                                                        if (commonLoadingDialog.isShowing()) {
+                                                            commonLoadingDialog.dismiss();
+                                                        }
+                                                        Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load todays and tomorrows data"+throwable,Toast.LENGTH_SHORT).show();
                                                     }));
                                         }
                                     }
                                 },
                                 err -> {
-
+                                    if (commonLoadingDialog.isShowing()) {
+                                        commonLoadingDialog.dismiss();
+                                    }
+                                    Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load others data",Toast.LENGTH_SHORT).show();
                                 })
         );
 
 
     }
 
-/*    private void fetchAndSegregateData(DataLoadingType dataLoadingType) {
-        if (dataLoadingType == DataLoadingType.INITIAL) {
-            finalMonthsFollowUpDates.clear();
-            if(commonLoadingDialog == null){
-                commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
-                commonLoadingDialog.setCancelable(false);
-            }
-            if(!commonLoadingDialog.isShowing()){
-                commonLoadingDialog.show();
-            }
-        } else {
-            isPageLoading = true;
-            //commonLoadingDialog = null;
-           *//* ToastUtil.showShortToast(this, getString(R.string.loading));*//*
-        }
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB(20, finalMonthsFollowUpDates.size());
-            if (initialFollowUpPatients.isEmpty()) {
-                if (dataLoadingType == DataLoadingType.INITIAL) {
-                    commonLoadingDialog.dismiss();
-                }
-                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
-            } else {
-                if (filterType != FollowupFilterTypeEnum.NONE) {
-                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                    runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
-                    runOnUiThread(() -> {
-                        mTodayRelativeLayout.setVisibility(View.GONE);
-                        mWeekRelativeLayout.setVisibility(View.GONE);
-                        othersTitle.setVisibility(View.GONE);
-
-                        completedRecyclerViews.incrementAndGet();
-                        completedRecyclerViews.incrementAndGet();
-
-                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                        if (completedRecyclerViews.get() == 3) {
-                            commonLoadingDialog.dismiss();
-                        }
-                    });
-                } else {
-                    finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                    runOnUiThread(() -> {
-                        mTodayRelativeLayout.setVisibility(View.VISIBLE);
-                        mWeekRelativeLayout.setVisibility(View.VISIBLE);
-                        othersTitle.setVisibility(View.VISIBLE);
-                        shouldShowNoDataTextViewForAllRecyclerViews(false);
-                    });
-                    getChiefComplaint(initialFollowUpPatients);
-
-                    *//*todaysFollowUpDates.addAll(getTodaysVisitsFromList(initialFollowUpPatients));
-                    initialFollowUpPatients.removeAll(todaysFollowUpDates);
-                    tomorrowssFollowUpDates.addAll(getTomorrowsVisitsFromList(initialFollowUpPatients));
-                    finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
-                    finalMonthsFollowUpDates.removeAll(tomorrowssFollowUpDates);*//*
-
-                    List<FollowUpModel> todaysPatients = getAllPatientsFromDBToday();
-                    List<FollowUpModel> tmorrowsPatients = getAllPatientsFromDBTomorrow();
-
-                    todaysFollowUpDates.addAll(todaysPatients);
-                    tomorrowssFollowUpDates.addAll(tmorrowsPatients);
-
-                    runOnUiThread(() -> {
-                        setTodaysDatesInRecyclerView(todaysFollowUpDates);
-                        setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
-                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                    });
-                }
-            }
-        });
-    }*/
 
     /**
      * atomic integer to keep track of recyclerviews loading
@@ -965,21 +904,41 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             sortQuery = " order by o.value desc ";
         }
 
-        String todaysDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
 
-        String query = "SELECT a.uuid as visituuid,b.first_name || " + middleName + " || b.last_name as patient_name_new, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "substr(o.value, 0, 10) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                + " AND o.voided='0' "
-                + " AND  followup_date = ?"
-                + " AND o.value is NOT NULL GROUP BY a.patientuuid"
-                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
+        String query = "SELECT " +
+                "a.uuid as visituuid," +
+                "b.first_name || " + middleName + " || b.last_name as patient_name_new, " +
+                "a.sync, a.patientuuid, " +
+                "substr(a.startdate, 1, 10) as startdate, "
+                +"DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                "o.value as follow_up_info,"
+                + "b.patient_photo, " +
+                "a.enddate, " +
+                "b.uuid, " +
+                "b.first_name, " +
+                "b.middle_name, " +
+                "b.last_name, " +
+                "b.date_of_birth, " +
+                "b.openmrs_id, " +
+                "b.gender, " +
+                "c.value AS speciality, " +
+                "SUBSTR(o.value,1,10) AS value_text, " +
+                "(o.obsservermodifieddate) AS obsservermodifieddate " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                "WHERE a.uuid = c.visit_uuid " +
+                "AND a.patientuuid = b.uuid " +
+                "AND a.uuid = d.visituuid " +
+                "AND d.uuid = o.encounteruuid " +
+                "AND o.conceptuuid = ? " +
+                "AND o.voided='0' " +
+                "AND  followup_date = ? " +
+                "AND o.value is NOT NULL " +
+                "AND followup_date is NOT NULL " +
+                "GROUP BY a.patientuuid " +
+                "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
         Timber.tag("FOLLOWUP_QUERY").d(query);
@@ -1072,21 +1031,44 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         c.add(Calendar.DAY_OF_MONTH, 1);
         Date tomorrowsDate = c.getTime();
 
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(tomorrowsDate);
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
 
 
-        String query = "SELECT a.uuid as visituuid,b.first_name || " + middleName + " || b.last_name as patient_name_new, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "substr(o.value, 0, 11) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                + " AND o.voided='0' "
-                + " AND  followup_date = ?"
-                + " AND o.value is NOT NULL GROUP BY a.patientuuid"
-                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
+        String query = "SELECT " +
+                "a.uuid as visituuid," +
+                "b.first_name || " + middleName + " || b.last_name as patient_name_new, " +
+                "a.sync, a.patientuuid, " +
+                "substr(a.startdate, 1, 10) as startdate, " +
+                "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                "o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, " +
+                "b.uuid, " +
+                "b.first_name, "
+                + "b.middle_name, " +
+                "b.last_name, " +
+                "b.date_of_birth, " +
+                "b.openmrs_id, " +
+                "b.gender, " +
+                "c.value AS speciality, " +
+                "SUBSTR(o.value,1,10) AS value_text, " +
+                "MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, " +
+                "tbl_patient b, " +
+                "tbl_encounter d, " +
+                "tbl_obs o, " +
+                "tbl_visit_attribute c " +
+                "WHERE " +
+                "a.uuid = c.visit_uuid " +
+                "AND a.patientuuid = b.uuid " +
+                "AND a.uuid = d.visituuid " +
+                "AND d.uuid = o.encounteruuid " +
+                "AND o.conceptuuid = ? " +
+                "AND o.voided='0' " +
+                "AND  followup_date = ? " +
+                "AND o.value is NOT NULL " +
+                "AND followup_date is NOT NULL "+
+                "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
         Timber.tag("FOLLOWUP_QUERY").d(query);
@@ -1160,28 +1142,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         return Observable.fromCallable(() -> {
             List<FollowUpModel> modelList = new ArrayList<>();
             String filterQuery = "";
-            if (filterType == FollowupFilterTypeEnum.DATE) {
-                String date = DateAndTimeUtils.date_formatter(filterDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
-                filterQuery = " and followup_date = '" + date + "' ";
-            } else if (filterType == FollowupFilterTypeEnum.RANGE) {
-                String startDate = DateAndTimeUtils.date_formatter(filterStartDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
-                String endDate = DateAndTimeUtils.date_formatter(filterEndDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
-                filterQuery = " and (followup_date >= '" + startDate + "' and followup_date <= '" + endDate + "' ) ";
-            }
-            String middleName = "CASE WHEN b.middle_name IS NOT NULL THEN ' ' || b.middle_name || ' ' ELSE ' ' END";
-
-            String searchQuery = "";
-            CharSequence sQuery = searchview_received.getText();
-            if (searchview_received.getText() != null && !searchview_received.getText().toString().isEmpty()) {
-                searchQuery = "and ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) ";
-            }
-
-            String sortQuery;
-            if (sortStatus) {
-                sortQuery = " order by o.value asc ";
-            } else {
-                sortQuery = " order by o.value desc ";
-            }
+            String skipTodayAndTomorrowQuery = "";
 
             Date todayssDate = DateAndTimeUtils.getCurrentDateWithoutTime();
             Calendar c = Calendar.getInstance();
@@ -1189,29 +1150,83 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             c.add(Calendar.DAY_OF_MONTH, 1);
             Date tomorrowsDate = c.getTime();
 
-            String tomorrow = new SimpleDateFormat("dd-MM-yyyy").format(tomorrowsDate);
-            String today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            String tomorrow = new SimpleDateFormat("yyyy-MM-dd").format(tomorrowsDate);
+            String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-            String query = "SELECT a.uuid as visituuid,b.first_name || " + middleName + " || b.last_name as patient_name_new, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                    + "substr(o.value, 0, 11) as followup_date, o.value as follow_up_info,"
-                    + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                    + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                    + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                    + "a.uuid = c.visit_uuid AND " +
-                    "a.patientuuid = b.uuid AND "
-                    + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                    + " AND o.voided='0' "
-                    + " AND  (followup_date != ? AND followup_date != ?)"
-                    + " AND o.value is NOT NULL GROUP BY a.patientuuid"
-                    + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
-                    + filterQuery
-                    + searchQuery
-                    + sortQuery
-                    + " limit ? offset ?";
+            skipTodayAndTomorrowQuery = "AND  (followup_date != '" + today + "' AND followup_date != '" + tomorrow + "') ";
+
+
+            if (filterType == FollowupFilterTypeEnum.DATE) {
+                String date = DateAndTimeUtils.date_formatter(filterDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+                filterQuery = " and followup_date = '" + date + "' ";
+                skipTodayAndTomorrowQuery = "";
+            } else if (filterType == FollowupFilterTypeEnum.RANGE) {
+                String startDate = DateAndTimeUtils.date_formatter(filterStartDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+                String endDate = DateAndTimeUtils.date_formatter(filterEndDateTv.getText().toString(), "dd MMM, yyyy", "yyyy-MM-dd");
+                filterQuery = " and (followup_date >= '" + startDate + "' and followup_date <= '" + endDate + "' ) ";
+                skipTodayAndTomorrowQuery = "";
+            }
+
+
+            String middleName = "CASE WHEN b.middle_name IS NOT NULL THEN ' ' || b.middle_name || ' ' ELSE ' ' END";
+
+            String searchQuery = "";
+            CharSequence sQuery = searchview_received.getText();
+            if (searchview_received.getText() != null && !searchview_received.getText().toString().isEmpty()) {
+                searchQuery = "and ((patient_name_new LIKE " + "'%" + sQuery.toString() + "%') OR (b.openmrs_id LIKE " + "'%" + sQuery + "%')) ";
+                skipTodayAndTomorrowQuery = "";
+            }
+
+            String sortQuery;
+            if (sortStatus) {
+                sortQuery = " order by followup_date asc ";
+            } else {
+                sortQuery = " order by followup_date desc ";
+            }
+
+
+            String query = "SELECT " +
+                    "a.uuid as visituuid," +
+                    "b.first_name || " + middleName + " || b.last_name as patient_name_new," +
+                    " a.sync, " +
+                    "a.patientuuid, " +
+                    "substr(a.startdate, 1, 10) as startdate, " +
+                    "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                    "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                    "o.value as follow_up_info, " +
+                    "b.patient_photo, " +
+                    "a.enddate, " +
+                    "b.uuid, " +
+                    "b.first_name, " +
+                    "b.middle_name, " +
+                    "b.last_name, " +
+                    "b.date_of_birth, " +
+                    "b.openmrs_id, " +
+                    "b.gender, " +
+                    "c.value AS speciality, " +
+                    "SUBSTR(o.value,1,10) AS value_text, " +
+                    "MAX(o.obsservermodifieddate) AS obsservermodifieddate " +
+                    "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                    "WHERE a.uuid = c.visit_uuid " +
+                    "AND a.patientuuid = b.uuid " +
+                    "AND a.uuid = d.visituuid " +
+                    "AND d.uuid = o.encounteruuid " +
+                    "AND o.conceptuuid = ? " +
+                    "AND o.voided='0' " +
+                    skipTodayAndTomorrowQuery +
+                    "AND o.value is NOT NULL " +
+                    "AND followup_date is NOT NULL " +
+                    "GROUP BY a.patientuuid " +
+                    "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
+                    "AND value_text != '' ) " +
+                    filterQuery +
+                    searchQuery +
+                    sortQuery +
+                    " limit ? offset ?";
 
             Timber.tag("FOLLOWUP_QUERY").d(query);
 
-            final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT, today, tomorrow, String.valueOf(limit), String.valueOf(offset)});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+            final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT, String.valueOf(limit), String.valueOf(offset)});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
             if (cursor.moveToFirst()) {
                 do {
                     try {
@@ -1317,4 +1332,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
+    }
 }
