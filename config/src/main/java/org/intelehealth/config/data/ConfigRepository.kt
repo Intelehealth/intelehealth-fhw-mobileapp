@@ -1,6 +1,7 @@
 package org.intelehealth.config.data
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -55,7 +56,10 @@ class ConfigRepository(
             configDb.clearAllTables()
             configDb.specializationDao().save(config.specialization)
             configDb.languageDao().save(config.language)
-            groupingPatientRegFields(config.patientRegFields.personal, FieldGroup.PERSONAL)
+            groupingPatientRegFields(
+                config.patientRegFields.personal,
+                FieldGroup.PERSONAL
+            )
             groupingPatientRegFields(config.patientRegFields.address, FieldGroup.ADDRESS)
             groupingPatientRegFields(config.patientRegFields.other, FieldGroup.OTHER)
             configDb.patientVitalDao().save(config.patientVitals)

@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -279,6 +281,7 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        declineCall(false);
                         sayBye("Call ended by you", null);
                     }
                 }).setNegativeButton(R.string.no, null).create().show();
@@ -287,7 +290,7 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     @Override
     public void onCompleted(@NonNull View view) {
         Timber.tag(TAG).d("onCompleted");
-        if (view.getId() == R.id.fabDeclineCall) declineCall();
+        if (view.getId() == R.id.fabDeclineCall) declineCall(true);
         else acceptCall();
     }
 

@@ -2466,7 +2466,6 @@
     </string-array>
 
     <string-array name="health_facility_name">
-        <item>Select Facility Name</item>
         <item>Maternity department of Chui Regional United Hospital</item>
         <item>Maternity department of Issyk-Kul Regional United Hospital</item>
         <item>Maternity hospital of Jalal-Abad Regional United Hospital</item>
@@ -2479,4 +2478,21 @@
         <item>In urgent form - from 3 to 24 hours</item>
         <item>In planned form – for a day or more</item>
     </string-array>
+
+    <string-array name="diagnosis_for_unfpa">
+        <item>Select Diagnosis</item>
+        <item>Chronic Arterial Hypertension (CAH)</item>
+        <item>Gestational Arterial Hypertension (GAH)</item>
+        <item>Pre-eclampsia (Moderate)</item>
+        <item>Pre-eclampsia (Severe)</item>
+        <item>Pre-eclampsia with Chronic Arterial Hypertension</item>
+        <item>Eclampsia</item>
+        <item>Early Postpartum Hemorrhage (Early PPH)</item>
+        <item>Late Postpartum Hemorrhage (Late PPH)</item>
+        <item>Postpartum Hemorrhage (PPH)</item>
+        <item>Postpartum Sepsis</item>
+        <item>Other</item>
+    </string-array>
+
+
 </resources>

@@ -556,7 +556,8 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputETPhoneNumber"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox.PhoneWtLength"
+                                android:maxLength="@{(personalConfig.phone.validations.maxLength != null) ? personalConfig.phone.validations.maxLength : 10}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"
@@ -708,7 +709,8 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/textInputETEMPhoneNumber"
-                                style="@style/AppTheme.InputBox.Phone"
+                                style="@style/AppTheme.InputBox.PhoneWtLength"
+                                android:maxLength="@{(personalConfig.emergencyContactNumber.validations.maxLength != null) ? personalConfig.emergencyContactNumber.validations.maxLength : 10}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"

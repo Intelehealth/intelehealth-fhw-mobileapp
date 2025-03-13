@@ -88,11 +88,11 @@ object LiveKitProvider {
                 audioHandler = audioSwitchHandler,
                 audioOutputType = io.livekit.android.AudioType.CallAudioType()
             ),
-            videoEncoderFactory = HardwareVideoEncoderFactory(
-                EglBase.create().eglBaseContext,
-                true,
-                true
-            )
+//            videoEncoderFactory = HardwareVideoEncoderFactory(
+//                EglBase.create().eglBaseContext,
+//                true,
+//                true
+//            )
         )
     )
 

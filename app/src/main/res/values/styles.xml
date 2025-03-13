@@ -581,7 +581,11 @@
     </style>
 
     <style name="AppTheme.InputBox.Department" parent="AppTheme.InputBox">
-        <item name="android:digits">@string/validation_department</item>
+        <item name="android:digits">@string/validation_letter_space_digit</item>
+    </style>
+
+    <style name="AppTheme.InputBox.RegAddressOfHf" parent="AppTheme.InputBox">
+        <item name="android:digits">@string/validation_letter_space_digit</item>
     </style>
 
     <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
@@ -597,6 +601,11 @@
 
     <style name="AppTheme.InputBox.Phone" parent="AppTheme.InputBox">
         <item name="android:maxLength">10</item>
+        <item name="android:digits">@string/validation_digit_only</item>
+        <item name="android:inputType">phone</item>
+    </style>
+
+    <style name="AppTheme.InputBox.PhoneWtLength" parent="AppTheme.InputBox">
         <item name="android:digits">@string/validation_digit_only</item>
         <item name="android:inputType">phone</item>
     </style>

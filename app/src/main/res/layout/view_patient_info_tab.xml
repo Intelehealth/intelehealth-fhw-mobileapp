@@ -25,7 +25,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIndicatorPatientPersonal"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
             android:gravity="center"
@@ -51,7 +51,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIndicatorPatientAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
             android:gravity="center"
@@ -78,7 +78,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvIndicatorPatientOther"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/std_8dp"
             android:gravity="center"

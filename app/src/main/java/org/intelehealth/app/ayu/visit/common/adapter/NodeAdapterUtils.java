@@ -99,6 +99,9 @@ public class NodeAdapterUtils {
                 break;
             case "kn":
                 break;
+            case "ru":
+                result = 'А';
+                break;
 
         }
 
@@ -133,6 +136,9 @@ public class NodeAdapterUtils {
             case "ml":
                 break;
             case "kn":
+                break;
+            case "ru":
+                result = 'Я';
                 break;
 
         }

@@ -456,7 +456,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         onCallAccept()
     }
 
-    open fun declineCall() {
+    open fun declineCall(isFinishRequired: Boolean) {
         isDeclined = true
 //        showToast(getString(R.string.you_declined_call))
         if (args.isIncomingCall().not()) {
@@ -467,7 +467,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
         stopRingtone()
         onCallDecline()
-        finish()
+        if(isFinishRequired) finish()
     }
 
     open fun endCall() {

@@ -23,8 +23,11 @@ import androidx.appcompat.app.AlertDialog;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.IntentKeys;
+import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 
@@ -35,6 +38,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
     private Button btn_accept_privacy;
     private int mIntentFrom;
     String appLanguage, intentType;
+    boolean isPersonalConsentRequired;
     WebView webView;
     SessionManager sessionManager = null;
     private AlertDialog loadingDialog;
@@ -56,8 +60,9 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
-        mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
-        intentType = getIntent().getStringExtra("intentType");
+        mIntentFrom = getIntent().getIntExtra(IntentKeys.INTENT_FROM, 0);
+        intentType = getIntent().getStringExtra(IntentKeys.INTENT_TYPE);
+        isPersonalConsentRequired = getIntent().getBooleanExtra(IntentKeys.IS_PERSONAL_CONSENT_REQUIRED, false);
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy);
         webView = findViewById(R.id.webview);
@@ -72,7 +77,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         webView.setWebViewClient(new GenericWebViewClient(this));
         String text;
         text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
-        text += new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage()) ;
+        text += new ConfigUtils(this).getPrivacyPolicyText(sessionManager.getAppLanguage());
         text += "</body></html>";
         webView.loadDataWithBaseURL(null, text, "text/html", "utf-8", null);
 
@@ -86,19 +91,25 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
         });
 
         //show button if it's from add patient
-        if (!intentType.equalsIgnoreCase("doNotNavigateFurther")) {
+        if (!intentType.equalsIgnoreCase(IntentKeys.DO_NOT_NAVIGATE_FURTHER)) {
             findViewById(R.id.layout_button_privacy).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.layout_button_privacy).setVisibility(View.GONE);
         }
 
         btn_accept_privacy.setOnClickListener(v -> {
-            if (intentType.equalsIgnoreCase("doNotNavigateFurther")) {
+            if (intentType.equalsIgnoreCase(IntentKeys.DO_NOT_NAVIGATE_FURTHER)) {
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             } else {
-                Intent intent = new Intent(this, PersonalConsentActivity.class);
-                activityResult.launch(intent);
+                if (isPersonalConsentRequired) {
+                    Intent intent = new Intent(this, PersonalConsentActivity.class);
+                    activityResult.launch(intent);
+                } else {
+                    PatientRegistrationActivity.startPatientRegistration(PrivacyPolicyActivity_New.this, null, PatientRegStage.PERSONAL);
+                    finish();
+                }
+
             }
         });
 

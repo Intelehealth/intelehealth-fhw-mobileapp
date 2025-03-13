@@ -390,7 +390,7 @@ public class DateAndTimeUtils {
     }
 
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
-        if(date.isEmpty()) return "";
+        if(date == null || date.isEmpty()) return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;

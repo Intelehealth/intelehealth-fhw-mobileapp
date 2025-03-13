@@ -65,6 +65,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
     private List<PatientVital> mPatientVitalList;
+    TextView temperatureLabel;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
 
     public VitalCollectionSummaryFragment() {
@@ -170,6 +171,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         mSpo2LinearLayout = view.findViewById(R.id.ll_spo2_container);
         mRespiratoryRateLinearLayout = view.findViewById(R.id.ll_respiratory_rate_container);
         mBloodGroupLinearLayout = view.findViewById(R.id.ll_blood_group_container);
+        temperatureLabel = view.findViewById(R.id.tv_temperature_label);
 
 
         if (mVitalsObject != null) {
@@ -201,8 +203,10 @@ public class VitalCollectionSummaryFragment extends Fragment {
             if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
                 if (new ConfigUtils(getActivity()).fahrenheit()) {
                     ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(TAG, mVitalsObject.getTemperature()));
+                    temperatureLabel.setText(getResources().getText(R.string.temperature_f_new));
                 } else {
                     ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+                    temperatureLabel.setText(getResources().getText(R.string.temperature_c_new));
                 }
             } else {
 

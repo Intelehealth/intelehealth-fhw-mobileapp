@@ -310,6 +310,7 @@
     <string name="please_enter_mobile_number">এটা মোবাইল নম্বৰ দিব</string>
     <string name="download_prescription_first_before_sharing">শ্বেয়াৰ কৰাৰ আগতে প্ৰথমে প্ৰেছক্ৰিপচন ডাউনলোড কৰক</string>
     <string name="enter_10_digits">১০টা অংক দিয়ক</string>
+    <string name="enter_digits">%d টা অংক দিয়ক</string>
     <string name="enter_15_digits">১৫টা অংক দিয়ক</string>
     <string name="gender_male">পুৰুষ</string>
     <string name="gender_female">মহিলা</string>
@@ -1078,5 +1079,15 @@
     <string name="select_consultation_type">Select Consulation Type</string>
     <string name="enter_diagnosis">Enter Diagnosis</string>
     <string name="diagnosis_required">Diagnosis Required</string>
+    <string name="blackout">Blackout</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="signature">Signature</string>
+    <string name="generate">Generate</string>
+    <string name="type_name_to_generate_signature">Type name to generate signature.</string>
+    <string name="enter_signature">Enter Signature</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="temp_eg_c">E.g., 36.6 C</string>
+    <string name="other_diagnosis">Other Diagnosis</string>
+    <string name="select_diagnosis">Select Diagnosis</string>
 
 </resources>

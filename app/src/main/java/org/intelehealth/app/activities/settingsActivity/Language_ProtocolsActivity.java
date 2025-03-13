@@ -44,6 +44,7 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter;
 import org.intelehealth.app.utilities.DownloadMindMaps;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.ActiveLanguage;
@@ -129,7 +130,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
         clickListeners();
 
         Intent intent = getIntent();
-        if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("language updated")) {
+        if (intent.getStringExtra(IntentKeys.INTENT_TYPE) != null && intent.getStringExtra(IntentKeys.INTENT_TYPE).equalsIgnoreCase("language updated")) {
             showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
         }
         switchNotification.setChecked(sessionManager.isBlackout());
@@ -450,7 +451,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 //    }
     private void restartActivity() {
         Intent intent = getIntent();
-        intent.putExtra("intentType", "language updated");
+        intent.putExtra(IntentKeys.INTENT_TYPE, "language updated");
         finish();
         startActivity(intent);
     }

@@ -52,5 +52,7 @@ class PatientRegConfigKeys {
         const val CODE_OF_HEALTHY_FACILITY = "o_code_of_the_health_facility"
         const val HEALTH_FACILITY_NAME = "o_health_facility_name"
         const val CODE_OF_DEPARTMENT = "o_code_of_the_department"
+        const val DATA_PRIVACY_POLICY = "o_data_privacy_policy"
+        const val TELEMEDICINE_CONSENT_POLICY = "o_telemedicine_consent_policy"
     }
 }

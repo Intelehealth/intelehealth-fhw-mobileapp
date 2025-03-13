@@ -47,7 +47,7 @@ class VideoCallActivity : CoreVideoCallActivity() {
         binding.actionView.audioImv.setOnClickListener { videoCallViewModel.toggleMicrophone() }
         binding.actionView.videoImv.setOnClickListener { videoCallViewModel.toggleCamera() }
         binding.actionView.flipImv.setOnClickListener { videoCallViewModel.flipCamera() }
-        binding.callingLayout.btnCallReject.setOnClickListener { declineCall() }
+        binding.callingLayout.btnCallReject.setOnClickListener { declineCall(true) }
         binding.callingLayout.btnCallAccept.setOnClickListener { acceptCall() }
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
