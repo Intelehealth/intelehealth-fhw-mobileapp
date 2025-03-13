@@ -243,7 +243,7 @@
         <item>बीपीएल</item>
     </string-array>
     <string-array name="delivery_type">
-        <item>>नॉर्मल/नैसर्गिक</item>
+        <item>नॉर्मल/नैसर्गिक</item>
         <item>सिझेरिअन (सी-सेक्शन)</item>
     </string-array>
 </resources>

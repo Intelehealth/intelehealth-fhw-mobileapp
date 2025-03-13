@@ -875,8 +875,8 @@
     <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_health_issues">सर्वसाधारणपणे, आरोग्याशी संबंधित समस्यांसाठी तुम्ही कोणत्या प्राथमिक
 आरोग्य प्रदात्याचा सल्ला घेतला आहे का?</string>
     <string name="first_location_of_visit_interaction">भेट / संवादाचे पहिले स्थान</string>
-    <string name="referred_to">रेफर केले / पुढील उपचारासाठी पाठवले</string>
-    <string name="mode_of_transportation_used_to_reach_facility">सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
+    <string name="referred_to"> रेफर केले / पुढील उपचारासाठी पाठवले</string>
+    <string name="mode_of_transportation_used_to_reach_facility"> सुविधेपर्यंत पोहोचण्यासाठी वापरला जाणारा वाहतुकीचा प्रकार</string>
     <string name="average_cost_incurred_on_travel_and_stay_per_episode">प्रवास आणि मुक्कामासाठी प्रति एपिसोडचा सरासरी खर्च</string>
     <string name="average_cost_incurred_on_consultation_fee_per_episode">सल्लामसलत शुल्क प्रति एपिसोड सरासरी खर्च</string>
     <string name="average_cost_incurred_on_medicines_per_episode">प्रत्येक वेळी अशा तक्रारींवर/ आजारपणावर होणारा  सरासरी खर्च</string>
@@ -1018,10 +1018,10 @@
     <string name="share_the_file">Share the file…</string>
     <string name="please_delete_pregnancy_outcome">कृपया %1$s गर्भधारणेचा परिणाम हटवा</string>
     <string name="please_connect_device">कृपया डिव्हाइस कनेक्ट करा</string>
-    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery">िलेल्या तारखेपूर्वी डिलिव्हरी/ प्रसूती झाली का ?/ (निर्धारित काळापूर्वी बाळाचा जन्म झाला का)</string>
+    <string name="was_this_birth_pre_term_earlier_than_due_date_for_delivery"> दिलेल्या तारखेपूर्वी डिलिव्हरी/ प्रसूती झाली का ?/ (निर्धारित काळापूर्वी बाळाचा जन्म झाला का)</string>
     <string name="txt_how_many_months_have_you_been_pregnant">तुम्ही किती महिने गरोदर आहात</string>
     <string name="focal_facility_for_this_pregnancy">ह्या गरोदरपणासाठी अथवा प्रसूती / डिलिव्हरीसाठी तुम्ही उपचार घेतलेले ठिकाण</string>
-    <string name="what_was_the_name_of_the_facility">ुविधाकेंद्र कुठले होते?</string>
+    <string name="what_was_the_name_of_the_facility"> सुविधा केंद्र कुठले होते?</string>
     <string name="txt_was_this_a_single_multiple_births">हे एकच/एकाहून अधिक जन्म होते का?</string>
     <string name="txt_how_old_was_the_baby_when_he_she_died">बाळ/ती मरण पावले तेव्हा त्याचे वय किती होते?</string>
     <string name="txt_what_is_was_the_sex_of_the_baby">बाळाचे लिंग काय/होते?</string>
@@ -1508,7 +1508,7 @@
     <string name="welcome_message">स्वागत आहे! %1$s</string>
     <string name="sync_wait_message">सिंक पूर्ण होण्यासाठी कृपया प्रतीक्षा करा</string>
     <string name="syncing">सिंक होत आहे</string>
-    <string name="sync_progress_percentage">%1$d%% प्रगती</string>
+    <string name="sync_progress_percentage">%1$d%%</string>
     <string name="sync_completed">सिंक पूर्ण झाले</string>
 
 </resources>

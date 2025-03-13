@@ -175,7 +175,7 @@ class RosterRepositoryImp @Inject constructor() : RosterRepository {
                 RoasterViewQuestion(
                     layoutId = RoasterQuestionView.SPINNER,
                     question = context.getString(R.string.what_is_the_type_of_delivery),
-                    spinnerItem = R.array.delivery_type_en,
+                    spinnerItem = R.array.delivery_type,
                     errorMessage = context.getString(R.string.this_field_is_mandatory)
                 )
             )
