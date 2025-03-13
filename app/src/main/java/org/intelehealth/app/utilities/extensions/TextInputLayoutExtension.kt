@@ -15,9 +15,12 @@ import com.google.android.material.textfield.TextInputLayout
  * Mob   : +919727206702
  **/
 
-fun TextInputLayout.showError(@StringRes resId: Int) {
+fun TextInputLayout.showError(resId: Any) {
     Timber.d { "showError" }
-    error = context.getString(resId)
+    error = when(resId){
+        is Int -> context.getString(resId)
+        else -> resId.toString()
+    }
 }
 
 fun TextInputLayout.hideError() {
@@ -60,7 +63,7 @@ fun TextInputLayout.validateDropDowb(input: AutoCompleteTextView, @StringRes res
 
 fun TextInputLayout.validateDigit(
     input: TextInputEditText,
-    @StringRes resId: Int,
+    resId: Any,
     minDigit: Int
 ): Boolean {
     return if (input.text.isNullOrEmpty() || input.text?.length!! < minDigit) {

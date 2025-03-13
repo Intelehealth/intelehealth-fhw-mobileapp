@@ -569,7 +569,7 @@
                             style="@style/AppTheme.InputBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_name"
+                            android:hint="@string/select"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>

@@ -192,6 +192,7 @@
     <string name="please_enter_mobile_number">" ദയവായി ഒരു മൊബൈൽ നമ്പർ നല്‍കുക"</string>
     <string name="download_prescription_first_before_sharing">" പങ്കിടുന്നതിന് മുൻപായി പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്യുക"</string>
     <string name="enter_10_digits">" 10 അക്കങ്ങൾ നല്‍കുക"</string>
+    <string name="enter_digits">" %d അക്കങ്ങൾ നല്‍കുക"</string>
     <string name="document_">" ഡോക്യുമെൻറ് -"</string>
     <string name="gender">ലിംഗഭേദം</string>
 <!--    <string name="are_you_head_of_the_family">നിങ്ങളാണോ കുടുംബനാഥന്‍?</string>-->

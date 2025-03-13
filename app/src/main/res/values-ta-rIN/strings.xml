@@ -190,6 +190,7 @@
     <string name="please_enter_mobile_number">மொபைல் எண்ணை உள்ளிடவும்</string>
     <string name="download_prescription_first_before_sharing">பகிர்வதற்கு முன் முதலில் மருந்து பதிவிறக்கவும்</string>
     <string name="enter_10_digits">10 இலக்கங்களை உள்ளிடவும்</string>
+    <string name="enter_digits">%d இலக்கங்களை உள்ளிடவும்</string>
     <string name="document_">ஆவணம்-</string>
 <!--    <string name="gender">பாலினம்</string>-->
 <!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->

@@ -172,6 +172,7 @@
     <string name="please_enter_mobile_number">" దయచేసి మొబైల్ నెంబర్‌ను నమోదు చేయండి"</string>
     <string name="download_prescription_first_before_sharing">" భాగస్వామ్యం చేయడానికి ముందు ప్రిస్క్రిప్షన్‌ను డౌన్‌లోడ్ చేయండి"</string>
     <string name="enter_10_digits">" 10 అంకెలను నమోదు చేయండి"</string>
+    <string name="enter_digits">" %d అంకెలను నమోదు చేయండి"</string>
     <string name="document_">" పత్రం -"</string>
     <string name="gender">" లింగం"</string>
     <!--    <string name="are_you_head_of_the_family">" మీరు కుటుంబానికి అధిపతినా?"</string>-->

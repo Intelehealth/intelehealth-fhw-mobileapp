@@ -34,6 +34,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ui.splash.activity.SplashActivity;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.Locale;
@@ -98,8 +99,8 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View textView) {
                 Intent mIntent = new Intent(context, PrivacyPolicyActivity_New.class);
-                mIntent.putExtra("intentType", "doNotNavigateFurther");
-                mIntent.putExtra("isPrivacyPolicy", true);
+                mIntent.putExtra(IntentKeys.INTENT_TYPE, IntentKeys.DO_NOT_NAVIGATE_FURTHER);
+                mIntent.putExtra(IntentKeys.IS_PRIVACY_POLICY, true);
                 startActivity(mIntent);
             }
         };

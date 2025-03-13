@@ -197,6 +197,7 @@
     <string name="days">ଦନି</string>
     <string name="enter_mobile_number_to_share_prescription">ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କର ଯେଉଁଥିରେ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ଅଂଶୀଦାର କରିବାକୁ ଚାହୁଁଛନ୍ତି |</string>
     <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="enter_digits">%d ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
     <string name="download_prescription_first_before_sharing">ବାଣ୍ଟିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
     <string name="share">ଶେୟାର୍</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଆନ୍ତରିକତା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ | "</string>

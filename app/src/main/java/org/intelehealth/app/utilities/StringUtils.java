@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.RoundingMode;
@@ -2491,6 +2493,13 @@ public final class StringUtils {
                     return val;
             }
 
+        } else if (locale.equalsIgnoreCase("ru")) {
+            if (val.equals("Kyrgyzstan")) {
+                val = "Кыргызстан";
+            } else {
+                return val;
+            }
+
         }
         return val;
     }
@@ -4146,13 +4155,23 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_contact_type_edit(String val) {
+    public static String switch_contact_type_by_local(String val,String locale) {
         if (val == null || val.isEmpty()) return "";
-        switch (val) {
-            case "Self" -> val = "स्वयं";
-            case "Family" -> val = "परिवार";
-            default -> {
-                return val;
+        if (locale.equals("hi")){
+            switch (val) {
+                case "Self" -> val = "स्वयं";
+                case "Family" -> val = "परिवार";
+                default -> {
+                    return val;
+                }
+            }
+        }else if(locale.equals("ru")){
+            switch (val) {
+                case "Self" -> val = "Личный";
+                case "Family" -> val = "Члена семьи";
+                default -> {
+                    return val;
+                }
             }
         }
         return val;
@@ -4576,6 +4595,7 @@ public final class StringUtils {
         if (consultationType == null || consultationType.isEmpty()) return "";
         if (lan.equalsIgnoreCase("ru")) {
             switch (consultationType) {
+                case "Select" -> consultationType = "Выберите";
                 case "Maternity department of Chui Regional United Hospital" ->
                         consultationType = "Родильное отделение Чуйской областной объединенной больницы";
                 case "Maternity department of Issyk-Kul Regional United Hospital" ->
@@ -4591,5 +4611,34 @@ public final class StringUtils {
         }
 
         return consultationType;
+    }
+
+
+    public static String getDefaultCountry(String country, String lan) {
+        if (country == null || country.isEmpty()) return "";
+        if (lan.equalsIgnoreCase("ru")) {
+            if (country.equals("Kyrgyzstan")) {
+                country = "Кыргызстан";
+            } else {
+                return country;
+            }
+        }
+
+        return country;
+    }
+
+    public static String getContactType(String contactType, String lan) {
+        if (contactType == null || contactType.isEmpty()) return "";
+        if (lan.equalsIgnoreCase("ru")) {
+            switch (contactType) {
+                case "Self" -> contactType = "Личный";
+                case "Family" -> contactType = "Личный";
+                default -> {
+                    return contactType;
+                }
+            }
+        }
+
+        return contactType;
     }
 }

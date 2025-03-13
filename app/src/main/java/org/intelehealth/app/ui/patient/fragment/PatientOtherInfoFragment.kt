@@ -21,8 +21,10 @@ import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.LanguageUtils.getLocalLang
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -65,7 +67,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-        patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+        }
 
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
@@ -222,7 +227,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
         binding.autoCompleteHealthFacilityName.setAdapter(adapter)
         if (patient.healthFacilityName != null && patient.healthFacilityName.isNotEmpty()) {
-            binding.autoCompleteHealthFacilityName.setText(patient.healthFacilityName, false)
+            binding.autoCompleteHealthFacilityName.setText(
+                StringUtils.getHealthyFacilityName(
+                    patient.healthFacilityName,
+                    getLocalLang()
+                ), false
+            )
         }
         binding.autoCompleteHealthFacilityName.setOnItemClickListener { _, _, i, _ ->
             binding.textInputLayHealthFacilityName.hideError()

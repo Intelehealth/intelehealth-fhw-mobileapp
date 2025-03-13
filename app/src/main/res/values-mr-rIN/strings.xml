@@ -308,6 +308,7 @@
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
     <string name="download_prescription_first_before_sharing">सामायिक करण्यापूर्वी प्रिस्क्रिप्शन डाउनलोड करा</string>
     <string name="enter_10_digits">10 अंक प्रविष्ट करा</string>
+    <string name="enter_digits">%d अंक प्रविष्ट करा</string>
     <string name="document_">"दस्तऐवज -"</string>
     <string name="gender">लिंग</string>
 <!--    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>-->

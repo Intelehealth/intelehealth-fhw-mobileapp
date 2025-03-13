@@ -306,6 +306,7 @@
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
     <string name="download_prescription_first_before_sharing">साझा करने से पहले पहले पर्चे डाउनलोड करें</string>
     <string name="enter_10_digits">10 अंक दर्ज करें</string>
+    <string name="enter_digits">%d अंक दर्ज करें</string>
     <string name="gender_male">पुरुष</string>
     <string name="gender_female">महिला</string>
     <string name="Hours">घंटे</string>

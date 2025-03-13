@@ -310,6 +310,7 @@
     <string name="please_enter_mobile_number">এটা মোবাইল নম্বৰ দিব</string>
     <string name="download_prescription_first_before_sharing">শ্বেয়াৰ কৰাৰ আগতে প্ৰথমে প্ৰেছক্ৰিপচন ডাউনলোড কৰক</string>
     <string name="enter_10_digits">১০টা অংক দিয়ক</string>
+    <string name="enter_digits">%d টা অংক দিয়ক</string>
     <string name="enter_15_digits">১৫টা অংক দিয়ক</string>
     <string name="gender_male">পুৰুষ</string>
     <string name="gender_female">মহিলা</string>

@@ -605,6 +605,11 @@
         <item name="android:inputType">phone</item>
     </style>
 
+    <style name="AppTheme.InputBox.PhoneWtLength" parent="AppTheme.InputBox">
+        <item name="android:digits">@string/validation_digit_only</item>
+        <item name="android:inputType">phone</item>
+    </style>
+
     <style name="AppTheme.OutlinedButton.Icon" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>

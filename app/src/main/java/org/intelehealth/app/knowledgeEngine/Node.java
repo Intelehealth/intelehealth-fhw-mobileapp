@@ -3279,6 +3279,8 @@ public class Node implements Serializable {
                                 break;
                             case "hi":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                            case "ru":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_russian);
                                 break;
                         }
                         answerResult.result = false;
@@ -3291,6 +3293,8 @@ public class Node implements Serializable {
                                 break;
                             case "hi":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                            case "ru":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_russian);
                                 break;
                         }
                         answerResult.result = false;
@@ -3341,6 +3345,9 @@ public class Node implements Serializable {
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
                             break;
+                        case "ru":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_russian);
+                            break;
                     }
                     answerResult.result = false;
                 }
@@ -3352,6 +3359,8 @@ public class Node implements Serializable {
                             break;
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
+                        case "ru":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_russian);
                             break;
                     }
                     answerResult.result = false;

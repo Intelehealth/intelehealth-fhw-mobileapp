@@ -8,10 +8,10 @@
     <string name="intro_title_3">Дать рекомендации</string>
     <string name="intro_tagline_3">"Облачная платформа с открытым исходным кодом, разработанная для среды с низким потреблением ресурсов, в сочетании с индивидуальной стратегией внедрения создает цифровое медицинское решение для достижения впечатляющих результатов в области здравоохранения"</string>
 
-    <string name="are_you_sure_you_want_to_send_visit">Are you sure you want to send the visit?</string>
+    <string name="are_you_sure_you_want_to_send_visit">Вы уверены, что хотите отправить запрос на консультацию?</string>
     <string name="send_visit">Отправить запрос на консультацию?</string>
-    <string name="visit_successfully_sent">Запрос на консультацию успешно отправлен!</string>
-    <string name="patient_visit_sent">Запрос на консультацию успешно отправлен!</string>
+    <string name="visit_successfully_sent">Запрос успешно отправлен!</string>
+    <string name="patient_visit_sent">Запрос на консультацию успешно отправлен</string>
     <string name="visit_data_failed">Запрос на консультацию успешно сохранен!</string>
     <string name="visit_uploaded_failed">Запрос на консультацию успешно сохранен.</string>
 

@@ -38,7 +38,10 @@ data class FeatureActiveStatus(
     val typeOfConsultation: Boolean = false,
 
     @SerializedName("mobile_e_signature")
-    val mobileESignature: Boolean = false
+    val mobileESignature: Boolean = false,
+
+    @SerializedName("consent_policy")
+    val consentPolicy: Boolean = false
 
 ) {
     var videoSection: Boolean = true

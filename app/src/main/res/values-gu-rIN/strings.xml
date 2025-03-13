@@ -349,6 +349,7 @@
     <string name="please_enter_mobile_number">મહેરબાની કરીને મોબાઇલ નંબર દાખલ કરો</string>
     <string name="download_prescription_first_before_sharing">વહેંચતા પહેલા પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરો</string>
     <string name="enter_10_digits">10 અંકો દાખલ કરો</string>
+    <string name="enter_digits">%d અંકો દાખલ કરો</string>
     <string name="gender_male">પુરુષ</string>
     <string name="gender_female">સ્ત્રી</string>
 

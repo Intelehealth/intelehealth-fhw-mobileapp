@@ -17,6 +17,9 @@ import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -39,6 +42,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
@@ -48,7 +52,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.usecase.DeleteLocalNotificationUseCase;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -63,6 +66,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.ToastUtil;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -254,10 +259,13 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, PrivacyPolicyActivity_New.class);
-                intent.putExtra("intentType", "navigateFurther");
-                intent.putExtra("add_patient", "add_patient");
-                startActivity(intent);
+                CoroutineProvider.usePatientConsentScope(
+                        LifecycleOwnerKt.getLifecycleScope(FollowUpPatientActivity_New.this),
+                        PatientViewModelFactory.create(FollowUpPatientActivity_New.this, FollowUpPatientActivity_New.this),
+                        data -> {
+                            NavigationConfigUtils.navigateToPatientReg(FollowUpPatientActivity_New.this, (List<PatientRegistrationFields>) data);
+                        }
+                );
                 finish();
             }
         });

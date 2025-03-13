@@ -45,7 +45,7 @@
     <string name="identification_screen_prompt_state">Область</string>
     <string name="identification_screen_prompt_country" translatable="false">Страна</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">Почтовый индекс</string>
-    <string name="identification_screen_text_years" translatable="false"> лет/годы(-а) </string>
+    <string name="identification_screen_text_years" translatable="false"> лет/года </string>
     <string name="identification_screen_text_months" translatable="false"> месяцы(-а)</string>
     <string name="identification_screen_picker_years" translatable="false">лет</string>
     <string name="identification_screen_picker_months" translatable="false">месяцы(-а)</string>
@@ -244,13 +244,13 @@
     <string name="accept">Принять</string>
     <string name="next">Далее</string>
     <string name="choose_an_option_for_protocols">Выберите вариант протоколов</string>
-    <string name="respiratory_rate">Частота Дыхания</string>
+    <string name="respiratory_rate">Частота дыхания</string>
     <string name="click_to_download_the_images">Нажмите, чтобы загрузить изображения</string>
     <string name="doctor">Подробная информация о враче</string>
     <string name="priority">Приоритет</string>
     <string name="server_url">URL-ссылка сервера</string>
     <string name="planet_name">Название планеты</string>
-    <string name="ok">В ПОРЯДКЕ</string>
+    <string name="ok">OK</string>
     <string name="cancel">Отменить</string>
 
     <string name="syncInProgress">Идет обновление</string>
@@ -310,6 +310,7 @@
     <string name="please_enter_mobile_number">Пожалуйста, введите номер мобильного телефона</string>
     <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем поделиться им</string>
     <string name="enter_10_digits">Введите 10 цифр</string>
+    <string name="enter_digits">Введите %d цифр</string>
     <string name="enter_15_digits">Введите 15 символов</string>
     <string name="gender_male">Мужчина</string>
     <string name="gender_female">женский</string>
@@ -377,7 +378,7 @@
     <string name="strength">Сила</string>
     <string name="additional_instruction">Дополнительная инструкция</string>
     <string name="follow_up">Следовать за</string>
-    <string name="submit">Представлять на рассмотрение</string>
+    <string name="submit">Отправить</string>
 
     <string name="yes">Да</string>
     <string name="no">Нет</string>
@@ -447,7 +448,7 @@
     <string name="hello_i_am_ayu">Здравствуйте, я цифровой помощник AYU,</string>
     <string name="ayu_intro">Я цифровой помощник. Давайте начнем работу!</string>
     <string name="agree_to_terms">Принять Правила &amp; Условия и Политика конфиденциальности</string>
-    <string name="setup">Настройка</string>
+    <string name="setup">Продолжить</string>
     <string name="terms_and_conditions">Правила &amp; Условия</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="decline">Отклонить</string>
@@ -469,7 +470,7 @@
     <string name="snack_policy">Пожалуйста примите правила и условия, и политику конфиденциальности</string>
 
 
-    <string name="setup_new">Настройка</string>
+    <string name="setup_new">Продолжить</string>
     <string name="one_time_setup">Пожалуйста, сделайте настройку приложения</string>
     <string name="enter_following_details">Пожалуйста, введите следущие детали</string>
     <string name="location_new">Местоположение</string>
@@ -828,7 +829,7 @@
     <string name="add_image_by">Добавить изображение</string>
     <string name="please_take">Пожалуйста примите</string>
     <string name="s_follow_up_visit">\'s последующий визит.</string>
-    <string name="nurse_whatsapp_message">Здравствуйте, это %1$ из телемедицинского проекта. Я на связи по поводу Вашего недавнего запроса.</string>
+    <string name="nurse_whatsapp_message">Здравствуйте, это %1$s из телемедицинского проекта. Я на связи по поводу Вашего недавнего запроса.</string>
     <string name="wait_for_the_doctor_message">Пожалуйста, дождитесь сообщения от врача!</string>
     <string name="doctor_yet_to_send_prescription">Специалист еще не отправил рекомендации для</string>
     <string name="patients">пациенты</string>
@@ -873,7 +874,7 @@
     <string name="additional_notes">Дополнительные записи</string>
     <string name="leave_a_note_for_doctor">Оставить примечание специалисту</string>
     <string name="add_additional_document_2">Добавить дополнительные документы (2)</string>
-    <string name="add_additional_documents_like">AПрикрепить дополнительные документы, отчеты, лечение, рецепты и т.д.\u000D</string>
+    <string name="add_additional_documents_like">Прикрепить дополнительные документы, отчеты, лечение, рецепты и т.д.\u000D</string>
     <string name="doctor_speciality">Специализация специалиста</string>
     <string name="priority_visits">Приоритетные консультации</string>
     <string name="send_visit_button">Отправить запрос</string>

@@ -5,7 +5,6 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -16,9 +15,8 @@ import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
-import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,13 +35,13 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -51,6 +49,8 @@ import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory;
+import org.intelehealth.config.room.entity.PatientRegistrationFields;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,14 @@ public class VisitReceivedFragment extends Fragment {
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPatientUtils.navigate(requireActivity());
+                //AddPatientUtils.navigate(requireActivity());
+                CoroutineProvider.usePatientConsentScope(
+                        LifecycleOwnerKt.getLifecycleScope(requireActivity()),
+                        PatientViewModelFactory.create(requireActivity(), requireActivity()),
+                        data -> {
+                            NavigationConfigUtils.navigateToPatientReg(requireActivity(), (List<PatientRegistrationFields>) data);
+                        }
+                );
                 getActivity().finish();
             }
         });

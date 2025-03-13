@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,11 +145,17 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                     try {
                         CustomLog.v("getFollowup_date", model.getFollowup_date());
 
-                        String followupDateTimeRaw = "";
+                        String followupDateTimeRaw;
                         try {
                             followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
                         } catch (Exception e) {
-                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                            //crash may occur if followup date is not in proper format
+                            //that's why we are handling this exception
+                            if (model.getFollowup_date().length() >= 25) {
+                                followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                            }else {
+                                followupDateTimeRaw = model.getFollowup_date();
+                            }
                         }
 
                         CustomLog.v("getFollowup_date", followupDateTimeRaw + "OK");
@@ -180,9 +188,9 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
                         String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd-MM-yyyy, HH:mm");
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                             followupDate = StringUtils.en__hi_dob(followupDate);
-                        }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                             followupDate = StringUtils.en__ru_dob(followupDate);
                         }
                         holder.fu_date_txtview.setText(followupDate);
@@ -226,7 +234,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 return getTimeDuration(minutes) +
                         context.getString(R.string.in);
-            }else {
+            } else {
                 return context.getString(R.string.in) + " " + getTimeDuration(minutes);
             }
         } else {

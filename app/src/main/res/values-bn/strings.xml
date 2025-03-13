@@ -309,6 +309,7 @@
     <string name="please_enter_mobile_number">একটি মোবাইল নম্বর লিখুন</string>
     <string name="download_prescription_first_before_sharing">শেয়ার করার আগে প্রেসক্রিপশন ডাউনলোড করুন</string>
     <string name="enter_10_digits">10 টি সংখ্যা লিখুন</string>
+    <string name="enter_digits">%d টি সংখ্যা লিখুন</string>
     <string name="enter_15_digits">15 টি সংখ্যা লিখুন</string>
     <string name="gender_male">পুরুষ</string>
     <string name="gender_female">মহিলা</string>

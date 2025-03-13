@@ -30,7 +30,9 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -83,10 +85,12 @@ import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SpecializationUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
@@ -208,7 +212,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
 
         if (clsDoctorDetails != null) {
-            CustomLog.e("TAG","TEST VISIT: " + clsDoctorDetails.toString());
+            CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
             dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
             dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
         }
@@ -512,13 +516,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                     "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
             CustomLog.v("SearchPatient", "date: " + startTime);
+
+            //UNFPA doesn't required AM or PM
+            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                startTime = DateAndTimeUtils.date_formatter(visit_startDate,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                        "HH:mm");    // Eg. 26 Sep 2022 at 03:15 PM
+            }
             visit_startTime.setText(startTime);
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 visit_startDate = StringUtils.en__hi_dob(visit_startDate);
-            }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 visit_startDate = StringUtils.en__ru_dob(visit_startDate);
             }
             CustomLog.v("Followup", "foramted date: " + visit_startDate);
@@ -530,7 +541,12 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);
         visit_speciality = fetchSpecialityValue(visitID);
-        visit_speciality_txt.setText(visit_speciality);
+
+        try {
+            visit_speciality_txt.setText(getString(SpecializationUtils.getSpecializationKeys().get(visit_speciality)));
+        } catch (Exception e) {
+            visit_speciality_txt.setText(visit_speciality);
+        }
 
        /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
@@ -555,9 +571,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 followupDate = StringUtils.en__hi_dob(followupDate);
-            }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 followupDate = StringUtils.en__ru_dob(followupDate);
             }
             if (followupDate != null && !followupDate.isEmpty()) {
@@ -566,9 +582,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
                 if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(originalFollowUpDate, "yyyy-MM-dd")) {
                     String followUpAcceptText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         followUpAcceptText = StringUtils.en__hi_dob(followUpAcceptText);
-                    }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         followUpAcceptText = StringUtils.en__ru_dob(followUpAcceptText);
                     }
                     followup_accept_text.setText(followUpAcceptText);

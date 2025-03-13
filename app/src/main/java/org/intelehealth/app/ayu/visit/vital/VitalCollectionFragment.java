@@ -110,6 +110,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     private List<PatientVital> mPatientVitalList;
     private VitalPreference vitalPref;
+    private TextView temperatureLblTv;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -440,7 +441,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.TEMPERATURE)) {
                 mTemperatureCardView.setVisibility(View.VISIBLE);
                 mTemperatureCardView.setTag(patientVital);
-                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_temperature_lbl));
+                temperatureLblTv = mRootView.findViewById(R.id.tv_temperature_lbl);
+                String title = getString(R.string.temperature_f_new);
+                if (configUtils.celsius()) {
+                    title = getString(R.string.temperature_c_new);
+                }
+                temperatureLblTv.setText(title);
+                appendMandatorySing(patientVital.isMandatory(), temperatureLblTv);
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SPO2)) {
                 mSpo2CardView.setVisibility(View.VISIBLE);

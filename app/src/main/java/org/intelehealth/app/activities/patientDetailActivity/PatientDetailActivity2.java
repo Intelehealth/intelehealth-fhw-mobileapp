@@ -18,11 +18,11 @@ import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_contact_type_by_local;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_hi_contact_type_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_guardian_type_edit;
@@ -130,6 +130,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegConfigKeys;
@@ -219,6 +220,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     List<PatientRegistrationFields> patientAllFields;
     private ActivityPatientDetail2Binding binding;
+    private boolean isTeleconsultationConsentActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -325,14 +327,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         @Override
                         public void onDialogActionDone(int action) {
                             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                Intent in = new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class);
-                                CommonVisitData commonVisitData = new CommonVisitData();
-                                commonVisitData.setPatientUuid(patientDTO.getUuid());
-                                commonVisitData.setPrivacyNote(privacy_value_selected);
-                                in.putExtra("CommonVisitData", commonVisitData);
-                                startActivity(in);
-                                // startVisit();
-                                // mStartForConsentApproveResult.launch(new Intent(PatientDetailActivity2.this, TeleconsultationConsentActivity.class));
+                                NavigationConfigUtils.navigateToStartVisit(
+                                        PatientDetailActivity2.this,
+                                        isTeleconsultationConsentActive,
+                                        privacy_value_selected,
+                                        patientDTO.getUuid()
+                                );
                             }
                         }
                     });
@@ -1986,15 +1986,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //contact type
-        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
+        if (patientDTO.getContactType() != null && !patientDTO.getContactType().equals("")) {
+            String type = switch_contact_type_by_local(patientDTO.getContactType(), LanguageUtils.getLocalLang());
+            contact_type_tv.setText(type);
 
-                equals("")) {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String type = switch_hi_contact_type_edit(patientDTO.getContactType());
-                contact_type_tv.setText(type);
-            } else {
-                contact_type_tv.setText(patientDTO.getContactType());
-            }
         } else {
             contact_type_tv.setText(getString(R.string.not_provided));
         }
@@ -2686,6 +2681,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+            isTeleconsultationConsentActive = activeStatus.getConsentPolicy();
         }
     }
 }

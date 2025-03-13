@@ -6,4 +6,5 @@
     <string name="validation_address">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.</string>
     <string name="validation_address_with_space">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 1234567890.</string>
     <string name="validation_letter_space_digit">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz1234567890</string>
+
 </resources>

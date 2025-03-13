@@ -303,6 +303,7 @@
     <string name="please_enter_mobile_number">ದಯವಿಟ್ಟು ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="download_prescription_first_before_sharing">ಹಂಚಿಕೊಳ್ಳುವ ಮೊದಲು ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ</string>
     <string name="enter_10_digits">10 ಅಂಕೆಗಳನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_digits">%d ಅಂಕೆಗಳನ್ನು ನಮೂದಿಸಿ</string>
     <string name="document_">ಡಾಕ್ಯುಮೆಂಟ್-</string>
     <string name="gender">ಲಿಂಗ</string>
     <!--    <string name="are_you_head_of_the_family">ನೀವು ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರಾಗಿದ್ದೀರಾ?</string>-->

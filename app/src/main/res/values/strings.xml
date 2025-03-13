@@ -310,6 +310,7 @@
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_digits">Enter %d digits</string>
     <string name="enter_15_digits">Enter 15 digits</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
