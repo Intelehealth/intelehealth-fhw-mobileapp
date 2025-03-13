@@ -89,12 +89,13 @@ public class SyncDAO {
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-
+        PatientAttributesMasterDaoNew patientAttributesMasterDaoNew = new PatientAttributesMasterDaoNew();
+        PatientAttributesDaoNew patientAttributesDaoNew = new PatientAttributesDaoNew();
         try {
             Logger.logD(TAG, "pull sync started");
             //saveConfig(responseDTO.getData().getConfigResponse());
 
-            patientsDAO.patinetAttributeMaster(
+            patientAttributesMasterDaoNew.patinetAttributeMaster(
                     responseDTO.getData().getPatientAttributeTypeMasterDTO());
             Logger.logD(TAG, "patinetAttributeMaster = " +
                              responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
@@ -102,7 +103,7 @@ public class SyncDAO {
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             Logger.logD(TAG, "insertPatients = " + responseDTO.getData().getPatientDTO().size());
 
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+            patientAttributesDaoNew.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             Logger.logD(TAG, "insertPatientAttributes = " +
                              responseDTO.getData().getPatientAttributesDTO().size());
 
@@ -268,6 +269,8 @@ public class SyncDAO {
 //        .getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
+        Log.d(TAG, "pullData_Background: pullurl : "+url);
+
         Logger.logD("Start pull request", "Started url : "+url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
@@ -613,6 +616,7 @@ public class SyncDAO {
         Logger.logD(PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
+        Log.d(TAG, "pullDataBackgroundService: pullurl : "+url);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override

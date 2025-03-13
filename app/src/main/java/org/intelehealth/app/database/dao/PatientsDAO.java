@@ -1455,6 +1455,7 @@ public class PatientsDAO extends BaseDao {
          return "tbl_patient";
      }*/
     public void setTableName(String tableName) {
+        Log.d(TAG, "setTableName: tableName  : "+tableName);
         this.currentTableName = tableName;
     }
 
@@ -1463,6 +1464,7 @@ public class PatientsDAO extends BaseDao {
         if (currentTableName == null || currentTableName.isEmpty()) {
             throw new RuntimeException("Table name is not set");
         }
+        Log.d(TAG, "tableName: currentTableName : "+currentTableName);
         return currentTableName;
     }
     public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
