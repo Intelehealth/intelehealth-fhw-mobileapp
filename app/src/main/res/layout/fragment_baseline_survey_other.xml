@@ -1173,6 +1173,24 @@
                             android:text="@string/spouse" />
 
                         <RadioButton
+                            android:id="@+id/radioSonDaughter"
+                            config="@{otherConfig.relationWithHousehold}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/son_or_daughter" />
+
+                        <RadioButton
+                            android:id="@+id/radioSonDaughterInLaw"
+                            config="@{otherConfig.relationWithHousehold}"
+                            editMode="@{baselineEditMode}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_20"
+                            android:text="@string/son_or_daughter_in_law" />
+
+                        <RadioButton
                             android:id="@+id/radioGrandchild"
                             config="@{otherConfig.relationWithHousehold}"
                             editMode="@{baselineEditMode}"

@@ -541,13 +541,35 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (val.equals(".")) {
-                editText.setText("");
-                return;
+            if (editText.getId() == R.id.etv_bp_dia) {
+                if(!val.isEmpty()){
+                    int dia = Integer.parseInt(val);
+                    mBpDiaEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal));
+                    if (dia < 80) {
+                        mBpDiaEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_dia1_ekal));
+                    } else if (dia >= 80 && dia <= 99) {
+                        mBpDiaEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_dia2_ekal));
+                    }
+                }
+            } else if(editText.getId() == R.id.etv_bp_sys) {
+                if(!val.isEmpty()){
+                    int sys = Integer.parseInt(val);
+                    mBpSysEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal));
+                    if (sys >= 90 && sys < 120) {
+                        mBpSysEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_sys1_ekal));
+                    } else if (sys >= 120 && sys <= 139) {
+                        mBpSysEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_sys2_ekal));
+                    }
+                }
+            } else {
+                if (val.equals(".")) {
+                    editText.setText("");
+                    return;
+                }
+                initialWeight = false;
+                boolean isValid = isValidaForm();
+                setDisabledSubmit(!isValid);
             }
-            initialWeight = false;
-            boolean isValid = isValidaForm();
-            setDisabledSubmit(!isValid);
         }
     }
 
@@ -559,13 +581,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String heightVal = heightvalue;
 
         String weight = mWeightEditText.getText().toString().trim();
-        if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
+//        if (mHeightCardView.getTag() != null && ((PatientVital) mHeightCardView.getTag()).isMandatory() && heightVal.isEmpty()) {
+        if (mHeightCardView.getTag() != null && heightVal.isEmpty()) {
             if (!initialHeight) {
-                mHeightErrorTextView.setText(getString(R.string.error_field_required));
-                mHeightErrorTextView.setVisibility(View.VISIBLE);
+                /*mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                mHeightErrorTextView.setVisibility(View.VISIBLE);*/
                 //mHeightEditText.requestFocus();
                 /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                return false;
+                return true;
             }
         } else {
             mHeightErrorTextView.setVisibility(View.GONE);
@@ -577,10 +600,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mHeightErrorTextView.setVisibility(View.GONE);
                     /*mHeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);*/
                 } else {
-                    mHeightErrorTextView.setVisibility(View.VISIBLE);
-                    mHeightErrorTextView.setText(getString(R.string.error_field_required));
+                    /*mHeightErrorTextView.setVisibility(View.VISIBLE);
+                    mHeightErrorTextView.setText(getString(R.string.error_field_required));*/
                     /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                    return false;
+                    return true;
                 }
             } else {
                 if ((Double.parseDouble(heightVal) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) ||
@@ -609,13 +632,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String wightVal = mWeightEditText.getText().toString().trim();
         /*String height = mHeightEditText.getText().toString().trim();*/
         String height = heightVal;
-        if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
+//        if (mWeightCardView.getTag() != null && ((PatientVital) mWeightCardView.getTag()).isMandatory() && wightVal.isEmpty()) {
+        if (mWeightCardView.getTag() != null && wightVal.isEmpty()) {
             if (!initialWeight) {
-                mWeightErrorTextView.setText(getString(R.string.error_field_required));
-                mWeightErrorTextView.setVisibility(View.VISIBLE);
+                /*mWeightErrorTextView.setText(getString(R.string.error_field_required));
+                mWeightErrorTextView.setVisibility(View.VISIBLE);*/
                 //mWeightEditText.requestFocus();
-                mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                return false;
+                /*mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                return true;
             }
         } else {
             mWeightErrorTextView.setVisibility(View.GONE);
@@ -627,20 +651,20 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mWeightErrorTextView.setVisibility(View.GONE);
                     mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 } else {
-                    mWeightErrorTextView.setVisibility(View.VISIBLE);
+                    /*mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightErrorTextView.setText(getString(R.string.error_field_required));
-                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                    return false;
+                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    return true;
                 }
             } else {
                 if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
                         (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
                     //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    /*mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
                     mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightEditText.requestFocus();
-                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                    return false;
+                    mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    return true;
                 } else {
                     mWeightErrorTextView.setVisibility(View.GONE);
                     mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -1250,7 +1274,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         BMIStatus bmiStatus = new BMIStatus();
         bmiStatus.setStatus("");
         bmiStatus.setColor(R.color.gray);
-        if (bmi < 18.5) {
+        /*if (bmi < 18.5) {
             bmiStatus.setStatus(getResources().getString(R.string.underweight));
             bmiStatus.setColor(R.color.ui2_bmi1);
         } else if (bmi > 18.5 && bmi <= 24.9) {
@@ -1268,9 +1292,26 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         } else if (bmi >= 39.9) {
             bmiStatus.setStatus(getResources().getString(R.string.very_severely_obese));
             bmiStatus.setColor(R.color.ui2_bmi6);
+        }*/
+        if (bmi < 18.50) {
+            bmiStatus.setStatus(getResources().getString(R.string.underweight));
+            bmiStatus.setColor(R.color.ui2_bmi1_ekal);
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            bmiStatus.setStatus(getResources().getString(R.string.normal));
+            bmiStatus.setColor(R.color.ui2_bmi2_ekal);
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            bmiStatus.setStatus(getResources().getString(R.string.overweight));
+            bmiStatus.setColor(R.color.ui2_bmi3_ekal);
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            bmiStatus.setStatus(getResources().getString(R.string.morbidly_obese));
+            bmiStatus.setColor(R.color.ui2_bmi4_ekal);
+        } else if (bmi > 30) {
+            bmiStatus.setStatus(getResources().getString(R.string.severely_obese));
+            bmiStatus.setColor(R.color.ui2_bmi5_ekal);
         }
         return bmiStatus;
     }
+
 
 
     /*public void calculateBMI() {
