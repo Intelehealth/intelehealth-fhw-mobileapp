@@ -31,8 +31,8 @@ android {
         archivesBaseName = "IDA-" + versionName + "-" + getDateTime()
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     buildTypes {
@@ -76,9 +76,9 @@ android {
         buildConfig true
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
+//    kotlinOptions {
+//        jvmTarget = '17'
+//    }
 
 //    dynamicFeatures = [':features:ondemand:klivekit']
 }

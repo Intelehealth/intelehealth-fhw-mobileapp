@@ -16,15 +16,13 @@ import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import org.json.JSONObject
-import javax.inject.Inject
-import kotlin.system.exitProcess
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-open class SocketManager @Inject constructor() {
+open class SocketManager() {
     var socket: Socket? = null
     private var emitterListeners: MutableList<((event: String) -> Emitter.Listener)> = arrayListOf()
     var emitterListener: ((event: String) -> Emitter.Listener)? = null

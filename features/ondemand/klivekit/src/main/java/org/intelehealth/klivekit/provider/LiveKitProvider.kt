@@ -1,7 +1,6 @@
 package org.intelehealth.klivekit.provider
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.livekit.android.AudioOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
@@ -13,11 +12,10 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
-import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
-import org.intelehealth.klivekit.utils.AudioType
-import org.webrtc.EglBase
-import org.webrtc.HardwareVideoEncoderFactory
+
+//import livekit.org.webrtc.EglBase
+//import livekit.org.webrtc.HardwareVideoEncoderFactory
 
 /**
  * Created by Vaghela Mithun R. on 16-09-2023 - 20:32.
@@ -26,15 +24,13 @@ import org.webrtc.HardwareVideoEncoderFactory
  **/
 object LiveKitProvider {
 
-    fun createRoom(@ApplicationContext context: Context) = provideLiveKitRoom(
-        context = context,
-        options = provideRoomOptions(
+    fun createRoom(context: Context) = provideLiveKitRoom(
+        context = context, options = provideRoomOptions(
             provideLocalAudioTrackOptions(),
             provideLocalVideoTrackOptions(),
             provideAudioPublishDefault(),
             provideVideoPublishTrack()
-        ),
-        audioSwitchHandler = provideAudioSwitchHandler(context)
+        ), audioSwitchHandler = provideAudioSwitchHandler(context)
     )
 
     private fun provideLocalAudioTrackOptions() = LocalAudioTrackOptions(
@@ -48,7 +44,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset43.FHD.capture,
+        captureParams = VideoPreset43.H720.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -57,7 +53,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.VGA.encoding
+        videoEncoding = VideoPreset43.H720.encoding,
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )
@@ -70,29 +66,24 @@ object LiveKitProvider {
     ) = RoomOptions(
         audioTrackCaptureDefaults = localAudioTrackOptions,
         audioTrackPublishDefaults = audioTrackPublishDefaults,
+        videoTrackCaptureDefaults = localVideoTrackOptions,
+        videoTrackPublishDefaults = videoTrackPublishDefaults,
         adaptiveStream = true
     )
 
-    private fun provideAudioSwitchHandler(@ApplicationContext context: Context) =
-        AudioSwitchHandler(context)
+    private fun provideAudioSwitchHandler(context: Context) = AudioSwitchHandler(context)
 
     private fun provideLiveKitRoom(
-        @ApplicationContext context: Context,
-        options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
+        context: Context, options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
     ): Room = LiveKit.create(
-        appContext = context,
-        options = options,
-        overrides = LiveKitOverrides(
+        appContext = context, options = options, overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(),
             audioOptions = AudioOptions(
-                audioHandler = audioSwitchHandler,
-                audioOutputType = io.livekit.android.AudioType.CallAudioType()
+                audioHandler = audioSwitchHandler, audioOutputType = io.livekit.android.AudioType.CallAudioType()
             ),
-            videoEncoderFactory = HardwareVideoEncoderFactory(
-                EglBase.create().eglBaseContext,
-                true,
-                true
-            )
+            /*videoEncoderFactory = HardwareVideoEncoderFactory(
+                           EglBase.create().eglBaseContext, true, true
+                       )*/
         )
     )
 

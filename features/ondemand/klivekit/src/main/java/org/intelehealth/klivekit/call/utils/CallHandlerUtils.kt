@@ -13,7 +13,6 @@ import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.RtcEngine
 import org.intelehealth.klivekit.call.CallLogHandler
-import org.intelehealth.klivekit.call.CallServiceWorker
 import org.intelehealth.klivekit.call.data.CallLogRepository
 import org.intelehealth.klivekit.call.model.RtcCallLog
 import org.intelehealth.klivekit.call.notification.CallReceiver

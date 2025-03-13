@@ -12,14 +12,13 @@ import org.intelehealth.klivekit.chat.listener.ConversationListener
 import org.intelehealth.klivekit.chat.listener.MessageListener
 import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.chat.model.MessageStatus
-import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 16:21.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class MessageHandler @Inject constructor(
+class MessageHandler (
     private val chatRepository: ChatRepository,
     private val preferenceHelper: PreferenceHelper
 ) : MessageListener, ConversationListener {
