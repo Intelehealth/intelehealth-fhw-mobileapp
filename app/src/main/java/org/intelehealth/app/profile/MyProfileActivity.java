@@ -2,6 +2,7 @@ package org.intelehealth.app.profile;
 
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
+import static org.intelehealth.app.utilities.StringUtils.en_ru_dob_three;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -797,14 +798,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private AlertDialog mImagePickerAlertDialog;
 
     private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+        //Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) captureImage(result.getData());
         }
     });
 
     private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
+        //Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) pickImage(result.getData());
         }
@@ -1164,7 +1165,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             @Override
             public void onNext(Profile profile) {
                 if (profile != null) {
-                    Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
+                    //Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
                     CustomLog.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
 
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
@@ -1365,6 +1366,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
                 if (sessionManager.getAppLanguage() != null && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     tvDob.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
+                }else if(sessionManager.getAppLanguage() != null && sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+                    tvDob.setText(en_ru_dob_three(dateToshow1) + ", " + splitedDate[2]);
                 }
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
                 if (tvErrorDob.getVisibility() == View.VISIBLE) tvErrorDob.setVisibility(View.GONE);

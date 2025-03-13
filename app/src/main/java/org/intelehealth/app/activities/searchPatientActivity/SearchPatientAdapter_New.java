@@ -177,8 +177,11 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
                     fu_item_calendar.setVisibility(View.VISIBLE);
                     String visitDate = model.getVisit_startdate();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
                         visitDate = StringUtils.en_hi_dob_three(visitDate);
+                    }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+                        visitDate = StringUtils.en_ru_dob_three(visitDate);
+                    }
                     search_date_relative.setVisibility(View.VISIBLE);
                     search_date_relative.setText(visitDate);
                 } else {
@@ -210,7 +213,15 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 RequestBuilder<Drawable> requestBuilder = Glide.with(itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
 
-                if (model.getPatientPhoto() != null) {
+                if (model.getPatientImageFromDownload() != null) {
+                    Glide.with(context)
+                            .load(model.getPatientImageFromDownload())
+                            .thumbnail(requestBuilder)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(profile_imgview);
+                } else if (model.getPatientPhoto() != null) {
 
                     Glide.with(context)
                             .load(model.getPatientPhoto())
@@ -219,17 +230,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true)
                             .into(profile_imgview);
-                }
-                else if(model.getPatientImageFromDownload() != null){
-                    Glide.with(context)
-                            .load(model.getPatientImageFromDownload())
-                            .thumbnail(requestBuilder)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .into(profile_imgview);
-                }else {
-                    profile_imgview.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                } else {
+                    profile_imgview.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
                 }
 
             }

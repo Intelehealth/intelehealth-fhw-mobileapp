@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.gson.Gson;

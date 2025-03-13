@@ -792,9 +792,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private void loadChiefComplainNodeForSelectedNames(List<ReasonData> selectedComplains) {
         for (int i = 0; i < selectedComplains.size(); i++) {
             String fileName = selectedComplains.get(i).getReasonName() + ".json";
-            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            /*if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 fileName = selectedComplains.get(i).getDefaultReasonName() + ".json";
-            }
+            }*/
             String fileLocation = "engines/" + fileName;
             JSONObject currentFile = null;
 
@@ -807,11 +807,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
 
             Node mainNode = new Node(currentFile);
-            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            /*if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 mainNode.setDisplay(selectedComplains.get(i).getReasonName());
                 mainNode.setText(selectedComplains.get(i).getReasonName());
                 mainNode.setCompareDuplicateNode(selectedComplains.get(i).getReasonName());
-            }
+            }*/
             List<Node> optionList = new ArrayList<>();
             Node associateSymptoms = null;
             CustomLog.v(TAG, "optionList  mainNode- " + mainNode.getText());

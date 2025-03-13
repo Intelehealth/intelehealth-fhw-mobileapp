@@ -125,7 +125,8 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                //as unfpa required multiple protocols that's why commented this potion of code
+                /*if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     if (mVisitReasonAutoCompleteTextView.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.please_select_at_least_one_complaint), Toast.LENGTH_SHORT).show();
                         return;
@@ -137,13 +138,13 @@ public class VisitReasonCaptureFragment extends Fragment {
                     data.setReasonNameLocalized(data.getReasonName());
                     mSelectedComplains.add(data);
                     mVisitReasonAutoCompleteTextView.setText("", true);
-                } else {
+                } else {*/
                     if (mSelectedComplains.isEmpty()) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.please_select_at_least_one_complaint), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                }
+               // }
                 showConfirmDialog();
             }
         });
@@ -155,14 +156,15 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         });
 
-        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+        //as unfpa required multiple protocols that's why commented this potion of code
+        /*if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             mSelectedComplainRecyclerView.setVisibility(View.GONE);
             view.findViewById(R.id.rcv_all_reason).setVisibility(View.GONE);
             view.findViewById(R.id.tv_selected_reason_lbl).setVisibility(View.GONE);
             view.findViewById(R.id.tv_all_reason_lbl).setVisibility(View.GONE);
             mEmptyReasonLabelTextView.setVisibility(View.GONE);
             mVisitReasonAutoCompleteTextView.setCompoundDrawables(null, null, null, null);
-        } else {
+        } else {*/
             // TODO: we are adding this below string array for keeping these two protocol enable for search also
             mFinalEnabledMMList.clear();
             List<ReasonData> mindmapReasonDataList = getVisitReasonFilesNamesOnly();
@@ -287,7 +289,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                 }
             });
             recyclerView.setAdapter(mReasonListingAdapter);
-        }
+       // }
         return view;
     }
 

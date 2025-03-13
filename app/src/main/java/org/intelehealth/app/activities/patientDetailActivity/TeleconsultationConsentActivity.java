@@ -23,6 +23,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 
@@ -41,7 +42,7 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
         setContentView(R.layout.activity_teleconsultation_consent);
         sessionManager = new SessionManager(TeleconsultationConsentActivity.this);
 
-        mCommonVisitData = getIntent().getExtras().getParcelable("CommonVisitData");
+        mCommonVisitData = getIntent().getExtras().getParcelable(IntentKeys.COMMON_VISIT_DATA);
 
         String consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
         WebView consentWebView = findViewById(R.id.content_tv);
@@ -83,8 +84,8 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
     public void acceptConsent(View view) {
         //setResult(AppConstants.TELECONSULTATION_CONSENT_ACCEPT);
         Intent intent = new Intent(TeleconsultationConsentActivity.this, VisitCreationActivity.class);
-        mCommonVisitData.setIntentTag("new");
-        intent.putExtra("CommonVisitData", mCommonVisitData);
+        mCommonVisitData.setIntentTag(IntentKeys.NEW);
+        intent.putExtra(IntentKeys.COMMON_VISIT_DATA, mCommonVisitData);
         startActivity(intent);
         finish();
     }

@@ -70,11 +70,13 @@ import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
+import org.intelehealth.app.utilities.LanguageUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
@@ -528,7 +530,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                                            sessionManager.setLocationName(location.getDisplay());
+                                                            sessionManager.setLocationName(StringUtils.translateLocation(location.getDisplay(),"en"));
                                                             sessionManager.setLocationUuid(location.getUuid());
                                                             sessionManager.setLocationDescription(location.getDescription());
                                                             sessionManager.setServerUrl(CLEAN_URL);
@@ -751,7 +753,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
         try {
             for (int i = 0; i < locationList.size(); i++) {
-                list.add(locationList.get(i).getDisplay());
+                list.add(StringUtils.translateLocation(locationList.get(i).getDisplay(), LanguageUtils.getLocalLang()));
                 CustomLog.d(TAG, "getLocationStringList: value : " + locationList.get(i).getDisplay());
             }
 

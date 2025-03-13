@@ -1,5 +1,6 @@
 package org.intelehealth.config.room.entity
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -22,5 +23,14 @@ data class PatientRegistrationFields(
     @SerializedName("is_editable")
     val isEditable: Boolean,
     @SerializedName("is_enabled")
-    var isEnabled: Boolean
+    var isEnabled: Boolean,
+
+    @Embedded
+    val validations: Validations?,
+)
+
+
+data class Validations(
+    val maxLength: Int?,
+    val minLength: Int?
 )

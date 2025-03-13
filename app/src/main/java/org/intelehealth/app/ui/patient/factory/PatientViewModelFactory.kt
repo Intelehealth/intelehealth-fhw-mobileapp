@@ -25,6 +25,8 @@ class PatientViewModelFactory(
     }
 
     companion object {
+
+        @JvmStatic
         fun create(
             context: Context,
             owner: ViewModelStoreOwner
