@@ -1306,9 +1306,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         drname.setText(details.getName());
         try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
-            int mAgeYears = Integer.valueOf(ymdData[0]);
-            dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
+            String ageData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth());
+            Log.d(TAG, "parseDoctorDetails:ageData :  "+ageData);
+            if (ageData != null && !ageData.isEmpty()) {
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
+                int mAgeYears = Integer.valueOf(ymdData[0]);
+                dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
+            }
         } catch (DAOException e) {
             e.printStackTrace();
             CustomLog.e(TAG, e.getMessage());

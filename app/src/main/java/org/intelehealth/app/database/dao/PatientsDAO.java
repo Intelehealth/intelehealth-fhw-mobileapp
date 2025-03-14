@@ -100,6 +100,10 @@ public class PatientsDAO extends BaseDao {
         values.put("em_contact_name", patient.getEmContactName());
         values.put("em_contact_num", patient.getEmContactNumber());
 
+        values.put("address3", patient.getAddress3());
+        values.put("address6", patient.getAddress6());
+        values.put("countyDistrict", patient.getDistrict());
+
         values.put("dead", patient.getDead());
         values.put("sync", patient.getSyncd().toString());
         return values;
