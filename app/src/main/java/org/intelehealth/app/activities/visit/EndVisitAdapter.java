@@ -134,7 +134,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
             //2.
-            if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+            /*if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
@@ -144,7 +144,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
-            }
+            }*/
 
             if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
