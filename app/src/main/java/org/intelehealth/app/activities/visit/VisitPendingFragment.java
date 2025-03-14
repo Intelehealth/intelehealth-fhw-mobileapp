@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.utilities.ThreadingUtils.executeInBackground;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Activity;
@@ -11,7 +12,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
@@ -211,8 +214,8 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        fetchRecentData();
-        fetchOlderData();
+        executeInBackground(fetchRecentData());
+        executeInBackground(fetchOlderData());
 
         int totalCount = totalCounts_recent + totalCounts_older;
         CustomLog.d("rece", "defaultData: pending" + totalCount);
@@ -226,41 +229,66 @@ public class VisitPendingFragment extends Fragment {
         progress.setVisibility(View.GONE);
     }
 
-    private void fetchOlderData() {
-        // pagination - start
-        olderList = olderVisits(olderLimit, olderStart);
-        CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter = new VisitAdapter(getActivity(), olderList);
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
+    private Runnable fetchOlderData() {
+        return () -> {
+            // pagination - start
+         //   olderList = olderVisits(olderLimit, olderStart);
+            do {
+                //   Timber.tag(TAG).v("fetchOlderData: 1st call: olderlimit, olderstart: " + olderLimit + " - " + olderStart);
+                olderList = olderVisits(olderLimit, olderStart);
+                if (olderList.isEmpty()) {
+                    olderEnd = olderEnd + 40;
+                    olderStart = olderStart + 40; // First update to 40, then double
+                    /*Timber.tag(TAG).v("do while loop older visits - start, end, limit: " + olderStart + "-" + olderEnd+ "-" + olderLimit);
+                    Timber.tag(TAG).v("==========================");*/
+                }
+            } while (olderList.isEmpty()); // Keep looping until we get some results
 
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
-        // pagination - end
+            CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
 
-        totalCounts_older = olderList.size();
-        if (totalCounts_older == 0 || totalCounts_older < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
+            new Handler(Looper.getMainLooper()).post(() -> {
+             //   recycler_older.setVisibility(View.VISIBLE); // Show RecyclerView
+                older_adapter = new VisitAdapter(getActivity(), olderList);
+                recycler_older.setNestedScrollingEnabled(false);
+                recycler_older.setAdapter(older_adapter);
+
+                totalCounts_older = olderList.size();
+                if (totalCounts_older == 0 || totalCounts_older < 0)
+                    older_nodata.setVisibility(View.VISIBLE);
+                else
+                    older_nodata.setVisibility(View.GONE);
+            });
+
+            olderStart = olderEnd;
+            olderEnd += olderLimit;
+            // pagination - end
+        };
     }
 
-    private void fetchRecentData() {
-        recentList = recentVisits(recentLimit, recentStart);
-        // pagination - start
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
+    private Runnable fetchRecentData() {
+        return () -> {
+            new Handler(Looper.getMainLooper()).post(() -> {    // Show loading indicator on UI thread
+                Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_LONG).show();
+            });
 
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
-        // pagination - end
+            recentList = recentVisits(recentLimit, recentStart);
+            // pagination - start
+            new Handler(Looper.getMainLooper()).post(() -> { // UI Thread.
+                        recent_adapter = new VisitAdapter(getActivity(), recentList);
+                        recycler_recent.setNestedScrollingEnabled(false);
+                        recycler_recent.setAdapter(recent_adapter);
 
-        totalCounts_recent = recentList.size();
-        if (totalCounts_recent == 0 || totalCounts_recent < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
+                totalCounts_recent = recentList.size();
+                if (totalCounts_recent == 0 || totalCounts_recent < 0)
+                    recent_nodata.setVisibility(View.VISIBLE);
+                else
+                    recent_nodata.setVisibility(View.GONE);
+                    });
+
+            recentStart = recentEnd;
+            recentEnd += recentLimit;
+            // pagination - end
+        };
     }
 
     // This method will be accessed every time the person scrolls the recyclerView further.
@@ -447,7 +475,8 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
@@ -525,7 +554,8 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
@@ -596,13 +626,13 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        //" v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate <= DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
@@ -671,7 +701,8 @@ public class VisitPendingFragment extends Fragment {
 
                 new String[]{});
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
@@ -749,7 +780,8 @@ public class VisitPendingFragment extends Fragment {
                         " and e.encounter_type_uuid = ?"
                 , new String[]{ENCOUNTER_VISIT_NOTE});
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
@@ -833,7 +865,7 @@ public class VisitPendingFragment extends Fragment {
                         "AND " +
                         "encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
 
-                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                if (cursor != null) {
                     do {
                         PrescriptionModel model = new PrescriptionModel();
                         //  model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));

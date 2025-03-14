@@ -38,6 +38,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 
@@ -68,7 +69,7 @@ public class VisitActivity extends BaseActivity implements
     private int refreshCount = 0;
     private AlertDialog loadingDialog;
     private int currentTabPos = 0;
-    private NotificationReceiver notificationReceiver;
+   // private NotificationReceiver notificationReceiver;
 
 
     @Override
@@ -79,8 +80,8 @@ public class VisitActivity extends BaseActivity implements
      //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
-        notificationReceiver =new  NotificationReceiver();
-        notificationReceiver.registerNotificationReceiver(this);
+      //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+       // notificationReceiver.registerNotificationReceiver(this);
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
@@ -176,7 +177,7 @@ public class VisitActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
       //  unregisterReceiver(mBroadcastReceiver);
-        notificationReceiver.unregisterNotificationReceiver(this);
+      //  notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {
@@ -265,6 +266,7 @@ public class VisitActivity extends BaseActivity implements
     public void receivedCount(int count) {
         CustomLog.v(TAG, "receivedCount: " + count);
         //tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+//        ThreadingUtils.executeInBackground(updateCounts(true));
         updateCounts(true);
     }
 
@@ -272,6 +274,7 @@ public class VisitActivity extends BaseActivity implements
     public void pendingCount(int count) {
         CustomLog.v(TAG, "pendingCount: " + count);
         //tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+//        ThreadingUtils.executeInBackground(updateCounts(false));
         updateCounts(false);
     }
 
@@ -299,7 +302,7 @@ public class VisitActivity extends BaseActivity implements
         }
     }
 
-    public class NotificationReceiver extends BroadcastReceiver {
+   /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -319,19 +322,19 @@ public class VisitActivity extends BaseActivity implements
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
-
-    private void updateCounts(boolean isForReceivedPrescription) {
-        new Thread(() -> {
-            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-            runOnUiThread(() -> {
-                if (isForReceivedPrescription)
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
-                            getResources().getString(R.string.received) + "\t(" + count + ")");
-                else
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
-                            getResources().getString(R.string.pending) + "\t(" + count + ")");
-            });
-        }).start();
-    }
+*/
+   private void updateCounts(boolean isForReceivedPrescription) {
+       new Thread(() -> {
+           int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+           runOnUiThread(() -> {
+               if (isForReceivedPrescription)
+                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                           getResources().getString(R.string.received) + "\t(" + count + ")");
+               else
+                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                           getResources().getString(R.string.pending) + "\t(" + count + ")");
+           });
+       }).start();
+   }
 
 }

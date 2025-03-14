@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 
 import org.intelehealth.app.utilities.AddPatientUtils;
@@ -212,6 +214,12 @@ public class VisitReceivedFragment extends Fragment {
         return () -> {
           //  mOlderList = olderVisits(olderLimit, olderStart);   // olderLimit is constant = 40 but olderStart will keep iterating by 40 on every cycle.
 
+            new Handler(Looper.getMainLooper()).post(() -> {    // Show loading indicator on UI thread
+                Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_LONG).show();
+                recycler_older.setVisibility(View.GONE); // Hide RecyclerView
+                older_nodata.setVisibility(View.GONE); // Hide 'No Data' message
+            });
+
             do {
              //   Timber.tag(TAG).v("fetchOlderData: 1st call: olderlimit, olderstart: " + olderLimit + " - " + olderStart);
                 mOlderList = olderVisits(olderLimit, olderStart);
@@ -223,20 +231,24 @@ public class VisitReceivedFragment extends Fragment {
                 }
             } while (mOlderList.isEmpty()); // Keep looping until we get some results
 
-            older_adapter = new VisitAdapter(getActivity(), mOlderList);
-            recycler_older.setNestedScrollingEnabled(false);
-            recycler_older.setAdapter(older_adapter);
+            new Handler(Looper.getMainLooper()).post(() -> {
+
+                recycler_older.setVisibility(View.VISIBLE); // Show RecyclerView
+                older_adapter = new VisitAdapter(getActivity(), mOlderList);
+                recycler_older.setNestedScrollingEnabled(false);
+                recycler_older.setAdapter(older_adapter);
+
+                totalCounts_older = mOlderList.size();
+                if (totalCounts_older == 0)
+                    older_nodata.setVisibility(View.VISIBLE);
+                else
+                    older_nodata.setVisibility(View.GONE);
+            });
 
             olderStart = olderEnd;
             olderEnd += olderLimit;
 
             // pagination - end
-
-            totalCounts_older = mOlderList.size();
-            if (totalCounts_older == 0 || totalCounts_older < 0)
-                older_nodata.setVisibility(View.VISIBLE);
-            else
-                older_nodata.setVisibility(View.GONE);
         };
     }
 
@@ -244,18 +256,20 @@ public class VisitReceivedFragment extends Fragment {
         return () -> {
             mRecentList = recentVisits(recentLimit, recentStart);
             // pagination - start
-            recent_adapter = new VisitAdapter(getActivity(), mRecentList);
-            recycler_recent.setNestedScrollingEnabled(false);
-            recycler_recent.setAdapter(recent_adapter);
+            new Handler(Looper.getMainLooper()).post(() -> {    // UI Thread.
+                        recent_adapter = new VisitAdapter(getActivity(), mRecentList);
+                        recycler_recent.setNestedScrollingEnabled(false);
+                        recycler_recent.setAdapter(recent_adapter);
+
+                totalCounts_recent = mRecentList.size();
+                if (totalCounts_recent == 0 || totalCounts_recent < 0)
+                    recent_nodata.setVisibility(View.VISIBLE);
+                else
+                    recent_nodata.setVisibility(View.GONE);
+            });
             recentStart = recentEnd;
             recentEnd += recentLimit;
             // pagination - end
-
-            totalCounts_recent = mRecentList.size();
-            if (totalCounts_recent == 0 || totalCounts_recent < 0)
-                recent_nodata.setVisibility(View.VISIBLE);
-            else
-                recent_nodata.setVisibility(View.GONE);
         };
     }
 
@@ -691,7 +705,8 @@ public class VisitReceivedFragment extends Fragment {
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 // emergency - start
@@ -861,7 +876,8 @@ public class VisitReceivedFragment extends Fragment {
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
 
@@ -934,7 +950,8 @@ public class VisitReceivedFragment extends Fragment {
                         " group by p.openmrs_id"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 // emergency - start
@@ -1007,7 +1024,7 @@ public class VisitReceivedFragment extends Fragment {
                         "STRFTIME('%m',date(substr(modified_date, 1, 4)||'-'||substr(modified_date, 6, 2)||'-'||substr(modified_date, 9,2))) = STRFTIME('%m',DATE('now')) AND " +
                         "encounter_type_uuid = ?", new String[]{ENCOUNTER_VISIT_NOTE});
 
-                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                if (cursor != null) {
                     do {
                         PrescriptionModel model = new PrescriptionModel();
 
@@ -1044,7 +1061,7 @@ public class VisitReceivedFragment extends Fragment {
 
                                 // fetching patient values from Patient table.
                                 Cursor cursor2 = db.rawQuery("SELECT * FROM tbl_patient WHERE uuid = ?", new String[]{model.getPatientUuid()});
-                                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                                if (cursor != null) {
                                     do {
                                         model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                                         model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
