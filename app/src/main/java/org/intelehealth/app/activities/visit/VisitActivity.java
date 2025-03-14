@@ -76,7 +76,7 @@ public class VisitActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
         sessionManager = new SessionManager(this);
-        networkUtils = new NetworkUtils(this, this);
+     //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
         notificationReceiver =new  NotificationReceiver();
@@ -89,56 +89,57 @@ public class VisitActivity extends BaseActivity implements
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
         configureTabLayout();
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra("JOB")) {
-                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
-                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
-                        if (!isFinishing()) {
-                            refresh.clearAnimation();
-                            if (syncAnimator != null) syncAnimator.cancel();
-                        }
-                        // Delay tab layout update slightly
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
-                    }
-                }
 
-           /* @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra("JOB")) {
-                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
-                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
-                            CustomLog.v(TAG, "Sync Done!");
-                            if (!isFinishing()) {
-                                refresh.clearAnimation();
-                                syncAnimator.cancel();
-                            }
-                            configureTabLayout();
-                    }
-                }*/
-
-                //just stopping the progressbar here if sync is failed
-                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
-                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                    if (flagType == AppConstants.SYNC_FAILED) {
-                        refresh.clearAnimation();
-                        syncAnimator.cancel();
-                        hideProgressbar();
-                    }
-                }
-            }
-        };
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                this,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+//        mBroadcastReceiver = new BroadcastReceiver() {    // TODO: Commented this code as it is taking heavy load when moving from home to this screen of around 10secs.
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.hasExtra("JOB")) {
+//                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+//                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+//                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+//                        if (!isFinishing()) {
+//                            refresh.clearAnimation();
+//                            if (syncAnimator != null) syncAnimator.cancel();
+//                        }
+//                        // Delay tab layout update slightly
+//                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
+//                    }
+//                }
+//
+//           /* @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.hasExtra("JOB")) {
+//                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+//                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+//                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+//                            CustomLog.v(TAG, "Sync Done!");
+//                            if (!isFinishing()) {
+//                                refresh.clearAnimation();
+//                                syncAnimator.cancel();
+//                            }
+//                            configureTabLayout();
+//                    }
+//                }*/
+//
+//                //just stopping the progressbar here if sync is failed
+//                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+//                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+//                    if (flagType == AppConstants.SYNC_FAILED) {
+//                        refresh.clearAnimation();
+//                        syncAnimator.cancel();
+//                        hideProgressbar();
+//                    }
+//                }
+//            }
+//        };
+//        IntentFilter filterSend = new IntentFilter();
+//        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+//        ContextCompat.registerReceiver(
+//                this,
+//                mBroadcastReceiver,
+//                filterSend,
+//                ContextCompat.RECEIVER_NOT_EXPORTED
+//        );
 
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -174,7 +175,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
+      //  unregisterReceiver(mBroadcastReceiver);
         notificationReceiver.unregisterNotificationReceiver(this);
     }
 
@@ -239,7 +240,7 @@ public class VisitActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         //register receiver for internet check
-        networkUtils.callBroadcastReceiver();
+      //  networkUtils.callBroadcastReceiver();
     }
 
     private void hideProgressbar() {
@@ -252,12 +253,12 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void onStop() {
         super.onStop();
-        try {
+        /*try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

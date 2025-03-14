@@ -4,22 +4,15 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMP
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.LocaleList;
 import android.text.Html;
-import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,21 +33,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+// import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -62,6 +55,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 public class VisitReceivedFragment extends Fragment {
+    public static final String TAG = "VisitReceivedFragment";
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
@@ -193,9 +187,15 @@ public class VisitReceivedFragment extends Fragment {
         priority_cancel = view.findViewById(R.id.priority_cancel);
     }
 
+    public void executeInBackground(Runnable task) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(task);
+        System.out.println("BaseDao.execute");
+    }
+
     private void defaultData() {
-        fetchRecentData();
-        fetchOlderData();
+        executeInBackground(fetchRecentData());
+        executeInBackground(fetchOlderData());
 
         int totalCounts = totalCounts_recent + totalCounts_older;
         CustomLog.d("rece", "defaultData: received" + totalCounts);
@@ -206,41 +206,57 @@ public class VisitReceivedFragment extends Fragment {
         progress.setVisibility(View.GONE);
     }
 
-    private void fetchOlderData() {
+    private Runnable fetchOlderData() {
         // Older vistis
         // pagination - start
-        mOlderList = olderVisits(olderLimit, olderStart);
-        older_adapter = new VisitAdapter(getActivity(), mOlderList);
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
+        return () -> {
+          //  mOlderList = olderVisits(olderLimit, olderStart);   // olderLimit is constant = 40 but olderStart will keep iterating by 40 on every cycle.
 
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
-        // pagination - end
+            do {
+             //   Timber.tag(TAG).v("fetchOlderData: 1st call: olderlimit, olderstart: " + olderLimit + " - " + olderStart);
+                mOlderList = olderVisits(olderLimit, olderStart);
+                if (mOlderList.isEmpty()) {
+                    olderEnd = olderEnd + 40;
+                    olderStart = olderStart + 40; // First update to 40, then double
+                    /*Timber.tag(TAG).v("do while loop older visits - start, end, limit: " + olderStart + "-" + olderEnd+ "-" + olderLimit);
+                    Timber.tag(TAG).v("==========================");*/
+                }
+            } while (mOlderList.isEmpty()); // Keep looping until we get some results
 
-        totalCounts_older = mOlderList.size();
-        if (totalCounts_older == 0 || totalCounts_older < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
+            older_adapter = new VisitAdapter(getActivity(), mOlderList);
+            recycler_older.setNestedScrollingEnabled(false);
+            recycler_older.setAdapter(older_adapter);
+
+            olderStart = olderEnd;
+            olderEnd += olderLimit;
+
+            // pagination - end
+
+            totalCounts_older = mOlderList.size();
+            if (totalCounts_older == 0 || totalCounts_older < 0)
+                older_nodata.setVisibility(View.VISIBLE);
+            else
+                older_nodata.setVisibility(View.GONE);
+        };
     }
 
-    private void fetchRecentData() {
-        mRecentList = recentVisits(recentLimit, recentStart);
-        // pagination - start
-        recent_adapter = new VisitAdapter(getActivity(), mRecentList);
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
-        // pagination - end
+    private Runnable fetchRecentData() {
+        return () -> {
+            mRecentList = recentVisits(recentLimit, recentStart);
+            // pagination - start
+            recent_adapter = new VisitAdapter(getActivity(), mRecentList);
+            recycler_recent.setNestedScrollingEnabled(false);
+            recycler_recent.setAdapter(recent_adapter);
+            recentStart = recentEnd;
+            recentEnd += recentLimit;
+            // pagination - end
 
-        totalCounts_recent = mRecentList.size();
-        if (totalCounts_recent == 0 || totalCounts_recent < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
-
+            totalCounts_recent = mRecentList.size();
+            if (totalCounts_recent == 0 || totalCounts_recent < 0)
+                recent_nodata.setVisibility(View.VISIBLE);
+            else
+                recent_nodata.setVisibility(View.GONE);
+        };
     }
 
     private void visitData() {
@@ -566,12 +582,12 @@ public class VisitReceivedFragment extends Fragment {
         if (mRecentPrescriptionModelList.size() > 0 || mOlderPrescriptionModelList.size() > 0) {
 
         } else {
-            if (mOlderList != null && mOlderList.size() == 0) {
+            if (mOlderList != null && mOlderList.isEmpty()) {
                 isolderFullyLoaded = true;
                 return;
             }
 
-            //  olderList = olderVisits(olderLimit, olderStart);
+          //  Timber.tag(TAG).v("older visits fetch on scroll - olderstart, olderlimit: " + olderStart + "-" + olderLimit);
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 mOlderList.addAll(tempList);
@@ -735,21 +751,43 @@ public class VisitReceivedFragment extends Fragment {
 
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
+        if (!db.isOpen()) {
+            db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        }
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        /*Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
-                        //" and v.enddate is null " +
                         "and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ?  "+
                         " and v.startdate <= DATE('now', '-4 day') " +
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});*/
+        Cursor cursor = db.rawQuery(
+                "SELECT p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, " +
+                        "p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, " +
+                        "e.uuid AS euid, o.uuid AS ouid, o.obsservermodifieddate, o.sync AS osync " +
+                        "FROM tbl_patient p " +
+                        "JOIN tbl_visit v ON p.uuid = v.patientuuid " +
+                        "JOIN tbl_encounter e ON v.uuid = e.visituuid " +
+                        "JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                        "WHERE e.encounter_type_uuid = ? " +
+                        "AND (o.sync = 1 OR LOWER(o.sync) = 'true') " +
+                        "AND o.voided = 0 " +
+                        "AND v.startdate <= DATE('now', '-4 day') " +
+                        "GROUP BY p.openmrs_id " +
+                        "ORDER BY v.startdate DESC " +
+                        "LIMIT ? OFFSET ?",
+                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)}
+        );
+        // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null) {
+            cursor.moveToFirst();  // Move cursor to first row
+            Log.v("VisitReceived", "oldervisits: " + cursor.getCount());
             do {
                 PrescriptionModel model = new PrescriptionModel();
 

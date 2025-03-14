@@ -63,6 +63,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
@@ -231,7 +232,13 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    public Runnable startActivity() {
+        return () -> {
+            Intent intent = new Intent(requireActivity(), VisitActivity.class);
+            startActivity(intent);
+        };
     }
 
     private void initUI() {
@@ -308,10 +315,10 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         card_prescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), VisitActivity.class);
-                startActivity(intent);
+                ThreadingUtils.executeInBackground(startActivity());
             }
         });
+
 
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         Executors.newSingleThreadExecutor().execute(() -> {
