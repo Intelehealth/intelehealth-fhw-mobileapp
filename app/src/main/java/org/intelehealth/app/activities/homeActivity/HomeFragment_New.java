@@ -602,6 +602,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 .setVisibility(status.getVisitSummeryAppointment() ? View.VISIBLE : View.GONE);
     }
 
+/*
     public void countStrPendingFollowupVisits() {
         Date todaysDate = DateAndTimeUtils.getCurrentDateWithoutTime();
         Calendar c = Calendar.getInstance();
@@ -652,5 +653,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         cursor.close();
     }
+*/
 }
 
