@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.databinding.DataBindingUtil
@@ -82,18 +83,21 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     if (!notificationList.isNullOrEmpty()) {
                         mBinding.notifiHeaderTitle.text = String.format(
                             getString(
-                                R.string.five_presc_received,
-                                mViewModel.getPrescriptionCount().toString()
-                            )
-                        )
-
+                                R.string.five_presc_received),
+                            mViewModel.getPrescriptionCount().toString())
                     }
+                    else {
+                        mBinding.notifiHeaderTitle.text = String.format(
+                            getString(
+                                R.string.five_presc_received),
+                            notificationCloudList?.size?.toString() ?: "0")
+                    }
+                    Log.d(TAG, "data:: " + mViewModel.getPrescriptionCount().toString() + " - " + notificationCloudList?.size?.toString())
                 }
 
                 else -> {}
             }
         }
-
 
         mViewModel.fetchAllCloudNotification(sessionManager.providerID,"1","100").observe(this) {
             when (it) {
@@ -109,6 +113,10 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     mBinding.rlPrescriptionHeader.visibility = VISIBLE
                     mBinding.ibClearAll.visibility = VISIBLE
                     notificationCloudList = it.data as ArrayList<NotificationList>
+                    mBinding.notifiHeaderTitle.text = String.format(
+                        getString(
+                            R.string.five_presc_received),
+                        notificationCloudList?.size?.toString() ?: "0")
                     setCloudNotificationAdapter()
 
                 }
