@@ -99,7 +99,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
     }
 
-/*
+
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -118,7 +118,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         res.updateConfiguration(conf, dm);
         return context;
     }
-*/
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         repository = new HomeScreenQueriesRepository();
         executorService = Executors.newSingleThreadExecutor();
 
-        //setLocale(getContext());
+        setLocale(getContext());
 
         ((HomeScreenActivity_New) requireActivity()).initUpdateFragmentOnEvent(new UpdateFragmentOnEvent() {
             @Override
@@ -247,7 +247,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
-        /*String language = sessionManager.getAppLanguage(); //as locale already set
+       String language = sessionManager.getAppLanguage(); //as locale already set
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -257,7 +257,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         }
 
        sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
-*/
+
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
         DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
@@ -403,7 +403,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onResume() {
         super.onResume();
-        //setLocale(getContext());
+        setLocale(getContext());
         initUI();
 
     }

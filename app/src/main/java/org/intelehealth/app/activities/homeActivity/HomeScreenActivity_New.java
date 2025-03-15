@@ -309,7 +309,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setLocale(HomeScreenActivity_New.this);
+        setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
@@ -682,7 +682,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
-        //setLocale(HomeScreenActivity_New.this);
+        setLocale(HomeScreenActivity_New.this);
 
     }
 
@@ -761,12 +761,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         return getSupportFragmentManager().findFragmentByTag(fragmentTag);
     }
 
-  /*  @Override
+    @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
-    }*/
+    }
 
-    /*public Context setLocale(Context context) {
+    public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
         Resources res = context.getResources();
@@ -784,7 +784,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         res.updateConfiguration(conf, dm);
         return context;
     }
-*/
+
     private String getTopFragmentTag() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return "";
