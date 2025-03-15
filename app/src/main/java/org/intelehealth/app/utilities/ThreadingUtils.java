@@ -28,7 +28,7 @@ public class ThreadingUtils {
         }
     }
 
-    /*public static void shutdownExecutor() {   // TODO : avoiding calling this since we are having multiple long running items...
+    public static void shutdownExecutor() {   // TODO : avoiding calling this since we are having multiple long running items...
         executorService.shutdown();  // Stop accepting new tasks
         try {
             if (!executorService.awaitTermination(3, TimeUnit.SECONDS)) {  // Wait for 3 sec
@@ -37,5 +37,5 @@ public class ThreadingUtils {
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }
-    }*/
+    }
 }

@@ -44,6 +44,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -125,21 +126,27 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                     profilePicDownloaded(model, holder);
                 }
             }*/
-            // TODO : need to remove the image download from adapter
-            if (model.getPatient_photo() != null) {
+           /* if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
                         .override(50, 50)
-                        //.thumbnail(requestBuilder)
                         .centerCrop()
                         .skipMemoryCache(false)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(holder.profile_image);
             } else {
                 holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
-            }
+            }*/
+            Glide.with(holder.itemView.getContext())
+                    .load(model.getPatient_photo())
+                    .placeholder(R.drawable.avatar1) // Default image while loading
+                    .error(R.drawable.avatar1) // Fallback in case of error
+                    .override(50, 50) // Resize only if necessary
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) // Better caching strategy
+                    .into(holder.profile_image);
             // photo - end
 
             // visit start date
@@ -230,7 +237,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     }
 
     // profile downlaod
-    public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
+    /*public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
@@ -289,7 +296,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 });
 
 
-    }
+    }*/
 
     private void sharePresc(final PrescriptionModel model) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);

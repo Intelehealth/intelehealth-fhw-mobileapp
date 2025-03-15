@@ -4230,10 +4230,33 @@ public final class StringUtils {
      *
      * @param context
      * @param genderView
-     * @param patient
      * @param sessionManager
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        // 1. Calculate Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        // 2. Get Localized Gender String
+        int genderStringResId;
+        switch (gender.toUpperCase()) {
+            case "M":
+                genderStringResId = R.string.identification_screen_checkbox_male;
+                break;
+            case "F":
+                genderStringResId = R.string.identification_screen_checkbox_female;
+                break;
+            case "O":
+                genderStringResId = R.string.identification_screen_checkbox_other;
+                break;
+            default:
+                genderView.setText(gender + " " + age);
+                return;
+        }
+
+        // 3. Apply Localized Text
+        genderView.setText(context.getString(genderStringResId) + " " + age);
+    }
+    /*public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         //  1. Age
         String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
 
@@ -4340,7 +4363,7 @@ public final class StringUtils {
         } else {
             genderView.setText(gender + " " + age);
         }
-    }
+    }*/
 
     /**
      * returning string instead of setting data to textview
