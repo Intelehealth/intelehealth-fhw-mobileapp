@@ -27,6 +27,7 @@ import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.StringUtils.getTranslatedString
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.klivekit.data.PreferenceHelper
 
@@ -132,7 +133,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         val builder = AlertDialog.Builder(this)
 
         builder.setTitle(getString(R.string.notifi_title))
-        builder.setMessage(message)
+        builder.setMessage(getTranslatedString(this, message))
 
         // Add the OK button
         builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->

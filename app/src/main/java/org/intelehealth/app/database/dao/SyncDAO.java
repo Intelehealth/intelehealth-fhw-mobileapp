@@ -356,7 +356,8 @@ public class SyncDAO {
             int totalCount = response.body().getData().getTotalCount();
             if (nextPageNo != -1) {
                 pullData_Background(context, nextPageNo);
-                return null;
+              //  return null;
+                return "";  // avoid null return
             } else {
                 //we are not handling
                 //if(!from.equals("pres")){
@@ -409,7 +410,8 @@ public class SyncDAO {
         } else {
             sessionManager.setTriggerNoti("yes");
         }
-        return null;
+     //   return null;
+        return "";  // avoid null return
     }
 
 

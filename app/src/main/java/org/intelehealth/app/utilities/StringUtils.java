@@ -5076,4 +5076,34 @@ public final class StringUtils {
         return result;
     }
 
+    /*private fun getTranslatedString(context: Context, text: String): String {
+        return when {
+            text.contains("Prescription available for", ignoreCase = true) -> {
+                // Extract patient name by removing "Prescription available for"
+                val patientName = text.replace("Prescription available for", "").trim()
+                context.getString(
+                        R.string.prescription_available_for_notification,
+                        patientName
+                ) // since we have a placeholder here.
+            }
+
+            text.contains("Click notification to see!", ignoreCase = true) ->
+            context.getString(R.string.click_notification_to_see)
+
+            else -> text // Return original text if no match
+        }
+    }*/
+
+    public static String getTranslatedString(Context context, String text) {
+        if (text.toLowerCase().contains("prescription available for")) {
+            // Extract patient name by removing "Prescription available for"
+            String patientName = text.replace("Prescription available for", "").trim();
+            return context.getString(R.string.prescription_available_for_notification, patientName);
+        } else if (text.equalsIgnoreCase("Click notification to see!")) {
+            return context.getString(R.string.click_notification_to_see);
+        } else {
+            return text; // Return original text if no match
+        }
+    }
+
 }
