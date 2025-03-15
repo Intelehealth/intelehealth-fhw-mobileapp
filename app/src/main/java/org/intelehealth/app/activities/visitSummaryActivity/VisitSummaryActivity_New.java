@@ -397,7 +397,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     private String visitType = "Consultation";
-
+    private boolean isDownloadImageBroadcastRecRegisterd = false;
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -3506,9 +3506,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     // receiver download
     public void registerBroadcastReceiverDynamically() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        if(!isDownloadImageBroadcastRecRegisterd) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+            ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+            isDownloadImageBroadcastRecRegisterd = true;
+        }
     }
 
     public void registerDownloadPrescription() {
@@ -4098,6 +4101,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
+
+            if(broadcastReceiverForIamgeDownlaod !=null && isDownloadImageBroadcastRecRegisterd){
+                unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
