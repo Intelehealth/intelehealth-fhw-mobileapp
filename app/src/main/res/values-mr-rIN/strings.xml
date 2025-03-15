@@ -1487,6 +1487,7 @@
     <string name="notifi_subheader_title">रुग्णांना प्रिस्क्रिप्शन पाठवा</string>
     <string name="work_in_progress">काम चालू आहे..</string>
 <!--    <string name="prescription_available_for_notification">%1$s साठी प्रिस्क्रिप्शन उपलब्ध आहे</string>-->
+    <string name="please_select_date">कृपया तारीख निवडा</string>
     <string name="prescription_available_for_notification">%1$s साठी प्रिस्क्रिप्शन उपलब्ध आहे</string>
     <string name="click_notification_to_see">सूचना पाहण्यासाठी क्लिक करा!</string>
     <string name="appointment_reschedule_for_notification">%1$s साठी अपॉइंटमेंट पुन्हा शेड्यूल केले</string>
