@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.database.dao.VisitsDAO.getTotalActiveVisitsCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
@@ -342,23 +343,24 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
-        executorService.execute(() -> {
+        ThreadingUtils.executeInBackground(() -> {
+            int count = getTotalActiveVisitsCount();
+            if (isAdded()) {
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView
+                        .setText(activity.getResources().getQuantityString(
+                                R.plurals.open_no_of_visit,
+                                count, count)));
+            }
+        });
+        /*executorService.execute(() -> {
             HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
-            int countPendingCloseVisits = repository.getRecentNotEndedVisits(db).size()
-                    + repository.getOlderNotEndedVisits(db).size();
+            int countPendingCloseVisits = repository.getRecentNotEndedVisits(db).size() + repository.getOlderNotEndedVisits(db).size();
             if (isAdded()) {
                 activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(
                         activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)
                 ));
             }
-        });
-        /*new Thread(() -> {
-            int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-            if (isAdded()) {
-                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
-
-            }
-        }).start();*/
+        });*/
 
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {

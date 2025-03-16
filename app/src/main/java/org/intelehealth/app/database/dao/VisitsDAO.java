@@ -516,8 +516,8 @@ public class VisitsDAO extends BaseDao{
                         "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                         "v.voided = 0 AND " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                        " v.startdate > DATETIME('now', '-4 day') " +
-                        " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                        "v.startdate > DATETIME('now', '-4 day') " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -902,6 +902,27 @@ public class VisitsDAO extends BaseDao{
         }
 
         return modifiedDate;
+    }
+
+    public static int getTotalActiveVisitsCount() {
+        int total = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase(); // Use getReadableDatabase for SELECT queries
+
+        if (db.inTransaction()) db.endTransaction(); // Ensure no open transactions
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM tbl_visit WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND enddate IS NULL", null);
+            if (cursor != null && cursor.moveToFirst()) {
+                total = cursor.getInt(0); // Retrieve the count from the first column
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error
+        } finally {
+            if (cursor != null) cursor.close(); // Close the cursor to prevent memory leaks
+        }
+
+        return total; // Return the actual count
     }
 
     /**
