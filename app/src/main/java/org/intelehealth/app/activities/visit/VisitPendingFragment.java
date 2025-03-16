@@ -52,6 +52,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -92,6 +93,14 @@ public class VisitPendingFragment extends Fragment {
     NestedScrollView nestedscrollview;
     List<PrescriptionModel> recent = new ArrayList<>();
     List<PrescriptionModel> older = new ArrayList<>();
+    boolean isLoadingRecent = false, isLoadingOlder = false;
+    private boolean isOlderPageLoading = false;
+    private boolean isRecentPageLoading = false;
+    PrescriptionLoadingListeners prescriptionLoadingListeners;
+
+    public VisitPendingFragment(PrescriptionLoadingListeners prescriptionLoadingListeners) {
+        this.prescriptionLoadingListeners = prescriptionLoadingListeners;
+    }
 
     @Nullable
     @Override
@@ -175,7 +184,7 @@ public class VisitPendingFragment extends Fragment {
                     if (recentList != null && recentList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }
-                    if (!isRecentFullyLoaded)
+                    if (!isRecentFullyLoaded && !isRecentPageLoading)
                         setRecentMoreDataIntoRecyclerView();
 
                     // Last Item Scroll Down.
@@ -186,7 +195,7 @@ public class VisitPendingFragment extends Fragment {
                             //CustomLog.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
                             return;
                         }
-                        if (!isolderFullyLoaded) {
+                        if (!isolderFullyLoaded && !isOlderPageLoading) {
                             if (recent != null && older != null) {
                                 if (recent.size() > 0 || older.size() > 0) {
 
@@ -248,9 +257,13 @@ public class VisitPendingFragment extends Fragment {
 
             new Handler(Looper.getMainLooper()).post(() -> {
              //   recycler_older.setVisibility(View.VISIBLE); // Show RecyclerView
-                older_adapter = new VisitAdapter(getActivity(), olderList);
-                recycler_older.setNestedScrollingEnabled(false);
-                recycler_older.setAdapter(older_adapter);
+               if(older_adapter == null){
+                   older_adapter = new VisitAdapter(getActivity(), olderList);
+                   recycler_older.setNestedScrollingEnabled(false);
+                   recycler_older.setAdapter(older_adapter);
+               }else {
+                   older_adapter.setData(olderList);
+               }
 
                 totalCounts_older = olderList.size();
                 if (totalCounts_older == 0 || totalCounts_older < 0)
@@ -261,22 +274,27 @@ public class VisitPendingFragment extends Fragment {
 
             olderStart = olderEnd;
             olderEnd += olderLimit;
+            prescriptionLoadingListeners.isPendingOldLoaded(true);
             // pagination - end
         };
     }
 
     private Runnable fetchRecentData() {
         return () -> {
-            new Handler(Looper.getMainLooper()).post(() -> {    // Show loading indicator on UI thread
+            /*new Handler(Looper.getMainLooper()).post(() -> {    // Show loading indicator on UI thread
                 Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_LONG).show();
-            });
+            });*/
 
             recentList = recentVisits(recentLimit, recentStart);
             // pagination - start
             new Handler(Looper.getMainLooper()).post(() -> { // UI Thread.
-                        recent_adapter = new VisitAdapter(getActivity(), recentList);
-                        recycler_recent.setNestedScrollingEnabled(false);
-                        recycler_recent.setAdapter(recent_adapter);
+                if(recent_adapter == null){
+                    recent_adapter = new VisitAdapter(getActivity(), recentList);
+                    recycler_recent.setNestedScrollingEnabled(false);
+                    recycler_recent.setAdapter(recent_adapter);
+                }else {
+                    recent_adapter.setData(recentList);
+                }
 
                 totalCounts_recent = recentList.size();
                 if (totalCounts_recent == 0 || totalCounts_recent < 0)
@@ -287,12 +305,14 @@ public class VisitPendingFragment extends Fragment {
 
             recentStart = recentEnd;
             recentEnd += recentLimit;
+            prescriptionLoadingListeners.isPendingRecentLoaded(true);
             // pagination - end
         };
     }
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
+        isRecentPageLoading = true;
         if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
         } else {
@@ -312,9 +332,11 @@ public class VisitPendingFragment extends Fragment {
                 recentEnd += recentLimit;
             }
         }
+        isRecentPageLoading = false;
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
+        isOlderPageLoading = true;
         if (recent.size() > 0 || older.size() > 0) {
 
         } else {
@@ -334,6 +356,8 @@ public class VisitPendingFragment extends Fragment {
                 olderEnd += olderLimit;
             }
         }
+
+        isOlderPageLoading = false;
     }
 
     private void visitData() {
@@ -475,8 +499,7 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        if (cursor != null) {
-            cursor.moveToFirst();  // Move cursor to first row
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);

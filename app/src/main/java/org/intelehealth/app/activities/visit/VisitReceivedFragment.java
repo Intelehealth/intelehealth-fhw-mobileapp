@@ -43,6 +43,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -81,6 +82,14 @@ public class VisitReceivedFragment extends Fragment {
     NestedScrollView nestedscrollview;
     List<PrescriptionModel> mRecentPrescriptionModelList = new ArrayList<>();
     List<PrescriptionModel> mOlderPrescriptionModelList = new ArrayList<>();
+    boolean isLoadingRecent = false, isLoadingOlder = false;
+    private boolean isOlderPageLoading = false;
+    private boolean isRecentPageLoading = false;
+    PrescriptionLoadingListeners prescriptionLoadingListeners;
+
+    public VisitReceivedFragment(PrescriptionLoadingListeners prescriptionLoadingListeners) {
+        this.prescriptionLoadingListeners = prescriptionLoadingListeners;
+    }
 
     @Nullable
     @Override
@@ -156,8 +165,9 @@ public class VisitReceivedFragment extends Fragment {
                    /* if (mRecentList != null && mRecentList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }*/
-                    if (!isRecentFullyLoaded)
+                    if (!isRecentFullyLoaded && !isRecentPageLoading){
                         setRecentMoreDataIntoRecyclerView();
+                    }
 
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
@@ -166,7 +176,7 @@ public class VisitReceivedFragment extends Fragment {
                             isolderFullyLoaded = true;
                             return;
                         }
-                        if (!isolderFullyLoaded) {
+                        if (!isolderFullyLoaded && !isOlderPageLoading) {
                             if (mRecentPrescriptionModelList != null && mOlderPrescriptionModelList != null) {
                                 if (mRecentPrescriptionModelList.size() > 0 || mOlderPrescriptionModelList.size() > 0) {
 
@@ -215,7 +225,7 @@ public class VisitReceivedFragment extends Fragment {
           //  mOlderList = olderVisits(olderLimit, olderStart);   // olderLimit is constant = 40 but olderStart will keep iterating by 40 on every cycle.
 
             new Handler(Looper.getMainLooper()).post(() -> {    // Show loading indicator on UI thread
-                Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_LONG).show();
                 recycler_older.setVisibility(View.GONE); // Hide RecyclerView
                 older_nodata.setVisibility(View.GONE); // Hide 'No Data' message
             });
@@ -247,6 +257,8 @@ public class VisitReceivedFragment extends Fragment {
 
             olderStart = olderEnd;
             olderEnd += olderLimit;
+            isLoadingRecent = false;
+            prescriptionLoadingListeners.isReceivedOldLoaded(true);
 
             // pagination - end
         };
@@ -269,6 +281,9 @@ public class VisitReceivedFragment extends Fragment {
             });
             recentStart = recentEnd;
             recentEnd += recentLimit;
+            isLoadingOlder = false;
+
+            prescriptionLoadingListeners.isReceivedRecentLoaded(true);
             // pagination - end
         };
     }
@@ -571,6 +586,7 @@ public class VisitReceivedFragment extends Fragment {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
+        isRecentPageLoading = true;
         if (mRecentPrescriptionModelList.size() > 0 || mOlderPrescriptionModelList.size() > 0) {    // on scroll, new data loads issue fix.
 
         } else {
@@ -589,10 +605,13 @@ public class VisitReceivedFragment extends Fragment {
                 recentStart = recentEnd;
                 recentEnd += recentLimit;
             }
+
         }
+        isRecentPageLoading = false;
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
+        isOlderPageLoading = true;
         if (mRecentPrescriptionModelList.size() > 0 || mOlderPrescriptionModelList.size() > 0) {
 
         } else {
@@ -600,7 +619,6 @@ public class VisitReceivedFragment extends Fragment {
                 isolderFullyLoaded = true;
                 return;
             }
-
           //  Timber.tag(TAG).v("older visits fetch on scroll - olderstart, olderlimit: " + olderStart + "-" + olderLimit);
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
@@ -612,6 +630,8 @@ public class VisitReceivedFragment extends Fragment {
                 olderEnd += olderLimit;
             }
         }
+
+        isOlderPageLoading = false;
     }
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
