@@ -69,12 +69,41 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         notifyDataSetChanged();
     }
 
+    public void resetAndAddData(List<PrescriptionModel> list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
+
+
     @NonNull
     @Override
     public VisitAdapter.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.followup_list_item, parent, false);
-        return new VisitAdapter.Myholder(row);
+        Myholder myholder = new VisitAdapter.Myholder(row);
+        myholder.fu_cardview_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrescriptionModel model = list.get(myholder.getAbsoluteAdapterPosition());
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
+                intent.putExtra("patientUuid", model.getPatientUuid());
+                intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
+                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age1);
+                intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
+                intent.putExtra("openmrsID", model.getOpenmrs_id());
+                intent.putExtra("visit_ID", model.getVisitUuid());
+                intent.putExtra("visit_startDate", model.getVisit_start_date());
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                context.startActivity(intent);
+            }
+        });
+        return myholder;
     }
 
     @Override
@@ -165,24 +194,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 }
             });
 */
-
-            holder.fu_cardview_item.setOnClickListener(v -> {
-                Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
-                intent.putExtra("patientUuid", model.getPatientUuid());
-                intent.putExtra("gender", model.getGender());
-                intent.putExtra("dob", model.getDob());
-                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-                intent.putExtra("age", age1);
-                intent.putExtra("priority_tag", model.isEmergency());
-                intent.putExtra("hasPrescription", model.isHasPrescription());
-                intent.putExtra("openmrsID", model.getOpenmrs_id());
-                intent.putExtra("visit_ID", model.getVisitUuid());
-                intent.putExtra("visit_startDate", model.getVisit_start_date());
-                intent.putExtra("patient_photo", model.getPatient_photo());
-                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
-                context.startActivity(intent);
-            });
 
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override

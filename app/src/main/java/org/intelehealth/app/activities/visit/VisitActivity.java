@@ -16,6 +16,8 @@ import android.os.LocaleList;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
@@ -353,6 +355,7 @@ public class VisitActivity extends BaseActivity implements
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {
+        Log.d("CCC","isReceivedRecentLoaded");
         isReceivedRecentLoaded = status;
         if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
 
