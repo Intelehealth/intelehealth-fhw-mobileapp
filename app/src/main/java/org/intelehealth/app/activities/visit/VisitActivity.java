@@ -16,6 +16,8 @@ import android.os.LocaleList;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
@@ -37,6 +39,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
@@ -51,7 +54,7 @@ import java.util.concurrent.Executors;
  * Github: prajwalmw
  */
 public class VisitActivity extends BaseActivity implements
-        NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
+        NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface, PrescriptionLoadingListeners {
     private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;
     private NetworkUtils networkUtils;
@@ -69,7 +72,12 @@ public class VisitActivity extends BaseActivity implements
     private int refreshCount = 0;
     private AlertDialog loadingDialog;
     private int currentTabPos = 0;
-   // private NotificationReceiver notificationReceiver;
+    private boolean isReceivedOldLoaded = false;
+    private boolean isReceivedRecentLoaded = false;
+    private boolean isPendingRecentLoaded = false;
+    private boolean isPendingOldLoaded = false;
+    AlertDialog commonLoadingDialog;
+    // private NotificationReceiver notificationReceiver;
 
 
     @Override
@@ -145,6 +153,14 @@ public class VisitActivity extends BaseActivity implements
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+
+        if (commonLoadingDialog == null) {
+            commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+            commonLoadingDialog.setCancelable(false);
+        }
+        if (!commonLoadingDialog.isShowing()) {
+            commonLoadingDialog.show();
+        }
     }
 
    /* @Override
@@ -187,7 +203,7 @@ public class VisitActivity extends BaseActivity implements
         if (viewPager == null) viewPager = findViewById(R.id.pager_appointments);
 
         if (viewPager.getAdapter() == null) {
-            VisitPagerAdapter adapter = new VisitPagerAdapter(this);
+            VisitPagerAdapter adapter = new VisitPagerAdapter(this,this);
             viewPager.setAdapter(adapter);
 
             new TabLayoutMediator(tabLayout, viewPager,
@@ -337,4 +353,48 @@ public class VisitActivity extends BaseActivity implements
        }).start();
    }
 
+    @Override
+    public void isReceivedRecentLoaded(boolean status) {
+        Log.d("CCC","isReceivedRecentLoaded");
+        isReceivedRecentLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isReceivedOldLoaded(boolean status) {
+        isReceivedOldLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isPendingRecentLoaded(boolean status) {
+        isPendingRecentLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isPendingOldLoaded(boolean status) {
+        isPendingOldLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
 }
