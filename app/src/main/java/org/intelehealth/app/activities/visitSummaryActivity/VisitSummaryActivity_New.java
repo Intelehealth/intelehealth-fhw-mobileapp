@@ -3279,6 +3279,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void visitUploadBlock() {
+
+        // Upload button disabled to prevent multiple insertion of data
+        uploadButton.setEnabled(false);
+
+        if (complaint.getValue() == null || complaint.getValue().isEmpty() || complaint.getValue().equalsIgnoreCase("")) {
+            Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean isPriorityFlagChecked = flag.isChecked();
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -3482,6 +3491,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             });
                         }
                         uploaded = true;
+                        uploadButton.setEnabled(true);
                     }, 4000);
                 } else {
                     runOnUiThread(() -> {
