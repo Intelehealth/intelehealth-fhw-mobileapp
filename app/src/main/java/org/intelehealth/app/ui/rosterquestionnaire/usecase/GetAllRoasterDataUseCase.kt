@@ -137,6 +137,9 @@ class GetAllRoasterDataUseCase @Inject constructor(private val repository: Roste
     }
 
     private fun parseJsonToPregnancyRosterData(jsonString: String): List<PregnancyRosterData> {
+        if (jsonString.isEmpty()) {
+            return emptyList()
+        }
         val gson = Gson()
         val listType = object : TypeToken<List<PregnancyRosterData>>() {}.type
         return gson.fromJson(jsonString, listType)
@@ -194,6 +197,9 @@ class GetAllRoasterDataUseCase @Inject constructor(private val repository: Roste
     }
 
     private fun parseJsonToHealthRosterData(jsonString: String): List<HealthIssues> {
+        if (jsonString.isEmpty()) {
+            return emptyList()
+        }
         val gson = Gson()
         val listType = object : TypeToken<List<HealthIssues>>() {}.type
         return gson.fromJson(jsonString, listType)
