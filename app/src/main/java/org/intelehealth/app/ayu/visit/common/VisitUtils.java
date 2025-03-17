@@ -451,6 +451,10 @@ AB NEGATIVE = 1231*/
     }
 
     public static String convertHeightIntoFeets(String height, Context context) {
+        if (height.equalsIgnoreCase("NA")) {
+            return "NA";
+        }
+
         int val = Integer.parseInt(height);
         double centemeters = val / 2.54;
         int inche = (int) centemeters % 12;

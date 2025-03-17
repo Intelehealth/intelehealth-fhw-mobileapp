@@ -14,7 +14,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.HEIGHT,
             uuid = UuidDictionary.HEIGHT,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -23,7 +23,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.WEIGHT,
             uuid = UuidDictionary.WEIGHT,
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 
@@ -32,7 +32,7 @@ object VitalsEnabledFieldsHelper {
             name = "",
             vitalKey = PatientVitalConfigKeys.BMI,
             uuid = "",
-            isMandatory = true
+            isMandatory = false
         )
         fields.add(currentField)
 

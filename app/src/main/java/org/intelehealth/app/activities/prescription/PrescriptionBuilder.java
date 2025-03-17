@@ -328,10 +328,23 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ft), vitalsData.getHeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
 
-        String systolicColor = getSystolicColor(Integer.parseInt(vitalsData.getBpsys()));
+        String systolicColor = "";
+        if (vitalsData.getBpsys() == null || vitalsData.getBpsys().isEmpty()) {
+            systolicColor = getSystolicColor(0);
+        } else {
+            systolicColor = getSystolicColor(Integer.parseInt(vitalsData.getBpsys()));
+
+        }
+
         vitalsDataString = vitalsDataString + createBPListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys(), systolicColor);
 
-        String diastolicColor = getDiastolicColor(Integer.parseInt(vitalsData.getBpdia()));
+        String diastolicColor = "";
+        if (vitalsData.getBpdia() == null || vitalsData.getBpdia().isEmpty()) {
+            diastolicColor = getDiastolicColor(0);
+        } else {
+            diastolicColor = getDiastolicColor(Integer.parseInt(vitalsData.getBpdia()));
+        }
+
         vitalsDataString = vitalsDataString + createBPListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia(), diastolicColor);
 
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
@@ -391,7 +404,7 @@ public class PrescriptionBuilder {
         String newValue = value;
         if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
             newValue = activityContext.getString(R.string.not_provided);
-            return "";
+            return newValue;
         }
 
         if (color != null && !color.isEmpty()) {
@@ -1188,22 +1201,31 @@ public class PrescriptionBuilder {
     }
 
     private void setBmiStatus(TextView bmiTextView, String mbmi) {
-        double bmi = Double.parseDouble(extractBmiFromString(mbmi));
-        bmiTextView.setText(mbmi + " " + ContextCompat.getString(activityContext, R.string.kg_m));
-        if (bmi < 18.50) {
-            bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi1_ekal));
-        } else if (bmi >= 18.50 && bmi <= 22.99) {
-            bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi2_ekal));
-        } else if (bmi >= 23 && bmi <= 24.99) {
-            bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi3_ekal));
-        } else if (bmi >= 25 && bmi <= 29.99) {
-            bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi4_ekal));
-        } else if (bmi > 30) {
-            bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi5_ekal));
+        double bmi = 0.0;
+        try {
+            bmi = Double.parseDouble(extractBmiFromString(mbmi));
+            bmiTextView.setText(mbmi + " " + ContextCompat.getString(activityContext, R.string.kg_m));
+            if (bmi < 18.50) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi1_ekal));
+            } else if (bmi >= 18.50 && bmi <= 22.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi2_ekal));
+            } else if (bmi >= 23 && bmi <= 24.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi3_ekal));
+            } else if (bmi >= 25 && bmi <= 29.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi4_ekal));
+            } else if (bmi > 30) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi5_ekal));
+            }
+        } catch (NumberFormatException exception) {
+            bmiTextView.setText(mbmi);
         }
     }
 
     private void setBpStatus(TextView bpTextView, String mSys, String mDia) {
+        if (mSys.equalsIgnoreCase("NA") && mDia.equalsIgnoreCase("NA")) {
+            return;
+        }
+
         int sys = Integer.parseInt(mSys);
         int dia = Integer.parseInt(mDia);
 
