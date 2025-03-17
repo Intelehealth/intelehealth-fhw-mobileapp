@@ -69,7 +69,7 @@
     <string name="religion_jain">जैन</string>
     <string name="religion_jewish">यहूदी</string>
     <string name="parsi_zoroastrian">पारसी</string>
-    <string name="no_religion">कोई धर्म नहीं</string>
+    <string name="no_religion">अन्य</string>
 
     <string name="schedule_caste">अनुसूचित जाति</string>
     <string name="schedule_tribe">अनुसूचित जनजाति</string>
@@ -253,6 +253,8 @@
 
     // Relation with household
     <string name="spouse">पति / पत्नी</string>
+    <string name="son_or_daughter">बेटा / बेटी</string>
+    <string name="son_or_daughter_in_law">पोता</string>
     <string name="grandchild">पोता</string>
     <string name="father_mother">पिता / माता</string>
     <string name="father_mother_in_law">ससुर / सास</string>

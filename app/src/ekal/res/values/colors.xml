@@ -7,4 +7,19 @@
     <color name="color_tagline_text">@color/white</color>
     <color name="colorPrimaryLightCard">#1a2E1E91</color>
     <color name="colorAccentLightCard">#1a0FD197</color>
+
+    <color name="ui2_bmi1_ekal">#FFA500</color>
+    <color name="ui2_bmi2_ekal">#008000</color>
+    <color name="ui2_bmi3_ekal">#d9d900</color>
+    <color name="ui2_bmi4_ekal">#F85E5EE6</color>
+    <color name="ui2_bmi5_ekal">#FF0000</color>
+
+    <color name="ui2_bp_default_ekal">#FF0000</color>
+
+    <color name="ui2_sys1_ekal">#008000</color>
+    <color name="ui2_sys2_ekal">#d9d900</color>
+
+    <color name="ui2_dia1_ekal">#008000</color>
+    <color name="ui2_dia2_ekal">#d9d900</color>
+
 </resources>

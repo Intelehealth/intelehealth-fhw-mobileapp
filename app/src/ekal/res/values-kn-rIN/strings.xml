@@ -75,7 +75,7 @@
     <string name="religion_jain">ಇತರೆ</string>
     <string name="religion_jewish">ಯಹೂದಿ</string>
     <string name="parsi_zoroastrian">ಪಾರ್ಸಿ ಅಥವಾ ಜೊರಾಸ್ಟ್ರಿಯನ್</string>
-    <string name="no_religion">ಧರ್ಮವಿಲ್ಲ</string>
+    <string name="no_religion">ಇತರರು</string>
 
     <string name="economic_status_apl">ಎಪಿಎಲ್</string>
     <string name="economic_status_bpl">ಬಿಪಿಎಲ್</string>
@@ -251,6 +251,8 @@
 
     // Relation with household
     <string name="spouse">ಸಂಗಾತಿಯ</string>
+    <string name="son_or_daughter">ಮಗ ಅಥವಾ ಮಗಳು</string>
+    <string name="son_or_daughter_in_law">ಮಗ ಅಥವಾ ಸೊಸೆ</string>
     <string name="grandchild">ಮೊಮ್ಮಗ</string>
     <string name="father_mother">ತಂದೆ ಅಥವಾ ತಾಯಿ</string>
     <string name="father_mother_in_law">ಮಾವ ಅಥವಾ ಅತ್ತೆ</string>

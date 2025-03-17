@@ -344,7 +344,7 @@
                             editMode="@{baselineEditMode}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/generic_not_sure" />
+                            android:text="@string/decline_to_answer" />
                     </RadioGroup>
 
                 </LinearLayout>

@@ -65,9 +65,12 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -1217,9 +1220,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mBMI = "";
             }
 
-            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase(""))
+            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase("")){
                 bmiView.setText(getResources().getString(R.string.no_information));
-            else bmiView.setText(mBMI);
+            } else {
+                setBmiStatus(bmiView, mBMI);
+            }
 
         }
 
@@ -1231,6 +1236,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             bpView.setText(getResources().getString(R.string.no_information));
         } else {
             bpView.setText(bpText);
+            setBpStatus(bpView, bpSys.getValue(), bpDias.getValue());
         }
 
         if (pulse.getValue() != null) {
@@ -3277,6 +3283,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void visitUploadBlock() {
+
+        // Upload button disabled to prevent multiple insertion of data
+        uploadButton.setEnabled(false);
+
+        if (complaint.getValue() == null || complaint.getValue().isEmpty() || complaint.getValue().equalsIgnoreCase("")) {
+            Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean isPriorityFlagChecked = flag.isChecked();
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -3480,6 +3495,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             });
                         }
                         uploaded = true;
+                        uploadButton.setEnabled(true);
                     }, 4000);
                 } else {
                     runOnUiThread(() -> {
@@ -4312,6 +4328,51 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         setAppointmentButtonStatus();
 
+    }
+
+    private void setBmiStatus(TextView bmiTextView, String mbmi) {
+        double bmi = Double.parseDouble(mbmi);
+        bmiTextView.setText(bmi + " " + getResources().getString(R.string.kg_m));
+        if (bmi < 18.50) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi1_ekal));
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi2_ekal));
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi3_ekal));
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi4_ekal));
+        } else if (bmi > 30) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi5_ekal));
+        }
+    }
+
+    private void setBpStatus(TextView bpTextView, String mSys, String mDia) {
+        int sys = Integer.parseInt(mSys);
+        int dia = Integer.parseInt(mDia);
+
+        int sysColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+        int diaColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+
+        if (sys >= 90 && sys < 120) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys1_ekal);
+        } else if (sys >= 120 && sys <= 139) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys2_ekal);
+        }
+
+        if (dia < 80) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia1_ekal);
+        } else if (dia >= 80 && dia <= 99) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia2_ekal);
+        }
+
+        bpTextView.setText(mSys + "/" + mDia);
+        bpTextView.setTextColor(sysColor);
+
+        SpannableString spannableString = new SpannableString(mSys + "/" + mDia);
+        spannableString.setSpan(new ForegroundColorSpan(sysColor), 0, mSys.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(diaColor), mSys.length() + 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        bpTextView.setText(spannableString);
     }
 
     // Netowork reciever

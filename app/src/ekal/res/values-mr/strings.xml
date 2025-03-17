@@ -75,7 +75,7 @@
     <string name="religion_jain">जैन</string>
     <string name="religion_jewish">ज्यू</string>
     <string name="parsi_zoroastrian">पारशी किंवा पारशी</string>
-    <string name="no_religion">धर्म नाही</string>
+    <string name="no_religion">इतर</string>
 
     <string name="economic_status_apl">एपीएल</string>
     <string name="economic_status_bpl">बीपीएल</string>
@@ -254,6 +254,8 @@
 
     // Relation with household
     <string name="spouse">जोडीदार</string>
+    <string name="son_or_daughter">मुलगा किंवा मुलगी</string>
+    <string name="son_or_daughter_in_law">मुलगा किंवा सून</string>
     <string name="grandchild">नातवंडे</string>
     <string name="father_mother">वडील किंवा आई</string>
     <string name="father_mother_in_law">सासरे किंवा सासू</string>
