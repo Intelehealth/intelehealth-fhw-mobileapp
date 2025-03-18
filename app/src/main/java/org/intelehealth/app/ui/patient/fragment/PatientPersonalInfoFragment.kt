@@ -1,8 +1,11 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.WindowManager
@@ -28,8 +31,8 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
-import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
@@ -46,6 +49,7 @@ import org.joda.time.PeriodType
 import java.io.File
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 /**
@@ -341,7 +345,27 @@ class PatientPersonalInfoFragment :
         return Period(birthdate, now, PeriodType.yearMonthDay())
     }
 
+    fun setLocale(context: Context): Context {
+        val appLanguage = LanguageUtils.getLocalLang()
+        val res = context.resources
+        val conf = res.configuration
+        val locale = Locale(appLanguage)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.displayMetrics
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
+    }
+
+
     private fun showDatePickerDialog(selectedDate: Long) {
+        setLocale(requireActivity())
         CalendarDialog.Builder()
             .maxDate(Calendar.getInstance().timeInMillis)
             .selectedDate(selectedDate)

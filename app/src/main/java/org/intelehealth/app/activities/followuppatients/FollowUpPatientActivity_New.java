@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -610,7 +611,26 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 datePicker.setMinDate(minDateForEndCal.getTimeInMillis());
             }
         }
+
         datePickerDialog.show();
+
+        Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setTextColor(
+                ContextCompat.getColor(
+                        this,
+                        R.color.colorPrimary
+                )
+        ); // Change to your desired color
+
+        Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setTextColor(
+                ContextCompat.getColor(
+                        this,
+                        R.color.colorPrimary
+                )
+        ); // Change to your desired color
     }
 
     private void followup_data() {
