@@ -1513,5 +1513,9 @@
     <string name="syncing">सिंक होत आहे</string>
     <string name="sync_progress_percentage">%1$d%%</string>
     <string name="sync_completed">सिंक पूर्ण झाले</string>
+    <string name="changing_protocols">प्रोटोकॉल बदलत आहे</string>
+    <string name="wait_while_protocols_changing">प्रोटोकॉल बदलले जात असताना कृपया वाट पहा.</string>
+    <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
+    <string name="language_successfully_changed">भाषा यशस्वीरित्या बदलली!</string>
 
 </resources>
