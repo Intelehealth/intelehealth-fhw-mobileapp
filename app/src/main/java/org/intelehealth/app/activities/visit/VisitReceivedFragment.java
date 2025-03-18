@@ -569,16 +569,19 @@ public class VisitReceivedFragment extends Fragment {
             }
 
             //  recentList = recentVisits(recentLimit, recentStart);
-            List<PrescriptionModel> tempList = recentVisits(20, mRecentList.size());  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            if (tempList.size() > 0) {
-                mRecentList.addAll(tempList);
-                CustomLog.d("TAG", "setRecentMoreDataIntoRecyclerView: " + mRecentList.size());
-                recent_adapter.list.addAll(tempList);
-                recent_adapter.notifyDataSetChanged();
-                recentStart = recentEnd;
-                recentEnd += recentLimit;
-            }
-
+            executeInBackground(()->{
+                List<PrescriptionModel> tempList = recentVisits(20, mRecentList.size());  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+                getActivity().runOnUiThread(()->{
+                    if (tempList.size() > 0) {
+                        mRecentList.addAll(tempList);
+                        CustomLog.d("TAG", "setRecentMoreDataIntoRecyclerView: " + mRecentList.size());
+                        recent_adapter.list.addAll(tempList);
+                        recent_adapter.notifyDataSetChanged();
+                        recentStart = recentEnd;
+                        recentEnd += recentLimit;
+                    }
+                });
+            });
         }
         isRecentPageLoading = false;
     }

@@ -329,15 +329,21 @@ public class VisitPendingFragment extends Fragment {
             }
 
             //  recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            List<PrescriptionModel> tempList = recentVisits(20, recentList.size());  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            if (tempList.size() > 0) {
-                recentList.addAll(tempList);
-                CustomLog.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
-                recent_adapter.list.addAll(tempList);
-                recent_adapter.notifyDataSetChanged();
-                recentStart = recentEnd;
-                recentEnd += recentLimit;
-            }
+
+            executeInBackground(()->{
+                List<PrescriptionModel> tempList = recentVisits(20, recentList.size());  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+                getActivity().runOnUiThread(()->{
+                    if (tempList.size() > 0) {
+                        recentList.addAll(tempList);
+                        CustomLog.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
+                        recent_adapter.list.addAll(tempList);
+                        recent_adapter.notifyDataSetChanged();
+                        recentStart = recentEnd;
+                        recentEnd += recentLimit;
+                    }
+                });
+            });
+
         }
         isRecentPageLoading = false;
     }
@@ -353,15 +359,19 @@ public class VisitPendingFragment extends Fragment {
             }
 
             //  olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            List<PrescriptionModel> tempList = olderVisits(20, olderList.size()); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            if (tempList.size() > 0) {
-                olderList.addAll(tempList);
-                CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
-                older_adapter.list.addAll(tempList);
-                older_adapter.notifyDataSetChanged();
-                olderStart = olderEnd;
-                olderEnd += olderLimit;
-            }
+            executeInBackground(()->{
+                List<PrescriptionModel> tempList = olderVisits(20, olderList.size()); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+                getActivity().runOnUiThread(()->{
+                    if (tempList.size() > 0) {
+                        olderList.addAll(tempList);
+                        CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+                        older_adapter.list.addAll(tempList);
+                        older_adapter.notifyDataSetChanged();
+                        olderStart = olderEnd;
+                        olderEnd += olderLimit;
+                    }
+                });
+            });
         }
 
         isOlderPageLoading = false;
