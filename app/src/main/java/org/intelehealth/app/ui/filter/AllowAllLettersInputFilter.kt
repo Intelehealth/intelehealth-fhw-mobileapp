@@ -13,7 +13,11 @@ class AllowAllLettersInputFilter : InputFilter {
         dstart: Int,
         dend: Int
     ): CharSequence {
-        val filteredInput = source.subSequence(start, end).filter { Character.isLetter(it) }
+        val filteredInput = source.subSequence(start, end).filter {
+            Character.isLetter(it) || Character.getType(it)
+                .toByte() == Character.NON_SPACING_MARK || Character.getType(it)
+                .toByte() == Character.COMBINING_SPACING_MARK
+        }
         return filteredInput
     }
 

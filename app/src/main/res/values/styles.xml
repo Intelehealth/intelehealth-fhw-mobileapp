@@ -575,6 +575,12 @@
         <item name="android:inputType">textCapWords</item>
     </style>
 
+    <style name="AppTheme.InputBox.English" parent="AppTheme.InputBox">
+        <item name="android:maxLength">25</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:digits">@string/validation_letter_digits_and_symbols</item>
+    </style>
+
     <style name="AppTheme.InputBox.NationalId" parent="AppTheme.InputBox">
         <!--        <item name="android:maxLength">25</item>-->
         <item name="android:digits">@string/validation_address</item>

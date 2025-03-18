@@ -4199,7 +4199,11 @@ public final class StringUtils {
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ');
+            return Character.isLetterOrDigit(c) ||
+                    Character.getType(c) == (int) Character.NON_SPACING_MARK ||
+                    Character.getType(c) == Character.COMBINING_SPACING_MARK ||
+                    Character.valueOf(c).equals('-') ||
+                    Character.valueOf(c).equals(' ');
         }
     };
 

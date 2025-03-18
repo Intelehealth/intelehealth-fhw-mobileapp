@@ -142,6 +142,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_username_login"
+                            style="@style/AppTheme.InputBox.English"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_fieldnew"
@@ -167,7 +168,7 @@
                         android:text="@string/forgot_username_link"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_username_error"
@@ -201,17 +202,18 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_password_login"
+                            style="@style/AppTheme.InputBox.English"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_fieldnew"
                             android:hint="@string/enter_password1"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
+                            android:maxLength="15"
                             android:paddingStart="@dimen/common_edittext_padding_left"
                             android:paddingTop="@dimen/common_edittext_padding_top"
                             android:paddingEnd="@dimen/common_edittext_padding_right"
                             android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                            android:maxLength="15"
                             android:singleLine="true"
                             android:textSize="@dimen/common_hint_text_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -239,7 +241,7 @@
                         android:text="@string/forgot_password_link"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
 
                 </LinearLayout>

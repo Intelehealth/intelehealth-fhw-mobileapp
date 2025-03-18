@@ -15,7 +15,10 @@ class LettersNumbersSelectedSymbolsInputFilter : InputFilter {
         dend: Int
     ): CharSequence {
         val filteredInput = source.subSequence(start, end).filter {
-            Character.isLetterOrDigit(it) || it in listOf('.', ',', '-', ' ')
+            Character.isLetterOrDigit(it) ||
+                    Character.getType(it).toByte() == Character.NON_SPACING_MARK ||
+                    Character.getType(it).toByte() == Character.COMBINING_SPACING_MARK ||
+                    it in listOf('.', ',', '-', ' ')
         }
         return filteredInput
     }
