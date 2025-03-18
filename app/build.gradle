@@ -45,9 +45,10 @@ android {
                 checkReleaseBuilds false
                 abortOnError false
             }
+            debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
         }
     }
 
