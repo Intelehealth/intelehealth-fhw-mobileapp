@@ -126,7 +126,7 @@
         <item>ऑटो</item>
         <item>स्वतःचे वाहन</item>
         <item>मित्रांचे/शेजाऱ्यांचे वाहन</item>
-        <item>अॅम्ब्युलन्स</item>
+        <item>रुग्णवाहिका</item>
         <item>इतर (स्पष्ट करा)</item>
     </string-array>
 
@@ -226,5 +226,24 @@
     <string-array name="complications">
         <item>होय</item>
         <item>नाही</item>
+    </string-array>
+
+    <string-array name="education">
+        <item>निवडा</item>
+        <item>निरक्षर</item>
+        <item>पूर्व-प्राथमिक</item>
+        <item>प्राथमिक</item>
+        <item>माध्यमिक</item>
+        <item>उच्च माध्यमिक</item>
+        <item>पदवीधर</item>
+        <item>पदवीधर आणि उच्च</item>
+    </string-array>
+    <string-array name="economic">
+        <item>एपीएल</item>
+        <item>बीपीएल</item>
+    </string-array>
+    <string-array name="delivery_type">
+        <item>नॉर्मल/नैसर्गिक</item>
+        <item>सिझेरिअन (सी-सेक्शन)</item>
     </string-array>
 </resources>

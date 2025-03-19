@@ -24,6 +24,14 @@ public class DistData implements Serializable {
     @SerializedName("tahasil")
     private List<String> tahasilList;
 
+    public List<Block> getBlocksMarathi() {
+        return blocksMarathi;
+    }
+
+    public void setBlocksMarathi(List<Block> blocksMarathi) {
+        this.blocksMarathi = blocksMarathi;
+    }
+
     @Expose
     @SerializedName("block")
     private List<Block> blocks;
@@ -31,6 +39,10 @@ public class DistData implements Serializable {
     @Expose
     @SerializedName("block-hi")
     private List<Block> blocksHindi;
+
+    @Expose
+    @SerializedName("block-mr")
+    private List<Block> blocksMarathi;
 
     public List<String> getTahasilList() {
         return tahasilList;
@@ -78,6 +90,20 @@ public class DistData implements Serializable {
         SessionManager sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equals("hi")) {
             return nameHindi;
+        }else if (sessionManager.getAppLanguage().equals("mr")) {
+            return nameMarathi;
         } else return name;
     }
+
+    public String getNameMarathi() {
+        return nameMarathi;
+    }
+
+    public void setNameMarathi(String nameMarathi) {
+        this.nameMarathi = nameMarathi;
+    }
+
+    @Expose
+    @SerializedName("name-mr")
+    private String nameMarathi;
 }

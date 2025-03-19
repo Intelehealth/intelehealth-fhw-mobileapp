@@ -20,6 +20,7 @@ import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
@@ -29,18 +30,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class EncounterDAO {
+public class EncounterDAO extends BaseDao {
     private static final String TAG = "EncounterDAO";
 
     private String tag = EncounterDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> encountersList = new ArrayList<>();
+        for (EncounterDTO encounterDTO : encounterDTOS) {
+            encountersList.add(createEncounterMap(encounterDTO));
+        }
+        executeInBackground(bulkInsert(encountersList));
+        /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -55,7 +62,7 @@ public class EncounterDAO {
         } finally {
             db.endTransaction();
 
-        }
+        }*/
         return isInserted;
     }
 
@@ -933,6 +940,22 @@ public class EncounterDAO {
         }
 
         return uuid;
+    }
+    @Override
+    String tableName() {
+      return "tbl_encounter";
+    }
+    public HashMap<String, Object> createEncounterMap(EncounterDTO encounter) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", encounter.getUuid());
+        values.put("visituuid", encounter.getVisituuid());
+        values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+        values.put("provider_uuid", encounter.getProvideruuid());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", encounter.getSyncd().toString());
+        values.put("voided", encounter.getVoided());
+        values.put("privacynotice_value", encounter.getPrivacynotice_value());
+        return values;
     }
 
 }

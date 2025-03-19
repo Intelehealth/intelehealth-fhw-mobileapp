@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.ui.rosterquestionnaire.di.IoDispatcher
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
@@ -112,6 +113,10 @@ class RosterViewModel @Inject constructor(
 
     fun insertRoster() {
         viewModelScope.launch(ioDispatcher) {
+            // set sync = false for tbl_patient.    // TODO: since this is an adhoc task for me have added it here itself. Pls handle the clean code later.
+            val patientsDAO = PatientsDAO()
+            patientsDAO.updatePatientSyncValue(patientUuid)
+
             insertRoasterUseCase(
                 patientUuid,
                 generalLiveList.value,

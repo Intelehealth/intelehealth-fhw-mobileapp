@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/padding_visit_summary_screen"
+            android:gravity="center_horizontal"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
@@ -570,7 +571,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="105dp"
                         android:animateLayoutChanges="true"
                         android:orientation="horizontal"
                         android:weightSum="1">

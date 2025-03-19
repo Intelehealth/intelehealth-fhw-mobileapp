@@ -14,6 +14,7 @@ import io.livekit.android.events.RoomEvent
 import io.livekit.android.events.collect
 import io.livekit.android.room.Room
 import io.livekit.android.room.participant.ConnectionQuality
+import io.livekit.android.room.participant.LocalParticipant
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.CameraPosition
@@ -285,6 +286,8 @@ open class CallViewModel(
 
     private fun collectTrackStats(event: RoomEvent.TrackSubscribed) {
         if (event.track is VideoTrack) updateParticipantVideoTrack(event.track as VideoTrack)
+        event.publication.track?.let { Timber.e { "Track => ${it.name}" } }
+//        event.participant?.let { it.pub }
     }
 
     private fun updateParticipantVideoTrack(videoTrack: VideoTrack) {

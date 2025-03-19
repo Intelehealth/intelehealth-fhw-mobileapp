@@ -3,6 +3,7 @@ package org.intelehealth.app.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.annotation.ArrayRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
@@ -33,7 +34,7 @@ object LanguageUtils {
 
     @JvmStatic
     fun getState(state: String): StateData? {
-        return parseStatesJson().stateDataList.find { it.state == state }
+        return parseStatesJson().stateDataList.find {it.state == state || it.stateMarathi == state}
     }
 
     @JvmStatic
@@ -82,12 +83,12 @@ object LanguageUtils {
 
     @JvmStatic
     fun getDistrict(state: StateData?, district: String): DistData? {
-        return state?.distDataList?.find { it.name == district }
+        return state?.distDataList?.find { it.name == district  || it.nameMarathi == district }
     }
 
     @JvmStatic
     fun getBlock(district: DistData?, block: String?): Block? {
-        return block?.let { return@let district?.blocks?.find { it.name == block } }
+        return block?.let { return@let district?.blocks?.find { it.name == block || it.nameMarathi == block } }
     }
 
     @JvmStatic
@@ -97,13 +98,16 @@ object LanguageUtils {
 
     @JvmStatic
     fun getVillage(gramPanchayat: GramPanchayat?, village: String?): Village? {
-        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village } }
+        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village || it.nameMarathi == village} }
     }
 
     @JvmStatic
     fun getStateLocal(state: StateData): String {
-        if (getLocalLang().equals("hi")) return state.stateHindi
-        return state.state
+        return when (getLocalLang()) {
+            "hi" -> state.stateHindi
+            "mr" -> state.stateMarathi
+            else -> state.state
+        }
     }
 
     @JvmStatic
@@ -187,4 +191,13 @@ object LanguageUtils {
         // Retrieve the string resource for the desired language
         return localizedResources.getString(stringResId)
     }
+    @JvmStatic
+    fun getStateInEnglish(state: StateData): String {
+             return state.state
+    }
+    @JvmStatic
+    fun getDistrictInEnglish(district: DistData): String {
+        return district.name
+    }
+
 }

@@ -110,7 +110,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         if (mIsForPhysicalExam) {
-            final String parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);
+            final String parent_name;
+            if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                parent_name = mPhysicalExam.getExamParentNodeName_NAS(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
+            else
+                parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
+
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
             CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
 
@@ -324,9 +329,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
             final String parent_name = mPhysicalExam.getExamParentNodeName(position);
-            String nodeText = (BuildConfig.FLAVOR_client == FlavorKeys.KCDO || BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) ?
-                    _mNode.findDisplay() :
-                    parent_name + " : " + _mNode.findDisplay();
+            String nodeText = (BuildConfig.FLAVOR_client == FlavorKeys.KCDO || BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
 
             genericViewHolder.tvQuestion.setText(nodeText);
 

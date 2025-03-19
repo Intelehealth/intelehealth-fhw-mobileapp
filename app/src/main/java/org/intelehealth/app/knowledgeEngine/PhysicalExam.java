@@ -233,6 +233,22 @@ public class PhysicalExam extends Node {
         for (Node selectedNode : selectedNodes) {
             if (selectedNode.getText().equals(split[0])) {
                 parent_node = selectedNode.findDisplay();
+              //  parent_node = selectedNode.getText();
+            }
+        }
+        return parent_node;
+
+    }
+
+    public String getExamParentNodeName_NAS(int index) {
+        String title = getTitle(index);
+        String[] split = title.split(" : ");
+
+        String parent_node = split[0];
+
+        for (Node selectedNode : selectedNodes) {
+            if (selectedNode.getText().equals(split[0])) {
+                parent_node = selectedNode.getText();
             }
         }
         return parent_node;

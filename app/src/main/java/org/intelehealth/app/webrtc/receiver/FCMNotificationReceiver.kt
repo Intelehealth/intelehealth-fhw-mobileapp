@@ -3,6 +3,8 @@ package org.intelehealth.app.webrtc.receiver
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
@@ -21,6 +23,7 @@ import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity
+import org.intelehealth.app.webrtc.notification.NotificationType
 import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.fcm.FcmBroadcastReceiver
@@ -31,6 +34,7 @@ import org.intelehealth.klivekit.call.utils.CallType
 import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.fromJson
+import java.util.Locale
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -174,8 +178,19 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     }
 
     private fun sendNotificationFromBody(data: HashMap<String, String>?, context: Context) {
-        val messageTitle = data?.get("title")
-        val messageBody = data?.get("body")
+        val messageTitle = data?.get("title") ?: context.getString(R.string.app_name)
+        val messageBody = data?.get("body") ?: ""
+        val patientName = data?.get("patientFirstName") ?: ""
+
+        // Determine notification type
+        val notificationType = getNotificationType(messageTitle)
+
+        // Generate formatted title based on notification type and patient name
+        val formattedTitle = getNotificationTitle(notificationType, patientName, context)
+        val resources = getLocalizedResources(context)
+        val formatedBody = resources.getString(R.string.click_notification_to_see)
+        Log.d(TAG, "sendNotificationFromBody: formattedTitle : "+formattedTitle)
+
         val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
@@ -187,8 +202,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
         FcmNotification.Builder(context)
                 .channelName("IDA4")
-                .title(messageTitle ?: context.getString(R.string.app_name))
-                .content(messageBody ?: "")
+                .title(formattedTitle ?: context.getString(R.string.app_name))
+                .content(formatedBody ?: "")
                 .smallIcon(R.mipmap.ic_launcher)
                 .contentIntent(pendingIntent)
                 .build().startNotify() }
@@ -196,5 +211,27 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     companion object {
         const val TAG = "FCMNotificationReceiver"
     }
-
+    private fun getNotificationTitle(notificationType: NotificationType, patientName: String, context: Context): String {
+        val resources = getLocalizedResources(context)
+        val stringResId = when (notificationType) {
+            NotificationType.PRESCRIPTION_AVAILABLE -> R.string.prescription_available_for_notification
+            NotificationType.APPOINTMENT_RESCHEDULED -> R.string.appointment_reschedule_for_notification
+            NotificationType.APPOINTMENT_CANCELLED -> R.string.appointment_cancelled_for_notification
+            NotificationType.UNKNOWN -> R.string.no_notifications_yet
+        }
+        return resources.getString(stringResId, patientName)
+    }
+    private fun getLocalizedResources(context: Context): Resources {
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(Locale.getDefault())
+        return context.createConfigurationContext(config).resources
+    }
+    private fun getNotificationType(title: String): NotificationType {
+        return when {
+            title.contains("Appointment rescheduled", ignoreCase = true) -> NotificationType.APPOINTMENT_RESCHEDULED
+            title.contains("Appointment cancelled", ignoreCase = true) -> NotificationType.APPOINTMENT_CANCELLED
+            title.contains("Prescription available", ignoreCase = true) -> NotificationType.PRESCRIPTION_AVAILABLE
+            else -> NotificationType.UNKNOWN
+        }
+    }
 }

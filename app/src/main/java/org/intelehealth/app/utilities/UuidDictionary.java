@@ -45,25 +45,7 @@ public class UuidDictionary {
     public static final String ENCOUNTER_VISIT_NOTE = "d7151f82-c1f3-4152-a605-2f9ea7414a79";
     public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
-    public static final String ENCOUNTER_ROLE = "73bbb069-9781-4afc-a9d1-54b6b2270e04";
-    public static final String ENCOUNTER_DR_ROLE = "73bbb069-9781-4afc-a9d1-54b6b2270e03";
-    public static final String ENCOUNTER_DR_PROVIDER = "f2f9948e-50e2-434e-8bf1-00a7426d6cc8";
-    public static final String OBS_DOCTORDETAILS = "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e";
-
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
-
-    //Patient Identifier Type
-    public static final String IDENTIFIER_OPENMRS_ID = "05a29f94-c0ed-11e2-94be-8c13b969e334";
-
-    //Person Attribute Type
-    public static final String ATTRIBUTE_PHONE_NUMBER = "14d4f066-15f5-102d-96e4-000c29c2a5d7";
-    public static final String ATTRIBUTE_CASTE = "5a889d96-0c84-4a04-88dc-59a6e37db2d3";
-    public static final String ATTRIBUTE_EDUCATION_LEVEL = "1c718819-345c-4368-aad6-d69b4c267db7";
-    public static final String ATTRIBUTE_ECONOMIC_STATUS = "f4af0ef3-579c-448a-8157-750283409122";
-    public static final String ATTRIBUTE_SON_WIFE_DAUGHTER = "1b2f34f7-2bf8-4ef7-9736-f5b858afc160";
-    public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
-    public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
-
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
@@ -81,6 +63,7 @@ public class UuidDictionary {
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
+  //  public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
     public static final String DIAGNOSIS = "672b025f-2d21-4dfb-8230-ffbc50c255d8";
     public static final String CONSULTATION_TYPE = "262632db-8cfe-47dd-b3b6-a8ed65d489cd";
@@ -94,8 +77,8 @@ public class UuidDictionary {
     public static final String BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID = "d7670f6a-377f-4807-92c8-26dc339fb0fe";
     public static final String BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID = "790cbe32-4a85-4953-a3a6-4f6b0e26336e";
     public static final String BILL_PRICE_HEMOGLOBIN_ID = "71f0aadf-2a15-420f-897a-145dfc87fcd1";
-    public static final String BILL_PRICE_URIC_ACID_ID = "e331ccc4-7995-41d5-abe6-15b3e5ead1b1";
-    public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325720";
+    public static final String BILL_PRICE_URIC_ACID_ID = "c6bb85b7-ada8-4382-b3ce-a1aa5027cecb";
+    public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325730";
     public static final String BILL_PRICE_BP_ID = "dd51ab03-12ef-43cb-9aef-2ec93a989816";
     public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
     public static final String ATTRIBUTE_TIME_OF_UPLOAD_BUTTON_CLICK = "ce364c8a-4cb7-4a3b-929e-6311ddcadc01";

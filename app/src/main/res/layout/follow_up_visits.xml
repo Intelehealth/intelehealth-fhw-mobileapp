@@ -357,7 +357,6 @@
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
                     tools:listitem="@layout/followup_list_item_1" />
             </RelativeLayout>

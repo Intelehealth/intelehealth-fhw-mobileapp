@@ -61,8 +61,8 @@ class BillGenerationViewModel(application: Application) : AndroidViewModel(appli
 
     }
 
-    fun updatePaymentStatusValue(paymentStatusValue: String) {
-        mutablePaymentStatus.postValue(paymentStatusValue)
+    fun updatePaymentStatusValue(paymentStatusValue: String?) {
+        mutablePaymentStatus.postValue(paymentStatusValue ?: "")
     }
 
     suspend fun syncOnServer() {

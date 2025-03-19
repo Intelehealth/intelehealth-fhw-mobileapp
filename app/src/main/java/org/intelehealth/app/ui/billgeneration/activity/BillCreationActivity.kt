@@ -50,14 +50,13 @@ class BillCreationActivity : AppCompatActivity() {
     }
 
     private fun showBillDetails() {
-        billDetails.billEncounterUUID.let {
-            if (it.isNotEmpty()) {
-                viewModel.isBillGenerated = true
-                binding.contentGenerateBill.isBillGenerated = viewModel.isBillGenerated
-                if (billDetails.billType.isNotEmpty())
-                    viewModel.updatePaymentStatusValue(billDetails.billType)
-            }
+        billDetails.billEncounterUUID.takeIf { it.isNotEmpty() }?.let {
+            viewModel.isBillGenerated = true
+            binding.contentGenerateBill.isBillGenerated = true
+            billDetails.billType.takeIf { it.isNotEmpty() }?.let(viewModel::updatePaymentStatusValue)
         }
+
+
         binding.contentGenerateBill.patientDetailsTV.text = viewModel.setPatientDetails(billDetails)
         viewModel.manageTestsData(binding, billDetails.selectedTestsList, billDetails)
     }

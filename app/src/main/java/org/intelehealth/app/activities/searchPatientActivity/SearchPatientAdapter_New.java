@@ -73,7 +73,32 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New.SearchHolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.search_listitem_layout, parent, false);
-        return new SearchPatientAdapter_New.SearchHolderView(row);
+        SearchHolderView holder = new SearchPatientAdapter_New.SearchHolderView(row);
+
+        //click listener moved from onbind view holder
+        //to prevent multiple initialization
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final PatientDTO patientDTO = patientDTOS.get(holder.getAbsoluteAdapterPosition());
+                Intent intent = new Intent(context, PatientDetailActivity2.class);
+                intent.putExtra("patientUuid", patientDTO.getUuid());
+                intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                intent.putExtra("tag", "searchPatient");
+                intent.putExtra("hasPrescription", "false");
+                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
+                //   CustomLog.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                Bundle args = new Bundle();
+
+                args.putSerializable("patientDTO", (Serializable) patientDTO);
+                intent.putExtra("BUNDLE", args);
+                intent.putExtra("patientUuid", patientDTO.getUuid());
+                context.startActivity(intent);
+            }
+        });
+        return holder;
     }
 
     @Override
@@ -109,27 +134,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
             presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
             visitNotUploadCV = itemView.findViewById(R.id.presc_visit_not_uploaded_CV);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, PatientDetailActivity2.class);
-                    intent.putExtra("patientUuid", patientDTO.getUuid());
-                    intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
-                    intent.putExtra("tag", "searchPatient");
-                    intent.putExtra("hasPrescription", "false");
-                    //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-                    //   CustomLog.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                    Bundle args = new Bundle();
-                    args.putSerializable("patientDTO", (Serializable) patientDTO);
-                    intent.putExtra("BUNDLE", args);
-                    intent.putExtra("patientUuid", patientDTO.getUuid());
-                    context.startActivity(intent);
-                }
-            });
-
         }
 
         void bind(PatientDTO model){
@@ -191,22 +195,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     fu_item_calendar.setVisibility(View.GONE);
                 }
 
-                //  6. Patient Profile Pic
-                //1.
                 profileImage = model.getPatientImageFromImageDao();
 
-                //2.
-               /* if (model.getPatientPhoto() == null || model.getPatientPhoto().equalsIgnoreCase("")) {
-                    if (NetworkConnection.isOnline(context)) {
-                        profilePicDownloaded(model, this);
-                    }
-                }
-                //3.
-                if (profileImage == null || !profileImage.equalsIgnoreCase(profileImage1)) {
-                    if (NetworkConnection.isOnline(context)) {
-                        profilePicDownloaded(model, this);
-                    }
-                }*/
                 RequestBuilder<Drawable> requestBuilder = Glide.with(itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
 
@@ -234,61 +224,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             }
         }
-    }
-
-    public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.patientProfileImageUrl(model.getUuid());
-        Logger.logD("TAG", "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, model.getUuid());
-                        Logger.logD("TAG", file.toString());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Logger.logD("TAG", "complete" + model.getPatientPhoto());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(model.getUuid(),
-                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                                    .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(requestBuilder)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(holder.profile_imgview);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg", model.getUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
     }
 
 }

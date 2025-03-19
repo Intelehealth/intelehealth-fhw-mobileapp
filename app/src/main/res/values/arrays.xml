@@ -2700,7 +2700,7 @@
 
     <string-array name="delivery_type_en">
 
-        <item>Normal vaginal delivery</item>
+        <item>Normal or vaginal delivery</item>
         <item>Cesarean section c section</item>
     </string-array>
 
@@ -2806,5 +2806,10 @@
     <string-array name="complications">
         <item>Yes</item>
         <item>No</item>
+    </string-array>
+    <string-array name="delivery_type">
+
+        <item>Normal or vaginal delivery</item>
+        <item>Cesarean section c section</item>
     </string-array>
 </resources>

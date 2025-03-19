@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -28,10 +29,11 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class ObsDAO {
+public class ObsDAO extends BaseDao{
 
 
     private SQLiteDatabase db = null;
@@ -39,7 +41,14 @@ public class ObsDAO {
     String TAG = ObsDAO.class.getSimpleName();
 
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        boolean isInserted = true;
+        List<HashMap<String, Object>> obsList = new ArrayList<>();
+        for (ObsDTO obsDTO : obsDTOS) {
+            if (new SessionManager(IntelehealthApplication.getAppContext()).isFirstTimeSyncExcuted() && obsDTO.getVoided() == 1) continue;
+            obsList.add(createObsMap(obsDTO));
+        }
+        executeInBackground(bulkInsert(obsList));
+       /* sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         try {
@@ -58,7 +67,7 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-
+*/
         return isInserted;
 
     }
@@ -396,6 +405,50 @@ public class ObsDAO {
         // fetch dr details from local db - end
     }
 
+    /*public static String fetchDrDetailsFromLocalDb(String visitUuid) {
+        // fetch dr details from local db - start
+        String dbValue = null;
+
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        String encounterIDSelection = "visituuid = ? ";
+        String[] encounterIDArgs = {visitUuid};
+        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='" + HW_FOLLOWUP_CONCEPT_ID + "'";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        return dbValue;
+        // fetch dr details from local db - end
+    }*/
+
     public static String fetchValueFromLocalDb(String visitUuid) {
         // fetch dr details from local db - start
         String dbValue = null;
@@ -481,5 +534,24 @@ public class ObsDAO {
             String deleteClause = "encounteruuid = ? AND conceptsetuuid = ?";
             db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, OBS_TYPE_DIAGNOSTICS_SET});
         }
+    }
+    public HashMap<String, Object> createObsMap(ObsDTO obsDTOS) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", obsDTOS.getUuid());
+        values.put("encounteruuid", obsDTOS.getEncounteruuid());
+        values.put("creator", obsDTOS.getCreator());
+        values.put("conceptuuid", obsDTOS.getConceptuuid());
+        values.put("value", obsDTOS.getValue());
+        values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("voided", obsDTOS.getVoided());
+        values.put("sync", "TRUE");
+        values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());
+        return values;
+    }
+
+    @Override
+    String tableName() {
+       return "tbl_obs";
     }
 }

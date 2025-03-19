@@ -26,7 +26,7 @@
             android:backgroundTint="@color/orange3"
             android:paddingStart="@dimen/margin_30"
             android:paddingEnd="@dimen/margin_14"
-            android:text="Household Survey"
+            android:text="@string/household_survey"
             android:textColor="@color/white"
             android:textSize="@dimen/txtsize_patdetail_16sp" />
     </LinearLayout>
