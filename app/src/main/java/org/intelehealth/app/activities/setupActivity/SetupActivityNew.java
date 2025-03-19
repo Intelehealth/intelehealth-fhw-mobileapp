@@ -18,6 +18,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.ui.initialsync.InitialSyncActivity;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -593,10 +595,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                             }
                                                             CustomLog.i(TAG, "onPostExecute: Parse init");
                                                             sessionManager.setIsLoggedIn(true);
-
-                                                            Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                            Intent intent = new Intent(SetupActivityNew.this, InitialSyncActivity.class);
+                                                           // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                             intent.putExtra("setup", true);
                                                             intent.putExtra("firstLogin", "firstLogin");
+                                                            intent.putExtra("loggedInUser", etUsername.getText().toString());
 
                                                             //  if (r2.isChecked()) {
                                                /* if (!sessionManager.getLicenseKey().isEmpty()) {
@@ -606,7 +609,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                 } else {
                                                     Toast.makeText(SetupActivityNew.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                                 }*/
-                                                            //   } else {
+                                                            //   } else {i
                                                             sessionManager.setTriggerNoti("no");
                                                             startActivity(intent);
                                                             finish();

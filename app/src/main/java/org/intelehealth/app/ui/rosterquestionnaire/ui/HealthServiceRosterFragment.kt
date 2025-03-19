@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.rosterquestionnaire.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,7 +41,9 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
     }
 
     override fun isInputValid(): Boolean {
-        if (healthServiceList.isNotEmpty()) {
+        //as per ticket the section itself is not mandatory only ques are mandatory
+        return true
+       /* if (healthServiceList.isNotEmpty()) {
             return true
 
         } else {
@@ -49,7 +52,7 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
                 getString(R.string.please_add_health_service)
             )
             return false
-        }
+        }*/
     }
 
     /**
@@ -139,7 +142,7 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
      * @param position The position of the item to edit
      * @param item The HealthServiceModel to edit
      */
-    override fun onClickEdit(view: View, position: Int, item: HealthServiceModel) {
+    /*override fun onClickEdit(view: View, position: Int, item: HealthServiceModel) {
         AddHealthServiceDialog().apply {
             setHealthServiceData(item.roasterViewQuestion, position)
         }.show(
@@ -148,7 +151,31 @@ class HealthServiceRosterFragment : BaseRosterFragment(R.layout.fragment_health_
         )
 
 
+    }*/
+    override fun onClickEdit(view: View, position: Int, item: HealthServiceModel) {
+        if (!isAdded || requireActivity().isFinishing) {
+            return // Prevent crash if fragment is detached
+        }
+
+        try {
+            if (item.roasterViewQuestion.isNullOrEmpty()) {
+                ToastUtil.showShortToast(requireContext(), "No data available for editing")
+                return
+            }
+
+            AddHealthServiceDialog().apply {
+                setHealthServiceData(item.roasterViewQuestion, position)
+            }.show(
+                childFragmentManager,
+                AddHealthServiceDialog::class.simpleName
+            )
+        }catch (e: Exception){
+            e.printStackTrace()
+            Log.d("TAG", "onClickEdit: e : "+e.message)
+        }
+
     }
+
 
     /**
      * Toggles the open/close state of a health service item.

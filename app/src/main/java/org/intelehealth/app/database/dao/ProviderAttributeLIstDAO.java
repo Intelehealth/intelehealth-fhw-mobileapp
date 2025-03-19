@@ -8,10 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.Uuid_Value;
 import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,13 +23,21 @@ import java.util.List;
  */
 
 
-public class ProviderAttributeLIstDAO {
+public class ProviderAttributeLIstDAO extends BaseDao{
     private long createdRecordsCount = 0;
 
     public boolean insertProvidersAttributeList(List<ProviderAttributeListDTO> providerAttributeListDTOS)
             throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (ProviderAttributeListDTO attributeListDTO : providerAttributeListDTOS) {
+            if (attributeListDTO.getVoided() == 0 &&
+                    attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062")) {
+                visitsList.add(createAttributeListMap(attributeListDTO));
+            }
+        }
+        executeInBackground(bulkInsert(visitsList));
+       /* boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -41,7 +51,7 @@ public class ProviderAttributeLIstDAO {
         } finally {
             db.endTransaction();
 
-        }
+        }*/
 
         return isInserted;
     }
@@ -138,5 +148,19 @@ public class ProviderAttributeLIstDAO {
             specialtyList.remove(gpSpecialtyString);
             specialtyList.add(0, gpSpecialtyString);
         }
+    }
+    public HashMap<String, Object> createAttributeListMap(ProviderAttributeListDTO attributeListDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", attributeListDTO.getUuid());
+        values.put("provideruuid", attributeListDTO.getProvideruuid());
+        values.put("attributetypeuuid", attributeListDTO.getAttributetypeuuid());
+        values.put("value", attributeListDTO.getValue());
+        values.put("voided", attributeListDTO.getVoided());
+        return values;
+    }
+
+    @Override
+    String tableName() {
+        return "tbl_dr_speciality";
     }
 }

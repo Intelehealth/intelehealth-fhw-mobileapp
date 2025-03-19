@@ -929,7 +929,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
                                 android:layout_toEndOf="@+id/ivPresTestIcon"
-                                android:text="Test" />
+                                android:text="@string/test" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                                 android:id="@+id/btnup_test_header"

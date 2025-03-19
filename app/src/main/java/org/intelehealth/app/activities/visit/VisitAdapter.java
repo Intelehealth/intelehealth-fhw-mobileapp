@@ -6,7 +6,6 @@ import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,25 +22,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DownloadFilesUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -51,12 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 
 /**
@@ -78,12 +64,46 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         sessionManager = new SessionManager(context);
     }
 
+    public void setData(List<PrescriptionModel> list){
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void resetAndAddData(List<PrescriptionModel> list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
+
+
     @NonNull
     @Override
     public VisitAdapter.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.followup_list_item, parent, false);
-        return new VisitAdapter.Myholder(row);
+        Myholder myholder = new VisitAdapter.Myholder(row);
+        myholder.fu_cardview_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrescriptionModel model = list.get(myholder.getAbsoluteAdapterPosition());
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
+                intent.putExtra("patientUuid", model.getPatientUuid());
+                intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
+                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age1);
+                intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
+                intent.putExtra("openmrsID", model.getOpenmrs_id());
+                intent.putExtra("visit_ID", model.getVisitUuid());
+                intent.putExtra("visit_startDate", model.getVisit_start_date());
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                context.startActivity(intent);
+            }
+        });
+        return myholder;
     }
 
     @Override
@@ -125,21 +145,27 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                     profilePicDownloaded(model, holder);
                 }
             }*/
-            // TODO : need to remove the image download from adapter
-            if (model.getPatient_photo() != null) {
+           /* if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
                         .override(50, 50)
-                        //.thumbnail(requestBuilder)
                         .centerCrop()
                         .skipMemoryCache(false)
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(holder.profile_image);
             } else {
                 holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
-            }
+            }*/
+            Glide.with(holder.itemView.getContext())
+                    .load(model.getPatient_photo())
+                    .placeholder(R.drawable.avatar1) // Default image while loading
+                    .error(R.drawable.avatar1) // Fallback in case of error
+                    .override(50, 50) // Resize only if necessary
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) // Better caching strategy
+                    .into(holder.profile_image);
             // photo - end
 
             // visit start date
@@ -168,24 +194,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 }
             });
 */
-
-            holder.fu_cardview_item.setOnClickListener(v -> {
-                Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
-                intent.putExtra("patientUuid", model.getPatientUuid());
-                intent.putExtra("gender", model.getGender());
-                intent.putExtra("dob", model.getDob());
-                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-                intent.putExtra("age", age1);
-                intent.putExtra("priority_tag", model.isEmergency());
-                intent.putExtra("hasPrescription", model.isHasPrescription());
-                intent.putExtra("openmrsID", model.getOpenmrs_id());
-                intent.putExtra("visit_ID", model.getVisitUuid());
-                intent.putExtra("visit_startDate", model.getVisit_start_date());
-                intent.putExtra("patient_photo", model.getPatient_photo());
-                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
-                context.startActivity(intent);
-            });
 
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -227,68 +235,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     // Call this method when all tasks are done
     public void shutDownExecutor() {
         executorService.shutdown(); // Clean up after use
-    }
-
-    // profile downlaod
-    public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
-
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
-        Logger.logD("TAG", "profilePicDownloaded url" + url);
-
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, model.getPatientUuid());
-                        Logger.logD("TAG", file.toString());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Logger.logD("TAG", "complete" + model.getPatient_photo());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(model.getPatientUuid(),
-                                    AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-
-                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                                    .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
-                                    .override(50, 50)
-                                    .thumbnail(requestBuilder)
-                                    .centerCrop()
-                                    .skipMemoryCache(false)
-                                    .diskCacheStrategy(DiskCacheStrategy.DATA)
-                                    .into(holder.profile_image);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg", model.getPatientUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
-
-
     }
 
     private void sharePresc(final PrescriptionModel model) {

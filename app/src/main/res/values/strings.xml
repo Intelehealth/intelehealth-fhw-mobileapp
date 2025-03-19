@@ -901,8 +901,8 @@
     <string name="country">Country</string>
     <string name="state">State</string>
     <string name="village_town_city">Village/Town/City</string>
-    <string name="_corresponding_address_1">Corresponding \nAddress 1</string>
-    <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
+    <string name="_corresponding_address_1">संबंधित पत्ता १</string>
+    <string name="_corresponding_address_2">संबंधित पत्ता २</string>
     <string name="other_details">Other details</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
@@ -1097,7 +1097,7 @@
     <string name="select_province">Select Province</string>
     <string name="city">City</string>
     <string name="select_city">Select City</string>
-    <string name="registration_address_of_health_facility">Registration Address of Health Facility</string>
+    <string name="registration_address_of_health_facility">आरोग्य सुविधेचा नोंदणी पत्ता</string>
     <string name="enter_registration_address">Enter Registration Address</string>
 
     <!-- KCDO Strings start  -->
@@ -1663,7 +1663,6 @@
     <string name="continue1">Continue</string>
     <string name="teleconsultation_consent">Teleconsultation Consent</string>
     <string name="visit_reason1">Visit reason</string>
-    <string name="visit_reason_prompt">What is the reason for this visit?</string>
     <string name="select_reason">Select one or multiple reasons</string>
     <string name="number">Number</string>
     <string name="select_duration_type">Please select the duration type</string>
@@ -1685,7 +1684,6 @@
     <string name="schedule_appointment">Schedule appointment</string>
     <string name="select_time_slot">Please select a time slot</string>
     <string name="pdf_created_successfully">Successfully PDF created!</string>
-    <string name="patients_awaiting_prescriptions">Patients are awaiting their prescriptions</string>
     <string name="received">Received</string>
     <string name="doctor_pending_prescriptions">Doctor is yet to send the prescriptions for 35 patients, you can remind the doctor.</string>
     <string name="visit_summary">Visit summary</string>
@@ -1697,7 +1695,6 @@
     <string name="no_data_found">No data found</string>
     <string name="sorted_ascending">Sorted by ascending order</string>
     <string name="sorted_descending">Sorted by descending order</string>
-    <string name="how_intelehealth_works">How Intelehealth works?</string>
     <string name="intelehealth_vision">Team at Intelehealth has a vision of "Health for all". Thus, Intelehealth exists to keep this vision of universal health coverage alive. It strives to achieve that every single citizen in this world should be able to receive the health services they need, when and where they need them, without facing any financial hardship.</string>
     <string name="how_intelehealth_helps_patients">How Intelehealth helps patients?</string>
     <string name="intelehealth_patient_help">Our Telemedicine app makes specialist doctor consultations available to rural populations coming to primary healthcare. Using the app, the HWs are able to capture details of a patient\'s medication history, diagnostics, prescriptions, and treatment. All these details are then shared with remote doctors to provide consultation. It helps in saving patients from traveling miles for healthcare.</string>
@@ -1729,6 +1726,20 @@
     <string name="heart_recording_saved">Heart recording saved successfully!</string>
     <string name="lung_sound_saved">Lung sound saved successfully!</string>
     <string name="other_block_option">Other Block</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="work_in_progress">Work in progress..</string>
+    <string name="prescription_available_for_notification">Prescription available for %1$s</string>
+    <string name="click_notification_to_see">Click notification to see!</string>
+    <string name="appointment_reschedule_for_notification">Appointment rescheduled for %1$s</string>
+    <string name="appointment_cancelled_for_notification">Appointment cancelled for %1$s</string>
+    <string name="lbl_retry">Retry</string>
+    <string name="sync_completed_message">Sync completed</string>
+    <string name="welcome_message">Welcome! %1$s</string>
+    <string name="sync_wait_message">Please wait for the sync to complete</string>
+    <string name="syncing">Syncing</string>
+    <string name="sync_progress_percentage">%1$d%%</string>
+    <string name="sync_completed">Sync completed</string>
+
 
 
 </resources>

@@ -39,6 +39,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
+import org.intelehealth.config.worker.ConfigSyncWorker;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.text.ParsePosition;
@@ -59,6 +60,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SyncDAO {
     public static final String TAG = "SyncDAO";
@@ -69,6 +71,7 @@ public class SyncDAO {
     String appLanguage;
 
     private static final SyncProgress liveDataSync = new SyncProgress();
+    boolean isTheConfigUpdated = false;
 
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
@@ -86,12 +89,13 @@ public class SyncDAO {
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
-
+        PatientAttributesMasterDaoNew patientAttributesMasterDaoNew = new PatientAttributesMasterDaoNew();
+        PatientAttributesDaoNew patientAttributesDaoNew = new PatientAttributesDaoNew();
         try {
             Logger.logD(TAG, "pull sync started");
-            saveConfig(responseDTO.getData().getConfigResponse());
+            //saveConfig(responseDTO.getData().getConfigResponse());
 
-            patientsDAO.patinetAttributeMaster(
+            patientAttributesMasterDaoNew.patinetAttributeMaster(
                     responseDTO.getData().getPatientAttributeTypeMasterDTO());
             Logger.logD(TAG, "patinetAttributeMaster = " +
                              responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
@@ -99,7 +103,7 @@ public class SyncDAO {
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             Logger.logD(TAG, "insertPatients = " + responseDTO.getData().getPatientDTO().size());
 
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+            patientAttributesDaoNew.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             Logger.logD(TAG, "insertPatientAttributes = " +
                              responseDTO.getData().getPatientAttributesDTO().size());
 
@@ -129,7 +133,7 @@ public class SyncDAO {
                              responseDTO.getData().getVisitAttributeList().size());
 
             //downloading images if not found
-            downloadPatientImages(responseDTO.getData().getPatientDTO());
+            //downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue //as per dicscussed with Mithun commenting this code due sync load - In dsm 11 march 2025
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
@@ -188,7 +192,7 @@ public class SyncDAO {
     public void profilePicDownloaded(PatientDTO model) {
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
-        Logger.logD("TAG", "profileimage url" + url);
+        //Logger.logD("TAG", "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload
                 = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
                 (url, "Basic " + sessionManager.getEncoded());
@@ -265,7 +269,9 @@ public class SyncDAO {
 //        .getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
-        Logger.logD("Start pull request", "Started");
+        Log.d(TAG, "pullData_Background: pullurl : "+url);
+
+        Logger.logD("Start pull request", "Started url : "+url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -336,6 +342,8 @@ public class SyncDAO {
         boolean sync = false;
 
         try {
+            if (!isTheConfigUpdated)
+                loadConfig();
             sync = SyncData(response.body());
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
@@ -348,7 +356,8 @@ public class SyncDAO {
             int totalCount = response.body().getData().getTotalCount();
             if (nextPageNo != -1) {
                 pullData_Background(context, nextPageNo);
-                return null;
+              //  return null;
+                return "";  // avoid null return
             } else {
                 //we are not handling
                 //if(!from.equals("pres")){
@@ -401,7 +410,8 @@ public class SyncDAO {
         } else {
             sessionManager.setTriggerNoti("yes");
         }
-        return null;
+     //   return null;
+        return "";  // avoid null return
     }
 
 
@@ -608,6 +618,7 @@ public class SyncDAO {
         Logger.logD(PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
+        Log.d(TAG, "pullDataBackgroundService: pullurl : "+url);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
@@ -978,5 +989,13 @@ public class SyncDAO {
 
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
+    }
+    private void loadConfig() {
+        ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
+            Timber.d("Worker state sync " + it);
+            return Unit.INSTANCE;
+        });
+        isTheConfigUpdated = true;
+
     }
 }

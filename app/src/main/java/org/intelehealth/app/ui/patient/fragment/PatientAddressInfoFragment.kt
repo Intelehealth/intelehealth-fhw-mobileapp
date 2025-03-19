@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.text.InputFilter.LengthFilter
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -31,6 +32,8 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Alphabets_And_Numbers
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -166,9 +169,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun applyFilter() {
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+     //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress1.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
         binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+       // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputOtherBlock.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
     }
 
     private fun setInputTextChangListener() {

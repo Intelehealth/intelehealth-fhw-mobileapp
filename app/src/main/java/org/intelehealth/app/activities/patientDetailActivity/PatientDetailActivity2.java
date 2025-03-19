@@ -68,6 +68,10 @@ import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.identificationActivity.model.Block;
+import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
+import org.intelehealth.app.activities.identificationActivity.model.StateData;
+import org.intelehealth.app.activities.identificationActivity.model.Village;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 
 import org.intelehealth.app.models.FamilyMemberRes;
@@ -165,6 +169,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -1368,7 +1373,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3","address6","countyDistrict"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1395,8 +1400,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
 
-                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
-                patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
+                patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
                 patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
             } while (idCursor.moveToNext());
         }
@@ -1822,7 +1827,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (city_village != null) {
-            village.setText(city_village);
+            //village.setText(city_village);
+            village.setText(getVillageTranslated(patientDTO.getStateprovince(), patientDTO.getDistrict(), patientDTO.getAddress3(), patientDTO.getCityvillage(), sessionManager.getAppLanguage()));
         } else {
             village.setText(getResources().getString(R.string.no_city_added));
         }
@@ -2316,6 +2322,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
                     else if (language.equalsIgnoreCase("en"))
                         desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
+                    else if (language.equalsIgnoreCase("mr"))
+                        desiredVal = mStateDistMaster.getStateDataList().get(i).getStateMarathi();
                     break;
                 }
             }
@@ -2344,6 +2352,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         desiredVal = distDataList.get(i).getNameHindi();
                     else if (language.equalsIgnoreCase("en"))
                         desiredVal = distDataList.get(i).getName();
+                    else if (language.equalsIgnoreCase("mr"))
+                        desiredVal = distDataList.get(i).getNameMarathi();
                     break;
                 }
             }
@@ -2861,5 +2871,75 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
             binding.setRosterQuestionnaireActiveStatus(activeStatus.getActiveStatusRosterQuestionnaireSection());
         }
+    }
+
+    private String getVillageTranslated(String state, String district, String block, String village, String language) {
+        Log.d(TAG, "getVillageTranslated: state : "+state);
+        Log.d(TAG, "getVillageTranslated: block : "+block);
+        Log.d(TAG, "getVillageTranslated: village : "+village);
+        Log.d(TAG, "getVillageTranslated: language : "+language);
+
+        String json = FileUtils.encodeJSON(this, "state_district_tehsil.json").toString();
+        StateDistMaster stateDistMaster = new Gson().fromJson(json, StateDistMaster.class);
+
+        if (stateDistMaster == null || stateDistMaster.getStateDataList() == null) {
+            return village; // Return original if JSON is invalid
+        }
+
+        // Find the state
+        StateData stateData = stateDistMaster.getStateDataList().stream()
+                .filter(s -> s.getState().equalsIgnoreCase(state))
+                .findFirst()
+                .orElse(null);
+
+        if (stateData == null || stateData.getDistDataList() == null) {
+            return village; // Return original if state or districts are not found
+        }
+
+        // Find the district
+        DistData districtData = stateData.getDistDataList().stream()
+                .filter(d -> d.getName().equalsIgnoreCase(district))
+                .findFirst()
+                .orElse(null);
+
+        if (districtData == null || districtData.getBlocks() == null) {
+            return village; // Return original if district or blocks are not found
+        }
+
+        // Find the block
+        Block blockData = districtData.getBlocks().stream()
+                .filter(b -> b.getName().equalsIgnoreCase(block))
+                .findFirst()
+                .orElse(null);
+
+        if (blockData == null || blockData.getGramPanchayats() == null) {
+            return village; // Return original if block or grampanchayats are not found
+        }
+
+        // Select the first available Grampanchayat (default selection)
+        GramPanchayat grampanchayatData = blockData.getGramPanchayats().stream()
+                .findFirst()
+                .orElse(null);
+
+        if (grampanchayatData == null || grampanchayatData.getVillages() == null) {
+            return village; // Return original if no villages exist under Grampanchayat
+        }
+
+        // Find the village in the grampanchayat
+        return grampanchayatData.getVillages().stream()
+                .sorted(Comparator.comparing(Village::getName, String.CASE_INSENSITIVE_ORDER)) // Sort villages by name
+                .filter(v -> v.getName().equalsIgnoreCase(village))
+                .map(v -> {
+                    switch (language.toLowerCase()) {
+                        case "hi":
+                            return v.getNameHindi();
+                        case "mr":
+                            return v.getNameMarathi();
+                        default:
+                            return v.getName();
+                    }
+                })
+                .findFirst()
+                .orElse(village); // Return original if village not found
     }
 }

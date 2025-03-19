@@ -653,14 +653,20 @@ public final class StringUtils {
             case "Illiterate":
                 val = "निरक्षर";
                 break;
+            case "Pre-Primary":
+                val = "पूर्व-प्राथमिक";
+                break;
             case "Primary":
                 val = "प्राथमिक";
                 break;
             case "Secondary":
-                val = "दुय्यम";
+                val = "माध्यमिक";
                 break;
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
+                break;
+            case "Graduate":
+                val = "पदवीधर";
                 break;
             case "Graduation & Higher":
                 val = "पदवी आणि उच्च";
@@ -678,14 +684,20 @@ public final class StringUtils {
             case "निरक्षर":
                 val = "Illiterate";
                 break;
+            case "पूर्व-प्राथमिक":
+                val = "Pre-Primary";
+                break;
             case "प्राथमिक":
                 val = "Primary";
                 break;
-            case "दुय्यम":
+            case "माध्यमिक":
                 val = "Secondary";
                 break;
             case "उच्च माध्यमिक":
                 val = "Higher Secondary";
+                break;
+            case "पदवीधर":
+                val = "Graduate";
                 break;
             case "पदवी आणि उच्च":
                 val = "Graduation & Higher";
@@ -4115,7 +4127,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
+    public static InputFilter inputFilter_Alphabets_And_Numbers = new InputFilter() { //filter input for name fields
         @Override
         public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
             boolean keepOriginal = true;
@@ -4140,8 +4152,8 @@ public final class StringUtils {
             }
         }
 
-        private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);    // This allows only number and alphabets.
+        private boolean isCharAllowed(char c) { // This allows only number and alphabets.
+            return Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.);
         }
     };
 
@@ -4158,7 +4170,7 @@ public final class StringUtils {
                     keepOriginal = false;
             }
             if (keepOriginal)
-                return null;
+                return charSequence;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);
@@ -4170,9 +4182,9 @@ public final class StringUtils {
             }
         }
 
-        private boolean isCharAllowed(char c) {
+        private boolean isCharAllowed(char c) { // This allows only alphabets.
             //   return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
-            return Character.isLetter(c) || Character.isSpaceChar(c);   // This allows only alphabets.
+            return Character.isLetter(c) || Character.isSpaceChar(c) || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.);
         }
     };
 
@@ -4202,7 +4214,8 @@ public final class StringUtils {
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ');
+            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ')
+                    || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.); ;
         }
     };
 
@@ -4217,10 +4230,33 @@ public final class StringUtils {
      *
      * @param context
      * @param genderView
-     * @param patient
      * @param sessionManager
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        // 1. Calculate Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        // 2. Get Localized Gender String
+        int genderStringResId;
+        switch (gender.toUpperCase()) {
+            case "M":
+                genderStringResId = R.string.identification_screen_checkbox_male;
+                break;
+            case "F":
+                genderStringResId = R.string.identification_screen_checkbox_female;
+                break;
+            case "O":
+                genderStringResId = R.string.identification_screen_checkbox_other;
+                break;
+            default:
+                genderView.setText(gender + " " + age);
+                return;
+        }
+
+        // 3. Apply Localized Text
+        genderView.setText(context.getString(genderStringResId) + " " + age);
+    }
+    /*public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         //  1. Age
         String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
 
@@ -4327,7 +4363,7 @@ public final class StringUtils {
         } else {
             genderView.setText(gender + " " + age);
         }
-    }
+    }*/
 
     /**
      * returning string instead of setting data to textview
@@ -5061,6 +5097,36 @@ public final class StringUtils {
             }
         }
         return result;
+    }
+
+    /*private fun getTranslatedString(context: Context, text: String): String {
+        return when {
+            text.contains("Prescription available for", ignoreCase = true) -> {
+                // Extract patient name by removing "Prescription available for"
+                val patientName = text.replace("Prescription available for", "").trim()
+                context.getString(
+                        R.string.prescription_available_for_notification,
+                        patientName
+                ) // since we have a placeholder here.
+            }
+
+            text.contains("Click notification to see!", ignoreCase = true) ->
+            context.getString(R.string.click_notification_to_see)
+
+            else -> text // Return original text if no match
+        }
+    }*/
+
+    public static String getTranslatedString(Context context, String text) {
+        if (text.toLowerCase().contains("prescription available for")) {
+            // Extract patient name by removing "Prescription available for"
+            String patientName = text.replace("Prescription available for", "").trim();
+            return context.getString(R.string.prescription_available_for_notification, patientName);
+        } else if (text.equalsIgnoreCase("Click notification to see!")) {
+            return context.getString(R.string.click_notification_to_see);
+        } else {
+            return text; // Return original text if no match
+        }
     }
 
 }

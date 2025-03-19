@@ -1099,5 +1099,6 @@
     <string name="average_cost_incurred_on_consultation_fee_per_episode">Average cost incurred on consultation fee per episode</string>
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
 
 </resources>

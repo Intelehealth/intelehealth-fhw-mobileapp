@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -141,7 +142,14 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
         binding.contentGenerateBill.finalBillCV.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         binding.contentGenerateBill.finalBillCV.layout(0, 0, binding.contentGenerateBill.finalBillCV.getMeasuredWidth(), binding.contentGenerateBill.finalBillCV.getMeasuredHeight());
-        mBitmap = binding.contentGenerateBill.finalBillCV.getDrawingCache(); // converting cardview to bitmap
+        //mBitmap = binding.contentGenerateBill.finalBillCV.getDrawingCache(); // converting cardview to bitmap
+        binding.contentGenerateBill.finalBillCV.post(() -> {
+            binding.contentGenerateBill.finalBillCV.setPadding(0, 0, 0, 0); // Add padding to prevent cutting
+            binding.contentGenerateBill.finalBillCV.invalidate();
+            binding.contentGenerateBill.finalBillCV.requestLayout();
+            mBitmap = loadBitmap(binding.contentGenerateBill.finalBillCV);
+        });
+
     }
 
     @Override
@@ -323,9 +331,9 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 binding.contentGenerateBill.buttonPrint.setEnabled(true);
                                 binding.contentGenerateBill.buttonPrint.setClickable(true);
-                                activity.finish();
+                                /*activity.finish();
                                 Intent intent = new Intent(context, HomeScreenActivity_New.class);
-                                context.startActivity(intent);
+                                context.startActivity(intent);*/
                             }
                         });
 
@@ -346,5 +354,17 @@ public class PrintBillUsingThermalPrinter implements PrinterObserver {
                 }
             }
         });
+    }
+    private Bitmap loadBitmap(View view) {
+        int width = view.getWidth() * 2;  // Double the width
+        int height = view.getHeight() * 2; // Double the height
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.scale(2f, 2f); // Scale everything up by 2x
+        view.layout(0, 0, width / 2, height / 2);
+        view.draw(canvas);
+
+        return bitmap;
     }
 }

@@ -45,9 +45,10 @@ public class PatientsDAO extends BaseDao {
     private long createdRecordsCount = 0;
     int limit = 10, offset = 0;
     private static final String TAG = "PatientsDAO";
+    private String currentTableName;
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
-
+        setTableName("tbl_patient");
         boolean isInserted = true;
         List<HashMap<String, Object>> patientList = new ArrayList<>();
         for (PatientDTO patient : patientDTO) {
@@ -99,8 +100,12 @@ public class PatientsDAO extends BaseDao {
         values.put("em_contact_name", patient.getEmContactName());
         values.put("em_contact_num", patient.getEmContactNumber());
 
+        values.put("address3", patient.getAddress3());
+        values.put("address6", patient.getAddress6());
+        values.put("countyDistrict", patient.getDistrict());
+
         values.put("dead", patient.getDead());
-        values.put("sync", patient.getSyncd());
+        values.put("sync", patient.getSyncd().toString());
         return values;
     }
 
@@ -112,8 +117,9 @@ public class PatientsDAO extends BaseDao {
         }
         return null; // Return null if no match is found
     }
+
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
-        Logger.logD(TAG, "createPatients = "+new Gson().toJson(patient));
+        Logger.logD(TAG, "createPatients = " + new Gson().toJson(patient));
 
         boolean isCreated = true;
         ContentValues values = new ContentValues();
@@ -149,7 +155,7 @@ public class PatientsDAO extends BaseDao {
             isCreated = createdRecordsCount > 0;
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         }
         return isCreated;
@@ -204,7 +210,7 @@ public class PatientsDAO extends BaseDao {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -265,7 +271,7 @@ public class PatientsDAO extends BaseDao {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -311,7 +317,7 @@ public class PatientsDAO extends BaseDao {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -321,6 +327,14 @@ public class PatientsDAO extends BaseDao {
     }
 
     public boolean patientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        setTableName("tbl_patient_attribute");
+        boolean isInserted = true;
+        List<HashMap<String, Object>> patientAttributesList = new ArrayList<>();
+        for (PatientAttributesDTO patientAttributesDTO : patientAttributesDTOS) {
+            patientAttributesList.add(createPatientAttributesMap(patientAttributesDTO));
+        }
+        executeInBackground(bulkInsert(patientAttributesList));
+        /* Old code
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -338,11 +352,11 @@ public class PatientsDAO extends BaseDao {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-        }
+        }*/
         return isInserted;
     }
 
@@ -360,7 +374,7 @@ public class PatientsDAO extends BaseDao {
                     String attributeType = cursor.getString(cursor.getColumnIndex("person_attribute_type_uuid"));
                     attribute.setAttributeType(attributeType);
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
-                    if(attributeType !=null && !attributeType.isEmpty()){
+                    if (attributeType != null && !attributeType.isEmpty()) {
                         patientAttributesList.add(attribute);
                     }
                     cursor.moveToNext();
@@ -369,7 +383,7 @@ public class PatientsDAO extends BaseDao {
             cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             //db.endTransaction();
@@ -386,7 +400,7 @@ public class PatientsDAO extends BaseDao {
         try {
             String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
             Cursor cursor = db.rawQuery(query, null, null);
-            PatientAttributesDTO attribute ;
+            PatientAttributesDTO attribute;
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     attribute = new PatientAttributesDTO();
@@ -395,7 +409,7 @@ public class PatientsDAO extends BaseDao {
                     attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
                     attribute.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
                     attribute.setPatientuuid(patientuuid);
-                    if(attributeType !=null && !attributeType.isEmpty()){
+                    if (attributeType != null && !attributeType.isEmpty()) {
                         patientAttributesList.add(attribute);
                     }
                     cursor.moveToNext();
@@ -404,7 +418,7 @@ public class PatientsDAO extends BaseDao {
             cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             //db.endTransaction();
@@ -412,7 +426,6 @@ public class PatientsDAO extends BaseDao {
         }
         return patientAttributesList;
     }
-
 
 
     //Fetch householdID value using Patient UUID
@@ -437,7 +450,7 @@ public class PatientsDAO extends BaseDao {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -461,7 +474,7 @@ public class PatientsDAO extends BaseDao {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
@@ -493,7 +506,7 @@ public class PatientsDAO extends BaseDao {
             // db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
-            CustomLog.e(TAG,s.getMessage());
+            CustomLog.e(TAG, s.getMessage());
             throw new DAOException(s);
         }
         return listPatientNames;
@@ -516,7 +529,7 @@ public class PatientsDAO extends BaseDao {
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
             //db.endTransaction();
@@ -546,7 +559,7 @@ public class PatientsDAO extends BaseDao {
         } catch (SQLException e) {
             isInserted = false;
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -579,7 +592,7 @@ public class PatientsDAO extends BaseDao {
         } catch (SQLException e) {
             isInserted = false;
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -590,7 +603,9 @@ public class PatientsDAO extends BaseDao {
     }
 
 
+/*
     public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
+        setTableName("tbl_patient_attribute_master");
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -607,7 +622,7 @@ public class PatientsDAO extends BaseDao {
         } catch (SQLException e) {
             isInserted = false;
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -615,6 +630,7 @@ public class PatientsDAO extends BaseDao {
 
         return isInserted;
     }
+*/
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
@@ -701,7 +717,7 @@ public class PatientsDAO extends BaseDao {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -729,7 +745,7 @@ public class PatientsDAO extends BaseDao {
         } catch (SQLException sql) {
             isUpdated = false;
             FirebaseCrashlytics.getInstance().recordException(sql);
-            CustomLog.e(TAG,sql.getMessage());
+            CustomLog.e(TAG, sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -754,7 +770,7 @@ public class PatientsDAO extends BaseDao {
             //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
-            CustomLog.e(TAG,s.getMessage());
+            CustomLog.e(TAG, s.getMessage());
             throw new DAOException(s);
         } finally {
             //db.endTransaction();
@@ -813,7 +829,7 @@ public class PatientsDAO extends BaseDao {
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         return modelList;
 
@@ -843,7 +859,7 @@ public class PatientsDAO extends BaseDao {
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         CustomLog.d("patientUUID_list", "list: " + patientUUID_List);
         if (patientUUID_List.size() != 0) {
@@ -881,7 +897,7 @@ public class PatientsDAO extends BaseDao {
                     }
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
         } else { // no mobile number was added in search text.
@@ -920,14 +936,14 @@ public class PatientsDAO extends BaseDao {
                 }
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
         return modelList;
     }
 
     public static Observable<List<PatientDTO>> getQueryPatientsObs(String query) {
-        return Observable.create(emitter ->{
+        return Observable.create(emitter -> {
             String search = query/*.trim().replaceAll("\\s", "")*/;
             // search = StringUtils.mobileNumberEmpty(phoneNumber());
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
@@ -951,7 +967,7 @@ public class PatientsDAO extends BaseDao {
                 }
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
             CustomLog.d("patientUUID_list", "list: " + patientUUID_List);
             if (patientUUID_List.size() != 0) {
@@ -989,12 +1005,12 @@ public class PatientsDAO extends BaseDao {
                         }
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 }
             } else { // no mobile number was added in search text.
                 final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
-                        "OR middle_name LIKE '%" + search +  "%'  OR  address6 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
+                        "OR middle_name LIKE '%" + search + "%'  OR  address6 LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                         "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
                         "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
                         "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
@@ -1028,7 +1044,7 @@ public class PatientsDAO extends BaseDao {
                     }
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
             emitter.onNext(modelList);
@@ -1049,7 +1065,7 @@ public class PatientsDAO extends BaseDao {
             }
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
-            CustomLog.e(TAG,s.getMessage());
+            CustomLog.e(TAG, s.getMessage());
         }
         idCursor.close();
         return phone;
@@ -1080,7 +1096,7 @@ public class PatientsDAO extends BaseDao {
                 while (idCursor.moveToNext());
             }
         } catch (SQLException e) {
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
 
         }
 
@@ -1211,7 +1227,7 @@ public class PatientsDAO extends BaseDao {
                     name = new PatientsDAO().getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1324,44 +1340,68 @@ public class PatientsDAO extends BaseDao {
     }
 
     //getting followup patient count here
-    public static int getAllFollowupPatientCount() {
-        int count = 0;
+    public static Observable<Integer> getAllFollowupPatientCount() {
+        return  Observable.fromCallable(()->{
+            int count = 0;
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?"
-                +"AND o.voided='0' and "
-                + "o.value is NOT NULL GROUP BY a.patientuuid"
-                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
+            String query = "SELECT " +
+                    "a.uuid as visituuid, " +
+                    "a.sync, " +
+                    "a.patientuuid, " +
+                    "substr(a.startdate, 1, 10) as startdate, "
+                    + "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                    "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                    "o.value as follow_up_info," +
+                    "b.patient_photo, " +
+                    "a.enddate, b.uuid, " +
+                    "b.first_name, " +
+                    "b.middle_name, " +
+                    "b.last_name, " +
+                    "b.date_of_birth, " +
+                    "b.openmrs_id, " +
+                    "b.gender, " +
+                    "c.value AS speciality, " +
+                    "SUBSTR(o.value,1,10) AS value_text, " +
+                    "MAX(o.obsservermodifieddate) AS obsservermodifieddate " +
+                    "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                    "WHERE " +
+                    "a.uuid = c.visit_uuid " +
+                    "AND a.patientuuid = b.uuid " +
+                    "AND a.uuid = d.visituuid " +
+                    "AND d.uuid = o.encounteruuid " +
+                    "AND o.conceptuuid = ? " +
+                    "AND o.voided='0' " +
+                    "AND o.value is NOT NULL " +
+                    "AND followup_date is NOT NULL " +
+                    "GROUP BY a.patientuuid " +
+                    "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
+                    "AND value_text != '' ) ";
 
-        CustomLog.d("QUERY_COUNT", query);
+            CustomLog.d("QUERY_COUNT", query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+            final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
                         count++;
-                }catch (Exception e){
-                    e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
                 }
+                while (cursor.moveToNext());
             }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
+            cursor.close();
 
-        return count;
+            return count;
+        });
     }
+
     public boolean updatePatientSurveyInDb(String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
-        Log.d("devKZchk", "updatePatientSurveyInDb: kz attrs : "+new Gson().toJson(patientAttributesDTOS));
+        Log.d("devKZchk", "updatePatientSurveyInDb: kz attrs : " + new Gson().toJson(patientAttributesDTOS));
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -1389,9 +1429,10 @@ public class PatientsDAO extends BaseDao {
         return isCreated;
 
     }
+
     // Update patient sync = false.
     public boolean updatePatientSyncValue(String patientUUID) throws DAOException {
-        Log.d(TAG, "patientUUID: "+patientUUID);
+        Log.d(TAG, "patientUUID: " + patientUUID);
         boolean isCreated = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -1410,6 +1451,7 @@ public class PatientsDAO extends BaseDao {
         return isCreated;
 
     }
+
     public HouseholdSurveyModel retrievePatientHouseholdSurveyAttributes(String patientUuid) {
         Timber.tag("devkz").d("retrievePatientHouseholdSurveyAttributes");
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -1420,7 +1462,7 @@ public class PatientsDAO extends BaseDao {
         final Cursor cursor = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel if blk: "+new Gson().toJson(householdSurveyModel));
+                Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel if blk: " + new Gson().toJson(householdSurveyModel));
 
                 // Attributes
                 householdSurveyModel.setHouseStructure(cursor.getString(cursor.getColumnIndexOrThrow("HouseStructure")));
@@ -1430,13 +1472,75 @@ public class PatientsDAO extends BaseDao {
                 //householdSurveyModel.setReportDateOfSurveyStarted(cursor.getString(cursor.getColumnIndexOrThrow("occupation")));
             } while (cursor.moveToNext());
         }
-        Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel : "+new Gson().toJson(householdSurveyModel));
+        Log.d(TAG, "retrievePatientHouseholdSurveyAttributes: householdSurveyModel : " + new Gson().toJson(householdSurveyModel));
         cursor.close();
         return householdSurveyModel;
     }
 
+    /* @Override
+     String tableName() {
+         return "tbl_patient";
+     }*/
+    public void setTableName(String tableName) {
+        Log.d(TAG, "setTableName: tableName  : "+tableName);
+        this.currentTableName = tableName;
+    }
+
     @Override
     String tableName() {
-        return "tbl_patient";
+        if (currentTableName == null || currentTableName.isEmpty()) {
+            throw new RuntimeException("Table name is not set");
+        }
+        Log.d(TAG, "tableName: currentTableName : "+currentTableName);
+        return currentTableName;
     }
+
+    public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
+        setTableName("tbl_patient_attribute_master");
+        boolean isInserted = true;
+        List<HashMap<String, Object>> patientAttributesList = new ArrayList<>();
+        for (PatientAttributeTypeMasterDTO patientAttrs : patientAttributeTypeMasterDTOS) {
+            patientAttributesList.add(createPatientMasterAttributesMap(patientAttrs));
+        }
+        executeInBackground(bulkInsert(patientAttributesList));
+
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+//        ContentValues values = new ContentValues();
+//        db.beginTransaction();
+//        try {
+//            for (PatientDTO patient : patientDTO) {
+//                createPatients(patient, db);
+//            }
+//            db.setTransactionSuccessful();
+//        } catch (SQLException e) {
+//            isInserted = false;
+//            CustomLog.e(TAG,e.getMessage());
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+//        }
+
+        return isInserted;
+    }
+
+    public HashMap<String, Object> createPatientMasterAttributesMap(PatientAttributeTypeMasterDTO patientAttrDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", patientAttrDTO.getUuid());
+        values.put("name", patientAttrDTO.getName());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", "TRUE");
+        return values;
+    }
+
+    public HashMap<String, Object> createPatientAttributesMap(PatientAttributesDTO patientAttributesDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", patientAttributesDTO.getUuid());
+        values.put("person_attribute_type_uuid", patientAttributesDTO.getPersonAttributeTypeUuid());
+        values.put("patientuuid", patientAttributesDTO.getPatientuuid());
+        values.put("value", patientAttributesDTO.getValue());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", "TRUE");
+        return values;
+    }
+
 }

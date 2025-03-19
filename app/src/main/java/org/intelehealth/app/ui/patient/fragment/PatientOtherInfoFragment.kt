@@ -3,6 +3,7 @@ package org.intelehealth.app.ui.patient.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -78,18 +79,26 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun setupEconomicCategory() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
+        val marathiArray = resources.getStringArray(R.array.economic) // Get Marathi values
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.economic)
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, marathiArray)
         binding.autoCompleteEconomicCategory.setAdapter(adapter)
-        if (patient.economic != null && patient.economic.isNotEmpty()) {
-            binding.autoCompleteEconomicCategory.setText(patient.economic, false)
-        }
-        binding.autoCompleteEconomicCategory.setOnItemClickListener { _, _, i, _ ->
-            binding.textInputLayEducation.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                patient.economic = this.getStringArray(R.array.economic)[i]
+
+        if (!patient.economic.isNullOrEmpty()) {
+            val index = englishArray.indexOf(patient.economic)
+            if (index != -1) {
+                binding.autoCompleteEconomicCategory.setText(marathiArray[index], false)
             }
         }
+
+        binding.autoCompleteEconomicCategory.setOnItemClickListener { _, _, i, _ ->
+            binding.textInputLayEducation.hideError()
+            patient.economic = englishArray[i]
+            binding.autoCompleteEconomicCategory.setText(marathiArray[i], false)
+        }
     }
+
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener { findNavController().popBackStack() }
@@ -172,16 +181,27 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun setupEducations() {
+        val marathiArray = resources.getStringArray(R.array.education)
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.education)
+
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.education)
         binding.autoCompleteEducation.setAdapter(adapter)
-        if (patient.education != null && patient.education.isNotEmpty()) {
+       /* if (patient.education != null && patient.education.isNotEmpty()) {
             binding.autoCompleteEducation.setText(patient.education, false)
+        }*/
+        if (!patient.education.isNullOrEmpty()) {
+            val index = englishArray.indexOf(patient.education)
+            if (index != -1) {
+                binding.autoCompleteEducation.setText(marathiArray[index], false)
+            }
         }
         binding.autoCompleteEducation.setOnItemClickListener { _, _, i, _ ->
             binding.textInputLayEducation.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+            /*LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 patient.education = this.getStringArray(R.array.education)[i]
-            }
+            }*/
+            patient.education = englishArray[i]
+            binding.autoCompleteEducation.setText(marathiArray[i], false)
         }
     }
 
