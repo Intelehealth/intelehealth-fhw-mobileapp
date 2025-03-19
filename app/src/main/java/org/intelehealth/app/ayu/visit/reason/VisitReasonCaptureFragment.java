@@ -34,6 +34,7 @@ import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -155,10 +156,17 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
 
             Node mainNode = new Node(currentFile);
-            boolean isPreviousVisitValid = VisitUtils.isPreviousVisitValid(mainNode, visitUuid);
-            if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age()) && isPreviousVisitValid) {
-                mFinalEnabledMMList.add(mindMapName);
+            //boolean isPreviousVisitValid = VisitUtils.isPreviousVisitValid(mainNode, visitUuid);
+            boolean isPatientHasOldVisit = mainNode.isPreviousVisitRequired() && VisitsDAO.isPatientHasOldVisit(patientUuid);
+            boolean isValidNodeForAgeGender = VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age());
+            if (mainNode.isPreviousVisitRequired() && !isPatientHasOldVisit) {
+                mFinalEnabledMMList.remove(mindMapName);
+            } else {
+                if (isValidNodeForAgeGender) {
+                    mFinalEnabledMMList.add(mindMapName);
+                }
             }
+
         }
         String[] mindmapsNamesFinalArray = new String[mFinalEnabledMMList.size()];
 

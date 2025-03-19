@@ -75,7 +75,7 @@
     <string name="religion_jain">Jain</string>
     <string name="religion_jewish">Jewish</string>
     <string name="parsi_zoroastrian">Parsi or Zoroastrian</string>
-    <string name="no_religion">No Religion</string>
+    <string name="no_religion">Others</string>
 
     <string name="economic_status_apl">APL</string>
     <string name="economic_status_bpl">BPL</string>
@@ -253,6 +253,8 @@
 
     // Relation with household
     <string name="spouse">Spouse</string>
+    <string name="son_or_daughter">Son or Daughter</string>
+    <string name="son_or_daughter_in_law">Son or Daughter-In-Law</string>
     <string name="grandchild">Grandchild</string>
     <string name="father_mother">Father or Mother</string>
     <string name="father_mother_in_law">Father or Mother-In-Law</string>

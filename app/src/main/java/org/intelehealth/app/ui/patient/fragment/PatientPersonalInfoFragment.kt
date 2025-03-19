@@ -15,11 +15,11 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.app.AppConstants
-import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
+import org.intelehealth.app.ui.filter.AllowAllLettersInputFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
@@ -27,7 +27,6 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -360,11 +359,20 @@ class PatientPersonalInfoFragment :
     }
 
     private fun applyFilter() {
-        binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETMName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETLName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETGuardianName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETECName.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputETFName.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(AllowAllLettersInputFilter())
+        }
+
+        binding.textInputETMName.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(AllowAllLettersInputFilter())
+        }
+
+        binding.textInputETLName.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(AllowAllLettersInputFilter())
+        }
     }
 
     private fun setInputTextChangListener() {

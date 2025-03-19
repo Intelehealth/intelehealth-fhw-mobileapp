@@ -219,6 +219,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_username"
+                        style="@style/AppTheme.InputBox.English"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
@@ -230,9 +231,8 @@
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
                         android:singleLine="true"
-                        android:textSize="@dimen/common_hint_text_size"
+                        android:textSize="@dimen/common_hint_text_size" />
 
-                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -279,6 +279,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password"
+                        style="@style/AppTheme.InputBox.English"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"

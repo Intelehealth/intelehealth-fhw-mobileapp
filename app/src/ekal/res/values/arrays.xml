@@ -8,8 +8,8 @@
         <item>@string/religion_sikh</item>
         <item>@string/religion_buddhist_neo_buddhist</item>
         <item>@string/religion_jain</item>
-        <item>@string/religion_jewish</item>
-        <item>@string/parsi_zoroastrian</item>
+        <!--<item>@string/religion_jewish</item>
+        <item>@string/parsi_zoroastrian</item>-->
         <item>@string/no_religion</item>
     </string-array>
 

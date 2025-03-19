@@ -1055,6 +1055,20 @@ public class VisitsDAO {
         return previousVisitDate;
     }
 
+    public static String getPatientPreviousVisitDate(String patientUUID) {
+        String previousVisitDate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT startdate FROM tbl_visit WHERE patientuuid = ? AND sync = 1 ORDER BY startdate DESC LIMIT 1";
+        Cursor cursor = db.rawQuery(query, new String[]{patientUUID});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                previousVisitDate = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+            }
+        }
+        cursor.close();
+        return previousVisitDate;
+    }
+
     public static String getPreviousVisitUuid(String currentVisitUuid) {
         String previousVisitUuid = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
@@ -1067,6 +1081,29 @@ public class VisitsDAO {
         }
         cursor.close();
         return previousVisitUuid;
+    }
+
+    public static String getPatientPreviousVisitUuid(String patientUuid) {
+        String previousVisitUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = ? AND sync = 1 ORDER BY startdate DESC LIMIT 1";
+        Cursor cursor = db.rawQuery(query, new String[]{patientUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                previousVisitUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        cursor.close();
+        return previousVisitUuid;
+    }
+
+    public static boolean isPatientHasOldVisit(String patientUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = ? AND sync = 1";
+        Cursor cursor = db.rawQuery(query, new String[]{patientUuid});
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
     //visit count to retry db operation
@@ -1108,7 +1145,7 @@ public class VisitsDAO {
 
                     List<String> visitUuidList = getFilteredVisits(db, puid);
 
-                    for(String vuid : visitUuidList){
+                    for (String vuid : visitUuidList) {
                         boolean isCompletedExitedSurvey = false;
                         boolean isPrescriptionReceived = false;
                         try {

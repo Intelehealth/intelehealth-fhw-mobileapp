@@ -11,10 +11,9 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
-import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.ui.filter.CorrespondingAddressInputFilter
+import org.intelehealth.app.ui.filter.LettersNumbersSelectedSymbolsInputFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.LanguageUtils
@@ -164,11 +163,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputAddress1.apply {
             addFilter(FirstLetterUpperCaseInputFilter())
-            addFilter(CorrespondingAddressInputFilter())
+            addFilter(LettersNumbersSelectedSymbolsInputFilter())
         }
         binding.textInputAddress2.apply {
             addFilter(FirstLetterUpperCaseInputFilter())
-            addFilter(CorrespondingAddressInputFilter())
+            addFilter(LettersNumbersSelectedSymbolsInputFilter())
         }
     }
 

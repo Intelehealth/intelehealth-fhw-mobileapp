@@ -12,11 +12,14 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyMedicalBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
+import org.intelehealth.app.ui.filter.AllowAllLettersInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
+import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
@@ -77,6 +80,14 @@ class BaselineMedicalFragment :
         binding.medicalConfig = PatientRegFieldsUtils.buildMedicalBaselineConfig(it)
         setValues()
         setClickListener()
+        setupFilter()
+    }
+
+    private fun setupFilter() {
+        binding.etSurgeryReasonCheck.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(AllowAllLettersInputFilter())
+        }
     }
 
     private fun getStaticPatientRegistrationFields() =

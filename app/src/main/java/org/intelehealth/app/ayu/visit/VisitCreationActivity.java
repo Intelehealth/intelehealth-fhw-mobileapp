@@ -692,7 +692,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }
         }
 
-        insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
+        insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage()).trim();
+
         boolean isCurrentComplaintInserted = insertChiefComplainToDb(insertion, UuidDictionary.CURRENT_COMPLAINT);
         boolean isCurrentComplaintLocaleInserted = false;
 
@@ -837,7 +838,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             for (Node options : optionList) {
                 if (options.isAutoPopulateField()) {
-                    VisitUtils.prefillNodeValues(options, options.getAutoPopulateDataType(), visitUuid);
+                    // VisitUtils.prefillNodeValues(options, options.getAutoPopulateDataType(), visitUuid);
+                    VisitUtils.prefillNodeValuesFromPreviousVisit(options, options.getAutoPopulateDataType(), patientUuid);
                 }
             }
 
@@ -1217,7 +1219,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             questionsMissing();
             return false;
         }
-
+        physicalString = physicalString.trim();
+        // if insertion starts with ► then please remove it
+        if (physicalString.startsWith("►")) {
+            physicalString = physicalString.substring(1);
+        }
         boolean isPhysicalExamInserted = insertDbPhysicalExam(physicalString, UuidDictionary.PHYSICAL_EXAMINATION);
         boolean isPhysicalExamLocaleInserted = false;
 
@@ -1342,7 +1348,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false);
-                    String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
+                    String toInsert = (!isLocale ? Node.bullet_hollow + node.getText() : Node.bullet_hollow + node.findDisplay()) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");

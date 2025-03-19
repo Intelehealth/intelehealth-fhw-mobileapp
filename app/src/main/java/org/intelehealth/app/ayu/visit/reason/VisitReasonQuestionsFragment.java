@@ -224,6 +224,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
         recyclerView.setAdapter(mQuestionsListingAdapter);
         mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
         mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
+        while (mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex).isAutoPopulateField()) {
+            mCurrentComplainNodeOptionsIndex++;
+            mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
+        }
 
         if (mIsEditMode) {
             boolean pendingForAddAll = true;

@@ -66,11 +66,11 @@
                     android:id="@+id/view_change_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:visibility="gone"
                     android:layout_marginStart="@dimen/tv_pass_margin_start"
                     android:layout_marginTop="@dimen/tv_pass_margin_top"
-                    android:layout_marginEnd="@dimen/tv_pass_margin_end">
+                    android:layout_marginEnd="@dimen/tv_pass_margin_end"
+                    android:visibility="gone"
+                    tools:visibility="gone">
 
                     <ImageView
                         android:id="@+id/iv_icon1"
@@ -638,6 +638,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email_profile"
+                        style="@style/AppTheme.InputBox.English"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"

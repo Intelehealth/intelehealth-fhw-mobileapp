@@ -32,6 +32,8 @@ import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -4197,7 +4199,11 @@ public final class StringUtils {
         }
 
         private boolean isCharAllowed(char c) {
-            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ');
+            return Character.isLetterOrDigit(c) ||
+                    Character.getType(c) == (int) Character.NON_SPACING_MARK ||
+                    Character.getType(c) == Character.COMBINING_SPACING_MARK ||
+                    Character.valueOf(c).equals('-') ||
+                    Character.valueOf(c).equals(' ');
         }
     };
 
@@ -4473,6 +4479,33 @@ public final class StringUtils {
         } catch (JSONException e) {
             visitReason = "";
         }
+
+        return visitReason;
+    }
+
+    public static String getVisitReasonDataNames(String value) {
+        // considering old format data
+        String visitReason = "";
+        String valueArray[] = null;
+        boolean isAssociateSymptomFound = false;
+        List<String> chiefComplainList = new ArrayList<>();
+        valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
+        isAssociateSymptomFound = valueArray.length >= 2;
+        CustomLog.v("StringUtild", "complaint: " + valueArray[0]);
+        CustomLog.v("StringUtild", "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
+        String[] headerchips = valueArray[0].split("►");
+        List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+
+
+        for (int i = 0; i < cc_tempvalues.size(); i++) {
+            if (!cc_tempvalues.get(i).equalsIgnoreCase("") && cc_tempvalues.get(i).contains(":"))
+                chiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+        }
+
+        // convert to sting with coma separator
+        visitReason = TextUtils.join(", ", chiefComplainList);
+        // remove all html tags from string
+        visitReason = visitReason.replaceAll("\\<.*?\\>", "");
 
         return visitReason;
     }

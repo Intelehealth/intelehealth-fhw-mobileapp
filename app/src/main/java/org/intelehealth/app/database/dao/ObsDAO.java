@@ -479,4 +479,28 @@ public class ObsDAO {
 
         return visitReason;
     }
+
+    public static String getPatientPreviousVisitReason(String patientUUID) {
+        String visitReason = "";
+        String previousVisitUuid = VisitsDAO.getPatientPreviousVisitUuid(patientUUID);
+        String encounterUuid = EncounterDAO.getEncounterAdultInitials(previousVisitUuid);
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{encounterUuid, UuidDictionary.CURRENT_COMPLAINT});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                visitReason = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+
+        if (!visitReason.isEmpty()) {
+            visitReason = StringUtils.getVisitReasonDataNames(visitReason);
+        } else {
+            visitReason = "";
+        }
+
+        return visitReason;
+    }
 }

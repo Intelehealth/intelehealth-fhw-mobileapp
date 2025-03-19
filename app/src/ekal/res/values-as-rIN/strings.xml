@@ -75,7 +75,7 @@
     <string name="religion_jain">জৈন</string>
     <string name="religion_jewish">ইহুদী</string>
     <string name="parsi_zoroastrian">পাৰ্চী বা জৰদস্তিয়ান</string>
-    <string name="no_religion">কোনো ধৰ্ম নাই</string>
+    <string name="no_religion">অন্য</string>
 
     <string name="economic_status_apl">এ পি এল</string>
     <string name="economic_status_bpl">বি পি এল</string>
@@ -251,6 +251,8 @@
 
     // Relation with household
     <string name="spouse">পতি বা পত্নী</string>
+    <string name="son_or_daughter">পুত্ৰ বা কন্যা</string>
+    <string name="son_or_daughter_in_law">পুত্ৰ বা বোৱাৰী</string>
     <string name="grandchild">নাতি</string>
     <string name="father_mother">পিতৃ বা মাতৃ</string>
     <string name="father_mother_in_law">পিতৃ বা শাহুৱেক</string>

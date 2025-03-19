@@ -13,7 +13,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -45,6 +49,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PrescriptionBuilder {
     private final AppCompatActivity activityContext;
@@ -321,8 +327,26 @@ public class PrescriptionBuilder {
         String vitalsDataString = "";
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ft), vitalsData.getHeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys());
-        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia());
+
+        String systolicColor = "";
+        if (vitalsData.getBpsys() == null || vitalsData.getBpsys().isEmpty()) {
+            systolicColor = getSystolicColor(0);
+        } else {
+            systolicColor = getSystolicColor(Integer.parseInt(vitalsData.getBpsys()));
+
+        }
+
+        vitalsDataString = vitalsDataString + createBPListItem(activityContext.getString(R.string.prescription_systolic_blood_pressure), vitalsData.getBpsys(), systolicColor);
+
+        String diastolicColor = "";
+        if (vitalsData.getBpdia() == null || vitalsData.getBpdia().isEmpty()) {
+            diastolicColor = getDiastolicColor(0);
+        } else {
+            diastolicColor = getDiastolicColor(Integer.parseInt(vitalsData.getBpdia()));
+        }
+
+        vitalsDataString = vitalsDataString + createBPListItem(activityContext.getString(R.string.prescription_diastolic_blood_pressure), vitalsData.getBpdia(), diastolicColor);
+
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_pulse), vitalsData.getPulse());
 
         try {
@@ -366,6 +390,63 @@ public class PrescriptionBuilder {
                 + closingDivTag;
 
         return finalVitalsData;
+    }
+
+    private String createBPListItem(String label, String value, String color) {
+        String listOpeningTag = "<li>";
+        String listClosingTag = "</li>";
+        String divListItemOpeningTag = "<div class=\"list-item\">";
+        String labelOpeningTag = "<label>";
+        String labelClosingTag = "</label>";
+        String divListItemContentOpeningTag = "<div class=\"list-item-content\">";
+        String closingDivTag = "</div>";
+
+        String newValue = value;
+        if (newValue == null || newValue.isEmpty() || newValue.equalsIgnoreCase("0")) {
+            newValue = activityContext.getString(R.string.not_provided);
+            return newValue;
+        }
+
+        if (color != null && !color.isEmpty()) {
+            newValue = "<span style=\"color: " + color + ";\">" + newValue + "</span>";
+        }
+
+        return listOpeningTag
+                + divListItemOpeningTag
+                + labelOpeningTag
+                + label + (label.endsWith(":") ? " " : ": ")
+                + labelClosingTag
+                + divListItemContentOpeningTag
+                + newValue
+                + closingDivTag
+                + closingDivTag
+                + listClosingTag;
+    }
+
+    private String getSystolicColor(int systolic) {
+        int colorResourceId;
+        if (systolic >= 90 && systolic < 120) {
+            colorResourceId = R.color.ui2_sys1_ekal;
+        } else if (systolic >= 120 && systolic <= 139) {
+            colorResourceId = R.color.ui2_sys2_ekal;
+        } else {
+            colorResourceId = R.color.ui2_bp_default_ekal;
+        }
+        int colorInt = ContextCompat.getColor(activityContext, colorResourceId);
+        return String.format("#%06X", (0xFFFFFF & colorInt));
+    }
+
+    private String getDiastolicColor(int diastolic) {
+        int colorResourceId;
+        if (diastolic < 80) {
+            colorResourceId = R.color.ui2_dia1_ekal;
+        } else if (diastolic >= 80 && diastolic <= 99) {
+            colorResourceId = R.color.ui2_dia2_ekal;
+        } else {
+            colorResourceId = R.color.ui2_bp_default_ekal;
+        }
+        int colorInt = ContextCompat.getColor(activityContext, colorResourceId);
+        return String.format("#%06X", (0xFFFFFF & colorInt));
     }
 
     private String createVitalsListItem(String label, String value) {
@@ -1106,7 +1187,8 @@ public class PrescriptionBuilder {
 
         binding.tvVitalsHeight.setText(height);
         binding.tvVitalsWeight.setText(weight);
-        binding.tvVitalsBmi.setText(bmi);
+        setBmiStatus(binding.tvVitalsBmi, bmi);
+        setBpStatus(binding.tvVitalsBp, bpSys, bpDia);
         binding.tvVitalsBp.setText(bloodPressure);
         binding.tvVitalsPulse.setText(pulse);
         binding.tvVitalsTemperature.setText(temperature);
@@ -1116,6 +1198,71 @@ public class PrescriptionBuilder {
         binding.tvVitalsBloodGroup.setText(bloodGroup);
 //        binding.tvVitalsSugarFasting.setText(sugarFasting);
         binding.tvVitalsSugarRandom.setText(sugarRandom);
+    }
+
+    private void setBmiStatus(TextView bmiTextView, String mbmi) {
+        double bmi = 0.0;
+        try {
+            bmi = Double.parseDouble(extractBmiFromString(mbmi));
+            bmiTextView.setText(mbmi + " " + ContextCompat.getString(activityContext, R.string.kg_m));
+            if (bmi < 18.50) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi1_ekal));
+            } else if (bmi >= 18.50 && bmi <= 22.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi2_ekal));
+            } else if (bmi >= 23 && bmi <= 24.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi3_ekal));
+            } else if (bmi >= 25 && bmi <= 29.99) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi4_ekal));
+            } else if (bmi > 30) {
+                bmiTextView.setTextColor(ContextCompat.getColor(activityContext, R.color.ui2_bmi5_ekal));
+            }
+        } catch (NumberFormatException exception) {
+            bmiTextView.setText(mbmi);
+        }
+    }
+
+    private void setBpStatus(TextView bpTextView, String mSys, String mDia) {
+        if (mSys.equalsIgnoreCase("NA") && mDia.equalsIgnoreCase("NA")) {
+            return;
+        }
+
+        int sys = Integer.parseInt(mSys);
+        int dia = Integer.parseInt(mDia);
+
+        int sysColor = ContextCompat.getColor(activityContext, R.color.ui2_bp_default_ekal);
+        int diaColor = ContextCompat.getColor(activityContext, R.color.ui2_bp_default_ekal);
+
+        if (sys >= 90 && sys < 120) {
+            sysColor = ContextCompat.getColor(activityContext, R.color.ui2_sys1_ekal);
+        } else if (sys >= 120 && sys <= 139) {
+            sysColor = ContextCompat.getColor(activityContext, R.color.ui2_sys2_ekal);
+        }
+
+        if (dia < 80) {
+            diaColor = ContextCompat.getColor(activityContext, R.color.ui2_dia1_ekal);
+        } else if (dia >= 80 && dia <= 99) {
+            diaColor = ContextCompat.getColor(activityContext, R.color.ui2_dia2_ekal);
+        }
+
+        bpTextView.setText(mSys + "/" + mDia);
+        bpTextView.setTextColor(sysColor);
+
+        SpannableString spannableString = new SpannableString(mSys + "/" + mDia);
+        spannableString.setSpan(new ForegroundColorSpan(sysColor), 0, mSys.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(diaColor), mSys.length() + 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        bpTextView.setText(spannableString);
+    }
+
+    public static String extractBmiFromString(String input) {
+        Pattern pattern = Pattern.compile("BMI:\\s([0-9.]+)");
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return "BMI not found";
+        }
     }
 
     public void setComplaintData(String complaints) {

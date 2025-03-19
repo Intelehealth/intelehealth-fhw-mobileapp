@@ -65,8 +65,12 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -165,6 +169,7 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.filter.LettersNumbersSelectedSymbolsInputFilter;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -1215,9 +1220,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mBMI = "";
             }
 
-            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase(""))
+            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase("")){
                 bmiView.setText(getResources().getString(R.string.no_information));
-            else bmiView.setText(mBMI);
+            } else {
+                setBmiStatus(bmiView, mBMI);
+            }
 
         }
 
@@ -1229,6 +1236,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             bpView.setText(getResources().getString(R.string.no_information));
         } else {
             bpView.setText(bpText);
+            setBpStatus(bpView, bpSys.getValue(), bpDias.getValue());
         }
 
         if (pulse.getValue() != null) {
@@ -1457,7 +1465,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaintLocalString));
+                    complaintText.setText(Html.fromHtml(complaintLocalString.isEmpty() ? complaint.getValue() : complaintLocalString));
                 }
                 complaintText.setEnabled(false);
 
@@ -1607,7 +1615,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                 if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(physicalExamLocaleString));
+                    physicalText.setText(Html.fromHtml(physicalExamLocaleString.isEmpty() ? phyExam.getValue() : physicalExamLocaleString));
                 physicalText.setEnabled(false);
 
                 /*physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1753,7 +1761,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patientHistoryLocaleString));
+                    historyText.setText(Html.fromHtml(patientHistoryLocaleString.isEmpty() ? patHistory.getValue() : patientHistoryLocaleString));
                 historyText.setEnabled(false);
 
                 /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1891,7 +1899,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
+                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString.isEmpty() ? famHistory.getValue() : familyHistoryLocaleString));
                 famHistText.setEnabled(false);
 
                 /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -2617,8 +2625,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
 
+
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+        etAdditionalNotesVS.setFilters(new InputFilter[]{new LettersNumbersSelectedSymbolsInputFilter()});
         etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -3273,6 +3283,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void visitUploadBlock() {
+
+        // Upload button disabled to prevent multiple insertion of data
+        uploadButton.setEnabled(false);
+
+        if (complaint.getValue() == null || complaint.getValue().isEmpty() || complaint.getValue().equalsIgnoreCase("")) {
+            Toast.makeText(getBaseContext(), getString(R.string.complaint_required), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean isPriorityFlagChecked = flag.isChecked();
 
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -3476,6 +3495,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             });
                         }
                         uploaded = true;
+                        uploadButton.setEnabled(true);
                     }, 4000);
                 } else {
                     runOnUiThread(() -> {
@@ -4308,6 +4328,51 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         setAppointmentButtonStatus();
 
+    }
+
+    private void setBmiStatus(TextView bmiTextView, String mbmi) {
+        double bmi = Double.parseDouble(mbmi);
+        bmiTextView.setText(bmi + " " + getResources().getString(R.string.kg_m));
+        if (bmi < 18.50) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi1_ekal));
+        } else if (bmi >= 18.50 && bmi <= 22.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi2_ekal));
+        } else if (bmi >= 23 && bmi <= 24.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi3_ekal));
+        } else if (bmi >= 25 && bmi <= 29.99) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi4_ekal));
+        } else if (bmi > 30) {
+            bmiTextView.setTextColor(getResources().getColor(R.color.ui2_bmi5_ekal));
+        }
+    }
+
+    private void setBpStatus(TextView bpTextView, String mSys, String mDia) {
+        int sys = Integer.parseInt(mSys);
+        int dia = Integer.parseInt(mDia);
+
+        int sysColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+        int diaColor = ContextCompat.getColor(this, R.color.ui2_bp_default_ekal);
+
+        if (sys >= 90 && sys < 120) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys1_ekal);
+        } else if (sys >= 120 && sys <= 139) {
+            sysColor = ContextCompat.getColor(this, R.color.ui2_sys2_ekal);
+        }
+
+        if (dia < 80) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia1_ekal);
+        } else if (dia >= 80 && dia <= 99) {
+            diaColor = ContextCompat.getColor(this, R.color.ui2_dia2_ekal);
+        }
+
+        bpTextView.setText(mSys + "/" + mDia);
+        bpTextView.setTextColor(sysColor);
+
+        SpannableString spannableString = new SpannableString(mSys + "/" + mDia);
+        spannableString.setSpan(new ForegroundColorSpan(sysColor), 0, mSys.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(diaColor), mSys.length() + 1, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        bpTextView.setText(spannableString);
     }
 
     // Netowork reciever

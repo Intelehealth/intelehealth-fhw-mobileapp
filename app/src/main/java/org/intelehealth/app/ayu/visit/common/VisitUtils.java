@@ -389,7 +389,7 @@ AB NEGATIVE = 1231*/
             return "ಸಾಮಾನ್ಯ ಪರೀಕ್ಷೆಗಳು:";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "सामान्य परीक्षण:";
-        }else {
+        } else {
             return "General exams:";
         }
     }
@@ -451,6 +451,10 @@ AB NEGATIVE = 1231*/
     }
 
     public static String convertHeightIntoFeets(String height, Context context) {
+        if (height.equalsIgnoreCase("NA")) {
+            return "NA";
+        }
+
         int val = Integer.parseInt(height);
         double centemeters = val / 2.54;
         int inche = (int) centemeters % 12;
@@ -472,6 +476,25 @@ AB NEGATIVE = 1231*/
             node.getOption(0).setDataCaptured(true);
         } else if (type.equalsIgnoreCase(Node.AUTO_POPULATE_TYPE_PREVIOUS_VISIT_REASON)) {
             String previousVisitReason = ObsDAO.getPreviousVisitReason(visitUuid);
+            node.getOption(0).setLanguage(previousVisitReason);
+            node.setSelected(true);
+            node.setDataCaptured(true);
+            node.getOption(0).setSelected(true);
+            node.getOption(0).setDataCaptured(true);
+        }
+    }
+
+    public static void prefillNodeValuesFromPreviousVisit(Node node, String type, String patientUid) {
+        if (type.equalsIgnoreCase(Node.AUTO_POPULATE_TYPE_PREVIOUS_VISIT_DATE)) {
+            String previousVisitDate = VisitsDAO.getPatientPreviousVisitDate(patientUid);
+            String formattedDate = DateAndTimeUtils.date_formatter(previousVisitDate, DateAndTimeUtils.D_FORMAT_ISO8601, DateAndTimeUtils.D_FORMAT_DD_MM_YYYY);
+            node.getOption(0).setLanguage(formattedDate);
+            node.setSelected(true);
+            node.setDataCaptured(true);
+            node.getOption(0).setSelected(true);
+            node.getOption(0).setDataCaptured(true);
+        } else if (type.equalsIgnoreCase(Node.AUTO_POPULATE_TYPE_PREVIOUS_VISIT_REASON)) {
+            String previousVisitReason = ObsDAO.getPatientPreviousVisitReason(patientUid);
             node.getOption(0).setLanguage(previousVisitReason);
             node.setSelected(true);
             node.setDataCaptured(true);

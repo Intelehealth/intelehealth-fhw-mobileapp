@@ -3,15 +3,11 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.text.format.DateUtils;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.jetbrains.annotations.NotNull;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -30,7 +26,7 @@ public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
     public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
     public static final String D_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public static final String D_FORMAT_DD_MM_YYYY = "DD-MM-YYYY";
+    public static final String D_FORMAT_DD_MM_YYYY = "dd-MM-yyyy";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;

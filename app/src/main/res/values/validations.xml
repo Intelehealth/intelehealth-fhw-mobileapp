@@ -2,5 +2,6 @@
 <resources>
     <string name="validation_latter_only">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</string>
     <string name="validation_digit_only">1234567890</string>
+    <string name="validation_letter_digits_and_symbols">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.@#$%^&amp;*()_+=-</string>
     <string name="validation_address">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.</string>
 </resources>
