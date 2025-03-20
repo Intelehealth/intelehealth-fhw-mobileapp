@@ -86,7 +86,10 @@ public class PatientAttributesDTO implements Serializable {
         INN("INN"),
         CODE_OF_HEALTH_FACILITY("Code of the Health Facility"),
         HEALTH_FACILITY_NAME("Health facility name"),
-        CODE_OF_DEPARTMENT("Code of the Department");
+        CODE_OF_DEPARTMENT("Code of the Department"),
+        EMERGENCY_CONTACT_NAME("Emergency Contact Name"),
+        EMERGENCY_CONTACT_NUMBER("Emergency Contact Number"),
+        EMERGENCY_CONTACT_TYPE("Emergency Contact Type");
 
         public final String value;
 
