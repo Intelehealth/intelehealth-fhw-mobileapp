@@ -81,16 +81,18 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
                     println("generateTriageResult - Referral Rule Result : $it11")
                     val x = referralRuleResult.resultFacilityCategory // Value to match
 
-                    val matchingPopup = evaluatePopupExpression(x, it.ruleset.popupResult)
+                    val matchingPopupResult = evaluatePopupExpression(x, it.ruleset.popupResult)
                     //triagingReferralRuleData.value?.data?.ruleset?.popupResult?.firstOrNull { it.condition == "x == '$x'" }?.popup
-                    println("generateTriageResult -matchingPopup : $matchingPopup")
-                    matchingPopup?.let { it2 ->
+                    println("generateTriageResult -matchingPopup : ${matchingPopupResult?.popup}")
+                    matchingPopupResult?.let { it2 ->
                         _triageCalculatedResultModel.value = TriageCalculatedResultModel(
-                            popupResult = it2,
+                            popupResult = it2.popup,
+                            popupResultHi = it2.popupHi,
                             resultFacilityType = referralRuleResult.resultFacilityType,
                             resultFacilityCategory = referralRuleResult.resultFacilityCategory,
                             resultHealthProviderDesignations = referralRuleResult.resultHealthProviderDesignations,
-                            riskName = referralRuleResult.name
+                            riskName = referralRuleResult.name,
+                            riskNameHi = referralRuleResult.nameHi
                         )
                     }
                 }
@@ -103,7 +105,7 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
     private fun evaluatePopupExpression(
         x: String,
         popupResults: List<PopupResult>
-    ): String? {
+    ): PopupResult? {
         for (popupResult in popupResults) {
             val rawExpression = popupResult.condition
 
@@ -113,7 +115,7 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
             val expression = jexl.createExpression(rawExpression)
             val res = expression.evaluate(context) as Boolean
             if (res) {
-                return popupResult.popup
+                return popupResult
             }
         }
         return null
@@ -221,16 +223,22 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
     // Function to convert the duration to days
     private fun convertDurationToDays(durationString: String): Int? {
         println("convertDurationToDays - durationString : $durationString")
+        /* val regex = Regex(
+             """<br/>•\s*(duration|since)\s*-\s*(\d+)\s*(days?|hours?|weeks?|months?|years?)""",
+             RegexOption.IGNORE_CASE
+         )*/
         val regex = Regex(
-            """<br/>•\s*(duration|since)\s*-\s*(\d+)\s*(days?|hours?|weeks?|months?|years?)""",
+            """<br/>•\s*(duration of [^ -]+|duration|since)\s*-\s*(\d+)\s*(days?|hours?|weeks?|months?|years?)""",
             RegexOption.IGNORE_CASE
         )
         val matchResult = regex.find(durationString)
         //[<br/>•Duration - 5 days, Duration, 5, days]
         // [<br/>• since -  5 Days, since, 5, Days]
         return matchResult?.let { match ->
-            val value = match.groupValues[2].toInt() // Extract the number
-            val unit = match.groupValues[3].lowercase() // Extract the unit
+//            val value = match.groupValues[2].toInt() // Extract the number
+//            val unit = match.groupValues[3].lowercase() // Extract the unit
+            val value = match.groupValues[match.groupValues.size - 2].toInt() // Extract the number
+            val unit = match.groupValues[match.groupValues.size - 1].lowercase() // Extract the unit
 
             when {
                 unit.startsWith("hour") -> value / 24 // Convert hours to days

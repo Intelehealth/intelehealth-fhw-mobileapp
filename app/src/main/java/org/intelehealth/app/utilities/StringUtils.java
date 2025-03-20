@@ -15,6 +15,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -4453,5 +4454,12 @@ public final class StringUtils {
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
+    }
+
+    public static String[] getEnglishStringArray(Context context, int resId) {
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        config.setLocale(Locale.ENGLISH); // Set to English
+        Context localizedContext = context.createConfigurationContext(config);
+        return localizedContext.getResources().getStringArray(resId);
     }
 }

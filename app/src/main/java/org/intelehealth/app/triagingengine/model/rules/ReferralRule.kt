@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class ReferralRule(
     @SerializedName("condition") val condition: String,
     @SerializedName("name") val name: String,
+    @SerializedName("name-hi") val nameHi: String,
     @SerializedName("result_facility_type") val resultFacilityType: String,
     @SerializedName("result_facility_category") val resultFacilityCategory: String,
     @SerializedName("result_health_provider_designations") val resultHealthProviderDesignations: List<String>
