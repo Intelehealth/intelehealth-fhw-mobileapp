@@ -24,6 +24,7 @@ import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,14 +188,26 @@ public class VisitPendingFragment extends Fragment {
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
-                    if (recentList != null && recentList.size() == 0) {
+                    //this is calling everytime while user scroll
+                    //hence lagging and ANR is happening
+                    //moved this code to bottom
+
+                    /*if (recentList != null && recentList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }
-                    if (!isRecentFullyLoaded && !isRecentPageLoading)
+                    if (!isRecentFullyLoaded && !isRecentPageLoading){
                         setRecentMoreDataIntoRecyclerView();
-
+                    }
+*/
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (recentList != null && recentList.size() == 0) {
+                            isRecentFullyLoaded = true;
+                        }
+                        if (!isRecentFullyLoaded && !isRecentPageLoading){
+                            setRecentMoreDataIntoRecyclerView();
+                        }
+
                         // update older data as it will not go at very bottom of list.
                         if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
@@ -333,7 +346,7 @@ public class VisitPendingFragment extends Fragment {
             executeInBackground(()->{
                 List<PrescriptionModel> tempList = recentVisits(20, recentList.size());  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
                 getActivity().runOnUiThread(()->{
-                    if (tempList.size() > 0) {
+                    if (!tempList.isEmpty()) {
                         recentList.addAll(tempList);
                         CustomLog.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
                         recent_adapter.list.addAll(tempList);
@@ -513,7 +526,6 @@ public class VisitPendingFragment extends Fragment {
             searchQ = "and (patient_name_new LIKE " + "'%" + searchQuery + "%') ";
         }
 
-
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo," +
@@ -545,7 +557,7 @@ public class VisitPendingFragment extends Fragment {
                         "AND has_exit_survey = 0 "+
                         "AND has_visit_complete = 0 "+
                         searchQ +
-                        "ORDER BY v.startdate DESC limit ? offset ?",
+                        " group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE,String.valueOf(limit), String.valueOf(offset)});
 

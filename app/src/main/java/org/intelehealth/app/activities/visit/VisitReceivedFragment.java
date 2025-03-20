@@ -170,12 +170,20 @@ public class VisitReceivedFragment extends Fragment {
                    /* if (mRecentList != null && mRecentList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }*/
-                    if (!isRecentFullyLoaded && !isRecentPageLoading) {
+                    //this function will call each everytime endlessly
+                    //that's is the cause of lagging and ANR
+                    //hence moved this to bottom logic
+
+                   /* if (!isRecentFullyLoaded && !isRecentPageLoading) {
                         setRecentMoreDataIntoRecyclerView();
-                    }
+                    }*/
 
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        if (!isRecentFullyLoaded && !isRecentPageLoading) {
+                            setRecentMoreDataIntoRecyclerView();
+                        }
+
                         // update older data as it will not go at very bottom of list.
                         if (mOlderList != null && mOlderList.size() == 0) {
                             isolderFullyLoaded = true;
@@ -271,8 +279,6 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private Runnable fetchRecentData() {
-        Log.d("CCC", "CAlle1");
-
         return () -> {
             mRecentList = recentVisits(20, mRecentList.size());
             // pagination - start
