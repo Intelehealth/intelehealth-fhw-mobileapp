@@ -299,20 +299,28 @@ public class Fragment_ThirdScreen extends Fragment {
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         mAbhaNumberEditText.setText(abhaProfileResponse.getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx") && !abhaProfileResponse.getPreferredAbhaAddress().isEmpty())
+        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx") && !abhaProfileResponse.getPreferredAbhaAddress().isEmpty()) {
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress() + "@sbx");
-        else
+            mAbhaAddressEditText.setEnabled(false);
+        }
+        else {
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
+            mAbhaAddressEditText.setEnabled(false);
+        }
 
     }
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx") && !otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty())
+        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx") && !otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
-        else
+            mAbhaAddressEditText.setEnabled(false);
+        }
+        else {
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
+            mAbhaAddressEditText.setEnabled(false);
+        }
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -481,8 +489,10 @@ public class Fragment_ThirdScreen extends Fragment {
             mAbhaNumberEditText.setEnabled(false);
         }
 
-        if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().isEmpty())
+        if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().isEmpty()) {
             mAbhaAddressEditText.setText(patientDTO.getAbhaAddress());
+            mAbhaAddressEditText.setEnabled(false);
+        }
 
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
