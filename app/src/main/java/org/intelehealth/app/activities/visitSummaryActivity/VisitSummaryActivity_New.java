@@ -163,6 +163,7 @@ import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.triagingengine.model.TriageCalculatedResultModel;
+import org.intelehealth.app.triagingengine.viewmodel.TriagingRuleViewModel;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
@@ -183,7 +184,6 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
-import org.intelehealth.app.triagingengine.viewmodel.TriagingRuleViewModel;
 import org.intelehealth.config.presenter.language.factory.SpecializationViewModelFactory;
 import org.intelehealth.config.presenter.specialization.data.SpecializationRepository;
 import org.intelehealth.config.presenter.specialization.viewmodel.SpecializationViewModel;
@@ -246,7 +246,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
             medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "",
-            patientBlockName = "", patientDistName = "";
+            patientBlockName = "", patientDistName = "",patientBlockNameEn = "", patientDistNameEn = "";
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
@@ -524,9 +524,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mTriagingRuleViewModel = new ViewModelProvider(this).get(TriagingRuleViewModel.class);
 
-        mAgeInteger = (int) float_ageYear_Month;
-        mSymptomName = mSymptomName.replaceAll("<b>", "").replaceAll("</b>", "");
-        Timber.tag(TAG).d("Triage Rule master data - age =>%s, SymptomName => %s", mAgeInteger, mSymptomName);
 
         mTriagingRuleViewModel.getTriageCalculatedResultModel().observe(this, triageCalculatedResultModel -> {
             mTriageCalculatedResultModel = triageCalculatedResultModel;
@@ -534,10 +531,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         mTriagingRuleViewModel.getTriagingReferralRuleData().observe(this, triagingReferralRuleData -> {
-            mTriagingRuleViewModel.calculateDurationInDays(mSymptomName, complaintClinicalString);
+            if (triagingReferralRuleData.getData() != null) initData();
         });
         mTriagingRuleViewModel.loadTriagingRuleData();
-
         mTriagingRuleViewModel.getDurationInDays().observe(this, val -> {
             mDurationInDay = val;
 
@@ -546,8 +542,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         });
 
-
     }
+
+    private void initData() {
+        mAgeInteger = (int) float_ageYear_Month;
+        mSymptomName = mSymptomName.replaceAll("<b>", "").replaceAll("</b>", "");
+        Timber.tag(TAG).d("Triage Rule master data - age =>%s, SymptomName => %s", mAgeInteger, mSymptomName);
+
+        mTriagingRuleViewModel.calculateDurationInDays(mSymptomName, complaintClinicalString);
+    }
+
+
+    private AlertDialog mTriageAlertDialog;
 
     // function to set the views data
     private void autoFillFacilityData() {
@@ -556,7 +562,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (!isPastVisit && isAllowForEdit) {
             // post delay
             new Handler().postDelayed(() -> {
-                List<String> facilityList = Arrays.asList(getResources().getStringArray(R.array.visit_facilities));
+                //List<String> facilityList = Arrays.asList(getResources().getStringArray(R.array.visit_facilities));
+                List<String> facilityList = Arrays.asList(StringUtils.getEnglishStringArray(VisitSummaryActivity_New.this, R.array.visit_facilities));
                 if (mTriageCalculatedResultModel != null) {
                     String facility = mTriageCalculatedResultModel.getResultFacilityCategory();
                     if (facilityList.contains(facility)) {
@@ -575,13 +582,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     }*/
 
                     // show advice alert to the HW
+
                     DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showCommonDialog(this, 0, mTriageCalculatedResultModel.getRiskName(), mTriageCalculatedResultModel.getPopupResult(), true, getString(R.string.generic_ok), "", new DialogUtils.CustomDialogListener() {
-                        @Override
-                        public void onDialogActionDone(int action) {
-                            // nothing to do here
-                        }
-                    });
+                    if (mTriageAlertDialog != null && mTriageAlertDialog.isShowing()) {
+                        mTriageAlertDialog.dismiss();
+                    }
+                    mTriageAlertDialog = dialogUtils.showCommonDialog(this,
+                            0,
+                            sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? mTriageCalculatedResultModel.getRiskNameHi() : mTriageCalculatedResultModel.getRiskName(),
+                            sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? mTriageCalculatedResultModel.getPopupResultHi() : mTriageCalculatedResultModel.getPopupResult(),
+                            true,
+                            getString(R.string.generic_ok),
+                            "", new DialogUtils.CustomDialogListener() {
+                                @Override
+                                public void onDialogActionDone(int action) {
+                                    // nothing to do here
+                                    mTriageAlertDialog.dismiss();
+                                }
+                            });
+
                 }
             }, 1000);
         }
@@ -953,11 +972,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DistData distData = LanguageUtils.getDistrict(stateData, patientDistName);
         if (distData != null) {
             patientDistName = LanguageUtils.getDistrictLocal(distData);
+            patientDistNameEn = distData.getName();
 
         }
         Block block = LanguageUtils.getBlock(distData, patientDTO.getAddress3());
         if (patientDTO.getAddress3() != null) {
-            if (block != null) patientBlockName = LanguageUtils.getBlockLocal(block);
+            if (block != null){
+                patientBlockName = LanguageUtils.getBlockLocal(block);
+                patientBlockNameEn =block.getName();
+            }
         }
 
     }
@@ -2280,7 +2303,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         List<ReferralFacilityData> referralFacilityDataList = new ArrayList<>();
         referralFacilityDataList.add(getInitialData());
         //referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategory(selectedFacilityToVisit));
-        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategoryAndLocation(selectedFacilityToVisit, patientBlockName, patientDistName));
+        //referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategoryAndLocation(selectedFacilityToVisit, patientBlockName, patientDistName));
+        referralFacilityDataList.addAll(LanguageUtils.getReferralFacilityByCategoryAndLocation(selectedFacilityToVisit, patientBlockNameEn, patientDistNameEn));
 
         if (referralFacilityDataList.size() == 1) {
             mBinding.flReferralFacility.setVisibility(View.GONE);
@@ -5839,6 +5863,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        recreate();
                 fetchingIntent();
                 setViewsData();
+                initData();
             }
         }
     });

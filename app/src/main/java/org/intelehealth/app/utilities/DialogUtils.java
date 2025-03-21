@@ -131,7 +131,7 @@ public class DialogUtils {
         alertDialog.show();
     }
 
-    public void showCommonDialog(Context context, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
+    public AlertDialog showCommonDialog(Context context, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message, null);
@@ -172,6 +172,7 @@ public class DialogUtils {
         });
 
         alertDialog.show();
+        return alertDialog;
     }
 
     public void showCommonDialogWithChipsGrid(Context context, ArrayList<ReasonData> selectedData, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {

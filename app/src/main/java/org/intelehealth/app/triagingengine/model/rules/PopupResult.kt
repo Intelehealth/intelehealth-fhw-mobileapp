@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
 data class PopupResult(
     @SerializedName("key") val key: String,
     @SerializedName("condition") val condition: String,
-    @SerializedName("popup") val popup: String
+    @SerializedName("popup") val popup: String,
+    @SerializedName("popup-hi") val popupHi: String
 )

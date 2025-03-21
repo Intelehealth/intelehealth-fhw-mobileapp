@@ -5,8 +5,10 @@ package org.intelehealth.app.triagingengine.model
  **/
 data class TriageCalculatedResultModel(
     val popupResult: String,
+    val popupResultHi: String,
     val resultFacilityType: String,
     val resultFacilityCategory: String,
     val resultHealthProviderDesignations: List<String>,
-    val riskName: String
+    val riskName: String,
+    val riskNameHi: String
 )
