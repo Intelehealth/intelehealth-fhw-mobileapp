@@ -426,6 +426,7 @@
     <string name="retired_without_pension">સેવા નિવૃત( પેન્સન વગર)</string>
     <string name="not_applicable">લાગુ પડતું નથી</string>
     <string name="no_family_member_registered">પરિવારના કોઈ સભ્ય નોંધાયેલા નથી</string>
+    <string name="enter_valid_phone_number">માન્ય ફોન નંબર દાખલ કરો.</string>
 
     <string-array name="baseline_survey_items">
         <item>સામાન્ય સર્વે</item>

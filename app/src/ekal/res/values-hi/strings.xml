@@ -426,6 +426,7 @@
     <string name="retired_without_pension">सेवानिवृत्त (पेंशन के बिना)</string>
     <string name="not_applicable">लागू नहीं</string>
     <string name="no_family_member_registered">परिवार का कोई भी सदस्य पंजीकृत नहीं है</string>
+    <string name="enter_valid_phone_number">मान्य फ़ोन नंबर दर्ज करें.</string>
 
     <string-array name="baseline_survey_items">
         <item>सामान्य सर्वेक्षण</item>

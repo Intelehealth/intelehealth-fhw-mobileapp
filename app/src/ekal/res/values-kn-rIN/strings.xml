@@ -424,6 +424,7 @@
     <string name="retired_without_pension">ನಿವೃತ್ತಿ (ಪಿಂಚಣಿ ಇಲ್ಲದೆ)</string>
     <string name="not_applicable">ಅನ್ವಯಿಸುವುದಿಲ್ಲ</string>
     <string name="no_family_member_registered">ಯಾವುದೇ ಕುಟುಂಬದ ಸದಸ್ಯರನ್ನು ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ</string>
+    <string name="enter_valid_phone_number">ಮಾನ್ಯವಾದ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
 
     <string-array name="baseline_survey_items">
         <item>ಸಾಮಾನ್ಯ ಸಮೀಕ್ಷೆ</item>

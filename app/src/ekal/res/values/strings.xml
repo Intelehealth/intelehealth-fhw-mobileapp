@@ -426,6 +426,7 @@
     <string name="retired_without_pension">Retired (Without Pension)</string>
     <string name="not_applicable">Not Applicable</string>
     <string name="no_family_member_registered">No family member registered</string>
+    <string name="enter_valid_phone_number">Enter valid phone number.</string>
 
     <string-array name="baseline_survey_items">
         <item>General Survey</item>

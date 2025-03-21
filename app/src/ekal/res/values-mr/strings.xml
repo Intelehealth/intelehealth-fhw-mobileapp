@@ -427,6 +427,7 @@
     <string name="retired_without_pension">सेवानिवृत्त (पेंशनशिवाय)</string>
     <string name="not_applicable">लागू नाही</string>
     <string name="no_family_member_registered">कुटुंबातील एकही सदस्य नोंदणीकृत नाही</string>
+    <string name="enter_valid_phone_number">तुम्ही अजूनही सुरू ठेवू इच्छिता?</string>
 
     <string-array name="baseline_survey_items">
         <item>सामान्य सर्वेक्षण</item>

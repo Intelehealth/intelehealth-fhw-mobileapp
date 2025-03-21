@@ -424,6 +424,8 @@
     <string name="retired_without_pension">অৱসৰপ্ৰাপ্ত (পেঞ্চনবিহীন)</string>
     <string name="not_applicable">প্ৰযোজ্য নহয়</string>
     <string name="no_family_member_registered">কোনো পৰিয়ালৰ সদস্য পঞ্জীয়ন হোৱা নাই</string>
+    <string name="enter_valid_phone_number">বৈধ ফোন নম্বৰ দিয়ক।</string>
+
 
     <string-array name="baseline_survey_items">
         <item>সাধাৰণ সমীক্ষা</item>

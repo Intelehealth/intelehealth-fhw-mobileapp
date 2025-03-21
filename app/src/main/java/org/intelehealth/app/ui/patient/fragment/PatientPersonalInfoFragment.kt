@@ -34,6 +34,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.app.utilities.extensions.validateIllogicalPhoneNumber
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -464,8 +465,12 @@ class PatientPersonalInfoFragment :
                         R.string.enter_10_digits,
                         10
                     )
+                ).and(
+                    binding.textInputLayPhoneNumber.validateIllogicalPhoneNumber(
+                        binding.textInputETPhoneNumber,
+                        R.string.enter_valid_phone_number
+                    )
                 )
-
             } else true
 
             val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {

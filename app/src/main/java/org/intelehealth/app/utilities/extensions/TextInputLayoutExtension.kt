@@ -45,6 +45,7 @@ fun TextInputLayout.hideDigitErrorOnTextChang(input: TextInputEditText, digit: I
     }
 }
 
+
 fun TextInputLayout.validate(input: TextInputEditText, @StringRes resId: Int): Boolean {
     return if (input.text.isNullOrEmpty()) {
         showError(resId)
@@ -65,6 +66,22 @@ fun TextInputLayout.validateDigit(
     minDigit: Int
 ): Boolean {
     return if (input.text.isNullOrEmpty() || input.text?.length!! < minDigit) {
+        showError(resId)
+        false
+    } else true
+}
+
+fun TextInputLayout.validateIllogicalPhoneNumber(
+    input: TextInputEditText,
+    @StringRes resId: Int
+): Boolean {
+    val illogicalNumber = listOf(
+        "0000000000", "1111111111", "2222222222", "3333333333", "4444444444", "5555555555", "6666666666", "7777777777",
+        "8888888888", "9999999999", "0123456789", "1234567890", "0000011111", "1111100000", "1111122222", "1122334455",
+        "1212121212", "0101010101", "1234567891", "1234512345", "0000088888", "0909090909", "1123456789", "1234567899"
+    )
+
+    return if (illogicalNumber.contains(input.text.toString())) {
         showError(resId)
         false
     } else true

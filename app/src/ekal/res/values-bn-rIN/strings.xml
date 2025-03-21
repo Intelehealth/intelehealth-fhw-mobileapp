@@ -424,6 +424,7 @@
     <string name="retired_without_pension">অবসরপ্রাপ্ত (পেনশন ছাড়া)</string>
     <string name="not_applicable">প্রযোজ্য নয়</string>
     <string name="no_family_member_registered">পরিবারের কোনো সদস্য নিবন্ধিত নয়</string>
+    <string name="enter_valid_phone_number">বৈধ ফোন নম্বর লিখুন।</string>
 
     <string-array name="baseline_survey_items">
         <item>সাধারণ জরিপ</item>
