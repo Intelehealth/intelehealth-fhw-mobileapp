@@ -238,7 +238,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private List<FamilyMemberRes> familyMemberList;
     private List<String> bsItemList;
     String houseHoldValue = "";
-
+    private boolean areAllVisitsEnded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -458,7 +458,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
 
-        if (!isBaselineSurveyCompleted || anyPrescriptionPending) {
+        if (!isBaselineSurveyCompleted || !areAllVisitsEnded) {
             startVisitBtn.setEnabled(false);
             startSevikaVisitBtn.setEnabled(false);
             ivAddBaselineSurvey.setVisibility(View.VISIBLE);
@@ -1160,6 +1160,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
                 boolean isVisitEnded = VisitsDAO.isVisitEnded(visit_id);
+                areAllVisitsEnded = isVisitEnded;
 
                 if (!isVisitEnded) {
 
@@ -1359,25 +1360,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
             });
             mCurrentVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
-            checkForPendingPrescription(mCurrentVisitDataList);
         } else {
             findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
-        }
-    }
-
-
-    private void checkForPendingPrescription(List<PastVisitData> mCurrentVisitDataList) {
-        for (PastVisitData pvd : mCurrentVisitDataList) {
-            try {
-                boolean prescriptionReceived = new EncounterDAO().isPrescriptionReceived(pvd.getVisitUUID());
-                if (!prescriptionReceived) {
-                    anyPrescriptionPending = true;
-                    break;
-                }
-            } catch (DAOException e) {
-                CustomLog.e(TAG, e.getMessage());
-                throw new RuntimeException(e);
-            }
         }
     }
 
