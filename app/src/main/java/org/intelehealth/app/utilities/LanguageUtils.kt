@@ -145,7 +145,8 @@ object LanguageUtils {
         )
 
         return referralFacilityData.data.filter {
-            (it.category.contains(category) || it.categoryHi.contains(category))
+            (((it.category.contains("Ayushman Arogya Mandir") && category == "HWC"))
+                    || it.category.contains(category) || it.categoryHi.contains(category))
                     && (it.block.contains(blockName) || it.blockHi.contains(blockName))
                     && (it.district.contains(districtName) || it.districtHi.contains(districtName))
         }
