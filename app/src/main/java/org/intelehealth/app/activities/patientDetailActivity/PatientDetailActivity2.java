@@ -238,7 +238,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private List<FamilyMemberRes> familyMemberList;
     private List<String> bsItemList;
     String houseHoldValue = "";
-    private boolean areAllVisitsEnded = false;
+    private boolean areAllVisitsEnded = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1144,7 +1144,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
+        String visitOrderBy = "startdate DESC LIMIT 1";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         //if (visitCursor == null || visitCursor.getCount() <= 0) {
         //     findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
