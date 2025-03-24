@@ -4,7 +4,10 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -34,6 +37,8 @@ import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
+import java.util.Locale
 
 @AndroidEntryPoint
 class RosterQuestionnaireMainActivity : BaseActivity() {
@@ -66,6 +71,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
             rosterViewModel.getGeneralQuestionList()
         }
         setListeners()
+        setLocale(this@RosterQuestionnaireMainActivity)
     }
 
     private fun setListeners() {
@@ -306,4 +312,22 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
         binding.rosterTab.line2.visibility = GONE
         binding.rosterTab.tvIndicatorPregnancyRoster.visibility = GONE
     }
+    private fun setLocale(context: Context): Context {
+        val sessionManager = SessionManager(context)
+        val appLanguage = sessionManager.appLanguage
+        val locale = Locale(appLanguage)
+
+        Locale.setDefault(locale)
+
+        val config = Configuration(context.resources.configuration).apply {
+            setLocale(locale)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                setLocales(LocaleList(locale))
+            }
+        }
+
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        return context.createConfigurationContext(config)
+    }
+
 }

@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
@@ -228,6 +229,62 @@ public class VisitAttributeListDAO extends BaseDao{
         values.put("voided", visitDTO.getVoided());
         values.put("sync", "1");
         return values;
+    }
+    public boolean insertProvidersAttributeListAfterSetup(List<VisitAttributeDTO> visitAttributeDTOS)
+            throws DAOException {
+        boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                // Repeat visit attributes with different uuids -
+                //1 value and visit attribute type - both same - update new record  with pull api record -uuid
+                //2 Value and visit attribute type both different then insert new record
+                boolean isRecordExist =checkWhetherRecordExistOrNot(visitDTO);
+                if(isRecordExist){
+                    // cant update uuid because its primary key
+                }else{
+                    visitsList.add(createVisitAttributeMap(visitDTO));
+                }
+            }
+        }
+        executeInBackground(bulkInsert(visitsList));
+        return isInserted;
+    }
+    public boolean checkWhetherRecordExistOrNot(VisitAttributeDTO visitDTO) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        boolean isRecordExist = false;
+
+        try {
+            db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            db.beginTransaction(); // Start transaction
+
+            String query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+                    "AND visit_attribute_type_uuid = ? " +
+                    "AND voided = 0 " +
+                    "AND (sync = ? OR sync = ?) COLLATE NOCASE";
+
+            cursor = db.rawQuery(query, new String[]{visitDTO.getVisit_uuid(), visitDTO.getVisit_attribute_type_uuid(), "1", "true"});
+
+            isRecordExist = (cursor != null && cursor.getCount() > 0);
+
+            db.setTransactionSuccessful(); // Mark transaction as successful
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking record existence: ", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.endTransaction(); // End transaction properly
+            }
+        }
+        return isRecordExist;
     }
 
 }

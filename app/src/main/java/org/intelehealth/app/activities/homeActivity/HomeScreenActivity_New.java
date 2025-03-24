@@ -1659,14 +1659,20 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
     }
     private void updateLastSyncTime() {
-        // Run long operations in background
+        new Thread(() -> {
+            String lastSync = sessionManager.getLastSyncDateTime();
+            String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+
+            runOnUiThread(() -> tvAppLastSync.setText(lastSyncText));
+        }).start();
+     /*   // Run long operations in background
         //new Thread(() -> {
             String lastSync = sessionManager.getLastSyncDateTime();
             String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
             tvAppLastSync.setText(lastSyncText);
             // Update UI on main thread
             //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
-       // }).start();
+       // }).start();*/
     }
     private void syncDataFromHome() {
         Data workData = new Data.Builder()

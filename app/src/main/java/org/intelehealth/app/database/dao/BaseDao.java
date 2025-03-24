@@ -67,7 +67,6 @@ abstract class BaseDao {
             }
 
             String sql = buildInsertQuery(Objects.requireNonNull(rows.get(0)));
-            Log.d(TAG, "bulkInsert: sql : " + sql);
 
             SQLiteStatement statement = db.compileStatement(sql);
             try {
@@ -136,9 +135,6 @@ abstract class BaseDao {
         }
         columns.deleteCharAt(columns.length() - 2);
         values.deleteCharAt(values.length() - 2);
-        Log.d(TAG, "buildInsertQuery: table name  : "+tableName());
-        Log.d(TAG, "buildInsertQuery: columns  : "+columns);
-        Log.d(TAG, "buildInsertQuery: values  : "+values);
 
         //return "INSERT INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
         return "INSERT OR REPLACE INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
