@@ -283,6 +283,11 @@ class PatientPersonalInfoFragment :
     }
 
     private fun takePicture() {
+        //saving fields value into patient object
+        patient.firstname = binding.textInputETFName.text.toString()
+        patient.middlename = binding.textInputETMName.text.toString()
+        patient.lastname = binding.textInputETLName.text.toString()
+
         val filePath = File(AppConstants.IMAGE_PATH + patient.uuid)
         if (!filePath.exists()) {
             filePath.mkdir()
