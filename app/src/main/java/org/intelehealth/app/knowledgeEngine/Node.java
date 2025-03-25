@@ -3996,7 +3996,7 @@ public class Node implements Serializable {
                 isAlert = true;
                 // split nodeValidation by "," and convert to list anc check val contains or not
                 List<String> stringList = Arrays.asList(nodeValidation.getCheckValues().split(","));
-                for (int i = 0; i < stringList.size() ; i++) {
+                for (int i = 0; i < stringList.size(); i++) {
                     // check contains value by ignoring case
                     if (stringList.get(i).trim().equalsIgnoreCase(val.trim())) {
                         isAlert = false;
