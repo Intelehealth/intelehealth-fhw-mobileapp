@@ -24,9 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.ObsImageModel.Encounter;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
@@ -34,7 +32,6 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,7 +40,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvStartDate;
@@ -52,8 +48,8 @@ public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvRangeVisitsEnded;
     private TextView tvAveragePatientSatisfactionScore;
     private TextView tvTotalTimeSpentInRange;
-    private String startDate;
-    private String endDate;
+    private String mSelectedStartDate;
+    private String mSelectedEndDate;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -107,6 +103,8 @@ public class DateRangeAchievementsFragment extends Fragment {
 
         tvStartDate.setText(DateAndTimeUtils.getYesterdaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
+        mSelectedStartDate = DateAndTimeUtils.getYesterdaysDateInRequiredFormat("dd MMM, yyyy", "en");
+        mSelectedEndDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", "en");
 
         selectStartDate.setOnClickListener(v -> selectDate(tvStartDate, "startDate"));
         selectEndDate.setOnClickListener(v -> selectDate(tvEndDate, "endDate"));
@@ -128,14 +126,21 @@ public class DateRangeAchievementsFragment extends Fragment {
             newDate.set(Calendar.DAY_OF_MONTH, day);
 
             Date selectedDate = newDate.getTime();
-            textView.setText(DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy"));
+            textView.setText(DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy", sessionManager.getAppLanguage()));
+            if (value.equalsIgnoreCase("startDate")) {
+
+                mSelectedStartDate =  DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy", "en");
+            } else if (value.equalsIgnoreCase("endDate")) {
+                 mSelectedEndDate = DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy", "en");
+            }
             fetchAndSetUIData();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
-        if (value.equalsIgnoreCase("startDate"))
+        if (value.equalsIgnoreCase("startDate")) {
             datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
-        else if (value.equalsIgnoreCase("endDate")) {
+
+        } else if (value.equalsIgnoreCase("endDate")) {
             datePicker.setMaxDate(System.currentTimeMillis());
             datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
         }
@@ -157,8 +162,8 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void fetchAndSetUIData() {
-        startDate = tvStartDate.getText().toString();
-        endDate = tvEndDate.getText().toString();
+//        mSelectedStartDate = tvStartDate.getText().toString();
+//        mSelectedEndDate = tvEndDate.getText().toString();
 
         executorService.execute(() -> {
             setPatientsCreatedInRange();
@@ -253,9 +258,9 @@ public class DateRangeAchievementsFragment extends Fragment {
 
     private void setTimeSpentInRange() {
         long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", sessionManager.getAppLanguage());
-        long startTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(startDate, "dd MMM, yyyy", sessionManager.getAppLanguage());
+        long startTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(mSelectedStartDate, "dd MMM, yyyy", "en");
 
-        long finalEndTimeInMs = DateAndTimeUtils.getEndDateInMilliseconds(endDate, "dd MMM, yyyy", sessionManager.getAppLanguage());
+        long finalEndTimeInMs = DateAndTimeUtils.getEndDateInMilliseconds(mSelectedEndDate, "dd MMM, yyyy", "en");
         long finalStartTimeInMs = Math.max(firstLoginTimeInMilliseconds, startTimeInMilliseconds);
 
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
@@ -276,7 +281,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     private int countPatientsCreatedBetweenRange(List<PatientAttributesDTO> patientAttributesDTOList) {
         int numberOfPatients = 0;
         for (PatientAttributesDTO dto : patientAttributesDTOList) {
-            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(dto.getValue(), startDate, endDate, "dd MMM, yyyy", sessionManager.getAppLanguage())) {
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(dto.getValue(), mSelectedStartDate, mSelectedEndDate, "dd MMM, yyyy", "en")) {
                 numberOfPatients++;
             }
         }
@@ -287,7 +292,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         int numberOfVisitsEnded = 0;
         for (EncounterDTO dto : encounterDTOList) {
             String tempDate = DateAndTimeUtils.formatDateFromOnetoAnother(dto.getEncounterTime(), "yyyy-MM-dd'T'hh:mm:ss", "dd MMM, yyyy");
-            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, startDate, endDate, "dd MMM, yyyy", sessionManager.getAppLanguage())) {
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, mSelectedStartDate, mSelectedEndDate, "dd MMM, yyyy", "en")) {
                 numberOfVisitsEnded++;
             }
         }
@@ -299,7 +304,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         int numberOfObservations = 0;
         for (ObsDTO dto : obsDTOList) {
             String tempDate = DateAndTimeUtils.formatDateFromOnetoAnother(dto.getObsServerModifiedDate(), "yyyy-MM-dd'T'hh:mm:ss", "dd MMM, yyyy");
-            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, startDate, endDate, "dd MMM, yyyy", sessionManager.getAppLanguage())) {
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(tempDate, mSelectedStartDate, mSelectedEndDate, "dd MMM, yyyy", "en")) {
                 totalScore += Double.parseDouble(dto.getValue());
                 numberOfObservations++;
             }

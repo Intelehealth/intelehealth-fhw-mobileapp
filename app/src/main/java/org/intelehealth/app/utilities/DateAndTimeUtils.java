@@ -996,6 +996,10 @@ public class DateAndTimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(date);
     }
+public static String convertDateObjectToString(Date date, String format,String localeCode) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
+        return simpleDateFormat.format(date);
+    }
 
     public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format, String localeCode) {
         Date createdDateObject = convertStringToDateObject(date, format, localeCode);
