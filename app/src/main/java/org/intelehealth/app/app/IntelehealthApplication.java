@@ -123,6 +123,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+        CrashHandler.init(this);
+
     }
 
     private void configureCrashReporting() {

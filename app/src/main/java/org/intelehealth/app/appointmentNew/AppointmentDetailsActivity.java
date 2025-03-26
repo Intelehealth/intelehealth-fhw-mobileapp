@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -73,6 +72,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
@@ -232,8 +232,13 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             appointmentStatus = intent.getStringExtra("status");
+            // log all values in one log
+            CustomLog.d(TAG, "initUI: patientName : " + patientName+" patientUuid : "+patientUuid);
+
             PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
-            patient_photo_path = patientDTO.getPatientPhoto();
+            if(patientDTO!=null) {
+                patient_photo_path = patientDTO.getPatientPhoto();
+            }
 
 
         }

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,6 +37,7 @@ import org.intelehealth.app.appointment.model.AppointmentListingResponse
 import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.enums.DataLoadingType
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
 import org.intelehealth.app.utilities.NavigationUtils
@@ -263,6 +265,7 @@ class UpcomingAppointmentsFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ appointments ->
                 if (appointments.size > 0) {
+                    CustomLog.d(TAG, "setMoreDataIntoUpcomingRecyclerView: "+ Gson().toJson(appointments))
                     upcomingAppointmentInfoList!!.addAll(appointments)
                     upcomingMyAppointmentsAdapter!!.notifyDataSetChanged()
                     offset = upcomingAppointmentInfoList?.size?:0
