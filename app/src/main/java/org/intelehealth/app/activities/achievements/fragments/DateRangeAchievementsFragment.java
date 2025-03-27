@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -148,16 +149,20 @@ public class DateRangeAchievementsFragment extends Fragment {
 
         datePickerDialog.show();
 
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
-                .setTextColor(
+        Button positiveBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        positiveBt.setText(ContextCompat.getString(requireActivity(),R.string.ok));
+        positiveBt.setTextColor(
                         ContextCompat.getColor(
                                 requireContext(),
                                 R.color.colorPrimary
                         )
                 ); // Change to your desired color
 
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+        Button negativeBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        negativeBt.setText(ContextCompat.getString(requireActivity(),R.string.cancel));
+        negativeBt.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+
+
 
     }
 
