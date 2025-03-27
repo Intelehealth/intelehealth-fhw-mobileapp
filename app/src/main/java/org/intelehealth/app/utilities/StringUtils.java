@@ -1008,11 +1008,11 @@ public final class StringUtils {
     public static String switch_mr_economic_edit(String val) {
         if (val == null || val.isEmpty()) return "";
         switch (val) {
-            case "APL":
-                val = "दारिद्र्य रेषेच्या वर";
+            case "APL (White)":
+                val = "एपीएल (पांढरा)";
                 break;
-            case "BPL":
-                val = "दारिद्र्य रेषेखाली";
+            case "BPL (Orange)":
+                val = "बीपीएल (केशरी)";
                 break;
             default:
                 return val;
