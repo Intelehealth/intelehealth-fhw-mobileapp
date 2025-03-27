@@ -1176,7 +1176,6 @@ public class VisitsDAO extends BaseDao{
         values.put("enddate", visitDTO.getEnddate());
         values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
         values.put("sync", visitDTO.getSyncd().toString());
-        Log.d(TAG, "createVisitMap: sync : "+visitDTO.getSyncd().toString());
         return values;
     }
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
