@@ -538,7 +538,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             mDurationInDay = val;
 
             Timber.tag(TAG).d("Triage Rule master durationInDays => %s", mDurationInDay);
-            mTriagingRuleViewModel.generateTriageResult(mAgeInteger, mSymptomName, mDurationInDay);
+            //mTriagingRuleViewModel.generateTriageResult(mAgeInteger, mSymptomName, mDurationInDay);
+            mTriagingRuleViewModel.generateTriageResult(float_ageYear_Month, mSymptomName, mDurationInDay);
 
         });
 

@@ -25,8 +25,8 @@ import java.util.Locale
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
 
-    //    private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
-    private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
+    private const val FACILITY_ALL_DATA_JSON = "facility-all-data.json"
+//    private const val FACILITY_ALL_DATA_JSON = "facility-all-data-for-qa.json"
 
 
     @JvmStatic

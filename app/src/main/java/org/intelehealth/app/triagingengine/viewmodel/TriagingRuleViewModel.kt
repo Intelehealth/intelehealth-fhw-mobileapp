@@ -51,7 +51,7 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
     }
 
     // Function to generate the triage result
-    fun generateTriageResult(age: Int, mmName: String, durationInDay: Int) {
+    fun generateTriageResult(age: Float, mmName: String, durationInDay: Int) {
         println("generateTriageResult - age : $age , mmName : $mmName , durationInDay : $durationInDay")
         // Generate triage result
         viewModelScope.launch {
@@ -142,7 +142,7 @@ class TriagingRuleViewModel @Inject constructor(private val repository: Triaging
     }
 
     // Function to find the age risk score
-    private fun foundAgeRiskScore(age: Int, conditions: List<AgeRiskScore>): Int {
+    private fun foundAgeRiskScore(age: Float, conditions: List<AgeRiskScore>): Int {
         for (condition in conditions) {
             val rawExpression = condition.condition
 
