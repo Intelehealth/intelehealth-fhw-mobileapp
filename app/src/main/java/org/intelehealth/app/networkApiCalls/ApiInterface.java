@@ -195,11 +195,13 @@ public interface ApiInterface {
 
     @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_CREATE(@Path("userUuid") String userUuid,
-                                                      @Body ProfileCreateAttribute profileCreateAttribute, @Header("Authorization") String authHeader);
+                                                      @Body ProfileCreateAttribute profileCreateAttribute,
+                                                      @Header("Authorization") String authHeader);
 
     @POST("attribute/{attributeUuid}")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_UPDATE(@Path("attributeUuid") String attributeUuid,
-                                                      @Body ProfileUpdateAttribute profileUpdateAttribute, @Header("Authorization") String authHeader);
+                                                      @Body ProfileUpdateAttribute profileUpdateAttribute,
+                                                      @Header("Authorization") String authHeader);
 
     @Headers({"Accept: application/json"})
     @POST
