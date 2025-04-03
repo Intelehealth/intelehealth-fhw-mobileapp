@@ -90,18 +90,22 @@ private fun getAlcoholHistory(
     alcoholDuration: String,
     alcoholFrequency: String
 ): String = Gson().toJson(
-    AlcoholConsumptionHistory(
-        alcoholCheck.storeHyphenIfEmpty(),
-        alcoholRate.storeHyphenIfEmpty(),
-        alcoholDuration.storeHyphenIfEmpty(),
-        alcoholFrequency.storeHyphenIfEmpty()
+    listOf(
+        AlcoholConsumptionHistory(
+            alcoholCheck.storeHyphenIfEmpty(),
+            alcoholRate.storeHyphenIfEmpty(),
+            alcoholDuration.storeHyphenIfEmpty(),
+            alcoholFrequency.storeHyphenIfEmpty()
+        )
     )
 )
 
 private fun getTobaccoHistory(
     tobaccoCheck: String
 ): String = Gson().toJson(
-    TobaccoHistory(tobaccoCheck.storeHyphenIfEmpty())
+    listOf(
+        TobaccoHistory(tobaccoCheck.storeHyphenIfEmpty())
+    )
 )
 
 private fun getMedicalHistory(
@@ -112,13 +116,15 @@ private fun getMedicalHistory(
     surgeryCheck: String,
     reasonForSurgery: String
 ): String = Gson().toJson(
-    MedicalHistory(
-        bpCheck.storeHyphenIfEmpty(),
-        diabetesCheck.storeHyphenIfEmpty(),
-        arthritisCheck.storeHyphenIfEmpty(),
-        anemiaCheck.storeHyphenIfEmpty(),
-        surgeryCheck.storeHyphenIfEmpty(),
-        reasonForSurgery.storeHyphenIfEmpty()
+    listOf(
+        MedicalHistory(
+            bpCheck.storeHyphenIfEmpty(),
+            diabetesCheck.storeHyphenIfEmpty(),
+            arthritisCheck.storeHyphenIfEmpty(),
+            anemiaCheck.storeHyphenIfEmpty(),
+            surgeryCheck.storeHyphenIfEmpty(),
+            reasonForSurgery.storeHyphenIfEmpty()
+        )
     )
 )
 
@@ -128,11 +134,13 @@ private fun getSmokingHistory(
     durationOfSmoking: String,
     frequencyOfSmoking: String
 ): String = Gson().toJson(
-    SmokingHistory(
-        smokingCheck.storeHyphenIfEmpty(),
-        rateOfSmoking.storeHyphenIfEmpty(),
-        durationOfSmoking.storeHyphenIfEmpty(),
-        frequencyOfSmoking.storeHyphenIfEmpty()
+    listOf(
+        SmokingHistory(
+            smokingCheck.storeHyphenIfEmpty(),
+            rateOfSmoking.storeHyphenIfEmpty(),
+            durationOfSmoking.storeHyphenIfEmpty(),
+            frequencyOfSmoking.storeHyphenIfEmpty()
+        )
     )
 )
 

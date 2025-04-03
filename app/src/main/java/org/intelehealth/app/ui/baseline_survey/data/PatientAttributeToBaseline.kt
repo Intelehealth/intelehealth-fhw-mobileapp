@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.baseline_survey.data
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO.Column
 import org.intelehealth.app.models.pushRequestApiCall.Attribute
@@ -13,6 +14,7 @@ import org.intelehealth.app.utilities.extensions.getCultivableLandUnit
 import org.intelehealth.app.utilities.extensions.getCultivableLandValue
 import org.intelehealth.app.utilities.extensions.getHyphenOrRelation
 import org.intelehealth.app.utilities.extensions.returnEmptyIfHyphen
+import org.intelehealth.klivekit.utils.extensions.fromJson
 
 class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
 
@@ -164,7 +166,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractMedicalHistoryData(baseline: Baseline, data: String) {
-        val medicalHistory: MedicalHistory = Gson().fromJson(data, MedicalHistory::class.java)
+        val medicalHistoryList: List<MedicalHistory> = Gson().fromJson(
+            data,
+            object : TypeToken<List<MedicalHistory>>() {}.type
+        )
+        val medicalHistory: MedicalHistory = medicalHistoryList[0]
+
         baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
         baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
         baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
@@ -174,7 +181,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {
-        val smokingHistory: SmokingHistory = Gson().fromJson(data, SmokingHistory::class.java)
+        val smokingHistoryList: List<SmokingHistory> = Gson().fromJson(
+            data,
+            object : TypeToken<List<SmokingHistory>>() {}.type
+        )
+        val smokingHistory: SmokingHistory = smokingHistoryList[0]
+
         baseline.smokingHistory = smokingHistory.smokingStatus
         baseline.smokingRate = smokingHistory.rateOfSmoking
         baseline.smokingDuration = smokingHistory.durationOfSmoking
@@ -182,10 +194,11 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractAlcoholHistoryData(baseline: Baseline, data: String) {
-        val alcoholConsumptionHistory: AlcoholConsumptionHistory = Gson().fromJson(
+        val alcoholConsumptionHistoryList: List<AlcoholConsumptionHistory> = Gson().fromJson(
             data,
-            AlcoholConsumptionHistory::class.java
+            object : TypeToken<List<AlcoholConsumptionHistory>>() {}.type
         )
+        val alcoholConsumptionHistory: AlcoholConsumptionHistory = alcoholConsumptionHistoryList[0]
 
         baseline.alcoholRate = alcoholConsumptionHistory.rateOfAlcoholConsumption
         baseline.alcoholHistory = alcoholConsumptionHistory.historyOfAlcoholConsumption
@@ -194,7 +207,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractTobaccoHistoryData(baseline: Baseline, data: String) {
-        val tobaccoHistory: TobaccoHistory = Gson().fromJson(data, TobaccoHistory::class.java)
+        val tobaccoHistoryList: List<TobaccoHistory> = Gson().fromJson(
+            data,
+            object : TypeToken<List<TobaccoHistory>>() {}.type
+        )
+        val tobaccoHistory: TobaccoHistory = tobaccoHistoryList[0]
+
         baseline.chewTobacco = tobaccoHistory.chewTobaccoStatus
     }
 }
