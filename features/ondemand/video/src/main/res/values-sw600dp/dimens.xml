@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="stander_padding">16dp</dimen>
+    <dimen name="normal_padding">8dp</dimen>
+    <dimen name="std_20sp">20sp</dimen>
+    <dimen name="action_btn_min_width">36dp</dimen>
+    <dimen name="action_bar_size">76dp</dimen>
+    <dimen name="doctor_image_size">124dp</dimen>
+    <dimen name="std_12dp">12dp</dimen>
+    <dimen name="date_header_text_siz">16sp</dimen>
+</resources>

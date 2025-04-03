@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <string name="settings_name" translatable="false">ସେଟିଂସମୂହ</string>
+    <string name="disconnect_call">କଲ୍ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ |</string>
+    <string name="room_description">
+        ଦୟାକରି ଏକ କୋଠରୀ ନାମ ପ୍ରବେଶ କରନ୍ତୁ | ରୁମ ନାମ ସମସ୍ତଙ୍କ ସହିତ ଅଂଶୀଦାର ହୋଇଛି, ତେଣୁ ଭାବନ୍ତୁ |
+         କିଛି ଅନନ୍ୟ ଏବଂ ଏହାକୁ ଏକ ସାଙ୍ଗକୁ ପଠାନ୍ତୁ |
+    </string>
+    <string name="favorites">ପସନ୍ଦ</string>
+    <string name="no_favorites">ପସନ୍ଦ ନାହିଁ |</string>
+    <string name="invalid_url_title">ଭୁଲ URL</string>
+    <string name="invalid_url_text">ଆପଣ ପ୍ରବେଶ କରିଥିବା URL କିମ୍ବା କୋଠରୀ ନାମ ଏକ ଅବଧ URL ରେ ପରିଣତ ହେଲା: %1$s
+    </string>
+    <string name="channel_error_title">ସଂଯୋଗ ତ୍ରୁଟି |</string>
+    <string name="connecting_to">ସହିତ ସଂଯୋଗ ହେଉଛି |: %1$s</string>
+    <string name="missing_url">ସାଂଘାତିକ ତ୍ରୁଟି: ସଂଯୋଗ କରିବାକୁ URL ନିଖୋଜ |</string>
+    <string name="camera2_texture_only_error">କ୍ୟାମେରା 2 କେବଳ ଟେକ୍ସଚରକୁ କ୍ୟାପଚର କରିବାକୁ ସମର୍ଥନ କରେ | କ୍ୟାମେରା 2 କୁ ଅକ୍ଷମ କରନ୍ତୁ କିମ୍ବା ବିକଳ୍ପଗୁଡ଼ିକରେ ଟେକ୍ସଚରକୁ କ୍ୟାପଚର କରିବାକୁ ସକ୍ଷମ କରନ୍ତୁ |</string>
+    <string name="ok">ଠିକ୍ ଅଛି</string>
+    <string name="switch_camera">ଆଗ / ପଛ କ୍ୟାମେରା ସୁଇଚ୍ କରନ୍ତୁ |</string>
+    <string name="capture_format_change_text">କ୍ୟାପଚର୍ ଫର୍ମାଟ୍ ପରିବର୍ତ୍ତନ କରିବାକୁ ସ୍ଲାଇଡ୍ |</string>
+    <string name="muted">ନିରବ |</string>
+    <string name="toggle_debug">ତ୍ରୁଟି ନିବାରଣ ଦୃଶ୍ୟ ଟୋଗଲ୍ କରନ୍ତୁ |</string>
+    <string name="toggle_mic">ମାଇକ୍ରୋଫୋନ୍ ଟୋଗଲ୍ କରନ୍ତୁ / ବନ୍ଦ କରନ୍ତୁ |</string>
+    <string name="action_settings">ସେଟିଂସମୂହ</string>
+    <string name="action_loopback">ଲୁପବ୍ୟାକ୍ ସଂଯୋଗ |</string>
+    <string name="connect_description">କୋଠରୀ ସହିତ ସଂଯୋଗ କରନ୍ତୁ |</string>
+    <string name="add_favorite_description">ପ୍ରିୟ ଯୋଡନ୍ତୁ |</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+
+    <string name="video_on_lbl">ଭିଡିଓ ଅନ୍!</string>
+    <string name="video_off_lbl">ଭିଡିଓ ବନ୍ଦ!</string>
+    <string name="call_end_lbl">କଲ୍ ଶେଷ!</string>
+    <string name="audio_off_lbl">ଅଡିଓ ବନ୍ଦ!</string>
+    <string name="audio_on_lbl">ଅଡିଓ ଅନ୍!</string>
+    <string name="flip_camera">ଫ୍ଲିପ କ୍ୟାମେରା</string>
+    <string name="video_on_off_button">ଭିଡିଓ ଅନ୍ / ଅଫ୍ ବଟନ୍ |</string>
+    <string name="call_end_button">କଲ୍ ଶେଷ ବଟନ୍ |</string>
+    <string name="audio_on_off_button">ଅଡିଓ ଅନ୍ / ଅଫ୍ ବଟନ୍ |</string>
+    <string name="you">ତୁମେ</string>
+    <string name="start_call_now">ବର୍ତ୍ତମାନ କଲ୍ ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="start_txt_chat_now">ବର୍ତ୍ତମାନ ପାଠ୍ୟ ଚାଟ୍ ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="connecting">ସଂଯୋଗ ...</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
+    <string name="you_have_no_messages_start_sending_messages_now">ଆପଣଙ୍କର କୌଣସି ବାର୍ତ୍ତା ନାହିଁ! ବର୍ତ୍ତମାନ ବାର୍ତ୍ତା ପଠାଇବା ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="empty_message_txt">ଦୟାକରି ଆପଣଙ୍କର ବାର୍ତ୍ତା ଲେଖନ୍ତୁ!</string>
+    <string name="loading">ଲୋଡିଂ ...</string>
+    <string name="video_call">ଭିଡିଓ କଲ୍ |</string>
+    <string name="please_wait_for_doctor">ଦୟାକରି ଡାକ୍ତରଙ୍କ ଉପଲବ୍ଧତା ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ |</string>
+    <string name="call_end_aler_txt">ଆପଣ ଭିଡିଓ କଲ୍ ଶେଷ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="yes">ହଁ</string>
+    <string name="no">ନା</string>
+
+    <string name="type_text_here_str">ଏଠାରେ ଲେଖ …</string>
+
+    <string name="take_photo_lbl">ଫୋଟ ନିଅ</string>
+    <string name="choose_from_gallery_lbl">ଗ୍ୟାଲେରୀ ରୁ ପସନ୍ଦ କର</string>
+    <string name="cancel_lbl">ବାତିଲ</string>
+    <string name="max_doc_size_toast">ମାକ୍ସ ଡକ ସାଇଜ 512KB</string>
+    <string name="choose_documents">ଦସ୍ତାବିଜ୍ ଚୟନ</string>
+    <string name="read">ପଢ଼</string>
+    <string name="sent">ପଠା</string>
+    <string name="msg_delivered">ଦିଆଗଲା</string>
+    <string name="sending">ପଠାଯାଉଛି ବା ପଠାଇବା</string>
+    <string name="max_5_image">ଗୋଟେ case ପାଇଁ ଅତି ବେଶିରେ 5 ଟି ଛବି ତୁମେ ପଠାଇ ପାର</string>
+    <string name="max_2_image">ଅତି ବେଶୀରେ ଗୋଟେ case ପାଇଁ ତୁମେ 2ଟି ଛବି ପଠାଇ ପାର</string>
+    <string name="select">ଚୟନ କରିବା</string>
+    <string name="camera_permission_denied">କ୍ୟାମେରା ଅନୁମତି ଅମାନ୍ୟ କରିବା</string>
+    <string name="unable_to_pick_data">ଗ୍ୟାଲେରୀ ତଥ୍ୟ ଚୟନ କରିବାରେ ଅକ୍ଷମତା!</string>
+    <string name="max_doc_size_toast_mb">ମାକ୍ସ ଦକ୍ ସାଇଜ 1 MB ଅଟେ</string>
+    <string name="doctor_annotation">ଡାକ୍ତର.</string>
+    <string name="disconnected">ବିଯୋଗ!</string>
+    <string name="enter_room_id">ଦୟାକରି ରୁମ୍ id ପ୍ରବେଶ କର</string>
+    <string name="permission_denied">ଅନୁମତି ଅମାନ୍ୟ କରିବା\n</string>
+
+    <string name="incoming_voice_call">ଇନ୍ କମିଂ ଭଏସ କଲ୍</string>
+    <string name="incoming_call">ଇନ୍ କମିଂ କଲ୍</string>
+    <string name="doctor_profile_picture">ଡାକ୍ତର ପ୍ରୋଫାଇଲ୍ ଛବି</string>
+    <string name="poor_connection">ଅଳ୍ପ ସଂଯୋଗିକରଣ</string>
+    <string name="remote_participant_mic_off_status">ରିମୋଟ ବା ଦୁରସ୍ଥ ଯୋଗଦାନ କାରି ମିକ୍ ଅପ୍ ଅବସ୍ଥା</string>
+    <string name="sender_image">ପ୍ରେରକ ଛବି</string>
+    <string name="select_spinner">ଚୟନ କରିବା</string>
+    <string name="call_swipe_up">Swipe Up</string>
+    <string name="release_now">Release Now</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+</resources>

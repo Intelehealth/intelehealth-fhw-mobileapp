@@ -476,11 +476,11 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
         dialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_icon_logging_in), getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing), getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
-
+        String encoded1 = sessionManager.getJwtAuthToken();
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, "Bearer "+encoded1);
             resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
                 @Override
                 public void onNext(DownloadMindMapRes res) {

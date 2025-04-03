@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/header_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_rounded_bottom_corner"
+        android:minHeight="64dip">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginTop="16dip"
+            android:layout_marginBottom="16dip"
+            android:onClick="endChat"
+            app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
+
+        <TextView
+            android:id="@+id/title_incoming_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dip"
+            android:layout_marginTop="16dip"
+            android:layout_toEndOf="@+id/back_iv"
+            android:text="Incoming call"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/call_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginTop="16dip"
+            android:layout_marginEnd="16dip"
+            android:layout_marginBottom="16dip"
+            android:onClick="vCallNow"
+            android:visibility="gone"
+            app:srcCompat="@drawable/call_icon_new" />
+
+        <ImageView
+            android:id="@+id/sync_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dip"
+            app:srcCompat="@drawable/ic_sync_now" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="8dip">
+
+        <ImageView
+            android:id="@+id/audio_rec_imv"
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_baseline_mic_none_24_blue" />
+
+        <ImageView
+            android:id="@+id/camera_imv"
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:layout_toEndOf="@+id/audio_rec_imv"
+            android:layout_toRightOf="@+id/audio_rec_imv"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24_blue" />
+
+        <ImageView
+            android:id="@+id/send_imv"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:onClick="sendMessageNow"
+            android:padding="16dip"
+            app:srcCompat="@drawable/ic_baseline_send_24_white" />
+
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="36dip"
+            android:layout_height="36dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner_16_blue_light" />
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/text_etv"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginEnd="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_toStartOf="@+id/send_imv"
+            android:layout_toLeftOf="@+id/send_imv"
+            android:layout_toEndOf="@+id/camera_imv"
+            android:layout_toRightOf="@+id/camera_imv"
+            android:background="@drawable/round_corner_16_gray_light"
+            android:gravity="center_vertical"
+            android:hint="@string/type_text_here_str"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="1000"
+            android:minHeight="36dip"
+            android:padding="16dip"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/send_attachment_imv"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignEnd="@+id/text_etv"
+            android:onClick="loadAttachment"
+            android:padding="16dip"
+            android:visibility="gone"
+            app:srcCompat="@drawable/attachment_icon_new" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chats_rcv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/header_ll"
+        android:layout_margin="16dip"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            app:srcCompat="@drawable/vc_new_chat_icon" />
+
+        <TextView
+            android:id="@+id/empty_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_no_messages_start_sending_messages_now"
+            android:textColor="@color/gray_3"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/image_preview_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c1_transaprent_1"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dip"
+            android:onClick="closePreview"
+            android:src="@drawable/ic_baseline_cancel_24" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/white" />
+
+        <ImageView
+            android:id="@+id/preview_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+</RelativeLayout>

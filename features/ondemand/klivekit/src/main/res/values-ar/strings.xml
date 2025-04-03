@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <string name="settings_name" translatable="false">AppRTC Settings</string>
+    <string name="disconnect_call">إنهاء المكالمة</string>
+    <string name="room_description">الرجاء إدخال اسم الغرفة. تتم مشاركة أسماء الغرف مع الجميع، لذا فكر في شيء فريد وأرسله إلى صديق.</string>
+    <string name="favorites">المفضلة</string>
+    <string name="no_favorites">لا يوجد مفضلة</string>
+    <string name="invalid_url_title">URL غير صالح</string>
+    <string name="invalid_url_text">عنوان URL أو اسم الغرفة الذي أدخلته إلى عنوان URL غير صالح:</string>
+    <string name="channel_error_title">خطأ في الإتصال</string>
+    <string name="connecting_to">الاتصال بـ: %1$s</string>
+    <string name="missing_url">خطأ فادح: عنوان URL مفقود للاتصال به.</string>
+    <string name="camera2_texture_only_error">يدعم Camera2 فقط التقاط الملمس. قم إما بتعطيل Camera2 أو تمكين التقاط النسيج في الخيارات.</string>
+    <string name="ok">نعم</string>
+    <string name="switch_camera">تبديل الكاميرا الأمامية/الخلفية</string>
+    <string name="capture_format_change_text">قم بالتمرير لتغيير تنسيق الالتقاط</string>
+    <string name="muted">كتم الصوت</string>
+    <string name="toggle_debug">تبديل عرض التصحيح</string>
+    <string name="toggle_mic">تبديل تشغيل/إيقاف الميكروفون</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="action_loopback">اتصال الاسترجاع</string>
+    <string name="connect_description">الاتصال بالغرفة</string>
+    <string name="add_favorite_description">أضف تفضيل</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+
+    <string name="video_on_lbl">تشغيل الفيديو!</string>
+    <string name="video_off_lbl">الفيديو معطل!</string>
+    <string name="call_end_lbl">نهاية المكالمة!</string>
+    <string name="audio_off_lbl">الصوت معطل!</string>
+    <string name="audio_on_lbl">تشغيل الصوت!</string>
+    <string name="video_on_off_button">زر تشغيل/إيقاف الفيديو</string>
+    <string name="flip_camera">الوجه الكاميرا</string>
+    <string name="call_end_button">زر إنهاء المكالمة</string>
+    <string name="audio_on_off_button">زر تشغيل/إيقاف الصوت</string>
+    <string name="you">أنت</string>
+    <string name="start_call_now">ابدأ الاتصال الآن</string>
+    <string name="start_txt_chat_now">ابدأ الدردشة النصية الآن</string>
+    <string name="connecting">توصيل…</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
+    <string name="you_have_no_messages_start_sending_messages_now">يس لديك رسائل! ابدأ بإرسال الرسائل الآن.</string>
+    <string name="empty_message_txt">من فضلك اكتب رسالتك!</string>
+    <string name="loading">تحميل…</string>
+    <string name="video_call">مكالمة فيديو</string>
+    <string name="please_wait_for_doctor">برجاء انتظار توفر الطبيب.</string>
+    <string name="call_end_aler_txt">هل تريد إنهاء مكالمة الفيديو؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="type_text_here_str">أكتب هنا…</string>
+    <string name="take_photo_lbl">تصوير</string>
+    <string name="choose_from_gallery_lbl">اختر من المعرض</string>
+    <string name="cancel_lbl">يلغي</string>
+    <string name="max_doc_size_toast">الحد الأقصى لحجم المستند هو 512 كيلو بايت</string>
+    <string name="choose_documents">اختر المستندات</string>
+    <string name="read">قرأ</string>
+    <string name="sent">مرسل</string>
+    <string name="msg_delivered">تم التوصيل</string>
+    <string name="sending">إرسال</string>
+    <string name="max_5_image">الحد الأقصى 5 صور يمكنك إرسالها لكل حالة</string>
+    <string name="max_2_image">الحد الأقصى 2 صور يمكنك إرسالها لكل حالة</string>
+    <string name="select">يختار</string>
+    <string name="camera_permission_denied">تم رفض إذن الكاميرا!</string>
+    <string name="unable_to_pick_data">غير قادر على اختيار بيانات المعرض!</string>
+    <string name="max_doc_size_toast_mb">الحد الأقصى لحجم المستند هو 1 ميغابايت</string>
+    <string name="doctor_annotation">دكتور.</string>
+    <string name="disconnected">انقطع الاتصال!</string>
+    <string name="enter_room_id">الرجاء إدخال معرف الغرفة</string>
+    <string name="permission_denied">تم رفض الإذن\n</string>
+    <string name="incoming_voice_call">مكالمة صوتية واردة</string>
+    <string name="incoming_call">مكالمة واردة</string>
+    <string name="doctor_profile_picture">صورة الملف الشخصي للطبيب</string>
+    <string name="poor_connection">اتصال ضعيف</string>
+    <string name="remote_participant_mic_off_status">حالة إيقاف تشغيل ميكروفون المشارك عن بعد</string>
+    <string name="sender_image">صورة المرسل</string>
+    <string name="select_spinner">يختار</string>
+    <string name="call_swipe_up">اسحب للأعلى</string>
+    <string name="release_now"> حرر</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+</resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.Logger;
 
 public class UpdateDownloadPrescriptionService extends IntentService {
@@ -22,6 +23,7 @@ public class UpdateDownloadPrescriptionService extends IntentService {
         try {
             Intent in = new Intent();
             in.setAction("downloadprescription");
+            in.setPackage(IntelehealthApplication.getAppContext().getPackageName());
             sendBroadcast(in);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);

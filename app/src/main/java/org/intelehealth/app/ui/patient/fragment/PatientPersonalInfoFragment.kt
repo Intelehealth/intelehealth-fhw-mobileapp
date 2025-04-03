@@ -3,22 +3,20 @@ package org.intelehealth.app.ui.patient.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
@@ -26,10 +24,11 @@ import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -165,6 +164,11 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
+        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            patient.apply {
+                gender = gender?:"F"
+            }
+        }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
     }
@@ -203,6 +207,7 @@ class PatientPersonalInfoFragment :
 
     private fun savePatient() {
         patient.apply {
+            bindGenderValue()
             firstname = binding.textInputETFName.text?.toString()
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
@@ -245,14 +250,23 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        binding.toggleGender.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            binding.btnMale.isCheckable = false
+            binding.btnFemale.isCheckable = false
+            binding.btnOther.isCheckable = false
+        }
+        binding.toggleGender.addOnButtonCheckedListener { _, checkedId, _ ->
             binding.tvGenderError.isVisible = false
-            patient.gender = when (checkedId) {
-                R.id.btnMale -> "M"
-                R.id.btnFemale -> "F"
-                R.id.btnOther -> "O"
-                else -> "O"
-            }
+            bindGenderValue()
+        }
+    }
+
+    private fun bindGenderValue(){
+        patient.gender = when (binding.toggleGender.checkedButtonId) {
+            R.id.btnMale -> "M"
+            R.id.btnFemale -> "F"
+            R.id.btnOther -> "O"
+            else -> "O"
         }
     }
 
@@ -356,11 +370,12 @@ class PatientPersonalInfoFragment :
     }
 
     private fun applyFilter() {
-        binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETMName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETLName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETGuardianName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETECName.addFilter(FirstLetterUpperCaseInputFilter())
+      //  binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputETFName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETMName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETLName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETGuardianName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETECName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
     }
 
     private fun setInputTextChangListener() {

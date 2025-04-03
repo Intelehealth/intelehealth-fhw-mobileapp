@@ -42,7 +42,13 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
+import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,13 +76,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -92,7 +101,6 @@ import org.intelehealth.app.activities.help.activities.HelpFragment_New;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.view.NotificationActivity;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -105,11 +113,9 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -156,7 +162,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final int ID_DOWN = 2;
     private DrawerLayout mDrawerLayout;
     SessionManager sessionManager;
-    Dialog dialogLoginSuccess, dialogRefreshInProgress;
+    //Dialog dialogLoginSuccess, dialogRefreshInProgress;
     NavigationView mNavigationView;
     private int versionCode = 0;
     private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
@@ -339,6 +345,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             checkAlarmAndReminderPermission();
         }
 //        getOnBackPressedDispatcher().addCallback(backPressedCallback);
+        sessionManager.setFirstTimeLaunched(false);
+        sessionManager.setMigration(true);
+        //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+
     }
 
     private void checkAlarmAndReminderPermission() {
@@ -350,6 +360,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     }
+
     private void setupAlarmPermissionLauncher() {
         scheduleExactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -644,7 +655,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 if (NetworkConnection.isOnline(HomeScreenActivity_New.this)) {
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
-                    syncUtils.syncForeground("home");
+                    //syncUtils.syncForeground("home");
+                    syncDataFromHome();
                 } else {
                     if (!tipWindow.isTooltipShown())
                         tipWindow.showToolTip(imageViewIsInternet, getResources().getString(R.string.no_network_tooltip));
@@ -653,14 +665,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
-            showRefreshDialog();
+          /*  showRefreshDialog();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
-            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));
+            Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));*/
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-            saveToken();
+            //saveToken();
 //            requestPermission();
         }
         //bottom nav
@@ -668,8 +680,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
-
+        //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
+        tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
 
     }
@@ -728,7 +740,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void handleBackPress() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        CustomLog.d(TAG,"backStackEntryCount %s", backStackEntryCount);
+        CustomLog.d(TAG, "backStackEntryCount %s", backStackEntryCount);
         CustomLog.v(TAG, "backStackEntryCount - " + backStackEntryCount);
         String topFragmentTag = getTopFragmentTag();
         if (topFragmentTag.equals(TAG_HOME)) {
@@ -865,6 +877,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.show();
     }
 
+/*
     public void showRefreshInProgressDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(HomeScreenActivity_New.this);
@@ -884,7 +897,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }, 3000);
     }
+*/
 
+/*
     public void showRefreshFailedDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(HomeScreenActivity_New.this);
@@ -904,11 +919,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }, 3000);
     }
+*/
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         notificationReceiver.unregisterModuleBReceiver(this);
+        if (scheduleExactAlarmPermissionLauncher != null)
         scheduleExactAlarmPermissionLauncher.unregister();
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
@@ -949,6 +966,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }*//*
     }*/
 
+/*
     public void showLoggingInDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity_New.this);
@@ -971,6 +989,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }, 2000);
     }
+*/
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -984,6 +1003,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (mNavigationView != null) {
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
+            mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
     }
 
@@ -1014,6 +1034,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             startActivity(intent);
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
+            startActivity(i);
+        } else if (itemId == R.id.menu_draft_survey) {
+            Intent i = new Intent(HomeScreenActivity_New.this, DraftSurveyActivity.class);
             startActivity(i);
         } else if (itemId == R.id.menu_logout) {
             wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
@@ -1049,16 +1072,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         networkUtils.callBroadcastReceiver();
 
 
-        if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+     /*   if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
-        }
+        }*/
         CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
+        /*set from broadcast
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
-        tvAppLastSync.setText(lastSync);
+        tvAppLastSync.setText(lastSync);*/
+        updateLastSyncTime();
+
 
         //ui2.0 update user details in  nav header
         updateNavHeaderUserDetails();
@@ -1068,7 +1094,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             firstLogin = "";
             getIntent().putExtra("firstLogin", "");
 
-            showLoggingInDialog();
+            //showLoggingInDialog();
 
         }
         checkAppVer();  //auto-update feature.
@@ -1131,7 +1157,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
     private boolean mIsFirstTimeSyncDone = false;
-    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
@@ -1176,11 +1202,43 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 syncAnimator.end();
             }
         }
+    };*/
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
+
+            if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                mTempSyncHelperList.add(flagType);
+
+               /* if (flagType == AppConstants.SYNC_FAILED && sessionManager.isFirstTimeLaunched()) {
+                    hideSyncProgressBar(false);
+                    //showRefreshFailedDialog();
+                }*/
+
+              /*  if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
+                        mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
+                    hideSyncProgressBar(true);
+                }*/
+
+                if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
+                    updateNavHeaderUserDetails();
+                    //hideSyncProgressBar(true);
+                }
+            }
+            updateLastSyncTime();
+
+            // Stop animation if running
+            if (syncAnimator != null && syncAnimator.isRunning()) {
+                syncAnimator.cancel();
+            }
+        }
     };
 
-    private void hideSyncProgressBar(boolean isSuccess) {
+    /*private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
-        saveToken();
+        //saveToken();
 //        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
@@ -1188,9 +1246,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
             if (isSuccess) {
-                saveToken();
-                sessionManager.setFirstTimeLaunched(false);
-                sessionManager.setMigration(true);
+               // saveToken();
+             *//*   sessionManager.setFirstTimeLaunched(false);
+                sessionManager.setMigration(true);*//*
                 // initial setup/sync done and now we can set the periodic background sync job
                 // given some delay after initial sync
                 new Handler().postDelayed(new Runnable() {
@@ -1208,10 +1266,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 //        }
 //        startService(serviceIntent);
 
-        mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
-    }
+        //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+    }*/
 
 
+/*
     private String setLastSyncTime(String dob) {
         String convertedString = getFullMonthName(dob);
         String sync_text = "";
@@ -1254,6 +1313,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
         return sync_text;
     }
+*/
 
     @Override
     protected void onPause() {
@@ -1314,10 +1374,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     loadFragment(fragment, TAG_HELP);
                     return true;
                 case R.id.bottom_nav_add_patient:
-                    Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
-                    intent.putExtra("intentType", "navigateFurther");
-                    intent.putExtra("add_patient", "add_patient");
-                    startActivity(intent);
+                    AddPatientUtils.navigate(HomeScreenActivity_New.this);
                     return false;
             }
 
@@ -1342,8 +1399,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     userFullName = providerDTO.getFamilyName();
 
                 }
+
+                String idTitleStr = getString(R.string.chw_id);
+                if(providerDTO.getRole().toLowerCase().contains(AppConstants.MCC_USER_TYPE)){
+                    idTitleStr = getString(R.string.mcc_id);
+                }
+
                 tvUsername.setText(userFullName);
-                tvUserId.setText(getString(R.string.chw_id).concat(" ").concat(sessionManager.getChwname()));
+                tvUserId.setText(idTitleStr.concat(" ").concat(sessionManager.getChwname()));
 
                 if (providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
                     RequestBuilder<Drawable> requestBuilder = Glide.with(this)
@@ -1551,6 +1614,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         public void onChanged(Integer progress) {
             Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
+                if (progress < 0) progress = 0;
                 syncProgressbar.setProgress(progress);
                 if (progress <= 100) {
                     progressTvStart.setText((progress) + "%");
@@ -1593,6 +1657,33 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         public void unregisterModuleBReceiver(Context context) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
+    }
+    private void updateLastSyncTime() {
+        // Run long operations in background
+        //new Thread(() -> {
+            String lastSync = sessionManager.getLastSyncDateTime();
+            String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+            tvAppLastSync.setText(lastSyncText);
+            // Update UI on main thread
+            //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
+       // }).start();
+    }
+    private void syncDataFromHome() {
+        Data workData = new Data.Builder()
+                .putString("fromActivity", "home")
+                .build();
+
+        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorkerForHomeScreen.class)
+                .setInputData(workData)
+                .setConstraints(
+                        new Constraints.Builder()
+                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                .build()
+                )
+                .build();
+
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
+                .enqueue(syncWorkRequest);
     }
 
 }

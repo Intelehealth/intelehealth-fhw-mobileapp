@@ -20,7 +20,7 @@ public class ApiClientAppointment {
     private ApiClientAppointment(String baseUrl) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.addInterceptor(new TokenSetupInterceptor());
         client.connectTimeout(45, TimeUnit.SECONDS);

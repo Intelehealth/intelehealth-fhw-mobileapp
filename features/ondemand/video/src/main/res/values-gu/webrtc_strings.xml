@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">%1$s તરફથી જવાબ મળ્યો નથી.</string>
+    <string name="call_canceled_by">%1$s ના દ્વારા ફોન કટ કરવામાં આવ્યો.</string>
+    <string name="call_rejected_by">%1$s દ્વારા કૉલ નકારવામાં આવ્યો</string>
+    <string name="call_time_up">કોલનો સમય સમાપ્ત</string>
+    <string name="left_the_call">%1$s ના દ્વારા કોલ છોડી દેવામાં આવ્યો.</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">શરૂ ન થવાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_duplicated_identity">ડુપ્લિકેટ ઓળખને કારણે કોલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_server_shutdown">સર્વર બંધ થવાના કારણે કોલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_participant_removed">સહભાગીને કાઢી નાખવાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_room_deleted">રૂમ ન મળવાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_state_mismatch">રૂમ મિસમેચ થવાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_join_failure">રૂમમાં જોડાવામાં નિષ્ફળ જવાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+    <string name="reason_unknown">અજ્ઞાત કારણોસર નિષ્ફળતાને કારણે કૉલ ડિસ્કનેક્ટ થયો</string>
+
+    <string name="call_missed">મિસકોલ</string>
+    <string name="call_outgoing">આઉટગોઇંગ કોલ</string>
+    <string name="call_ongoing">ચાલુ ફોન</string>
+    <string name="call_unknown">અજાણ્યા</string>
+    <string name="call_incoming">ઇનકમિંગ કોલ</string>
+    <string name="call_logs">કોલ લોગ</string>
+    <string name="calling">કોલિંગ</string>
+
+    <string name="an_hour_ago">કલાક પહેલા</string>
+    <string name="hours_ago">%1$s કલાક પહેલા</string>
+    <string name="a_min_ago">મિનિટ પહેલા</string>
+    <string name="mins_ago">%1$s મિનિટ પહેલા</string>
+    <string name="a_second_ago">સેકન્ડ પહેલા</string>
+    <string name="seconds_ago">%1$s સેકન્ડ પહેલા</string>
+    <string name="today">આજે</string>
+    <string name="today_at">આજે</string>
+    <string name="yesterday">ગઈકાલે</string>
+    <string name="yesterday_at">ગઈકાલે</string>
+    <string name="now">હવે</string>
+
+    <string name="decline">ગિરાવટ</string>
+    <string name="accept">સ્વીકાર કરો</string>
+    <string name="hang_up">અટકી દો</string>
+</resources>

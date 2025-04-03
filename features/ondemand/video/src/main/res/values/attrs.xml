@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeButton">
+        <attr name="btnIcon" format="reference" />
+        <attr name="btnColor" format="reference" />
+        <attr name="btnSize" format="dimension" />
+        <attr name="animDelay" format="integer" />
+        <attr name="animDistance" format="float"/>
+        <attr name="arrowVisibility" format="boolean"/>
+    </declare-styleable>
+</resources>

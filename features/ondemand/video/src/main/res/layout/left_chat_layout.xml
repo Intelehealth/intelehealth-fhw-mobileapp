@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dip"
+        android:layout_marginLeft="8dip"
+        android:gravity="center_vertical"
+        android:maxLines="4"
+        android:padding="8dip"
+        android:text="DOCTOR 1"
+        android:textColor="@color/gray_7"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dip"
+        android:layout_marginRight="36dip"
+        android:background="@drawable/chat_left_bg"
+        android:gravity="center_vertical"
+        android:minHeight="36dip"
+        android:maxLength="1000"
+        android:padding="16dip"
+        android:textIsSelectable="true"
+        android:text="@string/dummy_text"
+        android:textColor="@color/gray_7"
+        android:textSize="13sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_iv"
+            android:layout_width="124dip"
+            android:layout_height="124dip"
+            android:background="@drawable/chat_left_bg"
+            android:padding="8dip"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_doctor_ioc" />
+
+        <RelativeLayout
+            android:id="@+id/rl_loader"
+            android:layout_width="124dip"
+            android:layout_height="124dip"
+            android:alpha="0.9"
+            android:background="@drawable/chat_left_bg"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="4"
+        android:paddingTop="8dip"
+        android:paddingBottom="8dip"
+        android:text="4.31 PM"
+        android:textColor="@color/gray_3"
+        android:textSize="10sp" />
+
+</LinearLayout>

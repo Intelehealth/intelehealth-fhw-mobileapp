@@ -35,10 +35,11 @@ public class AppConstants {
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
     public static final String MESSAGE_PROGRESS = "message_progress";
+    public static final String MCC_USER_TYPE = "mcc";
 
-    public static final int PAGE_LIMIT = 50;
+    public static final int PAGE_LIMIT = 1000;
 
-    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 2;
+    public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;
 
     //App vitals constants
@@ -221,5 +222,26 @@ public class AppConstants {
     public static String getAppMarketUrl(Context context) {
         return "market://details?id=" + context.getApplicationContext().getPackageName();
     }
+
+    public static final String MINIMUM_GLUCOSE_NON_FASTING = "60";
+    public static final String MAXIMUM_GLUCOSE_NON_FASTING = "600";
+
+    public static final String MINIMUM_GLUCOSE_FASTING = "30";
+    public static final String MAXIMUM_GLUCOSE_FASTING = "300";
+
+    public static final String MINIMUM_GLUCOSE_RANDOM = "30";
+    public static final String MAXIMUM_GLUCOSE_RANDOM = "500";
+
+    public static final String MINIMUM_GLUCOSE_POST_PRANDIAL = "70";
+    public static final String MAXIMUM_GLUCOSE_POST_PRANDIAL = "400";
+
+    public static final String MINIMUM_HEMOGLOBIN = "4";
+    public static final String MAXIMUM_HEMOGLOBIN = "18";
+    public static final String MINIMUM_URIC_ACID = "2";
+    public static final String MAXIMUM_URIC_ACID = "12";
+
+    public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
+    public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
+
 }
 

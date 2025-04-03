@@ -11,9 +11,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
@@ -35,7 +39,9 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 
@@ -48,7 +54,7 @@ import java.util.concurrent.Executors;
  * Github: prajwalmw
  */
 public class VisitActivity extends BaseActivity implements
-        NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
+        NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface, PrescriptionLoadingListeners {
     private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;
     private NetworkUtils networkUtils;
@@ -66,7 +72,12 @@ public class VisitActivity extends BaseActivity implements
     private int refreshCount = 0;
     private AlertDialog loadingDialog;
     private int currentTabPos = 0;
-    private NotificationReceiver notificationReceiver;
+    private boolean isReceivedOldLoaded = false;
+    private boolean isReceivedRecentLoaded = false;
+    private boolean isPendingRecentLoaded = false;
+    private boolean isPendingOldLoaded = false;
+    AlertDialog commonLoadingDialog;
+    // private NotificationReceiver notificationReceiver;
 
 
     @Override
@@ -74,11 +85,11 @@ public class VisitActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
         sessionManager = new SessionManager(this);
-        networkUtils = new NetworkUtils(this, this);
+     //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
-        notificationReceiver =new  NotificationReceiver();
-        notificationReceiver.registerNotificationReceiver(this);
+      //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+       // notificationReceiver.registerNotificationReceiver(this);
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
@@ -87,52 +98,77 @@ public class VisitActivity extends BaseActivity implements
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
         configureTabLayout();
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra("JOB")) {
-                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
-                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
-                            CustomLog.v(TAG, "Sync Done!");
-                            if (!isFinishing()) {
-                                refresh.clearAnimation();
-                                syncAnimator.cancel();
-                            }
-                            configureTabLayout();
-                    }
-                }
 
-                //just stopping the progressbar here if sync is failed
-                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
-                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                    if (flagType == AppConstants.SYNC_FAILED) {
-                        refresh.clearAnimation();
-                        syncAnimator.cancel();
-                        hideProgressbar();
-                    }
-                }
-            }
-        };
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                this,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+//        mBroadcastReceiver = new BroadcastReceiver() {    // TODO: Commented this code as it is taking heavy load when moving from home to this screen of around 10secs.
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.hasExtra("JOB")) {
+//                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+//                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+//                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+//                        if (!isFinishing()) {
+//                            refresh.clearAnimation();
+//                            if (syncAnimator != null) syncAnimator.cancel();
+//                        }
+//                        // Delay tab layout update slightly
+//                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
+//                    }
+//                }
+//
+//           /* @Override
+//            public void onReceive(Context context, Intent intent) {
+//                if (intent.hasExtra("JOB")) {
+//                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+//                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+//                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+//                            CustomLog.v(TAG, "Sync Done!");
+//                            if (!isFinishing()) {
+//                                refresh.clearAnimation();
+//                                syncAnimator.cancel();
+//                            }
+//                            configureTabLayout();
+//                    }
+//                }*/
+//
+//                //just stopping the progressbar here if sync is failed
+//                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+//                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+//                    if (flagType == AppConstants.SYNC_FAILED) {
+//                        refresh.clearAnimation();
+//                        syncAnimator.cancel();
+//                        hideProgressbar();
+//                    }
+//                }
+//            }
+//        };
+//        IntentFilter filterSend = new IntentFilter();
+//        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+//        ContextCompat.registerReceiver(
+//                this,
+//                mBroadcastReceiver,
+//                filterSend,
+//                ContextCompat.RECEIVER_NOT_EXPORTED
+//        );
 
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+
+        if (commonLoadingDialog == null) {
+            commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+            commonLoadingDialog.setCancelable(false);
+        }
+        if (!commonLoadingDialog.isShowing()) {
+            commonLoadingDialog.show();
+        }
     }
 
-    @Override
+   /* @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
-    }
+    }*/
 
+/*
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -151,60 +187,41 @@ public class VisitActivity extends BaseActivity implements
         res.updateConfiguration(conf, dm);
         return context;
     }
+*/
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
-        notificationReceiver.unregisterNotificationReceiver(this);
+      //  unregisterReceiver(mBroadcastReceiver);
+      //  notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {
-        if(refreshCount > 0) return;
-        tabLayout = findViewById(R.id.tablayout_appointments);
-        viewPager = findViewById(R.id.pager_appointments);
-        VisitPagerAdapter adapter = new VisitPagerAdapter(VisitActivity.this);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(currentTabPos,false);
+        if (refreshCount > 0) return; // Prevent unnecessary updates
 
-        new TabLayoutMediator(tabLayout, viewPager,
-                (TabLayout.Tab tab, int position) -> {
-                    if (position == 0)
-                        tab.setText(getResources().getString(R.string.received)).setIcon(R.drawable.presc_tablayout_icon);
-                    else
-                        tab.setText(getResources().getString(R.string.pending)).setIcon(R.drawable.presc_tablayout_icon);
+        if (tabLayout == null) tabLayout = findViewById(R.id.tablayout_appointments);
+        if (viewPager == null) viewPager = findViewById(R.id.pager_appointments);
 
-                }
-        ).attach();
+        if (viewPager.getAdapter() == null) {
+            VisitPagerAdapter adapter = new VisitPagerAdapter(this,this);
+            viewPager.setAdapter(adapter);
 
-        int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
-        viewPager.setOffscreenPageLimit(limit);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                currentTabPos = tab.getPosition();
-            }
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> tab.setText(getResources().getString(
+                                    position == 0 ? R.string.received : R.string.pending))
+                            .setIcon(R.drawable.presc_tablayout_icon)
+            ).attach();
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-
-        });
-
-        String language = sessionManager.getAppLanguage();
-        if (!language.equalsIgnoreCase("")) {
+            viewPager.setOffscreenPageLimit(1); // Optimize memory usage
+        }
+          /*String language = sessionManager.getAppLanguage();
+      if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        }
+        }*/
 
         hideProgressbar();
         refreshCount++;
@@ -212,7 +229,7 @@ public class VisitActivity extends BaseActivity implements
 
     }
 
-    private void updateCounts(boolean isForReceivedPrescription) {
+   /* private void updateCounts(boolean isForReceivedPrescription) {
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
             runOnUiThread(() -> {
@@ -225,7 +242,7 @@ public class VisitActivity extends BaseActivity implements
 
         });
     }
-
+*/
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
@@ -240,7 +257,7 @@ public class VisitActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         //register receiver for internet check
-        networkUtils.callBroadcastReceiver();
+      //  networkUtils.callBroadcastReceiver();
     }
 
     private void hideProgressbar() {
@@ -253,18 +270,19 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void onStop() {
         super.onStop();
-        try {
+        /*try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void receivedCount(int count) {
         CustomLog.v(TAG, "receivedCount: " + count);
         //tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
+//        ThreadingUtils.executeInBackground(updateCounts(true));
         updateCounts(true);
     }
 
@@ -272,6 +290,7 @@ public class VisitActivity extends BaseActivity implements
     public void pendingCount(int count) {
         CustomLog.v(TAG, "pendingCount: " + count);
         //tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
+//        ThreadingUtils.executeInBackground(updateCounts(false));
         updateCounts(false);
     }
 
@@ -299,7 +318,7 @@ public class VisitActivity extends BaseActivity implements
         }
     }
 
-    public class NotificationReceiver extends BroadcastReceiver {
+   /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -319,6 +338,63 @@ public class VisitActivity extends BaseActivity implements
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
+*/
+   private void updateCounts(boolean isForReceivedPrescription) {
+       new Thread(() -> {
+           int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+           runOnUiThread(() -> {
+               if (isForReceivedPrescription)
+                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                           getResources().getString(R.string.received) + "\t(" + count + ")");
+               else
+                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                           getResources().getString(R.string.pending) + "\t(" + count + ")");
+           });
+       }).start();
+   }
 
+    @Override
+    public void isReceivedRecentLoaded(boolean status) {
+        Log.d("CCC","isReceivedRecentLoaded");
+        isReceivedRecentLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
 
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isReceivedOldLoaded(boolean status) {
+        isReceivedOldLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isPendingRecentLoaded(boolean status) {
+        isPendingRecentLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void isPendingOldLoaded(boolean status) {
+        isPendingOldLoaded = status;
+        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+
+            if (commonLoadingDialog.isShowing()) {
+                commonLoadingDialog.dismiss();
+            }
+        }
+    }
 }

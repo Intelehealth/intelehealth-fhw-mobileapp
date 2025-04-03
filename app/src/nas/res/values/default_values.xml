@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_country">@string/india</string>
+    <string name="default_state">@string/maharashtra</string>
+    <string name="default_district">@string/district_nashik</string>
+</resources>

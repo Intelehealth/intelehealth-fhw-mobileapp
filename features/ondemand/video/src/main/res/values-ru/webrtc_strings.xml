@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">Нет ответа %1$s</string>
+    <string name="call_canceled_by">Вызов завершен %1$s</string>
+    <string name="call_rejected_by">Вызов отклонен %1$s</string>
+    <string name="call_time_up">Время вызова истекло</string>
+    <string name="left_the_call">Вызов оставлен %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">Вызов отключен из-за отсутствия инициации</string>
+    <string name="reason_duplicated_identity">Вызов отсоединен из-за дублирования идентификатора</string>
+    <string name="reason_server_shutdown">Вызов отсоединен из-за отключения сервера</string>
+    <string name="reason_participant_removed">Вызов отключен из-за удаления участника</string>
+    <string name="reason_room_deleted">Вызов отсоединен из-за того, что комната не найдена</string>
+    <string name="reason_state_mismatch">Вызов отсоединен из-за несоответствия номеров</string>
+    <string name="reason_join_failure">Вызов отключен из-за невозможности присоединиться к комнате</string>
+    <string name="reason_unknown">Вызов отключен по неизвестной причине</string>
+
+    <string name="call_missed">Пропущенный звонок</string>
+    <string name="call_outgoing">Исходящий звонок</string>
+    <string name="call_ongoing">Текущий звонок</string>
+    <string name="call_unknown">Неизвестно</string>
+    <string name="call_incoming">Incoming Call</string>
+    <string name="calling">Звонок</string>
+    <string name="call_logs">Журналы вызовов</string>
+
+    <string name="an_hour_ago">Час назад</string>
+    <string name="hours_ago">%1$s часов назад</string>
+    <string name="a_min_ago">мин назад</string>
+    <string name="mins_ago">%1$s минут назад</string>
+    <string name="a_second_ago">Секунду назад</string>
+    <string name="seconds_ago">%1$s секунд назад</string>
+    <string name="today">Сегодня</string>
+    <string name="today_at">Сегодня в</string>
+    <string name="yesterday">Вчера</string>
+    <string name="yesterday_at">Вчера в</string>
+    <string name="now">сейчас</string>
+
+    <string name="decline">Отклонить</string>
+    <string name="accept">Принять</string>
+    <string name="hang_up">вешать трубку</string>
+</resources>

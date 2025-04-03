@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2E1E91</color>
+    <color name="colorPrimaryDark">#231670</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="s00">#d9f0ff</color>
+    <color name="s0">#c1e5fe</color>
+    <color name="s1">#83ccfd</color>
+    <color name="s2">#46b3fd</color>
+    <color name="s3">#0899fc</color>
+
+    <color name="v2_green">#7ebe4e</color>
+    <color name="green0">#c4eabf</color>
+    <color name="green1">#89d47f</color>
+    <color name="green2">#4fbf40</color>
+    <color name="green3">#14aa00</color>
+
+    <color name="lightGreen0">#eaf6c7</color>
+    <color name="lightGreen1">#d6ed90</color>
+    <color name="lightGreen2">#c2e459</color>
+    <color name="lightGreen3">#addb21</color>
+
+    <color name="red0">#febfbf</color>
+    <color name="red1">#fd7f7f</color>
+    <color name="red2">#fc4040</color>
+    <color name="red3">#fb0000</color>
+    <color name="red3_transa">#EEfb0000</color>
+
+    <color name="orange0">#ffd9bf</color>
+    <color name="orange1">#ffb27f</color>
+    <color name="orange2">#ff8c40</color>
+    <color name="orange3">#ff6600</color>
+
+    <color name="darkYellow0">#ffe4c0</color>
+    <color name="darkYellow1">#ffca81</color>
+    <color name="darkYellow2">#ffb043</color>
+    <color name="darkYellow3">#ff9504</color>
+    <color name="darkYellow3_trans">#EEff9504</color>
+
+    <color name="pink0">#f4c0df</color>
+    <color name="pink1">#e980be</color>
+    <color name="pink2">#de419e</color>
+    <color name="pink3">#d3027e</color>
+
+    <color name="violet0">#d3bfe7</color>
+    <color name="violet1">#a77fcf</color>
+    <color name="violet2">#7c40b7</color>
+    <color name="violet3">#50009f</color>
+
+    <color name="deepBlue0">#bfc3e8</color>
+    <color name="deepBlue1">#8088d1</color>
+    <color name="deepBlue2">#414dbb</color>
+    <color name="deepBlue3">#0111a4</color>
+
+    <color name="c1">#091029</color>
+    <color name="c1_dark">#050916</color>
+    <color name="c11">#192a66</color>
+    <color name="c1_transaprent">#88091029</color>
+    <color name="c1_transaprent_1">#EE091029</color>
+    <color name="c2">#24206C</color>
+    <color name="c3">#3C1F5B</color>
+    <color name="c4">#581B49</color>
+    <color name="c5">#56568E</color>
+    <color name="c6">#6A4F7A</color>
+    <color name="c7">#78516D</color>
+
+    <color name="start_color">#292178</color>
+    <color name="start_color_1">#AA292178</color>
+    <color name="center_color">#43215F</color>
+    <color name="center_color_1">#AA43215F</color>
+    <color name="end_color">#562343</color>
+    <color name="end_color_11">#a63e7f</color>
+    <color name="end_color_1">#AA562343</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_0_0">#F3F3F3</color>
+    <color name="gray_0">#F1F1F1</color>
+    <color name="gray_0_trans">#55F1F1F1</color>
+    <color name="gray_3_trans">#55a7a7a7</color>
+    <color name="gray_4_trans">#55767272</color>
+    <color name="gray_5_trans">#551a1919</color>
+    <color name="gray_6_trans">#991a1919</color>
+    <color name="gray_1">#e4e2e2</color>
+    <color name="gray_2">#cecdcd</color>
+    <color name="gray_3">#a7a7a7</color>
+    <color name="gray_4">#767272</color>
+    <color name="gray_5">#403d3d</color>
+    <color name="gray_6">#1a1919</color>
+    <color name="gray_7">#080808</color>
+
+    <color name="gray_start_trans">#00FFFFFF</color>
+    <color name="gray_center_trans">#22000000</color>
+    <color name="gray_end_trans">#DD000000</color>
+
+    <!--Dark gradient bg-->
+    <color name="dark_bg_start">#00202A</color>
+    <color name="dark_bg_end">#000304</color>
+
+    <color name="colorWhiteTransparent">#AAFFFFFF</color>
+    <color name="colorBlackTransparent">#AA000000</color>
+    <color name="colorBlackTransparent_0">#00000000</color>
+    <color name="colorBlackTransparent_0_0">#55000000</color>
+    <color name="colorBlackTransparent_0_0_0">#33000000</color>
+    <color name="colorBlackTransparent_1">#cc000000</color>
+    <color name="colorBlackTransparent_2">#C8000000</color>
+    <color name="colorBlackTransparent_1_1">#DD000000</color>
+
+    <color name="ios_bg">#80444444</color>
+    <color name="colorCardBg">#88FFFFFF</color>
+    <color name="colorCardBg_1">#44FFFFFF</color>
+    <color name="colorGreenTrans">#AA4CAF50</color>
+    <color name="colorYellowTrans">#AAFF9800</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorYellow">#FF9800</color>
+    <color name="cmnBgColor">#edefef</color>
+    <color name="cmnBgColor_1">#44edefef</color>
+    <color name="yellow">#FAF39B</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="red">#FF0000</color>
+    <color name="red_1">#f1676a</color>
+    <color name="blue_1">#06c1fa</color>
+    <color name="green_vectr">#FF00aa00</color>
+    <color name="colorGreen_1">#45be89</color>
+    <color name="colorGreen_2">#0dbc6f</color>
+    <color name="colorYellow_1">#efa04b</color>
+    <color name="colorYellow_2">#f2aa00</color>
+    <color name="colorYellow_2_trans">#EEf2aa00</color>
+    <color name="colorAccent_1">#34a7e1</color>
+    <color name="gray_4_1">#adb7c0</color>
+
+    <!--   Call log status color    -->
+    <color name="colorMissedCallBg">#44FA3131</color>
+    <color name="colorMissedCall">#FA3131</color>
+    <color name="colorReceivedCallBg">#4418A700</color>
+    <color name="colorIncomingCall">#18A700</color>
+    <color name="colorOutgoingCallBg">#443A81FD</color>
+    <color name="colorOutgoingCall">#3A81FD</color>
+    <color name="rippleMaskColor">#000000</color>
+</resources>

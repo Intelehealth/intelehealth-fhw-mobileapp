@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">لا إجابة من %1$s</string>
+    <string name="call_canceled_by">نهاية المكالمة بحلول %1$s</string>
+    <string name="call_rejected_by">تم رفض المكالمة بواسطة %1$s</string>
+    <string name="call_time_up">انتهى وقت المكالمة</string>
+    <string name="left_the_call">المكالمة التي تركتها %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">تم قطع المكالمة بسبب عدم بدئها</string>
+    <string name="reason_duplicated_identity">تم قطع المكالمة بسبب الهوية المكررة</string>
+    <string name="reason_server_shutdown">تم قطع المكالمة بسبب إيقاف تشغيل الخادم</string>
+    <string name="reason_participant_removed">تم قطع المكالمة بسبب إزالة المشارك</string>
+    <string name="reason_room_deleted">تم قطع المكالمة بسبب عدم العثور على الغرف</string>
+    <string name="reason_state_mismatch">تم قطع المكالمة بسبب عدم تطابق الغرفة</string>
+    <string name="reason_join_failure">تم قطع المكالمة بسبب الفشل في الانضمام إلى الغرفة</string>
+    <string name="reason_unknown">تم قطع الاتصال لسبب غير معروف</string>
+
+    <string name="call_missed">مكالمة فائتة</string>
+    <string name="call_outgoing">مكالمة خارجية</string>
+    <string name="call_ongoing">مكالمة جارية</string>
+    <string name="call_unknown">مجهول</string>
+    <string name="call_incoming">مكالمة واردة</string>
+    <string name="calling">الاتصال</string>
+    <string name="call_logs">سجلات المكالمات</string>
+
+    <string name="an_hour_ago">منذ ساعة</string>
+    <string name="hours_ago">%1$s منذ ساعات</string>
+    <string name="a_min_ago">منذ دقيقة</string>
+    <string name="mins_ago">%1$s منذ دقيقة</string>
+    <string name="a_second_ago">منذ ثانية واحدة</string>
+    <string name="seconds_ago">%1$s قبل ثواني</string>
+    <string name="today">اليوم</string>
+    <string name="today_at">اليوم في</string>
+    <string name="yesterday">أمس</string>
+    <string name="yesterday_at">البارحة عند</string>
+    <string name="now">الآن</string>
+
+    <string name="decline">رفض المكالمة</string>
+    <string name="accept">يقبل</string>
+    <string name="hang_up">يشنق</string>
+</resources>

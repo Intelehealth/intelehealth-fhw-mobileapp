@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <string name="settings_name" translatable="false">ସେଟିଂସମୂହ</string>
+    <string name="disconnect_call">Отключить вызов</string>
+    <string name="room_description">Пожалуйста, введите название комнаты. Названия комнат доступны всем, поэтому придумайте что-нибудь уникальное и отправьте его другу.</string>
+    <string name="favorites">Избранное</string>
+    <string name="no_favorites">Нет избранных</string>
+    <string name="invalid_url_title">Недействительный URL</string>
+    <string name="invalid_url_text">При вводе URL-адреса или названия комнаты был получен недопустимый URL-адрес: </string>
+    <string name="channel_error_title">Ошибка подключения</string>
+    <string name="connecting_to">Соединение с: %1$s</string>
+    <string name="missing_url">ФАТАЛЬНАЯ ОШИБКА: Отсутствует URL-адрес для подключения.</string>
+    <string name="camera2_texture_only_error">Камера 2 поддерживает только захват в текстуру. Либо отключите Камера2, либо включите захват в текстуру в опциях.</string>
+    <string name="ok">OK</string>
+    <string name="switch_camera">Переключение передней/задней камеры</string>
+    <string name="capture_format_change_text">Сдвиньте, чтобы изменить формат захвата</string>
+    <string name="muted">Отключить звук</string>
+    <string name="toggle_debug">Переключить вид отладки</string>
+    <string name="toggle_mic">Включить/выключить микрофон</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_loopback">Подключение шлейфа</string>
+    <string name="connect_description">Подключение к комнате</string>
+    <string name="add_favorite_description">Добавить любимого</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+
+    <string name="video_on_lbl">Включить видео!</string>
+    <string name="video_off_lbl">Выключить видео!</string>
+    <string name="call_end_lbl">Завершение вызова!</string>
+    <string name="audio_off_lbl">Аудио Выкл!</string>
+    <string name="audio_on_lbl">Включение звука!</string>
+    <string name="flip_camera">Откидная камера</string>
+    <string name="video_on_off_button">Кнопка включения/выключения видео</string>
+    <string name="call_end_button">Кнопка завершения вызова</string>
+    <string name="audio_on_off_button">Кнопка включения/выключения звука</string>
+    <string name="you">Вы</string>
+    <string name="start_call_now">Начать звонок сейчас</string>
+    <string name="start_txt_chat_now">Начать текстовый чат сейчас</string>
+    <string name="connecting">Подключение…</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="dummy_text_1">Lorem ipsum dolor sit amet</string>
+    <string name="you_have_no_messages_start_sending_messages_now">У вас нет сообщений! Начните отправлять сообщения прямо сейчас.</string>
+    <string name="empty_message_txt">Пожалуйста, напишите свое сообщение!</string>
+    <string name="loading">Загрузка…</string>
+    <string name="video_call">Видеозвонок</string>
+    <string name="please_wait_for_doctor">Пожалуйста, дождитесь готовности доктора.</string>
+    <string name="call_end_aler_txt">Вы хотите завершить видеозвонок?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <string name="type_text_here_str">Введите здесь…</string>
+
+    <string name="take_photo_lbl">Сделать фото</string>
+    <string name="choose_from_gallery_lbl">Выбрать из галереи</string>
+    <string name="cancel_lbl">Отменить</string>
+    <string name="max_doc_size_toast">Максимальный размер документа - 512 КБ</string>
+    <string name="choose_documents">Выберите документы</string>
+    <string name="read">Прочитать</string>
+    <string name="sent">Отправлено</string>
+    <string name="msg_delivered">Доставлено</string>
+    <string name="sending">Отправка</string>
+    <string name="max_5_image">Максимум 5 изображений, которые вы можете отправить в одном случае</string>
+    <string name="max_2_image">Максимум 2 изображений, которые вы можете отправить в одном случае</string>
+    <string name="select">Выберите</string>
+    <string name="camera_permission_denied">Разрешение на камеру отклонено!</string>
+    <string name="unable_to_pick_data">Невозможно выбрать данные галереи!</string>
+    <string name="max_doc_size_toast_mb">Максимальный размер документа - 1 МБ</string>
+    <string name="doctor_annotation">Доктор</string>
+    <string name="disconnected">Отключен!</string>
+    <string name="enter_room_id">Пожалуйста, введите номер комнаты</string>
+    <string name="permission_denied">Разрешение отклонено\n</string>
+
+    <string name="incoming_voice_call">Входящий голосовой вызов</string>
+    <string name="incoming_call">Входящий звонок</string>
+    <string name="doctor_profile_picture">Фотография профиля врача</string>
+    <string name="poor_connection">Плохое соединение</string>
+    <string name="remote_participant_mic_off_status">Состояние микрофона удаленного участника выключено</string>
+    <string name="sender_image">Изображение отправителя</string>
+    <string name="select_spinner">Выберите</string>
+    <string name="call_swipe_up">Проведите вверх</string>
+    <string name="release_now">Освободить сейчас</string>
+    <string name="chat_text_reach_to_limit">You reach to max limit of 1000 chars</string>
+</resources>

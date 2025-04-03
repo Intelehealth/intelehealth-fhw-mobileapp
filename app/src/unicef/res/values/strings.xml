@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Telemed KG</string>
+    <string name="intro_title_1">Who are we?</string>
+    <string name="intro_tagline_1">Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare. It helps in saving patients from traveling miles for healthcare.</string>
+    <string name="intro_title_2">Take patient visits</string>
+    <string name="intro_tagline_2">Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history.</string>
+    <string name="intro_title_3">Provide prescriptions</string>
+    <string name="intro_tagline_3">The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.</string>
+</resources>

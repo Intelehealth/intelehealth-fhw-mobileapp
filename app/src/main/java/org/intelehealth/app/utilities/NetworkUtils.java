@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.core.content.ContextCompat;
@@ -29,21 +30,21 @@ public class NetworkUtils {
     }
 
     public void callBroadcastReceiver() {
-        if (context != null) {
-            if (!isReceiverRegistered) {
-                IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-                receiver = new NetworkChangeReceiver();
-                ContextCompat.registerReceiver(
-                        context,
-                        receiver,
-                        filter,
-                        ContextCompat.RECEIVER_NOT_EXPORTED
-                );
-                isReceiverRegistered = true;
+        try {
+            if (context != null) {
+                if (!isReceiverRegistered) {
+                    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+                    receiver = new NetworkChangeReceiver();
+                    ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+                    isReceiverRegistered = true;
+                }
+            } else {
+                CustomLog.d("TAG", "callBroadcastReceiver: context is null");
             }
-        } else {
-            CustomLog.d("TAG", "callBroadcastReceiver: context is null");
+        } catch (IllegalArgumentException e) {
+            CustomLog.e("NetworkUtils", "BroadcastReceiver:" + e.getMessage(), e);
         }
+
 
     }
 
@@ -80,9 +81,14 @@ public class NetworkUtils {
     }
 
     public void unregisterNetworkReceiver() {
-        if (receiver != null) {
-            context.unregisterReceiver(receiver);
+        try {
+            if (receiver != null) {
+                context.unregisterReceiver(receiver);
+            }
+        } catch (IllegalArgumentException e) {
+            CustomLog.e("NetworkUtils", "BroadcastReceiver: not registered=>" + e.getMessage(), e);
         }
+
     }
 
     public interface InternetCheckUpdateInterface {

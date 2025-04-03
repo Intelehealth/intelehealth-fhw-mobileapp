@@ -1,22 +1,28 @@
 package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
+import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import org.intelehealth.app.utilities.CustomLog;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Prajwal Waingankar
@@ -25,14 +31,27 @@ import org.intelehealth.app.utilities.exception.DAOException;
  */
 
 
-public class VisitAttributeListDAO {
+public class VisitAttributeListDAO extends BaseDao{
     private long createdRecordsCount = 0;
     private static final String TAG = "VisitAttributeListDAO";
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                visitsList.add(createVisitAttributeMap(visitDTO));
+            }
+        }
+        executeInBackground(bulkInsert(visitsList));
+
+       /* boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -48,7 +67,7 @@ public class VisitAttributeListDAO {
             db.endTransaction();
 
         }
-
+*/
         return isInserted;
     }
 
@@ -69,14 +88,18 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                } else {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+//                if (createdRecordsCount != -1) {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                } else {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                }
             }
         } catch (SQLException e) {
             isCreated = false;
@@ -191,4 +214,20 @@ public class VisitAttributeListDAO {
 
         return specialityValue;
     }
+
+    @Override
+    String tableName() {
+        return "tbl_visit_attribute";
+    }
+    public HashMap<String, Object> createVisitAttributeMap(VisitAttributeDTO visitDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", visitDTO.getUuid());
+        values.put("visit_uuid", visitDTO.getVisit_uuid());
+        values.put("value", visitDTO.getValue());
+        values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
+        values.put("voided", visitDTO.getVoided());
+        values.put("sync", "1");
+        return values;
+    }
+
 }

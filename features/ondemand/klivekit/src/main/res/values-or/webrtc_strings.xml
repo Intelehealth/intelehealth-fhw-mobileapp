@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">କିଛି ଉତ୍ତର ନାହିଁ %1$s</string>
+    <string name="call_canceled_by">କଲ୍ ଶେଷ ଦ୍ଵାରା %1$s</string>
+    <string name="call_rejected_by">କଲ ଖାରଜ ହେଲା %1$s</string>
+    <string name="call_time_up">କଲ ଠିକ୍ ସମୟରେ</string>
+    <string name="left_the_call">କଲ ସମାପ୍ତ ହୁଏ %1$s</string>
+    <string name="you_declined_call">You declined call</string>
+    <string name="reason_not_initiated">କଲ ହୋଇନାହିଁ ଯେହେତୁ ଆରମ୍ଭ କରିନ</string>
+    <string name="reason_duplicated_identity">କଲ ବିଛିନ୍ନ ହୋଇଛି ଅବିକଳ ଚିହ୍ନ୍ନଟ ପାଇଁ</string>
+    <string name="reason_server_shutdown">କଲ ବିଛିନ୍ନ ହୋଇଛି ସର୍ଭର୍ ବନ୍ଦ ହେବା ଯୋଗୁଁ</string>
+    <string name="reason_participant_removed">ବିଛିନ୍ନ ହୋଇଛି ଯୋଗଦାନ କରି ପରିତ୍ୟାଗ କାରଣ ପାଇଁ</string>
+    <string name="reason_room_deleted">କଲ ବିଛିନ୍ନ ହୋଇଛି ରୁମ ନ ମିଳିବା ଯୋଗୁଁ</string>
+    <string name="reason_state_mismatch">କଲ ବିଛିନ୍ନ ହୋଇଛି ରୁମ୍ ମେଳ ଖାଉ ନଥିବାରୁ</string>
+    <string name="reason_join_failure">କଲ ବିଛିନ୍ନ ହୋଇଛି ରୁମ୍ ଯୋଗ ନ ହେଇ ଥିବା କାରଣ ରୁ</string>
+    <string name="reason_unknown">କଲ ବିଛିନ୍ନ ହୋଇଛି ଅଜଣା କାରଣ ପାଇଁ</string>
+
+    <string name="call_missed">ମିସ କଲ୍</string>
+    <string name="call_outgoing">ଆଉଟ୍ ଗୋଇଁ କଲ୍</string>
+    <string name="call_ongoing">ଅନ୍ ଗୋଇଁ କଲ୍</string>
+    <string name="call_unknown">ଅଜଣା</string>
+    <string name="call_incoming">ଇନ୍ କମିଂ କଲ୍</string>
+    <string name="call_logs">କଲ ଲଗ୍ଇନ୍ ସବୁ</string>
+    <string name="calling">କଲିଙ୍ଗ</string>
+
+    <string name="an_hour_ago">ଏକ ଘଣ୍ଟା ପୂର୍ବରୁ</string>
+    <string name="hours_ago">%1$s ଘଂଟା ପୁର୍ବରୁ</string>
+    <string name="a_min_ago">ଏକ ମିନିଟ୍ ପୂର୍ବରୁ</string>
+    <string name="mins_ago">%1$s ମିନିଟ୍ ପୂର୍ବରୁ</string>
+    <string name="a_second_ago">ଏକ ସେକେଣ୍ଡ ପୂର୍ବରୁ</string>
+    <string name="seconds_ago">%1$s ସେକେଣ୍ଡ ପୂର୍ବରୁ</string>
+    <string name="today">ଆଜି</string>
+    <string name="today_at">ଏବେର</string>
+    <string name="yesterday">ଗତକାଲି</string>
+    <string name="yesterday_at">ଗତକାଲିର</string>
+    <string name="now">ବର୍ତ୍ତମାନ</string>
+
+    <string name="decline">ମନା କରିବା</string>
+    <string name="accept">ଗ୍ରହଣ କରିବା</string>
+    <string name="hang_up">ଲଟକି ରହିବା, ଲାଗି ରହିବା, ଟାଗିଂବା</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/white">
+    <item>
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/red" />
+                    <padding
+                        android:bottom="@dimen/stander_padding"
+                        android:left="@dimen/stander_padding"
+                        android:right="@dimen/stander_padding"
+                        android:top="@dimen/stander_padding" />
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_call_end" />
+        </layer-list>
+    </item>
+</ripple>

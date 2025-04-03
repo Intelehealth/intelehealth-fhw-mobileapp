@@ -3,15 +3,18 @@ package org.intelehealth.app.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.annotation.ArrayRes
 import com.google.gson.Gson
 import org.intelehealth.app.activities.identificationActivity.model.Block
 import org.intelehealth.app.activities.identificationActivity.model.DistData
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.activities.identificationActivity.model.StateData
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster
 import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.app.IntelehealthApplication
+import java.io.File
 import java.util.Locale
 
 /**
@@ -21,6 +24,7 @@ import java.util.Locale
  **/
 object LanguageUtils {
     private const val STATE_DISTRICT_JSON = "state_district_tehsil.json"
+    private const val PROVINCE_AND_CITIES_JSON = "province_and_cities.json"
 
     @JvmStatic
     fun getLocalLang(): String {
@@ -30,13 +34,24 @@ object LanguageUtils {
 
     @JvmStatic
     fun getState(state: String): StateData? {
-        return parseStatesJson().stateDataList.find { it.state == state }
+        return parseStatesJson().stateDataList.find {it.state == state || it.stateMarathi == state}
+    }
+
+    @JvmStatic
+    fun getProvince(province: String): String? {
+        return getProvincesAndCities().provinces.find { it == province }
+    }
+
+    @JvmStatic
+    fun getCity(city: String): String? {
+        return getProvincesAndCities().cities.find { it == city }
     }
 
     @JvmStatic
     fun getStateList(): List<StateData>? {
         return parseStatesJson().stateDataList
     }
+
 
     @JvmStatic
     fun parseStatesJson(): StateDistMaster {
@@ -49,14 +64,31 @@ object LanguageUtils {
         )
     }
 
+    /**
+     * specially for Kazakhstan
+     */
+    @JvmStatic
+    fun getProvincesAndCities(): ProvincesAndCities {
+        val context = IntelehealthApplication.getAppContext()
+        val file = File(context.filesDir, PROVINCE_AND_CITIES_JSON)
+        if (!file.exists()) {
+            return ProvincesAndCities() // Return an empty ProvincesAndCities object or some other default behavior
+        }
+        val jsonObject = FileUtils.encodeJSON(context, PROVINCE_AND_CITIES_JSON)
+        return Gson().fromJson(
+            jsonObject.toString(),
+            ProvincesAndCities::class.java
+        )
+    }
+
     @JvmStatic
     fun getDistrict(state: StateData?, district: String): DistData? {
-        return state?.distDataList?.find { it.name == district }
+        return state?.distDataList?.find { it.name == district  || it.nameMarathi == district }
     }
 
     @JvmStatic
     fun getBlock(district: DistData?, block: String?): Block? {
-        return block?.let { return@let district?.blocks?.find { it.name == block } }
+        return block?.let { return@let district?.blocks?.find { it.name == block || it.nameMarathi == block } }
     }
 
     @JvmStatic
@@ -66,13 +98,16 @@ object LanguageUtils {
 
     @JvmStatic
     fun getVillage(gramPanchayat: GramPanchayat?, village: String?): Village? {
-        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village } }
+        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village || it.nameMarathi == village} }
     }
 
     @JvmStatic
     fun getStateLocal(state: StateData): String {
-        if (getLocalLang().equals("hi")) return state.stateHindi
-        return state.state
+        return when (getLocalLang()) {
+            "hi" -> state.stateHindi
+            "mr" -> state.stateMarathi
+            else -> state.state
+        }
     }
 
     @JvmStatic
@@ -110,7 +145,7 @@ object LanguageUtils {
     fun getLocalValueFromArray(
         context: Context,
         dbString: String,
-        @ArrayRes arrayResId: Int
+        @ArrayRes arrayResId: Int,
     ): String {
         return if (SessionManager(context).appLanguage.equals("en").not()) {
             val array = context.resources.getStringArray(arrayResId)
@@ -120,4 +155,49 @@ object LanguageUtils {
             else ""
         } else dbString
     }
+
+
+    // Function to get a string array for a specific locale
+    fun getStringArrayInLocale(
+        context: Context,
+        arrayResId: Int,
+        languageCode: String?,
+    ): Array<String> {
+        // Create a new Locale for the desired language
+        val locale = Locale(languageCode)
+
+        // Create a new Configuration with the desired Locale
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        // Get a Resources object with the updated Locale
+        val localizedResources = context.createConfigurationContext(config).resources
+
+        // Retrieve the string array for the desired language
+        return localizedResources.getStringArray(arrayResId)
+    }
+
+    fun getStringInLocale(context: Context, stringResId: Int, languageCode: String?): String {
+        // Create a new Locale for the desired language
+        val locale = Locale(languageCode)
+
+        // Create a new Configuration with the desired Locale
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        // Get a Resources object with the updated Locale
+        val localizedResources = context.createConfigurationContext(config).resources
+
+        // Retrieve the string resource for the desired language
+        return localizedResources.getString(stringResId)
+    }
+    @JvmStatic
+    fun getStateInEnglish(state: StateData): String {
+             return state.state
+    }
+    @JvmStatic
+    fun getDistrictInEnglish(district: DistData): String {
+        return district.name
+    }
+
 }
