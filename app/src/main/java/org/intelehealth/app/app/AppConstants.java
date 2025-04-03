@@ -132,6 +132,9 @@ public class AppConstants {
     public static final int RISK_LIMIT_SUGAR_RANDOM_LOWER = 80;
     public static final int RISK_LIMIT_SUGAR_RANDOM_UPPER = 130;
 
+    public static final int BEFORE_DECIMAL_PLACE_MAX_COUNT = 3;
+    public static final int AFTER_DECIMAL_PLACE_MAX_ONE_COUNT = 1;
+
     //functions constants
 
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";

@@ -1,7 +1,10 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.app.AppConstants.AFTER_DECIMAL_PLACE_MAX_ONE_COUNT;
+import static org.intelehealth.app.app.AppConstants.BEFORE_DECIMAL_PLACE_MAX_COUNT;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
+import static org.intelehealth.app.utilities.EditTextUtils.decimalPlacesCount;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -542,7 +545,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
             if (editText.getId() == R.id.etv_bp_dia) {
-                if(!val.isEmpty()){
+                if (!val.isEmpty()) {
                     int dia = Integer.parseInt(val);
                     mBpDiaEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal));
                     if (dia < 80) {
@@ -551,8 +554,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mBpDiaEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_dia2_ekal));
                     }
                 }
-            } else if(editText.getId() == R.id.etv_bp_sys) {
-                if(!val.isEmpty()){
+            } else if (editText.getId() == R.id.etv_bp_sys) {
+                if (!val.isEmpty()) {
                     int sys = Integer.parseInt(val);
                     mBpSysEditText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.ui2_bp_default_ekal));
                     if (sys >= 90 && sys < 120) {
@@ -588,7 +591,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mHeightErrorTextView.setVisibility(View.VISIBLE);*/
                 //mHeightEditText.requestFocus();
                 /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                return true;
+//                return true;
             }
         } else {
             mHeightErrorTextView.setVisibility(View.GONE);
@@ -603,7 +606,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     /*mHeightErrorTextView.setVisibility(View.VISIBLE);
                     mHeightErrorTextView.setText(getString(R.string.error_field_required));*/
                     /*mHeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                    return true;
+//                    return true;
                 }
             } else {
                 if ((Double.parseDouble(heightVal) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) ||
@@ -639,7 +642,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mWeightErrorTextView.setVisibility(View.VISIBLE);*/
                 //mWeightEditText.requestFocus();
                 /*mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                return true;
+//                return true;
             }
         } else {
             mWeightErrorTextView.setVisibility(View.GONE);
@@ -654,7 +657,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     /*mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightErrorTextView.setText(getString(R.string.error_field_required));
                     mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                    return true;
+//                    return true;
                 }
             } else {
                 if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
@@ -664,7 +667,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightEditText.requestFocus();
                     mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
-                    return true;
+//                    return true;
                 } else {
                     mWeightErrorTextView.setVisibility(View.GONE);
                     mWeightEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -974,6 +977,17 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else {
                 mHaemoglobinErrorTextView.setVisibility(View.GONE);
                 mHaemoglobinText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            }
+
+            if (mHaemoglobinText.getText().toString().startsWith(".")) {
+                mHaemoglobinText.setText("");
+            }
+            String str = mHaemoglobinText.getText().toString();
+            String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
+
+            if (!str2.equals(str)) {
+                mHaemoglobinText.setText(str2);
+                mHaemoglobinText.setSelection(str2.length());
             }
         }
 
@@ -1426,7 +1440,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if (!value.equalsIgnoreCase("0")) {
                     heightvalue = value;
                     String height = VisitUtils.convertHeightIntoFeets(value, requireContext());
-                    if(heightAdapter == null){
+                    if (heightAdapter == null) {
                         String heightStr = "height_" + sessionManager.getAppLanguage();
                         int heightArray = getResources().getIdentifier(heightStr, "array", requireActivity().getPackageName());
                         heightAdapter = ArrayAdapter.createFromResource(requireContext(), heightArray, android.R.layout.simple_spinner_dropdown_item);

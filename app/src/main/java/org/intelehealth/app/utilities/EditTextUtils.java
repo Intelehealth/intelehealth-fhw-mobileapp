@@ -87,4 +87,32 @@ public class EditTextUtils {
             return Character.isLetter(c) || Character.isSpaceChar(c) || (c >= 0x0900 && c <= 0x097F); // Unicode range for Devanagari (Marathi, Hindi, etc.);   // This allows only alphabets.
         }
     };
+
+    public static String decimalPlacesCount(String str, int maxBeforePoint, int maxDecimal) {
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0, up = 0, decimal = 0;
+        char t;
+
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && !after) {
+                up++;
+                if (up > maxBeforePoint) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > maxDecimal)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+
+        return rFinal;
+    }
 }
