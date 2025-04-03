@@ -1315,6 +1315,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
                 if (flagType == AppConstants.SYNC_FAILED) {
+                    Timber.d("SharedPreferences: Sync Failed %s", true);
                     if (sessionManager.isFirstTimeLaunched()) {
                         hideSyncProgressBar(false);
                         showRefreshFailedDialog();
@@ -1359,27 +1360,22 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
         saveToken();
-//        requestPermission();
-        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
 
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
-            if (isSuccess) {
-                saveToken();
-                sessionManager.setFirstTimeLaunched(false);
-                sessionManager.setMigration(true);
-                // initial setup/sync done and now we can set the periodic background sync job
-                // given some delay after initial sync
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-                    }
-                }, 10000);
-            }
         }
+
+        if (isSuccess) {
+            saveToken();
+            sessionManager.setFirstTimeLaunched(false);
+            sessionManager.setMigration(true);
+            // initial setup/sync done and now we can set the periodic background sync job
+            // given some delay after initial sync
+            new Handler().postDelayed(() -> WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST), 10000);
+        }
+
 //        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
 //            stopService(serviceIntent);

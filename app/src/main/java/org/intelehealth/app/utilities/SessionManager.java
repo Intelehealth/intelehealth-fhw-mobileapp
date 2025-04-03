@@ -9,6 +9,8 @@ import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.Set;
 
+import timber.log.Timber;
+
 public class SessionManager {
     // Shared preferences file name
     public static SessionManager instance;
@@ -38,7 +40,7 @@ public class SessionManager {
     private static final String RETURNING = "returning";
     private static final String PULLED = "pulled";
     private static final String NEW_DATABASE = "newDatabase";
-    private static final String FIRST_TIME_LAUNCHED = "firsttimelaunched";
+    private static final String FIRST_TIME_LAUNCHED = "first_time_launched";
     private static final String SYNC_FINISHED = "syncfinished";
     private static final String LAST_PULLED_EXECUTED_DATE_TIME = "lastpulledexecutedtimeanddate";
     private static final String LAST_SYNC_SUCCESS_DATE_TIME = "lastsyncsuccessdatetime";
