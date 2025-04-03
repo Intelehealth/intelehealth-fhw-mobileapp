@@ -296,7 +296,7 @@ public class VisitsDAO extends BaseDao{
         return visitDTOList;
     }
 
-    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+    private List<VisitAttribute_Speciality> fetchVisitAttrsOld(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         // VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
@@ -1232,5 +1232,23 @@ public class VisitsDAO extends BaseDao{
 
         return count;
     }
+    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+        List<VisitAttribute_Speciality> list = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
+                new String[]{visit_uuid ,"0", "false"});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
+                attribute.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                attribute.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                attribute.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                list.add(attribute);
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
 
 }
