@@ -430,7 +430,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         });
 
         addpatient_cardview.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), PrivacyPolicyActivity_New.class);
+            Intent intent = new Intent(requireActivity(), AbdmMainActivity.class);
             intent.putExtra("intentType", "navigateFurther");
             intent.putExtra("add_patient", "add_patient");
             startActivity(intent);
