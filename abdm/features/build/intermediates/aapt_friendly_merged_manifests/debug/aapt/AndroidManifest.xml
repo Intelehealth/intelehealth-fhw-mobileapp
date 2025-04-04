@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.intelehealth.abdm.features" >
+
+    <uses-sdk android:minSdkVersion="24" />
+
+    <application>
+        <activity
+            android:name="org.intelehealth.abdm.features.AbdmMainActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+
+</manifest>

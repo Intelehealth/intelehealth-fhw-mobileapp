@@ -1,0 +1,21 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.intelehealth.abdm.features" >
+4
+5    <uses-sdk android:minSdkVersion="24" />
+6
+7    <application>
+7-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:4:5-10:19
+8        <activity
+8-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:5:9-9:58
+9            android:name="org.intelehealth.abdm.features.AbdmMainActivity"
+9-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:6:13-44
+10            android:exported="false"
+10-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:7:13-37
+11            android:theme="@style/AppTheme.NoActionBar"
+11-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:8:13-56
+12            android:windowSoftInputMode="adjustResize" />
+12-->/Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:9:13-55
+13    </application>
+14
+15</manifest>

@@ -1,0 +1,5 @@
+org.intelehealth.abdm.common.test.common-jetified-core-1.6.1-0 /Users/poonamdipti/.gradle/caches/transforms-3/8afb8e584156c931e6fdd33769c4a620/transformed/jetified-core-1.6.1/res
+org.intelehealth.abdm.common.test.common-androidTest-1 /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/common/build/generated/res/resValues/androidTest/debug
+org.intelehealth.abdm.common.test.common-mergeDebugAndroidTestResources-2 /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/common/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+org.intelehealth.abdm.common.test.common-mergeDebugAndroidTestResources-3 /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/common/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+org.intelehealth.abdm.common.test.common-merged_res-4 /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/common/build/intermediates/merged_res/debugAndroidTest

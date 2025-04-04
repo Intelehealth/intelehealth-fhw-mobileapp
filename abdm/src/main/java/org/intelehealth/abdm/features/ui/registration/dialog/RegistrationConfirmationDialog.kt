@@ -12,15 +12,22 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import org.intelehealth.abdm.R
 import org.intelehealth.abdm.common.utils.ToastUtil
+import org.intelehealth.abdm.databinding.DialogAbdmPatientRegistrationConfirmationBinding
 import org.intelehealth.abdm.databinding.DialogAbdmRegistrationConfirmationBinding
+import org.intelehealth.abdm.features.ui.registration.AadhaarVerificationActivity
 import org.intelehealth.abdm.features.ui.registration.AbhaRegistrationConsentActivity
 
 
 class RegistrationConfirmationDialog : DialogFragment() {
-    private lateinit var mBinding: DialogAbdmRegistrationConfirmationBinding
+    private lateinit var mBinding: DialogAbdmPatientRegistrationConfirmationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateView(
@@ -28,22 +35,26 @@ class RegistrationConfirmationDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding =
-            DialogAbdmRegistrationConfirmationBinding.inflate(inflater, container, false)
+            DialogAbdmPatientRegistrationConfirmationBinding.inflate(inflater, container, false)
         initialization()
         setClickListener()
         return mBinding.root
     }
 
     private fun initialization() {
-        mBinding.btnYes.btnDecline.text = getString(R.string.yes)
-        mBinding.btnNo.btnActive.text = getString(R.string.no)
+        mBinding.btnAccept.btnActive.text = getString(R.string.yes)
+        mBinding.btnCAbha.btnDecline.text = getString(R.string.create_abha)
+        mBinding.btnCWAbha.btnDecline.text = getString(R.string.continue_without_abha)
     }
 
     private fun setClickListener() {
-        mBinding.btnYes.btnDecline.setOnClickListener {
-            startActivity(Intent(requireContext(),AbhaRegistrationConsentActivity::class.java))
+        mBinding.btnAccept.btnActive.setOnClickListener {
+            ToastUtil.showShortToast(requireContext(), "Work in progress")
         }
-        mBinding.btnNo.btnActive.setOnClickListener {
+        mBinding.btnCAbha.btnDecline.setOnClickListener {
+             startActivity(Intent(requireContext(), AadhaarVerificationActivity::class.java))
+        }
+        mBinding.btnCWAbha.btnDecline.setOnClickListener {
             ToastUtil.showShortToast(requireContext(), "Work in progress")
         }
     }

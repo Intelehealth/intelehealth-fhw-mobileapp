@@ -1,0 +1,28 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:2:1-11:12
+INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:2:1-11:12
+	package
+		INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:4:5-10:19
+activity#org.intelehealth.abdm.features.AbdmMainActivity
+ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:5:9-9:58
+	android:windowSoftInputMode
+		ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:9:13-55
+	android:exported
+		ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:7:13-37
+	android:theme
+		ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:8:13-56
+	android:name
+		ADDED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml:6:13-44
+uses-sdk
+INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml
+INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/poonamdipti/Desktop/latest git projects/intelehealth-fhw-mobileapp/abdm/features/src/main/AndroidManifest.xml
