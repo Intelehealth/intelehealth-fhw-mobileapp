@@ -137,7 +137,8 @@ public class VisitsDAO extends BaseDao{
                 values.put("visit_attribute_type_uuid", visit.getVisit_attribute_type_uuid());
                 values.put("visituuid", visit.getVisit_uuid());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", "true");
+                //values.put("sync", "true");
+                values.put("sync", "false"); //end visit issue in nas due to duplicate visit attrs- now we cane send only unsyncd attr to push api
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -295,7 +296,7 @@ public class VisitsDAO extends BaseDao{
         return visitDTOList;
     }
 
-    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+    private List<VisitAttribute_Speciality> fetchVisitAttrsOld(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         // VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
@@ -305,8 +306,10 @@ public class VisitsDAO extends BaseDao{
 //        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
 //                new String[]{/*"0", */visit_uuid});
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{/*"0", */visit_uuid});
+        /*Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
+                new String[]{*//*"0", *//*visit_uuid});*/
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
+                new String[]{visit_uuid ,"0", "false"});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
@@ -1173,7 +1176,6 @@ public class VisitsDAO extends BaseDao{
         values.put("enddate", visitDTO.getEnddate());
         values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
         values.put("sync", visitDTO.getSyncd().toString());
-        Log.d(TAG, "createVisitMap: sync : "+visitDTO.getSyncd().toString());
         return values;
     }
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
@@ -1230,5 +1232,23 @@ public class VisitsDAO extends BaseDao{
 
         return count;
     }
+    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+        List<VisitAttribute_Speciality> list = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
+                new String[]{visit_uuid ,"0", "false"});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
+                attribute.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                attribute.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                attribute.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                list.add(attribute);
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
 
 }

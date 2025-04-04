@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.CustomLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +45,7 @@ abstract class BaseDao {
                 db.setTransactionSuccessful();
             }catch(Exception e){
                 e.printStackTrace();
-                Log.d(TAG, "excec insert: e : "+e.getLocalizedMessage());
-
+                CustomLog.d(TAG, "excec insert: e "+ e.getLocalizedMessage());
             } finally {
                 db.endTransaction();
             }
@@ -67,7 +67,7 @@ abstract class BaseDao {
             }
 
             String sql = buildInsertQuery(Objects.requireNonNull(rows.get(0)));
-            Log.d(TAG, "bulkInsert: sql : " + sql);
+            //CustomLog.d(TAG, "bulkInsert: sql : "+ sql);
 
             SQLiteStatement statement = db.compileStatement(sql);
             try {
@@ -78,14 +78,14 @@ abstract class BaseDao {
                 db.setTransactionSuccessful();
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d(TAG, "excec bulkInsert: e  : " + e.getLocalizedMessage());
+                CustomLog.d(TAG, "excec bulkInsert: e  "+ e.getLocalizedMessage());
             } finally {
                 try {
                     if (db.inTransaction()) {
                         db.endTransaction(); // End transaction only if it's active
                     }
                 } catch (IllegalStateException e) {
-                    Log.e(TAG, "bulkInsert: Tried to end a transaction that wasn't started.", e);
+                    CustomLog.d(TAG, "bulkInsert: Tried to end a transaction e:  "+ e.getLocalizedMessage());
                 }
             }
         };
@@ -93,7 +93,6 @@ abstract class BaseDao {
 
     private void throwException() {
         if (tableName() == null || tableName().isEmpty()) {
-            Log.d(TAG, "excec throwException: e  : "+"Table name is not defined");
             throw new RuntimeException("Table name is not defined");
         }
     }
@@ -122,7 +121,7 @@ abstract class BaseDao {
             }
             statement.execute();
         } catch (Exception e) {
-            Log.d(TAG, " excec executeStatement: e : "+e.getLocalizedMessage());
+            CustomLog.d(TAG, "excec executeStatement: e  "+ e.getLocalizedMessage());
             e.printStackTrace();
         }
     }
@@ -136,9 +135,9 @@ abstract class BaseDao {
         }
         columns.deleteCharAt(columns.length() - 2);
         values.deleteCharAt(values.length() - 2);
-        Log.d(TAG, "buildInsertQuery: table name  : "+tableName());
-        Log.d(TAG, "buildInsertQuery: columns  : "+columns);
-        Log.d(TAG, "buildInsertQuery: values  : "+values);
+        //Log.d(TAG, "buildInsertQuery: table name  : "+tableName());
+        //Log.d(TAG, "buildInsertQuery: columns  : "+columns);
+        //Log.d(TAG, "buildInsertQuery: values  : "+values);
 
         //return "INSERT INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";
         return "INSERT OR REPLACE INTO " + tableName() + " (" + columns + ") VALUES (" + values + ")";

@@ -1142,17 +1142,26 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
         mCurrentVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitSelection = "patientuuid = ?";
-        String[] visitArgs = {patientDTO.getUuid()};
-        String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        //String visitSelection = "patientuuid = ?";
+        //String[] visitArgs = {patientDTO.getUuid()};
+        //String[] visitColumns = {"uuid", "startdate", "enddate"};
+        //String visitOrderBy = "startdate";
+        //Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         //if (visitCursor == null || visitCursor.getCount() <= 0) {
         //     findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
         //    startVisitBtn.setVisibility(View.VISIBLE);
         //} else {
         //   findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
         //   startVisitBtn.setVisibility(View.GONE);
+
+        String rawQuery ="SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+                "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NULL " +
+                "OR v.enddate = '')  AND e.encounter_type_uuid != ? ";
+
+        String[] selectionArgs = {patientDTO.getUuid(), UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY};
+
+        Cursor visitCursor = db.rawQuery(rawQuery, selectionArgs);
+
         if (visitCursor.moveToLast()) {
             do {
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1160,14 +1169,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                boolean isCompletedExitedSurvey = false;
+               /* boolean isCompletedExitedSurvey = false;
                 try {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                 } catch (DAOException e) {
                     e.printStackTrace();
                     CustomLog.e(TAG, e.getMessage());
                 }
-                if (!isCompletedExitedSurvey) {
+                if (!isCompletedExitedSurvey) {*/
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;
@@ -1314,10 +1323,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
 
 
-                }
+                //}
             } while (visitCursor.moveToPrevious());
         }
-        CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
+        //CustomLog.v(TAG, " initForOpenVisit- " +mCurrentVisitDataList.size());
+        //CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
         if (!mCurrentVisitDataList.isEmpty()) {
             PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                 @Override
@@ -2675,11 +2685,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
-        String[] visitArgs = {patientDTO.getUuid()};
-        String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+       // String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
+        //String[] visitArgs = {patientDTO.getUuid()};
+        //String[] visitColumns = {"uuid", "startdate", "enddate"};
+        //String visitOrderBy = "startdate";
+        //Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        String rawQuery ="SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+                "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NOT NULL " +
+                "AND v.enddate != '' OR e.encounter_type_uuid = ? )";
+        String[] selectionArgs = {patientDTO.getUuid(), UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY};
+
+        Cursor visitCursor = db.rawQuery(rawQuery, selectionArgs);
         if (visitCursor == null || visitCursor.getCount() <= 0) {
             findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
         } else {
@@ -2691,13 +2707,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                    boolean isCompletedExitedSurvey = false;
+                  /*  boolean isCompletedExitedSurvey = false;
                     try {
                         isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }
-                    if (isCompletedExitedSurvey) {
+                    if (isCompletedExitedSurvey) {*/
 
                         String encounterlocalAdultintial = "";
                         String encountervitalsLocal = null;
@@ -2833,7 +2849,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
                                     mPastVisitDataList.add(pastVisitData);
-                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -2842,7 +2859,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         }
 
 
-                    }
+                    //}
                 } while (visitCursor.moveToPrevious());
             }
 

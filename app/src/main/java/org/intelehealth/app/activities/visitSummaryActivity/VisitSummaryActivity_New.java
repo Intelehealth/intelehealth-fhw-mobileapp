@@ -636,8 +636,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
                 }, hour, minute, true);
         timePickerDialog.show();
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+        Button posBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        Button negBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        posBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void showDatePickerDialog() {
@@ -658,7 +663,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this,R.string.cancel), (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
                 dialog.dismiss();
@@ -667,8 +672,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         datePickerDialog.show();
         // Change button colors dynamically after the dialog is shown
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+        Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void setupSpecialization() {
@@ -3114,7 +3124,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
                     CustomLog.d("PPPPP", prescription_link);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
+                    //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link))));
 
                     // isreturningWhatsapp = true;
 

@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -450,6 +451,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         bundle.putString("patientUuid", patientUuid);
         bundle.putString("visitUuid", visitUuid);
         bundle.putString("encounterUuidVitals", encounterVitals);
+
+        handleDeviceBackPress();
+    }
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //not handling anything
+            }
+        });
     }
 
     public boolean isEditTriggerFromVisitSummary() {
@@ -1945,5 +1957,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         // Update the subtitle TextView
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
+
+
 
 }

@@ -74,7 +74,7 @@ public class SyncDAO {
     boolean isTheConfigUpdated = false;
 
 
-    public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
+    public boolean SyncData(ResponseDTO responseDTO,boolean isAppSetupDone) throws DAOException {
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         appLanguage = sessionManager.getAppLanguage();
@@ -126,9 +126,16 @@ public class SyncDAO {
                     (responseDTO.getData().getProviderAttributeList());
             Logger.logD(TAG, "insertProvidersAttributeList = " +
                              responseDTO.getData().getProviderAttributeList().size());
-
+/*
             visitAttributeListDAO.insertProvidersAttributeList(
-                    responseDTO.getData().getVisitAttributeList());
+                    responseDTO.getData().getVisitAttributeList());*/
+            if(isAppSetupDone){
+                visitAttributeListDAO.insertProvidersAttributeListAfterSetup(
+                        responseDTO.getData().getVisitAttributeList());
+            } else{
+                visitAttributeListDAO.insertProvidersAttributeList(
+                        responseDTO.getData().getVisitAttributeList());
+            }
             Logger.logD(TAG, "insertVisitAttributeList = " +
                              responseDTO.getData().getVisitAttributeList().size());
 
@@ -344,7 +351,7 @@ public class SyncDAO {
         try {
             if (!isTheConfigUpdated)
                 loadConfig();
-            sync = SyncData(response.body());
+            sync = SyncData(response.body(), true);
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
         } catch (DAOException e) {
@@ -446,7 +453,7 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
-                        sync = SyncData(response.body());
+                        sync = SyncData(response.body(), true);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                         CustomLog.e(TAG, e.getMessage());

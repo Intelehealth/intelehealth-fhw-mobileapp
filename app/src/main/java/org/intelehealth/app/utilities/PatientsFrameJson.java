@@ -69,6 +69,7 @@ public class PatientsFrameJson {
         List<Visit> visitList = new ArrayList<>();
         List<Encounter> encounterList = new ArrayList<>();
         List<Provider> providersList = new ArrayList<>();
+        Log.d(TAG, "frameJson: visitDTOList : "+new Gson().toJson(visitDTOList));
 
         if (patientDTOList != null) {
             for (int i = 0; i < patientDTOList.size(); i++) {
@@ -135,7 +136,7 @@ public class PatientsFrameJson {
         }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
-            if (visitDTO.getAttributes().size() > 0) {
+            //if (visitDTO.getAttributes().size() > 0) {
                 visit.setLocation(visitDTO.getLocationuuid());
                 visit.setPatient(visitDTO.getPatientuuid());
                 visit.setStartDatetime(visitDTO.getStartdate());
@@ -144,7 +145,7 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
-            }
+          //  }
 
         }
 
