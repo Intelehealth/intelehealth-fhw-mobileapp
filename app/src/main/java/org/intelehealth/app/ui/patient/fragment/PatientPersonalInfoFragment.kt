@@ -164,9 +164,9 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
-                gender = gender?:"F"
+                gender = gender ?: "F"
             }
         }
         binding.patient = patient
@@ -250,7 +250,7 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             binding.btnMale.isCheckable = false
             binding.btnFemale.isCheckable = false
             binding.btnOther.isCheckable = false
@@ -261,7 +261,7 @@ class PatientPersonalInfoFragment :
         }
     }
 
-    private fun bindGenderValue(){
+    private fun bindGenderValue() {
         patient.gender = when (binding.toggleGender.checkedButtonId) {
             R.id.btnMale -> "M"
             R.id.btnFemale -> "F"
@@ -370,12 +370,17 @@ class PatientPersonalInfoFragment :
     }
 
     private fun applyFilter() {
-      //  binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETFName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
-        binding.textInputETMName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
-        binding.textInputETLName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
-        binding.textInputETGuardianName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
-        binding.textInputETECName.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        //  binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputETFName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETMName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETLName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETGuardianName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETECName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
     }
 
     private fun setInputTextChangListener() {
@@ -473,6 +478,18 @@ class PatientPersonalInfoFragment :
                 )
 
             } else true
+            val bEPhone = if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length()>0 && binding.textInputETEMPhoneNumber.length()<10) {
+                binding.textInputLayEMPhoneNumber.validate(binding.textInputETEMPhoneNumber, error)
+                    .and(
+                        binding.textInputLayEMPhoneNumber.validateDigit(
+                            binding.textInputETEMPhoneNumber,
+                            R.string.enter_10_digits,
+                            10
+                        )
+                    )
+
+            } else true
+
 
             val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {
                 binding.textInputLayGuardianType.validateDropDowb(
@@ -529,7 +546,7 @@ class PatientPersonalInfoFragment :
 
             if (bProfile.and(bFName).and(bMName).and(bLName).and(bGender)
                     .and(bDob).and(bAge).and(bPhone).and(bGName).and(bGuardianType)
-                    .and(bEmName).and(bEmPhone).and(bEmContactType)
+                    .and(bEmName).and(bEmPhone).and(bEmContactType).and(bEPhone)
             ) block.invoke()
         }
     }
