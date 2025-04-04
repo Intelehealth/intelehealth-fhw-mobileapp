@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.annotation.NonNull;
@@ -27,12 +28,13 @@ import java.util.regex.Pattern;
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
-     public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
+    public static final String D_FORMAT_dd_M_yyyy = "dd/M/yyyy";
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
 
-        if (date_of_birth == null) return 0;
+        if (date_of_birth == null)
+            return 0;
 
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -57,10 +59,14 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if (period.getYears() > 0) xyears = period.getYears();
-        else xyears = 0;
-        if (period.getMonths() > 0) xmonths = period.getMonths();
-        else xmonths = 0;
+        if (period.getYears() > 0)
+            xyears = period.getYears();
+        else
+            xyears = 0;
+        if (period.getMonths() > 0)
+            xmonths = period.getMonths();
+        else
+            xmonths = 0;
 
         x_format = xyears + "." + xmonths;
         year_month = Float.parseFloat(x_format);
@@ -77,7 +83,8 @@ public class DateAndTimeUtils {
     }
 
     public static int getAge(String s, Context context) {
-        if (s == null) return 0;
+        if (s == null)
+            return 0;
 
         SessionManager sessionManager = new SessionManager(context);
         String language = sessionManager.getAppLanguage();
@@ -120,7 +127,8 @@ public class DateAndTimeUtils {
     public static String getAge_FollowUp(String s, Context context) {
         CustomLog.d(TAG, "getAge_FollowUp: s: " + s);
         CustomLog.d("TAG", "getAge_FollowUp: s : " + s);
-        if (s == null) return "";
+        if (s == null)
+            return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
@@ -129,6 +137,8 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(date == null) return "";
         String formattedDate = targetFormat.format(date);  // 20120821
         String[] components = formattedDate.split("\\-");
 
@@ -160,7 +170,8 @@ public class DateAndTimeUtils {
 
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
@@ -207,17 +218,24 @@ public class DateAndTimeUtils {
     public static String formatAgeInYearsMonthsDate(Context context, int year, int month, int day) {
         String age = "";
         if (year < 1) {
-            age = month + " " + context.getResources().getString(R.string.identification_screen_text_months) + " - " + day + " " + context.getResources().getString(R.string.days);
+            age = month + " " +
+                  context.getResources().getString(R.string.identification_screen_text_months) +
+                  " - " + day + " " + context.getResources().getString(R.string.days);
         } else if (year < 3) {
-            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years) + " - " + month + " " + context.getResources().getString(R.string.identification_screen_text_months);
+            age = year + " " +
+                  context.getResources().getString(R.string.identification_screen_text_years) +
+                  " - " + month + " " +
+                  context.getResources().getString(R.string.identification_screen_text_months);
         } else {
-            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years);
+            age = year + " " +
+                  context.getResources().getString(R.string.identification_screen_text_years);
         }
         return age;
     }
 
     public static String getAgeInYearMonth(String s) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
@@ -241,11 +259,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if (period.getYears() > 0) tyears = "" + period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if (period.getMonths() > 0) tmonth = "" + period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if (period.getDays() > 0) tdays = "" + period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -253,7 +274,8 @@ public class DateAndTimeUtils {
     }
 
     public static String getAgeInYears(String s, Context context) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
@@ -374,7 +396,8 @@ public class DateAndTimeUtils {
     }
 
     public static int getMonth(String s1) {
-        if (s1 == null) return 0;
+        if (s1 == null)
+            return 0;
 
         String[] components = s1.split("\\-");
 
@@ -389,8 +412,10 @@ public class DateAndTimeUtils {
         return period.getMonths();
     }
 
-    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
-        if(date.isEmpty()) return "";
+    public static String formatDateFromOnetoAnother(String date, String sourceFormat,
+                                                    String anotherFormat) {
+        if (date == null || date.isEmpty())
+            return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;
@@ -430,14 +455,16 @@ public class DateAndTimeUtils {
      * @return
      */
     public static String timeAgoFormat(String datetime) {
-        if (datetime == null || datetime.trim().isEmpty()) return "";
+        if (datetime == null || datetime.trim().isEmpty())
+            return "";
         String time = "";
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
             long date = format.parse(datetime).getTime();
             long now = System.currentTimeMillis();
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
+            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now,
+                    DateUtils.MINUTE_IN_MILLIS);
             time = String.valueOf(ago);
             CustomLog.v("TimeAgo", "TimeAgo: " + time);
 
@@ -860,7 +887,8 @@ public class DateAndTimeUtils {
         CustomLog.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
         java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
-        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
+        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month
+        // name
         java.text.DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date = null;
@@ -878,12 +906,13 @@ public class DateAndTimeUtils {
         CustomLog.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
         java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
+        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month
+        // name
         java.text.DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm");
 
         Date date = null;
         try {
-            date = inputFormat.parse(dateToConvert+" "+time);
+            date = inputFormat.parse(dateToConvert + " " + time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -921,7 +950,8 @@ public class DateAndTimeUtils {
         return parsedDate;
     }
 
-    public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
+    public static Calendar convertStringToCalendarObject(String date, String format,
+                                                         String localeCode) {
         Calendar calendar = Calendar.getInstance();
         Date parsedDate = convertStringToDateObject(date, format, localeCode);
         if (parsedDate != null) {
@@ -930,7 +960,8 @@ public class DateAndTimeUtils {
         return calendar;
     }
 
-    public static Calendar convertStringToCalendarObjectMinusOne(String date, String format, String localeCode) {
+    public static Calendar convertStringToCalendarObjectMinusOne(String date, String format,
+                                                                 String localeCode) {
         Calendar calendar = Calendar.getInstance();
         Date parsedDate = convertStringToDateObject(date, format, localeCode);
         if (parsedDate != null) {
@@ -968,7 +999,8 @@ public class DateAndTimeUtils {
         return calendar.getTimeInMillis();
     }
 
-    public static long convertStringDateToMilliseconds(String date, String format, String localeCode) {
+    public static long convertStringDateToMilliseconds(String date, String format,
+                                                       String localeCode) {
         Calendar calendarObject = convertStringToCalendarObject(date, format, localeCode);
         return calendarObject.getTimeInMillis();
     }
@@ -978,13 +1010,15 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(date);
     }
 
-    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format, String localeCode) {
+    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate,
+                                                     String format, String localeCode) {
         Date createdDateObject = convertStringToDateObject(date, format, localeCode);
         Date startDateObject = convertStringToDateObject(startDate, format, localeCode);
         Date endDateObject = convertStringToDateObject(endDate, format, localeCode);
         if (createdDateObject == null || startDateObject == null || endDateObject == null)
             return false;
-        return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
+        return createdDateObject.getTime() >= startDateObject.getTime() &&
+               createdDateObject.getTime() <= endDateObject.getTime();
     }
 
     public static String convertMillisecondsToHoursAndMinutes(long timeInMilliseconds) {
@@ -1015,7 +1049,8 @@ public class DateAndTimeUtils {
         Matcher matcher = pattern.matcher(str);
         StringBuilder stringBuilder = new StringBuilder();
         while (matcher.find()) {
-            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+            if (!stringBuilder.toString().isEmpty())
+                stringBuilder.append(",");
             stringBuilder.append(matcher.group());
         }
         result = stringBuilder.toString();
@@ -1048,10 +1083,12 @@ public class DateAndTimeUtils {
         return dateFormatted;
     }
 
-    public static boolean isCurrentDateBeforeFollowUpDate(String followUpDate, String followUpDateFormat) {
+    public static boolean isCurrentDateBeforeFollowUpDate(String followUpDate,
+                                                          String followUpDateFormat) {
         Date currentTime = new Date();
         try {
-            Date parseFollowUpDate = new SimpleDateFormat(followUpDateFormat, Locale.ENGLISH).parse(followUpDate);
+            Date parseFollowUpDate = new SimpleDateFormat(followUpDateFormat, Locale.ENGLISH).parse(
+                    followUpDate);
             return currentTime.before(parseFollowUpDate);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1095,7 +1132,8 @@ public class DateAndTimeUtils {
         Date currentDate = new Date();
 
         try {
-            Date givenDate = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH).parse(givenDateTime);
+            Date givenDate = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.ENGLISH).parse(
+                    givenDateTime);
             isGivenDateTimeGreater = currentDate.after(givenDate);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -1104,7 +1142,8 @@ public class DateAndTimeUtils {
         return isGivenDateTimeGreater;
     }
 
-    public static boolean isBefore(String currentDateStr, String targetDateStr, String dateFormatStr) {
+    public static boolean isBefore(String currentDateStr, String targetDateStr,
+                                   String dateFormatStr) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr);
         try {
             Date currentDate = dateFormat.parse(currentDateStr);
@@ -1118,7 +1157,8 @@ public class DateAndTimeUtils {
         }
     }
 
-    public static boolean isAfter(String currentDateStr, String targetDateStr, String dateFormatStr) {
+    public static boolean isAfter(String currentDateStr, String targetDateStr,
+                                  String dateFormatStr) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr);
         try {
             Date currentDate = dateFormat.parse(currentDateStr);
@@ -1130,7 +1170,7 @@ public class DateAndTimeUtils {
         }
     }
 
-    public static long getTimeStampFromString(String dateString, String format){
+    public static long getTimeStampFromString(String dateString, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
 
         try {
@@ -1143,8 +1183,10 @@ public class DateAndTimeUtils {
     }
 
     public static String parseDateTimeToDateTime(String input) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a", Locale.ENGLISH);
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd 'at' h:mm a", Locale.ENGLISH);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd, 'Time: 'hh:mm a",
+                Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd 'at' h:mm a",
+                Locale.ENGLISH);
 
         try {
             Date date = inputFormat.parse(input);

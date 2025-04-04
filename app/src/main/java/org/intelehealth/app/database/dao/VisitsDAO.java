@@ -601,7 +601,7 @@ public class VisitsDAO {
 
     public static List<PrescriptionModel> recentNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
@@ -654,7 +654,7 @@ public class VisitsDAO {
      */
     public static List<PrescriptionModel> olderNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
