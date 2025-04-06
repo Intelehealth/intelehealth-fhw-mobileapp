@@ -251,23 +251,34 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
 
         countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                if (resendCounter!=0)
+                try {
+                    if (resendCounter!=0)
+                    {
+                        val time =
+                            resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
+                        binding.resendBtn.text = time
+                    }
+                }
+                catch (e : Exception)
                 {
-                    val time =
-                        resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
-                    binding.resendBtn.text = time
+                    e.printStackTrace()
                 }
 
             }
 
             override fun onFinish() {
-                if ( resendCounter != 0) {
-                    binding.resendBtn.isEnabled = true
-                    binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
-                }
+                try {
+                    if ( resendCounter != 0) {
+                        binding.resendBtn.isEnabled = true
+                        binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
+                    }
 
-                binding.resendBtn.text = resources.getString(R.string.resend_otp)
-                if (cpd != null && cpd.isShowing) cpd.dismiss()
+                    binding.resendBtn.text = resources.getString(R.string.resend_otp)
+                    if (cpd != null && cpd.isShowing) cpd.dismiss()
+                }catch (e : Exception)
+                {
+                    e.printStackTrace()
+                }
             }
         }.start()
     }
@@ -276,5 +287,9 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     interface OnMobileEnrollCompleted {
         fun mobileRegistered(txnId: String?)
     }
-
+    companion object {
+        fun newInstance(): MobileNumberOtpVerificationDialog {
+            return MobileNumberOtpVerificationDialog()
+        }
+    }
 }

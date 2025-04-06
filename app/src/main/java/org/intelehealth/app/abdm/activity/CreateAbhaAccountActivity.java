@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -338,12 +339,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 boolean isNewUser = otpResponse.getIsNew();
 
                                 if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
-                                    MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
-                                    dialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                        otpResponse.getABHAProfile().setMobile(mobileNo);
-                                        handleUserFlow(otpResponse, accessToken, isNewUser);
-                                    });
-                                    dialog.show(getSupportFragmentManager(), "");
+                                    MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = getMobileNumberOtpVerificationDialog(otpResponse, isNewUser);
+                                    mobileNumberOtpVerificationDialog.show(getSupportFragmentManager(), "");
                                 } else {
                                     handleUserFlow(otpResponse, accessToken, isNewUser);
                                 }
@@ -358,6 +355,16 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);
                             }
 
+                        }
+
+                        private @NonNull MobileNumberOtpVerificationDialog getMobileNumberOtpVerificationDialog(OTPVerificationResponse otpResponse, boolean isNewUser) {
+                            MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = new MobileNumberOtpVerificationDialog();
+                            mobileNumberOtpVerificationDialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                                mobileNumberOtpVerificationDialog.dismiss();
+                                otpResponse.getABHAProfile().setMobile(mobileNo);
+                                handleUserFlow(otpResponse, accessToken, isNewUser);
+                            });
+                            return mobileNumberOtpVerificationDialog;
                         }
 
                         @Override
