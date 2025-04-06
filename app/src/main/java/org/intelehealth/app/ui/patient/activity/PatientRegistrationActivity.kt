@@ -4,7 +4,9 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -37,6 +39,7 @@ import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.entity.FeatureActiveStatus
+import java.util.Locale
 import java.util.UUID
 
 
@@ -66,6 +69,10 @@ class PatientRegistrationActivity : BaseActivity() {
         extractAndBindUI()
         setupActionBar()
         observeCurrentPatientStage()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(setLocale(newBase))
     }
 
     private fun observeCurrentPatientStage() {
@@ -233,6 +240,25 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private val networkStatusListener = InternetCheckUpdateInterface {
         if (::actionRefresh.isInitialized) actionRefresh.isEnabled = it
+    }
+    fun setLocale(context: Context): Context? {
+        val sessionManager1 = SessionManager(context)
+        val appLanguage = sessionManager1.appLanguage
+        val res = context.resources
+        val conf = res.configuration
+        val locale = Locale(appLanguage)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.displayMetrics
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.setLocale(locale)
+        }
+        res.displayMetrics.setTo(dm)
+        res.configuration.setTo(conf)
+        return context
     }
 
     companion object {

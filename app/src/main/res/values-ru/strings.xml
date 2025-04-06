@@ -1064,7 +1064,7 @@
     <string name="address_to_other_info">Address to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="emergency_contact_number">Номер телефона экстренной связи</string>
-    <string name="hint_drop_down_guardian_type">Select Guardian Type</string>
+    <string name="hint_drop_down_guardian_type">Выберите тип опекуна</string>
     <string name="hint_drop_down_contact_type">Выберите принадлежность номера</string>
     <string name="hint_drop_down_economic">Select Economic Category</string>
     <string name="hint_drop_down_education">Select Education</string>
