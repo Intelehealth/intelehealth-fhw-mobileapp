@@ -1132,7 +1132,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
                         " and v.startdate > DATETIME('now', '-4 day') " +
-                        " group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+                        " group by p.openmrs_id ORDER BY MAX(v.startdate) DESC limit ? offset ?",
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
@@ -1281,7 +1281,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ?  "+
                         " and v.startdate <= DATE('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+                        "group by p.openmrs_id ORDER BY MAX(v.startdate) DESC limit ? offset ?",
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
