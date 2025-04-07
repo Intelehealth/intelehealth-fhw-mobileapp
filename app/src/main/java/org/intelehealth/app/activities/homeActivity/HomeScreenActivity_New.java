@@ -49,6 +49,7 @@ import org.intelehealth.app.utilities.AddPatientUtils;
 
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -306,11 +307,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         mUpdateFragmentOnEvent = listener;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
+        Log.d(TAG, "onCreate: homekk");
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
         networkUtils = new NetworkUtils(context, this);
@@ -320,6 +323,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
             return Unit.INSTANCE;
         });
+        sessionManager = new SessionManager(this);
+        toolbarHome = findViewById(R.id.toolbar_home);
+        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        updateLastSyncTime();
+
 //        catchFCMMessageData();
 
 
@@ -333,7 +341,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
-        sessionManager = new SessionManager(this);
+        //sessionManager = new SessionManager(this);
 
         backPress();
         initUI();
@@ -614,9 +622,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvAppVersion = findViewById(R.id.tv_app_version);
         menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-        toolbarHome = findViewById(R.id.toolbar_home);
+        //toolbarHome = findViewById(R.id.toolbar_home);
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
-        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        //tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
         ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
@@ -1056,9 +1064,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
+
     @Override
     protected void onResume() {
-
         if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
             ivNotificationIcon.setVisibility(View.VISIBLE);
         } else {

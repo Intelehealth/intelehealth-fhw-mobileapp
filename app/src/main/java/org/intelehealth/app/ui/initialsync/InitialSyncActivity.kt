@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.databinding.ActivityInitialSyncBinding
@@ -82,6 +83,10 @@ class InitialSyncActivity : AppCompatActivity() {
     }
 
     private fun navigateToHomeScreen() {
+        val sessionManager = SessionManager(this@InitialSyncActivity)
+        // saving here the app last sync time instead of InitialSyncIntentService
+        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.appLanguage))
+
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, HomeScreenActivity_New::class.java).apply {
                 putExtra("setup", true)

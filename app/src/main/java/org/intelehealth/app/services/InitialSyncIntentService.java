@@ -63,7 +63,7 @@ public class InitialSyncIntentService extends IntentService {
                 SyncDAO.setProgress(percentage);
 
                 sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+                //sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
                 Intent broadcast = new Intent();
                 broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
