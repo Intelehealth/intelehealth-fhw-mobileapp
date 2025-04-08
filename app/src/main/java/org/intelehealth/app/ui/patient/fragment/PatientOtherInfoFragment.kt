@@ -2,13 +2,16 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.OnRebindCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
@@ -41,6 +44,7 @@ import java.io.File
  **/
 class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_other_info) {
     private lateinit var binding: FragmentPatientOtherInfoBinding
+    private val textWatchers = mutableMapOf<TextInputEditText, TextWatcher>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPatientOtherInfoBinding.bind(view)
@@ -188,8 +192,27 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun applyFilter() {
 //        binding.textInputNationalId.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputDepartment.addFilter(FirstLetterUpperCaseInputFilter())
+        /*binding.textInputOccupation.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputDepartment.addFilter(FirstLetterUpperCaseInputFilter())*/
+
+        firstLetterUpperCaseListener(binding.textInputOccupation)
+        firstLetterUpperCaseListener(binding.textInputDepartment)
+    }
+
+    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText){
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.isNotEmpty() && Character.isLowerCase(editable[0])) {
+                    textInputEditText.removeTextChangedListener(this)
+                    editable.replace(0, 1, editable[0].uppercaseChar().toString())
+                    textInputEditText.addTextChangedListener(this)
+                }
+            }
+        }
+        textInputEditText.addTextChangedListener(watcher)
+        textWatchers[textInputEditText] = watcher
     }
 
     private fun setInputTextChangListener() {
@@ -353,5 +376,15 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     .and(bDepartment)
             ) block.invoke()
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        //removing all text watcher listeners
+        //to prevent memory leak
+        textWatchers.forEach { (editText, watcher) ->
+            editText.removeTextChangedListener(watcher)
+        }
+        textWatchers.clear()
     }
 }
