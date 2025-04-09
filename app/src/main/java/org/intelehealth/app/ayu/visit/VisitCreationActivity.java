@@ -14,12 +14,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionFragment;
-import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionFragmentK;
 import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionSummaryFragment;
 import org.intelehealth.app.models.DiagnosticsModel;
 import org.intelehealth.app.utilities.CustomLog;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -459,7 +457,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                //not handling anything
+                if(!mIsEditTriggerFromVisitSummary){
+                    showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
+                }
             }
         });
     }
@@ -539,7 +539,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-        finish();
+       // finish();
+        if(!mIsEditTriggerFromVisitSummary){
+            showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
+        }
     }
 
     private VitalsObject mVitalsObject;
@@ -1845,8 +1848,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private ObjectAnimator syncAnimator;
 
     public void syncNow(View view) {
-        if (NetworkConnection.isOnline(this)) {
-            SyncUtils.syncNow(this, view, syncAnimator);
+        if(mIsEditTriggerFromVisitSummary){
+            if (NetworkConnection.isOnline(this)) {
+                SyncUtils.syncNow(this, view, syncAnimator);
+            }
+        }else{
+            showConfirmationDialog(getString(R.string.confirm_discard_changes_content_on_sync));
         }
     }
 
@@ -1958,6 +1965,19 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
 
+    private void showConfirmationDialog(String content) {
+        Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(this, R.drawable.fingerprint_dialog_error, getResources().getString(R.string.confirm_discard_changes_title),
+                content, false,
+                getResources().getString(R.string.confirm_continue_changes_button_dialog), getResources().getString(R.string.confirm_discard_changes_button_dialog), action -> {
 
+            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid);
+            finish();
+            }
+        });
+
+    }
 
 }

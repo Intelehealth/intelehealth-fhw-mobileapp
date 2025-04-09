@@ -1249,6 +1249,37 @@ public class VisitsDAO extends BaseDao{
         cursor.close();
         return list;
     }
+    public void deleteAllDataForOngoingIncompleteVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Delete observations related to the visit's encounters
+            db.execSQL(
+                    "DELETE FROM tbl_obs " +
+                            "WHERE encounteruuid IN (" +
+                            " SELECT uuid FROM tbl_encounter WHERE visituuid = ?" +
+                            ")",
+                    new Object[]{visitId}
+            );
 
+            //  Delete encounters for the visit
+            db.execSQL(
+                    "DELETE FROM tbl_encounter WHERE visituuid = ?",
+                    new Object[]{visitId}
+            );
 
+            //  Delete the visit itself
+            db.execSQL(
+                    "DELETE FROM tbl_visit WHERE uuid = ?",
+                    new Object[]{visitId}
+            );
+
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            Log.d(TAG, "deleteAllDataForOngoingIncompleteVisit: e : "+e.getLocalizedMessage());
+           e.printStackTrace();
+        }  finally{
+            db.endTransaction();
+        }
+    }
 }
