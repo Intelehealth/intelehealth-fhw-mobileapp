@@ -5,11 +5,13 @@ import android.os.Build;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +36,7 @@ public class DateTimeUtils {
     public static final String MMM_DD_YYYY_FORMAT = "MMM dd, yyyy";
 
     public static final String CALL_LOG_TIME_FORMAT = "EEE, dd MMM yyyy HH:mm:ss";
+
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -48,6 +51,12 @@ public class DateTimeUtils {
 
     public static String formatToLocalDate(Date date, String format) {
         SimpleDateFormat sdf = getSimpleDateFormat(format, TimeZone.getDefault());
+        return sdf.format(date);
+    }
+
+    public static String formatToEnglishDate(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(date);
     }
 
