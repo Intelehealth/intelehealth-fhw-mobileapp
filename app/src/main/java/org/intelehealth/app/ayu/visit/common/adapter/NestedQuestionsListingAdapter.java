@@ -14,6 +14,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1965,7 +1966,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
-        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        //calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        Log.d("DDDDDDDDDDDDDDD",""+node.isFutureDateRequired());
+        if(!node.isFutureDateRequired()){
+            calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        }
 //        Timber.tag(TAG).v("addDateView - %s", node.getLanguage());
         String langVal = node.getLanguage();
         Button skipButton = view.findViewById(R.id.btn_skip);
