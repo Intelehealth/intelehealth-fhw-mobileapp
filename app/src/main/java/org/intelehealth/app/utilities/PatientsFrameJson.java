@@ -136,7 +136,10 @@ public class PatientsFrameJson {
         }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
-            if (visitDTO.getAttributes().size() > 0) {
+           /* Multiple visit attributes getting sync - when we restrict to sync multiple visit
+            attributes for same visit then this condition not allowing to sync visit with 0 attributes.*/
+
+            //if (visitDTO.getAttributes().size() > 0) {
                 visit.setLocation(visitDTO.getLocationuuid());
                 visit.setPatient(visitDTO.getPatientuuid());
                 visit.setStartDatetime(visitDTO.getStartdate());
@@ -145,7 +148,7 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
-           }
+          // }
 
         }
 
