@@ -18,6 +18,7 @@
         android:weightSum="2">
 
         <Button
+            style="@style/DefaultButtonStyle"
             android:id="@+id/btn_cancel"
             android:layout_width="0dip"
             android:layout_height="wrap_content"

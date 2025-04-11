@@ -52,4 +52,16 @@
     <string name="rndocrine_surgeon">Endocrine Surgeon</string>
     <string name="pediatric_orthopedician">Pediatric Orthopedician</string>
     <string name="respiratory_medicine">Respiratory Medicine</string>
+    <string name="physiotherapist">Physiotherapist</string>
+    <string name="medical_oncology_adult_haematology">Medical Oncology</string>
+    <string name="surgical_oncology_adult_haematology">Surgical Oncology</string>
+    <string name="surgical_oncologist_urology">Surgical Oncologist - Urology</string>
+    <string name="surgical_oncologist_gastrointestinal">Surgical Oncologist - Gastrointestinal</string>
+    <string name="surgical_oncologist_breast">Surgical Oncologist - Breast</string>
+    <string name="surgical_oncologist_gynaecologist">Surgical Oncologist - Gynaecologist</string>
+    <string name="surgical_oncologist_bone_and_soft_tissue">Surgical Oncologist - Bone and Soft Tissue</string>
+    <string name="medical_oncologist_gastrointestinal">Medical Oncologist - Gastrointestinal</string>
+    <string name="medical_oncologist_breast">Medical Oncologist - Breast</string>
+    <string name="medical_oncologist_gynaecologist">Medical Oncologist - Gynaecologist</string>
+    <string name="medical_oncologist_bone_and_soft_tissue">Medical Oncologist - Bone and Soft Tissue</string>
 </resources>

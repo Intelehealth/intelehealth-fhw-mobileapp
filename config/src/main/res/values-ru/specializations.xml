@@ -52,4 +52,16 @@
     <string name="rndocrine_surgeon">Эндокринный хирург</string>
     <string name="pediatric_orthopedician">Детский ортопед</string>
     <string name="respiratory_medicine">Респираторная медицина</string>
+    <string name="physiotherapist">Физиотерапевт</string>
+    <string name="medical_oncology_adult_haematology">Медицинская онкология</string>
+    <string name="surgical_oncology_adult_haematology">Хирургическая онкология</string>
+    <string name="surgical_oncologist_urology">Хирургический онколог - Урология</string>
+    <string name="surgical_oncologist_gastrointestinal">Хирургический онколог - Гастроинтестинальный</string>
+    <string name="surgical_oncologist_breast">Хирургический онколог - Грудь</string>
+    <string name="surgical_oncologist_gynaecologist">Хирургический онколог - Гинеколог</string>
+    <string name="surgical_oncologist_bone_and_soft_tissue">Хирургический онколог - Кости и Мягкие ткани</string>
+    <string name="medical_oncologist_gastrointestinal">Врач-онколог - желудочно-кишечный тракт</string>
+    <string name="medical_oncologist_breast">Врач-онколог - грудь</string>
+    <string name="medical_oncologist_gynaecologist">Врач-онколог - гинеколог</string>
+    <string name="medical_oncologist_bone_and_soft_tissue">Врач-онколог - кости и мягкие ткани</string>
 </resources>

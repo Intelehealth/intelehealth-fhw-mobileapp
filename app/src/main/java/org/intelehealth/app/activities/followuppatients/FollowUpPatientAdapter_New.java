@@ -99,31 +99,31 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
 
                 // Patient Photo
                 //1.
-                try {
-                    profileImage = imagesDAO.getPatientProfileChangeTime(model.getPatientuuid());
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                //2.
-                if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
-                    if (NetworkConnection.isOnline(context)) {
-                        profilePicDownloaded(model, holder);
-                    }
-                }
-                //3.
-                if (!profileImage.equalsIgnoreCase(profileImage1)) {
-                    if (NetworkConnection.isOnline(context)) {
-                        profilePicDownloaded(model, holder);
-                    }
-                }
-
-                if (model.getPatient_photo() != null) {
-                    RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                            .asDrawable().sizeMultiplier(0.3f);
-                    Glide.with(context).load(model.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
-                } else {
-                    holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
-                }
+//                try {
+//                    profileImage = imagesDAO.getPatientProfileChangeTime(model.getPatientuuid());
+//                } catch (DAOException e) {
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//                //2.
+//                if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+//                    if (NetworkConnection.isOnline(context)) {
+//                        profilePicDownloaded(model, holder);
+//                    }
+//                }
+//                //3.
+//                if (!profileImage.equalsIgnoreCase(profileImage1)) {
+//                    if (NetworkConnection.isOnline(context)) {
+//                        profilePicDownloaded(model, holder);
+//                    }
+//                }
+//
+//                if (model.getPatient_photo() != null) {
+//                    RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+//                            .asDrawable().sizeMultiplier(0.3f);
+//                    Glide.with(context).load(model.getPatient_photo()).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.profile_image);
+//                } else {
+//                    holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
+//                }
                 // photo - end
 
                 // Patient Name section
