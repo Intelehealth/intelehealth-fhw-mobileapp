@@ -30,6 +30,8 @@ import org.intelehealth.app.networkApiCalls.ApiInterface
 import org.intelehealth.app.utilities.LocationValidationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.exception.DAOException
+import org.intelehealth.app.utilities.extensions.checkChipBySelectedText
+import org.intelehealth.app.utilities.extensions.getSelectedChipTextInLocale
 
 
 class LocationSurveyActivity : AppCompatActivity() {
@@ -61,9 +63,61 @@ class LocationSurveyActivity : AppCompatActivity() {
 
         fetchIntentData()
         setListeners()
+        initializeChipTags()
         initializeButtons()
         initializeAutoTextViewDropDowns()
         fetchLocations()
+    }
+
+    private fun initializeChipTags() {
+        binding?.chipScWithinFiveMins?.tag = R.string.within_5_minutes
+        binding?.chipScFiveFifteenMins?.tag = R.string.five_fifteen_minutes
+        binding?.chipScFifteenThirtyMins?.tag = R.string.fifteen_thirty_minutes
+        binding?.chipScMoreThanThirtyMins?.tag = R.string.more_than_thirty_minutes
+
+        binding?.chipPhcWithinOneKm?.tag = R.string.within_1_km
+        binding?.chipPhcOneThreeKm?.tag = R.string.one_three_km
+        binding?.chipPhcThreeFiveKm?.tag = R.string.three_five_km
+        binding?.chipScMoreThanFiveKm?.tag = R.string.more_than_five_km
+
+        binding?.chipChcWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipChcThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipChcSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipChcMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipChcWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipChcThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipChcSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipChcMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipDhWithinFiveKm?.tag = R.string.within_five_km
+        binding?.chipDhFiveTenKm?.tag = R.string.five_ten_km
+        binding?.chipDhTenTwentyKm?.tag = R.string.ten_twenty_km
+        binding?.chipDhTwentyThirtyKm?.tag = R.string.twenty_thirty_km
+        binding?.chipDhMoreThanThirtyKm?.tag = R.string.more_than_thirty_km
+
+        binding?.chipMsWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipMsThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipMsSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipMsMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipPlWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipPlThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipPlSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipPlMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipPcWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipPcThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipPcSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipPcMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipPcamWithinThreeKm?.tag = R.string.within_three_km
+        binding?.chipPcamThreeSixKm?.tag = R.string.three_six_km
+        binding?.chipPcamSixTenKm?.tag = R.string.six_ten_km
+        binding?.chipPcamMoreThanTenKm?.tag = R.string.more_than_ten_km
+
+        binding?.chipJjyYes?.tag = R.string.generic_yes
+        binding?.chipJjyNo?.tag = R.string.generic_no
     }
 
     private fun setLocationDataIfPresent() {
@@ -607,70 +661,32 @@ class LocationSurveyActivity : AppCompatActivity() {
     }
 
     private fun storeSurveyData() {
-        val subCentreDistance: String? =
-            binding?.cbScDistance?.checkedChipId?.let { chipId ->
-                binding?.cbScDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
+        sessionManager?.subCentreDistance =
+            binding?.cbScDistance?.getSelectedChipTextInLocale(this)
 
-        sessionManager?.subCentreDistance = subCentreDistance
+        sessionManager?.primaryHealthCentreDistance =
+            binding?.cbPhcDistance?.getSelectedChipTextInLocale(this)
 
-        val primaryHealthCenterDistance: String? =
-            binding?.cbPhcDistance?.checkedChipId?.let { chipId ->
-                binding?.cbPhcDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
+        sessionManager?.communityHealthCentreDistance =
+            binding?.cbChcDistance?.getSelectedChipTextInLocale(this)
 
-        sessionManager?.primaryHealthCentreDistance = primaryHealthCenterDistance
+        sessionManager?.districtHospitalDistance =
+            binding?.cbDhDistance?.getSelectedChipTextInLocale(this)
 
-        val communityHealthCenterDistance: String? =
-            binding?.cbChcDistance?.checkedChipId?.let { chipId ->
-                binding?.cbChcDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
+        sessionManager?.medicalStoreDistance =
+            binding?.cbMsDistance?.getSelectedChipTextInLocale(this)
 
-        sessionManager?.communityHealthCentreDistance = communityHealthCenterDistance
-
-        val districtHospital: String? =
-            binding?.cbDhDistance?.checkedChipId?.let { chipId ->
-                binding?.cbDhDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
-
-        sessionManager?.districtHospitalDistance = districtHospital
-
-        val medicalStore: String? =
-            binding?.cbMsDistance?.checkedChipId?.let { chipId ->
-                binding?.cbMsDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
-
-        sessionManager?.medicalStoreDistance = medicalStore
-
-        val pathologicalLab: String? =
-            binding?.cbPlDistance?.checkedChipId?.let { chipId ->
-                binding?.cbPlDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
-
-        sessionManager?.pathologicalLabDistance = pathologicalLab
-
-        val privateClinicWithMbbsDoctorDistance: String? =
-            binding?.cbPcDistance?.checkedChipId?.let { chipId ->
-                binding?.cbPcDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
+        sessionManager?.pathologicalLabDistance =
+            binding?.cbPlDistance?.getSelectedChipTextInLocale(this)
 
         sessionManager?.privateClinicWithMbbsDoctorDistance =
-            privateClinicWithMbbsDoctorDistance
-
-        val privateClinicWithAlternateMedicalRadioGroup: String? =
-            binding?.cbPcamDistance?.checkedChipId?.let { chipId ->
-                binding?.cbPcamDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
+            binding?.cbPcDistance?.getSelectedChipTextInLocale(this)
 
         sessionManager?.privateClinicWithAlternateDoctorDistance =
-            privateClinicWithAlternateMedicalRadioGroup
+            binding?.cbPcamDistance?.getSelectedChipTextInLocale(this)
 
-        val jalJeevanYojana: String? =
-            binding?.cbJjyDistance?.checkedChipId?.let { chipId ->
-                binding?.cbJjyDistance?.findViewById<Chip>(chipId)?.text?.toString()
-            }
-
-        sessionManager?.jalJeevanYojanaScheme = jalJeevanYojana
+        sessionManager?.jalJeevanYojanaScheme =
+            binding?.cbJjyDistance?.getSelectedChipTextInLocale(this)
     }
 
     private fun fetchAndSetLocationAttributes(villageUuid: String?) {
@@ -709,62 +725,51 @@ class LocationSurveyActivity : AppCompatActivity() {
             val distanceData: String = data.attributeValue
 
             when (data.attributeName) {
-                AppConstants.DISTANCE_TO_SUB_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbScDistance,
-                    distanceData
+
+                AppConstants.DISTANCE_TO_SUB_CENTRE_UUID_TEXT -> binding?.cbScDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbPhcDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_PRIMARY_HEALTHCARE_CENTRE_UUID_TEXT -> binding?.cbPhcDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbChcDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_COMMUNITY_HEALTHCARE_CENTRE_UUID_TEXT -> binding?.cbChcDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbDhDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_DISTRICT_HOSPITAL_UUID_TEXT -> binding?.cbDhDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbMsDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_MEDICAL_STORE_UUID_TEXT -> binding?.cbMsDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbPlDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_PATHOLOGICAL_LAB_UUID_TEXT -> binding?.cbPlDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbPcDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_UUID_TEXT -> binding?.cbPcDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbPcamDistance,
-                    distanceData
+                AppConstants.DISTANCE_TO_NEAREST_PRIVATE_CLINIC_WITH_ALTERNATIVE_MEDICINE_UUID_TEXT -> binding?.cbPcamDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
 
-                AppConstants.JAL_JEEVAN_YOJANA_UUID_TEXT -> checkChipInsideChipGroup(
-                    binding?.cbJjyDistance,
-                    distanceData
+                AppConstants.JAL_JEEVAN_YOJANA_UUID_TEXT -> binding?.cbJjyDistance?.checkChipBySelectedText(
+                    distanceData,
+                    this
                 )
-            }
-        }
-    }
-
-    private fun checkChipInsideChipGroup(chipGroup: ChipGroup?, distanceText: String) {
-        chipGroup?.childCount?.let {
-            for (i in 0 until it) {
-                val currentChip: Chip = chipGroup.getChildAt(i) as Chip
-                if (currentChip.text.toString().equals(distanceText, ignoreCase = true)) {
-                    currentChip.isChecked = true
-                    break
-                }
             }
         }
     }
