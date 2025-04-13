@@ -21,7 +21,9 @@ import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedCheckboxes
 import org.intelehealth.app.utilities.extensions.getSelectedData
+import org.intelehealth.app.utilities.extensions.getSelectedDataInEnglishLocale
 import org.intelehealth.app.utilities.extensions.getTextIfVisible
+import org.intelehealth.app.utilities.extensions.getTextInEnglish
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
@@ -74,6 +76,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         StaticPatientRegistrationEnabledFieldsHelper.getEnabledOtherBaselineFields()
 
     private fun setValues() {
+        setupRadioButtons()
         setupHohCheck()
         setupEconomicStatus()
         setupReligion()
@@ -192,12 +195,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.acEconomicStatusCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilEconomicStatusOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEconomicStatusCheck.setText(
-                    this.getStringArray(R.array.economic)[i],
-                    false
-                )
-            }
+            binding.acEconomicStatusCheck.setText(
+                resources.getStringArray(R.array.economic)[i],
+                false
+            )
         }
     }
 
@@ -207,9 +208,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.acReligion.setOnItemClickListener { _, _, i, _ ->
             binding.tilReligionOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acReligion.setText(this.getStringArray(R.array.baseline_religion)[i], false)
-            }
+            binding.acReligion.setText(
+                resources.getStringArray(R.array.baseline_religion)[i],
+                false
+            )
         }
     }
 
@@ -223,12 +225,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.acToiletFacility.setOnItemClickListener { _, _, i, _ ->
             binding.tilToiletFacilityOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acToiletFacility.setText(
-                    this.getStringArray(R.array.baseline_toilet_facilities)[i],
-                    false
-                )
-            }
+            binding.acToiletFacility.setText(
+                resources.getStringArray(R.array.baseline_toilet_facilities)[i],
+                false
+            )
         }
     }
 
@@ -239,12 +239,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.acHouseStructure.setOnItemClickListener { _, _, i, _ ->
             binding.tilHouseStructureOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acHouseStructure.setText(
-                    this.getStringArray(R.array.baseline_house_structure)[i],
-                    false
-                )
-            }
+            binding.acHouseStructure.setText(
+                resources.getStringArray(R.array.baseline_house_structure)[i],
+                false
+            )
         }
     }
 
@@ -257,12 +255,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.acCultivableLand.setAdapter(adapter)
         binding.acCultivableLand.setOnItemClickListener { _, _, i, _ ->
             binding.tilCultivableLandOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acCultivableLand.setText(
-                    this.getStringArray(R.array.baseline_cultivable_land)[i],
-                    false
-                )
-            }
+            binding.acCultivableLand.setText(
+                resources.getStringArray(R.array.baseline_cultivable_land)[i],
+                false
+            )
         }
 
         binding.acCultivableLand.doOnTextChanged { text, start, before, count ->
@@ -532,15 +528,27 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         val isHeadOfHousehold = binding.llHohYes.isVisible
 
         baselineSurveyData.apply {
-            headOfHousehold = binding.rgHOHOptions.getSelectedData()
+            headOfHousehold = binding.rgHOHOptions.getSelectedDataInEnglishLocale(requireContext())
 
             if (!isHeadOfHousehold) {
-                relationWithHousehold = binding.rgRelationWithHohOptions.getSelectedData()
+                relationWithHousehold = binding
+                    .rgRelationWithHohOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
+
                 setOptionalFieldsInOtherWithHyphen()
             } else {
-                rationCardCheck = binding.rgRationOptions.getSelectedData()
-                economicStatus = binding.acEconomicStatusCheck.text.toString()
-                religion = binding.acReligion.text.toString()
+                rationCardCheck = binding
+                    .rgRationOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
+
+                economicStatus = binding.acEconomicStatusCheck.getTextInEnglish(
+                    requireContext(),
+                    R.array.economic
+                )
+                religion = binding.acReligion.getTextInEnglish(
+                    requireContext(),
+                    R.array.baseline_religion
+                )
 
                 totalHouseholdMembers = binding.textInputTotalHHMembers.text.toString()
                 usualHouseholdMembers = binding.textInputUsualHHMembers.text.toString()
@@ -548,34 +556,66 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                 numberOfFeaturePhones = binding.textInputNoOfFeaturePhones.text.toString()
                 numberOfEarningMembers = binding.textInputEarningMembers.text.toString()
 
-                electricityCheck = binding.rgElectricityOptions.getSelectedData()
-                loadSheddingHours =
-                    binding.llLoadShedding.getTextIfVisible(binding.textInputloadSheddingHours)
-                loadSheddingDays =
-                    binding.llLoadShedding.getTextIfVisible(binding.textInputloadSheddingDays)
+                electricityCheck = binding
+                    .rgElectricityOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
 
-                waterCheck = binding.rgWaterCheckOptions.getSelectedData()
-                waterAvailabilityHours =
-                    binding.llWaterAvailability.getTextIfVisible(binding.textInputWaterAvailabilityHours)
-                waterAvailabilityDays =
-                    binding.llWaterAvailability.getTextIfVisible(binding.textInputWaterAvailabilityDays)
+                loadSheddingHours = binding
+                    .llLoadShedding
+                    .getTextIfVisible(binding.textInputloadSheddingHours)
+
+                loadSheddingDays = binding
+                    .llLoadShedding
+                    .getTextIfVisible(binding.textInputloadSheddingDays)
+
+                waterCheck = binding
+                    .rgWaterCheckOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
+
+                waterAvailabilityHours = binding
+                    .llWaterAvailability
+                    .getTextIfVisible(binding.textInputWaterAvailabilityHours)
+
+                waterAvailabilityDays = binding
+                    .llWaterAvailability
+                    .getTextIfVisible(binding.textInputWaterAvailabilityDays)
 
                 sourceOfWater = binding.cgSourceOfWater.getSelectedCheckboxes()
                 safeguardWater = binding.cgSafeguardWater.getSelectedCheckboxes()
 
-                distanceFromWater = binding.rgDistanceFromWaterOptions.getSelectedData()
-                toiletFacility = binding.acToiletFacility.text.toString()
-                houseStructure = binding.acHouseStructure.text.toString()
+                distanceFromWater = binding
+                    .rgDistanceFromWaterOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
 
-                cultivableLand = binding.acCultivableLand.text.toString()
-                cultivableLandValue =
-                    binding.tilCultivableLandValue.getTextIfVisible(binding.textInputCultivableLandValue)
+                toiletFacility = binding
+                    .acToiletFacility
+                    .getTextInEnglish(requireContext(), R.array.baseline_toilet_facilities)
 
-                averageIncome = binding.rgAverageIncomeOptions.getSelectedData()
+                houseStructure = binding
+                    .acHouseStructure
+                    .getTextInEnglish(requireContext(), R.array.baseline_house_structure)
+
+                cultivableLand = binding
+                    .acCultivableLand
+                    .getTextInEnglish(requireContext(), R.array.baseline_cultivable_land)
+
+                cultivableLandValue = binding
+                    .tilCultivableLandValue
+                    .getTextIfVisible(binding.textInputCultivableLandValue)
+
+                averageIncome = binding
+                    .rgAverageIncomeOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
+
                 fuelType = binding.cgFuelType.getSelectedCheckboxes()
+
                 sourceOfLight = binding.cgSourceOfLight.getSelectedCheckboxes()
+
                 handWashPractices = binding.cgHandWashPractices.getSelectedCheckboxes()
-                ekalServiceCheck = binding.rgEkalServiceCheckOptions.getSelectedData()
+
+                ekalServiceCheck = binding
+                    .rgEkalServiceCheckOptions
+                    .getSelectedDataInEnglishLocale(requireContext())
             }
 
             baselineSurveyViewModel.updateBaselineData(this)
@@ -602,5 +642,48 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
             findNavController().navigate(it)
             requireActivity().finish()
         }
+    }
+
+    private fun setupRadioButtons() {
+        binding.radioHOHYes.tag = R.string.yes
+        binding.radioHOHNo.tag = R.string.no
+
+        binding.radioRationYes.tag = R.string.yes
+        binding.radioRationNo.tag = R.string.no
+        binding.radioRationNotSure.tag = R.string.generic_not_sure
+
+        binding.radioElectricityYes.tag = R.string.yes
+        binding.radioElectricityNo.tag = R.string.no
+
+        binding.radioWaterCheckYes.tag = R.string.yes
+        binding.radioWaterCheckNo.tag = R.string.no
+
+        binding.radioDistanceFromWaterYes.tag = R.string.yes
+        binding.radioDistanceFromWaterNo.tag = R.string.no
+
+        binding.radioAverageIncome1.tag = R.string.zero_thirty_thousand
+        binding.radioAverageIncome2.tag = R.string.thirty_fifty_thousand
+        binding.radioAverageIncome3.tag = R.string.fifty_thousand_one_lakh
+        binding.radioAverageIncome4.tag = R.string.one_lakh_two_lakh_fifty_thousand
+        binding.radioAverageIncome5.tag = R.string.more_than_two_lakh_fifty_thousand
+
+        binding.radioEkalServiceYes.tag = R.string.yes
+        binding.radioEkalServiceNo.tag = R.string.no
+
+        binding.radioSpouse.tag = R.string.spouse
+        binding.radioSonDaughter.tag = R.string.son_or_daughter
+        binding.radioSonDaughterInLaw.tag = R.string.son_or_daughter_in_law
+        binding.radioGrandchild.tag = R.string.grandchild
+        binding.radioFatherMother.tag = R.string.father_mother
+        binding.radioFatherMotherInLaw.tag = R.string.father_mother_in_law
+        binding.radioBrotherSister.tag = R.string.brother_sister
+        binding.radioBrotherSisterInLaw.tag = R.string.brother_sister_in_law
+        binding.radioNieceNephew.tag = R.string.niece_nephew
+        binding.radioGrandparent.tag = R.string.grandparent
+        binding.radioOther.tag = R.string.other_relative
+        binding.radioAdopted.tag = R.string.adopted
+        binding.radioServant.tag = R.string.servant
+        binding.radioOtherNotRelated.tag = R.string.other_not_related
+        binding.radioNotStated.tag = R.string.not_stated
     }
 }

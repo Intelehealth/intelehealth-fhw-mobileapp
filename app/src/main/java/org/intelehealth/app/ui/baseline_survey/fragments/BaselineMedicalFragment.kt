@@ -22,6 +22,7 @@ import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.getSelectedData
 import org.intelehealth.app.utilities.extensions.getSelectedDataInEnglishLocale
+import org.intelehealth.app.utilities.extensions.getTextInEnglish
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.storeReasonIfAnswerIsPositive
@@ -108,6 +109,11 @@ class BaselineMedicalFragment :
         binding.radioSmokingRate1.tag = R.string.less_than_5_bidis_or_cigarette
         binding.radioSmokingRate2.tag = R.string.five_to_ten_bidis_or_cigarette
         binding.radioSmokingRate3.tag = R.string.more_than_10_bidis_or_cigarette
+
+        binding.radioSmokingDuration1.tag = R.string.less_than_a_year
+        binding.radioSmokingDuration2.tag = R.string.from_1_year_to_5_years
+        binding.radioSmokingDuration3.tag = R.string.from_5_year_to_10_years
+        binding.radioSmokingDuration4.tag = R.string.more_than_10_years
 
         binding.radioSmokingFrequency1.tag = R.string.frequency_daily
         binding.radioSmokingFrequency2.tag = R.string.frequency_once_a_week
@@ -209,9 +215,7 @@ class BaselineMedicalFragment :
 
         binding.acHbCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilHbCheckOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acHbCheck.setText(this.getStringArray(R.array.hb_check)[i], false)
-            }
+            binding.acHbCheck.setText(resources.getStringArray(R.array.hb_check)[i], false)
         }
     }
 
@@ -221,9 +225,7 @@ class BaselineMedicalFragment :
 
         binding.acBpCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilBpCheckOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acBpCheck.setText(this.getStringArray(R.array.bp_check)[i], false)
-            }
+            binding.acBpCheck.setText(resources.getStringArray(R.array.bp_check)[i], false)
         }
     }
 
@@ -233,9 +235,7 @@ class BaselineMedicalFragment :
 
         binding.acSugarCheck.setOnItemClickListener { _, _, i, _ ->
             binding.tilSugarCheckOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acSugarCheck.setText(this.getStringArray(R.array.sugar_check)[i], false)
-            }
+            binding.acSugarCheck.setText(resources.getStringArray(R.array.sugar_check)[i], false)
         }
     }
 
@@ -267,27 +267,41 @@ class BaselineMedicalFragment :
     private fun saveSurveyData() {
         baselineSurveyData.apply {
 
-            hbCheck = binding.acHbCheck.text.toString()
-            bpCheck = binding.acBpCheck.text.toString()
-            sugarCheck = binding.acSugarCheck.text.toString()
+            hbCheck = binding.acHbCheck.getTextInEnglish(requireContext(), R.array.hb_check)
+            bpCheck = binding.acBpCheck.getTextInEnglish(requireContext(), R.array.bp_check)
+            sugarCheck = binding
+                .acSugarCheck
+                .getTextInEnglish(requireContext(), R.array.sugar_check)
 
             bpValue = binding.rgBpOptions.getSelectedDataInEnglishLocale(requireContext())
-            diabetesValue = binding.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())
-            arthritisValue = binding.rgArthritisOptions.getSelectedDataInEnglishLocale(requireContext())
+            diabetesValue =
+                binding.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())
+            arthritisValue =
+                binding.rgArthritisOptions.getSelectedDataInEnglishLocale(requireContext())
             anemiaValue = binding.rgAnemiaOptions.getSelectedDataInEnglishLocale(requireContext())
             surgeryValue = binding.rgSurgeryOptions.getSelectedDataInEnglishLocale(requireContext())
-            surgeryReason = binding.etSurgeryReasonCheck.text.toString().storeReasonIfAnswerIsPositive(surgeryValue)
+            surgeryReason = binding.etSurgeryReasonCheck.text.toString()
+                .storeReasonIfAnswerIsPositive(surgeryValue)
 
-            smokingHistory = binding.rgSmokingHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
-            smokingRate = binding.rgSmokingRateOptions.getSelectedDataInEnglishLocale(requireContext())
-            smokingDuration = binding.rgSmokingDurationOptions.getSelectedDataInEnglishLocale(requireContext())
-            smokingFrequency = binding.rgSmokingFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingHistory =
+                binding.rgSmokingHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingRate =
+                binding.rgSmokingRateOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingDuration =
+                binding.rgSmokingDurationOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingFrequency =
+                binding.rgSmokingFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
 
-            chewTobacco = binding.rgChewTobaccoOptions.getSelectedDataInEnglishLocale(requireContext())
-            alcoholHistory = binding.rgAlcoholHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
-            alcoholRate = binding.rgAlcoholRateOptions.getSelectedDataInEnglishLocale(requireContext())
-            alcoholDuration = binding.rgAlcoholDurationOptions.getSelectedDataInEnglishLocale(requireContext())
-            alcoholFrequency = binding.rgAlcoholFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
+            chewTobacco =
+                binding.rgChewTobaccoOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholHistory =
+                binding.rgAlcoholHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholRate =
+                binding.rgAlcoholRateOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholDuration =
+                binding.rgAlcoholDurationOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholFrequency =
+                binding.rgAlcoholFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
 
             baselineSurveyViewModel.updateBaselineData(this)
             BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
