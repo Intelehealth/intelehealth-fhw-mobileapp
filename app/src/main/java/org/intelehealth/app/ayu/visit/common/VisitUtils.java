@@ -442,12 +442,11 @@ AB NEGATIVE = 1231*/
         Double b = (a * 9 / 5) + 32;
 
         //DecimalFormat dtime = new DecimalFormat("#.##");
-        DecimalFormat dtime = new DecimalFormat("#.#");
+        DecimalFormat dtime = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.US));
         b = Double.parseDouble(dtime.format(b));
-        result = String.format("%.1f", b);
+        result = String.format(Locale.ENGLISH, "%.1f", b);
         //result = String.valueOf(b);
         return result;
-
     }
 
     public static String convertHeightIntoFeets(String height, Context context) {
