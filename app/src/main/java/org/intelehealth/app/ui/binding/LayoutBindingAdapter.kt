@@ -14,9 +14,11 @@ import androidx.databinding.BindingAdapter
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.button.MaterialButtonToggleGroup
 import org.intelehealth.app.R
+import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.extensions.setSelectedCheckboxes
 import org.intelehealth.config.network.response.PatientRegFieldConfig
 import org.intelehealth.config.room.entity.PatientRegistrationFields
+import java.util.Locale
 
 /**
  * Created by Vaghela Mithun R. on 11-07-2024 - 19:55.
@@ -65,20 +67,49 @@ fun maintainDynamicMargin(view: View?, config: PatientRegistrationFields?, margi
 
 @BindingAdapter("radioButtonValue")
 fun bindRadioButtonValue(radioGroup: RadioGroup?, data: String?) {
-    data?.let {
-        radioGroup?.forEach {
-            if (it is RadioButton && it.text.toString() == data) {
-                it.isChecked = true
-                return@forEach
+    radioGroup?.forEach { radioButton ->
+        data?.let { text ->
+            if (radioButton is RadioButton) {
+                val englishLocaleResources = LanguageUtils.getSpecificLocalResource(
+                    radioButton.context!!,
+                    "en"
+                )
+
+                val tag: Int = radioButton.tag as Int
+                val englishText = englishLocaleResources.getString(tag)
+                if (englishText == text) {
+                    radioButton.isChecked = true
+                }
             }
         }
     }
 }
 
-@BindingAdapter("bindAutoCompleteValue")
-fun bindAutoCompleteValue(autoCompleteTextView: AutoCompleteTextView?, data: String?) {
-    data?.let {
-        autoCompleteTextView?.setText(data, false)
+@BindingAdapter("bindAutoCompleteValue", "stringArrayResId")
+fun bindAutoCompleteValue(
+    autoCompleteTextView: AutoCompleteTextView?,
+    data: String?,
+    stringArrayResId: Int
+) {
+    autoCompleteTextView?.let { view ->
+        data?.let { data ->
+            val englishResources = LanguageUtils.getSpecificLocalResource(view.context, "en")
+            val englishArray = englishResources.getStringArray(stringArrayResId)
+            val index = englishArray.indexOf(data)
+
+            if (index != -1) {
+                val localizedResources = LanguageUtils.getSpecificLocalResource(
+                    view.context,
+                    Locale.getDefault().language
+                )
+
+                val localizedArray = localizedResources.getStringArray(stringArrayResId)
+                val localizedValue = localizedArray[index]
+                view.setText(localizedValue, false)
+            } else {
+                view.setText(data, false)
+            }
+        }
     }
 }
 

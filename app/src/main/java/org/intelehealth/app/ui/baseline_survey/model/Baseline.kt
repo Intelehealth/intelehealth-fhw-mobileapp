@@ -1,5 +1,6 @@
 package org.intelehealth.app.ui.baseline_survey.model
 
+import org.intelehealth.app.R
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 data class Baseline(
@@ -93,4 +94,20 @@ data class Baseline(
         this.handWashPractices = "-"
         this.ekalServiceCheck = "-"
     }
+
+    var occupationArrayConstants: Int = R.array.occupation
+    var casteArrayConstants: Int = R.array.caste
+    var educationArrayConstants: Int = R.array.education
+    var phoneOwnershipArrayConstants: Int = R.array.phone_ownership
+
+    var hbCheckArrayConstants: Int = R.array.hb_check
+    var bpCheckArrayConstants: Int = R.array.bp_check
+    var sugarCheckArrayConstants: Int = R.array.sugar_check
+
+    var religionArrayConstants: Int = R.array.baseline_religion
+    var economicStatusArrayConstants: Int = R.array.economic
+    var toiletFacilityArrayConstants: Int = R.array.baseline_toilet_facilities
+    var houseStructureArrayConstants: Int = R.array.baseline_house_structure
+    var cultivableLandArrayConstants: Int = R.array.baseline_cultivable_land
+
 }

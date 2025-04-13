@@ -1,14 +1,17 @@
 package org.intelehealth.app.utilities.extensions
 
+import android.content.Context
 import android.text.InputFilter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import org.intelehealth.app.utilities.LanguageUtils
 
 /**
  * Created by Vaghela Mithun R. on 12-07-2024 - 11:05.
@@ -128,4 +131,37 @@ fun TextInputLayout.getTextIfVisible(editText: TextInputEditText): String = if (
     editText.text.toString()
 } else {
     ""
+}
+
+fun AutoCompleteTextView.getTextInEnglish(
+    context: Context,
+    @ArrayRes arrayResId: Int
+): String {
+    val selectedText = this.text.toString()
+    val localizedArray = context.resources.getStringArray(arrayResId)
+    val typedArray = context.resources.obtainTypedArray(arrayResId)
+
+    val index = localizedArray.indexOf(selectedText)
+    if (index == -1) {
+        typedArray.recycle()
+        return ""
+    }
+
+    val resId = index.let { typedArray.getResourceId(it, 0) }
+    typedArray.recycle()
+
+    val englishResources = LanguageUtils.getSpecificLocalResource(context, "en")
+    return englishResources.getString(resId)
+}
+
+fun AutoCompleteTextView.setItemFromString(
+    context: Context,
+    @ArrayRes arrayResId: Int,
+    englishText: String
+) {
+    val localizedArray = context.resources.getStringArray(arrayResId)
+    val index = localizedArray.indexOf(englishText)
+    if (index != -1) {
+        this.setText(localizedArray[index], false)
+    }
 }

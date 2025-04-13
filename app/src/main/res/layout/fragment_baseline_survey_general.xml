@@ -75,11 +75,14 @@
                             android:id="@+id/ac_occupation"
                             style="@style/AppTheme.InputBox"
                             bindAutoCompleteValue="@{baseline.occupation}"
+                            stringArrayResId="@{baseline.occupationArrayConstants}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_occupation_txt"
                             android:inputType="none" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,6 +120,7 @@
                             android:id="@+id/ac_caste"
                             style="@style/AppTheme.InputBox"
                             bindAutoCompleteValue="@{baseline.caste}"
+                            stringArrayResId="@{baseline.casteArrayConstants}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_caste"
@@ -159,11 +163,14 @@
                             android:id="@+id/ac_education"
                             style="@style/AppTheme.InputBox"
                             bindAutoCompleteValue="@{baseline.education}"
+                            stringArrayResId="@{baseline.educationArrayConstants}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_education"
                             android:inputType="none" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -223,6 +230,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/generic_not_sure" />
+
                     </RadioGroup>
 
                 </LinearLayout>
@@ -384,11 +392,14 @@
                             android:id="@+id/ac_phone_ownership"
                             style="@style/AppTheme.InputBox"
                             bindAutoCompleteValue="@{baseline.phoneOwnership}"
+                            stringArrayResId="@{baseline.phoneOwnershipArrayConstants}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/select_phone_ownership"
                             android:inputType="none" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

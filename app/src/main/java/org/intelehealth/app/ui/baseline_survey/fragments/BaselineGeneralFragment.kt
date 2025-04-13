@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.github.ajalt.timberkt.i
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyGeneralBinding
@@ -14,6 +15,8 @@ import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.getSelectedData
+import org.intelehealth.app.utilities.extensions.getSelectedDataInEnglishLocale
+import org.intelehealth.app.utilities.extensions.getTextInEnglish
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
@@ -29,6 +32,12 @@ class BaselineGeneralFragment :
     BaseFragmentBaselineSurvey(R.layout.fragment_baseline_survey_general) {
 
     private lateinit var binding: FragmentBaselineSurveyGeneralBinding
+
+    private lateinit var occupation: String
+    private lateinit var caste: String
+    private lateinit var education: String
+    private lateinit var phoneOwnership: String
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyGeneralBinding.bind(view)
@@ -58,6 +67,29 @@ class BaselineGeneralFragment :
         setupCasteCheck()
         setupEducationCheck()
         setupPhoneOwnershipCheck()
+        initializeRadioButtonTags()
+    }
+
+    private fun initializeRadioButtonTags() {
+        binding.radioACYes.tag = R.string.yes
+        binding.radioACNo.tag = R.string.no
+        binding.radioACNotSure.tag = R.string.generic_not_sure
+
+        binding.radioMCYes.tag = R.string.yes
+        binding.radioMCNo.tag = R.string.no
+        binding.radioMCNotSure.tag = R.string.generic_not_sure
+
+        binding.radioBAYes.tag = R.string.yes
+        binding.radioBANo.tag = R.string.no
+        binding.radioBANotSure.tag = R.string.decline_to_answer
+
+        binding.radioPersonal.tag = R.string.generic_yes_personal
+        binding.radioFamilyMember.tag = R.string.generic_yes_family
+        binding.radioFamilyWhatsappNo.tag = R.string.no
+
+        binding.radioMarried.tag = R.string.married
+        binding.radioUnmarried.tag = R.string.unmarried
+        binding.radioWidowed.tag = R.string.widowed
     }
 
     private fun setupOccupationCheck() {
@@ -66,9 +98,7 @@ class BaselineGeneralFragment :
 
         binding.acOccupation.setOnItemClickListener { _, _, i, _ ->
             binding.tilOccupationOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acOccupation.setText(this.getStringArray(R.array.occupation)[i], false)
-            }
+            binding.acOccupation.setText(resources.getStringArray(R.array.occupation)[i], false)
         }
     }
 
@@ -78,9 +108,7 @@ class BaselineGeneralFragment :
 
         binding.acCaste.setOnItemClickListener { _, _, i, _ ->
             binding.tilCasteOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acCaste.setText(this.getStringArray(R.array.caste)[i], false)
-            }
+            binding.acCaste.setText(resources.getStringArray(R.array.caste)[i], false)
         }
     }
 
@@ -90,12 +118,7 @@ class BaselineGeneralFragment :
 
         binding.acEducation.setOnItemClickListener { _, _, i, _ ->
             binding.tilEducationOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acEducation.setText(
-                    this.getStringArray(R.array.education)[i],
-                    false
-                )
-            }
+            binding.acEducation.setText(resources.getStringArray(R.array.education)[i], false)
         }
     }
 
@@ -105,12 +128,10 @@ class BaselineGeneralFragment :
 
         binding.acPhoneOwnership.setOnItemClickListener { _, _, i, _ ->
             binding.tilPhoneOwnershipOption.hideError()
-            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                binding.acPhoneOwnership.setText(
-                    this.getStringArray(R.array.phone_ownership)[i],
-                    false
-                )
-            }
+            binding.acPhoneOwnership.setText(
+                resources.getStringArray(R.array.phone_ownership)[i],
+                false
+            )
         }
     }
 
@@ -122,16 +143,20 @@ class BaselineGeneralFragment :
 
     private fun saveSurveyData() {
         baselineSurveyData.apply {
-
-            occupation = binding.acOccupation.text.toString()
-            caste = binding.acCaste.text.toString()
-            education = binding.acEducation.text.toString()
-            ayushmanCard = binding.rgACOptions.getSelectedData()
-            mgnregaCard = binding.rgMCOptions.getSelectedData()
-            bankAccount = binding.rgBAOptions.getSelectedData()
-            phoneOwnership = binding.acPhoneOwnership.text.toString()
-            familyWhatsApp = binding.rgFamilyWhatsappOptions.getSelectedData()
-            martialStatus = binding.rgMaritalStatusOptions.getSelectedData()
+            occupation = binding.acOccupation.getTextInEnglish(requireContext(), R.array.occupation)
+            caste = binding.acCaste.getTextInEnglish(requireContext(), R.array.caste)
+            education = binding.acEducation.getTextInEnglish(requireContext(), R.array.education)
+            ayushmanCard = binding.rgACOptions.getSelectedDataInEnglishLocale(requireContext())
+            mgnregaCard = binding.rgMCOptions.getSelectedDataInEnglishLocale(requireContext())
+            bankAccount = binding.rgBAOptions.getSelectedDataInEnglishLocale(requireContext())
+            phoneOwnership = binding.acPhoneOwnership.getTextInEnglish(
+                requireContext(),
+                R.array.phone_ownership
+            )
+            familyWhatsApp =
+                binding.rgFamilyWhatsappOptions.getSelectedDataInEnglishLocale(requireContext())
+            martialStatus =
+                binding.rgMaritalStatusOptions.getSelectedDataInEnglishLocale(requireContext())
 
             baselineSurveyViewModel.updateBaselineData(this)
             BaselineGeneralFragmentDirections.navigationGeneralToMedical().apply {
