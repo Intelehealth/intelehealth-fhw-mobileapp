@@ -255,19 +255,6 @@
         <item>परास्नातक एवं उच्चतर</item>
     </string-array>-->
 
-    <string-array name="caste">
-        <item>सामान्य</item>
-        <item>अन्य पिछड़ा वर्ग</item>
-        <item>अनुसूचित जाति</item>
-        <item>अनुसूचित जनजाति</item>
-        <item>अन्य</item>
-    </string-array>
-
-    <string-array name="economic">
-        <item>गरीबी रेखा से ऊपर</item>
-        <item>गरीबी रेखा से नीचे</item>
-    </string-array>
-
     <string-array name="guardian_type">
         <item>मां</item>
         <item>पिता</item>

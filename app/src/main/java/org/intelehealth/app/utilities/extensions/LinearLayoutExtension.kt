@@ -5,6 +5,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
+import org.intelehealth.app.utilities.LanguageUtils
 import org.json.JSONArray
 
 fun LinearLayout.validateCheckboxes(): Boolean {
@@ -28,24 +29,35 @@ fun LinearLayout.getTextIfVisible(editText: TextInputEditText): String = if (thi
 
 fun LinearLayout.getSelectedCheckboxes(): String {
     val result = JSONArray()
+    val englishResources = LanguageUtils.getSpecificLocalResource(context, "en")
 
     for (i in 0 until this.childCount) {
         val child = this.getChildAt(i)
         if (child is CheckBox && child.isChecked) {
-            val text = child.text.toString()
-            result.put(text)
+            val resId = child.tag as? Int
+            if (resId != null) {
+                val englishText = englishResources.getString(resId)
+                result.put(englishText)
+            }
         }
     }
 
     return result.toString()
 }
 
+
 fun LinearLayout.setSelectedCheckboxes(data: String) {
     val normalizedData = data.replace("\\/", "/")
+    val englishResources = LanguageUtils.getSpecificLocalResource(context, "en")
+
     for (i in 0 until this.childCount) {
         val child = this.getChildAt(i)
         if (child is CheckBox) {
-            child.isChecked = normalizedData.contains(child.text.toString())
+            val resId = child.tag as? Int
+            if (resId != null) {
+                val englishText = englishResources.getString(resId)
+                child.isChecked = normalizedData.contains(englishText)
+            }
         }
     }
 }

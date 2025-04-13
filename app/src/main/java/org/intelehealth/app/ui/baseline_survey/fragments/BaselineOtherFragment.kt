@@ -154,40 +154,43 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun setupSourceOfWater() {
-        val mItems = resources.getStringArray(R.array.source_of_water).toList()
-        createCheckboxes(binding.cgSourceOfWater, mItems)
+        createCheckboxes(binding.cgSourceOfWater, R.array.source_of_water)
     }
 
     private fun setupSourceOfLight() {
-        val mItems = resources.getStringArray(R.array.source_of_light).toList()
-        createCheckboxes(binding.cgSourceOfLight, mItems)
+        createCheckboxes(binding.cgSourceOfLight, R.array.source_of_light)
     }
 
     private fun setupFuelType() {
-        val mItems = resources.getStringArray(R.array.fuel_type).toList()
-        createCheckboxes(binding.cgFuelType, mItems)
+        createCheckboxes(binding.cgFuelType, R.array.fuel_type)
     }
 
     private fun setupHandWashPractice() {
-        val mItems = resources.getStringArray(R.array.hand_wash_practice).toList()
-        createCheckboxes(binding.cgHandWashPractices, mItems)
+        createCheckboxes(binding.cgHandWashPractices, R.array.hand_wash_practice)
     }
 
     private fun setupWaterSafeguarding() {
-        val mItems = resources.getStringArray(R.array.safeguard_water).toList()
-        createCheckboxes(binding.cgSafeguardWater, mItems)
+        createCheckboxes(binding.cgSafeguardWater, R.array.safeguard_water)
     }
 
-    private fun createCheckboxes(container: LinearLayout, items: List<String>) {
-        for (item in items) {
-            val checkBox = CheckBox(requireContext())
-            checkBox.text = item
-            container.addView(checkBox)
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
-                println("$item is checked: $isChecked")
+    private fun createCheckboxes(container: LinearLayout, arrayResId: Int) {
+        val typedArray = resources.obtainTypedArray(arrayResId)
+
+        for (i in 0 until typedArray.length()) {
+            val resId = typedArray.getResourceId(i, 0)
+            if (resId != 0) {
+                val localizedLabel = getString(resId) // current locale
+                val checkBox = CheckBox(container.context).apply {
+                    text = localizedLabel
+                    tag = resId
+                }
+                container.addView(checkBox)
             }
         }
+
+        typedArray.recycle()
     }
+
 
     private fun setupEconomicStatus() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.economic)
