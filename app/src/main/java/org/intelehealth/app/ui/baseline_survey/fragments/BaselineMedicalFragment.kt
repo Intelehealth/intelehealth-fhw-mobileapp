@@ -21,6 +21,7 @@ import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.getSelectedData
+import org.intelehealth.app.utilities.extensions.getSelectedDataInEnglishLocale
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.storeReasonIfAnswerIsPositive
@@ -81,6 +82,65 @@ class BaselineMedicalFragment :
         setValues()
         setClickListener()
         setupFilter()
+        initializeRadioButtonTags()
+    }
+
+    private fun initializeRadioButtonTags() {
+        binding.radioBpYes.tag = R.string.yes
+        binding.radioBpNo.tag = R.string.no
+
+        binding.radioDiabetesYes.tag = R.string.yes
+        binding.radioDiabetesNo.tag = R.string.no
+
+        binding.radioArthritisYes.tag = R.string.yes
+        binding.radioArthritisNo.tag = R.string.no
+
+        binding.radioAnemiaYes.tag = R.string.yes
+        binding.radioAnemiaNo.tag = R.string.no
+
+        binding.radioSurgeryYes.tag = R.string.yes
+        binding.radioSurgeryNo.tag = R.string.no
+
+        binding.radioSmoker.tag = R.string.smoker
+        binding.radioNonSmoker.tag = R.string.non_smoker
+        binding.radioDeclined.tag = R.string.denied_to_answer
+
+        binding.radioSmokingRate1.tag = R.string.less_than_5_bidis_or_cigarette
+        binding.radioSmokingRate2.tag = R.string.five_to_ten_bidis_or_cigarette
+        binding.radioSmokingRate3.tag = R.string.more_than_10_bidis_or_cigarette
+
+        binding.radioSmokingFrequency1.tag = R.string.frequency_daily
+        binding.radioSmokingFrequency2.tag = R.string.frequency_once_a_week
+        binding.radioSmokingFrequency3.tag = R.string.frequency_twice_a_week
+        binding.radioSmokingFrequency4.tag = R.string.frequency_occasionally
+
+        binding.radioChewYes.tag = R.string.yes
+        binding.radioChewNo.tag = R.string.no
+        binding.radioChewDeclined.tag = R.string.denied_to_answer
+
+        binding.radioAlcoholHistoryYes.tag = R.string.yes
+        binding.radioAlcoholHistoryNo.tag = R.string.no
+        binding.radioAlcoholHistoryDeclined.tag = R.string.denied_to_answer
+
+        binding.radioAlcoholHistoryYes.tag = R.string.yes
+        binding.radioAlcoholHistoryNo.tag = R.string.no
+        binding.radioAlcoholHistoryDeclined.tag = R.string.denied_to_answer
+
+        binding.radioAlcoholRate1.tag = R.string.zero_fifty_ml
+        binding.radioAlcoholRate2.tag = R.string.fifty_hundred_ml
+        binding.radioAlcoholRate3.tag = R.string.hundred_two_hundred_fifty_ml
+        binding.radioAlcoholRate4.tag = R.string.two_fifty_five_hundred_ml
+        binding.radioAlcoholRate5.tag = R.string.more_than_five_hundred_ml
+
+        binding.radioAlcoholDuration1.tag = R.string.less_than_a_year
+        binding.radioAlcoholDuration2.tag = R.string.from_1_year_to_5_years
+        binding.radioAlcoholDuration3.tag = R.string.from_5_year_to_10_years
+        binding.radioAlcoholDuration4.tag = R.string.more_than_10_years
+
+        binding.radioAlcoholFrequency1.tag = R.string.daily
+        binding.radioAlcoholFrequency2.tag = R.string.frequency_once_a_week
+        binding.radioAlcoholFrequency3.tag = R.string.frequency_twice_a_week
+        binding.radioAlcoholFrequency4.tag = R.string.frequency_occasionally
     }
 
     private fun setupFilter() {
@@ -210,22 +270,24 @@ class BaselineMedicalFragment :
             hbCheck = binding.acHbCheck.text.toString()
             bpCheck = binding.acBpCheck.text.toString()
             sugarCheck = binding.acSugarCheck.text.toString()
-            bpValue = binding.rgBpOptions.getSelectedData()
-            diabetesValue = binding.rgDiabetesOptions.getSelectedData()
-            arthritisValue = binding.rgArthritisOptions.getSelectedData()
-            anemiaValue = binding.rgAnemiaOptions.getSelectedData()
-            surgeryValue = binding.rgSurgeryOptions.getSelectedData()
-            surgeryReason = binding.etSurgeryReasonCheck.text.toString()
-                .storeReasonIfAnswerIsPositive(surgeryValue)
-            smokingHistory = binding.rgSmokingHistoryOptions.getSelectedData()
-            smokingRate = binding.rgSmokingRateOptions.getSelectedData()
-            smokingDuration = binding.rgSmokingDurationOptions.getSelectedData()
-            smokingFrequency = binding.rgSmokingFrequencyOptions.getSelectedData()
-            chewTobacco = binding.rgChewTobaccoOptions.getSelectedData()
-            alcoholHistory = binding.rgAlcoholHistoryOptions.getSelectedData()
-            alcoholRate = binding.rgAlcoholRateOptions.getSelectedData()
-            alcoholDuration = binding.rgAlcoholDurationOptions.getSelectedData()
-            alcoholFrequency = binding.rgAlcoholFrequencyOptions.getSelectedData()
+
+            bpValue = binding.rgBpOptions.getSelectedDataInEnglishLocale(requireContext())
+            diabetesValue = binding.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())
+            arthritisValue = binding.rgArthritisOptions.getSelectedDataInEnglishLocale(requireContext())
+            anemiaValue = binding.rgAnemiaOptions.getSelectedDataInEnglishLocale(requireContext())
+            surgeryValue = binding.rgSurgeryOptions.getSelectedDataInEnglishLocale(requireContext())
+            surgeryReason = binding.etSurgeryReasonCheck.text.toString().storeReasonIfAnswerIsPositive(surgeryValue)
+
+            smokingHistory = binding.rgSmokingHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingRate = binding.rgSmokingRateOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingDuration = binding.rgSmokingDurationOptions.getSelectedDataInEnglishLocale(requireContext())
+            smokingFrequency = binding.rgSmokingFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
+
+            chewTobacco = binding.rgChewTobaccoOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholHistory = binding.rgAlcoholHistoryOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholRate = binding.rgAlcoholRateOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholDuration = binding.rgAlcoholDurationOptions.getSelectedDataInEnglishLocale(requireContext())
+            alcoholFrequency = binding.rgAlcoholFrequencyOptions.getSelectedDataInEnglishLocale(requireContext())
 
             baselineSurveyViewModel.updateBaselineData(this)
             BaselineMedicalFragmentDirections.navigationMedicalToOther().apply {
