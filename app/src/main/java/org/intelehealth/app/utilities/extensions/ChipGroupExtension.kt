@@ -6,17 +6,14 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.intelehealth.app.utilities.LanguageUtils.getSpecificLocalResource
 
-fun ChipGroup.getSelectedChipTextInLocale(
-    context: Context,
-    locale: String = "en"
-): String? {
+fun ChipGroup.getSelectedChipTextInEnglishLocale(context: Context): String? {
     val chipId = checkedChipId
     if (chipId == View.NO_ID) return null
 
     val chip = findViewById<Chip>(chipId)
     val resId = chip.tag as? Int ?: return null
 
-    val localizedRes = getSpecificLocalResource(context, locale)
+    val localizedRes = getSpecificLocalResource(context, "en")
     return localizedRes.getString(resId)
 }
 

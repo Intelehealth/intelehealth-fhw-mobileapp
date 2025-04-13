@@ -7,8 +7,6 @@ import android.webkit.URLUtil
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -31,7 +29,7 @@ import org.intelehealth.app.utilities.LocationValidationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.exception.DAOException
 import org.intelehealth.app.utilities.extensions.checkChipBySelectedText
-import org.intelehealth.app.utilities.extensions.getSelectedChipTextInLocale
+import org.intelehealth.app.utilities.extensions.getSelectedChipTextInEnglishLocale
 
 
 class LocationSurveyActivity : AppCompatActivity() {
@@ -662,31 +660,31 @@ class LocationSurveyActivity : AppCompatActivity() {
 
     private fun storeSurveyData() {
         sessionManager?.subCentreDistance =
-            binding?.cbScDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbScDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.primaryHealthCentreDistance =
-            binding?.cbPhcDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbPhcDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.communityHealthCentreDistance =
-            binding?.cbChcDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbChcDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.districtHospitalDistance =
-            binding?.cbDhDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbDhDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.medicalStoreDistance =
-            binding?.cbMsDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbMsDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.pathologicalLabDistance =
-            binding?.cbPlDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbPlDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.privateClinicWithMbbsDoctorDistance =
-            binding?.cbPcDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbPcDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.privateClinicWithAlternateDoctorDistance =
-            binding?.cbPcamDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbPcamDistance?.getSelectedChipTextInEnglishLocale(this)
 
         sessionManager?.jalJeevanYojanaScheme =
-            binding?.cbJjyDistance?.getSelectedChipTextInLocale(this)
+            binding?.cbJjyDistance?.getSelectedChipTextInEnglishLocale(this)
     }
 
     private fun fetchAndSetLocationAttributes(villageUuid: String?) {
