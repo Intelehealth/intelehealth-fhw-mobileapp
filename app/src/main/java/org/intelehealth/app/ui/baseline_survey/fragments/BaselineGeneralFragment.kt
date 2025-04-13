@@ -33,12 +33,6 @@ class BaselineGeneralFragment :
 
     private lateinit var binding: FragmentBaselineSurveyGeneralBinding
 
-    private lateinit var occupation: String
-    private lateinit var caste: String
-    private lateinit var education: String
-    private lateinit var phoneOwnership: String
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyGeneralBinding.bind(view)
         baselineSurveyViewModel.updateBaselineStage(BaselineSurveyStage.GENERAL)
