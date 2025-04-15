@@ -4213,6 +4213,30 @@ public final class StringUtils {
      * @param sessionManager
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
+        // 1. Calculate Age
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        // 2. Get Localized Gender String
+        int genderStringResId;
+        switch (gender.toUpperCase()) {
+            case "M":
+                genderStringResId = R.string.identification_screen_checkbox_male;
+                break;
+            case "F":
+                genderStringResId = R.string.identification_screen_checkbox_female;
+                break;
+            case "O":
+                genderStringResId = R.string.identification_screen_checkbox_other;
+                break;
+            default:
+                genderView.setText(gender + " " + age);
+                return;
+        }
+
+        // 3. Apply Localized Text
+        genderView.setText(context.getString(genderStringResId) + " " + age);
+    }
+    /*public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         //  1. Age
         String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
 
@@ -4231,7 +4255,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4241,7 +4265,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4251,7 +4275,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4261,7 +4285,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4271,7 +4295,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4281,7 +4305,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4291,7 +4315,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4319,6 +4343,31 @@ public final class StringUtils {
         } else {
             genderView.setText(gender + " " + age);
         }
+    }*/
+
+    /**
+     * returning string instead of setting data to textview
+     * @param context
+     * @param dob
+     * @param gender
+     * @return
+     */
+    public static String setGenderAgeLocal(Context context, String dob, String gender) {
+        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        int genderResId;
+        if (gender.equalsIgnoreCase("M")) {
+            genderResId = R.string.identification_screen_checkbox_male;
+        } else if (gender.equalsIgnoreCase("F")) {
+            genderResId = R.string.identification_screen_checkbox_female;
+        } else if (gender.equalsIgnoreCase("O")) {
+            genderResId = R.string.identification_screen_checkbox_other;
+        } else {
+            return gender + " " + age;
+        }
+
+        String localizedGender = context.getResources().getString(genderResId);
+        return  localizedGender + " " + age;
     }
 
     /**
