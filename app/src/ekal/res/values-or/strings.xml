@@ -424,6 +424,7 @@
     <string name="unemployed">ବେକାରୀ</string>
     <string name="retired_with_pension">ଚାକିରୀରୁ ଅବସର(ପେନସନ ଗ୍ରହୀତା)</string>
     <string name="retired_without_pension">ଅବସର ପ୍ରାପ୍ତ ( ଅବସର କାଳୀନ ଭତ୍ତା ବିହୀନ )</string>
+    <string name="not_applicable">ପ୍ରଯୁଜ୍ୟ ନୁହେଁ</string>
     <string name="no_family_member_registered">କ family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
     <string name="enter_valid_phone_number">ଠିକ୍ ଫୋନ୍ ନମ୍ୱର୍ ଦିଅ</string>
 
