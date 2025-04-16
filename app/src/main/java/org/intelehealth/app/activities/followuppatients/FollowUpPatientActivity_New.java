@@ -656,8 +656,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             //commonLoadingDialog = null;
             /* ToastUtil.showShortToast(this, getString(R.string.loading));*/
         }
-        
-        Log.d("LLLL",""+limit+"  "+finalMonthsFollowUpDates.size());
 
         compositeDisposable.add(
                 getAllPatientsFromDB(limit, finalMonthsFollowUpDates.size())
