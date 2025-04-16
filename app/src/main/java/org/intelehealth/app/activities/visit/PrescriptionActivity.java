@@ -73,6 +73,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -122,6 +123,11 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
+import org.intelehealth.config.presenter.section.factory.ActiveSectionViewModelFactory;
+import org.intelehealth.config.presenter.section.viewmodel.ActiveSectionViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.ActiveSection;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -206,6 +212,60 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO cholesterol = new ObsDTO();
     String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
+    private List<ActiveSection> mActiveSectionList;
+
+    private void loadFeatureActiveStatus() {
+        ActiveSectionRepository repository = new ActiveSectionRepository(ConfigDatabase.getInstance(this).activeSectionDao());
+        ActiveSectionViewModel activeSectionViewModel = new ViewModelProvider(this, new ActiveSectionViewModelFactory(repository)).get(ActiveSectionViewModel.class);
+        activeSectionViewModel.fetchActiveSection().observe(this, activeSections -> {
+            if (activeSections != null) {
+                mActiveSectionList = activeSections;
+
+                boolean isFound = false;
+                for (ActiveSection activeSection : mActiveSectionList) {
+
+                    if (activeSection.getKey().equals("share_prescription")) {
+                        isFound = true;
+                        btn_vs_share.setVisibility(activeSection.isEnable() ? View.VISIBLE : View.GONE);
+                        // setweight  for btn_vs_print
+
+
+                        // two button resize with weight
+
+                        // set text as per local language
+                        String lng = sessionManager.getAppLanguage();
+                        String title = activeSection.getLang().get(lng);
+
+                        if (title != null && !title.trim().isEmpty()) {
+                            btn_vs_share.setText(title);
+
+                        } else {
+                            btn_vs_share.setText(activeSection.getName());
+                        }
+                    }
+                }
+                // Get current LayoutParams and cast to LinearLayout.LayoutParams
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btn_vs_print.getLayoutParams();
+                if (!isFound) {
+                    btn_vs_share.setVisibility(View.GONE);
+                    // Set new weight (example: 2 to make it full width if weightSum = 2)
+                    params.weight = 2f;
+                    // Optionally adjust width if needed
+                    params.width = 0; // Important when using weight
+
+                } else {
+                    // Set new weight (example: 1 to make it half width if weightSum = 2)
+                    params.weight = 1f;
+                    // Optionally adjust width if needed
+                    params.width = 0; // Important when using weight
+                }
+                // Apply new layout parameters
+                btn_vs_print.setLayoutParams(params);
+
+            }
+            ;
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +282,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         fetchIntent();
         setDataToView();
         expandableCardVisibilityHandling();
+        loadFeatureActiveStatus();
     }
 
     private FeatureActiveStatus mFeatureActiveStatus;
@@ -391,8 +452,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                    .asDrawable().sizeMultiplier(0.3f);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.3f);
             Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
@@ -493,8 +553,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 Log.d(TAG, "setDataToView: uricAcid  : " + new Gson().toJson(uricAcid));
                 Log.d(TAG, "setDataToView: cholesterol  : " + new Gson().toJson(cholesterol));
 
-                PrintViewPrescription printViewPrescription = new PrintViewPrescription(
-                        PrescriptionActivity.this, details, patient, prescriptionDataModel, PrescriptionActivity.this);
+                PrintViewPrescription printViewPrescription = new PrintViewPrescription(PrescriptionActivity.this, details, patient, prescriptionDataModel, PrescriptionActivity.this);
                 try {
                     printViewPrescription.textPrint();
                 } catch (Exception e) {
@@ -1307,7 +1366,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
             String ageData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth());
-            Log.d(TAG, "parseDoctorDetails:ageData :  "+ageData);
+            Log.d(TAG, "parseDoctorDetails:ageData :  " + ageData);
             if (ageData != null && !ageData.isEmpty()) {
                 String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
                 int mAgeYears = Integer.valueOf(ymdData[0]);
@@ -1323,10 +1382,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         dr_speciality.setText(details.getSpecialization());
     }
 
-    private   String addBulletPoints(String inputString) {
+    private String addBulletPoints(String inputString) {
         // Remove all occurrences of "&null" (case-insensitive) and "null" (case-insensitive)
-        String cleanedString = inputString
-                .replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
+        String cleanedString = inputString.replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
                 .trim();
 
         // Split the cleaned string into lines
@@ -1347,7 +1405,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         return result.toString();
     }
-  private   String addBulletPoints1(String inputString) {
+
+    private String addBulletPoints1(String inputString) {
 
 
         // Split the cleaned string into lines
@@ -1478,12 +1537,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 CustomLog.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
-                if (!medicalAdvice_HyperLink.isEmpty())
-                {
+                if (!medicalAdvice_HyperLink.isEmpty()) {
                     medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "\n");
                     advice_txt.setText(addBulletPoints1(medicalAdvice_string));
-                }else
-                {
+                } else {
                     medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                     advice_txt.setText(addBulletPoints1(medicalAdvice_string));
                 }

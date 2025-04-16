@@ -494,7 +494,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-
+String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

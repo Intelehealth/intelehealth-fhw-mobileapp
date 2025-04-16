@@ -1739,7 +1739,7 @@
     <string name="syncing">Syncing</string>
     <string name="sync_progress_percentage">%1$d%%</string>
     <string name="sync_completed">Sync completed</string>
-
+    <string name="feature_not_found">Feature not found</string>
 
 
 </resources>

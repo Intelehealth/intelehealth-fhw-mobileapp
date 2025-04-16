@@ -9,8 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -349,7 +347,7 @@ public class SyncDAO {
         boolean sync = false;
 
         try {
-            if (!isTheConfigUpdated)
+            //if (!isTheConfigUpdated)
                 loadConfig();
             sync = SyncData(response.body(), true);
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
@@ -566,6 +564,7 @@ public class SyncDAO {
                 }
 
                 Logger.logD("End Pull request", "Ended");
+                loadConfig();
                 sessionManager.setLastPulledDateTime(
                         AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
