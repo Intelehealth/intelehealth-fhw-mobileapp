@@ -522,9 +522,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         tomorrowssFollowUpDates.clear();
         finalMonthsFollowUpDates.clear();
         try {
-            todaysAdapter.notifyDataSetChanged();
-            tomorrowsAdapter.notifyDataSetChanged();
-            othersAdapter.notifyDataSetChanged();
+            todaysAdapter = null;
+            tomorrowsAdapter = null;
+            othersAdapter = null;
         } catch (Exception e) {
         }
     }
@@ -615,7 +615,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         datePickerDialog.show();
 
         Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(
                 ContextCompat.getColor(
                         this,
@@ -624,7 +624,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         ); // Change to your desired color
 
         Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(
                 ContextCompat.getColor(
                         this,
@@ -656,6 +656,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             //commonLoadingDialog = null;
             /* ToastUtil.showShortToast(this, getString(R.string.loading));*/
         }
+        
+        Log.d("LLLL",""+limit+"  "+finalMonthsFollowUpDates.size());
 
         compositeDisposable.add(
                 getAllPatientsFromDB(limit, finalMonthsFollowUpDates.size())
@@ -679,7 +681,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                             completedRecyclerViews.incrementAndGet();
                                             completedRecyclerViews.incrementAndGet();
 
-                                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                                            setMonthsDatesInRecyclerView(
+                                                    dataLoadingType == DataLoadingType.INITIAL ?
+                                                            finalMonthsFollowUpDates : initialFollowUpPatients);
                                             if (commonLoadingDialog.isShowing()) {
                                                 commonLoadingDialog.dismiss();
                                             }
@@ -717,7 +721,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                         if (commonLoadingDialog.isShowing()) {
                                                             commonLoadingDialog.dismiss();
                                                         }
-                                                        Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load todays and tomorrows data"+throwable,Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(FollowUpPatientActivity_New.this, "Failed to load todays and tomorrows data" + throwable, Toast.LENGTH_SHORT).show();
                                                     }));
                                         }
                                     }
@@ -726,7 +730,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                     if (commonLoadingDialog.isShowing()) {
                                         commonLoadingDialog.dismiss();
                                     }
-                                    Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load others data",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FollowUpPatientActivity_New.this, "Failed to load others data", Toast.LENGTH_SHORT).show();
                                 })
         );
 
@@ -933,7 +937,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "b.first_name || " + middleName + " || b.last_name as patient_name_new, " +
                 "a.sync, a.patientuuid, " +
                 "substr(a.startdate, 1, 10) as startdate, "
-                +"DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                + "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
                 "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
                 "o.value as follow_up_info,"
                 + "b.patient_photo, " +
@@ -1088,7 +1092,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND o.voided='0' " +
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
-                "AND followup_date is NOT NULL "+
+                "AND followup_date is NOT NULL " +
                 "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
@@ -1161,8 +1165,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     public Observable<List<FollowUpModel>> getAllPatientsFromDB(int limit, int offset) {
         return Observable.fromCallable(() -> {
-            Log.d("CCCC",Thread.currentThread().getName());
-
             List<FollowUpModel> modelList = new ArrayList<>();
             String filterQuery = "";
             String skipTodayAndTomorrowQuery = "";

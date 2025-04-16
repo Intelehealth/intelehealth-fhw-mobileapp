@@ -777,7 +777,6 @@ public class PatientsDAO {
 
     public static Observable<List<PatientDTO>> getQueryPatientsObs(String query) {
         return Observable.create(emitter ->{
-            Log.d("QQQQQ",""+query);
             String search = query/*.trim().replaceAll("\\s", "")*/;
             // search = StringUtils.mobileNumberEmpty(phoneNumber());
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
