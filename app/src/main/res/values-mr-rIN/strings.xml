@@ -1517,5 +1517,6 @@
     <string name="wait_while_protocols_changing">प्रोटोकॉल बदलले जात असताना कृपया वाट पहा.</string>
     <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
     <string name="language_successfully_changed">भाषा यशस्वीरित्या बदलली!</string>
+    <string name="feature_not_found">Feature not found</string>
 
 </resources>
