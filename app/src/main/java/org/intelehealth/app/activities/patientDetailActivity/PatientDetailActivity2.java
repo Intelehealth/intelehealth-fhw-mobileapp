@@ -484,16 +484,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     getResources().getString(R.string.generic_yes),
                     getResources().getString(R.string.generic_no),
                     action -> {
-                        if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                             //
-                        } else if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            //
-                            startVisit();
+                            Intent intent2 = new Intent(PatientDetailActivity2.this, VisitCreationActivity.class);
+                            CommonVisitData commonVisitData = new CommonVisitData();
+                            commonVisitData.setPatientUuid(patientDTO.getUuid());
+                            commonVisitData.setPrivacyNote(privacy_value_selected);
+                            intent2.putExtra("CommonVisitData", commonVisitData);
                             IntelehealthApplication.getInstance().setVisitType(AppConstants.VISIT_TYPE_SEVIKA);
+
+                            startActivity(intent2);
+                            finish();
                         }
                     }
             );
-
         });
 
         populateBaselineSurveys();
@@ -804,14 +808,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         intent2.putExtra("gender", mGender);
         intent2.putExtra("tag", "new");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-
-        CommonVisitData commonVisitData = new CommonVisitData();
-        commonVisitData.setPatientUuid(patientDTO.getUuid());
-        commonVisitData.setPrivacyNote(privacy_value_selected);
-        intent2.putExtra("CommonVisitData", commonVisitData);
-
-        startActivity(intent2);
-        finish();
     }
 
 
