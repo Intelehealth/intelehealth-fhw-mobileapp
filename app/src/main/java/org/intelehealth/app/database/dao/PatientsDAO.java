@@ -630,11 +630,17 @@ public class PatientsDAO {
         return gender;
     }
 
-    public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset) {
+    public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset,String query) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        String middleName = "CASE WHEN middle_name IS NOT NULL THEN ' ' || middle_name || ' ' ELSE ' ' END ";
+        String searchQuery = "";
+        if(!query.isEmpty()){
+            searchQuery = " where ((first_name || " + middleName + " || last_name) LIKE " + "'%" + query + "%') OR (openmrs_id LIKE " + "'%" + query + "%') ";
+        }
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY modified_date DESC limit ? offset ?",
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +searchQuery+" ORDER BY modified_date DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
         try {
             if (searchCursor.moveToFirst()) {

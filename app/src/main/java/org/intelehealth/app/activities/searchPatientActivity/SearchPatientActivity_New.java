@@ -166,6 +166,8 @@ public class SearchPatientActivity_New extends BaseActivity {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
                     recent.clear();
                     mSearchEditText.setText("");
+                    start = 0;
+                    queryAllPatients();
                 }
             }
         });
@@ -173,8 +175,10 @@ public class SearchPatientActivity_New extends BaseActivity {
         iconSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String searchText = mSearchEditText.getText().toString();
-                performSearch(searchText);
+               // String searchText = mSearchEditText.getText().toString();
+                //performSearch(searchText);
+                start = 0;
+                queryAllPatients();
             }
         });
 
@@ -206,7 +210,8 @@ public class SearchPatientActivity_New extends BaseActivity {
                         @Override
                         public void run() {
                             query = "";
-                            doQuery(query);
+                           /* doQuery(query);*/
+                            //queryAllPatients();
                         }
                     }, 100);
 
@@ -278,7 +283,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private void queryAllPatients() {
-        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
+        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start, mSearchEditText.getText().toString());   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
         CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
         commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
         commonLoadingDialog.setCancelable(false);
@@ -687,7 +692,7 @@ public class SearchPatientActivity_New extends BaseActivity {
             }
 
          //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start,mSearchEditText.getText().toString()); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 patientDTOList.addAll(tempList);
                 CustomLog.d(TAG, "queryAllPatients: " + patientDTOList.size());
