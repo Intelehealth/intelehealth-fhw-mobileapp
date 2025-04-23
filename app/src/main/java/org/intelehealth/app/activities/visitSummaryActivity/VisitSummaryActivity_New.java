@@ -7,6 +7,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAsso
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
@@ -2995,6 +2996,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void buildAndSavePrescription(String fileName) {
+        fetchAndSaveDoctorDetails(visitUUID);
         PrescriptionBuilder builder = new PrescriptionBuilder(this);
         builder.setPatientData(patient, visitStartDate);
         builder.setVitals(getVitals());
@@ -3007,6 +3009,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         builder.setDoctorData(objClsDoctorDetails);
 //        builder.builder(patient, getAllVitalsData(), diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus);
         builder.build(fileName);
+    }
+
+    private void fetchAndSaveDoctorDetails(String visitUuid) {
+        if (objClsDoctorDetails != null) {
+            return;
+        }
+        String drDetails = fetchDrDetailsFromLocalDb(visitUuid);
+        objClsDoctorDetails = new Gson().fromJson(drDetails, ClsDoctorDetails.class);
     }
 
     private String formatComplaintData(String mComplaint) {

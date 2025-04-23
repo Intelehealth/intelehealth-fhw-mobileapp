@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.database.dao.VisitsDAO.allNotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
@@ -75,6 +76,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, EndVisitAdapter.OnVisitClickListener {
     RecyclerView recycler_recent, recycler_older, recycler_month;
@@ -95,7 +97,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private EndVisitAdapter recentVisitsAdapter, olderVisitsAdapter;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
-   // int totalCounts_recent = 0, totalCounts_older = 0;
+    // int totalCounts_recent = 0, totalCounts_older = 0;
 
     private Context context = EndVisitActivity.this;
     private RelativeLayout no_patient_found_block, main_block;
@@ -218,8 +220,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                         if (!isolderFullyLoaded) {
                             if (recent != null && older != null) {
                                 if (recent.size() > 0 || older.size() > 0) {
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
                                     setOlderMoreDataIntoRecyclerView();
                                 }
@@ -245,12 +246,13 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 searchOperation(query);
                 return false;   // setting to false will close the keyboard when clicked on search btn.
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.blue_border_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.blue_border_bg));
                 } else {
-                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_common_input_bg));
+                    searchview_received.setBackground(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_common_input_bg));
                 }
                 return false;
             }
@@ -335,8 +337,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void setRecentMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        }
-        else {
+        } else {
             CustomLog.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
             if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                 isRecentFullyLoaded = true;
@@ -358,8 +359,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void setOlderMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {
-        }
-        else {
+        } else {
             if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
                 isolderFullyLoaded = true;
                 return;
@@ -392,9 +392,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(EndVisitActivity.this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -458,7 +458,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
 
 
-        buildAndSavePrescription(fileName, mPatient, visitStartDate);
+        buildAndSavePrescription(fileName, mPatient, visitStartDate, model.getVisitUuid());
 
         try {
             File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
@@ -505,6 +505,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
         return obj;
     }
+
     public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
         try {
             T obj = targetClass.newInstance();
@@ -585,7 +586,9 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         visitCursor.close();
     }
 
-    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate) {
+    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate, String visitUuid) {
+        fetchAndSaveDoctorDetails(visitUuid);
+
         PrescriptionBuilder builder = new PrescriptionBuilder(this);
         builder.setPatientData(patient, visitStartDate);
         builder.setVitals(getVitals());
@@ -597,6 +600,14 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         builder.setFollowUp(followUpDate);
         builder.setDoctorData(objClsDoctorDetails);
         builder.build(fileName);
+    }
+
+    private void fetchAndSaveDoctorDetails(String visitUuid) {
+        if (objClsDoctorDetails != null) {
+            return;
+        }
+        String drDetails = fetchDrDetailsFromLocalDb(visitUuid);
+        objClsDoctorDetails = new Gson().fromJson(drDetails, ClsDoctorDetails.class);
     }
 
     private VitalsObject getVitals() {
@@ -638,48 +649,39 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 phyExam.setValue(value);
                 break;
             }
-            case UuidDictionary.HEIGHT:
-            {
+            case UuidDictionary.HEIGHT: {
                 height.setValue(value);
                 break;
             }
-            case UuidDictionary.WEIGHT:
-            {
+            case UuidDictionary.WEIGHT: {
                 weight.setValue(value);
                 break;
             }
-            case UuidDictionary.PULSE:
-            {
+            case UuidDictionary.PULSE: {
                 pulse.setValue(value);
                 break;
             }
-            case UuidDictionary.SYSTOLIC_BP:
-            {
+            case UuidDictionary.SYSTOLIC_BP: {
                 bpSys.setValue(value);
                 break;
             }
-            case UuidDictionary.DIASTOLIC_BP:
-            {
+            case UuidDictionary.DIASTOLIC_BP: {
                 bpDias.setValue(value);
                 break;
             }
-            case UuidDictionary.TEMPERATURE:
-            {
+            case UuidDictionary.TEMPERATURE: {
                 temperature.setValue(value);
                 break;
             }
-            case UuidDictionary.RESPIRATORY:
-            {
+            case UuidDictionary.RESPIRATORY: {
                 resp.setValue(value);
                 break;
             }
-            case UuidDictionary.SPO2:
-            {
+            case UuidDictionary.SPO2: {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GROUP:
-            {
+            case UuidDictionary.BLOOD_GROUP: {
                 mBloodGroupObsDTO.setValue(value);
                 break;
             }
@@ -823,8 +825,8 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         String colon = ":";
         String result = "";
 
-        if(mComplaints != null){
-            for (String mc: mComplaints) {
+        if (mComplaints != null) {
+            for (String mc : mComplaints) {
                 String[] complaints = {mc};
                 if (complaints != null) {
                     for (String value : complaints) {
@@ -886,11 +888,12 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         Gson gson = new Gson();
         SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
         String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
-        if(!prescriptionListJson.isEmpty()){
-            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+        if (!prescriptionListJson.isEmpty()) {
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+            }.getType();
             prescriptionDataList = gson.fromJson(prescriptionListJson, type);
-            for(LocalPrescriptionInfo lpi: prescriptionDataList){
-                if(lpi.getVisitUUID().equals(visituuid)){
+            for (LocalPrescriptionInfo lpi : prescriptionDataList) {
+                if (lpi.getVisitUUID().equals(visituuid)) {
                     lpi.setShareStatus(true);
                 }
             }
@@ -920,7 +923,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         new Thread(new Runnable() {
             @Override
             public void run() {
-              //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
+                //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
                 CustomLog.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
@@ -971,13 +974,12 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                                         String fullName = firstName + " " + middleName + " " + lastName;
 
                                         if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
-                                                || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                             older.add(model);
                                         } else {
                                             // do nothing
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
@@ -1036,7 +1038,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         }
     }
 
-    void handleBackPress(){
+    void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

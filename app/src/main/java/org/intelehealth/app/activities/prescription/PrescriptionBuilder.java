@@ -1394,14 +1394,14 @@ public class PrescriptionBuilder {
     private Typeface getSignatureTypeface(String font) {
         String directory = "";
 
-        if (font.equalsIgnoreCase("youthness")) {
-            directory = "fonts/Youthness.ttf";
-        } else if (font.equalsIgnoreCase("asem")) {
-            directory = "fonts/Asem.otf";
-        } else if (font.equalsIgnoreCase("arty")) {
-            directory = "fonts/Arty.otf";
-        } else if (font.equalsIgnoreCase("almondita")) {
-            directory = "fonts/almondita.ttf";
+        if (font.equalsIgnoreCase("Youthness")) {
+            directory = "font/youthness.ttf";
+        } else if (font.equalsIgnoreCase("Asem")) {
+            directory = "font/asem.otf";
+        } else if (font.equalsIgnoreCase("Arty")) {
+            directory = "font/arty.otf";
+        } else if (font.equalsIgnoreCase("Almondita")) {
+            directory = "font/almondita.ttf";
         }
 
         return Typeface.createFromAsset(activityContext.getAssets(), directory);

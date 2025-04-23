@@ -2167,7 +2167,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         builder.setTests(testsReturned);
         builder.setAdvice(medicalAdvice_string);
         builder.setFollowUp(followUpDate);
-        builder.setDoctorData(objClsDoctorDetails);
+        builder.setDoctorData(details);
         builder.build(fileName);
     }
 

@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
+import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -83,7 +84,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVisitClickListener{
+public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVisitClickListener {
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_received_card_header;
     private static SQLiteDatabase db;
@@ -217,7 +218,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
 
 
-        buildAndSavePrescription(fileName, mPatient, visitStartDate);
+        buildAndSavePrescription(fileName, mPatient, visitStartDate, model.getVisitUuid());
 
         try {
             File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
@@ -264,6 +265,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         return obj;
     }
+
     public <T> T mapCursorToObject(Cursor cursor, Class<T> targetClass) {
         try {
             T obj = targetClass.newInstance();
@@ -342,7 +344,9 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         visitCursor.close();
     }
 
-    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate) {
+    private void buildAndSavePrescription(String fileName, Patient patient, String visitStartDate, String visitUuid) {
+        fetchAndSaveDoctorDetails(visitUuid);
+
         PrescriptionBuilder builder = new PrescriptionBuilder((AppCompatActivity) getActivity());
         builder.setPatientData(patient, visitStartDate);
         builder.setVitals(getVitals());
@@ -354,6 +358,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         builder.setFollowUp(followUpDate);
         builder.setDoctorData(objClsDoctorDetails);
         builder.build(fileName);
+    }
+
+    private void fetchAndSaveDoctorDetails(String visitUuid) {
+        if (objClsDoctorDetails != null) {
+            return;
+        }
+        String drDetails = fetchDrDetailsFromLocalDb(visitUuid);
+        objClsDoctorDetails = new Gson().fromJson(drDetails, ClsDoctorDetails.class);
     }
 
     private VitalsObject getVitals() {
@@ -395,48 +407,39 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                 phyExam.setValue(value);
                 break;
             }
-            case UuidDictionary.HEIGHT:
-            {
+            case UuidDictionary.HEIGHT: {
                 height.setValue(value);
                 break;
             }
-            case UuidDictionary.WEIGHT:
-            {
+            case UuidDictionary.WEIGHT: {
                 weight.setValue(value);
                 break;
             }
-            case UuidDictionary.PULSE:
-            {
+            case UuidDictionary.PULSE: {
                 pulse.setValue(value);
                 break;
             }
-            case UuidDictionary.SYSTOLIC_BP:
-            {
+            case UuidDictionary.SYSTOLIC_BP: {
                 bpSys.setValue(value);
                 break;
             }
-            case UuidDictionary.DIASTOLIC_BP:
-            {
+            case UuidDictionary.DIASTOLIC_BP: {
                 bpDias.setValue(value);
                 break;
             }
-            case UuidDictionary.TEMPERATURE:
-            {
+            case UuidDictionary.TEMPERATURE: {
                 temperature.setValue(value);
                 break;
             }
-            case UuidDictionary.RESPIRATORY:
-            {
+            case UuidDictionary.RESPIRATORY: {
                 resp.setValue(value);
                 break;
             }
-            case UuidDictionary.SPO2:
-            {
+            case UuidDictionary.SPO2: {
                 spO2.setValue(value);
                 break;
             }
-            case UuidDictionary.BLOOD_GROUP:
-            {
+            case UuidDictionary.BLOOD_GROUP: {
                 mBloodGroupObsDTO.setValue(value);
                 break;
             }
@@ -581,7 +584,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         String result = "";
 
         if (mComplaints != null) {
-            for (String mc: mComplaints) {
+            for (String mc : mComplaints) {
                 String[] complaints = {mc};
                 if (complaints != null) {
                     for (String value : complaints) {
@@ -642,11 +645,12 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
         Gson gson = new Gson();
         SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
         String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
-        if(!prescriptionListJson.isEmpty()){
-            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+        if (!prescriptionListJson.isEmpty()) {
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+            }.getType();
             prescriptionDataList = gson.fromJson(prescriptionListJson, type);
-            for(LocalPrescriptionInfo lpi: prescriptionDataList){
-                if(lpi.getVisitUUID().equals(visituuid)){
+            for (LocalPrescriptionInfo lpi : prescriptionDataList) {
+                if (lpi.getVisitUUID().equals(visituuid)) {
                     lpi.setShareStatus(true);
                 }
             }
@@ -1299,7 +1303,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                 //if(!isPrescriptionReceived) continue;
+                //if(!isPrescriptionReceived) continue;
                 if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                     String emergencyUuid = "";
                     EncounterDAO encounterDAO = new EncounterDAO();
