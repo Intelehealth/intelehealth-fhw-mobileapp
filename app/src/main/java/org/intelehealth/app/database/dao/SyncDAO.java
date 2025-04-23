@@ -36,7 +36,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
 import org.intelehealth.klivekit.data.PreferenceHelper;
-
+import org.intelehealth.config.worker.ConfigSyncWorker;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class SyncDAO {
     String appLanguage;
 
     private static final SyncProgress liveDataSync = new SyncProgress();
-
+    boolean isTheConfigUpdated = false;
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -82,9 +82,9 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-            if (responseDTO.getData().getConfigResponse() != null) {
-                saveConfig(responseDTO.getData().getConfigResponse());
-            }
+            // if (responseDTO.getData().getConfigResponse() != null) {
+            //     saveConfig(responseDTO.getData().getConfigResponse());
+            // }
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patinetAttributeMaster(
@@ -204,6 +204,8 @@ public class SyncDAO {
         boolean sync = false;
 
         try {
+             if (!isTheConfigUpdated)
+                loadConfig();
             sync = SyncData(response.body());
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
@@ -846,5 +848,14 @@ public class SyncDAO {
 
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
+    }
+
+    private void loadConfig() {
+        ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
+            Timber.d("Worker state sync " + it);
+            return Unit.INSTANCE;
+        });
+        isTheConfigUpdated = true;
+
     }
 }
