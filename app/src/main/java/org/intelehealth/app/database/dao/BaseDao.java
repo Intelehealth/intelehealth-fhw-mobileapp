@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import android.util.LruCache;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -45,6 +47,7 @@ abstract class BaseDao {
                 db.setTransactionSuccessful();
             }catch(Exception e){
                 e.printStackTrace();
+                FirebaseCrashlytics.getInstance().recordException(e);
                 CustomLog.d(TAG, "excec insert: e "+ e.getLocalizedMessage());
             } finally {
                 db.endTransaction();
@@ -63,6 +66,7 @@ abstract class BaseDao {
 
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
             if (db == null || !db.isOpen()) {
+                FirebaseCrashlytics.getInstance().recordException(new IllegalStateException("Database is null or already closed:Basedao"));
                 throw new IllegalStateException("Database is null or already closed");
             }
 
@@ -77,6 +81,7 @@ abstract class BaseDao {
                 }
                 db.setTransactionSuccessful();
             } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
                 e.printStackTrace();
                 CustomLog.d(TAG, "excec bulkInsert: e  "+ e.getLocalizedMessage());
             } finally {
@@ -85,6 +90,7 @@ abstract class BaseDao {
                         db.endTransaction(); // End transaction only if it's active
                     }
                 } catch (IllegalStateException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     CustomLog.d(TAG, "bulkInsert: Tried to end a transaction e:  "+ e.getLocalizedMessage());
                 }
             }
@@ -93,6 +99,7 @@ abstract class BaseDao {
 
     private void throwException() {
         if (tableName() == null || tableName().isEmpty()) {
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Table name is not defined"));
             throw new RuntimeException("Table name is not defined");
         }
     }
@@ -121,6 +128,7 @@ abstract class BaseDao {
             }
             statement.execute();
         } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.d(TAG, "excec executeStatement: e  "+ e.getLocalizedMessage());
             e.printStackTrace();
         }
