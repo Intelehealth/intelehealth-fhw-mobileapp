@@ -1517,5 +1517,14 @@
     <string name="wait_while_protocols_changing">प्रोटोकॉल बदलले जात असताना कृपया वाट पहा.</string>
     <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
     <string name="language_successfully_changed">भाषा यशस्वीरित्या बदलली!</string>
+    <string name="confirm_discard_changes_title">ही भेट अपूर्ण आहे!</string>
+    <string name="confirm_discard_changes_content">तुम्हाला खात्री आहे का की तुम्ही या भेटीचे सर्व तपशील रद्द करू इच्छिता?</string>
+    <string name="confirm_discard_changes_button_dialog">रद्द करा</string>
+    <string name="confirm_continue_changes_button_dialog">सुरू ठेवा</string>
+    <string name="confirm_discard_changes_content_on_sync">तुमची भेट तयार करण्याची प्रक्रिया अद्याप पूर्ण झालेली नाही. तुम्ही ती पूर्ण करू शकता किंवा ती रद्द करू शकता.</string>
+    <string name="please_enter_mobile_no_in_profile">सुरू ठेवा</string>
+    <string name="enter_mobile_number_in_profile">कृपया प्रोफाइल विभागात तुमचा मोबाइल क्रमांक अपडेट करा</string>
+    <string name="morbidly_obese">मध्यम लठ्ठपणा (वर्ग १)</string>
+
 
 </resources>

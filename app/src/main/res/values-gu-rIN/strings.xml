@@ -906,4 +906,12 @@
     <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
     <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_discard_changes_content_on_sync">Your visit creation process remains incomplete. You can either proceed to finalize the process or choose to discard it.</string>
+    <string name="please_enter_mobile_no_in_profile">Continue</string>
+    <string name="enter_mobile_number_in_profile">Please update your mobile number under profile section</string>
+
 </resources>
