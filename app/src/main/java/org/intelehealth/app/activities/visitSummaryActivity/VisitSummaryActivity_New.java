@@ -1221,7 +1221,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mBMI = "";
             }
 
-            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase("")){
+            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase("")) {
                 bmiView.setText(getResources().getString(R.string.no_information));
             } else {
                 setBmiStatus(bmiView, mBMI);
@@ -2835,7 +2835,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (hasPrescription) {
                     getVisitStartDate();
 
-                    String fileNamePatientName = patientName.replace(" ", "-");
+                    String[] patientNameArray = patientName.split(" ");
+                    String fileNamePatientName = patientNameArray[0] + "-" + patientNameArray[1].charAt(0);
                     String prescriptionString = "Prescription";
 
                     String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");

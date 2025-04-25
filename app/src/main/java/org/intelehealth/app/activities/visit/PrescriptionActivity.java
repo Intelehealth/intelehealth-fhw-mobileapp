@@ -2038,7 +2038,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             preparePrescriptionVitals(mEncounter.getUuid());
 
-            String fileNamePatientName = patientName.replace(" ", "-");
+            String[] patientNameArray = patientName.split(" ");
+            String fileNamePatientName = patientNameArray[0] + "-" + patientNameArray[1].charAt(0);
             String prescriptionString = "Prescription";
 
             String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");

@@ -212,7 +212,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         String visitStartDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
 
-        String fileNamePatientName = mPatient.getFirst_name() + mPatient.getMiddle_name() + mPatient.getLast_name();
+        String fileNamePatientName = mPatient.getFirst_name() + "-" + mPatient.getLast_name().charAt(0);
         String prescriptionString = "Prescription";
 
         String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
