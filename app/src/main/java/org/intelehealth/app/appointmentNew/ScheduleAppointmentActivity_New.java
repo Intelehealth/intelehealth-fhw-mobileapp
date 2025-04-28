@@ -711,7 +711,10 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("scheduleAppointment");
                 mIsPendingForAppointmentSave = true;
-            }, 100);
+                mSyncAlertDialog.dismiss();
+                ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
+                finish();
+            }, 2000);
         } else {
             ScheduleAppointmentActivity_New.this.setResult(AppConstants.EVENT_APPOINTMENT_BOOKING);
             finish();
