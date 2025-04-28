@@ -1542,5 +1542,21 @@ public class PatientsDAO extends BaseDao {
         values.put("sync", "TRUE");
         return values;
     }
+    public String getPatientNameByPatientUuid(String patientUuid) throws DAOException {
+        String patientName = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try {
+            Cursor cursor = db.rawQuery("SELECT first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    patientName = cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
+                }
+            }
+            cursor.close();
+        } catch (SQLException s) {
+            throw new DAOException(s);
+        }
+        return patientName;
+    }
 
 }
