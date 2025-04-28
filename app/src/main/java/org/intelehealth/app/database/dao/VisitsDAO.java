@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -265,6 +266,7 @@ public class VisitsDAO extends BaseDao{
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttrs(visitDTO.getUuid());
+                Log.d(TAG, "unsyncedVisits: fetchVisitAttrs : "+new Gson().toJson(list));
                 visitDTO.setAttributes(list);
 //                visitDTOList.add(visitDTO);
 
@@ -1281,5 +1283,18 @@ public class VisitsDAO extends BaseDao{
         }  finally{
             db.endTransaction();
         }
+    }
+    public String getVisitStartDate(String visitUuid) {
+        String startdate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT startdate FROM tbl_visit where uuid = ? ", new String[]{visitUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                startdate = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+            }
+        }
+        cursor.close();
+
+        return startdate;
     }
 }

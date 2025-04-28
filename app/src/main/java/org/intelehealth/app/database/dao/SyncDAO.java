@@ -130,8 +130,7 @@ public class SyncDAO {
             visitAttributeListDAO.insertProvidersAttributeList(
                     responseDTO.getData().getVisitAttributeList());*/
             if(isAppSetupDone){
-                visitAttributeListDAO.insertProvidersAttributeListAfterSetup(
-                        responseDTO.getData().getVisitAttributeList());
+                visitAttributeListDAO.insertOrUpdateVisitAttributes(responseDTO.getData().getVisitAttributeList(), 0);
             } else{
                 visitAttributeListDAO.insertProvidersAttributeList(
                         responseDTO.getData().getVisitAttributeList());
@@ -440,6 +439,7 @@ public class SyncDAO {
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
+        Log.d(TAG, "pullData: pull url : "+url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -799,6 +799,7 @@ public class SyncDAO {
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
+        Log.d(TAG, "pushDataApi: visits packet : : "+new Gson().toJson(pushRequestApiCall.getVisits()));
         if (!pushRequestApiCall.getVisits().isEmpty()
             || !pushRequestApiCall.getPersons().isEmpty()
             || !pushRequestApiCall.getPatients().isEmpty()
@@ -1005,4 +1006,5 @@ public class SyncDAO {
         isTheConfigUpdated = true;
 
     }
+
 }
