@@ -1241,6 +1241,7 @@ public class PatientsDAO extends BaseDao {
     }
 
     public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
+        CustomLog.v(TAG, "getPatientDetailsByUuid: " + patientUuid);
         PatientDTO patientDTO = null;
         SQLiteDatabase db
                 = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();

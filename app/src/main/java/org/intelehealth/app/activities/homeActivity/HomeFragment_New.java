@@ -18,11 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
-import org.intelehealth.app.utilities.AddPatientUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +36,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
@@ -55,6 +49,7 @@ import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseFragment;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;

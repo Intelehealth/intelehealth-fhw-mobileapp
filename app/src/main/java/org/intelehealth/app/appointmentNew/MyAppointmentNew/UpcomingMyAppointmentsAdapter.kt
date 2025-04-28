@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -232,7 +233,9 @@ class UpcomingMyAppointmentsAdapter(
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val appointmentInfoModel = appointmentInfoList[position]
+                    CustomLog.v(TAG, "onBindViewHolder: appointmentInfoModel : " + Gson().toJson(appointmentInfoModel))
                     val intent = Intent(context, AppointmentDetailsActivity::class.java).apply {
+
                         putExtra("patientname", appointmentInfoModel.patientName)
                         putExtra("patientUuid", appointmentInfoModel.patientId)
                         putExtra("gender", "")

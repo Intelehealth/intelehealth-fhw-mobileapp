@@ -106,15 +106,18 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun initLanguageList() {
+
         binding.rvSelectLanguage.layoutManager = LinearLayoutManager(this)
         binding.rvSelectLanguage.itemAnimator = DefaultItemAnimator()
         adapter = LanguageAdapter(this, arrayListOf()).apply {
             this.viewHolderClickListener = this@SplashActivity
             binding.rvSelectLanguage.adapter = this
         }
+
     }
 
     override fun onLanguageLoaded(languages: List<ActiveLanguage>) {
+
         adapter.updateItems(languages.toMutableList())
     }
 

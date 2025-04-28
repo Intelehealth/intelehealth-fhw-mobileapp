@@ -4,10 +4,7 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,12 +20,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -219,7 +217,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 public void onClick(View v) {
                   /*    patientname patientUuid gender age openmrsID visit_ID visit_startDate visit_speciality followup_date
                   priority_tag hasPrescription patient_photo chief_complaint */
-
+                    CustomLog.v(TAG, "onClick: " + new Gson().toJson(appointmentInfoModel));
                     Intent intent = new Intent(context, AppointmentDetailsActivity.class);
                     intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                     intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());

@@ -113,7 +113,6 @@
                     android:text="In 2 minutes"
                     android:textAppearance="@style/caption"
                     android:textColor="@color/textColorGray"
-                    android:textSize="@dimen/edittext_textsize_16sp"
                     app:drawableStartCompat="@drawable/ui2_ic_time" />
             </LinearLayout>
 
