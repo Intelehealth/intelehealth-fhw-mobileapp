@@ -27,10 +27,12 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionBinding;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionSummaryBinding;
 import org.intelehealth.app.models.DiagnosticsModel;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -56,16 +58,18 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     private boolean mIsEditMode = false;
     private List<Diagnostics> mDiagnosticsList;
     private FragmentDiagnosticsCollectionSummaryBinding mBinding;
+    private String visitUuid;
 
     public DiagnosticsCollectionSummaryFragment() {
         // Required empty public constructor
     }
 
 
-    public static DiagnosticsCollectionSummaryFragment newInstance(DiagnosticsModel result, boolean isEditMode) {
+    public static DiagnosticsCollectionSummaryFragment newInstance(DiagnosticsModel result, boolean isEditMode, String visitUuid) {
         DiagnosticsCollectionSummaryFragment fragment = new DiagnosticsCollectionSummaryFragment();
         fragment.diagnosticsModel = result;
         fragment.mIsEditMode = isEditMode;
+        fragment.visitUuid = visitUuid;
         return fragment;
     }
 
@@ -215,8 +219,12 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
         mBinding.imbBtnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(requireActivity())) {
-                    syncNow(getActivity(), mBinding.imbBtnRefresh, syncAnimator);
+                if(mIsEditMode){
+                    if (NetworkConnection.isOnline(requireActivity())) {
+                        SyncUtils.syncNow(requireActivity(), view, syncAnimator);
+                    }
+                }else{
+                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
                 }
             }
         });

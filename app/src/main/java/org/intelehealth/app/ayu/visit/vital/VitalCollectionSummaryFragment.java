@@ -29,11 +29,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.models.VitalsObject;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.FlavorKeys;
@@ -53,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -70,16 +73,18 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private boolean mIsEditMode = false;
     private List<PatientVital> mPatientVitalList;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
+    private String visitUuid;
 
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
     }
 
 
-    public static VitalCollectionSummaryFragment newInstance(VitalsObject result, boolean isEditMode) {
+    public static VitalCollectionSummaryFragment newInstance(VitalsObject result, boolean isEditMode, String visitUuid) {
         VitalCollectionSummaryFragment fragment = new VitalCollectionSummaryFragment();
         fragment.mVitalsObject = result;
         fragment.mIsEditMode = isEditMode;
+        fragment.visitUuid = visitUuid;
         return fragment;
     }
 
@@ -272,8 +277,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(getActivity())) {
-                    syncNow(getActivity(), refresh, syncAnimator);
+                if(mIsEditMode){
+                    if (NetworkConnection.isOnline(requireActivity())) {
+                        SyncUtils.syncNow(requireActivity(), view, syncAnimator);
+                    }
+                } else {
+                   new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
                 }
             }
         });
