@@ -561,7 +561,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode, visitUuid), VITAL_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -595,7 +595,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep2ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, DiagnosticsCollectionSummaryFragment.newInstance(mDiagnosticsModel, isEditMode), DIAGNOSTICS_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, DiagnosticsCollectionSummaryFragment.newInstance(mDiagnosticsModel, isEditMode, visitUuid), DIAGNOSTICS_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -663,7 +663,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, insertionWithLocaleJsonString, isEditMode, visitUuid), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -684,7 +684,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
                             //replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
-                                    replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(mCommonVisitData, physicalStringLocale, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                                    replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(mCommonVisitData, physicalStringLocale, isEditMode, visitUuid), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -702,7 +702,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 if (isSavedPastHistory()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(mCommonVisitData, patientHistoryLocale, familyHistoryLocale, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(mCommonVisitData, patientHistoryLocale, familyHistoryLocale, isEditMode, visitUuid), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;

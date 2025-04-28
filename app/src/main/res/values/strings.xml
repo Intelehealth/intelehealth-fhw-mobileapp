@@ -1760,5 +1760,6 @@
     <string name="label_contact">Contact:</string>
     <string name="label_patient_id">Patient Id:</string>
     <string name="label_visit_date">Date of Visit:</string>
+    <string name="hw_mobile_number">Health worker number</string>
 
 </resources>
