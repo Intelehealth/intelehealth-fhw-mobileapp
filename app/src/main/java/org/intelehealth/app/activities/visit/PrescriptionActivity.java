@@ -537,10 +537,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         btn_vs_share.setOnClickListener(v -> {
-                // sharePresc(); //uncomment this later.its a actual ida flow. commenting due configurability sharePrescriptionInPdf(); });
-            //sharePrescriptionInPdf();sharePrescription();
-            //createAndSharePdf();
-            sharePrescriptionInPdf();
+            Log.d(TAG, "setDataToView: otp : "+mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp());
+            if(mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp()){
+                sharePrescriptionInPdf();
+            }else{
+                sharePresc(); //uncomment this later.its a actual ida flow. commenting due configurability sharePrescriptionInPdf(); });
+            }
             });
         // Bottom Buttons - end
 
@@ -3199,7 +3201,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         ShowPrescriptionPdfShareDialog helper = new ShowPrescriptionPdfShareDialog(
                 this, visitID, patient.getPhone_number(), patient.getOpenmrs_id(),
                 patient, visit_startDate, diagnosisReturned, rxReturned, testsReturned,
-                medicalAdvice_string, followUpDate, details, complaint.getValue(), vitalsMap,
+                medicalAdvice_string.trim(), followUpDate, details, complaint.getValue(), vitalsMap,
                 "Youthness.ttf", details.getTextOfSign() != null ? details.getTextOfSign() : "",diagnosticsMap,referredSpeciality);
         helper.createAndSaveFile(hwMobileNumber);
     }
