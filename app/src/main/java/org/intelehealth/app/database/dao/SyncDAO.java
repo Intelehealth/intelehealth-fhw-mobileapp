@@ -126,15 +126,15 @@ public class SyncDAO {
                     (responseDTO.getData().getProviderAttributeList());
             Logger.logD(TAG, "insertProvidersAttributeList = " +
                              responseDTO.getData().getProviderAttributeList().size());
-/*
             visitAttributeListDAO.insertProvidersAttributeList(
-                    responseDTO.getData().getVisitAttributeList());*/
-            if(isAppSetupDone){
+                    responseDTO.getData().getVisitAttributeList());
+            //code for dupliacte attr removal
+            /*if(isAppSetupDone){
                 visitAttributeListDAO.insertOrUpdateVisitAttributes(responseDTO.getData().getVisitAttributeList(), 0);
             } else{
                 visitAttributeListDAO.insertProvidersAttributeList(
                         responseDTO.getData().getVisitAttributeList());
-            }
+            }*/
             Logger.logD(TAG, "insertVisitAttributeList = " +
                              responseDTO.getData().getVisitAttributeList().size());
 
@@ -453,6 +453,8 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
+                        if (!isTheConfigUpdated)
+                            loadConfig();
                         sync = SyncData(response.body(), true);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
