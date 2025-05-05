@@ -10,6 +10,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -179,9 +180,16 @@ class ShowPrescriptionPdfShareDialog(
 
         val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${patient.openmrs_id}"
         val visitStartDate = VisitsDAO().getVisitStartDate(visitID)
-        val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visitStartDate"
         Log.d("TAG", "createPatientData: startDate : "+visitStartDate)
         Log.d("TAG", "createPatientData: visitID : "+visitID)
+        //  2. startdate added.
+        val visit_start_date = DateAndTimeUtils.date_formatter(
+            visitStartDate,
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+            "dd-MM-yyyy"
+        )
+        Log.d("TAG", "createPatientData: visit_start_date : "+visit_start_date)
+        val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visit_start_date"
 
         // Combine all data into one string
         return listOf(fullName, ageGender, patientIdLine, visitDateLine)
