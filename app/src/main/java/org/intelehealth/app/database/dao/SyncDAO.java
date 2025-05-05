@@ -453,8 +453,8 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
-                        if (!isTheConfigUpdated)
-                            loadConfig();
+                       /* if (!isTheConfigUpdated)
+                            loadConfig();*/
                         sync = SyncData(response.body(), true);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
