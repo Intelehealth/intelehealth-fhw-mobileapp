@@ -20,6 +20,10 @@
             name="isEditMode"
             type="Boolean" />
 
+        <variable
+            name="otherCityVisibility"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -349,6 +353,49 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llOtherCity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_12dp"
+                    android:orientation="vertical"
+                    android:visibility="@{(addressInfoConfig.city.enabled &amp;&amp; otherCityVisibility) ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llCity"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lblOtherCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@{ addressInfoConfig.city.mandatory ? @string/other_city + ` *` : @string/other_city}"
+                        android:textAppearance="@style/blur_txtview"
+                        android:textSize="@null"
+                        tools:text="@string/other_city" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/textInputLayOtherCity"
+                        style="@style/AppTheme.OutlineInputBox"
+                        config="@{addressInfoConfig.city}"
+                        editMode="@{isEditMode}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputOtherCity"
+                            style="@style/AppTheme.InputBox.Address1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_city"
+                            android:text="@{patient.otherCity}"
+                            />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llRegistrationAddressOfHf"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -357,7 +404,7 @@
                     android:visibility="@{addressInfoConfig.registrationAddressOfHf.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llCity"
+                    app:layout_constraintTop_toBottomOf="@id/llOtherCity"
                     tools:visibility="visible">
 
                     <TextView

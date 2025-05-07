@@ -15,6 +15,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.LocaleUtils
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -121,13 +122,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             super.onBound(binding)
             setupCountries()
             setupStates()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
             //province and cities required only for unfpa
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
+            applyFilter()
+            setInputTextChangListener()
+            setClickListener()
         }
     }
 
@@ -147,8 +148,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
             registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
-
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                if (city == getString(R.string.other)) {
+                    city = binding.textInputOtherCity.text?.toString()
+                }
+            }
             patientViewModel.updatedPatient(this)
+            //LanguageUtils.
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
@@ -187,9 +193,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         firstLetterUpperCaseListener(binding.textInputCityVillage)
         firstLetterUpperCaseListener(binding.textInputAddress1)
         firstLetterUpperCaseListener(binding.textInputAddress2)
+        firstLetterUpperCaseListener(binding.textInputOtherCity)
     }
 
-    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText){
+    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText) {
         val watcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -210,6 +217,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayAddress1.hideErrorOnTextChang(binding.textInputAddress1)
         binding.textInputLayAddress2.hideErrorOnTextChang(binding.textInputAddress2)
         binding.textInputLayRegistrationAddressOfHf.hideErrorOnTextChang(binding.textInputRegistrationAddressOfHf)
+        binding.textInputLayOtherCity.hideErrorOnTextChang(binding.textInputOtherCity)
 
         binding.textInputLayPostalCode.hideDigitErrorOnTextChang(binding.textInputPostalCode, 6)
     }
@@ -267,15 +275,24 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             //cities
             binding.textInputLayCity.tag = it
+            val cities = LanguageUtils.getCityByLocal(it)
             val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
-                requireContext(), LanguageUtils.getCityByLocal(it)
+                requireContext(), cities
             )
             binding.autoCompleteCity.setAdapter(cityAdapter)
 
             if (patient.city != null && patient.city.isNotEmpty()) {
                 val city = LanguageUtils.getCity(patient.city)
-                if (city != null) {
+                if (cities.contains(city)) {
                     binding.autoCompleteCity.setText(city.toString(), false)
+                } else {
+                    LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                        binding.textInputLayOtherCity.hideError()
+                        binding.autoCompleteCity.setText(cities[cities.size - 1], false)
+                        patient.otherCity = city
+                        binding.otherCityVisibility = true
+                        binding.patient = patient
+                    }
                 }
             }
 
@@ -283,7 +300,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 binding.textInputLayCity.hideError()
                 val provincesAndCities: ProvincesAndCities =
                     binding.textInputLayCity.tag as ProvincesAndCities
-                patient.city = provincesAndCities.cities[i]
+                val city = provincesAndCities.cities[i]
+                LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                    binding.otherCityVisibility = city == getString(R.string.other)
+                }
+                patient.city = city
             }
         }
 
@@ -370,11 +391,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
             val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
-                binding.textInputLayCity.validateDropDowb(
-                    binding.autoCompleteCity,
-                    error
-                )
+                if (patient.city == LanguageUtils.getSpecificLocalResource(requireContext(), "en")
+                        .getString(R.string.other)
+                ) {
+                    binding.textInputLayOtherCity.validate(binding.textInputOtherCity, error)
+                } else {
+                    binding.textInputLayCity.validateDropDowb(
+                        binding.autoCompleteCity,
+                        error
+                    )
+                }
             } else true
+            /*val bOtherCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
+                if (patient.city == LanguageUtils.getSpecificLocalResource(requireContext(), "en")
+                        .getString(R.string.other)
+                ) {
+                    binding.textInputLayCity.validate(binding.textInputOtherCity, error)
+                } else true
+
+            } else true*/
+
 
             val bRelativeAddressOfHf =
                 if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {

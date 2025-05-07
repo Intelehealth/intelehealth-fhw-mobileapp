@@ -1092,4 +1092,6 @@
     <string name="temp_eg_c">E.g., 36.6 C</string>
     <string name="other_diagnosis">Other Diagnosis</string>
     <string name="select_diagnosis">Select Diagnosis</string>
+    <string name="enter_city">Enter City</string>
+    <string name="other_city">Other City</string>
 </resources>

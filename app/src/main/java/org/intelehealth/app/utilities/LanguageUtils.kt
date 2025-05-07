@@ -51,6 +51,7 @@ object LanguageUtils {
     fun getCity(city: String): String? {
         val locations = getProvincesAndCities()
         val index =  getProvincesAndCities().cities.indexOf(city)
+        if(index == -1) return city
         return when(getLocalLang()){
             "ru"-> locations.cities_ru[index]
             else -> locations.cities[index]

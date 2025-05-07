@@ -169,6 +169,7 @@ public class PatientDTO implements Serializable {
     //for unfpa
     private String province;
     private String city;
+    private String otherCity;
     private String registrationAddressOfHf;
     private String inn;
     private String codeOfHealthFacility;
@@ -229,6 +230,14 @@ public class PatientDTO implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getOtherCity() {
+        return otherCity;
+    }
+
+    public void setOtherCity(String otherCity) {
+        this.otherCity = otherCity;
     }
 
     public String getRegistrationAddressOfHf() {

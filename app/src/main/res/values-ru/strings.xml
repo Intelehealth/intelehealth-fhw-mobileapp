@@ -1128,5 +1128,7 @@
     <string name="temp_eg_c">Например, 36.6 С</string>
     <string name="other_diagnosis">Другой диагноз</string>
     <string name="select_diagnosis">Выберите Диагноз</string>
+    <string name="enter_city">введите город</string>
+    <string name="other_city">Другой город</string>
     <!-- UNFPA Strings end  -->
 </resources>
