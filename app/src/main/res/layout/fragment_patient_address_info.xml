@@ -24,6 +24,10 @@
             name="otherCityVisibility"
             type="Boolean" />
 
+        <variable
+            name="otherCity"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -369,7 +373,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ addressInfoConfig.city.mandatory ? @string/other_city + ` *` : @string/other_city}"
+                        android:text="@{otherCityVisibility ? @string/other_city + ` *` : @string/other_city}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/other_city" />
@@ -390,7 +394,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_city"
-                            android:text="@{patient.otherCity}"
+                            android:text="@{otherCity}"
                             />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>

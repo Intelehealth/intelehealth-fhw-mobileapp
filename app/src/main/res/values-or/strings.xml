@@ -420,4 +420,5 @@
     <string name="select_diagnosis">Select Diagnosis</string>
     <string name="enter_city">Enter City</string>
     <string name="other_city">Other City</string>
+    <string name="other_field_dropdown">Other</string>
 </resources>

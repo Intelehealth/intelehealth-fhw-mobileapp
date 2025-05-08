@@ -149,7 +149,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address2 = binding.textInputAddress2.text?.toString()
             registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                if (city == getString(R.string.other)) {
+                if (city == getString(R.string.other_field_dropdown)) {
                     city = binding.textInputOtherCity.text?.toString()
                 }
             }
@@ -286,13 +286,15 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 if (cities.contains(city)) {
                     binding.autoCompleteCity.setText(city.toString(), false)
                 } else {
-                    LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                        binding.textInputLayOtherCity.hideError()
-                        binding.autoCompleteCity.setText(cities[cities.size - 1], false)
-                        patient.otherCity = city
-                        binding.otherCityVisibility = true
-                        binding.patient = patient
-                    }
+                    val provincesAndCities: ProvincesAndCities =
+                        binding.textInputLayCity.tag as ProvincesAndCities
+                    binding.autoCompleteCity.setText(
+                        getString(R.string.other_field_dropdown),
+                        false
+                    )
+                    patient.city = provincesAndCities.cities[cities.size - 1]
+                    binding.otherCityVisibility = true
+                    binding.otherCity = city
                 }
             }
 
@@ -302,7 +304,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.textInputLayCity.tag as ProvincesAndCities
                 val city = provincesAndCities.cities[i]
                 LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                    binding.otherCityVisibility = city == getString(R.string.other)
+                    binding.otherCityVisibility = city == getString(R.string.other_field_dropdown)
                 }
                 patient.city = city
             }
@@ -391,17 +393,17 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
             val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
-                if (patient.city == LanguageUtils.getSpecificLocalResource(requireContext(), "en")
-                        .getString(R.string.other)
-                ) {
-                    binding.textInputLayOtherCity.validate(binding.textInputOtherCity, error)
-                } else {
-                    binding.textInputLayCity.validateDropDowb(
-                        binding.autoCompleteCity,
-                        error
-                    )
-                }
+                binding.textInputLayCity.validateDropDowb(
+                    binding.autoCompleteCity,
+                    error
+                )
             } else true
+
+            val bOtherCity =
+                if (it.city?.isEnabled == true && binding.otherCityVisibility == true) {
+                    binding.textInputLayOtherCity.validate(binding.textInputOtherCity, error)
+                } else true
+
             /*val bOtherCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
                 if (patient.city == LanguageUtils.getSpecificLocalResource(requireContext(), "en")
                         .getString(R.string.other)
@@ -433,7 +435,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
-                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity)
+                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity).and(bOtherCity)
                     .and(bRelativeAddressOfHf)
             ) block.invoke()
         }

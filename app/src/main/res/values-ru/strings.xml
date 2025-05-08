@@ -1130,5 +1130,6 @@
     <string name="select_diagnosis">Выберите Диагноз</string>
     <string name="enter_city">введите город</string>
     <string name="other_city">Другой город</string>
+    <string name="other_field_dropdown">Другой</string>
     <!-- UNFPA Strings end  -->
 </resources>
