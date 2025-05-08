@@ -107,6 +107,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
+import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentViewHolder;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
@@ -649,9 +650,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             add_additional_doc.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
-        } else {
-            add_additional_doc.setVisibility(View.VISIBLE);
-            editAddDocs.setVisibility(View.VISIBLE);
         }
 
         //here we changing the appointment button behavior
@@ -1019,8 +1017,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
             rowListItem = new ArrayList<>();
 
+            boolean shouldShowCancelButton = !isVisitSpecialityExists;
+
             for (File file : fileList)
-                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath(), shouldShowCancelButton));
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
@@ -2696,6 +2696,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 speciality_spinner.setEnabled(false);
                                 flag.setEnabled(false);
                                 flag.setClickable(false);
+                                add_additional_doc.setVisibility(View.GONE);
+                                recyclerViewAdapter.hideAllCancelBtnDocs(false);
                             } else {
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
@@ -3461,15 +3463,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
-
-            if (recyclerViewAdapter != null) {
-                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
-                    recyclerViewAdapter.hideCancelBtnAddDoc(true);
-                } else {
-                    recyclerViewAdapter.hideCancelBtnAddDoc(false);
-                }
-            }
-
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
@@ -3639,7 +3632,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 System.out.println("File not found : " + e.getMessage() + e);
             }
 
-            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath(), true));
             updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
         }
     }
@@ -5348,11 +5341,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     /**
      * formatting complain here
      * if any unexpected complain has came then format it here
+     *
      * @param complain
      * @return
      */
     private String getFormattedComplain(String complain) {
-        if(!complain.trim().equals(getString(R.string.general_exam_title).trim())){
+        if (!complain.trim().equals(getString(R.string.general_exam_title).trim())) {
             return complain;
         }
         return "";

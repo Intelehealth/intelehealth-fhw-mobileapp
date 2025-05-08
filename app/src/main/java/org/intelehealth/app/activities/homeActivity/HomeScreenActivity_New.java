@@ -908,14 +908,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         } else if (itemId == R.id.menu_about_us) {
             Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
             startActivity(i);
-        }  else if (itemId == R.id.menu_abha_card) {
+        } else if (itemId == R.id.menu_abha_card) {
             Intent i = new Intent(HomeScreenActivity_New.this, AadharMobileVerificationActivity.class);
-          //  Intent i = new Intent(context, AbhaCardActivity.class); // todo: comment later.
+            //  Intent i = new Intent(context, AbhaCardActivity.class); // todo: comment later.
             i.putExtra("hasABHA", true);
             i.putExtra("abhaCard", true);
             startActivity(i);
-        }
-        else if (itemId == R.id.menu_logout) {
+        } else if (itemId == R.id.menu_logout) {
             wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
         }
 
@@ -1089,20 +1088,21 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
-            if (isSuccess) {
-                saveToken();
-                sessionManager.setFirstTimeLaunched(false);
-                sessionManager.setMigration(true);
-                // initial setup/sync done and now we can set the periodic background sync job
-                // given some delay after initial sync
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+        }
 
-                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-                    }
-                }, 10000);
-            }
+        if (isSuccess) {
+            saveToken();
+            sessionManager.setFirstTimeLaunched(false);
+            sessionManager.setMigration(true);
+            // initial setup/sync done and now we can set the periodic background sync job
+            // given some delay after initial sync
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                }
+            }, 10000);
         }
 //        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
@@ -1464,7 +1464,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         public void run() {
                             mSyncProgressDialog.dismiss();
                         }
-                    },2000);
+                    }, 2000);
                 }
             }
         }

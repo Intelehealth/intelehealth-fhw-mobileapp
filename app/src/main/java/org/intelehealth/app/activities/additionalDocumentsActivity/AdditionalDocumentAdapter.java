@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -73,7 +74,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
-        mEncounterUUID=edult;
+        mEncounterUUID = edult;
         this.filePath = filePath;
         this.anInterface = anInterface;
         this.fromVisitDetails = fromVisitDetails;
@@ -88,7 +89,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     @Override
-    public void onBindViewHolder(final AdditionalDocumentViewHolder holder,  int position) {
+    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, int position) {
         holder.getDocumentNameTextView().setText
                 (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
@@ -108,10 +109,11 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
-        if (fromVisitDetails)
-            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
-        else
+        if (documentList.get(position).shouldShowDocumentCancelButton()) {
             holder.getDeleteDocumentImageView().setVisibility(View.VISIBLE);
+        } else {
+            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
+        }
 
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,20 +127,20 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
 
-                    try {
-                        List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
-                        for (String images : imageList) {
-                           Log.d(TAG,"image= "+images);
+                try {
+                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
+                    for (String images : imageList) {
+                        Log.d(TAG, "image= " + images);
 
-                        }
-                        imagesDAO.deleteImageFromDatabase(imageList.get(position));
-
-
-                    } catch (DAOException e) {
-
-                        e.printStackTrace();
-                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
+                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+
+
+                } catch (DAOException e) {
+
+                    e.printStackTrace();
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
 
             }
@@ -214,5 +216,10 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     }
 
-
+    public void hideAllCancelBtnDocs(boolean flag) {
+        for (int i = 0; i < documentList.size(); i++) {
+            documentList.get(i).setShouldShowDocumentCancelButton(flag);
+        }
+        notifyDataSetChanged();
+    }
 }

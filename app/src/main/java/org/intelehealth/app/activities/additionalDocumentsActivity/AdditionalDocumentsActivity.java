@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -114,14 +115,14 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
             rowListItem = new ArrayList<>();
 
             for (File file : fileList)
-                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath(), true));
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             RecyclerView recyclerView = findViewById(R.id.document_RecyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,
                     rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -144,9 +145,8 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
             }
-        }
-        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if(data!=null) {
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            if (data != null) {
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -202,7 +202,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
     }
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -229,10 +229,9 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         builder.show();
     }
 
-/**
- * @param filePath Final Image path to compress.
- *
- * */
+    /**
+     * @param filePath Final Image path to compress.
+     */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -252,6 +251,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         });
 
     }
+
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
@@ -265,7 +265,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                 System.out.println("File not found : " + e.getMessage() + e);
             }
 
-            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath(), true));
             updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
         }
     }
