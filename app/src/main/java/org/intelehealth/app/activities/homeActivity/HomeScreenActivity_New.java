@@ -1032,7 +1032,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
     private boolean mIsFirstTimeSyncDone = false;
-    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD("syncBroadcastReceiver", "onReceive! " + intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY));
