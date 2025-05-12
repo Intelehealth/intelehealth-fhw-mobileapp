@@ -712,8 +712,8 @@
     <string name="open_visit">Open Visit</string>
     <string name="open_visits">Open Visits</string>
     <plurals name="open_no_of_visit">
-        <item quantity="one">%d Open Visit</item>
-        <item quantity="other">%d Open Visits</item>
+        <item quantity="one">%d open visit</item>
+        <item quantity="other">%d open visits</item>
     </plurals>
 
     <string name="all_patients_txt">All Patients</string>
