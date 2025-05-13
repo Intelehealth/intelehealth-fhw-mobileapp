@@ -95,6 +95,7 @@ public class SessionManager {
 
     //UI2.0
     private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
+    private static final String HW_MOBILE_NUMBER = "hw_mobile_number";
 
 
     public SessionManager(Context context) {
@@ -641,4 +642,14 @@ public class SessionManager {
     public String getCustomLogVersion() {
         return pref.getString(CUSTOM_LOG_VERSION,"");
     }
+
+    public void setHealthWorkerNumber(String hwNumber) {
+        editor.putString(HW_MOBILE_NUMBER, hwNumber);
+        editor.commit();
+    }
+
+    public String getHealthWorkerNumber() {
+        return pref.getString(HW_MOBILE_NUMBER, "");
+    }
+
 }

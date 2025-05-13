@@ -1221,6 +1221,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
                                 phoneAttributeUuid = personAttributes.get(i).getUuid();
+                                sessionManager.setHealthWorkerNumber(personAttributes.get(i).getValue().toString());
                             }
                             if (attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());
