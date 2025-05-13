@@ -53,8 +53,12 @@ import org.intelehealth.app.models.hwprofile.PersonAttributes;
 import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.ui.prescriptionwithotp.PDFfilePoc;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
 import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionDetailsDataKeys;
 import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionHtmlPdfGenerator;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -83,6 +87,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -227,6 +232,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO cholesterol = new ObsDTO();
     String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
     String hwMobileNumber = "";
+    private SharePrescriptionViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -537,11 +543,23 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         btn_vs_share.setOnClickListener(v -> {
-            Log.d(TAG, "setDataToView: otp : "+mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp());
             if(mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp()){
-                sharePrescriptionInPdf();
+               // sharePrescriptionInPdf(); //NAS 5.0 share pdf with prescription data on whtsapp
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                SharePrescriptionViewModelFactory factory = new SharePrescriptionViewModelFactory(db);
+                SharePrescriptionViewModel viewModel = new ViewModelProvider(this, factory).get(SharePrescriptionViewModel.class);
+                viewModel.loadPrescriptionDataFromJava(patientUuid, visitID, data -> {
+                            ShowPrescriptionDataPdfShareDialog helper = new ShowPrescriptionDataPdfShareDialog(this, data, openmrsID, patientUuid, visitID, hasPrescription);
+                            helper.sharePrescriptionInPdf();
+                            return null;
+                        },
+                        throwable -> {
+                            Log.e("TAG", "Failed to load prescription", throwable);
+                            return null;
+                        }
+                );
             }else{
-                sharePresc(); //uncomment this later.its a actual ida flow. commenting due configurability sharePrescriptionInPdf(); });
+                sharePresc();//default IDA flow
             }
             });
         // Bottom Buttons - end
@@ -1707,6 +1725,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             mBinding.tvNoPrescription.setVisibility(View.GONE);
             mBinding.dividerNoPrescription.setVisibility(View.GONE);
         }
+        Log.d(TAG, "getMedicationData1: medicineModelList : "+new Gson().toJson(medicineModelList));
         hideAdditionalInstruction();
 
         String[] medicationDataArray = rxReturned.split("\n");
@@ -1942,7 +1961,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onResume();
 
         callBroadcastReceiver();
-        fetchUserDetails();
     }
 
     @Override
@@ -3106,144 +3124,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         List<PrescribedMedicineModel> medicineList = getMedicationData1();
         PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
         mBinding.rvPrescribedMedicine.setAdapter(adapter);
-    }
-
-    private void sharePrescriptionInPdf() {
-        if (hasPrescription) {
-            MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(PrescriptionActivity.this);
-            final LayoutInflater inflater = LayoutInflater.from(PrescriptionActivity.this);
-            View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
-            alertdialogBuilder.setView(convertView);
-
-            EditText editText = convertView.findViewById(R.id.editText_mobileno);
-            Button sharebtn = convertView.findViewById(R.id.sharebtn);
-            TextView message = convertView.findViewById(R.id.message);
-            editText.setText(hwMobileNumber);
-            editText.setEnabled(false);
-            AlertDialog alertDialog = alertdialogBuilder.create();
-            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-            int width = PrescriptionActivity.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
-            message.setText(getString(R.string.hw_mobile_number));
-
-            sharebtn.setOnClickListener(v -> {
-                if (!TextUtils.isEmpty(hwMobileNumber) || !hwMobileNumber.equalsIgnoreCase("NA")) {
-                buildPdfData(hwMobileNumber);
-                    alertDialog.dismiss();
-
-                   /* new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (alertDialog != null && alertDialog.isShowing()) {
-                                alertDialog.dismiss();
-                            }
-                        }
-                    }, 2000);
-*/
-                } else {
-                    alertDialog.dismiss();
-                    Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.enter_mobile_number_in_profile), Toast.LENGTH_SHORT).show();
-                }
-
-            });
-        } else {
-            Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-    public interface PdfGenerationCallback {
-        void onPdfGenerated(File pdfFile);
-    }
-    public void sharePdfViaWhatsApp(File pdfFile, Context context) {
-        Log.d("PDF", "Attempting to share PDF via WhatsApp...");
-
-        // Get the URI for the file using FileProvider
-        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", pdfFile);
-
-        // Create an Intent to send the PDF via WhatsApp
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("application/pdf");
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.putExtra(Intent.EXTRA_TEXT, "Here is the prescription.");
-        intent.setPackage("com.whatsapp"); // Ensure it's sent through WhatsApp
-
-        try {
-            // Start the activity
-            context.startActivity(intent);
-            Log.d("PDF", "WhatsApp sharing intent started.");
-        } catch (Exception e) {
-            Log.e("PDF", "WhatsApp not installed: ${e.message}" + e.getMessage());
-
-            // If WhatsApp is not installed, show a message
-            Toast.makeText(context, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void buildPdfData(String hwMobileNumber){
-        Log.d(TAG, "buildPdfData: tests : "+testsReturned);
-        Log.d(TAG, "buildPdfData: referredSpeciality : "+referredSpeciality);
-
-        Map vitalsMap = new HashMap<>();
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.HEIGHT, height.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.WEIGHT, weight.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.BP, bpSys.getValue() + "/" + bpDias.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.PULSE, pulse.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.TEMPERATURE, temperature.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.SPO2, spO2.getValue());
-        vitalsMap.put(PrescriptionDetailsDataKeys.Vitals.RESPIRATORY_RATE, resp.getValue());
-
-        Map diagnosticsMap = new HashMap<>();
-        diagnosticsMap.put(PrescriptionDetailsDataKeys.Diagnostics.GLUCOSE_RANDOM, bloodGlucoseRandom.getValue());
-        diagnosticsMap.put(PrescriptionDetailsDataKeys.Diagnostics.HAEMOGLOBIN, hemoglobin.getValue());
-
-        ShowPrescriptionPdfShareDialog helper = new ShowPrescriptionPdfShareDialog(
-                this, visitID, patient.getPhone_number(), patient.getOpenmrs_id(),
-                patient, visit_startDate, diagnosisReturned, rxReturned, testsReturned,
-                medicalAdvice_string.trim(), followUpDate, details, complaint.getValue(), vitalsMap,
-                "Youthness.ttf", details.getTextOfSign() != null ? details.getTextOfSign() : "",diagnosticsMap,referredSpeciality);
-        helper.createAndSaveFile(hwMobileNumber);
-    }
-    private void fetchUserDetails() {
-        String uuid = new SessionManager(PrescriptionActivity.this).getCreatorID();
-        String url = new UrlModifiers().getHWProfileDetails(uuid);
-        CustomLog.d(TAG, "profilePicDownloaded:: url : " + url);
-
-        Observable<Profile> profileDetailsDownload = AppConstants.apiInterface.PROVIDER_PROFILE_DETAILS_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profileDetailsDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Profile>() {
-            @Override
-            public void onNext(Profile profile) {
-                if (profile != null) {
-                    Timber.tag(TAG).d("Profile =>%s", new Gson().toJson(profile));
-                    CustomLog.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
-                    List<PersonAttributes> personAttributes = new ArrayList<>();
-                    personAttributes = profile.getResults().get(0).getAttributes();
-                    if (personAttributes != null && personAttributes.size() > 0) {
-                        for (int i = 0; i < personAttributes.size(); i++) {
-                            String attributeName = personAttributes.get(i).getAttributeTpe().getDisplay();
-                            if (attributeName.equalsIgnoreCase("phoneNumber") && !personAttributes.get(i).isVoided()) {
-                                hwMobileNumber =personAttributes.get(i).getValue().toString();
-                                //phoneAttributeUuid = personAttributes.get(i).getUuid();
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                Logger.logD(TAG, e.getMessage());
-                Toast.makeText(PrescriptionActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        });
-
     }
 
 }

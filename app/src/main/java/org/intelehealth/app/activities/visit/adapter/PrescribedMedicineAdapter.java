@@ -1,11 +1,14 @@
 package org.intelehealth.app.activities.visit.adapter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
 import org.intelehealth.app.databinding.ItemPrescribedMedicationsBinding;
@@ -32,6 +35,7 @@ public class PrescribedMedicineAdapter extends RecyclerView.Adapter<PrescribedMe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PrescribedMedicineModel medicine = medicineList.get(position);
+        Log.d("TAG", "onBindViewHolder: medicineList : "+new Gson().toJson(medicineList));
         holder.bind(position, medicine);
     }
 
@@ -52,7 +56,7 @@ public class PrescribedMedicineAdapter extends RecyclerView.Adapter<PrescribedMe
         public void bind(int position, PrescribedMedicineModel medicine) {
             int medicineCount = position + 1;
             binding.tvMedicineName.setText(medicineCount + ". " + medicine.getMedicineName());
-            binding.tvStrength.setText(medicine.getStrength());
+            binding.tvStrength.setText(medicine.getStrength().trim());
             binding.tvNoDays.setText(medicine.getNoOfDays());
             binding.tvTiming.setText(medicine.getTiming());
             binding.tvRemarks.setText(medicine.getRemark());

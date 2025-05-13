@@ -6,138 +6,144 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_12"
-        >
+        android:paddingBottom="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
 
+        <!-- Top Divider -->
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/notifi_divider_color"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
+        <!-- Medicine Name -->
         <TextView
             android:id="@+id/tvMedicineName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginTop="12dp"
+            android:text="1. Dolo (Tab)"
             android:textColor="@color/header_title_color"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            tools:text="1. Dolo (Tab)" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
+        <!-- Vertical Guideline at 40% -->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.4" />
 
+        <!-- Strength Row -->
         <TextView
             android:id="@+id/tvStrengthTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/u2022_strength"
+            android:text="• Strength"
             android:textColor="@color/textColorGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/tvMedicineName"
-            app:layout_constraintTop_toBottomOf="@+id/tvMedicineName" />
-
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tvMedicineName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline" />
 
         <TextView
             android:id="@+id/tvStrength"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="1 tablet twice a day after food, with water"
             android:textColor="@color/textColorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvStrengthTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/tvStrengthTitle"
-            tools:text="@string/strength" />
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="@id/tvStrengthTitle"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- No. of Days Row -->
         <TextView
             android:id="@+id/tvNoDaysTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/u2022_no_of_days"
+            android:text="• No of Days"
             android:textColor="@color/textColorGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvStrengthTitle" />
-
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tvStrength"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline" />
 
         <TextView
             android:id="@+id/tvNoDays"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="6"
             android:textColor="@color/textColorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvNoDaysTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/tvNoDaysTitle"
-            tools:text="6" />
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="@id/tvNoDaysTitle"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Timings Row -->
         <TextView
             android:id="@+id/tvTimingTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/u2022_timings"
+            android:text="• Timings"
             android:textColor="@color/textColorGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvNoDaysTitle" />
-
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tvNoDays"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline" />
 
         <TextView
             android:id="@+id/tvTiming"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="1-0-1"
             android:textColor="@color/textColorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvTimingTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/tvTimingTitle"
-            tools:text="1-0-1" />
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="@id/tvTimingTitle"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Remarks Row -->
         <TextView
             android:id="@+id/tvRemarksTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/u2022_remarks"
+            android:text="• Remarks"
             android:textColor="@color/textColorGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/tvStrengthTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvTimingTitle" />
-
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tvTiming"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline" />
 
         <TextView
             android:id="@+id/tvRemarks"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="Once after meal, keep hydrated, eat at least 3 hours before sleep, take medicines on time, don’t take medicine on empty stomach"
             android:textColor="@color/textColorBlack"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/tvRemarksTitle"
-            tools:text="Once after meal, keep hydrated, eat at least 3 hours before sleep, take medicines on time, don’t take medicine on empty stomach" />
-
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="@id/tvRemarksTitle"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
