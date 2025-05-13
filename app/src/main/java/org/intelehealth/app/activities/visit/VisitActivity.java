@@ -20,6 +20,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +44,7 @@ import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 
 import java.util.Locale;
@@ -78,8 +80,22 @@ public class VisitActivity extends BaseActivity implements
     private boolean isPendingOldLoaded = false;
     AlertDialog commonLoadingDialog;
     // private NotificationReceiver notificationReceiver;
+    public FeatureActiveStatus mFeatureActiveStatus;
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus);
+        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus.getActiveStatusPrescriptionWithOtp());
 
+        if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
+            featureStatusListener.onFeatureStatusReady(activeStatus);
+        }
+    }
+    public FeatureActiveStatus getFeatureActiveStatus() {
+        return mFeatureActiveStatus;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -395,6 +411,17 @@ public class VisitActivity extends BaseActivity implements
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
             }
+        }
+    }
+    public interface OnFeatureStatusReadyListener {
+        void onFeatureStatusReady(FeatureActiveStatus status);
+    }
+    private OnFeatureStatusReadyListener featureStatusListener;
+
+    public void setFeatureStatusListener(OnFeatureStatusReadyListener listener) {
+        this.featureStatusListener = listener;
+        if (mFeatureActiveStatus != null) {
+            listener.onFeatureStatusReady(mFeatureActiveStatus);
         }
     }
 }

@@ -84,7 +84,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     String profileImage1 = "";
     SessionManager sessionManager;
     FeatureActiveStatus featureActiveStatus;
+    private OnItemClickListener listener;
 
+    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus, OnItemClickListener listener) {
+        this.context = context;
+        this.arrayList.addAll(arrayList);
+        this.featureActiveStatus = featureActiveStatus;
+        this.listener = listener;
+        sessionManager = new SessionManager(context);
+    }
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus) {
         this.context = context;
         this.arrayList.addAll(arrayList);
@@ -200,7 +208,13 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharePresc(model);
+                    if(featureActiveStatus.getActiveStatusPrescriptionWithOtp()){
+                        if (listener != null) {
+                            listener.onItemClicked(model);
+                        }
+                    }else{
+                        sharePresc(model);
+                    }
                 }
             });
         }
@@ -424,5 +438,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                     }
                 });
     }
-
+    public interface OnItemClickListener {
+        void onItemClicked(PrescriptionModel data);
+    }
 }

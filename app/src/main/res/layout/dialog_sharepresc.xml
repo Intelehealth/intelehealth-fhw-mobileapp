@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <!-- Add variables if needed -->
     </data>
 
     <androidx.cardview.widget.CardView
@@ -13,23 +13,25 @@
         app:cardCornerRadius="@dimen/corner_radius_8dp"
         app:cardElevation="@dimen/hamburger_margin_start">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/fu_margin_start">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fu_margin_start"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/enter_mobile_number_to_share_prescription" />
+                android:text="@string/enter_mobile_number_to_share_prescription"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/editText_mobileno"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/edittext_textcolor"
-                android:layout_below="@+id/message"
                 android:background="@drawable/edittext_border"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/edittext_textsize_16sp"
@@ -40,7 +42,28 @@
                 android:inputType="phone"
                 android:paddingTop="@dimen/fu_margin_start"
                 android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10" />
+                android:paddingBottom="@dimen/margin_10"
+                app:layout_constraintTop_toBottomOf="@id/message"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/errorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_mobile_number_in_profile"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:lineSpacingExtra="0sp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:paddingStart="5dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="end"
+                android:textAlignment="viewEnd"
+                app:layout_constraintTop_toBottomOf="@id/editText_mobileno"
+                app:layout_constraintEnd_toEndOf="parent" />
+
 
             <Button
                 android:id="@+id/sharebtn"
@@ -49,14 +72,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_below="@+id/editText_mobileno"
                 android:background="@drawable/ui2_common_primary_bg"
-                android:layout_alignParentEnd="true"
                 android:paddingHorizontal="@dimen/margin_32dp"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:text="@string/share" />
+                android:text="@string/share"
+                app:layout_constraintTop_toBottomOf="@id/errorTextView"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

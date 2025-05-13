@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,9 +30,13 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -58,7 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, EndVisitAdapter.OnItemClickListener {
     RecyclerView recycler_recent, recycler_older, recycler_month;
     NestedScrollView nestedscrollview;
     private static SQLiteDatabase db;
@@ -241,10 +246,10 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         recent_older_visibility(recentCloseVisitsList, olderCloseVisitsList);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
         CustomLog.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus,this);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus,this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
     }
@@ -266,7 +271,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
         CustomLog.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus,this);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
 
@@ -282,7 +287,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void olderCloseVisits() {
         olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList, mFeatureActiveStatus,this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
 
@@ -341,7 +346,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void thisMonths_EndVisits() {
         List<PrescriptionModel> arrayList = thisMonths_NotEndedVisits();
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList, mFeatureActiveStatus);
+        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList, mFeatureActiveStatus,this);
         recycler_month.setNestedScrollingEnabled(false);
         recycler_month.setAdapter(adapter_new);
         months_count = arrayList.size();
@@ -522,5 +527,22 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onItemClicked(PrescriptionModel data) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        SharePrescriptionViewModelFactory factory = new SharePrescriptionViewModelFactory(db);
+        SharePrescriptionViewModel viewModel = new ViewModelProvider(this, factory).get(SharePrescriptionViewModel.class);
+        viewModel.loadPrescriptionDataFromJava(data.getPatientUuid(), data.getVisitUuid(), dataPdf -> {
+                    ShowPrescriptionDataPdfShareDialog helper =
+                            new ShowPrescriptionDataPdfShareDialog(EndVisitActivity.this, dataPdf, data.getOpenmrs_id(), data.getPatientUuid(), data.getVisitUuid(), data.isHasPrescription());
+                    helper.sharePrescriptionInPdf();
+                    return null;
+                },
+                throwable -> {
+                    return null;
+                }
+        );
     }
 }
