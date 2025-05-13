@@ -38,6 +38,8 @@ public class EncounterDAO {
     private String tag = EncounterDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
+
+
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -841,5 +843,13 @@ public class EncounterDAO {
         }
         cursor.close();
         return encounterUuid;
+    }
+
+    public static int deleteEncounterUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_encounter";
+        String whereClause = "visituuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
     }
 }

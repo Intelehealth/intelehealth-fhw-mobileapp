@@ -6,8 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.app.AppConstants;
@@ -16,6 +14,7 @@ import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -26,6 +25,30 @@ import java.util.List;
 
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
+    public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid) throws DAOException {
+        boolean isInserted = false;
+        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        try {
+            contentValues.put("uuid", uuid);
+            contentValues.put("encounteruuid", encounteruuid);
+            contentValues.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            contentValues.put("conceptuuid", conceptUuid);
+            contentValues.put("voided", "0");
+            contentValues.put("sync", "false");
+            localdb.insertWithOnConflict("tbl_obs", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            isInserted = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isInserted = false;
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return isInserted;
+    }
 
     public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid, String comments) throws DAOException {
         CustomLog.v(TAG, "ImagesDAO - insertObsImageDatabase uuid - " + uuid + "\t" + encounteruuid + "\t" + conceptUuid + "\t" + comments);

@@ -19,12 +19,14 @@ import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -4526,4 +4528,382 @@ public final class StringUtils {
 
         return regionalChiefComplaintData;
     }
+    /***
+     * It will help in making code readable and reduce boiler-plate code.
+     * @param context Activity context.
+     * @param sessionManager This contains the application context.
+     * @param currentNode This is the node class object.
+     * @return It will return a localized string.
+     */
+    public static String node_fetch_local_language(Context context, SessionManager sessionManager, Node currentNode) {
+        String currentNodeVal = "";
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "सवाल का जवाब नहीं दिया")
+                    .replace("Patient reports -", "पेशेंट ने सूचित किया -")
+                    .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
+                    .replace("Minutes", "मिनट")
+                    .replace("Hours", "घंटे").replace("Days", "दिन")
+                    .replace("Weeks", "हफ्तों").replace("Months", "महीने")
+                    .replace("Years", "वर्ष")
+                    .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
+                    .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
+                    .replace("times per year", "प्रति वर्ष बार");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+            Log.d("tag", currentNodeVal);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
+                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
+                    .replace("Minutes", "ମିନିଟ୍ |")
+                    .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
+                    .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
+                    .replace("Years", "ବର୍ଷ")
+                    .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
+                    .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
+                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
+                    .replace("Patient reports -", "દર્દીના અહેવાલો -")
+                    .replace("Patient denies -", "દર્દી નકારે છે -")
+                    .replace("Minutes", "મિનિટ")
+                    .replace("Hours", "કલાકો").replace("Days", "દિવસ")
+                    .replace("Weeks", "અઠવાડિયા").replace("Months", "મહિનાઓ")
+                    .replace("Years", "વર્ષ")
+                    .replace("times per hour", "કલાક દીઠ વખત").replace("time per day", "દિવસ દીઠ વખત")
+                    .replace("times per week", "સપ્તાહ દીઠ વખત").replace("times per month", "દર મહિને વખત")
+                    .replace("times per year", "દર વર્ષે વખત");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট -")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
+                    .replace("Minutes", "মিনিট")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিন")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "প্রতি ঘন্টায় বার")
+                    .replace("time per day", "প্রতিদিন সময়")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ")
+                    .replace("Patient reports -", "ರೋಗಿಗಳ ವರದಿಗಳು -")
+                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -")
+                    .replace("Minutes", "ನಿಮಿಷಗಳು")
+                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
+                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
+                    .replace("Years", "ವರ್ಷಗಳು")
+                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ")
+                    .replace("time per day", "ದಿನಕ್ಕೆ ಸಮಯ")
+                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
+                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही")
+                    .replace("Patient reports -", "रुग्ण अहवाल -")
+                    .replace("Patient denies -", "रुग्ण नकार देतो -")
+                    .replace("Minutes", "मिनिट")
+                    .replace("Hours", "तास").replace("Days", "दिवस")
+                    .replace("Weeks", "आठवडे").replace("Months", "महिने")
+                    .replace("Years", "वर्षे")
+                    .replace("times per hour", "प्रति तास वेळा")
+                    .replace("time per day", "प्रती दिन वेळा")
+                    .replace("times per week", "प्रति आठवडा वेळा")
+                    .replace("times per month", "दर महिन्याला")
+                    .replace("times per year", "दर वर्षी");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "પপ্ৰশ্নৰ উত্তৰ নাই")
+                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
+                    .replace("Patient denies -", "ৰোগীৰ ৰিপৰ্ট -")
+                    .replace("Minutes", "মিনিটবোৰ")
+                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনবোৰ")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহবোৰ")
+                    .replace("Years", "বছৰবোৰ")
+                    .replace("times per hour", "প্ৰতি ঘণ্টাত বাৰকৈ").replace("time per day", "প্ৰতিদিনে সময়")
+                    .replace("times per week", "প্ৰতি সপ্তাহত বাৰকৈ").replace("times per month", "প্ৰতিমাহে বাৰ")
+                    .replace("times per year", "বছৰি বাৰকৈ");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        } else {
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+        }
+
+        return currentNodeVal;
+    }
+
+    /**
+     * This function will read the regional lang from the json if the regional lang string is present for this current
+     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
+     *
+     * @param value_REG this obs object contains regional lang data.
+     * @param value     this obs objet contains english lang data.
+     * @return either regional or english data as per need.
+     */
+    public static String fetchObsValue_REG(ObsDTO value_REG, ObsDTO value, SessionManager sessionManager) {
+        if (value_REG.getValue() != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG.getValue());
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value.getValue() != null)
+                    return value.getValue();
+            }
+        }
+        return (value.getValue() != null) ? value.getValue() : "";
+    }
+
+    /**
+     * This function will read the regional lang from the json if the regional lang string is present for this current
+     * set app language than it will show the regional lang data else it will show the standard earlier one english data.
+     *
+     * @param value_REG this String object contains regional lang data.
+     * @param value     this String objet contains english lang data.
+     * @return either regional or english data as per need.
+     */
+    public static String fetchValue_REG(String value_REG, String value, SessionManager sessionManager) {
+        if (value_REG != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(value_REG);
+                String text = jsonObject.getString("text_" + sessionManager.getAppLanguage());
+                return text;
+            } catch (JSONException e) {
+                if (value != null)
+                    return value;
+            }
+        }
+        return (value != null) ? value : "";
+    }
+
+    public static String second_filter(String value) {
+
+        // when values are dynamic than we will check by using contains() of String...
+        if (value.contains("बीघा") || value.contains("বিঘা"))
+            value = value.replace("बीघा", "Bigha")
+                    .replace("বিঘা", "Bigha");
+
+        if (value.contains("एकड") || value.contains("એકર") || value.contains("ಎಕರೆ"))
+            value = value.replace("एकड", "Acre")
+                    .replace("એકર", "Acre")
+                    .replace("ಎಕರೆ", "Acre");
+
+        if (value.contains("भूमिहीन") || value.contains("ভূমিহীন") || value.contains("ಭೂರಹಿತರ"))
+            value = value.replace("भूमिहीन", "Landless")
+                    .replace("ভূমিহীন", "Landless")
+                    .replace("ಭೂರಹಿತರ", "Landless");
+
+        if (value.contains("चुनते हैं"))
+            value = value.replace("चुनते हैं", "Select");
+
+        if (value.contains("পোৰা") || value.contains("गुंटा"))
+            value = value.replace("পোৰা", "Gunta")
+                    .replace("गुंटा", "Gunta");
+
+        if (value.contains("2,50,000 से अधिक") || value.contains("২,৫০,০০০ তকৈ অধিক"))
+            value = value.replace("2,50,000 से अधिक", "More than 2,50,000")
+                    .replace("২,৫০,০০০ তকৈ অধিক", "More than 2,50,000");
+
+        if (value.contains("एलपीजी\\/प्राकृतिक गैस") || value.contains("এল পি জি বা প্ৰাকৃতিক গেছ") ||
+                value.contains("એલપીજી\\/નેચરલ ગેસ") || value.contains("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ"))
+            value = value.replace("एलपीजी\\/प्राकृतिक गैस", "LPG or Natural Gas")
+                    .replace("এল পি জি বা প্ৰাকৃতিক গেছ", "LPG or Natural Gas")
+                    .replace("એલપીજી\\/નેચરલ ગેસ", "LPG or Natural Gas")
+                    .replace("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ", "LPG or Natural Gas");
+
+
+        if (value.contains("मिट्टी का तेल") || value.contains("कोयला\\/लिग्नाइट") || value.contains("लकड़ी का कोयला")
+                || value.contains("पुआल\\/झाड़ियाँ\\/घास") || value.contains("कृषि फसल अपशिष्ट") || value.contains("गोबर के कंडे")) {
+            value = value.replace("कोयला\\/लिग्नाइट", "Coal or Lignite")
+                    .replace("लकड़ी का कोयला", "Charcoal")
+                    .replace("पुआल\\/झाड़ियाँ\\/घास", "Straw or Shrubs or Grass")
+                    .replace("कृषि फसल अपशिष्ट", "Agricultural Crop Waste")
+                    .replace("गोबर के कंडे", "Dung Cakes");
+        }
+
+        if (value.contains("बायोगैस") || value.contains("ಜೈವಿಕ ಅನಿಲ"))
+            value = value.replace("बायोगैस", "Biogas")
+                    .replace("ಜೈವಿಕ ಅನಿಲ", "Biogas");
+
+        if (value.contains("বিদ্যুৎ") || value.contains("વીજળી") || value.contains("बिजली") || value.contains("ವಿದ್ಯುತ್"))
+            value = value.replace("বিদ্যুৎ", "Electricity").replace("વીજળી", "Electricity")
+                    .replace("बिजली", "Electricity").replace("ವಿದ್ಯುತ್", "Electricity");
+
+        if (value.contains("কাঠ") || value.contains("લાકડા") || value.contains("लकड़ी"))
+            value = value.replace("কাঠ", "Wood")
+                    .replace("लकड़ी", "Wood")
+                    .replace("લાકડા", "Wood");
+
+        if (value.contains("কেৰাচিন") || value.contains("मिट्टी का तेल"))
+            value = value.replace("কেৰাচিন", "Kerosene").replace("मिट्टी का तेल", "Kerosene");
+
+        if (value.contains("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती") || value.contains("বন্তি/কেৰাচিন লেম্প/মমবাতি"))
+            value = value.replace("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती", "Lantern/Kerosene Lamp/Candle")
+                    .replace("বন্তি/কেৰাচিন লেম্প/মমবাতি", "Lantern/Kerosene Lamp/Candle");
+
+        if (value.contains("दिन") || value.contains("দিন"))
+            value = value.replace("दिन", "Days")
+                    .replace("দিন", "Days");
+
+        if (value.contains("घंटे") || value.contains("ঘণ্টা") || value.contains("ঘন্টার") || value.contains("মিনিট"))
+            value = value.replace("घंटे", "Hours")
+                    .replace("ঘন্টার", "Hours")
+                    .replace("ঘণ্টা", "Hours")
+                    .replace("মিনিট", "Minutes");
+
+        // drinking water source.
+        if (value.contains("सार्वजनिक नल\\/स्टैंडपाइप") || value.contains("घर पर हैंड पंप")
+                || value.contains("आवास में बोर किया गया") || value.contains("বাসস্থান মধ্য পাইপ")
+                || value.contains("यार्ड\\/प्लॉट में बोर किया गया") || value.contains("सार्वजनिक नल\\/स्टैंडपाइप")
+                || value.contains("ट्यूब वेल\\/बोरहोल") || value.contains("संरक्षित कुआं") || value.contains("सामान्य हैंड पंप")
+                || value.contains("সুৰক্ষিত ভাল") || value.contains("টিউব ৱেল বা ব’ৰহ’ল")) {
+            value = value.replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
+                    .replace("घर पर हैंड पंप", "Hand Pump At Home")
+                    .replace("आवास में बोर किया गया", "Piped Into Dwelling")
+                    .replace("বাসস্থান মধ্য পাইপ", "Piped Into Dwelling")
+                    .replace("यार्ड\\/प्लॉट में बोर किया गया", "Piped Into Yard or Plot")
+                    .replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
+                    .replace("ट्यूब वेल\\/बोरहोल", "Tube Well or Borehole")
+                    .replace("संरक्षित कुआं", "Protected Well")
+                    .replace("सामान्य हैंड पंप", "Common Hand Pump")
+                    .replace("সুৰক্ষিত ভাল", "Protected Well")
+                    .replace("টিউব ৱেল বা ব’ৰহ’ল", "Tube Well or Borehole");
+        }
+
+        if (value.contains("ब्लीच डालते हैं") || value.contains("उबालते है") ||
+                value.contains("উতলোৱা") || value.contains("ফুটান") || value.contains("ಕುದಿಸಿ"))
+            value = value.replace("ब्लीच डालते हैं", "Add bleach")
+                    .replace("उबालते है", "Boiling")
+                    .replace("উতলোৱা", "Boiling")
+                    .replace("ফুটান", "Boiling")
+                    .replace("ಕುದಿಸಿ", "Boiling");
+
+        if (value.contains("कपड़े से छानते है") || value.contains("कुछ नहीं करते है") || value.contains("કાપડ દ્વારા તાણ"))
+            value = value.replace("कपड़े से छानते है", "Strain Through A Cloth")
+                    .replace("कुछ नहीं करते है", "Do Nothing")
+                    .replace("કાપડ દ્વારા તાણ", "Strain Through A Cloth");
+
+        if (value.contains("পানী ফিল্টাৰ") || value.contains("फिटकरी का उपयोग करें") || value.contains("পানী ফিল্টাৰ"))
+            value = value.replace("পানী ফিল্টাৰ", "Water Filter")
+                    .replace("পানী ফিল্টাৰ", "Water Filter")
+                    .replace("फिटकरी का उपयोग करें", "Use Alum");
+
+        if (value.contains("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ"))
+            value = value.replace("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ", "Hand Made Purifier");
+
+        if (value.contains("हिंदू") || value.contains("হিন্দু") || value.contains("હિંદુ") || value.contains("ಹಿಂದೂ")
+                || value.contains("খ্ৰীষ্টান") || value.contains("ಮುಸ್ಲಿಂ") || value.contains("স টি") || value.contains("ಕಚ್ಚಾ ಮನೆ")
+                || value.contains("ಪಕ್ಕಾ ಮನೆ"))
+            value = value.replace("हिंदू", "Hindu")
+                    .replace("হিন্দু", "Hindu").replace("હિંદુ", "Hindu")
+                    .replace("ಹಿಂದೂ", "Hindu").replace("খ্ৰীষ্টান", "Christian")
+                    .replace("ಮುಸ್ಲಿಂ", "Muslim").replace("স টি", "ST")
+                    .replace("ಕಚ್ಚಾ ಮನೆ", "Kutcha House")
+                    .replace("ಪಕ್ಕಾ ಮನೆ", "Pakka House");
+
+        if (value.contains("नहीं") || value.contains("নহয়") || value.contains("ના"))
+            value = value.replace("नहीं", "No")
+                    .replace("নহয়", "No").replace("ના", "No");
+
+        if (value.contains("हाँ") || value.contains("હા") || value.contains("হয়") || value.contains("হ্যাঁ") || value.contains("ಹೌದು"))
+            value = value.replace("हाँ", "Yes")
+                    .replace("હા", "Yes").replace("হয়", "Yes")
+                    .replace("হ্যাঁ", "Yes").replace("ಹೌದು", "Yes");
+
+        if (value.contains("पता नहीं") || value.contains("নিশ্চিত নহয়") || value.contains("हाँ, कार्ड नहीं देखा")
+                || value.contains("हाँ, कार्ड देखा") || value.contains("হয়, কাৰ্ড দেখা") || value.contains("হ্যাঁ, কার্ড দেখা গেছে"))
+            value = value.replace("पता नहीं", "Not Sure")
+                    .replace("নিশ্চিত নহয়", "Not Sure")
+                    .replace("हाँ, कार्ड नहीं देखा", "Yes, Card Not Seen")
+                    .replace("हाँ, कार्ड देखा", "Yes, Card Seen")
+                    .replace("হয়, কাৰ্ড দেখা", "Yes, Card Seen")
+                    .replace("হ্যাঁ, কার্ড দেখা গেছে", "Yes, Card Seen");
+
+        // soap hand washing occasion.
+        if (value.contains("साबुन का प्रयोग करते है") || value.contains("हाथ धोने के लिए अन्य साधनों का प्रयोग करते है") ||
+                value.contains("शौचालय का उपयोग करने के बाद धो लेते है")
+                || value.contains("खाना पकाने से पहले धो लेते है")
+                || value.contains("खाने से पहले और बाद में धो लेते है")
+                || value.contains("खाना पकाने से पहले")
+                || value.contains("खाना पकाने से पहले धो लेते है")
+                || value.contains("চাবোন ব্যৱহাৰ কৰক")
+                || value.contains("শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব")
+                || value.contains("ৰন্ধা আগতে ধুব")
+                || value.contains("রান্নার আগে")
+                || value.contains("সাবান ব্যবহার করুন")
+                || value.contains("খাবার আগে")
+                || value.contains("ಶೌಚಾಲಯವನ್ನು ಬಳಸಿದ ನಂತರ ತೊಳೆಯಿರಿ")
+                || value.contains("સાબુનો ઉપયોગ")
+                || value.contains("ಸೋಪ್ ಬಳಸಿ")
+                || value.contains("ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.")
+                || value.contains("ಅಡುಗೆ ಮಾಡುವ ಮೊದಲು ತೊಳೆಯಿರಿ")
+                || value.contains("જમ્યા પહેલાં અને જમ્યા પછી")
+                || value.contains("જમવાનું બનાવવા પહેલા")
+                || value.contains("શૌચાલયનો ઉપયોગ કર્યા પછી")
+                || value.contains("হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক")
+                || value.contains("খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।")
+                || value.contains("খোৱাৰ আগতে আৰু পিছত ধুব লাগে।")
+                || value.contains("शौचालय का उपयोग करने के बाद धो लेते है"))
+
+            value = value.replace("साबुन का प्रयोग करते है", "Use Soap")
+                    .replace("हाथ धोने के लिए अन्य साधनों का प्रयोग करते है", "Use other means to wash hands")
+                    .replace("शौचालय का उपयोग करने के बाद धो लेते है", "Wash after using toilet")
+                    .replace("खाना पकाने से पहले धो लेते है", "Wash before cooking")
+                    .replace("खाने से पहले और बाद में धो लेते है", "Wash before and after eating")
+                    .replace("खाना पकाने से पहले", "Before Cooking")
+                    .replace("खाना पकाने से पहले धो लेते है", "Wash before cooking")
+                    .replace("চাবোন ব্যৱহাৰ কৰক", "Use Soap")
+                    .replace("শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব", "Wash after using toilet")
+                    .replace("ৰন্ধা আগতে ধুব", "Wash before cooking")
+                    .replace("খোৱাৰ আগতে আৰু পিছত ধুব লাগে।", "Wash before and after eating")
+                    .replace("রান্নার আগে", "Before Cooking")
+                    .replace("খাবার আগে", "Before Eating")
+                    .replace("ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.", "Wash before and after eating")
+                    .replace("ಅಡುಗೆ ಮಾಡುವ ಮೊದಲು ತೊಳೆಯಿರಿ", "Wash before cooking")
+                    .replace("ಶೌಚಾಲಯವನ್ನು ಬಳಸಿದ ನಂತರ ತೊಳೆಯಿರಿ", "Wash after using toilet")
+                    .replace("સાબુનો ઉપયોગ", "Use Soap")
+                    .replace("ಸೋಪ್ ಬಳಸಿ", "Use Soap")
+                    .replace("જમ્યા પહેલાં અને જમ્યા પછી", "Wash before and after eating")
+                    .replace("જમવાનું બનાવવા પહેલા", "Wash before cooking")
+                    .replace("શૌચાલયનો ઉપયોગ કર્યા પછી", "Wash after using toilet")
+                    .replace("হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক", "Use other means to wash hands")
+                    .replace("সাবান ব্যবহার করুন", "Use Soap")
+                    .replace("খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।", "Wash before and after eating")
+                    .replace("शौचालय का उपयोग करने के बाद धो लेते है", "Wash after using toilet");
+
+        if (value.contains("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ"))
+            value = value.replace("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ", "Shared Toilet with other households");
+
+
+        Logger.logV("StringUtils", "second_filter: " + value);  // 16.
+        return value;
+    }
+
 }
