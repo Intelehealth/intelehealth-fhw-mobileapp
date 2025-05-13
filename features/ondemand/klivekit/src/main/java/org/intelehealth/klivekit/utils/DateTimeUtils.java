@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -131,5 +132,10 @@ public class DateTimeUtils {
 
     public static TimeZone getUTCTimeZone() {
         return TimeZone.getTimeZone(TIME_ZONE_UTC);
+    }
+    public static String formatToEnglishDate(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getDefault());
+        return sdf.format(date);
     }
 }

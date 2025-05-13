@@ -392,7 +392,7 @@ class PatientPersonalInfoFragment :
         Calendar.getInstance().apply {
             timeInMillis = selectedDate
         }.also {
-            DateTimeUtils.formatToLocalDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
+            DateTimeUtils.formatToEnglishDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
                 patient.dateofbirth = this
             }
         }
