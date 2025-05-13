@@ -427,6 +427,8 @@ public class DateAndTimeUtils {
      * @return
      */
     public static String timeAgoFormat(String datetime) {
+        if (datetime == null) return "";
+
         String time = "";
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
