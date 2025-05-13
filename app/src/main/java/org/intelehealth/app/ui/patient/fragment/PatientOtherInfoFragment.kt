@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.OnRebindCallback
@@ -16,6 +17,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.identificationActivity.model.ProvincesAndCities
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -73,12 +75,35 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
 
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            setupOtherHealthFacility()
             patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
         }
 
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
+    }
+
+    private fun setupOtherHealthFacility() {
+        LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+            val hfNameList = this.getStringArray(R.array.health_facility_name)
+
+            if (patient.otherHealthFacilityName != null) patient.healthFacilityName =
+                patient.otherHealthFacilityName
+            if (patient.healthFacilityName != null) {
+                val hfName = StringUtils.getHealthyFacilityName(
+                    patient.healthFacilityName,
+                    "en"
+                )
+                if (!hfNameList.contains(hfName) || patient.healthFacilityName == LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
+                    patient.otherHealthFacilityName = patient.healthFacilityName
+                }
+            }
+        }
     }
 
     private fun fetchPersonalInfoConfig() {
@@ -109,7 +134,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * this field is dependant with the province
+     * if province selected then code of healthy facility will be shown automatically
+     */
     private fun setupCodeOfHealthFacilityTextField() {
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             binding.textInputCodeOfHealthyFacility.isEnabled = false
@@ -154,6 +182,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
             codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
             department = binding.textInputDepartment.text?.toString()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                if (healthFacilityName == getString(R.string.other_field_dropdown)) {
+                    healthFacilityName = binding.textInputOtherHf.text?.toString()
+                    otherHealthFacilityName = null
+                }
+            }
 
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
@@ -197,9 +231,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
         firstLetterUpperCaseListener(binding.textInputOccupation)
         firstLetterUpperCaseListener(binding.textInputDepartment)
+        firstLetterUpperCaseListener(binding.textInputOtherHf)
     }
 
-    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText){
+    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText) {
         val watcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -229,6 +264,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.textInputLayInn.hideErrorOnTextChang(binding.textInputInn)
         binding.textInputLayCodeOfHealthyFacility.hideErrorOnTextChang(binding.textInputCodeOfHealthyFacility)
         binding.textInputLayCodeOfDepartment.hideErrorOnTextChang(binding.textInputCodeOfDepartment)
+        binding.textInputLayOtherHf.hideErrorOnTextChang(binding.textInputOtherHf)
     }
 
     private fun setupEducations() {
@@ -250,17 +286,47 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
         binding.autoCompleteHealthFacilityName.setAdapter(adapter)
         if (patient.healthFacilityName != null && patient.healthFacilityName.isNotEmpty()) {
-            binding.autoCompleteHealthFacilityName.setText(
-                StringUtils.getHealthyFacilityName(
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                val hfNameList = this.getStringArray(R.array.health_facility_name)
+                val hfName = StringUtils.getHealthyFacilityName(
                     patient.healthFacilityName,
                     getLocalLang()
-                ), false
-            )
+                )
+                if (hfNameList.contains(patient.healthFacilityName) && patient.healthFacilityName != LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
+                    binding.autoCompleteHealthFacilityName.setText(
+                        hfName, false
+                    )
+                } else {
+                    val otherTranslated =
+                        LanguageUtils.getSpecificLocalResource(requireContext(), getLocalLang())
+                            .getString(R.string.other_field_dropdown)
+                    val otherEn = getString(R.string.other_field_dropdown)
+                    binding.autoCompleteHealthFacilityName.setText(
+                        otherTranslated,
+                        false
+                    )
+                    binding.otherHfVisibility = true
+                    patient.healthFacilityName = otherEn
+                }
+            }
+
         }
         binding.autoCompleteHealthFacilityName.setOnItemClickListener { _, _, i, _ ->
             binding.textInputLayHealthFacilityName.hideError()
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                patient.healthFacilityName = this.getStringArray(R.array.health_facility_name)[i]
+                val hfName = this.getStringArray(R.array.health_facility_name)[i]
+                if (hfName != getString(R.string.other_field_dropdown)) {
+                    patient.otherHealthFacilityName = null
+                    binding.otherHfVisibility = false
+                } else {
+                    binding.otherHfVisibility = true
+                }
+
+                patient.healthFacilityName = hfName
             }
         }
     }
@@ -309,6 +375,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     binding.textInputLayHealthFacilityName.validateDropDowb(
                         binding.autoCompleteHealthFacilityName, error
                     )
+                } else true
+
+            val bOtherHealthFacilityName =
+                if (it.healthFacilityName?.isEnabled == true && binding.otherHfVisibility == true) {
+                    binding.textInputLayOtherHf.validate(binding.textInputOtherHf, error)
                 } else true
 
 
@@ -372,7 +443,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     .and(bOccuptions)
                     .and(tmhCaseNumber).and(requestId).and(discipline).and(relativePhoneNumber)
                     .and(bInn)
-                    .and(bCodeOfHealthyFacility).and(bHealthFacilityName).and(bCodeOfDepartment)
+                    .and(bCodeOfHealthyFacility).and(bHealthFacilityName)
+                    .and(bOtherHealthFacilityName).and(bCodeOfDepartment)
                     .and(bDepartment)
             ) block.invoke()
         }

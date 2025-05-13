@@ -96,9 +96,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
+        setupOtherCity()
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
+    }
+
+    private fun setupOtherCity() {
+        LanguageUtils.getProvincesAndCities().let {
+            val cities = LanguageUtils.getCityByLocal(it, "en")
+            if (patient.otherCity != null) patient.city = patient.otherCity
+            if (patient.city != null) {
+                if (!cities.contains(patient.city) || patient.city == LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
+                    patient.otherCity = patient.city
+                }
+            }
+        }
     }
 
     private fun fetchPersonalInfoConfig() {
@@ -151,8 +168,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
                 if (city == getString(R.string.other_field_dropdown)) {
                     city = binding.textInputOtherCity.text?.toString()
+                    otherCity = city
                 }
+
             }
+
             patientViewModel.updatedPatient(this)
             //LanguageUtils.
             if (patientViewModel.isEditMode) {
@@ -275,7 +295,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             //cities
             binding.textInputLayCity.tag = it
-            val cities = LanguageUtils.getCityByLocal(it)
+            val cities = LanguageUtils.getCityByLocal(it, null)
+            val citiesEn = LanguageUtils.getCityByLocal(it, "en")
             val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
                 requireContext(), cities
             )
@@ -283,7 +304,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             if (patient.city != null && patient.city.isNotEmpty()) {
                 val city = LanguageUtils.getCity(patient.city)
-                if (cities.contains(city)) {
+                if (citiesEn.contains(patient.city) && patient.city != LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
                     binding.autoCompleteCity.setText(city.toString(), false)
                 } else {
                     val provincesAndCities: ProvincesAndCities =
@@ -292,9 +317,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         getString(R.string.other_field_dropdown),
                         false
                     )
-                    patient.city = provincesAndCities.cities[cities.size - 1]
                     binding.otherCityVisibility = true
-                    binding.otherCity = city
+                    patient.city = provincesAndCities.cities[cities.size - 1]
                 }
             }
 
@@ -304,7 +328,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.textInputLayCity.tag as ProvincesAndCities
                 val city = provincesAndCities.cities[i]
                 LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
-                    binding.otherCityVisibility = city == getString(R.string.other_field_dropdown)
+                    if (city == getString(R.string.other_field_dropdown)) {
+                        binding.otherCityVisibility = true
+                    } else {
+                        binding.otherCityVisibility = false
+                        patient.otherCity = null
+                    }
+
                 }
                 patient.city = city
             }
@@ -401,7 +431,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             val bOtherCity =
                 if (it.city?.isEnabled == true && binding.otherCityVisibility == true) {
-                    binding.textInputLayOtherCity.validate(binding.textInputOtherCity, error)
+                    binding.textInputLayOtherCity.validate(
+                        binding.textInputOtherCity, error
+                    )
                 } else true
 
             /*val bOtherCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {

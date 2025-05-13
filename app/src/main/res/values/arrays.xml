@@ -2470,6 +2470,7 @@
         <item>Maternity department of Issyk-Kul Regional United Hospital</item>
         <item>Maternity hospital of Jalal-Abad Regional United Hospital</item>
         <item>Maternity hospital of Osh Interregional Clinical Hospital</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="type_of_consultations">

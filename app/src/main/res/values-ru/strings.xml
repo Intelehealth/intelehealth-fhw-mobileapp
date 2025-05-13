@@ -1131,5 +1131,9 @@
     <string name="enter_city">введите город</string>
     <string name="other_city">Другой город</string>
     <string name="other_field_dropdown">Другой</string>
+    <string name="other_healthy_facility_name">Другой название медицинского учреждения</string>
+    <string name="enter_healthy_facility_name">введите название медицинского учреждения</string>
+    <string name="enter_valid_data">Enter valid data</string>
+    <string name="city_and_other_city_can_not_be_same">City and other city can not be same</string>
     <!-- UNFPA Strings end  -->
 </resources>

@@ -179,8 +179,9 @@ object LanguageUtils {
         }
     }
 
-    fun getCityByLocal(it: ProvincesAndCities): List<String> {
-        return when(getLocalLang()){
+    fun getCityByLocal(it: ProvincesAndCities, local: String?): List<String> {
+        val local = local?:getLocalLang()
+        return when(local){
             "ru"-> it.cities_ru
             else -> it.cities
         }

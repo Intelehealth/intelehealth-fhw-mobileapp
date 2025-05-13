@@ -174,6 +174,7 @@ public class PatientDTO implements Serializable {
     private String inn;
     private String codeOfHealthFacility;
     private String healthFacilityName;
+    private String otherHealthFacilityName;
     private String codeOfDepartment;
 
     public String getProvince() {
@@ -206,6 +207,14 @@ public class PatientDTO implements Serializable {
 
     public void setHealthFacilityName(String healthFacilityName) {
         this.healthFacilityName = healthFacilityName;
+    }
+
+    public String getOtherHealthFacilityName() {
+        return otherHealthFacilityName;
+    }
+
+    public void setOtherHealthFacilityName(String otherHealthFacilityName) {
+        this.otherHealthFacilityName = otherHealthFacilityName;
     }
 
     public String getCodeOfDepartment() {
