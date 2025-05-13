@@ -189,7 +189,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mWeightEditText = mRootView.findViewById(R.id.etv_weight);
 
         mHeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
-        mWeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
+        mWeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
 

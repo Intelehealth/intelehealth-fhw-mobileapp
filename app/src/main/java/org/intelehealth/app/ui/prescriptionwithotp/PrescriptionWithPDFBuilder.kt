@@ -41,7 +41,6 @@ class PrescriptionWithPDFBuilder(
     private val context: Activity,
     private var patientDataSections: Map<String, Map<String, String?>>
 ) {
-    private val TAG = "PrescriptionWithPDFBuil"
     private val binding: LayoutPrescriptionPdfBinding = LayoutPrescriptionPdfBinding.inflate(LayoutInflater.from(context))
     var generatedFile: File? = null
     var simpleGeneratedFile: File? = null
@@ -53,13 +52,12 @@ class PrescriptionWithPDFBuilder(
         for ((sectionTitle, sectionData) in patientDataSections) {
             val showLabels = sectionTitle.equals(PrescriptionDetailsDataKeys.VITALS_SECTION, ignoreCase = true) ||
                     sectionTitle.equals(PrescriptionDetailsDataKeys.DIAGNOSTICS_SECTION, ignoreCase = true)
-
             val groupedContents = sectionData.entries.chunked(3).map { group ->
                 group.joinToString(" | ") { (key, value) ->
                     val displayValue = checkValueAndReturnNA(value)
                     if (showLabels) {
-                        val label = PrescriptionDetailsDataKeys.getLabelForKey(key)
-                        "$label: $displayValue"
+                        val label = PrescriptionDetailsDataKeys.getLabelForKey(key)?.takeIf { it.isNotBlank() }
+                        if (label != null) "$label: $displayValue" else displayValue
                     } else {
                         displayValue
                     }
@@ -67,6 +65,7 @@ class PrescriptionWithPDFBuilder(
             }
             addSection(container, sectionTitle, groupedContents)
         }
+
     }
 
     private fun addSection(container: LinearLayout, title: String, contents: List<String>) {
@@ -116,15 +115,17 @@ class PrescriptionWithPDFBuilder(
         binding.root.draw(page.canvas)
         pdfDocument.finishPage(page)
 
-        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val filePath = File(downloadsDir, fileName)
+        // ✅ Safely build file path without duplicating full paths
+        val filePath = File(fileName)
+        val downloadsDir = filePath.parentFile ?: Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val finalFile = if (filePath.isAbsolute) filePath else File(downloadsDir, fileName)
 
         try {
-            // 👇 No need to manually delete, directly overwrite
-            FileOutputStream(filePath, false).use { fos ->
+            // ✅ Overwrite the file if it exists
+            FileOutputStream(finalFile, false).use { fos ->
                 pdfDocument.writeTo(fos)
             }
-            generatedFile = filePath
+            generatedFile = finalFile
         } catch (e: Exception) {
             e.printStackTrace()
             throw RuntimeException("Error saving PDF", e)
@@ -132,8 +133,8 @@ class PrescriptionWithPDFBuilder(
             pdfDocument.close()
         }
 
-        // Create simple image-based PDF
-        createSimpleImagePdf(filePath, File(downloadsDir, getSimpleFileName(fileName)))
+        // ✅ Use cleaned-up file name for simple PDF
+        createSimpleImagePdf(finalFile, File(downloadsDir, getSimpleFileName(finalFile.name)))
     }
 
     private fun createSimpleImagePdf(sourcePdf: File, outputPdf: File) {
@@ -198,10 +199,11 @@ class PrescriptionWithPDFBuilder(
 
     fun createSignatureBitmap(fontFamily: String, context: Activity, drSignText: String, drDetails: ClsDoctorDetails) {
         val drSignTextView = binding.drSignTextview
-
+       val font =  getFontFamily(fontFamily)
         val typeface = try {
-            Typeface.createFromAsset(context.assets, "fonts/$fontFamily")
+            Typeface.createFromAsset(context.assets, font)
         } catch (e: Exception) {
+            e.printStackTrace()
             Typeface.DEFAULT
         }
 
@@ -221,5 +223,16 @@ class PrescriptionWithPDFBuilder(
 
         val drDetailsVal = "${drDetails.name}\n${drDetails.qualification}, ${drDetails.specialization}\n${drDetails.registrationNumber}"
         binding.drDetailsTextview.text = drDetailsVal
+    }
+    private fun getFontFamily(fontFamily: String): String{
+        val fontFamilyFile = when (fontFamily.lowercase()) {
+            "youthness" -> "fonts/Youthness.ttf"
+            "asem" -> "fonts/Asem.otf"
+            "arty" -> "fonts/Arty.otf"
+            "almondita" -> "fonts/Almondita.ttf"
+            else -> ""
+        }
+        return fontFamilyFile
+
     }
 }

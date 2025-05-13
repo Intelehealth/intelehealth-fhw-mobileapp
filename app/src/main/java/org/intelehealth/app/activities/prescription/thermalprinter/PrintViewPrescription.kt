@@ -13,6 +13,7 @@ import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.DateAndTimeUtils
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -259,6 +260,7 @@ class PrintViewPrescription(
     private fun formatFollowUpDate(): String {
         var htmlDocument = ""
         val followUpWeb = followUpWeb()
+        Log.d(TAG, "formatFollowUpDate: followUpWeb : "+followUpWeb)
         if (followUpWeb.isNotEmpty()) {
             htmlDocument = "<b id=\"follow_up_heading\">* Follow Up Date </b><br>$followUpWeb<br>"
         }
@@ -266,30 +268,43 @@ class PrintViewPrescription(
     }
 
     private fun followUpWeb(): String {
-        var followUpWeb = ""
-        var followUpDateStr = ""
         val followUpDate = dataModel.followUpDate
 
-        if (!followUpDate.isNullOrEmpty() && followUpDate.contains(",")) {
+        if (followUpDate.isNullOrBlank()) {
+            return stringToWebSms("NA")
+        }
+
+        var followUpDateStr = ""
+
+        if (followUpDate.contains(",")) {
             val splitFollowDate = followUpDate.split(",")
-            if (splitFollowDate[0].contains("-")) {
-                var remainingStr = ""
-                for (i in 1 until splitFollowDate.size) {
-                    remainingStr = if (remainingStr.isNotEmpty()) {
-                        "$remainingStr, ${splitFollowDate[i]}"
-                    } else {
-                        splitFollowDate[i]
-                    }
+            val rawDate = splitFollowDate.getOrNull(0)?.trim()
+
+            if (!rawDate.isNullOrEmpty() && rawDate.contains("-")) {
+                val formattedDate = DateAndTimeUtils.date_formatter(
+                    rawDate,
+                    "yyyy-MM-dd",
+                    "dd MMM, yyyy"
+                ) ?: "NA"
+
+                val remainingStr = splitFollowDate
+                    .drop(1)
+                    .mapNotNull { it.trim().takeIf { it.isNotEmpty() && it != "null" } }
+                    .joinToString(", ")
+
+                followUpDateStr = if (remainingStr.isNotEmpty()) {
+                    "$formattedDate, $remainingStr"
+                } else {
+                    formattedDate
                 }
-                followUpDateStr = "${parseDateToddMMyyyy(splitFollowDate[0])}, $remainingStr"
             } else {
                 followUpDateStr = followUpDate
             }
         } else {
-            followUpDateStr = followUpDate ?: ""
+            followUpDateStr = if (followUpDate != "null") followUpDate else "NA"
         }
-        followUpWeb = stringToWebSms(followUpDateStr)
-        return followUpWeb
+
+        return stringToWebSms(followUpDateStr.ifBlank { "NA" })
     }
 
     private fun stringToWebSms(input: String?): String {
