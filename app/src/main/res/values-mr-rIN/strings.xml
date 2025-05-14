@@ -1527,6 +1527,6 @@
     <string name="morbidly_obese">मध्यम लठ्ठपणा (वर्ग १)</string>
     <string name="hw_mobile_number">स्वास्थ्य कार्यकर्ता संपर्क नंबर</string>
     <string name="pdf_share_flow_msg">कृपया प्रिस्क्रिप्शन या मोबाईल नंबरवर पाठवा: %1$s</string>
-    <string name="pdf_share_flow_title">व्हॉट्सॲपद्वारे प्रिस्क्रिप्शन शेअर करा</string>
+    <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
 
 </resources>

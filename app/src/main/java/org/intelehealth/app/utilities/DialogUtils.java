@@ -1,5 +1,8 @@
 package org.intelehealth.app.utilities;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -144,9 +147,9 @@ public class DialogUtils {
         Button positive_btn = convertView.findViewById(R.id.positive_btn);
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
-        if (iconResource == 0) icon.setVisibility(View.GONE);
+        if (iconResource == 0) icon.setVisibility(GONE);
         if (message == null || message.equalsIgnoreCase(""))
-            dialog_subtitle.setVisibility(View.GONE);
+            dialog_subtitle.setVisibility(GONE);
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
         dialog_subtitle.setText(message);
@@ -154,7 +157,7 @@ public class DialogUtils {
         negative_btn.setText(negativeBtnText);
 
         if (isSingleButton) {
-            negative_btn.setVisibility(View.GONE);
+            negative_btn.setVisibility(GONE);
         }
 
         AlertDialog alertDialog = alertdialogBuilder.create();
@@ -195,7 +198,7 @@ public class DialogUtils {
         negative_btn.setText(negativeBtnText);
 
         if (isSingleButton) {
-            negative_btn.setVisibility(View.GONE);
+            negative_btn.setVisibility(GONE);
         }
 
         AlertDialog alertDialog = alertdialogBuilder.create();
@@ -326,5 +329,55 @@ public class DialogUtils {
 
     public static void showToast(Context context, int messageResId) {
         Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show();
+    }
+    public static void showPrescriptionPDFShareDialog(Context context, Drawable drawable, String title,
+                                                 String subTitle, String positiveBtnTxt, String negativeBtnTxt,boolean showNegativeButtonEnabled,
+                                                 CustomDialogListener customDialogListener) {
+
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        icon.setImageDrawable(drawable);
+        if(showNegativeButtonEnabled){
+            negative_btn.setVisibility(VISIBLE);
+            negative_btn.setText(negativeBtnTxt);
+        }else{
+            negative_btn.setVisibility(GONE);
+            negative_btn.setText(negativeBtnTxt);
+        }
+       /* dialog_title.setText("Close patient registration?");
+        dialog_subtitle.setText("Are you sure you want to close the patient registration?");
+        positive_btn.setText("No");
+        negative_btn.setText("Yes");*/
+
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subTitle);
+        positive_btn.setText(positiveBtnTxt);
+
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        negative_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+        });
+
+        positive_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+        });
+
+        alertDialog.show();
     }
 }

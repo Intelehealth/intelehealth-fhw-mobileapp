@@ -914,6 +914,6 @@
     <string name="please_enter_mobile_no_in_profile">Continue</string>
     <string name="enter_mobile_number_in_profile">Please update your mobile number under profile section</string>
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
-    <string name="pdf_share_flow_title">Share prescription via whatsapp</string>
+    <string name="pdf_share_flow_title">Share Prescription</string>
 
 </resources>

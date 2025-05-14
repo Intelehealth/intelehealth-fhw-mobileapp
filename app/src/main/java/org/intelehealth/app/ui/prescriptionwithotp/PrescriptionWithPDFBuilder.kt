@@ -115,13 +115,13 @@ class PrescriptionWithPDFBuilder(
         binding.root.draw(page.canvas)
         pdfDocument.finishPage(page)
 
-        // ✅ Safely build file path without duplicating full paths
+        //  Safely build file path without duplicating full paths
         val filePath = File(fileName)
         val downloadsDir = filePath.parentFile ?: Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val finalFile = if (filePath.isAbsolute) filePath else File(downloadsDir, fileName)
 
         try {
-            // ✅ Overwrite the file if it exists
+            //Overwrite the file if it exists
             FileOutputStream(finalFile, false).use { fos ->
                 pdfDocument.writeTo(fos)
             }
@@ -133,7 +133,6 @@ class PrescriptionWithPDFBuilder(
             pdfDocument.close()
         }
 
-        // ✅ Use cleaned-up file name for simple PDF
         createSimpleImagePdf(finalFile, File(downloadsDir, getSimpleFileName(finalFile.name)))
     }
 
@@ -182,7 +181,7 @@ class PrescriptionWithPDFBuilder(
 
     private fun getSimpleFileName(originalFileName: String): String {
         val baseName = originalFileName.substringBeforeLast(".pdf")
-        return "${baseName}_simple.pdf"
+        return "${baseName}.pdf"
     }
 
     private fun checkValueAndReturnNA(value: String?): String {

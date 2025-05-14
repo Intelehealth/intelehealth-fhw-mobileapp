@@ -1762,6 +1762,6 @@
     <string name="label_visit_date">Date of Visit:</string>
     <string name="hw_mobile_number">Health worker number</string>
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
-    <string name="pdf_share_flow_title">Share prescription via whatsapp</string>
+    <string name="pdf_share_flow_title">Share Prescription</string>
 
 </resources>

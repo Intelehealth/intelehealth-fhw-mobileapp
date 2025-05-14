@@ -79,9 +79,9 @@ class ShowPrescriptionDataPdfShareDialog(
                  title = activity.resources.getString(R.string.pdf_share_flow_title)
                  body = activity.resources.getString(R.string.enter_mobile_number_in_profile)
              }
-             DialogUtils.patientRegistrationDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
-                 activity.resources.getString(R.string.yes),
-                 activity.resources.getString(R.string.no)
+             DialogUtils.showPrescriptionPDFShareDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
+                 activity.resources.getString(R.string.ok),
+                 activity.resources.getString(R.string.cancel), false
              ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK)
                  if (isHWNumberAvailable) {
                      createAndSaveFile()
