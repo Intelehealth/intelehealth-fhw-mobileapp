@@ -128,8 +128,8 @@ public class SyncDAO {
                              responseDTO.getData().getProviderAttributeList().size());
             visitAttributeListDAO.insertProvidersAttributeList(
                     responseDTO.getData().getVisitAttributeList());
-            //code for dupliacte attr removal
-            /*if(isAppSetupDone){
+            //code for duplicate attr removal
+           /* if(isAppSetupDone){
                 visitAttributeListDAO.insertOrUpdateVisitAttributes(responseDTO.getData().getVisitAttributeList(), 0);
             } else{
                 visitAttributeListDAO.insertProvidersAttributeList(

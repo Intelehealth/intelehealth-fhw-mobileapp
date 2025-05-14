@@ -148,7 +148,7 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
-          }
+         }
 
         }
 

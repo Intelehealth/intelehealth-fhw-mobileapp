@@ -352,7 +352,7 @@ public class VisitAttributeListDAO extends BaseDao{
         executorService.shutdown();*/
     }
     private void collectDataForInsertAndUpdate(List<VisitAttributeDTO> dtos, int index) {
-        Log.d(TAG, "kaveri collectDataForInsertAndUpdate: original dtos : "+new Gson().toJson(dtos));
+        Log.d(TAG, "20kaveri collectDataForInsertAndUpdate: original dtos : "+new Gson().toJson(dtos));
         if (index >= dtos.size()){
             updateExistingVisitAttribute(dtos, visitAttributeDTOListForAdd, visitAttributeDTOListForUpdate);
             return;
@@ -360,6 +360,7 @@ public class VisitAttributeListDAO extends BaseDao{
         VisitAttributeDTO visitDTO = dtos.get(index);
         if (isRelevantAttribute(visitDTO)) {
             boolean exists = checkWhetherRecordExistOrNot(visitDTO);
+            Log.d(TAG, "20kaveri collectDataForInsertAndUpdate: exists : "+exists);
             if (exists) {
                 visitAttributeDTOListForUpdate.add(visitDTO);
             } else {
@@ -450,9 +451,9 @@ public class VisitAttributeListDAO extends BaseDao{
             List<HashMap<String, Object>> visitAttributeDTOListForAdd,
             List<VisitAttributeDTO> visitAttributeDTOListForUpdate
     ) {
-        Log.d(TAG, "kaveri updateRecord: visitAttributeDTOList : " + new Gson().toJson(visitAttributeDTOList));
-        Log.d(TAG, "kaveri updateRecord: visitAttributeDTOListForAdd : " + new Gson().toJson(visitAttributeDTOListForAdd));
-        Log.d(TAG, "kaveri updateRecord: visitAttributeDTOListForUpdate : " + new Gson().toJson(visitAttributeDTOListForUpdate));
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOList : " + new Gson().toJson(visitAttributeDTOList));
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOListForAdd : " + new Gson().toJson(visitAttributeDTOListForAdd));
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOListForUpdate : " + new Gson().toJson(visitAttributeDTOListForUpdate));
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
@@ -482,7 +483,7 @@ public class VisitAttributeListDAO extends BaseDao{
                         "AND visit_uuid IN (" + visitUuids + ") " +
                         "AND visit_attribute_type_uuid IN (" + attrTypes + ")"+
                         "AND value IN (" + values + ") ";
-                Log.d(TAG, "kaveri updateExistingVisitAttribute: sql : "+sql);
+                Log.d(TAG, "20kaveri updateExistingVisitAttribute: sql : "+sql);
                 db.execSQL(sql);
               /*  ContentValues updateValues = new ContentValues();
                 updateValues.put("sync", "1");
@@ -506,8 +507,6 @@ public class VisitAttributeListDAO extends BaseDao{
 
                     insertVisitAttributes(db, visitAttributeDTOListForAdd);
                 }
-
-                // ✅ 2. Bulk insert using SQLiteStatement with parameter binding
                 if (!visitAttributeDTOListForAdd.isEmpty()) {
                     insertVisitAttributes(db, visitAttributeDTOListForAdd);
                 }
