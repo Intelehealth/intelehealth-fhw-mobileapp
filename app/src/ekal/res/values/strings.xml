@@ -434,4 +434,6 @@
         <item>Other Survey</item>
     </string-array>
 
+    <string name="prescription_disclaimer">Note - If your condition does not improve after treatment, please visit your nearest hospital or consult a doctor as soon as possible. Telemedicine services are a limited consultation and are not a substitute for an in-person examination.</string>
+
 </resources>
