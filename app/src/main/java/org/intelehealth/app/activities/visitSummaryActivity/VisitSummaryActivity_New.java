@@ -3220,9 +3220,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-                String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
-                vd_special_value.setText(" " + Node.bullet + "  " + value);
+                if (specialization != null) {
+                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                    vd_special_value.setText(" " + Node.bullet + "  " + value);
+                } else {
+                    vd_special_value.setText(""); // or some fallback value
+                }
             });
+
 
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
