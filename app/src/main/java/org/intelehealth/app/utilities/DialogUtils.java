@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,7 +22,6 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
@@ -166,12 +164,14 @@ public class DialogUtils {
 
         negative_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
-            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+            if (customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
-            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+            if (customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         alertDialog.show();

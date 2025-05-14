@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,8 +40,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.ncd.constants.Constants;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
@@ -84,6 +89,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     RecyclerView list_recyclerView/*, rv_suggested_complaints*/;
     private float float_ageYear_Month;
     private String intentAdviceFrom;
+    private int mAgeInMonth = 0;
+    private String mAgeAndMonth = "";
+    private List<ReasonData> mSelectedComplains = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,14 +144,16 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        img_question = findViewById(R.id.img_question);
-        tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
+        //img_question = findViewById(R.id.img_question);
+        //tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
         list_recyclerView = findViewById(R.id.list_recyclerView);
 
 //        rv_suggested_complaints = findViewById(R.id.rvSuggestedComplaints);
@@ -292,12 +302,27 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         list_recyclerView.setAdapter(listAdapter);
 //        rv_suggested_complaints.setAdapter(suggestedComplaintListAdapter);
 
-        img_question.setVisibility(View.VISIBLE);
-        tv_selectComplaint.setVisibility(View.VISIBLE);
+        //img_question.setVisibility(View.VISIBLE);
+        //tv_selectComplaint.setVisibility(View.VISIBLE);
         list_recyclerView.setVisibility(View.VISIBLE);
 //        rv_suggested_complaints.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
+
+        String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
+        mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+        if (Integer.parseInt(temp[0]) == 0) {
+            mAgeAndMonth = temp[1] + " " + getResources().getString(R.string.months);
+        } else if (Integer.parseInt(temp[0]) == 0) {
+            mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years);
+        } else {
+            mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years) + " " + temp[1] + " " + getResources().getString(R.string.months);
+        }
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName);
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", mgender, mAgeAndMonth));
+
         fetchEligibleProtocols();
+
+
     }
 
     private void fetchEligibleProtocols() {
@@ -358,16 +383,22 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void confirmComplaints() {
         final ArrayList<String> selection = new ArrayList<>();
         final ArrayList<String> displaySelection = new ArrayList<>();
+        mSelectedComplains.clear();
         if (listAdapter != null) {
             for (Node node : listAdapter.getmNodes()) {
                 if (node.isSelected()) {
                     selection.add(node.getText());
                     displaySelection.add(node.findDisplay());
+                    String name = node.getText();
+                    ReasonData data = new ReasonData();
+                    data.setReasonName(name);
+                    data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(ComplaintNodeActivity.this, name));
+                    mSelectedComplains.add(data);
                 }
             }
 
             if (selection.isEmpty()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+               /* MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
                 alertDialogBuilder.setMessage(getString(R.string.complaint_required));
@@ -382,9 +413,43 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
+                // show custom dialog
+                DialogUtils d1 = new DialogUtils();
+                d1.showCommonDialog(this, 0, getString(R.string.complaint_dialog_title), getString(R.string.complaint_required), true,
+                        getString(R.string.generic_ok), "", null);
+
+
             } else {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialogWithChipsGrid(ComplaintNodeActivity.this, new ArrayList<ReasonData>(mSelectedComplains), R.drawable.ui2_visit_reason_summary_icon, getResources().getString(R.string.confirm_visit_reason), getResources().getString(R.string.are_you_sure_the_patient_has_the_following_reasons_for_a_visit), false, getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                            intent.putExtra("patientUuid", patientUuid);
+                            intent.putExtra("visitUuid", visitUuid);
+                            intent.putExtra("encounterUuidVitals", encounterVitals);
+                            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("advicefrom", intentAdviceFrom);
+                            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                            intent.putExtra("advicefrom", intentAdviceFrom);
+                            if (intentTag != null) {
+                                intent.putExtra("tag", intentTag);
+                            }
+                            intent.putStringArrayListExtra("complaints", selection);
+
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+
+               /* MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
                 final LayoutInflater inflater = getLayoutInflater();
@@ -431,7 +496,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 // pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 //nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
             }
         }
     }
@@ -489,5 +554,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
         v.startAnimation(bottomUp);
 
+    }
+
+    public void backPress(View view) {
+        deleteVisitAndGoBack();
     }
 }

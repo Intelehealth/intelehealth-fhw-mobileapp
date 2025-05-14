@@ -52,6 +52,8 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.ncd.NCDNodeValidationLogic;
 import org.intelehealth.app.knowledgeEngine.ncd.NCDValidationResult;
@@ -191,6 +193,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     };
 
     private CountDownTimer mCountDownTimer;
+    private int mAgeInMonth = 0;
+    private String mAgeAndMonth = "";
 
     @Override
     protected void onResume() {
@@ -237,6 +241,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             intentTag = intent.getStringExtra("tag");
             intentAdviceFrom = intent.getStringExtra("advicefrom");
             complaints = intent.getStringArrayListExtra("complaints");
+            mgender = PatientsDAO.fetch_gender(patientUuid);
         }
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
@@ -272,12 +277,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         // questionListView = findViewById(R.id.complaint_question_expandable_list_view);
 
@@ -327,6 +333,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         question_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(question_recyclerView);
+
+        String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
+        mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+        if (Integer.parseInt(temp[0]) == 0) {
+            mAgeAndMonth = temp[1] + " " + getResources().getString(R.string.months);
+        } else if (Integer.parseInt(temp[0]) == 0) {
+            mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years);
+        } else {
+            mAgeAndMonth = temp[0] + " " + getResources().getString(R.string.years) + " " + temp[1] + " " + getResources().getString(R.string.months);
+        }
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName);
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", mgender, mAgeAndMonth));
 
         setupQuestions(complaintNumber);
         //In the event there is more than one complaint, they will be prompted one at a time.
@@ -602,6 +620,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
                     intent.putExtra("advicefrom", intentAdviceFrom);
                     startActivity(intent);
+                    finish();
                 } else {
                     Intent intent;
 
@@ -746,8 +765,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             question_recyclerView.setAdapter(mQuestionListingadapter);
             mQuestionListingadapter.setForNCDProtocol(mCurrentNode.getNcdProtocol());
             recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
-            setTitle(patientName + ": " + mCurrentNode.findDisplay());
-            getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
+//            setTitle(patientName + ": " + mCurrentNode.findDisplay());
+//            getSupportActionBar().setSubtitle(mgender + "/" + (int) float_ageYear_Month + " Yrs");
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
@@ -817,24 +836,28 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                     boolean scrollToPosition = false;
                                     while (!scrollToPosition) {
                                         if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()) {
-                                            mCurrentNodeIndex += 1;
+                                            NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
+                                            mCurrentNode = autoFillResult.getUpdatedNode();
+                                            if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getHidden()) {
+                                                mCurrentNodeIndex += 1;
+                                            }
                                         } else {
 
                                             if (mCurrentNode.getOptionsList().get(mCurrentNodeIndex).getAutoFill()) {
                                                 NCDValidationResult autoFillResult = NCDNodeValidationLogic.validateAndFindNextPath(QuestionNodeActivity.this, patientUuid, currentNode, mCurrentNodeIndex, currentNode.getOption(mCurrentNodeIndex), false, null, true);
                                                 mCurrentNode = autoFillResult.getUpdatedNode();
-                                                if(autoFillResult.getMoveToIndex()!=0){
+                                                if (autoFillResult.getMoveToIndex() != 0) {
                                                     mCurrentNodeIndex = autoFillResult.getMoveToIndex();
                                                     scrollToPosition = true;
 
-                                                }else {
+                                                } else {
                                                     if (autoFillResult.isMoveToNextQuestion()) {
                                                         mCurrentNodeIndex += 1;
                                                     } else {
                                                         scrollToPosition = true;
                                                     }
                                                 }
-                                                if(autoFillResult.getPopupMessage()!=null && !autoFillResult.getPopupMessage().isEmpty()){
+                                                if (autoFillResult.getPopupMessage() != null && !autoFillResult.getPopupMessage().isEmpty()) {
                                                     showPopuMessage(autoFillResult.getPopupMessage());
                                                 }
                                             } else {
@@ -1190,5 +1213,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     @Override
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null, groupPos, childPos);
+    }
+
+    public void backPress(View view) {
+        VisitAttributeListDAO.deleteVisitAttributeUsingVisitUuid(visitUuid);
+        EncounterDAO.deleteEncounterUsingVisitUuid(visitUuid);
+        VisitsDAO.deleteVisitUsingVisitUuid(visitUuid);
+        finish();
     }
 }

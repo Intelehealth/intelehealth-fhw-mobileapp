@@ -508,4 +508,6 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 </resources>

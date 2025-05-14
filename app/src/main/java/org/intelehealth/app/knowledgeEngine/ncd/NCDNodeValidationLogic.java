@@ -273,6 +273,9 @@ public class NCDNodeValidationLogic {
         if (actionResult == null) {
             ncdValidationResult.setTargetNodeID(null);
             ncdValidationResult.setReadyToEndTheScreening(false);
+            if (validationRules.getActionType().equals(ValidationConstants.THEN_CONST_HIDE_THE_NODE)){
+                mmRootNode.getOptionsList().get(selectedRootIndex).setHidden(false);
+            }
             ncdValidationResult.setUpdatedNode(mmRootNode);
         } else {
             if (validationRules.isSelfCheck()) {

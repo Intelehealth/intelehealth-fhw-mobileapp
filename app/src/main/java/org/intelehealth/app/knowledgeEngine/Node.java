@@ -17,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -920,6 +922,10 @@ public class Node implements Serializable {
         firstValueEditText.setHint(node1.findDisplay() + "(" + min1 + " to " + max1 + ")");
         EditText secondValueEditText = convertView.findViewById(R.id.etv_2nd_value);
         secondValueEditText.setHint(node2.findDisplay() + "(" + min2 + " to " + max2 + ")");
+
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
         if (isDecimalType) {
             firstValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             firstValueEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
@@ -933,10 +939,16 @@ public class Node implements Serializable {
             secondValueEditText.setFilters(new InputFilter[]{new InputFilterMinMax(finalMin2, finalMax2)});
         }*/
 
-        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        AlertDialog alertDialog = numberDialog.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        positive_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-               /* numberPicker.setValue(numberPicker.getValue());
+            public void onClick(View view) {
+                /* numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());*/
                 String value1 = firstValueEditText.getText().toString().trim();
                 String value2 = secondValueEditText.getText().toString().trim();
@@ -1024,7 +1036,7 @@ public class Node implements Serializable {
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
-                dialog.dismiss();
+                alertDialog.dismiss();
                /* if (!value.equalsIgnoreCase("")) {
 
 
@@ -1041,38 +1053,55 @@ public class Node implements Serializable {
                     }
                 }*/
                 // node.setSelected(true);
-
             }
         });
-        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+//        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//            }
+//        });
+//        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                /*if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+//                    if (node.getLanguage().contains("_")) {
+//                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+//                    } else {
+//                        node.addLanguage(et_enter_value.getText().toString());
+//                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+//                    }
+//                } else {
+//                    if (node.getLanguage().contains("_")) {
+//                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+//                    } else {
+//                        node.addLanguage("Question not answered");
+//                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+//                    }
+//                }*/
+//                node.setSelected(false);
+//                node.setDataCaptured(false);
+//                adapter.refreshChildAdapter();
+//                adapter.notifyDataSetChanged();
+//                alertDialog.dismiss();
+//            }
+//        });
+        negative_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                /*if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
-                    } else {
-                        node.addLanguage(et_enter_value.getText().toString());
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
-                } else {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                    } else {
-                        node.addLanguage("Question not answered");
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
-                }*/
+            public void onClick(View view) {
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                alertDialog.dismiss();
             }
         });
-        AlertDialog dialog = numberDialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        alertDialog.show();
+        //AlertDialog dialog = numberDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+        //IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 

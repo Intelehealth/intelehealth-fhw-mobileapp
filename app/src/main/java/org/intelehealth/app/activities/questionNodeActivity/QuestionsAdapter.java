@@ -1,4 +1,5 @@
 package org.intelehealth.app.activities.questionNodeActivity;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -347,7 +348,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         private int physExamNodePos;
 
 
-
         public ComplaintNodeListAdapter(Context context, List<Node> nodes, Node groupNode, int groupPos,
                                         QuestionsAdapter.FabClickListener listener, String callingClass, int nodePos) {
             this.mContext = context;
@@ -396,15 +396,26 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                     || (groupNode.getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು") && thisNode.isNoSelected())
                     || thisNode.isSelected()) {
+//                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+//                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+//                itemViewHolder.mChipText.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+//                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                itemViewHolder.mChipText.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+
                 if (thisNode.isDataCaptured() && !thisNode.getLanguage().equals("%"))
                     itemViewHolder.mChipText.setText(thisNode.getLanguage());
                 else
                     itemViewHolder.mChipText.setText(thisNode.findDisplay());
             } else {
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+//                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+//                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+
+//                itemViewHolder.mChipText.setBackgroundResource(R.drawable.ui2_chip_type_1_bg);
+//                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.ui2_black_text_color));
+                itemViewHolder.mChipText.setBackgroundResource(R.drawable.edittext_border_blue);
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.ui2_black_text_color));
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
