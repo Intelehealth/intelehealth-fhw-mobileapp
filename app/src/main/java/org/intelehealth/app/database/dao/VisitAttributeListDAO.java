@@ -346,4 +346,21 @@ public class VisitAttributeListDAO {
         String[] whereArgs = new String[]{String.valueOf(visitUuid)};
         return db.delete(table, whereClause, whereArgs);
     }
+
+    public static boolean isVisitNCD(String visitUuid) {
+        boolean isNcdVisit = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=? and voided=0",
+                new String[]{visitUuid, AppConstants.IS_NCD_VISIT_ATTRIBUTE});
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                if (value.equalsIgnoreCase("true")) {
+                    isNcdVisit = true;
+                }
+            }
+        }
+        cursor.close();
+        return isNcdVisit;
+    }
 }

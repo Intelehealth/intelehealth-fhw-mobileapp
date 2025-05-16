@@ -420,7 +420,7 @@ class LocationSurveyActivity : AppCompatActivity() {
 
     private fun fetchLocations() {
         isLocationFetched = false
-        val baseUrl = "https://$url:30041/api/openmrs/"
+        val baseUrl = "https://$url:3004/api/openmrs/"
 
         if (URLUtil.isValidUrl(baseUrl) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(baseUrl)

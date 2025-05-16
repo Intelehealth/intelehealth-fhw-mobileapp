@@ -1237,4 +1237,9 @@ public class DateAndTimeUtils {
         Date date = new Date(currentTimeMillis);
         return simpleFormat.format(date);
     }
+    public static String getCurrentTimeAsVisitEndedTime() {
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        return currentDateFormat.format(todayDate);
+    }
 }
