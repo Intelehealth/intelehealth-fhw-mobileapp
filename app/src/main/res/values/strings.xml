@@ -1940,4 +1940,10 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="entered_aadhaar_or_mobile_number_is_incorrect">Entered Aadhaar or mobile number is incorrect.</string>
     <string name="please_enter_6_digit_valid_otp">Please enter 6 digit valid OTP</string>
     <string name="i_agree_terms_amp_conditions"><![CDATA[I Agree Terms & Conditions]]></string>
+    <string name="click_here_to_download_doctors_document">Click here to download doctor\'s document.</string>
+    <string name="doctors_additional_document">Doctor\'s Additional Document</string>
+    <string name="doctor_additional_document_download_started_notification">Doctor\'s additional document download has been started.</string>
+    <string name="doctor_additional_document_download_failed_notification">Doctor\'s additional document download failed.</string>
+    <string name="doctor_additional_document_download_completed_notification">Doctor\'s additional document download completed successfully. Kindly check your Downloads folder.</string>
+    <string name="doctor_additional_document_download_file_exists">Doctor\'s additional document is present in your Downloads folder.</string>
 </resources>

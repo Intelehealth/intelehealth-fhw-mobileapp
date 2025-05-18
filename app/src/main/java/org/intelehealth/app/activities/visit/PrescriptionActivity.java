@@ -25,6 +25,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -38,6 +39,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -61,7 +63,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -77,6 +79,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDoc;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocCallback;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -94,6 +98,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -126,7 +131,7 @@ import java.util.Objects;
  * Email: prajwalwaingankar@gmail.com
  */
 @SuppressLint("Range")
-public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, DownloadDoctorDocCallback {
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
@@ -178,6 +183,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private FrameLayout filter_framelayout;
     private View hl_2;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
+    private TextView tvAdditionalDoctorsDocument;
+    private CardView doctorAdditionalDocumentsCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,6 +311,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             syncNow(PrescriptionActivity.this, refresh, syncAnimator);
         });
 */
+        tvAdditionalDoctorsDocument = findViewById(R.id.doctor_additional_doc_txt);
+        String text = getString(R.string.click_here_to_download_doctors_document);
+        tvAdditionalDoctorsDocument.setText(Html.fromHtml("<u>" + text + "</u>"));
+        doctorAdditionalDocumentsCard = findViewById(R.id.doctorAdditionalDocumentsCard);
     }
 
     private void fetchIntent() {
@@ -1219,7 +1230,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value) {
+    private void parseData(String concept_id, String value, String obsUuid) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -1408,12 +1419,49 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
 
+            case UuidDictionary.DOCTORS_ADDITIONAL_DOCUMENT: {
+                if (obsUuid != null) {
+                    doctorAdditionalDocumentsCard.setVisibility(View.VISIBLE);
+                    tvAdditionalDoctorsDocument.setOnClickListener(v -> {
+                        String url = getDoctorsAdditionalDocumentUrl(obsUuid);
+                        checkAndDownloadDoctorDocument(url);
+                    });
+                }
+            }
+
             default:
                 Log.i("TAG", "parseData: " + value);
                 break;
         }
     }
+
+    private void checkAndDownloadDoctorDocument(String url) {
+        String fileName = "Doctor-Additional-Doc-" + visitID + ".pdf";
+        File docFile = getFile(fileName);
+        if (docFile.exists()) {
+            Toast.makeText(this, getString(R.string.doctor_additional_document_download_file_exists), Toast.LENGTH_SHORT).show();
+        } else {
+            downloadDoctorDocument(docFile, url);
+        }
+    }
+
+    private void downloadDoctorDocument(File destinationFile, String url) {
+        DownloadDoctorDoc downloadOperation = new DownloadDoctorDoc(this, destinationFile);
+        downloadOperation.downloadDoctorDoc(url, "Basic " + new Base64Utils().encoded("arpand", "Doctor@123"));
+    }
+
+    private File getFile(String fileName) {
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        return new File(downloadsDir, fileName);
+    }
+
     // parse presc value - end
+
+    private String getDoctorsAdditionalDocumentUrl(String obsUuid) {
+        String baseUrl = AppConstants.DOCTOR_DOCUMENT_BASE_URL;
+        String stringToReplace = AppConstants.DOCTORS_URL_STRING_TO_REPLACE;
+        return baseUrl.replace(stringToReplace, obsUuid);
+    }
 
     // downlaod - start
     public void downloadPrescriptionDefault() {
@@ -1432,16 +1480,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         encounterCursor.close();
 
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"uuid", "value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
+                String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
-                parseData(dbConceptID, dbValue);
+                parseData(dbConceptID, dbValue, obsUuid);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
@@ -1467,16 +1516,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             adviceReturned = "";
             additionalReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid"};
+            String[] columns = {"uuid", "value", " conceptuuid"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
 
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
                 do {
+                    String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    parseData(dbConceptID, dbValue, obsUuid);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();
@@ -1630,6 +1680,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         super.onDestroy();
 
     }
+
     // handle - end
 
     public class DownloadPrescriptionService extends BroadcastReceiver {
@@ -1768,16 +1819,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     //  followUpDateCard.setVisibility(View.GONE);
                 }
 
-                String[] columns = {"value", " conceptuuid"};
+                String[] columns = {"uuid", "value", " conceptuuid"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
                     do {
+                        String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
-                        parseData(dbConceptID, dbValue);
+                        parseData(dbConceptID, dbValue, obsUuid);
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
@@ -2576,7 +2628,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"uuid", "value", " conceptuuid"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -2624,9 +2676,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
+                        String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        parseData(dbConceptID, dbValue);
+                        parseData(dbConceptID, dbValue, obsUuid);
                     } while (visitCursor.moveToNext());
                 }
                 if (visitCursor != null) {
@@ -2646,7 +2699,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    parseData(dbConceptID, dbValue, null);
                 } while (encountercursor.moveToNext());
             }
             if (encountercursor != null) {
@@ -2767,5 +2820,21 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         args.putSerializable("patientDTO", (Serializable) patientDTO);
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
+    }
+
+    @Override
+    public void onDownloadStarted() {
+        Toast.makeText(this, getString(R.string.doctor_additional_document_download_started_notification), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDownloadComplete(File downloadedFile) {
+        MediaScannerConnection.scanFile(this, new String[]{downloadedFile.getAbsolutePath()}, null, (path, uri) ->
+                Toast.makeText(PrescriptionActivity.this, getString(R.string.doctor_additional_document_download_completed_notification), Toast.LENGTH_LONG).show());
+    }
+
+    @Override
+    public void onDownloadFailed() {
+        Toast.makeText(this, getString(R.string.doctor_additional_document_download_failed_notification), Toast.LENGTH_LONG).show();
     }
 }

@@ -188,17 +188,15 @@ public interface ApiInterface {
                                                                     @Body ChangePasswordParamsModel_New changePasswordParamsModel_new);
 
 
-
-
     @POST
     Single<ResponseBody> PROVIDER_PROFILE_PIC_UPLOAD(@Url String url,
-                                                   @Body ProviderProfile patientProfile,
-                                                   @Header("Authorization") String authHeader);
+                                                     @Body ProviderProfile patientProfile,
+                                                     @Header("Authorization") String authHeader);
 
 
     @GET
     Observable<ResponseBody> PROVIDER_PROFILE_PIC_DOWNLOAD(@Url String url,
-                                                         @Header("Authorization") String authHeader);
+                                                           @Header("Authorization") String authHeader);
 
     @GET
     Observable<Profile> PROVIDER_PROFILE_DETAILS_DOWNLOAD(@Url String url,
@@ -206,7 +204,7 @@ public interface ApiInterface {
 
     @POST("/openmrs/ws/rest/v1/person/{userUuid}")
     Observable<ResponseBody> PROFILE_AGE_UPDATE(@Path("userUuid") String userUuid,
-                                                             @Body ProfileUpdateAge profileUpdateAge, @Header("Authorization") String authHeader);
+                                                @Body ProfileUpdateAge profileUpdateAge, @Header("Authorization") String authHeader);
 
     @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
     Observable<ResponseBody> PROFILE_ATTRIBUTE_CREATE(@Path("userUuid") String userUuid,
@@ -222,17 +220,19 @@ public interface ApiInterface {
 
     @POST
     Single<Response<OTPResponse>> GET_OTP_FOR_AADHAR(@Url String url,
-                                           @Header("Authorization") String accessToken,
-                                           @Body AadharApiBody aadharApiBody);
+                                                     @Header("Authorization") String accessToken,
+                                                     @Body AadharApiBody aadharApiBody);
+
     @POST
     Single<Response<OTPResponse>> getEnrollNumberWithABDM(@Url String url,
-                                           @Header("Authorization") String accessToken,
-                                           @Body EnrollNumberWithABDMRequest apiRequest);
+                                                          @Header("Authorization") String accessToken,
+                                                          @Body EnrollNumberWithABDMRequest apiRequest);
 
     @POST
     Single<Response<OTPResponse>> GET_OTP_FOR_MOBILE(@Url String url,
-                                           @Header("Authorization") String accessToken,
-                                           @Body MobileLoginApiBody mobileLoginApiBody);
+                                                     @Header("Authorization") String accessToken,
+                                                     @Body MobileLoginApiBody mobileLoginApiBody);
+
     @POST
     Single<Response<HashMap<String, SearchAbhaProfileResponse>>> searchAbhaProfile(@Url String url,
                                                                                    @Header("Authorization") String accessToken,
@@ -240,33 +240,43 @@ public interface ApiInterface {
 
     @POST
     Single<Response<OTPVerificationResponse>> PUSH_OTP_FOR_VERIFICATION(@Url String url,
-                                                                  @Header("Authorization") String accessToken,
-                                                                  @Body OTPVerificationRequestBody otpVerificationRequestBody);
+                                                                        @Header("Authorization") String accessToken,
+                                                                        @Body OTPVerificationRequestBody otpVerificationRequestBody);
+
     @POST
     Single<Response<MobileLoginOnOTPVerifiedResponse>> PUSH_OTP_FOR_MOBILE_LOGIN_VERIFICATION(@Url String url,
-                                                                                    @Header("Authorization") String accessToken,
-                                                                                    @Body OTPVerificationRequestBody otpVerificationRequestBody);
+                                                                                              @Header("Authorization") String accessToken,
+                                                                                              @Body OTPVerificationRequestBody otpVerificationRequestBody);
 
     @POST
     Single<EnrollSuggestionResponse> PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(@Url String url,
-                                                               @Header("Authorization") String accessToken,
-                                                               @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+                                                                         @Header("Authorization") String accessToken,
+                                                                         @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+
     @POST
     Single<Response<SetAbhaAddressResponse>> PUSH_SET_PREFERRED_ABHA_ADDRESS(@Url String url,
-                                                             @Header("Authorization") String accessToken,
-                                                             @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+                                                                             @Header("Authorization") String accessToken,
+                                                                             @Body EnrollSuggestionRequestBody enrollSuggestionRequestBody);
+
     @POST
     Single<AbhaProfileResponse> PUSH_ABHA_PROFILE(@Url String url,
-                                                                    @Header("Authorization") String accessToken,
-                                                                    @Header("X-TOKEN") String xToken,
-                                                                    @Body AbhaProfileRequestBody abhaProfileRequestBody);
+                                                  @Header("Authorization") String accessToken,
+                                                  @Header("X-TOKEN") String xToken,
+                                                  @Body AbhaProfileRequestBody abhaProfileRequestBody);
+
     @GET
     Single<ExistUserStatusResponse> checkExistingUser(@Url String url,
-                                                    @Header("Authorization") String authHeader);
+                                                      @Header("Authorization") String authHeader);
+
     @GET
     Single<AbhaCardResponseBody> GET_ABHA_CARD(@Url String url,
                                                @Header("Authorization") String accessToken,
                                                @Query("scope") String scope,
                                                @Header("X-TOKEN") String xToken);
 
+    @GET
+    Single<Response<ResponseBody>> DOWNLOAD_DOCTOR_ADDITIONAL_DOCUMENT(
+            @Url String url,
+            @Header("Authorization") String accessToken
+    );
 }
