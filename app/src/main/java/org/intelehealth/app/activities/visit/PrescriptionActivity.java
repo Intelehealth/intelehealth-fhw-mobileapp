@@ -81,6 +81,7 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDoc;
 import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocCallback;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocUtils;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -1423,7 +1424,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (obsUuid != null) {
                     doctorAdditionalDocumentsCard.setVisibility(View.VISIBLE);
                     tvAdditionalDoctorsDocument.setOnClickListener(v -> {
-                        String url = getDoctorsAdditionalDocumentUrl(obsUuid);
+                        String url = DownloadDoctorDocUtils.getDoctorsAdditionalDocumentUrl(obsUuid);
                         checkAndDownloadDoctorDocument(url);
                     });
                 }
@@ -1436,8 +1437,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void checkAndDownloadDoctorDocument(String url) {
-        String fileName = "Doctor-Additional-Doc-" + visitID + ".pdf";
-        File docFile = getFile(fileName);
+        String fileName = DownloadDoctorDocUtils.getDocumentFileName(visitID);
+        File docFile = DownloadDoctorDocUtils.getDocumentFile(fileName);
+
         if (docFile.exists()) {
             Toast.makeText(this, getString(R.string.doctor_additional_document_download_file_exists), Toast.LENGTH_SHORT).show();
         } else {
@@ -1450,18 +1452,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         downloadOperation.downloadDoctorDoc(url, "Basic " + sessionManager.getEncoded());
     }
 
-    private File getFile(String fileName) {
-        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        return new File(downloadsDir, fileName);
-    }
-
     // parse presc value - end
-
-    private String getDoctorsAdditionalDocumentUrl(String obsUuid) {
-        String baseUrl = AppConstants.DOCTOR_DOCUMENT_BASE_URL;
-        String stringToReplace = AppConstants.DOCTORS_URL_STRING_TO_REPLACE;
-        return baseUrl.replace(stringToReplace, obsUuid);
-    }
 
     // downlaod - start
     public void downloadPrescriptionDefault() {

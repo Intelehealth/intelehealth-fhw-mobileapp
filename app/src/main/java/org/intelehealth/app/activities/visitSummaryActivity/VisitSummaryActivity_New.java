@@ -37,6 +37,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -112,6 +113,10 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDoc;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocCallback;
+import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocUtils;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
@@ -195,7 +200,7 @@ import okhttp3.ResponseBody;
  * Github: prajwalmw
  */
 @SuppressLint("Range")
-public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface, DownloadDoctorDocCallback {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
@@ -221,6 +226,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private AdditionalDocumentAdapter recyclerViewAdapter;
     private ComplaintHeaderAdapter cc_adapter;
     private String mEngReason = "";
+    private boolean doesDoctorDocumentExist = false;
 
     boolean hasLicense = false;
     private String hasPrescription = "";
@@ -338,6 +344,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ObjectAnimator syncAnimator;
     TooltipWindow tipWindow;
     Boolean doesAppointmentExist = false;
+    private String doctorAdditionalDocumentUuid;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -2294,6 +2301,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         btn_vs_print.setOnClickListener(v -> {
             try {
+                checkAndDownloadDoctorDocument();
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -2348,6 +2356,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("speciality", speciality_selected);
             mStartForScheduleAppointment.launch(in);
         });
+    }
+
+    private void checkAndDownloadDoctorDocument() {
+        if (!doesDoctorDocumentExist) {
+            Toast.makeText(this, getString(R.string.doctor_additional_document_download_file_exists), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String url = DownloadDoctorDocUtils.getDoctorsAdditionalDocumentUrl(doctorAdditionalDocumentUuid);
+        String fileName = DownloadDoctorDocUtils.getDocumentFileName(visitUuid);
+        File docFile = DownloadDoctorDocUtils.getDocumentFile(fileName);
+
+        if (docFile.exists()) {
+            Toast.makeText(this, getString(R.string.doctor_additional_document_download_file_exists), Toast.LENGTH_SHORT).show();
+        } else {
+            downloadDoctorDocument(docFile, url);
+        }
+    }
+
+    private void downloadDoctorDocument(File destinationFile, String url) {
+        DownloadDoctorDoc downloadOperation = new DownloadDoctorDoc(this, destinationFile);
+        downloadOperation.downloadDoctorDoc(url, "Basic " + sessionManager.getEncoded());
     }
 
     private void rescheduleAppointment(VisitSummaryActivity_New context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
@@ -2879,7 +2909,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"uuid", "value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -2887,8 +2917,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
-                parseData(dbConceptID, dbValue);
+                parseData(dbConceptID, dbValue, obsUuid);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
@@ -2938,7 +2969,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value) {
+    private void parseData(String concept_id, String value, String obsUuid) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3113,6 +3144,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 break;
             }
 
+            case UuidDictionary.DOCTORS_ADDITIONAL_DOCUMENT: {
+                doesDoctorDocumentExist = true;
+                doctorAdditionalDocumentUuid = obsUuid;
+                break;
+            }
+
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
@@ -3221,7 +3258,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"uuid", "value", " conceptuuid"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3270,7 +3307,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        parseData(dbConceptID, dbValue);
+                        String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
+                        parseData(dbConceptID, dbValue, obsUuid);
                     } while (visitCursor.moveToNext());
                 }
                 if (visitCursor != null) {
@@ -3289,7 +3327,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    String obsUuid = encountercursor.getString(encountercursor.getColumnIndex("uuid"));
+                    parseData(dbConceptID, dbValue, obsUuid);
                 } while (encountercursor.moveToNext());
             }
             if (encountercursor != null) {
@@ -3503,7 +3542,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             adviceReturned = "";
             additionalReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid"};
+            String[] columns = {"uuid", "value", " conceptuuid"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -3511,7 +3550,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    String obsUuid = visitCursor.getString(visitCursor.getColumnIndex("uuid"));
+                    parseData(dbConceptID, dbValue, obsUuid);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();
@@ -5630,5 +5670,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         }
 
+    }
+
+
+    @Override
+    public void onDownloadStarted() {
+        Toast.makeText(this, getString(R.string.doctor_additional_document_download_started_notification), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDownloadComplete(File downloadedFile) {
+        MediaScannerConnection.scanFile(this, new String[]{downloadedFile.getAbsolutePath()}, null, (path, uri) ->
+                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.doctor_additional_document_download_completed_notification), Toast.LENGTH_LONG).show());
+    }
+
+    @Override
+    public void onDownloadFailed() {
+        Toast.makeText(this, getString(R.string.doctor_additional_document_download_failed_notification), Toast.LENGTH_LONG).show();
     }
 }
