@@ -1447,7 +1447,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     private void downloadDoctorDocument(File destinationFile, String url) {
         DownloadDoctorDoc downloadOperation = new DownloadDoctorDoc(this, destinationFile);
-        downloadOperation.downloadDoctorDoc(url, "Basic " + new Base64Utils().encoded("arpand", "Doctor@123"));
+        downloadOperation.downloadDoctorDoc(url, "Basic " + sessionManager.getEncoded());
     }
 
     private File getFile(String fileName) {
