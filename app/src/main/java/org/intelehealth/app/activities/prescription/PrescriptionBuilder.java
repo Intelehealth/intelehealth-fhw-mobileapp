@@ -28,6 +28,7 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
+            String additionalDoctorDetailsData,
             ClsDoctorDetails details
     ) {
         String prescriptionHTML = "";
@@ -38,7 +39,7 @@ public class PrescriptionBuilder {
         prescriptionHTML = headingDocTypeTag
                 + headingHTMLLangTag
                 + buildHeadData()
-                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, additionalDoctorDetailsData, details)
                 + htmlClosingTag;
 
         return prescriptionHTML;
@@ -66,6 +67,7 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
+            String additionalDoctorDetailsData,
             ClsDoctorDetails details
     ) {
         String finalBodyString = "";
@@ -83,7 +85,7 @@ public class PrescriptionBuilder {
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
                 + generatePatientDetailsData(patient)
-                + generateMainRowData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + generateMainRowData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, additionalDoctorDetailsData, details)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
                 + closingBodyTag;
@@ -177,6 +179,7 @@ public class PrescriptionBuilder {
 
     /**
      * return full gender from gender char
+     *
      * @param gender
      * @return
      */
@@ -197,6 +200,7 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
+            String additionalDoctorDocumentData,
             ClsDoctorDetails details
     ) {
         String finalMainRowData = "";
@@ -213,6 +217,7 @@ public class PrescriptionBuilder {
                 + generateTestData(testData)
                 + generateReferredOutData(referredOutData)
                 + generateFollowUpData(followUpData)
+                + generateAdditionalDoctorData(additionalDoctorDocumentData)
                 + rowClosingTag
                 + generateDoctorSignatureData(details)
                 + rowClosingTag;
@@ -246,7 +251,7 @@ public class PrescriptionBuilder {
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
 
-        if(vitalsDataString.isEmpty()) return "";
+        if (vitalsDataString.isEmpty()) return "";
 
         finalVitalsData = openingDivTag
                 + openingDataSectionTag
@@ -455,11 +460,11 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        if((tableDataFinalString+tableAdditionalDataFinalString).isEmpty()){
+        if ((tableDataFinalString + tableAdditionalDataFinalString).isEmpty()) {
             return "";
         }
 
-        return finalMedicationData+lineBreak;
+        return finalMedicationData + lineBreak;
     }
 
     private String bifurcateMedicationData(String medicationData) {
@@ -594,7 +599,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedAdviceData = checkAndBifurcateAdviceData(adviceData);
 
-        if(bifurcatedAdviceData.isEmpty()) return "";
+        if (bifurcatedAdviceData.isEmpty()) return "";
 
         finalAdviceString = openingDivTag
                 + dataSectionTag
@@ -607,7 +612,7 @@ public class PrescriptionBuilder {
                 + closingDivTag
                 + closingDivTag;
 
-        return finalAdviceString+lineBreak;
+        return finalAdviceString + lineBreak;
     }
 
     private String checkAndBifurcateAdviceData(String adviceData) {
@@ -623,7 +628,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceData.isEmpty()) return "";
+            if (adviceData.isEmpty()) return "";
             finalAdviceStringBuilder.append(listOpeningTag);
             finalAdviceStringBuilder.append(divClassOpeningTagCenter);
             finalAdviceStringBuilder.append(spanOpeningTag);
@@ -636,7 +641,7 @@ public class PrescriptionBuilder {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
             for (String advice : adviceArray) {
                 finalAdviceStringBuilder.append(listOpeningTag);
                 finalAdviceStringBuilder.append(divClassOpeningTagCenter);
@@ -668,7 +673,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedTestsData = checkAndBifurcateTestData(testData);
 
-        if(bifurcatedTestsData.isEmpty()) return "";
+        if (bifurcatedTestsData.isEmpty()) return "";
         finalTestString = divOpeningTag
                 + divDataSectionOpening
                 + divDataSectionTitleTag
@@ -680,7 +685,7 @@ public class PrescriptionBuilder {
                 + divClosingTag
                 + divClosingTag;
 
-        return finalTestString+lineBreak;
+        return finalTestString + lineBreak;
     }
 
     private String checkAndBifurcateTestData(String testsData) {
@@ -697,7 +702,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(testsData.isEmpty()) return "";
+            if (testsData.isEmpty()) return "";
             finalTestsStringBuilder.append(listOpeningTag);
             finalTestsStringBuilder.append(divClassOpeningTagCenter);
             finalTestsStringBuilder.append(spanOpeningTag);
@@ -710,7 +715,7 @@ public class PrescriptionBuilder {
             //checking any test exist or not
             //if not then return empty string
             //because we will disable test ui if test is empty
-            if(adviceArray.length == 0) return "";
+            if (adviceArray.length == 0) return "";
 
             for (String advice : adviceArray) {
                 finalTestsStringBuilder.append(listOpeningTag);
@@ -751,7 +756,7 @@ public class PrescriptionBuilder {
 
         String bifurcatedReferralData = checkAndBifurcateReferredData(referredOutData);
 
-        if(bifurcatedReferralData.isEmpty()) return "";
+        if (bifurcatedReferralData.isEmpty()) return "";
 
         finalReferredOutString = divOpeningTag
                 + divDataSectionOpening
@@ -802,7 +807,7 @@ public class PrescriptionBuilder {
             //checking any referral out exist or not
             //if not then return empty string
             //because we will disable referral out ui if referral out is empty
-            if(referredOutArray.length == 0) return "";
+            if (referredOutArray.length == 0) return "";
 
             for (String referred : referredOutArray) {
                 if (referred.contains(":")) {
@@ -837,6 +842,7 @@ public class PrescriptionBuilder {
         String closingUnorderedListTag = "</ul>";
         String isFollowUpScheduled = "";
         String[] followUpArrayData = followUpData.split(",");
+        String lineBreak = "<br>";
 
         if (followUpData.equalsIgnoreCase("")) {
             isFollowUpScheduled = "No";
@@ -895,6 +901,44 @@ public class PrescriptionBuilder {
                         + "</li>";
             }
         }
+
+        divSectionContentOpeningTag = divSectionContentOpeningTag
+                + closingUnorderedListTag
+                + closingDivTag;
+
+        finalFollowUpString = divOpeningTag
+                + divDataSectionOpeningTag
+                + divSectionTitleTag
+                + divSectionContentOpeningTag
+                + closingDivTag
+                + closingDivTag;
+
+        return finalFollowUpString + lineBreak;
+    }
+
+    private String generateAdditionalDoctorData(String additionalDocumentData) {
+        String finalFollowUpString = "";
+        String closingDivTag = "</div>";
+        String divOpeningTag = "<div class=\"col-md-12 px-3 mb-3\">";
+        String divDataSectionOpeningTag = "<div class=\"data-section\">";
+        String divSectionTitleTag = "<div class=\"data-section-title\">"
+                + "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAABh5JREFUaIHVmm1wVOUVx3/n3ptQQ6JBkCa8JIEExA5lE90oWJlRO1KrtrYSq1ZSaQsUQ0mg4NiZ9osz7dQZbCFkRN7qGw6FAbXUD+0HW+tMbYNECJCRYCCEBCOKy4ubDbDZe08/5KUL2c3eu9lN2/+n3ec5z//8z73Pfd7OI6rKcDFzyoY8QyN3i+ptiswwkKmKjgWy+0y6BAk4aKugzahRb5vmO00nqk4P17ckG8BNk54fm2k6j4NTCeJPhkNhnwHbLtvm9iOnlgWS4fAcgG9S3SRMXQ0sBrKScRoDIdAt4jjPNXas/NhLQ9cB+P2bM3rOXKoCfsV/ukaq0Q2s6c6U37S0LL/spoGrAHxTa2+UiOxUwTdchS7RKLb5SOOpZR8lMjQSGfiKaudjS8MIigcoVdNuKC1a/91EhkMGMKugbiEqO0hflxkKOarsKi1Yv3Qoo7gBlBbW/UREXwKslEtzD1OFF0oL1y+PZxDzG/AV1c5HZSdgplOdB9iqTsWh9hV/vLpiUAAzJ68tMQzzA4FrR0yeO3SpYZQfOvHT5ujCK7rQzJnPZFpi7v4fFA+QLY6z3e/fnBFdeEX/toJjfuZltCmfM4m7v1HMuPFDz2e5Y64hLz+bqif20HHygifVV6Gs5/NLNcBz/QUDXah08tqJaphHgdFumCoXl7HqF3MRce/9dGeQxx7YwdnARU+qr0JXhjjTG9pWfAJRb0AN8ylcih87Louap29HHWXD2nraWs8PaV+5qIxZN+eRNyGHrTseYtGjbwwniOwwxmpgFfS9gd6Fmd2Oy7XNHXcW8vwrD/Le309S9cSehPZrNnyTefdP43RnkLwJORz/KDDcIEJh2yw8cmpZwADoXVW6X5hljc7sZQmFPXndWPs+Lc0BiqeP5cVdFYwb7+qFx8LoDMt+FAZGIacyWSYvCAXDLP7+G7Q0B5hSPIatOx5KOghRfgBg+IvW5YPcklKlQ+Bc4GKqgij/6tTaL1thjLsEPIwlyWPBolLuub8EgI87LpA/MYcpxWN48+0FfO/e7XzSGfRCJ2aEOy1RvS3d+oNf9C7tfTfnx6y/9rpRfPvhm9hU+74nXhVmW4rMSPfj/92v/8E/323HMAZ7WvDjUny35HPi+DnvxMqNlkBJCjQOia5gmLf/fCxm3T33Je9exJhmALlJM/yXoWiuQRo3Ky/vruDl3RXpogfISetmpax8Qjrpgd6JrCvtXtKHoAWcA65PBdt1uV/iwYe/gmVdOdr86MneeTISUfbs+pAL5y+lwh2CnLcUjgsUp4LwW/NnsOqXdwwqr/n51wZ+O47Da79vTIU7VJ0WS9BmkHmpIHzr9WauycoYWOz1P/kXX/gAgO5QmLdeb47b3jOEoxZq1CNanQq+C+cvsaVu38D//gBqn30vFfSDIMi/DMdy/gYM/4h65KG2qe8ah1trPlVoSIeHA/s6ObCvMx3UoOw93FrzqQVgwDaF8lT7WFixO9WUUdBt0LehuWyb24GQ26bdfTux0X0f63CQld3LcTHU46VZKOxYO6FvU3/k1LKAr7B2C8gKN62PNJ2hp8dmztwCliwvT7ipj4eiqbncPreAnh6bDw9/5r6hysb+hMiIHqvE1KK9y+1Xt+x32yRoG9b0/vTUFUeLswrrnhb0WbdM/tkT+fq9JQkPtuLh88+6+etfjtFQ7z4pI6KrG9tqfjvwPzqAvizMXqAsKUVph+zPuGHU7IaGJQMfzP/V4S6m+g+21hyNLhyUH2jqWHnMEBYC9kgpcwEb1cevFg9xEhyNbdVvKlSlX5crKMLSg+01f4pVGTdDc+hk9WZV+SEQSZu0xLAFefJgW/XWeAYJs5SzCtZ9R8R4FchJtbqhoPCFqFbGe/L9cJVmLZu8fppjsJMRG51kv+1EHmnqWBn7KCMKCdOsAAc6qluubz93K7AC8HR85hHdwDN2ztk5bsRDElcN/EXr8iMYT6myBJeztguEVNjkiLXG6wWQYV32yLAijwmyAOVWvJ9PKspeNXjNse0/NHWsPJuMjqQDiIavZON4CV++S4XZiMxAmQLcQNR1G+AMwglUm0Wp18xR7xw8ttTDCi42/g1Ip1JbCLXaHAAAAABJRU5ErkJggg==\" alt=\"\" />"
+                + "<h6>Doctor's Additional Document</h6>"
+                + "</div>";
+
+        String closingUnorderedListTag = "</ul>";
+
+        String divSectionContentOpeningTag = "<div class=\"data-section-content\">"
+                + "<ul class=\"items-list\">\n"
+                + "<li>"
+                + "<div class=\"list-item\">"
+                + "<div class=\"list-item-content\">"
+                + additionalDocumentData
+                + "</div>"
+                + "</div>"
+                + "</li>"
+                + "</ul>"
+                + "</div>";
 
         divSectionContentOpeningTag = divSectionContentOpeningTag
                 + closingUnorderedListTag
