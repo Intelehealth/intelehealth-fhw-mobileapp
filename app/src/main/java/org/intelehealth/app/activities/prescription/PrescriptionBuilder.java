@@ -917,6 +917,10 @@ public class PrescriptionBuilder {
     }
 
     private String generateAdditionalDoctorData(String additionalDocumentData) {
+        if (additionalDocumentData == null) {
+            additionalDocumentData = "No documents added";
+        }
+
         String finalFollowUpString = "";
         String closingDivTag = "</div>";
         String divOpeningTag = "<div class=\"col-md-12 px-3 mb-3\">";
