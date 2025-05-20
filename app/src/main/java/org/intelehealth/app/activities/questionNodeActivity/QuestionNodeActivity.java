@@ -33,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -201,14 +202,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         super.onResume();
         // Register the receiver
         IntentFilter filter = new IntentFilter(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
-        ContextCompat.registerReceiver(this, mQuestionActionBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        //ContextCompat.registerReceiver(this, mQuestionActionBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mQuestionActionBroadcastReceiver, filter);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         // Unregister the receiver
-        unregisterReceiver(mQuestionActionBroadcastReceiver);
+        //unregisterReceiver(mQuestionActionBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mQuestionActionBroadcastReceiver);
+
     }
 
     @Override

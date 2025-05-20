@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -1005,7 +1006,8 @@ public class Node implements Serializable {
                             if (node.getRecurringCurrentCount() > node.getRecurringMaxCount()) {
                                 Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                                 intent.putExtra("move_next", true);
-                                context.sendBroadcast(intent);
+                                //context.sendBroadcast(intent);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                             } else {
                                 Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
                                 // count limit if it exceeded then move to next question
@@ -1016,20 +1018,23 @@ public class Node implements Serializable {
                                 intent.putExtra("recurring_current_step", node.getRecurringCurrentCount());
                                 intent.putExtra("move_next", false);
                                 intent.putExtra("node_text", node.getDisplay());
-                                context.sendBroadcast(intent);
+                                //context.sendBroadcast(intent);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                             }
 
 
                         } else {
                             Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                             intent.putExtra("move_next", true);
-                            context.sendBroadcast(intent);
+                            //context.sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                         }
                     } else {
                         //// go to next question
                         Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
                         intent.putExtra("move_next", true);
-                        context.sendBroadcast(intent);
+                        //context.sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                     }
 
                 }
