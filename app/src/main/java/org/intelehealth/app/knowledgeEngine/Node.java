@@ -130,6 +130,7 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    private Boolean isFutureDateRequired;
     private boolean isMultiChoice = false;
     private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
     //for Associated Complaints and medical history only
@@ -199,6 +200,8 @@ public class Node implements Serializable {
             this.min_age = jsonNode.optString("age_min");
 
             this.max_age = jsonNode.optString("age_max");
+
+            this.isFutureDateRequired = jsonNode.optBoolean("is_future_date_required");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -3929,6 +3932,14 @@ public class Node implements Serializable {
 
     public boolean isShowCalendarHeader() {
         return showCalendarHeader;
+    }
+
+    public Boolean isFutureDateRequired() {
+        return isFutureDateRequired;
+    }
+
+    public void setFutureDateRequiredVaue(Boolean futureDateRequired) {
+        isFutureDateRequired = futureDateRequired;
     }
 
     /*End*/

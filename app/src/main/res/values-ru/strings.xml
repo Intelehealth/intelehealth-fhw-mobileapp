@@ -1064,7 +1064,7 @@
     <string name="address_to_other_info">Address to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="emergency_contact_number">Номер телефона экстренной связи</string>
-    <string name="hint_drop_down_guardian_type">Select Guardian Type</string>
+    <string name="hint_drop_down_guardian_type">Выберите тип опекуна</string>
     <string name="hint_drop_down_contact_type">Выберите принадлежность номера</string>
     <string name="hint_drop_down_economic">Select Economic Category</string>
     <string name="hint_drop_down_education">Select Education</string>
@@ -1128,5 +1128,12 @@
     <string name="temp_eg_c">Например, 36.6 С</string>
     <string name="other_diagnosis">Другой диагноз</string>
     <string name="select_diagnosis">Выберите Диагноз</string>
+    <string name="enter_city">введите город</string>
+    <string name="other_city">Другой город</string>
+    <string name="other_field_dropdown">Другой</string>
+    <string name="other_healthy_facility_name">Другой название медицинского учреждения</string>
+    <string name="enter_healthy_facility_name">введите название медицинского учреждения</string>
+    <string name="enter_valid_data">Enter valid data</string>
+    <string name="city_and_other_city_can_not_be_same">City and other city can not be same</string>
     <!-- UNFPA Strings end  -->
 </resources>

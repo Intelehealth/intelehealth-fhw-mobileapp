@@ -1,6 +1,8 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -10,8 +12,10 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.LocaleUtils
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.DistData
@@ -44,6 +48,7 @@ import org.intelehealth.app.utilities.extensions.validateDropDowb
 class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient_address_info) {
 
     private lateinit var binding: FragmentPatientAddressInfoBinding
+    private val textWatchers = mutableMapOf<TextInputEditText, TextWatcher>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPatientAddressInfoBinding.bind(view)
@@ -91,9 +96,26 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
+        setupOtherCity()
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
+    }
+
+    private fun setupOtherCity() {
+        LanguageUtils.getProvincesAndCities().let {
+            val cities = LanguageUtils.getCityByLocal(it, "en")
+            if (patient.otherCity != null) patient.city = patient.otherCity
+            if (patient.city != null) {
+                if (!cities.contains(patient.city) || patient.city == LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
+                    patient.otherCity = patient.city
+                }
+            }
+        }
     }
 
     private fun fetchPersonalInfoConfig() {
@@ -117,13 +139,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             super.onBound(binding)
             setupCountries()
             setupStates()
-            applyFilter()
-            setInputTextChangListener()
-            setClickListener()
             //province and cities required only for unfpa
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
+            applyFilter()
+            setInputTextChangListener()
+            setClickListener()
         }
     }
 
@@ -143,8 +165,16 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address1 = binding.textInputAddress1.text?.toString()
             address2 = binding.textInputAddress2.text?.toString()
             registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
+            LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                if (city == getString(R.string.other_field_dropdown)) {
+                    city = binding.textInputOtherCity.text?.toString()
+                    otherCity = city
+                }
+
+            }
 
             patientViewModel.updatedPatient(this)
+            //LanguageUtils.
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
@@ -176,9 +206,30 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun applyFilter() {
-        binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
+        /*binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())*/
+
+        firstLetterUpperCaseListener(binding.textInputCityVillage)
+        firstLetterUpperCaseListener(binding.textInputAddress1)
+        firstLetterUpperCaseListener(binding.textInputAddress2)
+        firstLetterUpperCaseListener(binding.textInputOtherCity)
+    }
+
+    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText) {
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.isNotEmpty() && Character.isLowerCase(editable[0])) {
+                    textInputEditText.removeTextChangedListener(this)
+                    editable.replace(0, 1, editable[0].uppercaseChar().toString())
+                    textInputEditText.addTextChangedListener(this)
+                }
+            }
+        }
+        textInputEditText.addTextChangedListener(watcher)
+        textWatchers[textInputEditText] = watcher
     }
 
     private fun setInputTextChangListener() {
@@ -186,6 +237,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         binding.textInputLayAddress1.hideErrorOnTextChang(binding.textInputAddress1)
         binding.textInputLayAddress2.hideErrorOnTextChang(binding.textInputAddress2)
         binding.textInputLayRegistrationAddressOfHf.hideErrorOnTextChang(binding.textInputRegistrationAddressOfHf)
+        binding.textInputLayOtherCity.hideErrorOnTextChang(binding.textInputOtherCity)
 
         binding.textInputLayPostalCode.hideDigitErrorOnTextChang(binding.textInputPostalCode, 6)
     }
@@ -243,15 +295,30 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
             //cities
             binding.textInputLayCity.tag = it
+            val cities = LanguageUtils.getCityByLocal(it, null)
+            val citiesEn = LanguageUtils.getCityByLocal(it, "en")
             val cityAdapter: ArrayAdapter<String> = ArrayAdapterUtils.getObjectArrayAdapter(
-                requireContext(), LanguageUtils.getCityByLocal(it)
+                requireContext(), cities
             )
             binding.autoCompleteCity.setAdapter(cityAdapter)
 
             if (patient.city != null && patient.city.isNotEmpty()) {
                 val city = LanguageUtils.getCity(patient.city)
-                if (city != null) {
+                if (citiesEn.contains(patient.city) && patient.city != LanguageUtils.getSpecificLocalResource(
+                        requireContext(),
+                        "en"
+                    ).getString(R.string.other_field_dropdown)
+                ) {
                     binding.autoCompleteCity.setText(city.toString(), false)
+                } else {
+                    val provincesAndCities: ProvincesAndCities =
+                        binding.textInputLayCity.tag as ProvincesAndCities
+                    binding.autoCompleteCity.setText(
+                        getString(R.string.other_field_dropdown),
+                        false
+                    )
+                    binding.otherCityVisibility = true
+                    patient.city = provincesAndCities.cities[cities.size - 1]
                 }
             }
 
@@ -259,7 +326,17 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 binding.textInputLayCity.hideError()
                 val provincesAndCities: ProvincesAndCities =
                     binding.textInputLayCity.tag as ProvincesAndCities
-                patient.city = provincesAndCities.cities[i]
+                val city = provincesAndCities.cities[i]
+                LanguageUtils.getSpecificLocalResource(requireContext(), "en").apply {
+                    if (city == getString(R.string.other_field_dropdown)) {
+                        binding.otherCityVisibility = true
+                    } else {
+                        binding.otherCityVisibility = false
+                        patient.otherCity = null
+                    }
+
+                }
+                patient.city = city
             }
         }
 
@@ -352,6 +429,23 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 )
             } else true
 
+            val bOtherCity =
+                if (it.city?.isEnabled == true && binding.otherCityVisibility == true) {
+                    binding.textInputLayOtherCity.validate(
+                        binding.textInputOtherCity, error
+                    )
+                } else true
+
+            /*val bOtherCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
+                if (patient.city == LanguageUtils.getSpecificLocalResource(requireContext(), "en")
+                        .getString(R.string.other)
+                ) {
+                    binding.textInputLayCity.validate(binding.textInputOtherCity, error)
+                } else true
+
+            } else true*/
+
+
             val bRelativeAddressOfHf =
                 if (it.registrationAddressOfHf?.isEnabled == true && it.registrationAddressOfHf?.isMandatory == true) {
                     binding.textInputLayRegistrationAddressOfHf.validate(
@@ -373,9 +467,19 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (bPostalCode.and(bCountry).and(bState).and(bDistrict).and(bCityVillage)
-                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity)
+                    .and(bAddress1).and(bAddress2).and(bProvince).and(bCity).and(bOtherCity)
                     .and(bRelativeAddressOfHf)
             ) block.invoke()
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        //removing all text watcher listeners
+        //to prevent memory leak
+        textWatchers.forEach { (editText, watcher) ->
+            editText.removeTextChangedListener(watcher)
+        }
+        textWatchers.clear()
     }
 }

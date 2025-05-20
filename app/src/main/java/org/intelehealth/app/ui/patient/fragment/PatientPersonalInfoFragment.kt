@@ -2,45 +2,37 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
-import org.intelehealth.app.ayu.visit.vital.CoroutineProvider
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.ui.binding.bindProfileImage
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.CountryCodeUtils
-import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
@@ -49,7 +41,6 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
-import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -63,6 +54,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
 
+
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
  * Email : mithun@intelehealth.org
@@ -75,7 +67,7 @@ class PatientPersonalInfoFragment :
     private val permissionRegistry by lazy {
         PermissionRegistry(requireContext(), requireActivity().activityResultRegistry)
     }
-
+    private val textWatchers = mutableMapOf<TextInputEditText, TextWatcher>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPatientPersonalInfoOldDesignBinding.bind(view)
@@ -442,11 +434,35 @@ class PatientPersonalInfoFragment :
     }
 
     private fun applyFilter() {
-        binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
+        //sometimes text is being doubled whenever entering text
+        //commented these filter and added text change listener
+        /*binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputETMName.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputETLName.addFilter(FirstLetterUpperCaseInputFilter())
         binding.textInputETGuardianName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETECName.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputETECName.addFilter(FirstLetterUpperCaseInputFilter())*/
+
+        firstLetterUpperCaseListener(binding.textInputETFName)
+        firstLetterUpperCaseListener(binding.textInputETMName)
+        firstLetterUpperCaseListener(binding.textInputETLName)
+        firstLetterUpperCaseListener(binding.textInputETGuardianName)
+        firstLetterUpperCaseListener(binding.textInputETECName)
+    }
+
+    private fun firstLetterUpperCaseListener(textInputEditText: TextInputEditText){
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.isNotEmpty() && Character.isLowerCase(editable[0])) {
+                    textInputEditText.removeTextChangedListener(this)
+                    editable.replace(0, 1, editable[0].uppercaseChar().toString())
+                    textInputEditText.addTextChangedListener(this)
+                }
+            }
+        }
+        textInputEditText.addTextChangedListener(watcher)
+        textWatchers[textInputEditText] = watcher
     }
 
     private fun setInputTextChangListener() {
@@ -665,5 +681,15 @@ class PatientPersonalInfoFragment :
                     .and(bEmName).and(bEmPhone).and(bEmContactType)
             ) block.invoke()
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        //removing all text watcher listeners
+        //to prevent memory leak
+        textWatchers.forEach { (editText, watcher) ->
+            editText.removeTextChangedListener(watcher)
+        }
+        textWatchers.clear()
     }
 }

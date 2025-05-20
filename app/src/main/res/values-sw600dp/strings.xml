@@ -142,4 +142,11 @@
     <string name="temp_eg_c">E.g., 36.6 C</string>
     <string name="other_diagnosis">Other Diagnosis</string>
     <string name="select_diagnosis">Select Diagnosis</string>
+    <string name="enter_city">Enter City</string>
+    <string name="other_city">Other City</string>
+    <string name="other_field_dropdown">Other</string>
+    <string name="other_healthy_facility_name">Other health facility name</string>
+    <string name="enter_healthy_facility_name">Enter health facility name</string>
+    <string name="enter_valid_data">Enter valid data</string>
+    <string name="city_and_other_city_can_not_be_same">City and other city can not be same</string>
 </resources>

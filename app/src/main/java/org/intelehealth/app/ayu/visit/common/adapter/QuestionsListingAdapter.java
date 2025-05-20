@@ -2743,7 +2743,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 //        calendarHeader.setVisibility(node.isShowCalendarHeader() ? View.VISIBLE : View.GONE);
 //        calendarHeader.setText(node.getText());
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
-        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        Log.d("DDDDDDDDDDDDDDD",""+node.isFutureDateRequired());
+        if(!node.isFutureDateRequired()){
+            calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        }
+
         Button skipButton = view.findViewById(R.id.btn_skip);
         String oldValue = node.getLanguage();
         if (node.isSkipped()) {

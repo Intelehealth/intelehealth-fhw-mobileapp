@@ -173,6 +173,11 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 View view = View.inflate(requireActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    if (_complain.trim().equalsIgnoreCase("Obstetric History:")) {
+                        _complain = getString(R.string.obstetric_history) + ":";
+                    }
+                }
                 complainLabelTextView.setText(_complain);
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
