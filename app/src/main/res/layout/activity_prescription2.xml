@@ -1167,8 +1167,8 @@
                                         android:id="@+id/followup_date_txt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:hint="15 May, 2022"
                                         android:layout_marginTop="@dimen/fu_margin_start"
-                                        android:text="15 May, 2022"
                                         android:textColor="?attr/colorPrimary"
                                         android:textSize="@dimen/edittext_textsize_16sp"
                                         android:textStyle="bold" />

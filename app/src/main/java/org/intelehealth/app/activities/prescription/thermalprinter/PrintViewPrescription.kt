@@ -269,6 +269,7 @@ class PrintViewPrescription(
 
     private fun followUpWeb(): String {
         val followUpDate = dataModel.followUpDate
+        Log.d(TAG, "kzfollowUpWeb: followUpDate : $followUpDate")
 
         if (followUpDate.isNullOrBlank()) {
             return stringToWebSms("NA")
@@ -279,18 +280,35 @@ class PrintViewPrescription(
         if (followUpDate.contains(",")) {
             val splitFollowDate = followUpDate.split(",")
             val rawDate = splitFollowDate.getOrNull(0)?.trim()
+            Log.d(TAG, "kzfollowUpWeb: splitFollowDate : $splitFollowDate")
+            Log.d(TAG, "kzfollowUpWeb: rawDate : $rawDate")
 
-            if (!rawDate.isNullOrEmpty() && rawDate.contains("-")) {
-                val formattedDate = DateAndTimeUtils.date_formatter(
-                    rawDate,
-                    "yyyy-MM-dd",
-                    "dd MMM, yyyy"
-                ) ?: "NA"
+            if (!rawDate.isNullOrEmpty()) {
+                val formattedDate = when {
+                    rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
+                        // Format: dd-MM-yyyy
+                        DateAndTimeUtils.date_formatter(
+                            rawDate,
+                            "dd-MM-yyyy",
+                            "dd MMM, yyyy"
+                        )
+                    }
+                    rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
+                        // Format: yyyy-MM-dd
+                        DateAndTimeUtils.date_formatter(
+                            rawDate,
+                            "yyyy-MM-dd",
+                            "dd MMM, yyyy"
+                        )
+                    }
+                    else -> null
+                } ?: "NA"
 
                 val remainingStr = splitFollowDate
                     .drop(1)
-                    .mapNotNull { it.trim().takeIf { it.isNotEmpty() && it != "null" } }
+                    .mapNotNull { it.trim().takeIf { str -> str.isNotEmpty() && str != "null" } }
                     .joinToString(", ")
+                Log.d(TAG, "kzfollowUpWeb: remainingStr : $remainingStr")
 
                 followUpDateStr = if (remainingStr.isNotEmpty()) {
                     "$formattedDate, $remainingStr"
@@ -301,9 +319,19 @@ class PrintViewPrescription(
                 followUpDateStr = followUpDate
             }
         } else {
-            followUpDateStr = if (followUpDate != "null") followUpDate else "NA"
+            val rawDate = followUpDate.trim()
+            followUpDateStr = when {
+                rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
+                    DateAndTimeUtils.date_formatter(rawDate, "dd-MM-yyyy", "dd MMM, yyyy") ?: "NA"
+                }
+                rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
+                    DateAndTimeUtils.date_formatter(rawDate, "yyyy-MM-dd", "dd MMM, yyyy") ?: "NA"
+                }
+                else -> if (rawDate != "null") rawDate else "NA"
+            }
         }
 
+        Log.d(TAG, "kzfollowUpWeb: followUpDateStr : $followUpDateStr")
         return stringToWebSms(followUpDateStr.ifBlank { "NA" })
     }
 
