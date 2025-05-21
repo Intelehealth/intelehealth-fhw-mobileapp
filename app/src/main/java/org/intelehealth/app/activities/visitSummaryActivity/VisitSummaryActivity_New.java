@@ -207,8 +207,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
-    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative, doc_additional_docs_relative;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout, vs_doctor_additional_doc_header_expandview;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
@@ -227,6 +227,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ComplaintHeaderAdapter cc_adapter;
     private String mEngReason = "";
     private boolean doesDoctorDocumentExist = false;
+    private TextView tvAdditionalDoctorsDocument;
+    private CardView doctorAdditionalDocumentsCard;
 
     boolean hasLicense = false;
     private String hasPrescription = "";
@@ -846,6 +848,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
                 openall_btn.setText(getResources().getString(R.string.close_all));
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+            }
+        });
+
+        doc_additional_docs_relative.setOnClickListener(v -> {
+            if (vs_doctor_additional_doc_header_expandview.getVisibility() == View.VISIBLE) {
+                vs_doctor_additional_doc_header_expandview.setVisibility(View.GONE);
+            } else {
+                vs_doctor_additional_doc_header_expandview.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -2194,6 +2204,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
         addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
+        doc_additional_docs_relative = findViewById(R.id.doc_additional_docs_relative);
 
         vs_header_expandview = findViewById(R.id.vs_header_expandview);
         vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
@@ -2204,6 +2215,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
         tvAddNotesValueVS = findViewById(R.id.tvAddNotesValueVS);
+        vs_doctor_additional_doc_header_expandview = findViewById(R.id.vs_doctor_additional_doc_header_expandview);
         // up-down btn - end
 
         // vitals ids
@@ -2301,7 +2313,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         btn_vs_print.setOnClickListener(v -> {
             try {
-                checkAndDownloadDoctorDocument();
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -2356,15 +2367,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             in.putExtra("speciality", speciality_selected);
             mStartForScheduleAppointment.launch(in);
         });
+
+        tvAdditionalDoctorsDocument = findViewById(R.id.doctor_additional_doc_txt);
+        String text = getString(R.string.click_here_to_download_doctors_document);
+        tvAdditionalDoctorsDocument.setText(Html.fromHtml("<u>" + text + "</u>"));
+        doctorAdditionalDocumentsCard = findViewById(R.id.doctorAdditionalDocumentsCard);
     }
 
-    private void checkAndDownloadDoctorDocument() {
+    private void checkAndDownloadDoctorDocument(String url) {
         if (!doesDoctorDocumentExist) {
             Toast.makeText(this, getString(R.string.doctor_additional_document_download_file_exists), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String url = DownloadDoctorDocUtils.getDoctorsAdditionalDocumentUrl(doctorAdditionalDocumentUuid);
         String fileName = DownloadDoctorDocUtils.getDocumentFileName(visitUuid);
         File docFile = DownloadDoctorDocUtils.getDocumentFile(fileName);
 
@@ -3145,9 +3160,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             case UuidDictionary.DOCTORS_ADDITIONAL_DOCUMENT: {
-                doesDoctorDocumentExist = true;
-                doctorAdditionalDocumentUuid = obsUuid;
-                break;
+                if (obsUuid != null) {
+                    doesDoctorDocumentExist = true;
+                    doctorAdditionalDocumentsCard.setVisibility(View.VISIBLE);
+                    tvAdditionalDoctorsDocument.setOnClickListener(v -> {
+                        String url = DownloadDoctorDocUtils.getDoctorsAdditionalDocumentUrl(obsUuid);
+                        checkAndDownloadDoctorDocument(url);
+                    });
+                }
             }
 
             default:
@@ -4093,7 +4113,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, DownloadDoctorDocUtils.getDocumentFileName(visitUuid), objClsDoctorDetails);
+
+        String additionalDoctorDocumentName = null;
+        if (doesDoctorDocumentExist) {
+            additionalDoctorDocumentName = DownloadDoctorDocUtils.getDocumentFileName(visitUuid);
+        }
+
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, additionalDoctorDocumentName, objClsDoctorDetails);
 
 
         if (isRespiratory) {

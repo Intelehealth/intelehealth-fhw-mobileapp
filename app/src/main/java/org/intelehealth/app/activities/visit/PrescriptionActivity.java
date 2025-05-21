@@ -136,8 +136,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
-    private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
-    private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
+    private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative, doc_additional_docs_relative;
+    private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block, vs_doctor_additional_doc_header_expandview;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, medication_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private SessionManager sessionManager;
@@ -186,6 +186,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     private TextView tvAdditionalDoctorsDocument;
     private CardView doctorAdditionalDocumentsCard;
+    private Boolean doesDoctorDocumentExist = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,6 +284,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         test_header_relative = findViewById(R.id.test_header_relative);
         referred_header_relative = findViewById(R.id.referred_header_relative);
         followup_header_relative = findViewById(R.id.followup_header_relative);
+        doc_additional_docs_relative = findViewById(R.id.doc_additional_docs_relative);
 
         btnup_drdetails_header = findViewById(R.id.btnup_drdetails_header);
         btnup_diagnosis_header = findViewById(R.id.btnup_diagnosis_header);
@@ -299,6 +301,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         vs_testheader_expandview = findViewById(R.id.vs_testheader_expandview);
         vs_speciality_header_expandview = findViewById(R.id.vs_speciality_header_expandview);
         vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+        vs_doctor_additional_doc_header_expandview = findViewById(R.id.vs_doctor_additional_doc_header_expandview);
 
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
@@ -1190,6 +1193,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 vs_followup_header_expandview.setVisibility(View.GONE);
             else vs_followup_header_expandview.setVisibility(View.VISIBLE);
         });
+
+        doc_additional_docs_relative.setOnClickListener(v -> {
+            if (vs_doctor_additional_doc_header_expandview.getVisibility() == View.VISIBLE) {
+                vs_doctor_additional_doc_header_expandview.setVisibility(View.GONE);
+            } else {
+                vs_doctor_additional_doc_header_expandview.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     // parse dr details - start
@@ -1422,6 +1433,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             case UuidDictionary.DOCTORS_ADDITIONAL_DOCUMENT: {
                 if (obsUuid != null) {
+                    doesDoctorDocumentExist = true;
                     doctorAdditionalDocumentsCard.setVisibility(View.VISIBLE);
                     tvAdditionalDoctorsDocument.setOnClickListener(v -> {
                         String url = DownloadDoctorDocUtils.getDoctorsAdditionalDocumentUrl(obsUuid);
@@ -2381,7 +2393,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, DownloadDoctorDocUtils.getDocumentFileName(visitID), details);
+        String additionalDoctorDocumentName = null;
+        if (doesDoctorDocumentExist) {
+            additionalDoctorDocumentName = DownloadDoctorDocUtils.getDocumentFileName(visitID);
+        }
+
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, additionalDoctorDocumentName, details);
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +

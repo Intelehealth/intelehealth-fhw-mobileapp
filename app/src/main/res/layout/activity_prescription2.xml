@@ -1102,7 +1102,7 @@
                             android:id="@+id/additional_doc_icon"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
-                            android:src="@drawable/dr_details_icon" />
+                            android:src="@drawable/ic_additional_docs_icon" />
 
                         <TextView
                             style="@style/text_title_style"
