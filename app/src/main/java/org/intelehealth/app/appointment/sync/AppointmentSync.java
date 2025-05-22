@@ -2,6 +2,8 @@ package org.intelehealth.app.appointment.sync;
 
 import android.content.Context;
 import android.content.Intent;
+
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.github.ajalt.timberkt.Timber;
@@ -13,6 +15,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentListingResponse;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -48,10 +51,20 @@ public class AppointmentSync {
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
+                            AppointmentInfo appointmentInfo = slotInfoResponse.getData().get(i);
+                            String fullDateTime = appointmentInfo.getSlotJsDate();
                             try {
+                                //converting utc to local time
                                 CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
-                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                                String fullUtcDateTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                                String localDate = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "dd/MM/yyyy");
+                                String localTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "h:mm a");
+                                String localDay = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "EEEE");
+                                appointmentInfo.setSlotDay(localDay);
+                                appointmentInfo.setSlotTime(localTime);
+                                appointmentInfo.setSlotDate(localDate);
+                                appointmentInfo.setSlotJsDate(fullUtcDateTime);
+                                appointmentDAO.insert(appointmentInfo);
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }
@@ -87,7 +100,7 @@ public class AppointmentSync {
                     public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
                         CustomLog.v(TAG, t.getMessage());
                         //log out operation if response code is 401
-                        new NavigationUtils().logoutOperation(context,t);
+                        new NavigationUtils().logoutOperation(context, t);
                     }
                 });
 

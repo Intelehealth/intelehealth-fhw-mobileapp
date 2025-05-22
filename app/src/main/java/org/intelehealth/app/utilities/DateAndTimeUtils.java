@@ -2,6 +2,8 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,9 +71,28 @@ public class DateAndTimeUtils {
         return year_month;
     }
 
+    public static String getUtcDate(String date, String format) {
+
+        DateFormat df = new SimpleDateFormat(format, Locale.ENGLISH);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String utcDate;
+        utcDate = df.format(date);
+
+        return utcDate;
+    }
+
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
+    public String currentDateTimeUtc() {
+        Locale.setDefault(Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        date.setTimeZone(TimeZone.getTimeZone("UTC"));
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
         return date.format(todayDate);
@@ -400,6 +422,51 @@ public class DateAndTimeUtils {
         try {
             sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
             sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
+            result = sdf1.format(sdf.parse(date));
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return "";
+        } finally {
+            sdf = null;
+            sdf1 = null;
+        }
+        return result;
+    }
+
+
+    public static String formatDateFromUtcToLocal(String date, String sourceFormat, String anotherFormat) {
+        if(date==null || date.isEmpty()) return "";
+        String result = "";
+        SimpleDateFormat sdf;
+        SimpleDateFormat sdf1;
+
+        try {
+            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
+            result = sdf1.format(sdf.parse(date));
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return "";
+        } finally {
+            sdf = null;
+            sdf1 = null;
+        }
+        return result;
+    }
+
+    public static String formatDateFromLocalToUtc(String date, String sourceFormat, String anotherFormat) {
+        if(date==null || date.isEmpty()) return "";
+        String result = "";
+        SimpleDateFormat sdf;
+        SimpleDateFormat sdf1;
+
+        try {
+            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
+            sdf1.setTimeZone(TimeZone.getTimeZone("UTC"));
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);

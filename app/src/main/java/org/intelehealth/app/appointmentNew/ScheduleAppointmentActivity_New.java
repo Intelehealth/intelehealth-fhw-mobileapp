@@ -17,7 +17,10 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -137,7 +140,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
 
         //for reschedule appointment as per old flow
         actionTag = getIntent().getStringExtra("actionTag").toLowerCase();
-        requestCode = getIntent().getIntExtra("requestCode",0);
+        requestCode = getIntent().getIntExtra("requestCode", 0);
         if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("rescheduleappointment")) {
 
             tvPrevSelectedAppDetails.setVisibility(View.VISIBLE);
@@ -187,8 +190,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                     broadcasterReceiverStatusMap.add(intent.getIntExtra("JOB", -1));
                     //sometimes the broadcaster receiver returning same status multipple times
                     //that's why added those values on SET then calculating
-                    for(int status : broadcasterReceiverStatusMap){
-                        mStatusCount+=status;
+                    for (int status : broadcasterReceiverStatusMap) {
+                        mStatusCount += status;
                     }
                     //mStatusCount = mStatusCount + intent.getIntExtra("JOB", -1);
                     if (mStatusCount == AppConstants.SYNC_PULL_PUSH_APPOINTMENT_PULL_DATA_DONE) {
@@ -301,9 +304,9 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         String month_name = month_date.format(calendarInstance.getTime());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")){
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             month_name = StringUtils.en__hi_dob(month_name);
-        }else if(sessionManager.getAppLanguage().equalsIgnoreCase("ru")){
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             month_name = StringUtils.en__ru_dob(month_name);
         }
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
@@ -707,12 +710,18 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             request.setAppointmentId(appointmentId);
             request.setReason(rescheduleReason);
         }
+        String fullDateTime = slotInfoForBookApp.getSlotDate() + " " + slotInfoForBookApp.getSlotTime();
+        //Log.d("DDD",fullDateTime);
+        String utcDate = DateAndTimeUtils.formatDateFromLocalToUtc(fullDateTime, "dd/MM/yyyy h:mm a", "dd/MM/yyyy");
+        String utcTime = DateAndTimeUtils.formatDateFromLocalToUtc(fullDateTime, "dd/MM/yyyy h:mm a", "h:mm a");
+        String utcDay = DateAndTimeUtils.formatDateFromLocalToUtc(fullDateTime, "dd/MM/yyyy h:mm a", "EEEE");
+
         request.setUuid(new UuidGenerator().UuidGenerator());
-        request.setSlotDay(slotInfoForBookApp.getSlotDay());
-        request.setSlotDate(slotInfoForBookApp.getSlotDate());
+        request.setSlotDay(/*slotInfoForBookApp.getSlotDay()*/utcDay);
+        request.setSlotDate(/*slotInfoForBookApp.getSlotDate()*/utcDate);
         request.setSlotDuration(slotInfoForBookApp.getSlotDuration());
         request.setSlotDurationUnit(slotInfoForBookApp.getSlotDurationUnit());
-        request.setSlotTime(slotInfoForBookApp.getSlotTime());
+        request.setSlotTime(/*slotInfoForBookApp.getSlotTime()*/utcTime);
         request.setSpeciality(slotInfoForBookApp.getSpeciality());
         request.setUserUuid(slotInfoForBookApp.getUserUuid());
         request.setDrName(slotInfoForBookApp.getDrName());
@@ -776,10 +785,10 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
 
         }
     }

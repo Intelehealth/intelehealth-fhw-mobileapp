@@ -390,7 +390,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputOtherCity"
-                            style="@style/AppTheme.InputBox.Address1"
+                            style="@style/AppTheme.InputBox.Other"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_city"

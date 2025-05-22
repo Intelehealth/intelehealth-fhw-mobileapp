@@ -27,11 +27,13 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.appointment.api.ApiClientAppointment
 import org.intelehealth.app.appointment.dao.AppointmentDAO
 import org.intelehealth.app.appointment.model.AppointmentListingResponse
+import org.intelehealth.app.appointment.sync.AppointmentSync
 import org.intelehealth.app.appointmentNew.UpdateAppointmentsCount
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent
 import org.intelehealth.app.enums.AppointmentTabType
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.CustomLog
+import org.intelehealth.app.utilities.CustomLog.Companion.v
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.MyAppointmentLoadingListener
@@ -112,8 +114,41 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                         appointmentDAO.deleteAllAppointments()
                         if (slotInfoResponse!!.data.size > 0) {
                             for (i in slotInfoResponse.data.indices) {
-                                try {
+                                /*try {
                                     appointmentDAO.insert(slotInfoResponse.data[i])
+                                } catch (e: DAOException) {
+                                    e.printStackTrace()
+                                }*/
+                                val appointmentInfo = slotInfoResponse.data[i]
+                                val fullDateTime = appointmentInfo.slotJsDate
+                                try {
+                                    //converting utc to local time
+
+                                    val fullUtcDateTime = DateAndTimeUtils.formatDateFromUtcToLocal(
+                                        fullDateTime,
+                                        "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+                                        "yyyy-MM-dd'T'HH:mm:ss.SSS"
+                                    )
+                                    val localDate = DateAndTimeUtils.formatDateFromUtcToLocal(
+                                        fullDateTime,
+                                        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                                        "dd/MM/yyyy"
+                                    )
+                                    val localTime = DateAndTimeUtils.formatDateFromUtcToLocal(
+                                        fullDateTime,
+                                        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                                        "h:mm a"
+                                    )
+                                    val localDay = DateAndTimeUtils.formatDateFromUtcToLocal(
+                                        fullDateTime,
+                                        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                                        "EEEE"
+                                    )
+                                    appointmentInfo.slotDay = localDay
+                                    appointmentInfo.slotTime = localTime
+                                    appointmentInfo.slotDate = localDate
+                                    appointmentInfo.slotJsDate = fullUtcDateTime
+                                    appointmentDAO.insert(appointmentInfo)
                                 } catch (e: DAOException) {
                                     e.printStackTrace()
                                 }

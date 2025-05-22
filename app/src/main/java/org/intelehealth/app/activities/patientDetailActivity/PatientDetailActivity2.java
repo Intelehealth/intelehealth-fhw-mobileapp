@@ -157,6 +157,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -455,6 +456,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        currentDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
 
@@ -2064,19 +2066,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //province
-        if (patientDTO.getProvince() != null && !patientDTO.getProvince().
+        if (patientDTO.getStateprovince() != null && !patientDTO.getStateprovince().
 
                 equals("")) {
-            provinceTv.setText(LanguageUtils.getProvince(patientDTO.getProvince()));
+            provinceTv.setText(LanguageUtils.getProvince(patientDTO.getStateprovince()));
         } else {
             provinceTv.setText(getString(R.string.not_provided));
         }
 
         //city
-        if (patientDTO.getCity() != null && !patientDTO.getCity().
+        if (patientDTO.getCityvillage() != null && !patientDTO.getCityvillage().
 
                 equals("")) {
-            cityTv.setText(LanguageUtils.getCity(patientDTO.getCity()));
+            cityTv.setText(LanguageUtils.getCity(patientDTO.getCityvillage()));
         } else {
             cityTv.setText(getString(R.string.not_provided));
         }

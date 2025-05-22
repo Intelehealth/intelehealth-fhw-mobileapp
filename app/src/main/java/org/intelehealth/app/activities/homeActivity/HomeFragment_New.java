@@ -345,7 +345,10 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                             .append("\n")
                             .append(tomorrowsCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
+                            .append(getActivity().getString(R.string.tomorrow))
+                   ;
+
+
 
                     mCountPendingFollowupVisitsTextView.setText(
                             followupCount
