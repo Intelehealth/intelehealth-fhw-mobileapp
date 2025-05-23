@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <activity
+            android:name=".search.activity.NcdSearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".category.activity.NcdPatientCategoryActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+    </application>
+
+</manifest>
