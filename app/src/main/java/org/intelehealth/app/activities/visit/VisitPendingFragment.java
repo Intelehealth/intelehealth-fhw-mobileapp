@@ -17,6 +17,8 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
 import org.intelehealth.app.utilities.NavigationConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

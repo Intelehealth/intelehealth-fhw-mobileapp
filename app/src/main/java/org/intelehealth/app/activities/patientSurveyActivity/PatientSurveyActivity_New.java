@@ -238,7 +238,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
     private void endVisit(String tag) {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTimeUtc());
 
             //cancelling alarm manager for end visit followup
             NotificationSchedulerUtils.cancelNotification(visitUuid + "-" + AppConstants.FOLLOW_UP_SCHEDULE_ONE_DURATION);

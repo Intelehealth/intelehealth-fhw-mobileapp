@@ -32,6 +32,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -621,8 +623,25 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                 appointmentDAO.deleteAllAppointments();
                 for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
-                    try {
+                /*    try {
                         appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }*/
+                    AppointmentInfo appointmentInfo = slotInfoResponse.getData().get(i);
+                    String fullDateTime = appointmentInfo.getSlotJsDate();
+                    try {
+                        //converting utc to local time
+                        CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
+                        String fullUtcDateTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                        String localDate = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "dd/MM/yyyy");
+                        String localTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "h:mm a");
+                        String localDay = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "EEEE");
+                        appointmentInfo.setSlotDay(localDay);
+                        appointmentInfo.setSlotTime(localTime);
+                        appointmentInfo.setSlotDate(localDate);
+                        appointmentInfo.setSlotJsDate(fullUtcDateTime);
+                        appointmentDAO.insert(appointmentInfo);
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }

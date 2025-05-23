@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+
+import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,15 +107,24 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
                         if (slotInfoResponse.getData().size() > 0) {
                             for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
+                                AppointmentInfo appointmentInfo = slotInfoResponse.getData().get(i);
+                                String fullDateTime = appointmentInfo.getSlotJsDate();
                                 try {
-                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
-
+                                    //converting utc to local time
+                                    CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
+                                    String fullUtcDateTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                                    String localDate = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "dd/MM/yyyy");
+                                    String localTime = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "h:mm a");
+                                    String localDay = DateAndTimeUtils.formatDateFromUtcToLocal(fullDateTime, "yyyy-MM-dd'T'HH:mm:ss.SSS", "EEEE");
+                                    appointmentInfo.setSlotDay(localDay);
+                                    appointmentInfo.setSlotTime(localTime);
+                                    appointmentInfo.setSlotDate(localDate);
+                                    appointmentInfo.setSlotJsDate(fullUtcDateTime);
+                                    appointmentDAO.insert(appointmentInfo);
                                 } catch (DAOException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        }
 
                         /*if (slotInfoResponse.getCancelledAppointments() != null) {
                             if (slotInfoResponse.getCancelledAppointments().size() > 0) {
@@ -130,9 +141,10 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                             }
                         }*/
 
-                        //getAppointments();
-                        CustomLog.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
-                        Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                            //getAppointments();
+                            CustomLog.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
+                            Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                        }
                     }
 
                     @Override

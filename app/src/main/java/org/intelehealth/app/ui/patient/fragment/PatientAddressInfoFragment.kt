@@ -96,10 +96,16 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
+        swapProvinceAndCity()
         setupOtherCity()
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
+    }
+
+    private fun swapProvinceAndCity() {
+        patient.city = patient.cityvillage
+        patient.province = patient.stateprovince
     }
 
     private fun setupOtherCity() {
@@ -170,8 +176,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     city = binding.textInputOtherCity.text?.toString()
                     otherCity = city
                 }
-
             }
+
+            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+                stateprovince = province
+                cityvillage = city
+            }
+
 
             patientViewModel.updatedPatient(this)
             //LanguageUtils.

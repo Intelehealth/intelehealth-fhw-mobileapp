@@ -92,6 +92,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.UUID;
 
@@ -174,9 +175,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        currentDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
-
 
         visitUuid = UUID.randomUUID().toString();
         mCommonVisitData.setVisitUuid(visitUuid);
@@ -361,7 +362,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         EncounterDTO encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTimeUtc());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());

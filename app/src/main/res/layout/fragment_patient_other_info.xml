@@ -612,7 +612,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputOtherHf"
-                            style="@style/AppTheme.InputBox.Address1"
+                            style="@style/AppTheme.InputBox.Other"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_healthy_facility_name"
@@ -655,7 +655,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputCodeOfDepartment"
-                            style="@style/AppTheme.InputBox.Address1"
+                            style="@style/AppTheme.InputBox.Other"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"

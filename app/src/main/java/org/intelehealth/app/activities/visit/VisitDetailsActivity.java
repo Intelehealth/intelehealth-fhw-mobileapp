@@ -33,6 +33,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;

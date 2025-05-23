@@ -164,7 +164,7 @@ class PatientRepository(
 
 
 
-            add(
+       /*     add(
                 createPatientAttribute(
                     patient.uuid,
                     PatientAttributesDTO.Column.PROVINCES.value,
@@ -178,7 +178,7 @@ class PatientRepository(
                     patient.city
                 )
             )
-
+*/
             add(
                 createPatientAttribute(
                     patient.uuid,
