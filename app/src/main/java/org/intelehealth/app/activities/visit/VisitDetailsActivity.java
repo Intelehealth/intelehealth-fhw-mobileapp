@@ -303,13 +303,16 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             presc_arrowRight.setVisibility(View.VISIBLE);
             presc_relative.setClickable(true);
             presc_remind_block.setVisibility(View.GONE);
+            String modifiedDate = "";
             if (!obsservermodifieddate.equalsIgnoreCase("")) {
                 //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-                String modifiedDate = obsservermodifieddate;
-                modifiedDate = timeAgoFormat(modifiedDate);
-                presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
+                modifiedDate = obsservermodifieddate;
+            } else {
+                modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
             }
+            modifiedDate = timeAgoFormat(modifiedDate);
+            presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
 
 /*
             presc_arrowRight.setOnClickListener(v -> {

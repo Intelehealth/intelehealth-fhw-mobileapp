@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -204,8 +207,10 @@ public class VisitReasonCaptureFragment extends Fragment {
             mVisitReasonAutoCompleteTextView.setThreshold(2);
             mVisitReasonAutoCompleteTextView.setAdapter(adapter);
             mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
+            mVisitReasonAutoCompleteTextView.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
 
-            mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     String name = NodeAdapterUtils.getEngChiefComplainNameOnly((String) adapterView.getItemAtPosition(position));

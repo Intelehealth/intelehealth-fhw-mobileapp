@@ -65,10 +65,12 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -2716,6 +2718,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+        etAdditionalNotesVS.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
         etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

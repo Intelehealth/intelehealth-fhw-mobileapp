@@ -76,7 +76,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             setupOtherHealthFacility()
-            patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.province)
+            patient.codeOfHealthFacility = LanguageUtils.getCodeOfHf(patient.stateprovince)?:""
         }
 
         binding.patient = patient

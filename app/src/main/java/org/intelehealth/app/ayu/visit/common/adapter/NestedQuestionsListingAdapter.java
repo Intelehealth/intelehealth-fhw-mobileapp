@@ -53,6 +53,7 @@ import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
@@ -1792,6 +1793,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        editText.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
+
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
@@ -1937,7 +1940,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         });
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new EmojiExcludeFilter()});
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);

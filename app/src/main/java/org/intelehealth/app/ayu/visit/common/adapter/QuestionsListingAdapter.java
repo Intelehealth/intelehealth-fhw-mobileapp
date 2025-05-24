@@ -2578,6 +2578,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        editText.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
