@@ -2,12 +2,14 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.TELEMEDICINE_DIAGNOSIS;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -505,6 +507,8 @@ public class VisitsDAO {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescByConcept(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -518,7 +522,7 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-
+                model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -593,10 +597,12 @@ public class VisitsDAO {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
                 //
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setVisitUuid(visitID);
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
@@ -606,6 +612,7 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
 
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
@@ -641,6 +648,8 @@ public class VisitsDAO {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -654,6 +663,8 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
+
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -684,6 +695,8 @@ public class VisitsDAO {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescByConcept(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -697,6 +710,7 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -826,6 +840,34 @@ public class VisitsDAO {
 
         if (visitUUID != null) {
             final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " + "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " + "v.uuid = ? and " + "e.encounter_type_uuid = ? group by p.openmrs_id", new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
+        }
+
+        return modifiedDate;
+    }
+
+    public static String fetchVisitModifiedDateForPrescByConcept(String visitUUID) {
+        String modifiedDate = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        if (visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " + "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " + "v.uuid = ? and " + "o.conceptuuid = ? group by p.openmrs_id", new String[]{visitUUID, TELEMEDICINE_DIAGNOSIS});
 
             if (cursor.moveToFirst()) {
                 do {
