@@ -4,9 +4,21 @@ public class PrescribedMedicineModel {
     private String medicineName;
     private String strength;
     private String noOfDays;
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
     private String timing;
     private String remark;
+    private String frequency;
 
+    //${medicine.drug ?? ''}:${medicine.dose ?? ''}:${medicine.durationNo ?? ''}:${medicine.durationUnit ?? ''  }:
+    // ${medicine.instructRemark ?? ''}:${medicine.frequency ?? ''}
     public String getMedicineName() {
         return medicineName != null ? medicineName : "";
     }

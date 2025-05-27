@@ -119,6 +119,32 @@
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Timings Row -->
+        <TextView
+            android:id="@+id/tvFrequencyTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="• Frequency"
+            android:textColor="@color/textColorGray"
+            android:textSize="14sp"
+            android:gravity="start"
+            app:layout_constraintTop_toBottomOf="@id/tvTiming"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline" />
+
+        <TextView
+            android:id="@+id/tvFrequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Once Daily"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp"
+            android:gravity="start"
+            app:layout_constraintTop_toTopOf="@id/tvFrequencyTitle"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <!-- Remarks Row -->
         <TextView
             android:id="@+id/tvRemarksTitle"
@@ -129,7 +155,7 @@
             android:textColor="@color/textColorGray"
             android:textSize="14sp"
             android:gravity="start"
-            app:layout_constraintTop_toBottomOf="@id/tvTiming"
+            app:layout_constraintTop_toBottomOf="@id/tvFrequency"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline" />
 

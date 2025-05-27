@@ -60,6 +60,7 @@ public class PrescribedMedicineAdapter extends RecyclerView.Adapter<PrescribedMe
             binding.tvNoDays.setText(medicine.getNoOfDays());
             binding.tvTiming.setText(medicine.getTiming());
             binding.tvRemarks.setText(medicine.getRemark());
+            binding.tvFrequency.setText(medicine.getFrequency());
         }
     }
 }
