@@ -431,6 +431,6 @@
         <item>ఇతర సర్వే</item>
     </string-array>
 
-    <string name="prescription_disclaimer">Note - If your condition does not improve after treatment, please visit your nearest hospital or consult a doctor as soon as possible. Telemedicine services are a limited consultation and are not a substitute for an in-person examination.</string>
+    <string name="prescription_disclaimer">గమనిక: చికిత్స తర్వాత కూడా మీ ఆరోగ్య పరిస్థితి మెరుగుపడకపోతే, దయచేసి మీ దగ్గరలోని ఆసుపత్రిని సందర్శించండి లేదా వెంటనే ఒక డాక్టరును సంప్రదించండి. టెలిమెడిసిన్ సేవలు పరిమిత సలహాలకి మాత్రమే ,  ప్రత్యక్ష పరిశీలనకు అనుకూలముగా ఉండవు.</string>
 
 </resources>
