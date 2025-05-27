@@ -476,12 +476,21 @@ public class SearchPatientActivity_New extends BaseActivity {
                 patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
                 //  3. prescription received/pending tag logic.
-                String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
+               /* String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
                 if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
                     patientDTOList.get(i).setPrescription_exists(true);
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
+                }*/
+
+                //added this query to handle prescription received status issue
+                boolean hasPrescription;
+                try {
+                    hasPrescription = new EncounterDAO().isPrescriptionReceived(visitDTO.getUuid());
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
                 }
+                patientDTOList.get(i).setPrescription_exists(hasPrescription);
 
                 // checking if visit is uploaded or not - start
                 patientDTOList.get(i).setVisitDTO(visitDTO);
@@ -530,12 +539,21 @@ public class SearchPatientActivity_New extends BaseActivity {
                     patientDTOList.get(i).setVisit_startdate(visit_start_date);
 
                     //  3. prescription received/pending tag logic.
-                    String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
+                    /*String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
                     if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
                         patientDTOList.get(i).setPrescription_exists(true);
                     } else {
                         patientDTOList.get(i).setPrescription_exists(false);
+                    }*/
+
+                    //added this query to handle prescription received status issue
+                    boolean hasPrescription;
+                    try {
+                        hasPrescription = new EncounterDAO().isPrescriptionReceived(visitDTO.getUuid());
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
                     }
+                    patientDTOList.get(i).setPrescription_exists(hasPrescription);
 
                     // checking if visit is uploaded or not - start
                     patientDTOList.get(i).setVisitDTO(visitDTO);
