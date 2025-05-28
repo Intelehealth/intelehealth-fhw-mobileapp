@@ -873,4 +873,9 @@
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="lbl_clear_all">ସମସ୍ତ ସଫା କର</string>
 
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+        <item quantity="other">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+    </plurals>
+
 </resources>

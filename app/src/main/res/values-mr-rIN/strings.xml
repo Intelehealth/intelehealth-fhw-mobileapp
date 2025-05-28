@@ -1017,4 +1017,9 @@
     <string name="profile_picture_is_mandatory">प्रोफाइल चित्र अनिवार्य आहे</string>
     <string name="lbl_clear_all">सर्व साफ करा</string>
 
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d खुली भेट</item>
+        <item quantity="other">%d खुल्या भेटी</item>
+    </plurals>
+
 </resources>
