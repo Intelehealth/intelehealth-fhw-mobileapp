@@ -277,13 +277,13 @@
     <string name="failed_to_cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయడంలో విఫలమైంది!</string>
     <string name="appointment_cancelled_success_txt">అపాయింట్‌మెంట్ విజయవంతంగా రద్దు చేయబడింది!</string>
 
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
+    <string name="please_select_your_reschedule_reason">దయచేసి మీ రీషెడ్యూల్ కారణాన్ని ఎంచుకోండి</string>
+    <string name="please_select_your_cancel_reason">దయచేసి మీ రద్దు కారణాన్ని ఎంచుకోండి</string>
+    <string name="doctor_is_not_available">డాక్టర్ అందుబాటులో లేరు</string>
+    <string name="patient_is_not_available">రోగి అందుబాటులో లేరు</string>
+    <string name="others">ఇతరులు</string>
+    <string name="please_enter_the_reason_details">దయచేసి కారణం వివరాలను నమోదు చేయండి</string>
+    <string name="please_enter_reason_txt">దయచేసి కారణాన్ని నమోదు చేయండి!</string>
 
 
     <string name="prescription_pulse">Pulse(bpm)</string>

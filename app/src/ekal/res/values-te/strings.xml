@@ -113,7 +113,7 @@
     <string name="smoking_rate_label">ధూమపానం రేటు</string>
     <string name="smoking_duration_question">మీరు ఎంతకాలం నుండి ధూమపానం చేస్తున్నారు</string>
     <string name="smoking_frequency_label">వినియోగం యొక్క ఫ్రీక్వెన్సీ</string>
-    <string name="chew_tobacco_question">Does the person chew tobacco?</string>
+    <string name="chew_tobacco_question">ఆ వ్యక్తి పొగాకు నమలుతారా?</string>
     <string name="alcohol_history_question">మద్యం సేవించిన చరిత్ర ఏదైనా ఉందా?</string>
     <string name="alcohol_rate_label">మద్యం వినియోగం రేటు</string>
     <string name="alcohol_consumption_question">మీరు ఎంతకాలం మద్యం సేవిస్తున్నారు?</string>
