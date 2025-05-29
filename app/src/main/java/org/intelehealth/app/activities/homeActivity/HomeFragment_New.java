@@ -36,6 +36,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
@@ -61,7 +62,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
+public class HomeFragment_New extends Fragment implements NetworkUtils.InternetCheckUpdateInterface, CountCallback {
     private static final String TAG = "HomeFragment_New";
     View view;
     SessionManager sessionManager;
@@ -71,6 +72,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     ImageView ivInternet;
     private TextView mUpcomingAppointmentCountTextView;
     private Executor initUIExecutor = Executors.newSingleThreadExecutor();
+
+    private boolean isPrescriptionCountLoaded = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -185,7 +188,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ((HomeScreenActivity_New) requireActivity()).setCallback(this);
     }
 
     private void initUI() {
@@ -262,6 +265,19 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             }
         });
 
+        getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener);
+    }
+
+    @Override
+    public void fetchCount() {
+        fetchAndSetPrescriptionCount(false);
+        fetchAndSetCloseVisitCount(false);
+    }
+
+    private void fetchAndSetPrescriptionCount(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         Executors.newSingleThreadExecutor().execute(() -> {
             int pendingCountTotalVisits = getCurrentMonthsVisits(false);
@@ -274,10 +290,15 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                 }
                 prescriptionCountTextView.setText(prescCountText);
+                isPrescriptionCountLoaded = true;
             });
         });
+    }
 
-        //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
+    private void fetchAndSetCloseVisitCount(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         new Thread(() -> {
             int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
@@ -285,8 +306,6 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
             }
         }).start();
-
-        getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener);
     }
 
     private void startExecutor() {
@@ -310,7 +329,8 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         super.onResume();
         setLocale(getContext());
         initUI();
-
+        fetchAndSetPrescriptionCount(true);
+        fetchAndSetCloseVisitCount(true);
     }
 
     @Override

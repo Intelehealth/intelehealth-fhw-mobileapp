@@ -83,6 +83,7 @@ import org.intelehealth.app.abdm.activity.AbhaCardActivity;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
+import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.NotificationActivity;
@@ -172,10 +173,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
 
+    private CountCallback callback;
+
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+    }
+
+    public void setCallback(CountCallback callback) {
+        this.callback = callback;
     }
 
     @Override
@@ -1059,6 +1066,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     //ui2.0 update user details in  nav header
                     updateNavHeaderUserDetails();
                     hideSyncProgressBar(true);
+                    if (callback != null) {
+                        callback.fetchCount();
+                    }
                 }
             }
 
@@ -1463,6 +1473,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         @Override
                         public void run() {
                             mSyncProgressDialog.dismiss();
+                            callback.fetchCount();
                         }
                     }, 2000);
                 }
