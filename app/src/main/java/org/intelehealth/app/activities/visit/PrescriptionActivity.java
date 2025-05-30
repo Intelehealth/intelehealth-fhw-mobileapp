@@ -152,10 +152,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -234,6 +236,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
     String hwMobileNumber = "";
     private SharePrescriptionViewModel viewModel;
+    Set<String> processedConcepts = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1429,6 +1432,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
      * @param value      variable of type String.
      */
     private void parseData(String concept_id, String value) {
+        processedConcepts.add(concept_id);
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -1596,6 +1600,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
             case UuidDictionary.FOLLOW_UP_VISIT: {
+                Log.d(TAG, "parseData: followUpDate : "+followUpDate);
+
                 if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
                     followUpDate = followUpDate + "," + value;
                 } else {
@@ -1796,6 +1802,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 hasPrescription = true; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
+            handleMissingData();
         }
         visitCursor.close();
 
@@ -1831,6 +1838,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
+                handleMissingData();
             }
             visitCursor.close();
 
@@ -2979,6 +2987,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
+                    handleMissingData();
                 }
                 if (visitCursor != null) {
                     visitCursor.close();
@@ -2999,6 +3008,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
+                handleMissingData();
             }
             if (encountercursor != null) {
                 encountercursor.close();
@@ -3222,5 +3232,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         return medicineModelList;
     }*/
-
+    private void handleMissingData() {
+        if (!processedConcepts.contains(UuidDictionary.FOLLOW_UP_VISIT)) {
+            // Show 'no follow-up' explicitly
+            no_followup_txt.setVisibility(View.VISIBLE);
+            followup_date_block.setVisibility(View.GONE);
+            followup_subtext.setVisibility(View.GONE);
+        }
+    }
 }
