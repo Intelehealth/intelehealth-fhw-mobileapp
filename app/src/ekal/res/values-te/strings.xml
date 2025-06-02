@@ -203,7 +203,7 @@
     <string name="setup_select_dropdown_state_msg">డ్రాప్‌డౌన్ నుండి రాష్ట్రాన్ని ఎంచుకోండి</string>
     <string name="setup_select_district_str">జిల్లాను ఎంచుకోండి</string>
     <string name="setup_select_dropdown_district_msg">డ్రాప్‌డౌన్ నుండి జిల్లాను ఎంచుకోండి</string>
-    <string name="setup_select_sanch_str">Sanch ఎంచుకోండి</string>
+    <string name="setup_select_sanch_str">సాంచ్ ఎంచుకోండి</string>
     <string name="setup_select_dropdown_sanch_msg">డ్రాప్‌డౌన్ నుండి Sanchని ఎంచుకోండి</string>
     <string name="setup_select_village_str">గ్రామాన్ని ఎంచుకోండి</string>
     <string name="setup_select_primary_village_str">ప్రాథమిక గ్రామాన్ని ఎంచుకోండి</string>

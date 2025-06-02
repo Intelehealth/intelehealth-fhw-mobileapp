@@ -1,7 +1,7 @@
 <resources>
-    <string name="video_library">Video Library</string>
-    <string name="video_player">Video Player</string>
-    <string name="search_for_videos">Search for videos</string>
-    <string name="no_categories_found_on_server">No categories found on the server</string>
-    <string name="no_videos_found_on_server_for_category">No videos found on the server for category: %1$s</string>
+    <string name="video_library">వీడియో లైబ్రరీ</string>
+    <string name="video_player">వీడియో ప్లేయర్</string>
+    <string name="search_for_videos">వీడియోల కోసం శోధించండి</string>
+    <string name="no_categories_found_on_server">సర్వర్‌లో వర్గాలు ఏవీ కనుగొనబడలేదు.</string>
+    <string name="no_videos_found_on_server_for_category">వర్గం కోసం సర్వర్‌లో వీడియోలు ఏవీ కనుగొనబడలేదు: %1$s</string>
 </resources>

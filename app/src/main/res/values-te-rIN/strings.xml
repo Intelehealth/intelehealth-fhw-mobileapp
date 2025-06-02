@@ -76,8 +76,8 @@
     <string name="button_history" translatable="false">" రోగి చరిత్ర"</string>
     <string name="title_activity_patient_detail" translatable="false">" రోగి వివరాలు"</string>
     <string name="title_activity_additional_documents">అదనపు పత్రాలు</string>
-    <string name="title_activity_video_library" translatable="true">వీడియో లైబ్రరీ</string>
-    <string name="visit_summary_patient_details" translatable="true">వివరాలను సందర్శించండి</string>
+    <string name="title_activity_video_library">వీడియో లైబ్రరీ</string>
+    <string name="visit_summary_patient_details">వివరాలను సందర్శించండి</string>
     <string name="picture_taken" translatable="false">చిత్రం తీయబడింది</string>
     <string name="button_save" translatable="false">సేవ్ చేయండి</string>
     <string name="button_delete" translatable="false">తొలగించు</string>
@@ -168,7 +168,7 @@
     <string name="days">రోజుల</string>
     <string name="has_a_new_prescription">కొత్త ప్రిస్క్రిప్షన్ ఉంది</string>
     <string name="enter_mobile_number_to_share_prescription">" మీరు ప్రిస్క్రిప్షన్‌ను భాగస్వామ్యం చేయదలిచిన మొబైల్ నెంబర్‌ను నమోదు చేయండి."</string>
-    <string name="share">" భాగస్వామ్యం చేయండి"</string>
+    <string name="share">షేర్ చేయండి</string>
     <string name="please_enter_mobile_number">" దయచేసి మొబైల్ నెంబర్‌ను నమోదు చేయండి"</string>
     <string name="download_prescription_first_before_sharing">" భాగస్వామ్యం చేయడానికి ముందు ప్రిస్క్రిప్షన్‌ను డౌన్‌లోడ్ చేయండి"</string>
     <string name="enter_10_digits">" 10 అంకెలను నమోదు చేయండి"</string>
@@ -214,8 +214,8 @@
     <string name="enter_license_key"><b> లైసెన్స్ కీని ఎన్టర్ చేయండి </b></string>
     <string name="years">సంవత్సరాలు</string>
     <string name="months">నెలల</string>
-    <string name="accept">"యాక్సెప్ట్ "</string>
-    <string name="next">నెక్ స్టు</string>
+    <string name="accept">యాక్సెప్ట్</string>
+    <string name="next">తరువాత</string>
     <string name="day">రోజు</string>
     <string name="hour">గంట</string>
     <string name="minute">నిమిషం</string>
@@ -309,7 +309,7 @@
     <string name="gender_female">స్త్రీ</string>
 
     //----download protocol failed alert dialog-----------
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="app_version_string">యాప్ వెర్షన్ - %1$s</string>
     <string name="enter_patient_s_body_measurement_details">రోగి శరీర కొలత వివరాలను నమోదు చేయండి</string>
     <string name="height_cm">ఎత్తు (సెం.మీ.)</string>
     <string name="weight_kg">బరువు (కిలోలు)</string>
@@ -481,10 +481,10 @@
     <string name="profile_photo_updated_new">ప్రొఫైల్ ఫోటో విజయవంతంగా నవీకరించబడింది</string>
     <string name="hello_i_am_ayu">హలో, నేను ఆయుని,</string>
     <string name="ayu_intro">డిజిటల్ హెల్త్ అసిస్టెంట్.\nప్రారంభిద్దాం!</string>
-    <string name="agree_to_terms"><font color='#2F1E91'><u>నిబంధనలు &amp; షరతులు</u></font> మరియు <font color='#2F1E91'><u>గోప్యతా విధానం</u></font> కు అంగీకరిస్తున్నాను.</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>నిబంధనలు &amp; షరతులు</u></font> మరియు <font color='#2F1E91'><u> గోప్యతా విధానానికి </u></font>అంగీకరిస్తున్నాను.</string>
     <string name="setup">సెటప్</string>
     <string name="terms_and_conditions">నిబంధనలు &amp; షరతులు</string>
-    <string name="privacy_policy">గోప్యతా విధానం</string>
+    <string name="privacy_policy">గోప్యతా విధానానికి</string>
     <string name="decline">తిరస్కరించు</string>
     <string name="accept_new">అంగీకరించు</string>
     <string name="next_new">తరువాత</string>

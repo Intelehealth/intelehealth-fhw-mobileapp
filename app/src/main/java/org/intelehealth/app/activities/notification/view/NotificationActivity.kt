@@ -80,13 +80,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     notificationList = it.data as ArrayList<NotificationModel>
                     setNotificationAdapter()
                     if (!notificationList.isNullOrEmpty()) {
-                        mBinding.notifiHeaderTitle.text = String.format(
-                            getString(
-                                R.string.five_presc_received,
-                                mViewModel.getPrescriptionCount().toString()
-                            )
-                        )
-
+                        mBinding.notifiHeaderTitle.text = getString(R.string.five_presc_received, mViewModel.getPrescriptionCount().toString())
+                    } else {
+                        mBinding.notifiHeaderTitle.text = getString(R.string.five_presc_received, "0")
                     }
                 }
 
