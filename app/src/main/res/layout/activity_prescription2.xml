@@ -1064,13 +1064,13 @@
 
                 <!--Follow up - start -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/followUpCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/specialityCard"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/toolbar_margin_left"
                     android:elevation="16dp"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
@@ -1215,6 +1215,265 @@
                             <!--Visibility based - end -->
 
 
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Discussion Summary-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/discussionSummaryCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/followUpCard"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/discussion_summary_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                            <ImageView
+                                android:id="@+id/discussion_icon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/dr_details_icon" />
+
+                            <TextView
+                                style="@style/text_title_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:layout_toEndOf="@+id/discussion_icon"
+                                android:text="Discussion Summary" />
+
+                            <ImageButton
+                                android:id="@+id/btnup_discussion_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <!--Expanded Vitals-->
+                        <RelativeLayout
+                            android:id="@+id/vs_discussion_header_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/discussion_summary_header_relative"
+                            android:visibility="visible"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/divider_discussion"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:background="@color/notifi_divider_color" />
+
+                            <!--Personal Sub-Child-->
+                            <TextView
+                                android:id="@+id/discussion_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider_discussion"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/margin_16dp"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_margin_start"
+                                android:text="@string/no_information_with_bullet"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Recommendation-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/recommendationCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/discussionSummaryCard"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/recommendation_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                            <ImageView
+                                android:id="@+id/recommendation_icon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/dr_details_icon" />
+
+                            <TextView
+                                style="@style/text_title_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:layout_toEndOf="@+id/recommendation_icon"
+                                android:text="Recommendation" />
+
+                            <ImageButton
+                                android:id="@+id/btnup_recommendation_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <!--Expanded Vitals-->
+                        <RelativeLayout
+                            android:id="@+id/vs_recommendation_header_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/recommendation_header_relative"
+                            android:visibility="visible"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/divider_recommendation"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:background="@color/notifi_divider_color" />
+
+                            <!--Personal Sub-Child-->
+                            <TextView
+                                android:id="@+id/recommendation_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider_recommendation"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/margin_16dp"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_margin_start"
+                                android:text="@string/no_information_with_bullet"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Reschedule-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/rescheduleCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/recommendationCard"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/toolbar_margin_left"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/reschedule_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                            <ImageView
+                                android:id="@+id/reschedule_icon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/dr_details_icon" />
+
+                            <TextView
+                                style="@style/text_title_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:layout_toEndOf="@+id/reschedule_icon"
+                                android:text="Reschedule" />
+
+                            <ImageButton
+                                android:id="@+id/btnup_reschedule_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <!--Expanded Vitals-->
+                        <RelativeLayout
+                            android:id="@+id/vs_reschedule_header_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/reschedule_header_relative"
+                            android:visibility="visible"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/divider_reschedule"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:background="@color/notifi_divider_color" />
+
+                            <!--Personal Sub-Child-->
+                            <TextView
+                                android:id="@+id/reschedule_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider_reschedule"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/margin_16dp"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_margin_start"
+                                android:text="@string/no_information_with_bullet"
+                                android:textSize="@dimen/find_patient_hint_size" />
                         </RelativeLayout>
 
                     </RelativeLayout>

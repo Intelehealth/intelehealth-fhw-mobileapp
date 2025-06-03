@@ -42,7 +42,9 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +65,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -108,6 +111,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -144,13 +148,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
-    private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
-    private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative,
+            referred_header_relative, followup_header_relative, discussion_summary_header_relative, recommendation_header_relative, reschedule_header_relative;
+    private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview,
+            vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview,
+            followup_date_block, discussion_summary_expanded_view, recommendation_expanded_view, reschedule_expanded_view;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
+            mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act,
+            archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt,
+            followup_date_txt, followup_subtext, discussion_summary_text, recommendation_text, reschedule_text;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
+
+    CardView prescribedMedicationCard, adviceCard, testCard, specialistCard, followUpCard,
+            discussionSummaryCard, recommendationCard, rescheduleCard;
     private SessionManager sessionManager;
-    String diagnosisReturned = "", rxReturned = "", testsReturned = "", referredSpeciality = "", adviceReturned = "", doctorName = "", additionalReturned = "", followUpDate = "";
+    String diagnosisReturned = "", rxReturned = "", testsReturned = "", referredSpeciality = "",
+            adviceReturned = "", doctorName = "", additionalReturned = "", followUpDate = "",
+            discussionSummary = "", recommendation = "", reschedule = "";
     String medicalAdvice_string = "", medicalAdvice_HyperLink = "";
     private SQLiteDatabase db;
     private Patient patient = new Patient();
@@ -284,6 +299,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         followup_subtext = findViewById(R.id.followup_info);
         followup_date_block = findViewById(R.id.followup_date_block);
 
+        discussion_summary_text = findViewById(R.id.discussion_txt);
+        recommendation_text = findViewById(R.id.recommendation_txt);
+        reschedule_text = findViewById(R.id.reschedule_txt);
+
+        followup_date_block = findViewById(R.id.followup_date_block);
+        followup_date_block = findViewById(R.id.followup_date_block);
+        followup_date_block = findViewById(R.id.followup_date_block);
+
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
         downloadBtn = findViewById(R.id.downloadBtn);
@@ -299,6 +322,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         test_header_relative = findViewById(R.id.test_header_relative);
         referred_header_relative = findViewById(R.id.referred_header_relative);
         followup_header_relative = findViewById(R.id.followup_header_relative);
+
+        discussion_summary_header_relative = findViewById(R.id.discussion_summary_header_relative);
+        recommendation_header_relative = findViewById(R.id.recommendation_header_relative);
+        reschedule_header_relative = findViewById(R.id.reschedule_header_relative);
 
         btnup_drdetails_header = findViewById(R.id.btnup_drdetails_header);
         btnup_diagnosis_header = findViewById(R.id.btnup_diagnosis_header);
@@ -316,12 +343,41 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         vs_speciality_header_expandview = findViewById(R.id.vs_speciality_header_expandview);
         vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
 
+        discussion_summary_expanded_view = findViewById(R.id.vs_discussion_header_expandview);
+        recommendation_expanded_view = findViewById(R.id.vs_recommendation_header_expandview);
+        reschedule_expanded_view = findViewById(R.id.vs_reschedule_header_expandview);
+
+        vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+        vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+        vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+
+        prescribedMedicationCard = findViewById(R.id.medicationCard);
+        adviceCard = findViewById(R.id.adviceCard);
+        testCard = findViewById(R.id.testCard);
+        specialistCard = findViewById(R.id.specialityCard);
+        followUpCard = findViewById(R.id.followUpCard);
+
+        discussionSummaryCard = findViewById(R.id.discussionSummaryCard);
+        recommendationCard = findViewById(R.id.recommendationCard);
+        rescheduleCard = findViewById(R.id.rescheduleCard);
+
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
 
         backArrow.setOnClickListener(v -> {
             finish();
         });
+
+        if (BuildConfig.FLAVOR_client.equals(FlavorKeys.KCDO)) {
+            prescribedMedicationCard.setVisibility(View.GONE);
+            adviceCard.setVisibility(View.GONE);
+            testCard.setVisibility(View.GONE);
+            specialistCard.setVisibility(View.GONE);
+            followUpCard.setVisibility(View.GONE);
+
+            discussionSummaryCard.setVisibility(View.VISIBLE);
+            recommendationCard.setVisibility(View.VISIBLE);
+        }
 
 /*
         refresh.setOnClickListener(v -> {
@@ -350,7 +406,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitID);
 //                CustomLog.d(PrescriptionActivity.class.getSimpleName(),"has prescription main::%s", hasPrescription);
             } catch (DAOException e) {
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);
             }
             queryData(String.valueOf(patientUuid));
@@ -442,7 +498,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_Button();
             } catch (ParseException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         });
 
@@ -562,7 +618,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 doWebViewPrint_downloadBtn();
             } catch (ParseException e) {
                 e.printStackTrace();
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
     }
@@ -920,7 +976,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -1216,6 +1272,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 vs_followup_header_expandview.setVisibility(View.GONE);
             else vs_followup_header_expandview.setVisibility(View.VISIBLE);
         });
+
+        discussion_summary_header_relative.setOnClickListener(v -> {
+            if (discussion_summary_expanded_view.getVisibility() == View.VISIBLE)
+                discussion_summary_expanded_view.setVisibility(View.GONE);
+            else discussion_summary_expanded_view.setVisibility(View.VISIBLE);
+        });
+
+        recommendation_header_relative.setOnClickListener(v -> {
+            if (recommendation_expanded_view.getVisibility() == View.VISIBLE)
+                recommendation_expanded_view.setVisibility(View.GONE);
+            else recommendation_expanded_view.setVisibility(View.VISIBLE);
+        });
+
+        reschedule_header_relative.setOnClickListener(v -> {
+            if (reschedule_expanded_view.getVisibility() == View.VISIBLE)
+                reschedule_expanded_view.setVisibility(View.GONE);
+            else reschedule_expanded_view.setVisibility(View.VISIBLE);
+        });
     }
 
     // parse dr details - start
@@ -1242,7 +1316,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             dr_age_gender.setText("(" + providerDTO.getGender() + ", " + mAgeYears + ")");
         } catch (DAOException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
@@ -1465,6 +1539,27 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 //checkForDoctor();
                 break;
             }
+            case UuidDictionary.DISCUSSION_SUMMARY: {
+                if (!discussionSummary.isEmpty() && !discussionSummary.contains(value)) {
+                    discussionSummary = discussionSummary + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    discussionSummary = Node.bullet + " " + value;
+                }
+                CustomLog.i("TAG", "DISCUSSION: " + value);
+                discussion_summary_text.setText(discussionSummary);
+                break;
+            }
+            case UuidDictionary.RECOMMENDATION: {
+                if (!recommendation.isEmpty() && !recommendation.contains(value)) {
+                    recommendation = recommendation + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    recommendation =  Node.bullet + " " + value;
+                }
+                CustomLog.i("TAG", "RECOMMENDATION: " + value);
+                recommendation_text.setText(recommendation);
+                break;
+            }
+
 
             default:
                 CustomLog.i("TAG", "parseData: " + value);
@@ -1720,7 +1815,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
 
@@ -1920,7 +2015,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_SHORT).show();
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 }
                 downloadDoctorDetails();
@@ -1932,7 +2027,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         } catch (DAOException e) {
             e.printStackTrace();
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
     }
     // downlaod presc - end
@@ -2200,7 +2295,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
         mresp = resp.getValue();
         mSPO2 = getResources().getString(R.string.spo2) + ": " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -2262,7 +2357,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
             }
 
