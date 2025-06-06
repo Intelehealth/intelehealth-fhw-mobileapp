@@ -31,6 +31,8 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
         val PRIVACY_POLICY: String = "Privacy Policy"
         val TERMS_OF_USE: String = "Terms Of Use"
         var PERSONAL_DATA_PROCESSING_POLICY = "Personal Data Processing  Policy"
+        val CONSENT_FORM_FOR_PERSONAL_DATA: String = "Consent Form for Processing of Personal Data"
+
     }
 
     /**
@@ -68,6 +70,13 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
                 context.startActivity(Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse(it)
                 })
+            }  else if (it.contains("intelehealth.org/consent-form-for-processing-of-personal-data/")) {
+                intent.apply {
+                    putExtra(TITLE, CONSENT_FORM_FOR_PERSONAL_DATA)
+                    putExtra(KEY, SessionManager.CONSENT_FORM_FOR_PERSONAL_DATA)
+                    putExtra(URL, it)
+                }
+                context.startActivity(intent)
             } else {
                 //if url type is other then loading the url on same webview if network is available
                 return if (!NetworkConnection.isCapableNetwork(context)) {

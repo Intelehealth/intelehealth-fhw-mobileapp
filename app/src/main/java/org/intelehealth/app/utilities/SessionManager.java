@@ -96,6 +96,7 @@ public class SessionManager {
     //UI2.0
     private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
     private static final String HW_MOBILE_NUMBER = "hw_mobile_number";
+    public static final String CONSENT_FORM_FOR_PERSONAL_DATA = "CONSENT_FORM_FOR_PROCESSING_OF_PERSONAL_DATA";
 
 
     public SessionManager(Context context) {

@@ -11,13 +11,13 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
-import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import java.util.Locale
@@ -59,8 +59,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
             var text: String?
             text =
                 "<html><body style='color:black;font-size: 0.8em;' >" //style='text-align:justify;text-justify: inter-word;'
-
-            text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            if (BuildConfig.FLAVOR_client === FlavorKeys.NAS){
+                text += ConfigUtils(this).getPersonalDataConsentTextForWebrtcRecording(sessionManager?.appLanguage)
+            }else{
+                text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            }
             text += "</body></html>"
 
             runOnUiThread {
