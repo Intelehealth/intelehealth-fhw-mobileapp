@@ -22,6 +22,7 @@ import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -34,7 +35,6 @@ import java.util.Objects;
 public class TermsAndConditionsActivity_New extends AppCompatActivity {
     private static final String TAG = "TermsAndConditionsActiv";
     private int mIntentFrom;
-    JSONObject obj = null;
     TextView tvText;
     ImageView ivBack;
     String privacy_string = "";
@@ -64,12 +64,8 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
 
             new Thread(() -> {
                 // bg task
-                try {
-                    obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-                    privacy_string = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi") : obj.getString("terms_and_conditions");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+                privacy_string = new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
+
                 runOnUiThread(() -> {
                     // ui task
                     tvText.setAutoLinkMask(Linkify.ALL);

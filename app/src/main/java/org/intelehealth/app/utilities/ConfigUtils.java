@@ -120,4 +120,55 @@ public class ConfigUtils {
         return view;
     }
 
+    public String getTeleconsultationConsentText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("teleconsultation_consent_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
+    public String getPrivacyPolicyText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("privacy_policy_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
+    public String getTermsAndConditionsText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("terms_and_conditions_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+
+    public String getPersonalDataConsentText(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("personalDataConsentText_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
 }
