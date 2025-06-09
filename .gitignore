@@ -26,3 +26,5 @@ salt.env
 /app/src/unfpa/assets/
 /app/src/kcdo/assets/
 /app/src/ida/assets/
+
+app/src/ekal/assets/font/
