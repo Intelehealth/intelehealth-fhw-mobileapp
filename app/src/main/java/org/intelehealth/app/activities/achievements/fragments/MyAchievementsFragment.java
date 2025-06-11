@@ -106,6 +106,9 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
         configureTabLayout();
 
+        TextView tvLevel = view.findViewById(R.id.tv_user_level);
+        tvLevel.setText(getString(R.string.level, 1));
+
     }
 
     public void configureTabLayout() {
