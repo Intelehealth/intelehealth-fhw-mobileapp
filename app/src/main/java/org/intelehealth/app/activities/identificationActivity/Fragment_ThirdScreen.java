@@ -179,8 +179,7 @@ public class Fragment_ThirdScreen extends Fragment {
         linearAbhaNo = view.findViewById(R.id.linear_abhaNo);
         linearAbhaAddress = view.findViewById(R.id.linear_abhaAddress);
 
-        if(!sessionManager.doCreateABHA())
-        {
+        if (!sessionManager.doCreateABHA()) {
             linearAbhaNo.setVisibility(View.GONE);
             linearAbhaAddress.setVisibility(View.GONE);
         }
@@ -237,6 +236,7 @@ public class Fragment_ThirdScreen extends Fragment {
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
 
+            disableAbhaFlowFieldsOnEdit(patientDTO);
             // abdm - end
         }
 
@@ -286,6 +286,15 @@ public class Fragment_ThirdScreen extends Fragment {
         });
     }
 
+    private void disableAbhaFlowFieldsOnEdit(PatientDTO patientDTO) {
+        if (patientDTO.getAbhaAddress() == null || patientDTO.getAbhaAddress().trim().isEmpty()) {
+            return;
+        }
+
+        mAbhaNumberEditText.setEnabled(false);
+        mAbhaAddressEditText.setEnabled(false);
+    }
+
     private InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
@@ -299,11 +308,10 @@ public class Fragment_ThirdScreen extends Fragment {
     private void setAutoFillValuesViaMobile(AbhaProfileResponse abhaProfileResponse) {
         mAbhaNumberEditText.setText(abhaProfileResponse.getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx") && !abhaProfileResponse.getPreferredAbhaAddress().isEmpty()) {
+        if (!abhaProfileResponse.getPreferredAbhaAddress().endsWith("@sbx") && !abhaProfileResponse.getPreferredAbhaAddress().isEmpty()) {
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress() + "@sbx");
             mAbhaAddressEditText.setEnabled(false);
-        }
-        else {
+        } else {
             mAbhaAddressEditText.setText(abhaProfileResponse.getPreferredAbhaAddress());
             mAbhaAddressEditText.setEnabled(false);
         }
@@ -313,11 +321,10 @@ public class Fragment_ThirdScreen extends Fragment {
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         mAbhaNumberEditText.setText(otpVerificationResponse.getABHAProfile().getABHANumber());
         mAbhaNumberEditText.setEnabled(false);
-        if(!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx") && !otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
+        if (!otpVerificationResponse.getABHAProfile().getPhrAddress().get(0).endsWith("@sbx") && !otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
             mAbhaAddressEditText.setEnabled(false);
-        }
-        else {
+        } else {
             mAbhaAddressEditText.setText(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
             mAbhaAddressEditText.setEnabled(false);
         }
@@ -365,13 +372,12 @@ public class Fragment_ThirdScreen extends Fragment {
         }
     }
 
-    public int countChar(String str, char c)
-    {
+    public int countChar(String str, char c) {
         int count = 0;
 
-        for(int i=0; i < str.length(); i++)
-        {    if(str.charAt(i) == c)
-            count++;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == c)
+                count++;
         }
 
         return count;
@@ -386,39 +392,31 @@ public class Fragment_ThirdScreen extends Fragment {
         other_icon.setImageDrawable(getResources().getDrawable(R.drawable.other_icon));
 
         frag3_btn_back.setOnClickListener(v -> {
-            if(!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@')>1)
-            {
+            if (!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@') > 1) {
                 mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
                 mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
                 return;
-            }
-            else if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
-            {
+            } else if (!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx")) {
                 mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
                 mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
                 return;
-            }
-            else {
+            } else {
                 mAbhaAddressErrorTextView.setVisibility(View.GONE);
                 onBackInsertIntoPatientDTO();
             }
         });
 
         frag3_btn_next.setOnClickListener(v -> {
-            if(!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@')>1)
-            {
+            if (!mAbhaAddressEditText.getText().toString().isEmpty() && countChar(mAbhaAddressEditText.getText().toString(), '@') > 1) {
                 mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
                 mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
                 return;
 
-            }
-            else if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
-            {
+            } else if (!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx")) {
                 mAbhaAddressErrorTextView.setText("Enter valid ABHA Address (e.g. address@sbx)");
                 mAbhaAddressErrorTextView.setVisibility(View.VISIBLE);
                 return;
-            }
-            else {
+            } else {
                 mAbhaAddressErrorTextView.setVisibility(View.GONE);
                 onPatientCreateClicked();
             }
@@ -648,7 +646,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+        if (!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
         else
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
@@ -684,7 +682,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
         patientDTO.setAbhaNumber(mAbhaNumberEditText.getText().toString());
-        if(!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
+        if (!mAbhaAddressEditText.getText().toString().isEmpty() && !mAbhaAddressEditText.getText().toString().endsWith("@sbx"))
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString() + "@sbx");
         else
             patientDTO.setAbhaAddress(mAbhaAddressEditText.getText().toString());
@@ -806,7 +804,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
             } else {
-                if (patientDTO.getIsExist()!=null && patientDTO.getIsExist()) {
+                if (patientDTO.getIsExist() != null && patientDTO.getIsExist()) {
                     isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
                     isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
                 } else {

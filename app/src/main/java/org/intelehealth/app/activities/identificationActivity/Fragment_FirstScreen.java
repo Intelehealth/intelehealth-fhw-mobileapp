@@ -205,7 +205,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 patient_detail = getArguments().getBoolean("patient_detail");
             if (getArguments().containsKey("accessToken"))
                 accessToken = getArguments().getString("accessToken");
-             if (getArguments().containsKey("xToken"))
+            if (getArguments().containsKey("xToken"))
                 xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
@@ -231,6 +231,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 }
             }
 
+            disableAbhaFlowFieldsOnEdit(patientdto);
         }
 
        /* // todo: uncomment later - start
@@ -326,6 +327,24 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     }
 
+    private void disableAbhaFlowFieldsOnEdit(PatientDTO patientdto) {
+        if (patientdto.getAbhaAddress() == null || patientdto.getAbhaAddress().trim().isEmpty()) {
+            return;
+        }
+
+        patient_imgview.setClickable(false);
+        patient_imgview.setEnabled(false);
+        mFirstNameEditText.setEnabled(false);
+        mMiddleNameEditText.setEnabled(false);
+        mLastNameEditText.setEnabled(false);
+        mGenderMaleRadioButton.setEnabled(false);
+        mGenderFemaleRadioButton.setEnabled(false);
+        mGenderOthersRadioButton.setEnabled(false);
+        mDOBEditText.setEnabled(false);
+        mAgeEditText.setEnabled(false);
+        mPhoneNumberEditText.setEnabled(false);
+    }
+
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
         Log.d(TAG, "setAutoFillValuesViaAadhar: " + otpVerificationResponse.toString());
 
@@ -341,20 +360,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mLastNameEditText.setText(otpVerificationResponse.getABHAProfile().getLastName());
         mLastNameEditText.setEnabled(false);
 
-        if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("M"))
-        {
+        if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("M")) {
             mGenderMaleRadioButton.setChecked(true);
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
             mGenderOthersRadioButton.setEnabled(false);
-        }
-        else if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("F")){
+        } else if (otpVerificationResponse.getABHAProfile().getGender().equalsIgnoreCase("F")) {
             mGenderFemaleRadioButton.setChecked(true);
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
             mGenderOthersRadioButton.setEnabled(false);
-        }
-        else {
+        } else {
             mGenderOthersRadioButton.setChecked(true);
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
@@ -391,14 +407,12 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
             mGenderOthersRadioButton.setEnabled(false);
-        }
-        else if (abhaProfileResponse.getGender().equalsIgnoreCase("F")) {
+        } else if (abhaProfileResponse.getGender().equalsIgnoreCase("F")) {
             mGenderFemaleRadioButton.setChecked(true);
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
             mGenderOthersRadioButton.setEnabled(false);
-        }
-        else {
+        } else {
             mGenderOthersRadioButton.setChecked(true);
             mGenderMaleRadioButton.setEnabled(false);
             mGenderFemaleRadioButton.setEnabled(false);
@@ -935,7 +949,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         Log.v(TAG, "reltion: " + patientID_edit + ", " + patientdto.toString());
         if (!patient_detail && TextUtils.isEmpty(patientdto.getUuid())) {
             patientdto.setUuid(uuid);
-        }else {
+        } else {
             patientdto.setIsExist(true);
         }
 
@@ -1063,11 +1077,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
             ImagesDAO imagesDAO = new ImagesDAO();
 
-             if (patient_detail) {
+            if (patient_detail) {
                 isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientdto, patientdto.getUuid(), patientAttributesDTOList);
                 isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientdto.getPatientPhoto(), patientdto.getUuid());
-            }
-            else {
+            } else {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("patientDTO", (Serializable) patientdto);
                 bundle.putBoolean("fromFirstScreen", true);

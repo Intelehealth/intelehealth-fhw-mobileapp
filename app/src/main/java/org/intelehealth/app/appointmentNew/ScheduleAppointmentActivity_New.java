@@ -331,6 +331,11 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         ApiClientAppointment.getInstance(baseurl).getApi().getSlots(mSelectedStartDate, mSelectedEndDate, speciality).enqueue(new Callback<SlotInfoResponse>() {
             @Override
             public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
+                if (!response.isSuccessful()) {
+                    ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.unable_to_fetch_slots));
+                    return;
+                }
+
                 SlotInfoResponse slotInfoResponse = response.body();
                 if (isRescheduled && slotInfoResponse != null) {
                     removePreviousAppointmentDateTime(slotInfoResponse);

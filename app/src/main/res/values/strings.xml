@@ -1946,4 +1946,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="doctor_additional_document_download_failed_notification">Doctor\'s additional document download failed.</string>
     <string name="doctor_additional_document_download_completed_notification">Doctor\'s additional document download completed successfully. Kindly check your Downloads folder.</string>
     <string name="doctor_additional_document_download_file_exists">Doctor\'s additional document is present in your Downloads folder.</string>
+    <string name="unable_to_fetch_slots">Unable to fetch slots.</string>
 </resources>
