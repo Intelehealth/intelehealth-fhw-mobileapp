@@ -1,9 +1,11 @@
 package org.intelehealth.ncd.category.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
@@ -25,10 +27,14 @@ class HypertensionScreeningViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             val patientsBasedOnAge = repository.getPatientsBasedOnAge(age)
+            Log.d("TAG", "getPatientsForHypertensionScreening: patientsBasedOnAge : "+ patientsBasedOnAge.size)
+
+
             val patientsBasedOnUuids = repository.getPatientsBasedOnUuids(
                 patientsBasedOnAge,
                 Constants.OTHER_MEDICAL_HISTORY
             )
+            //Log.d("TAG", "getPatientsForHypertensionScreening: patientsBasedOnUuids : "+Gson().toJson(patientsBasedOnUuids))
 
             hypertensionScreeningPatients = utils.segregateAndFetchData(
                 patientsBasedOnAge.toMutableList(),

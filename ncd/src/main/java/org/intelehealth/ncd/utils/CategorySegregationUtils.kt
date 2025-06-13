@@ -1,6 +1,7 @@
 package org.intelehealth.ncd.utils
 
 import android.content.res.Resources
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.intelehealth.ncd.R
@@ -9,6 +10,7 @@ import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientWithAttribute
+import com.google.gson.JsonParser
 
 class CategorySegregationUtils(private val resources: Resources) {
 
@@ -17,8 +19,8 @@ class CategorySegregationUtils(private val resources: Resources) {
         patientAttributeList: MutableList<PatientAttributes>,
         category: String
     ): MutableList<Patient> {
+        Log.d("TAG", "segregateAndFetchData: category : "+category)
         when (category) {
-
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
                 // check attribute it self null
                 if (attribute == null) {
@@ -64,8 +66,29 @@ class CategorySegregationUtils(private val resources: Resources) {
 
                 }
             }
+            Constants.HYPERTENSION_SCREENING -> {
 
-            Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
+
+                Log.d("TAG", "patientAttributeList size = ${patientAttributeList.size}")
+
+                patientAttributeList.forEach { attribute ->
+                    Log.d("TAG", "patientAttributeList size = ${patientAttributeList.size}")
+
+                    val isHistoryPresent = isHistoryOfHypertensionPresent(attribute.value)
+                    val isOnMedication = isCurrentlyTakingHypertensionMedication(attribute.value)
+                    val hasFollowUp = isThereAFollowUpWithHypertensionPHC(attribute.value)
+
+                    Log.d("TAG", "segregateAndFetchData: for attribute = ${attribute.value}")
+                    Log.d("TAG", "  isHistoryOfHypertensionPresent: $isHistoryPresent")
+                    Log.d("TAG", "  isCurrentlyTakingHypertensionMedication: $isOnMedication")
+                    Log.d("TAG", "  isThereAFollowUpWithHypertensionPHC: $hasFollowUp")
+
+                    if (isHistoryPresent && (isOnMedication || hasFollowUp)) {
+                        removePatientsFromList(patientList, attribute)
+                    }
+                }
+
+                /*  Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
                         attribute.value
                     ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
@@ -73,8 +96,9 @@ class CategorySegregationUtils(private val resources: Resources) {
                     removePatientsFromList(patientList, attribute)
 
                 }
-            }
+            }*/
 
+            }
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
                         attribute.value
@@ -283,7 +307,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientList
     }
 
-    private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
+  /*  private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
+        Log.d("JSON_DEBUG", "Input: $medicalHistoryJson")
+
         medicalHistoryJson?.let {
             return Gson().fromJson(
                 medicalHistoryJson,
@@ -291,5 +317,27 @@ class CategorySegregationUtils(private val resources: Resources) {
             )
         }
         return emptyList()
-    }
+    }*/
+  private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
+      if (medicalHistoryJson.isNullOrBlank()) return emptyList()
+
+      return try {
+          val gson = Gson()
+          val jsonElement = JsonParser().parse(medicalHistoryJson) // ✅ works with all versions
+
+          when {
+              jsonElement.isJsonArray -> {
+                  gson.fromJson(jsonElement, object : TypeToken<List<MedicalHistory>>() {}.type)
+              }
+              jsonElement.isJsonObject -> {
+                  listOf(gson.fromJson(jsonElement, MedicalHistory::class.java))
+              }
+              else -> emptyList()
+          }
+      } catch (e: Exception) {
+          Log.e("MedicalHistoryParser", "Failed to parse: ${e.message}")
+          emptyList()
+      }
+  }
+
 }

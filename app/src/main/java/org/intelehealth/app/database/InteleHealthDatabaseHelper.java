@@ -110,7 +110,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT NOT NULL PRIMARY KEY," +
             "openmrs_id TEXT," +
             "first_name TEXT," +
             "middle_name TEXT," +
@@ -130,7 +130,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "economic_status TEXT," +
             "education_status TEXT," +
             "caste TEXT," +
-            "dead Text," +
+            "dead TEXT," +
             "guardian_name TEXT," +
             "guardian_type TEXT," +
             "contact_type TEXT," +
@@ -142,7 +142,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT NOT NULL PRIMARY KEY," +
             "value TEXT," +
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +

@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.data.category
 
+import android.util.Log
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
@@ -18,7 +19,10 @@ class CategoryDataSource(
     suspend fun getPatientsBasedOnAttributesUuids(
         patientUuid: String,
         attributeUuid: String
-    ): PatientAttributes =
-        patientAttributeDao.getPatientsBasedOnAttributeUuids(patientUuid, attributeUuid)
+    ): PatientAttributes {
+        Log.d("PatientRepo", "getPatientsBasedOnAttributesUuids called with patientUuid=$patientUuid, attributeUuid=$attributeUuid")
+
+        return patientAttributeDao.getPatientsBasedOnAttributeUuids(patientUuid, attributeUuid)
+    }
 
 }

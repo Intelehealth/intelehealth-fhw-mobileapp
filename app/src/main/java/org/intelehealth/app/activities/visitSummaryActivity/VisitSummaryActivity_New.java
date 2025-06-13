@@ -3478,7 +3478,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!flag.isChecked()) {
                     //
                 }
-
+                endSevikaVisitOnUpload(); //instead of double sync, with single will upload the visit and sync visit end date
                 if (NetworkConnection.isOnline(getApplication())) {
                     runOnUiThread(() -> Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show());
 
@@ -3533,11 +3533,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         }
                         uploaded = true;
                         uploadButton.setEnabled(true);
-                        endSevikaVisitOnUpload();
+                        //endSevikaVisitOnUpload();
                     }, 4000);
                 } else {
                     runOnUiThread(() -> {
-                        endSevikaVisitOnUpload();
+                        //endSevikaVisitOnUpload();
                         add_additional_doc.setVisibility(View.GONE);
                         fetchingIntent();
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
@@ -6649,6 +6649,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void endSevikaVisitOnUpload() {
+        Log.d(TAG, "endSevikaVisitOnUpload: mIsNCDVisit :"+mIsNCDVisit);
         if (!mIsNCDVisit) return;
 
         String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
@@ -6656,10 +6657,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endDateTime);
         } catch (DAOException e) {
+            Log.d(TAG, "endSevikaVisitOnUpload: e: " +e.getLocalizedMessage());
+            e.printStackTrace();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        new SyncUtils().syncForeground("");
+        //new SyncUtils().syncForeground("");//instead of double sync, with single will upload the visit and sync visit end date
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
 //        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
