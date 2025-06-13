@@ -1,7 +1,6 @@
 package org.intelehealth.app.ui.patient.data
 
 import android.database.sqlite.SQLiteOpenHelper
-import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.ImagesPushDAO
@@ -48,9 +47,7 @@ class PatientRepository(
     }
 
     fun fetchPatient(uuid: String): PatientDTO {
-        Timber.d { "uuid => $uuid" }
         PatientQueryBuilder().buildPatientDetailsQuery(uuid).apply {
-            Timber.d { "Query => $this" }
             val cursor = sqlHelper.readableDatabase.rawQuery(this, null)
             return patientsDao.retrievePatientDetails(cursor)
         }
