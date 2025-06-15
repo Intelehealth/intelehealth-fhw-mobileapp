@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.intelehealth.klivekit.data.PreferenceHelper;
+
 import java.util.Set;
 
 public class SessionManager {
@@ -60,6 +62,7 @@ public class SessionManager {
     public static final String PHY_EXAM = "PHY_EXAM_";
     public static final String PATIENT_HISTORY = "PATIENT_HISTORY_";
     public static final String FAMILY_HISTORY = "FAMILY_HISTORY_";
+    private static final String JWT_AUTH_TOKEN = "JWT_AUTH_TOKEN";
     public static final String ABHA_LOGIN = "abha_login";
     public static final String AADHAAR_LOGIN = "aadhaar_login";
     public static final String MOBILE_LOGIN = "mobile_login";
@@ -528,6 +531,20 @@ public class SessionManager {
         return pref.getString(FIRST_PROVIDER_LOGIN_TIME, "");
     }
 
+
+    /**
+     * handling token here
+     */
+    // get the visit edit cache data as json string
+    public void setJwtAuthToken(String token) {
+        new PreferenceHelper(_context).save(PreferenceHelper.AUTH_TOKEN, token);
+        editor.putString(JWT_AUTH_TOKEN, token);
+        editor.commit();
+    }
+
+    public String getJwtAuthToken() {
+        return pref.getString(JWT_AUTH_TOKEN, "");
+    }
     // set the visit edit cache data as json string
     public void setVisitEditCache(String key, String valueJson) {
         editor.putString(key, valueJson);

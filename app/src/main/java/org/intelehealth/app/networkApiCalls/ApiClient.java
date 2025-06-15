@@ -1,6 +1,8 @@
 package org.intelehealth.app.networkApiCalls;
 
 
+import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
