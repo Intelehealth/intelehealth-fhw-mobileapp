@@ -1834,7 +1834,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String providerID = sessionManager.getProviderID();
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
-        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(this,visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
     private void triggerEndVisit() {

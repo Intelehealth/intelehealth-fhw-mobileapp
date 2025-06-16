@@ -269,7 +269,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         String providerID = sessionManager.getProviderID();
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
-        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitID, appointmentID, reason, providerID, baseurl);
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(context,visitID, appointmentID, reason, providerID, baseurl);
     }
 
     private void sharePresc(final PrescriptionModel model) {

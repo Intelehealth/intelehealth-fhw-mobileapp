@@ -32,6 +32,7 @@ class TokenSetupInterceptor : Interceptor {
             //adding token here
             val builder: Request.Builder = request.newBuilder()
             builder.header("Authorization", "Bearer $token")
+            //builder.header("Authorization", "Bearer ")
             builder.method(request.method, request.body)
             val response = chain.proceed(builder.build())
 

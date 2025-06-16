@@ -1071,6 +1071,6 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         String providerID = sessionManager.getProviderID();
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
-        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(visitUUID, appointmentID, reason, providerID, baseurl);
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(this,visitUUID, appointmentID, reason, providerID, baseurl);
     }
 }

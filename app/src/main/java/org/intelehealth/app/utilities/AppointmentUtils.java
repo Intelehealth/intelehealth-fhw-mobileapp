@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
@@ -12,7 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AppointmentUtils {
-    public void cancelAppointmentRequestOnVisitEnd(String visitID, int appointment_id, String reason, String providerID, String baseurl) {
+    public void cancelAppointmentRequestOnVisitEnd(Context context, String visitID, int appointment_id, String reason, String providerID, String baseurl) {
         AppointmentDAO appointmentDAO = new AppointmentDAO();
         CancelRequest request = new CancelRequest();
 
@@ -34,6 +35,8 @@ public class AppointmentUtils {
             @Override
             public void onFailure(Call<CancelResponse> call, Throwable t) {
                 Log.v("onFailure", t.getMessage());
+                //log out operation if response code is 401
+                new NavigationUtils().logoutOperation(context,t);
             }
         });
     }
