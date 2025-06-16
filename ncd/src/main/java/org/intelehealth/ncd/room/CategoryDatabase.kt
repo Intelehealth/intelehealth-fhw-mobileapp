@@ -10,9 +10,10 @@ import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.utils.getApplicationName
+import java.io.File
 import java.util.Locale
 
-@Database(entities = [Patient::class, PatientAttributes::class], version = 5)
+@Database(entities = [Patient::class, PatientAttributes::class], version = 4)
 abstract class CategoryDatabase : RoomDatabase() {
 
     abstract fun patientDao(): PatientDao
@@ -24,7 +25,7 @@ abstract class CategoryDatabase : RoomDatabase() {
         private var INSTANCE: CategoryDatabase? = null
 
         @VisibleForTesting
-        private val DATABASE_NAME = "localrecords.db"
+        private val DATABASE_NAME = "ekal-localrecords.db"
 
         @JvmStatic
         fun getInstance(context: Context): CategoryDatabase =
@@ -39,10 +40,19 @@ abstract class CategoryDatabase : RoomDatabase() {
          * The SQLite database is only created when it's accessed for the first time.
          */
         private fun buildDatabase(appContext: Context): CategoryDatabase {
-            val databaseName = DATABASE_NAME
+            val dbFile = File("/data/data/org.intelehealth.ekalarogya/databases/ekal-localrecords.db")
+            return  Room.databaseBuilder(appContext, CategoryDatabase::class.java, "ekal-localrecords.db")
+                .createFromFile(dbFile)
+                .build()
+            /*val dbFile = appContext.getDatabasePath("ekal-localrecords.db")
+
+            return Room.databaseBuilder(appContext, CategoryDatabase::class.java, "ekal-localrecords.db")
+                .createFromFile(dbFile)
+                .build()*/
+           /* val databaseName = DATABASE_NAME
             return Room.databaseBuilder(appContext, CategoryDatabase::class.java, databaseName)
                 .fallbackToDestructiveMigration()
-                .build()
+                .build()*/
         }
 
         private fun getAppName(context: Context) = getApplicationName(context).let {
