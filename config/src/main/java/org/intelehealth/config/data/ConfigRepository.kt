@@ -3,19 +3,13 @@ package org.intelehealth.config.data
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.intelehealth.config.Config
 import org.intelehealth.config.network.provider.WebClientProvider
 import org.intelehealth.config.network.response.ConfigResponse
 import org.intelehealth.config.room.ConfigDatabase
-import org.intelehealth.config.room.dao.ConfigDao
-import org.intelehealth.config.room.entity.ConfigDictionary
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.config.utility.FieldGroup
-import org.intelehealth.config.utility.KEY_SPECIALIZATIONS
 import org.intelehealth.config.utility.NO_DATA_FOUND
 import org.intelehealth.core.network.helper.NetworkHelper
 import org.intelehealth.core.network.state.Result
@@ -60,6 +54,8 @@ class ConfigRepository(
             groupingPatientRegFields(config.patientRegFields.other, FieldGroup.OTHER)
             configDb.patientVitalDao().save(config.patientVitals)
             configDb.patientDiagnosticsDao().save(config.diagnostics)
+            configDb.activeSectionDao().save(config.patientVisitSection)
+            configDb.activeSectionDao().save(config.homeScreen)
             config.patientVisitSummery.apply {
                 chatSection = if (config.webrtcSection) config.webrtcStatus.chat else false
                 videoSection = if (config.webrtcSection) config.webrtcStatus.video else false

@@ -4234,8 +4234,7 @@ public final class StringUtils {
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         // 1. Calculate Age
-        String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
-
+        String age = !dob.isEmpty() ? DateAndTimeUtils.getAge_FollowUp(dob, context) : "";
         // 2. Get Localized Gender String
         int genderStringResId;
         switch (gender.toUpperCase()) {
@@ -4367,6 +4366,7 @@ public final class StringUtils {
 
     /**
      * returning string instead of setting data to textview
+     *
      * @param context
      * @param dob
      * @param gender
@@ -4387,7 +4387,7 @@ public final class StringUtils {
         }
 
         String localizedGender = context.getResources().getString(genderResId);
-        return  localizedGender + " " + age;
+        return localizedGender + " " + age;
     }
 
     /**
@@ -4960,6 +4960,7 @@ public final class StringUtils {
         }
         return -1; // Return -1 if not found
     }
+
     public static String getPreTermEdit(String val, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
@@ -4992,6 +4993,7 @@ public final class StringUtils {
         }
         return val;
     }
+
     public static String getWaterSourceDistance(String text, Context context, String locale) {
         Context updatedContext;
 
@@ -5031,6 +5033,7 @@ public final class StringUtils {
 
         return text;
     }
+
     public static String getCultivableLand(String text, Context context, String locale) {
         if (locale.equalsIgnoreCase("mr")) {
             Configuration configuration = new Configuration(IntelehealthApplication.getAppContext().getResources().getConfiguration());
@@ -5083,6 +5086,7 @@ public final class StringUtils {
 
         return text;
     }
+
     public static boolean validateFields(List<View> mandatoryFields) {
         boolean result = true;
         for (View mandatoryField : mandatoryFields) {
