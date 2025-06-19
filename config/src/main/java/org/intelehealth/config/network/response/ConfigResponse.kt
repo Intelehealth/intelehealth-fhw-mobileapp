@@ -2,6 +2,7 @@ package org.intelehealth.config.network.response
 
 import com.google.gson.annotations.SerializedName
 import org.intelehealth.config.room.entity.ActiveLanguage
+import org.intelehealth.config.room.entity.ActiveSection
 import org.intelehealth.config.room.entity.Diagnostics
 import org.intelehealth.config.room.entity.FeatureActiveStatus
 import org.intelehealth.config.room.entity.PatientVital
@@ -47,5 +48,10 @@ data class ConfigResponse(
     @SerializedName("patient_diagnostics_section")
     val patientDiagnosticsSection: Boolean = true,
     @SerializedName("patient_draft_survey")
-    val patientDraftSurvey: Boolean = true
+    val patientDraftSurvey: Boolean = true,
+
+    @SerializedName("patient_visit_sections")
+    val patientVisitSection: List<ActiveSection>,
+    @SerializedName("home_screen")
+    val homeScreen: List<ActiveSection>,
 )

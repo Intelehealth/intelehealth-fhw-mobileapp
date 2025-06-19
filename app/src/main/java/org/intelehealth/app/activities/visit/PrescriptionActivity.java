@@ -7,7 +7,6 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
-import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
@@ -48,18 +47,6 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescription;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionTest;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionDataModel;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.models.hwprofile.PersonAttributes;
-import org.intelehealth.app.models.hwprofile.Profile;
-import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.ui.prescriptionwithotp.PDFfilePoc;
-import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
-import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionDetailsDataKeys;
-import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionHtmlPdfGenerator;
-import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
-import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
-import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
-import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -85,7 +72,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -94,7 +80,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -139,6 +124,11 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
+import org.intelehealth.config.presenter.section.factory.ActiveSectionViewModelFactory;
+import org.intelehealth.config.presenter.section.viewmodel.ActiveSectionViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.ActiveSection;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -234,9 +224,60 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO cholesterol = new ObsDTO();
     String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
-    String hwMobileNumber = "";
-    private SharePrescriptionViewModel viewModel;
-    Set<String> processedConcepts = new HashSet<>();
+    private List<ActiveSection> mActiveSectionList;
+
+    private void loadFeatureActiveStatus() {
+        ActiveSectionRepository repository = new ActiveSectionRepository(ConfigDatabase.getInstance(this).activeSectionDao());
+        ActiveSectionViewModel activeSectionViewModel = new ViewModelProvider(this, new ActiveSectionViewModelFactory(repository)).get(ActiveSectionViewModel.class);
+        activeSectionViewModel.fetchActiveSection().observe(this, activeSections -> {
+            if (activeSections != null) {
+                mActiveSectionList = activeSections;
+
+                boolean isFound = false;
+                for (ActiveSection activeSection : mActiveSectionList) {
+
+                    if (activeSection.getKey().equals("share_prescription")) {
+                        isFound = true;
+                        btn_vs_share.setVisibility(activeSection.isEnable() ? View.VISIBLE : View.GONE);
+                        // setweight  for btn_vs_print
+
+
+                        // two button resize with weight
+
+                        // set text as per local language
+                        String lng = sessionManager.getAppLanguage();
+                        String title = activeSection.getLang().get(lng);
+
+                        if (title != null && !title.trim().isEmpty()) {
+                            btn_vs_share.setText(title);
+
+                        } else {
+                            btn_vs_share.setText(activeSection.getName());
+                        }
+                    }
+                }
+                // Get current LayoutParams and cast to LinearLayout.LayoutParams
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btn_vs_print.getLayoutParams();
+                if (!isFound) {
+                    btn_vs_share.setVisibility(View.GONE);
+                    // Set new weight (example: 2 to make it full width if weightSum = 2)
+                    params.weight = 2f;
+                    // Optionally adjust width if needed
+                    params.width = 0; // Important when using weight
+
+                } else {
+                    // Set new weight (example: 1 to make it half width if weightSum = 2)
+                    params.weight = 1f;
+                    // Optionally adjust width if needed
+                    params.width = 0; // Important when using weight
+                }
+                // Apply new layout parameters
+                btn_vs_print.setLayoutParams(params);
+
+            }
+            ;
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,6 +294,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         fetchIntent();
         setDataToView();
         expandableCardVisibilityHandling();
+        loadFeatureActiveStatus();
     }
 
     private FeatureActiveStatus mFeatureActiveStatus;
@@ -422,8 +464,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // Patient Photo
         profile_image = findViewById(R.id.profile_image);
         if (patient_photo_path != null) {
-            RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                    .asDrawable().sizeMultiplier(0.3f);
+            RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.3f);
             Glide.with(this).load(patient_photo_path).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
         } else {
             profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
@@ -1360,6 +1401,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(details.getUuid());
             String ageData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth());
+            Log.d(TAG, "parseDoctorDetails:ageData :  " + ageData);
             if (ageData != null && !ageData.isEmpty()) {
                 String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(providerDTO.getDateofbirth()).split(" ");
                 int mAgeYears = Integer.valueOf(ymdData[0]);
@@ -1377,8 +1419,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     private String addBulletPoints(String inputString) {
         // Remove all occurrences of "&null" (case-insensitive) and "null" (case-insensitive)
-        String cleanedString = inputString
-                .replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
+        String cleanedString = inputString.replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
                 .trim();
 
         // Split the cleaned string into lines
@@ -1432,7 +1473,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
      * @param value      variable of type String.
      */
     private void parseData(String concept_id, String value) {
-        processedConcepts.add(concept_id);
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -1600,8 +1640,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
             case UuidDictionary.FOLLOW_UP_VISIT: {
-                Log.d(TAG, "parseData: followUpDate : "+followUpDate);
-
                 if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
                     followUpDate = followUpDate + "," + value;
                 } else {
@@ -1802,7 +1840,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 hasPrescription = true; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
-            handleMissingData();
         }
         visitCursor.close();
 
@@ -1838,7 +1875,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
-                handleMissingData();
             }
             visitCursor.close();
 
@@ -2987,7 +3023,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
-                    handleMissingData();
                 }
                 if (visitCursor != null) {
                     visitCursor.close();
@@ -3008,7 +3043,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
-                handleMissingData();
             }
             if (encountercursor != null) {
                 encountercursor.close();
@@ -3129,115 +3163,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void setMedicationAdapter() {
+        // Initialize RecyclerView
         mBinding.rvPrescribedMedicine.setLayoutManager(new LinearLayoutManager(this));
-        List<PrescribedMedicineModel> medicineList;
-        if (BuildConfig.FLAVOR_client == FlavorKeys.NAS) {
-            medicineList = getMedicationDataStandardize();
-        } else {
-            medicineList = getMedicationData1();
-        }
-        if(medicineList!=null && !medicineList.isEmpty()){
-            PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
-            mBinding.rvPrescribedMedicine.setAdapter(adapter);
-        }
-    }
-    private List<PrescribedMedicineModel> getMedicationDataStandardize() {
-        List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
-        if (rxReturned.isEmpty()) {
-            return medicineModelList;
-        } else {
-            mBinding.tvNoPrescription.setVisibility(View.GONE);
-            mBinding.dividerNoPrescription.setVisibility(View.GONE);
-        }
-        Log.d(TAG, "getMedicationData1: medicineModelList : " + new Gson().toJson(medicineModelList));
-        hideAdditionalInstruction();
 
-        String[] medicationDataArray = rxReturned.split("\n");
+        // Initialize your data
+        List<PrescribedMedicineModel> medicineList = getMedicationData1();
+        // Add your prescribed medications to medicineList
 
-        for (String medicine : medicationDataArray) {
-            if (medicine.matches(".*[:;,].*")) { // checks if it contains any of the separators
-                String[] medicineDetailArray = medicine.split("[:;,]");
-                for (String detail : medicineDetailArray) {
-                    System.out.println(detail);
-                    Log.d(TAG, "getMedicationData1: detail : " + detail);
-                }
+        // Initialize adapter
+        PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
 
-                PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
-                for (int i = 0; i < medicineDetailArray.length; i++) {
-                    String value = getSafeValue(medicineDetailArray, i);
-                    switch (i) {
-                        case 0 -> medicineModel.setMedicineName(value);
-                        case 1 -> medicineModel.setStrength(value);
-                        case 2 -> medicineModel.setNoOfDays(value);
-                        case 3 -> medicineModel.setTiming(value);
-                        case 4 -> medicineModel.setRemark(value);
-                        case 5 -> medicineModel.setFrequency(value);
-                    }
-                }
-                medicineModelList.add(medicineModel);
-            } else {
-                if (!medicine.isEmpty()) {
-                    setAdditionalInstruction(medicine.trim());
-                }
-            }
-        }
-        return medicineModelList;
-    }
-
-    private String getSafeValue(String[] array, int index) {
-        if (index >= array.length) return "";
-        String value = array[index];
-        if (value == null || value.trim().equalsIgnoreCase("null")) return "";
-        return value.trim();
-    }
-
-    /*private List<PrescribedMedicineModel> getMedicationDataStandardize() {
-        List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
-        if (rxReturned.isEmpty()) {
-            return medicineModelList;
-        } else {
-            mBinding.tvNoPrescription.setVisibility(View.GONE);
-            mBinding.dividerNoPrescription.setVisibility(View.GONE);
-        }
-        Log.d(TAG, "getMedicationData1: medicineModelList : " + new Gson().toJson(medicineModelList));
-        hideAdditionalInstruction();
-
-        String[] medicationDataArray = rxReturned.split("\n");
-
-        for (String medicine : medicationDataArray) {
-            if (medicine.matches(".*[:;,].*")) { // checks if it contains any of the separators
-                String[] medicineDetailArray = medicine.split("[:;,]");
-                for (String detail : medicineDetailArray) {
-                    System.out.println(detail);
-                    Log.d(TAG, "getMedicationData1: detail : " + detail);
-                }
-
-                PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
-                for (int i = 0; i < medicineDetailArray.length; i++) {
-                    switch (i) {
-                        case 0 -> medicineModel.setMedicineName(medicineDetailArray[i].trim());
-                        case 1 -> medicineModel.setStrength(medicineDetailArray[i].trim());
-                        case 2 -> medicineModel.setNoOfDays(medicineDetailArray[i].trim());
-                        case 3 -> medicineModel.setTiming(medicineDetailArray[i].trim());
-                        case 4 -> medicineModel.setRemark(medicineDetailArray[i].trim());
-                        case 5 -> medicineModel.setFrequency(medicineDetailArray[i].trim());
-                    }
-                }
-                medicineModelList.add(medicineModel);
-            } else {
-                if (!medicine.isEmpty()) {
-                    setAdditionalInstruction(medicine.trim());
-                }
-            }
-        }
-        return medicineModelList;
-    }*/
-    private void handleMissingData() {
-        if (!processedConcepts.contains(UuidDictionary.FOLLOW_UP_VISIT)) {
-            // Show 'no follow-up' explicitly
-            no_followup_txt.setVisibility(View.VISIBLE);
-            followup_date_block.setVisibility(View.GONE);
-            followup_subtext.setVisibility(View.GONE);
-        }
+        // Set adapter to RecyclerView
+        mBinding.rvPrescribedMedicine.setAdapter(adapter);
     }
 }
