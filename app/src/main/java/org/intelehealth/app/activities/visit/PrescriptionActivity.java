@@ -47,6 +47,9 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescription;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionTest;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionDataModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
