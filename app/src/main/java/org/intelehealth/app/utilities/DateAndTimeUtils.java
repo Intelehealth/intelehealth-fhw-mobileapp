@@ -125,39 +125,40 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+        String age = "";
         try {
             date = originalFormat.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String formattedDate = targetFormat.format(date);  // 20120821
-        String[] components = formattedDate.split("\\-");
+            String formattedDate = targetFormat.format(date);  // 20120821
+            String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-        String age = "";
-        String tyears = "", tmonth = "", tdays = "";
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            String tyears = "", tmonth = "", tdays = "";
 
        /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
         }*/
 
-        if (period.getValue(0) > 0) {  // o index -> years
-            tyears = String.valueOf(period.getValue(0));
-            age = tyears;
-            //CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
-        } else {
+            if (period.getValue(0) > 0) {  // o index -> years
+                tyears = String.valueOf(period.getValue(0));
+                age = tyears;
+                //CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
+            } else {
+                age = "0";
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
             age = "0";
         }
 
         return age;
     }
-
 
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
