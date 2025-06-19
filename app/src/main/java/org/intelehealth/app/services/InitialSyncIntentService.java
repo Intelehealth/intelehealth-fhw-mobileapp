@@ -43,7 +43,7 @@ public class InitialSyncIntentService extends IntentService {
         SyncDAO syncDAO = new SyncDAO();
         String fromActivity = intent.getStringExtra("from");
         try {
-            sync = syncDAO.SyncData(responseDTO);
+            sync = syncDAO.SyncData(responseDTO, false);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -67,6 +67,7 @@ public class InitialSyncIntentService extends IntentService {
                 Intent broadcast = new Intent();
                 broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                 sendBroadcast(broadcast);
                 if (fromActivity.equalsIgnoreCase("home")) {
                     //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
@@ -95,7 +96,8 @@ public class InitialSyncIntentService extends IntentService {
 //                        }
             if(!sessionManager.isLogout()){
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
             }
         }
     }

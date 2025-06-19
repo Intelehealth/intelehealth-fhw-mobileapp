@@ -6,6 +6,9 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: "kotlin-kapt"
 apply from: "resdir.gradle"
 apply from: "whitelabel.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.dagger.hilt.android'
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -22,7 +25,7 @@ android {
         applicationId "org.intelehealth.app"
         minSdk 23
         targetSdk 34
-        versionCode 65
+        versionCode 67
         versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
@@ -42,8 +45,10 @@ android {
                 checkReleaseBuilds false
                 abortOnError false
             }
+            debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.debug
         }
     }
 
@@ -87,6 +92,7 @@ dependencies {
     api project(':config')
 //    api project(':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/printer_library.jar') // Thermal Printer
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.12.0'
@@ -96,6 +102,7 @@ dependencies {
     implementation project(path: ':ihutils')
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
+    implementation 'androidx.activity:activity:1.9.1'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
@@ -107,8 +114,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.8.6"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.6'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.2'
+
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // RxJava
@@ -176,6 +185,10 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'//
     implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    implementation "com.google.dagger:hilt-android:2.49" // Replace 2.x with the latest version
+    kapt "com.google.dagger:hilt-compiler:2.47"
+
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

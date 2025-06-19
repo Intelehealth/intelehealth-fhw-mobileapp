@@ -41,6 +41,7 @@ public class VisitSummaryWork extends Worker {
 
         Intent in = new Intent();
         in.setAction("downloadprescription");
+        in.setPackage(IntelehealthApplication.getAppContext().getPackageName());
         IntelehealthApplication.getAppContext().sendBroadcast(in);
 
         return Result.success();

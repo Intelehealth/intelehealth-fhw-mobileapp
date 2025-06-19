@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.room.WebRtcDatabase
@@ -51,7 +52,9 @@ object CallHandlerUtils {
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isIncomingCall() or callArgs.isCallAccepted() or callArgs.isOutGoingCall()) {
-            CallServiceWorker.startCallServiceWorker(callArgs, context)
+            IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
+                ContextCompat.startForegroundService(context, it)
+            }
         }
     }
 
@@ -102,6 +105,7 @@ object CallHandlerUtils {
     fun operateCallAction(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -138,6 +142,7 @@ object CallHandlerUtils {
     fun hangUpCall(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -147,6 +152,7 @@ object CallHandlerUtils {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
 //            messageBody.callStatus = CALL_FINISHED
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -162,6 +168,7 @@ object CallHandlerUtils {
 //        messageBody.callStatus = CALL_TIMED_OUT
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }
@@ -175,6 +182,7 @@ object CallHandlerUtils {
     fun callMissed(messageBody: RtcArgs, context: Context) {
         context.sendBroadcast(Intent(context, CallReceiver::class.java).apply {
             putExtra(RTC_ARGS, messageBody)
+            setPackage("org.intelehealth.app")
             action = IntentUtils.getCallReceiverAction(context)
         })
     }

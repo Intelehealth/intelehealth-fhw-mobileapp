@@ -136,6 +136,7 @@ public class AwsS3Utils {
                             Intent intent = new Intent();
                             intent.setAction(ACTION_FILE_UPLOAD_DONE);
                             intent.putExtra("fileUrl", fileUrl);
+                            intent.setPackage("org.intelehealth.app");
                             context.sendBroadcast(intent);
                         }
                     });

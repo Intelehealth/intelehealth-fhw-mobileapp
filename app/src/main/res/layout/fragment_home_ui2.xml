@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textview_prescriptions"
                     android:layout_marginTop="@dimen/common_info_margin_top"
-                    android:text="5 out of 12 received"
+                    tools:text="5 out of 12 received"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +170,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="16dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ui2_image_prescription_green_bg"
+                    android:src="@drawable/ic_home_prescription_card_bg"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -179,7 +179,7 @@
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_alignParentEnd="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ui2_image_prescription_green"
+                    android:src="@drawable/ic_home_prescription_card"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 

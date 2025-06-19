@@ -4,15 +4,22 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.DatePicker
-import androidx.appcompat.app.AlertDialog
+import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import org.intelehealth.app.R
+import org.intelehealth.app.utilities.LanguageUtils
+import org.intelehealth.app.utilities.LocaleHelper
 import org.intelehealth.klivekit.utils.DateTimeUtils
+import java.lang.reflect.Field
+import java.text.NumberFormat
 import java.util.Calendar
+import java.util.Locale
 import java.util.TimeZone
+
 
 /**
  * Created by Vaghela Mithun R. on 11-07-2024 - 15:59.
@@ -53,15 +60,17 @@ class CalendarDialog private constructor() : AppCompatDialogFragment(), OnDateSe
 
     private fun updateButtonTheme(datePickerDialog: DatePickerDialog) {
         datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
-            .setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.colorAccent
-                )
-            ) // Change to your desired color
+            .apply {
+                text = ContextCompat.getString(requireContext(),R.string.ok)
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent)) // Change to your desired color
+            }
+
 
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            .apply {
+                text = ContextCompat.getString(requireContext(),R.string.cancel)
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            }
     }
 
     override fun onDateSet(datePicker: DatePicker?, year: Int, month: Int, day: Int) {
@@ -109,5 +118,17 @@ class CalendarDialog private constructor() : AppCompatDialogFragment(), OnDateSe
 
     companion object {
         const val TAG = "CalendarDialog"
+
+        fun showDatePickerDialog(
+            listener: OnDatePickListener,
+            childFragmentManager: FragmentManager
+        ) {
+            Builder()
+                .maxDate(Calendar.getInstance().timeInMillis)
+                .selectedDate(Calendar.getInstance().timeInMillis)
+                .format(DateTimeUtils.MMM_DD_YYYY_FORMAT)
+                .listener(listener)
+                .build().show(childFragmentManager, TAG)
+        }
     }
 }

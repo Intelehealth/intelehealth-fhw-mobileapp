@@ -1,0 +1,17 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/colorPrimaryBlackOverlay"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/colorAccentLightCard"/>
+        </shape>
+    </item>
+    <item android:bottom="@dimen/std_24dp" android:end="@dimen/std_24dp" android:start="@dimen/std_24dp" android:top="@dimen/std_24dp">
+        <shape android:shape="oval">
+            <solid android:color="#1E1471"/>
+        </shape>
+    </item>
+</layer-list>

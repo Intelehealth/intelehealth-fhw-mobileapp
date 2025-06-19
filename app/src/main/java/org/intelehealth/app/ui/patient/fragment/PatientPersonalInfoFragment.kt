@@ -1,24 +1,25 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
+import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.databinding.OnRebindCallback
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
-import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
-import org.intelehealth.app.databinding.FragmentPatientPersonalInfoBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
@@ -26,11 +27,12 @@ import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.utilities.extensions.addFilter
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
@@ -47,6 +49,7 @@ import org.joda.time.PeriodType
 import java.io.File
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 /**
@@ -165,6 +168,11 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
         fetchPersonalInfoConfig()
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            patient.apply {
+                gender = gender ?: "F"
+            }
+        }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
     }
@@ -203,6 +211,7 @@ class PatientPersonalInfoFragment :
 
     private fun savePatient() {
         patient.apply {
+            bindGenderValue()
             firstname = binding.textInputETFName.text?.toString()
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
@@ -245,14 +254,23 @@ class PatientPersonalInfoFragment :
     }
 
     private fun setGender() {
-        binding.toggleGender.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            binding.btnMale.isCheckable = false
+            binding.btnFemale.isCheckable = false
+            binding.btnOther.isCheckable = false
+        }
+        binding.toggleGender.addOnButtonCheckedListener { _, checkedId, _ ->
             binding.tvGenderError.isVisible = false
-            patient.gender = when (checkedId) {
-                R.id.btnMale -> "M"
-                R.id.btnFemale -> "F"
-                R.id.btnOther -> "O"
-                else -> "O"
-            }
+            bindGenderValue()
+        }
+    }
+
+    private fun bindGenderValue() {
+        patient.gender = when (binding.toggleGender.checkedButtonId) {
+            R.id.btnMale -> "M"
+            R.id.btnFemale -> "F"
+            R.id.btnOther -> "O"
+            else -> "O"
         }
     }
 
@@ -265,6 +283,11 @@ class PatientPersonalInfoFragment :
     }
 
     private fun takePicture() {
+        //saving fields value into patient object
+        patient.firstname = binding.textInputETFName.text.toString()
+        patient.middlename = binding.textInputETMName.text.toString()
+        patient.lastname = binding.textInputETLName.text.toString()
+
         val filePath = File(AppConstants.IMAGE_PATH + patient.uuid)
         if (!filePath.exists()) {
             filePath.mkdir()
@@ -327,7 +350,27 @@ class PatientPersonalInfoFragment :
         return Period(birthdate, now, PeriodType.yearMonthDay())
     }
 
+    fun setLocale(context: Context): Context {
+        val appLanguage = LanguageUtils.getLocalLang()
+        val res = context.resources
+        val conf = res.configuration
+        val locale = Locale(appLanguage)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.displayMetrics
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
+    }
+
+
     private fun showDatePickerDialog(selectedDate: Long) {
+        setLocale(requireActivity())
         CalendarDialog.Builder()
             .maxDate(Calendar.getInstance().timeInMillis)
             .selectedDate(selectedDate)
@@ -356,11 +399,17 @@ class PatientPersonalInfoFragment :
     }
 
     private fun applyFilter() {
-        binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETMName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETLName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETGuardianName.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputETECName.addFilter(FirstLetterUpperCaseInputFilter())
+        //  binding.textInputETFName.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputETFName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETMName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETLName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETGuardianName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
+        binding.textInputETECName.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others, LengthFilter(25))
     }
 
     private fun setInputTextChangListener() {
@@ -416,39 +465,41 @@ class PatientPersonalInfoFragment :
     private fun validateForm(block: () -> Unit) {
         val error = R.string.this_field_is_mandatory
         binding.personalConfig?.let {
-            val bProfile = if (it.profilePic!!.isEnabled && it.profilePic!!.isMandatory) {
-                !patient.patientPhoto.isNullOrEmpty()
-            } else true
+            val bProfile =
+                if (it.profilePic?.isEnabled == true && it.profilePic?.isMandatory == true) {
+                    !patient.patientPhoto.isNullOrEmpty()
+                } else true
 
             binding.profileImageError.isVisible = bProfile.not()
 
-            val bFName = if (it.firstName!!.isEnabled && it.firstName!!.isMandatory) {
+            val bFName = if (it.firstName?.isEnabled == true && it.firstName?.isMandatory == true) {
                 binding.textInputLayFName.validate(binding.textInputETFName, error)
             } else true
 
-            val bMName = if (it.middleName!!.isEnabled && it.middleName!!.isMandatory) {
-                binding.textInputLayMName.validate(binding.textInputETMName, error)
-            } else true
+            val bMName =
+                if (it.middleName?.isEnabled == true && it.middleName?.isMandatory == true) {
+                    binding.textInputLayMName.validate(binding.textInputETMName, error)
+                } else true
 
-            val bLName = if (it.lastName!!.isEnabled && it.lastName!!.isMandatory) {
+            val bLName = if (it.lastName?.isEnabled == true && it.lastName?.isMandatory == true) {
                 binding.textInputLayLName.validate(binding.textInputETLName, error)
             } else true
 
-            val bGender = if (it.gender!!.isEnabled && it.gender!!.isMandatory) {
+            val bGender = if (it.gender?.isEnabled == true && it.gender?.isMandatory == true) {
                 !patient.gender.isNullOrEmpty()
             } else true
 
             binding.tvGenderError.isVisible = bGender.not()
 
-            val bDob = if (it.dob!!.isEnabled && it.dob!!.isMandatory) {
+            val bDob = if (it.dob?.isEnabled == true && it.dob?.isMandatory == true) {
                 binding.textInputLayDob.validate(binding.textInputETDob, error)
             } else true
 
-            val bAge = if (it.age!!.isEnabled && it.age!!.isMandatory) {
+            val bAge = if (it.age?.isEnabled == true && it.age?.isMandatory == true) {
                 binding.textInputLayAge.validate(binding.textInputETAge, error)
             } else true
 
-            val bPhone = if (it.phone!!.isEnabled && it.phone!!.isMandatory) {
+            val bPhone = if (it.phone?.isEnabled == true && it.phone?.isMandatory == true) {
                 binding.textInputLayPhoneNumber.validate(binding.textInputETPhoneNumber, error).and(
                     binding.textInputLayPhoneNumber.validateDigit(
                         binding.textInputETPhoneNumber,
@@ -458,28 +509,42 @@ class PatientPersonalInfoFragment :
                 )
 
             } else true
+            val bEPhone = if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length()>0 && binding.textInputETEMPhoneNumber.length()<10) {
+                binding.textInputLayEMPhoneNumber.validate(binding.textInputETEMPhoneNumber, error)
+                    .and(
+                        binding.textInputLayEMPhoneNumber.validateDigit(
+                            binding.textInputETEMPhoneNumber,
+                            R.string.enter_10_digits,
+                            10
+                        )
+                    )
 
-            val bGuardianType = if (it.guardianType!!.isEnabled && it.guardianType!!.isMandatory) {
-                binding.textInputLayGuardianType.validateDropDowb(
-                    binding.autoCompleteGuardianType,
-                    error
-                )
             } else true
 
-            val bGName = if (it.guardianName!!.isEnabled && it.guardianName!!.isMandatory) {
-                binding.textInputLayGuardianName.validate(
-                    binding.textInputETGuardianName,
-                    error
-                )
-            } else true
+
+            val bGuardianType =
+                if (it.guardianType?.isEnabled == true && it.guardianType?.isMandatory == true) {
+                    binding.textInputLayGuardianType.validateDropDowb(
+                        binding.autoCompleteGuardianType,
+                        error
+                    )
+                } else true
+
+            val bGName =
+                if (it.guardianName?.isEnabled == true && it.guardianName?.isMandatory == true) {
+                    binding.textInputLayGuardianName.validate(
+                        binding.textInputETGuardianName,
+                        error
+                    )
+                } else true
 
             val bEmName =
-                if (it.emergencyContactName!!.isEnabled && it.emergencyContactName!!.isMandatory) {
+                if (it.emergencyContactName?.isEnabled == true && it.emergencyContactName?.isMandatory == true) {
                     binding.textInputLayECName.validate(binding.textInputETECName, error)
                 } else true
 
             val bEmPhone =
-                if (it.emergencyContactNumber!!.isEnabled && it.emergencyContactNumber!!.isMandatory) {
+                if (it.emergencyContactNumber?.isEnabled == true && it.emergencyContactNumber?.isMandatory == true) {
                     Timber.d { "Emergency validation" }
                     binding.textInputLayEMPhoneNumber.validate(
                         binding.textInputETEMPhoneNumber,
@@ -501,11 +566,35 @@ class PatientPersonalInfoFragment :
                         valid
                     } ?: false)
 
-
-                } else true
+                }
+                // comparing em-contact number with phone number only
+                // when field is not mandatory
+                else {
+                    binding.textInputETEMPhoneNumber.let { etEm ->
+                        // checking emergency contact number entered or not
+                        // if entered, then checking the 10 digits validation and
+                        // comparing with phone number
+                        if (etEm.text?.isNotEmpty() == true) {
+                            binding.textInputLayEMPhoneNumber.validateDigit(
+                                binding.textInputETEMPhoneNumber,
+                                R.string.enter_10_digits,
+                                10
+                            ).and(binding.textInputETPhoneNumber.text?.let { phone ->
+                                val valid =
+                                    phone.toString() != binding.textInputETEMPhoneNumber.text.toString()
+                                if (!valid) {
+                                    binding.textInputLayEMPhoneNumber.error = getString(
+                                        R.string.phone_number_and_emergency_number_can_not_be_the_same
+                                    )
+                                }
+                                valid
+                            } ?: false)
+                        } else true
+                    }
+                }
 
             val bEmContactType =
-                if (it.emergencyContactType!!.isEnabled && it.emergencyContactType!!.isMandatory) {
+                if (it.emergencyContactType?.isEnabled == true && it.emergencyContactType?.isMandatory == true) {
                     binding.textInputLayEmContactType.validateDropDowb(
                         binding.autoCompleteEmContactType,
                         error
@@ -514,7 +603,7 @@ class PatientPersonalInfoFragment :
 
             if (bProfile.and(bFName).and(bMName).and(bLName).and(bGender)
                     .and(bDob).and(bAge).and(bPhone).and(bGName).and(bGuardianType)
-                    .and(bEmName).and(bEmPhone).and(bEmContactType)
+                    .and(bEmName).and(bEmPhone).and(bEmContactType).and(bEPhone)
             ) block.invoke()
         }
     }

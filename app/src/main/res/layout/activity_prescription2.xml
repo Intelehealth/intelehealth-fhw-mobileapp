@@ -743,8 +743,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dividerNoPrescription"
-                            android:layout_marginBottom="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_12"
+                            android:layout_marginBottom="@dimen/fu_margin_start"
                             android:paddingHorizontal="@dimen/padding_12"
                             android:text="@string/no_information_with_bullet"
                             android:textSize="@dimen/find_patient_hint_size" />
@@ -929,7 +929,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
                                 android:layout_toEndOf="@+id/ivPresTestIcon"
-                                android:text="Test" />
+                                android:text="@string/test" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                                 android:id="@+id/btnup_test_header"
@@ -1231,6 +1231,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/margin_24"
             android:layout_marginBottom="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:paddingTop="@dimen/fu_margin_start"
@@ -1240,26 +1241,25 @@
                 android:id="@+id/btn_vs_print"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_8"
+
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
-                app:backgroundTint="@null"
                 android:lineHeight="@dimen/button_line_height"
                 android:padding="@dimen/fu_margin_start"
                 android:text="@string/action_print"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/btn_vs_share"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/common_edittext_margin_top"
-                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_marginStart="@dimen/margin_16"
+
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"

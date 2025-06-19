@@ -48,12 +48,25 @@ public class StateData implements Serializable {
         this.stateHindi = stateHindi;
     }
 
+    public String getStateMarathi() {
+        return stateMarathi;
+    }
+
+    public void setStateMarathi(String stateMarathi) {
+        this.stateMarathi = stateMarathi;
+    }
+
     @NonNull
     @Override
     public String toString() {
         SessionManager sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equals("hi")) {
             return stateHindi;
-        } else return state;
+        } else if (sessionManager.getAppLanguage().equals("mr")) {
+            return stateMarathi;}
+        else return state;
     }
+    @Expose
+    @SerializedName("state-mr")
+    private String stateMarathi;
 }

@@ -43,7 +43,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amazonaws.HttpMethod;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -66,6 +65,7 @@ import org.intelehealth.klivekit.chat.model.DayHeader;
 import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -89,7 +89,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.socket.emitter.Emitter;
@@ -100,6 +102,7 @@ public class ChatActivity extends AppCompatActivity {
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     private ChatListingAdapter mChatListingAdapter;
+    private PreferenceHelper preferenceHelper;
 
     //    private Socket mSocket;
     private RequestQueue mRequestQueue;
@@ -276,6 +279,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentResourceId());
+        preferenceHelper = new PreferenceHelper(ChatActivity.this);
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
@@ -432,7 +436,15 @@ public class ChatActivity extends AppCompatActivity {
                 Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
             }
-        });
+        }){
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                return headers;
+            }
+        };
+
+
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -558,7 +570,13 @@ public class ChatActivity extends AppCompatActivity {
             }, error -> {
                 Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
                 mLoadingLinearLayout.setVisibility(View.GONE);
-            });
+            }){
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                    return headers;
+                }
+            };
             mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -574,7 +592,14 @@ public class ChatActivity extends AppCompatActivity {
 //            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()))
+        {
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
+                return headers;
+            }
+        };
         mRequestQueue.add(jsonObjectRequest);
     }
 

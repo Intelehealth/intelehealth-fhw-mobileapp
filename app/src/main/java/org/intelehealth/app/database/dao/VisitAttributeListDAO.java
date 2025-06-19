@@ -1,22 +1,34 @@
 package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
+import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import org.intelehealth.app.utilities.CustomLog;
+import android.util.Log;
 
-import java.util.List;
-import java.util.UUID;
+import com.google.gson.Gson;
 
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar
@@ -25,14 +37,27 @@ import org.intelehealth.app.utilities.exception.DAOException;
  */
 
 
-public class VisitAttributeListDAO {
+public class VisitAttributeListDAO extends BaseDao{
     private long createdRecordsCount = 0;
     private static final String TAG = "VisitAttributeListDAO";
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                visitsList.add(createVisitAttributeMap(visitDTO));
+            }
+        }
+        executeInBackground(bulkInsert(visitsList));
+
+       /* boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -48,7 +73,7 @@ public class VisitAttributeListDAO {
             db.endTransaction();
 
         }
-
+*/
         return isInserted;
     }
 
@@ -69,14 +94,18 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                } else {
-                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+//                if (createdRecordsCount != -1) {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                } else {
+//                    CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+//                }
             }
         } catch (SQLException e) {
             isCreated = false;
@@ -190,5 +219,104 @@ public class VisitAttributeListDAO {
         //db.endTransaction();
 
         return specialityValue;
+    }
+
+    @Override
+    String tableName() {
+        return "tbl_visit_attribute";
+    }
+    public HashMap<String, Object> createVisitAttributeMap(VisitAttributeDTO visitDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", visitDTO.getUuid());
+        values.put("visit_uuid", visitDTO.getVisit_uuid());
+        values.put("value", visitDTO.getValue());
+        values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
+        values.put("voided", visitDTO.getVoided());
+        values.put("sync", "1");
+        return values;
+    }
+    public boolean insertProvidersAttributeListAfterSetup(List<VisitAttributeDTO> visitAttributeDTOS)
+            throws DAOException {
+        boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                // Repeat visit attributes with different uuids -
+                //1 value and visit attribute type - both same - update new record  with pull api record -uuid
+                //2 Value and visit attribute type both different then insert new record
+                boolean isRecordExist =checkWhetherRecordExistOrNot(visitDTO);
+                if(isRecordExist){
+                    // cant update uuid because its primary key
+                    updateRecord(visitDTO);
+                }else{
+                    visitsList.add(createVisitAttributeMap(visitDTO));
+                }
+            }
+        }
+        executeInBackground(bulkInsert(visitsList));
+        return isInserted;
+    }
+    public boolean checkWhetherRecordExistOrNot(VisitAttributeDTO visitDTO) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        boolean isRecordExist = false;
+
+        try {
+            db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            db.beginTransaction();
+            String query;
+            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.SPECIALITY)){
+                query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+                        "AND visit_attribute_type_uuid = ? " + " AND value = ? " +
+                        "AND voided = 0 ";/*+
+                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*/
+                cursor = db.rawQuery(query, new String[]{visitDTO.getVisit_uuid(), visitDTO.getVisit_attribute_type_uuid(),visitDTO.getValue()});
+            }else{
+                query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+                        "AND visit_attribute_type_uuid = ? " +
+                        "AND voided = 0 ";/*+
+                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*/
+                cursor = db.rawQuery(query, new String[]{visitDTO.getVisit_uuid(), visitDTO.getVisit_attribute_type_uuid()});
+            }
+
+            isRecordExist = (cursor != null && cursor.getCount() > 0);
+
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
+        return isRecordExist;
+    }
+    private void updateRecord(VisitAttributeDTO visitAttributeDTO) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(() -> {
+            db.beginTransaction();
+            try {
+                String updateQuery = "UPDATE tbl_visit_attribute SET sync = ? WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0";
+                db.execSQL(updateQuery, new Object[]{"1", visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()});
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (db != null) {
+                    db.endTransaction();
+                }
+            }
+        });
+        executorService.shutdown();
     }
 }
