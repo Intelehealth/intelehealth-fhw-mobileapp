@@ -5,4 +5,37 @@
     <dimen name="search_result_head_text">17sp</dimen>
     <dimen name="search_result_body_text">15sp</dimen>
     <dimen name="search_result_chips_text">15sp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="fu_margin_start">12dp</dimen>
+    <dimen name="fu_name_txt_size">16sp</dimen>
+    <dimen name="btn_prioirty_w_60dp">60dp</dimen>
+    <dimen name="btn_prioirty_h_20dp">20dp</dimen>
+    <dimen name="cal_margnin_start">4dp</dimen>
+    <dimen name="item_ta_priority_tag_margin_top">5dp</dimen>
+    <dimen name="item_ta_priority_tag_margin_end">12dp</dimen>
+    <dimen name="cal_size">16dp</dimen>
+    <dimen name="cal_margin_top">6dp</dimen>
+    <dimen name="fu_male_textsize">14sp</dimen>
+    <dimen name="search_toolbar_height">112dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="toolbar_margin_left">24dp</dimen>
+    <dimen name="toolbar_margin_top">44dp</dimen>
+    <dimen name="toolbar_margin_right">24dp</dimen>
+    <dimen name="search_icon_toolbar">20dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="fu_vs_margin_start">8dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="search_empty_margin_top">114dp</dimen>
+    <dimen name="fu_vs_margin_top">40dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="search_icon_bg_dimens">100dp</dimen>
+    <dimen name="search_pat_notfound_txtsize">20sp</dimen>
+    <dimen name="common_button_text_size">16sp</dimen>
+    <dimen name="edittext_textsize_16sp">16sp</dimen>
+    <dimen name="fu_card_margin_sides">12dp</dimen>
+    <dimen name="list_side_margin">16dp</dimen>
+
 </resources>

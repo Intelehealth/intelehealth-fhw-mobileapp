@@ -1,12 +1,15 @@
 package org.intelehealth.ncd.utils
 
 import android.content.Context
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.intelehealth.ncd.R
 import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
 import org.joda.time.Years
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 
@@ -56,6 +59,64 @@ object DateAndTimeUtils {
             return Years.yearsBetween(birth, today).years
         }
         return 0;
+    }
+    fun currentDateTime(): String {
+        Locale.setDefault(Locale.ENGLISH)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+        val todayDate = Date()
+        return dateFormat.format(todayDate)
+    }
+    fun formatDateFromOnetoAnother(
+        date: String,
+        sourceFormat: String,
+        targetFormat: String
+    ): String {
+        if (date.isEmpty()) return ""
+
+        return try {
+            val sdf = SimpleDateFormat(sourceFormat, Locale.ENGLISH)
+            val sdf1 = SimpleDateFormat(targetFormat, Locale.ENGLISH)
+            val parsedDate = sdf.parse(date)
+            parsedDate?.let { sdf1.format(it) } ?: ""
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            ""
+        }
+    }
+    fun getAgeFollowUp(dobString: String?, context: Context): String {
+
+        if (dobString == null) return ""
+
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val targetFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+
+        val date = try {
+            originalFormat.parse(dobString)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            return ""
+        }
+
+        val formattedDate = targetFormat.format(date ?: return "")
+        val components = formattedDate.split("-")
+
+        val year = components[2].toInt()
+        val month = components[1].toInt()
+        val day = components[0].toInt()
+
+        val birthdate = LocalDate(year, month, day)   // Joda-Time LocalDate
+        val now = LocalDate()                         // Current date
+        val period = Period(birthdate, now, PeriodType.yearMonthDay())
+
+        val years = period.getValue(0)
+        val age = if (years > 0) {
+            //CustomLog.d("TAG", "getAge_FollowUp: s : $years")
+            years.toString()
+        } else {
+            "0"
+        }
+
+        return age
     }
 
 }
