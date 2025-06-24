@@ -1834,7 +1834,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String providerID = sessionManager.getProviderID();
         String baseurl = BuildConfig.SERVER_URL + ":3004";
 
-        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(this,visitUUID, appointmentID, reason, providerID, baseurl);
+        new AppointmentUtils().cancelAppointmentRequestOnVisitEnd(this, visitUUID, appointmentID, reason, providerID, baseurl);
     }
 
     private void triggerEndVisit() {
@@ -1977,9 +1977,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         if (id == 1) {
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            }
+
             if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+                } else {
+                    listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -5348,11 +5356,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     /**
      * formatting complain here
      * if any unexpected complain has came then format it here
+     *
      * @param complain
      * @return
      */
     private String getFormattedComplain(String complain) {
-        if(!complain.trim().equals(getString(R.string.general_exam_title).trim())){
+        if (!complain.trim().equals(getString(R.string.general_exam_title).trim())) {
             return complain;
         }
         return "";
