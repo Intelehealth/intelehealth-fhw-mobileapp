@@ -74,6 +74,38 @@ public class SyncUtils {
 
     }
 
+    public void syncBackgroundBeforeLogout() {
+        SyncDAO syncDAO = new SyncDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        syncDAO.pushDataApi();
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
+        imagesPushDAO.loggedInUserProfileImagesPush();
+        /*
+         * Looper.getMainLooper is used in background sync since the sync_background()
+         * is called from the syncWorkManager.java class which executes the sync on the
+         * worker thread (non-ui thread) and the image push is executing on the
+         * ui thread.
+         */
+        final Handler handler_background = new Handler(Looper.getMainLooper());
+        handler_background.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Background Image Push Started");
+                imagesPushDAO.obsImagesPush();
+                Logger.logD(TAG, "Background Image Pull ended");
+            }
+        }, 4000);
+
+        imagesPushDAO.deleteObsImage();
+        NotificationUtils notificationUtils = new NotificationUtils();
+        notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
+                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
+                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
+                .enqueue();
+
+    }
+
     public void syncBackground1() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
