@@ -20,9 +20,11 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
-class GeneralFragment : Fragment(), PatientClickedListener {
+class GeneralFragment : Fragment() , PatientClickedListener{
     private var binding: LayoutNcdPatientCategoryBinding? = null
     private var viewModel: GeneralViewModel? = null
 
@@ -46,8 +48,9 @@ class GeneralFragment : Fragment(), PatientClickedListener {
         val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
         val patientAttributeDao: PatientAttributeDao =
             CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
+        val visitsDao: VisitDao = CategoryDatabase.getInstance(requireContext()).visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao,visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
@@ -73,21 +76,21 @@ class GeneralFragment : Fragment(), PatientClickedListener {
         viewModel?.getPatientsForGeneral()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
             )
 
             val status = "returning"
             val tag = "search"
             val hasPrescription = "false"
 
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
+            intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
             intent.putExtra(
                 Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
+                "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
             )
             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)

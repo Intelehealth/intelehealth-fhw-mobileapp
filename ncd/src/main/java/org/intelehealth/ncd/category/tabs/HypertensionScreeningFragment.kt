@@ -2,6 +2,7 @@ package org.intelehealth.ncd.category.tabs
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +21,15 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 
 class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
     private var viewModel: HypertensionScreeningViewModel? = null
-
+    private lateinit var visitsDao: VisitDao
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +51,10 @@ class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
         val patientAttributeDao: PatientAttributeDao =
             CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+         visitsDao = CategoryDatabase.getInstance(requireContext()).visitDao()
+       /* val patientDetails = visitsDao.getVisitsByPatientUuid("366776a8-2cdf-4ad0-83bf-0b49054d0af9")
+        Log.d("TAG", "initializeData: patientDetails : "+patientDetails)*/
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao,visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
@@ -71,24 +77,24 @@ class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForHypertensionScreening(Constants.HYPERTENSION_EXCLUSION_AGE)
+        viewModel?.getPatientsForHypertensionScreening()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onPatientClicked(patient: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
             )
 
             val status = "returning"
             val tag = "search"
             val hasPrescription = "false"
 
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
+            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.patientId)
             intent.putExtra(
                 Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
+                "${patient.firstName} ${patient.lastName}"
             )
             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)

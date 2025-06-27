@@ -8,17 +8,22 @@ import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
+import org.intelehealth.ncd.model.PatientAttributes
+import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import java.util.UUID
 
 class AnemiaScreeningViewModel(
     private val repository: CategoryRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 
-    private val _anemiaScreeningMutableLiveData: MutableLiveData<List<Patient>> = MutableLiveData()
+  /*  private val _anemiaScreeningMutableLiveData: MutableLiveData<List<Patient>> = MutableLiveData()
+    val anemiaScreeningLiveData = _anemiaScreeningMutableLiveData*/
+    private val _anemiaScreeningMutableLiveData: MutableLiveData<List<PatientVisitDetails>> = MutableLiveData()
     val anemiaScreeningLiveData = _anemiaScreeningMutableLiveData
 
-    fun getPatientsForAnemiaScreening(age: Int) {
+    /*fun getPatientsForAnemiaScreening(age: Int) {
         var anemiaScreeningPatients: MutableList<Patient>
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -35,6 +40,51 @@ class AnemiaScreeningViewModel(
             )
 
             _anemiaScreeningMutableLiveData.postValue(anemiaScreeningPatients)
+        }
+    }*/
+
+    fun getPatientsForAnemiaScreening() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetails(
+                age = Constants.ANEMIA_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.VISIT_NOTE,
+            )
+
+            // Extract patient and attribute info
+            val patientList = result.map {
+                Patient(
+                    uuid = it.patientId ?: "",
+                    firstName = it.firstName,
+                    middleName = it.middleName,
+                    lastname = it.lastName,
+                    gender = it.gender,
+                    dateOfBirth = it.dateOfBirth
+                )
+            }.toMutableList()
+
+            val attributeList = result.map {
+                PatientAttributes(
+                    uuid = UUID.randomUUID().toString(),
+                    patientUuid = it.patientId ?: "",
+                    value = it.value
+                )
+            }.toMutableList()
+
+            // Filter using segregation utility
+            val filteredPatients = utils.segregateAndFetchData(
+                patientList = patientList,
+                patientAttributeList = attributeList,
+                category = Constants.ANEMIA_SCREENING
+            )
+
+            // Now, filter original result using the filtered patient UUIDs
+            val filteredResult = result.filter { detail ->
+                filteredPatients.any { it.uuid == detail.patientId }
+            }
+
+            // Post filtered result
+            _anemiaScreeningMutableLiveData.postValue(filteredResult)
         }
     }
 }

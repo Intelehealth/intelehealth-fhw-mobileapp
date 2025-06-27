@@ -9,17 +9,23 @@ import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
+import org.intelehealth.ncd.model.PatientAttributes
+import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import java.util.UUID
 
 class DiabetesFollowUpViewModel(
     private val repository: CategoryRepository,
     private val utils: CategorySegregationUtils
 ) : ViewModel() {
 
-    private val _diabetesFollowUpMutableLiveData = MutableLiveData<List<Patient>>()
-    val diabetesFollowUpLiveData: LiveData<List<Patient>> = _diabetesFollowUpMutableLiveData
+   /* private val _diabetesFollowUpMutableLiveData = MutableLiveData<List<Patient>>()
+    val diabetesFollowUpLiveData: LiveData<List<Patient>> = _diabetesFollowUpMutableLiveData*/
 
-    fun getPatientsForDiabetesFollowUp(age: Int) {
+    private val _diabetesFollowUpMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
+    val diabetesFollowUpLiveData: LiveData<List<PatientVisitDetails>> = _diabetesFollowUpMutableLiveData
+
+    /*fun getPatientsForDiabetesFollowUp(age: Int) {
         var diabetesFollowUpPatients: MutableList<Patient>
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -37,5 +43,50 @@ class DiabetesFollowUpViewModel(
 
             _diabetesFollowUpMutableLiveData.postValue(diabetesFollowUpPatients)
         }
+    }*/
+    fun getPatientsForDiabetesFollowUp() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetails(
+                age = Constants.DIABETES_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.VISIT_NOTE,
+            )
+
+            // Extract patient and attribute info
+            val patientList = result.map {
+                Patient(
+                    uuid = it.patientId ?: "",
+                    firstName = it.firstName,
+                    middleName = it.middleName,
+                    lastname = it.lastName,
+                    gender = it.gender,
+                    dateOfBirth = it.dateOfBirth
+                )
+            }.toMutableList()
+
+            val attributeList = result.map {
+                PatientAttributes(
+                    uuid = UUID.randomUUID().toString(),
+                    patientUuid = it.patientId ?: "",
+                    value = it.value
+                )
+            }.toMutableList()
+
+            // Filter using segregation utility
+            val filteredPatients = utils.segregateAndFetchData(
+                patientList = patientList,
+                patientAttributeList = attributeList,
+                category = Constants.DIABETES_FOLLOW_UP
+            )
+
+            // Now, filter original result using the filtered patient UUIDs
+            val filteredResult = result.filter { detail ->
+                filteredPatients.any { it.uuid == detail.patientId }
+            }
+
+            // Post filtered result
+            _diabetesFollowUpMutableLiveData.postValue(filteredResult)
+        }
     }
+
 }
