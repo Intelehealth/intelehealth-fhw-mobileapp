@@ -5,19 +5,24 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.intelehealth.ncd.model.Encounter
+import org.intelehealth.ncd.model.Obs
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
+import org.intelehealth.ncd.model.Visit
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
+import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.getApplicationName
 import java.io.File
 import java.util.Locale
 
-@Database(entities = [Patient::class, PatientAttributes::class], version = 4)
+@Database(entities = [Patient::class, PatientAttributes::class, Visit::class, Encounter::class, Obs::class], version = 4)
 abstract class CategoryDatabase : RoomDatabase() {
 
     abstract fun patientDao(): PatientDao
     abstract fun patientAttributeDao(): PatientAttributeDao
+    abstract fun visitDao(): VisitDao
 
     companion object {
 

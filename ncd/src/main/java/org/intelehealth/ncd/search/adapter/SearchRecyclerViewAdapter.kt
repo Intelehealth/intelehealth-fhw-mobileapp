@@ -81,14 +81,14 @@ class SearchRecyclerViewAdapter(
             }
 
             binding.root.setOnClickListener {
-                listener.onPatientClicked(
+               /* listener.onPatientClicked(
                     Patient(
                         uuid = data.uuid,
                         firstName = data.firstName,
                         middleName = data.middleName,
                         lastname = data.lastname
                     )
-                )
+                )*/
             }
         }
     }
