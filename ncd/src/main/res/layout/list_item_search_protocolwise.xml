@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
+        <variable
+            name="visitDetail"
+            type="org.intelehealth.ncd.model.PatientVisitDetails" />
     </data>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fu_cardview_item"
@@ -44,6 +49,7 @@
                             android:id="@+id/profile_imgview"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            app:profileUrl= "@{visitDetail.patientPhoto}"
                             android:src="@drawable/avatar1" />
                     </androidx.cardview.widget.CardView>
 
@@ -68,7 +74,7 @@
                                 android:gravity="center_vertical"
                                 android:lineSpacingExtra="3sp"
                                 android:maxLines="1"
-                                android:text="test"
+                                android:text='@{visitDetail.firstName + " " + visitDetail.lastName}'
                                 android:textAppearance="@style/label"
                                 android:textColor="@null"
                                 android:textSize="@dimen/fu_name_txt_size" />
@@ -79,34 +85,34 @@
                                 android:layout_height="@dimen/btn_prioirty_h_20dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginStart="@dimen/cal_margnin_start"
+                                android:gravity="center_vertical"
                                 android:visibility="gone"
-                                tools:visibility="gone"
-                                android:gravity="center_vertical">
+                                tools:visibility="gone">
 
                                 <LinearLayout
                                     android:id="@+id/llPriorityTagSearchPatientListItem"
-                                    android:contentDescription="Search Patient List Item Priority Tag Linear Layout"
-                                    android:layout_gravity="top|end|center"
-                                    android:layout_marginTop="@dimen/item_ta_priority_tag_margin_top"
-                                    android:layout_marginEnd="@dimen/item_ta_priority_tag_margin_end"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
+                                    android:layout_gravity="top|end|center"
+                                    android:layout_marginTop="@dimen/item_ta_priority_tag_margin_top"
+                                    android:layout_marginEnd="@dimen/item_ta_priority_tag_margin_end"
                                     android:background="@drawable/ui2_frame_priority"
+                                    android:contentDescription="Search Patient List Item Priority Tag Linear Layout"
                                     android:gravity="center"
                                     android:visibility="gone"
                                     tools:visibility="visible">
 
                                     <TextView
                                         android:id="@+id/fu_priority_tag"
-                                        android:layout_gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
                                         android:lineSpacingExtra="0sp"
                                         android:text="@string/priority"
-                                        android:textColor="@color/white"
                                         android:textAlignment="center"
                                         android:textAllCaps="true"
+                                        android:textColor="@color/white"
                                         android:textSize="10sp"
                                         android:textStyle="bold" />
 
@@ -121,7 +127,8 @@
                             android:layout_height="@dimen/cal_size"
                             android:layout_below="@+id/lll"
                             android:layout_marginTop="@dimen/cal_margin_top"
-                            android:src="@drawable/followup_item_calendar" />
+                            android:src="@drawable/followup_item_calendar"
+                            app:visibleIfNotNullOrEmpty="@{visitDetail.startDate}" />
 
                         <TextView
                             android:id="@+id/search_date_relative"
@@ -133,7 +140,8 @@
                             android:layout_toEndOf="@+id/fu_item_calendar"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
-                            android:text="@string/search_date_txt"
+                            android:text='@{visitDetail.startDate}'
+                            android:textAppearance="@style/label"
                             android:textColor="@color/search_followup"
                             android:textSize="@dimen/fu_male_textsize" />
 
@@ -142,11 +150,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/search_date_relative"
+                            android:layout_marginHorizontal="2dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:visibility="gone"
-                            tools:visibility="gone"
-                            android:layout_marginHorizontal="2dp"
+                            android:visibility="@{visitDetail.isPrescriptionExist() ? View.VISIBLE : View.GONE}"
                             app:cardCornerRadius="3dp">
 
                             <LinearLayout
@@ -179,12 +186,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/search_date_relative"
+                            android:layout_marginHorizontal="2dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:visibility="visible"
-                            tools:visibility="visible"
-                            android:layout_marginHorizontal="2dp"
-                            app:cardCornerRadius="3dp">
+                            android:visibility="gone"
+                            app:cardCornerRadius="3dp"
+                            tools:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -218,11 +225,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/search_date_relative"
+                            android:layout_marginHorizontal="2dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:visibility="gone"
-                            tools:visibility="gone"
-                            android:layout_marginHorizontal="2dp"
+                            app:prescriptionStatusVisibility="@{visitDetail}"
                             app:cardCornerRadius="3dp">
 
                             <LinearLayout
@@ -269,7 +275,7 @@
                         android:layout_marginStart="@dimen/cal_margnin_start"
                         android:layout_gravity="end"
                         android:lineSpacingExtra="3sp"
-                        android:text="@string/search_gender"
+                        app:genderWithAge="@{visitDetail}"
                         android:paddingRight="5dp"
                         android:textAppearance="@style/label_misc_txt_14sp"
                         android:textColor="@null"

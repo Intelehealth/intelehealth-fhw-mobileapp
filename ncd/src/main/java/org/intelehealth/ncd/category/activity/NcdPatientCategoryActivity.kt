@@ -37,7 +37,7 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         fetchData()
-        setToolbar()
+        //setToolbar()
         setListeners()
         setViewPager()
     }
@@ -46,22 +46,22 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         isPrivacyNotice = intent.getBooleanExtra(Constants.IS_PRIVACY_NOTICE, false)
     }
 
-    private fun setToolbar() {
+   /* private fun setToolbar() {
         binding?.toolbar?.apply {
             setSupportActionBar(this)
             setTitleTextAppearance(this@NcdPatientCategoryActivity, R.style.ToolbarTheme)
             setTitleTextColor(Color.WHITE)
         }
     }
-
+*/
     private fun setListeners() {
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
-        binding?.ivBack?.setOnClickListener {
+        binding?.backbtn?.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        binding?.toolbarSearch?.setOnClickListener {
+        binding?.searchTxtEnter?.setOnClickListener {
             val intent = Intent(this@NcdPatientCategoryActivity, NcdSearchActivity::class.java)
             intent.putExtra(Constants.IS_PRIVACY_NOTICE, isPrivacyNotice)
             startActivity(intent)
