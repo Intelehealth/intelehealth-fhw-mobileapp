@@ -69,7 +69,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "UNIQUE(uuid) ON CONFLICT IGNORE)";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT NOT NULL PRIMARY KEY," +
             "visituuid TEXT," +
             "encounter_time TEXT," +
             "provider_uuid TEXT," +
@@ -151,8 +151,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
-    public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
-            "uuid TEXT PRIMARY KEY," +
+   /* public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
+            "uuid TEXT  NOT NULL PRIMARY KEY," +
             "patientuuid TEXT," +
             "startdate TEXT," +
             "enddate TEXT," +
@@ -164,10 +164,25 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' ," +
             "issubmitted Integer DEFAULT 0" +
-            ")";
+            ")";*/
+   public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
+           "uuid TEXT NOT NULL PRIMARY KEY," +
+           "patientuuid TEXT," +
+           "startdate TEXT," +
+           "enddate TEXT," +
+           "visit_type_uuid TEXT," +
+           "locationuuid TEXT," +
+           "creator TEXT," +
+           "modified_date TEXT," +
+           "isdownloaded TEXT DEFAULT 'false'," +
+           "voided TEXT DEFAULT '0'," +
+           "sync TEXT DEFAULT 'false'," +
+           "issubmitted INTEGER DEFAULT 0" +
+           ")";
+
 
     public static final String CREATE_OBS_MAIN = "CREATE TABLE IF NOT EXISTS tbl_obs (" +
-            "uuid TEXT PRIMARY KEY ," +
+            "uuid TEXT NOT NULL PRIMARY KEY ," +
             "encounteruuid TEXT," +
             "conceptuuid TEXT," +
             "value TEXT," +

@@ -118,5 +118,16 @@ object DateAndTimeUtils {
 
         return age
     }
+    fun formatStartVisitDate(dateString: String?, format: String, resultFormat: String): String? {
+        return try {
+            val originalFormat = SimpleDateFormat(format, Locale.ENGLISH)
+            val targetFormat = SimpleDateFormat(resultFormat, Locale.ENGLISH)
+            val date = originalFormat.parse(dateString ?: return null)
+            targetFormat.format(date ?: return null)
+        } catch (ex: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(ex)
+            null
+        }
+    }
 
 }

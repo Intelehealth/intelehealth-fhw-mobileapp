@@ -26,4 +26,8 @@ object Constants {
     // intents
     const val IS_PRIVACY_NOTICE = "isPrivacyNotice"
 
+    const val VISIT_NOTE = "d7151f82-c1f3-4152-a605-2f9ea7414a79"
+
+
+
 }
