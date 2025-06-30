@@ -272,6 +272,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     public void fetchCount() {
         fetchAndSetPrescriptionCount(false);
         fetchAndSetCloseVisitCount(false);
+        getUpcomingAppointments(false);
     }
 
     private void fetchAndSetPrescriptionCount(boolean calledFromOnResume) {
@@ -320,7 +321,6 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     }
 
     private final FragmentOnAttachListener fragmentAttachListener = (fragmentManager, fragment) -> {
-        getUpcomingAppointments();
         startExecutor();
     };
 
@@ -331,6 +331,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         initUI();
         fetchAndSetPrescriptionCount(true);
         fetchAndSetCloseVisitCount(true);
+        getUpcomingAppointments(true);
     }
 
     @Override
@@ -396,7 +397,10 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     }
 
     @SuppressLint("SetTextI18n")
-    private void getUpcomingAppointments() {
+    private void getUpcomingAppointments(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
         Executors.newSingleThreadExecutor().execute(() -> {
             //recyclerview for upcoming appointments
             int totalUpcomingApps = 0;

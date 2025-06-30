@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -110,8 +111,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             @Override
             public void onFinished(int eventFlag) {
                 Log.v(TAG, "onFinished");
-                initLimits();
-                getAppointments();
             }
         });
     }
@@ -124,6 +123,13 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         clickListeners();
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initLimits();
+        getAppointments();
     }
 
     public Context setLocale(Context context) {
