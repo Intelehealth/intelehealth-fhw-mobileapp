@@ -4419,6 +4419,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     // update image database
     private void updateImageDatabase(String imageuuid) {
+    //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
+        final Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            if (intent.hasExtra("CommonVisitData")) {
+                encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
+            } else {
+                encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
+            }
+        }
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC);

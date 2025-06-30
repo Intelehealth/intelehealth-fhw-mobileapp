@@ -246,6 +246,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
 
         encounterAdultIntials = "";
+            encounterAdultIntials = UUID.randomUUID().toString(); //added due to in some case the adult initial encounter is not getting saved aginst physical exam images obs
+
         mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         //intent2.putExtra("encounterUuidAdultIntial", "");
 
