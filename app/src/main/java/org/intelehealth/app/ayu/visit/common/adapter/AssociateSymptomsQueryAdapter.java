@@ -27,6 +27,7 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.json.JSONObject;
 
@@ -460,7 +461,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
 
         editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new EmojiExcludeFilter()});
         editText.setMinLines(5);
         editText.setLines(5);
         editText.setHorizontallyScrolling(false);

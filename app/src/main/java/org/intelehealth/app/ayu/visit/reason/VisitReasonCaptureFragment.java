@@ -3,8 +3,10 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,6 +221,8 @@ public class VisitReasonCaptureFragment extends Fragment {
             mVisitReasonAutoCompleteTextView.setThreshold(2);
             mVisitReasonAutoCompleteTextView.setAdapter(adapter);
             mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
+            mVisitReasonAutoCompleteTextView.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
+
 
             mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

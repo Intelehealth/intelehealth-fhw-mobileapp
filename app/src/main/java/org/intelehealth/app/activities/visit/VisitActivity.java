@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -85,11 +89,11 @@ public class VisitActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
         sessionManager = new SessionManager(this);
-     //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+        //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
-      //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
-       // notificationReceiver.registerNotificationReceiver(this);
+        //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+        // notificationReceiver.registerNotificationReceiver(this);
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
@@ -192,8 +196,8 @@ public class VisitActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-      //  unregisterReceiver(mBroadcastReceiver);
-      //  notificationReceiver.unregisterNotificationReceiver(this);
+        //  unregisterReceiver(mBroadcastReceiver);
+        //  notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {
@@ -203,7 +207,7 @@ public class VisitActivity extends BaseActivity implements
         if (viewPager == null) viewPager = findViewById(R.id.pager_appointments);
 
         if (viewPager.getAdapter() == null) {
-            VisitPagerAdapter adapter = new VisitPagerAdapter(this,this);
+            VisitPagerAdapter adapter = new VisitPagerAdapter(this, this);
             viewPager.setAdapter(adapter);
 
             new TabLayoutMediator(tabLayout, viewPager,
@@ -229,27 +233,27 @@ public class VisitActivity extends BaseActivity implements
 
     }
 
-   /* private void updateCounts(boolean isForReceivedPrescription) {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-            runOnUiThread(() -> {
-                if (isForReceivedPrescription)
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
-                else
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
+    /* private void updateCounts(boolean isForReceivedPrescription) {
+         Executors.newSingleThreadExecutor().execute(() -> {
+             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+             runOnUiThread(() -> {
+                 if (isForReceivedPrescription)
+                     Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
+                 else
+                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
 
-            });
+             });
 
-        });
-    }
-*/
+         });
+     }
+ */
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -257,11 +261,11 @@ public class VisitActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         //register receiver for internet check
-      //  networkUtils.callBroadcastReceiver();
+        //  networkUtils.callBroadcastReceiver();
     }
 
     private void hideProgressbar() {
-        if(syncClicked && !this.isFinishing()){
+        if (syncClicked && !this.isFinishing()) {
             loadingDialog.dismiss();
         }
     }
@@ -318,46 +322,52 @@ public class VisitActivity extends BaseActivity implements
         }
     }
 
-   /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+    /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
-                // FCM A added action received
-                String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
-                syncNow(refresh);
+         @Override
+         public void onReceive(Context context, Intent intent) {
+             if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
+                 // FCM A added action received
+                 String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
+                 syncNow(refresh);
+             }
+         }
+
+         public void registerNotificationReceiver(Context context) {
+             IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
+             LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+         }
+
+         public void unregisterNotificationReceiver(Context context) {
+             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+         }
+     }
+ */
+    private void updateCounts(boolean isForReceivedPrescription) {
+        new Thread(() -> {
+            int count;
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            if (isForReceivedPrescription) {
+                count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
+            } else {
+                count = new VisitsDAO().getVisitCountsByStatus(false);
             }
-        }
-
-        public void registerNotificationReceiver(Context context) {
-            IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
-            LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-        }
-
-        public void unregisterNotificationReceiver(Context context) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-        }
+            int finalCount = count;
+            runOnUiThread(() -> {
+                if (isForReceivedPrescription)
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                            getResources().getString(R.string.received) + "\t(" + finalCount + ")");
+                else
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                            getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
+            });
+        }).start();
     }
-*/
-   private void updateCounts(boolean isForReceivedPrescription) {
-       new Thread(() -> {
-           int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-           runOnUiThread(() -> {
-               if (isForReceivedPrescription)
-                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
-                           getResources().getString(R.string.received) + "\t(" + count + ")");
-               else
-                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
-                           getResources().getString(R.string.pending) + "\t(" + count + ")");
-           });
-       }).start();
-   }
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {
-        Log.d("CCC","isReceivedRecentLoaded");
         isReceivedRecentLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -368,7 +378,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isReceivedOldLoaded(boolean status) {
         isReceivedOldLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -379,7 +389,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isPendingRecentLoaded(boolean status) {
         isPendingRecentLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -390,7 +400,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isPendingOldLoaded(boolean status) {
         isPendingOldLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();

@@ -572,13 +572,15 @@
 
     <style name="AppTheme.InputBox.Name" parent="AppTheme.InputBox">
         <item name="android:maxLength">25</item>
-<!--        <item name="android:digits">@string/validation_latter_only</item>-->
+        <!--        <item name="android:digits">@string/validation_latter_only</item>-->
         <item name="android:inputType">textCapWords</item>
     </style>
+
     <style name="AppTheme.InputBox.Name1" parent="AppTheme.InputBox">
-        <!--<item name="android:maxLength">25</item>
-        <item name="android:digits">@string/validation_latter_with_space_only</item>-->
+        <item name="android:maxLength">25</item>
+        <item name="android:digits">@string/validation_latter_with_space_only</item>
     </style>
+
     <style name="AppTheme.InputBox.Number" parent="AppTheme.InputBox">
         <item name="android:maxLength">25</item>
 
@@ -590,12 +592,15 @@
 
     <style name="AppTheme.InputBox.Address" parent="AppTheme.InputBox">
         <!--        <item name="android:maxLength">25</item>-->
-<!--        <item name="android:digits">@string/validation_address</item>-->
+        <!--Enabled the validation, if validation is not required then remove from xml design  -->
+        <item name="android:digits">@string/validation_address</item>
         <item name="android:inputType">textPostalAddress</item>
     </style>
+
     <style name="AppTheme.InputBox.Address1" parent="AppTheme.InputBox">
         <!--        <item name="android:maxLength">25</item>-->
-<!--        <item name="android:digits">@string/validation_address_with_space</item>-->
+        <!--Enabled the validation, if validation is not required then remove from xml design  -->
+        <item name="android:digits">@string/validation_address_with_space</item>
         <item name="android:inputType">textPostalAddress</item>
     </style>
 
@@ -663,6 +668,7 @@
         <item name="android:paddingStart">10dp</item>
 
     </style>
+
     <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:textAllCaps">false</item>
@@ -672,22 +678,26 @@
         <item name="backgroundTint">@null</item>
         <item name="android:letterSpacing">0.02</item>
     </style>
+
     <style name="CommonRadioButtonStyle" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="android:button">@drawable/selector_radio_button</item>
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:textColor">@color/textColorBlack</item>
         <item name="android:textSize">@dimen/common_button_text_size</item>
     </style>
+
     <style name="HouseholdSurveyTexts">
         <item name="android:textSize">@dimen/edittext_textsize_16sp</item>
         <item name="android:textColor">@color/textview_color</item>
         <item name="android:fontFamily">@font/lato_regular</item>
     </style>
+
     <style name="Theme.IDA.TextAppearance.ScreenTitle" parent="Theme.IDA.TextAppearance.Primary">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
 
     </style>
+
     <style name="Theme.IDA.TextAppearance.Primary" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/dm_sans</item>
@@ -697,6 +707,7 @@
         <item name="android:textColor">@color/colorTextSecondary</item>
         <item name="android:fontFamily">@font/dm_sans</item>
     </style>
+
     <style name="Theme.IDA.TextAppearance.Label" parent="Theme.IDA.TextAppearance.Secondary">
         <item name="android:textSize">14sp</item>
     </style>
