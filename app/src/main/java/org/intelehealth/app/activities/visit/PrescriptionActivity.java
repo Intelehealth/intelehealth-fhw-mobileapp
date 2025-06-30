@@ -521,6 +521,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 prescriptionDataModel.setHemoglobin(hemoglobin);
                 prescriptionDataModel.setUricAcid(uricAcid);
                 prescriptionDataModel.setCholesterol(cholesterol);
+                prescriptionDataModel.setReferredSpecialist(referredSpeciality);
+                Log.d(TAG, "setDataToView: referredSpeciality : "+referredSpeciality);
 
                 Log.d(TAG, "setDataToView: bloodGlucoseRandom  : " + new Gson().toJson(bloodGlucoseRandom));
                 Log.d(TAG, "setDataToView: bloodGlucoseFasting  : " + new Gson().toJson(bloodGlucoseFasting));

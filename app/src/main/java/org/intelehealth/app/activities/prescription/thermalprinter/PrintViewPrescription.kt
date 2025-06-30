@@ -205,7 +205,6 @@ class PrintViewPrescription(
 
     private fun formatPrescribedTests(): String {
         var htmlDocument = ""
-        Log.d(TAG, "formatPrescribedTests: tests  : ${replaceDot(dataModel.testsReturned)}")
         if (dataModel.testsReturned.isNotEmpty()) {
             htmlDocument =
                 "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${replaceDot(dataModel.testsReturned)} <br>"
@@ -240,6 +239,7 @@ class PrintViewPrescription(
             .append(formatDiagnosis())
             .append(formatMedicationPlan())
             .append(formatPrescribedTests())
+            .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
             .toString()
@@ -260,7 +260,6 @@ class PrintViewPrescription(
     private fun formatFollowUpDate(): String {
         var htmlDocument = ""
         val followUpWeb = followUpWeb()
-        Log.d(TAG, "formatFollowUpDate: followUpWeb : "+followUpWeb)
         if (followUpWeb.isNotEmpty()) {
             htmlDocument = "<b id=\"follow_up_heading\">* Follow Up Date </b><br>$followUpWeb<br>"
         }
@@ -331,7 +330,6 @@ class PrintViewPrescription(
             }
         }
 
-        Log.d(TAG, "kzfollowUpWeb: followUpDateStr : $followUpDateStr")
         return stringToWebSms(followUpDateStr.ifBlank { "NA" })
     }
 
@@ -344,5 +342,12 @@ class PrintViewPrescription(
         }
         return formatted
     }
-
+    private fun formatReferredSpecialist(): String {
+        var htmlDocument = ""
+        if (dataModel.referredSpecialist.isNotEmpty()) {
+            htmlDocument =
+                "<b id=\"referred_specialist_heading\" >* Referred Specialist </b>${replaceDot(dataModel.referredSpecialist)}<br><br>"
+        }
+        return htmlDocument
+    }
 }

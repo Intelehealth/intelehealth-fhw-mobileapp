@@ -262,10 +262,19 @@ public class PrintViewPrescriptionDataModel {
     }
 
     private String followUpDate;
+
+    public String getReferredSpecialist() {
+        return referredSpecialist;
+    }
+
+    public void setReferredSpecialist(String referredSpecialist) {
+        this.referredSpecialist = referredSpecialist;
+    }
+
     private String doctorName;
     private String prescription1;
     private String prescription2;
     private String BP;
     private String medicalAdvice;
-
+    private String referredSpecialist;
 }

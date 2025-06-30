@@ -55,7 +55,7 @@ object PrescriptionDetailsDataKeys {
         const val TESTS = "Tests"
     }
     object Referral {
-        const val REFERRAL = "Referral"
+        const val REFERRAL = "Referred Specialist"
     }
     fun getLabelForKey(key: String): String {
         return when (key) {

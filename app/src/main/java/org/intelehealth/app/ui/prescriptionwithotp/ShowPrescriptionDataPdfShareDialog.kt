@@ -138,7 +138,7 @@ class ShowPrescriptionDataPdfShareDialog(
             val outputDir = activity.getExternalFilesDir(null) // or use context.getCacheDir()
             val outputFile = File(outputDir, fileName)
 
-            // 🔥 Delete existing file if present
+            //  Delete existing file if present
             if (outputFile.exists()) {
                 outputFile.delete()
             }
@@ -219,7 +219,7 @@ class ShowPrescriptionDataPdfShareDialog(
             "Medication Plan" to mapOf(PrescriptionDetailsDataKeys.MedicationPlan.toString() to prescriptionData.visitCompleteEncData?.get("Medicine")),
             "General Advice" to mapOf(PrescriptionDetailsDataKeys.GeneralAdvice.toString() to formatedAdvice),
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
-            "Referral" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referral")),
+            "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
             "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date")))
 
         val patientData = createPatientData(prescriptionData.patient)
