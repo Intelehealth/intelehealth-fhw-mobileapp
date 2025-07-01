@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">आरोग्य पथ</string>
+    <string name="app_name" translatable="false">TeleMedKG-MCH</string>
     <string name="intro_title_1">हम कौन हैं?</string>
     <string name="intro_tagline_1">आरोग्य पथ एक अभिनव टेलीमेडिसिन प्लेटफ़ॉर्म है जिसे उच्च गुणवत्ता वाली स्वास्थ्य सेवाएँ प्रदान करने के लिए फ्रंटलाइन स्वास्थ्य कार्यकर्ता और रोगी को एक आभासी डॉक्टर से जोड़कर दूरदराज के क्षेत्रों में स्वास्थ्य सेवा पहुँच के अंतर को पाटने के लिए डिज़ाइन किया गया है।</string>
     <string name="intro_title_2">मरीज़ों से मिलें</string>
