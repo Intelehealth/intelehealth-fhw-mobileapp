@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
