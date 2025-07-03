@@ -127,7 +127,7 @@
                         android:text="@{ personalConfig.firstName.mandatory ? @string/first_name_mandatory + ` *` : @string/first_name_mandatory}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/first_name_mandatory" />
+                        tools:text="@string/first_name" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayFName"
@@ -210,7 +210,7 @@
                         android:text="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/last_name_mandatory" />
+                        tools:text="@string/last_name" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayLName"
@@ -253,7 +253,7 @@
                         android:textSize="@null"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/gender_mandatory" />
+                        tools:text="@string/gender" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
@@ -335,7 +335,7 @@
                         android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/date_of_birth_mandatory" />
+                        tools:text="@string/date_of_birth" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayDob"
@@ -384,7 +384,7 @@
                         android:text="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/age_mandatory" />
+                        tools:text="@string/age" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayAge"
