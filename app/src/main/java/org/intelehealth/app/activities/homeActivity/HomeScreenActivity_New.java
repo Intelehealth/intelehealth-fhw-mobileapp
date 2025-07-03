@@ -1117,7 +1117,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
 
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
-        boolean isSynced = syncUtils.syncForeground("home");
+        boolean isSynced = syncUtils.syncForeground("");
         if (!isSynced) {
             syncDialog.dismiss();
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
@@ -1176,6 +1176,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setCurrentLocationUuid(villageName.getKey());
         sessionManager.setFirstTimeSyncExecute(true);
         sessionManager.setFirstTimeLaunched(true);
+        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
+        sessionManager.setPulled("2006-08-22 22:21:48");
 
         clearDatabase();
         progress.dismiss();

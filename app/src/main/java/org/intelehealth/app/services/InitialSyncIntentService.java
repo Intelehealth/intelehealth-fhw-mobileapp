@@ -58,12 +58,16 @@ public class InitialSyncIntentService extends IntentService {
             if (nextPageNo != -1) {
                 percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
                 Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
-                SyncDAO.setProgress(percentage);
+                if (fromActivity != null && fromActivity.equalsIgnoreCase("home")) {
+                    SyncDAO.setProgress(percentage);
+                }
                 syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
             } else {
                 percentage = 100;
                 Logger.logD(SyncDAO.PULL_ISSUE, "percentage page -1: " + percentage);
-                SyncDAO.setProgress(percentage);
+                if (fromActivity != null && fromActivity.equalsIgnoreCase("home")) {
+                    SyncDAO.setProgress(percentage);
+                }
 
                 sessionManager.setPullExcutedTime(sessionManager.isPulled());
                 sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));

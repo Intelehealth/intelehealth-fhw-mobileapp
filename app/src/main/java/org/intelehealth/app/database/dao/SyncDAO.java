@@ -283,14 +283,14 @@ public class SyncDAO {
                         if (nextPageNo != -1) {
                             percentage = (int) Math.round(nextPageNo * 100.0 / totalCount);
                             Logger.logD(PULL_ISSUE, "percentage: " + percentage);
-                            setProgress(percentage);
+                            if (fromActivity.equalsIgnoreCase("home")) setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
                         } else {
                             percentage = 100;
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
-                            setProgress(percentage);
+                            if (fromActivity.equalsIgnoreCase("home")) setProgress(percentage);
                             Intent broadcast = new Intent();
                             broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                             broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
