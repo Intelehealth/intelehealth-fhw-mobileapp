@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.firstName.mandatory ? @string/first_name_mandatory + ` *` : @string/first_name_mandatory}"
+                        android:text="@{ personalConfig.firstName.mandatory ? @string/first_name + ` *` : @string/first_name}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/first_name" />
@@ -207,7 +207,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
+                        android:text="@{ personalConfig.lastName.mandatory ? @string/last_name + ` *` : @string/last_name}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/last_name" />
@@ -248,7 +248,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.gender.mandatory ? @string/gender_mandatory + ` *` : @string/gender_mandatory}"
+                        android:text="@{ personalConfig.gender.mandatory ? @string/gender + ` *` : @string/gender}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         app:layout_constraintStart_toStartOf="parent"
@@ -332,7 +332,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
+                        android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth + ` *` : @string/date_of_birth}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/date_of_birth" />
@@ -381,7 +381,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
+                        android:text="@{ personalConfig.age.mandatory ? @string/age + ` *` : @string/age}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/age" />
