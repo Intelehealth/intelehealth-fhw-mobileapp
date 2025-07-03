@@ -64,6 +64,7 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -71,6 +72,7 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.bill.VisitSummaryBillModel;
 import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
 import org.intelehealth.app.ui.billgeneration.models.BillDetails;
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -398,6 +400,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
     private String visitType = "Consultation";
     private boolean isDownloadImageBroadcastRecRegisterd = false;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -494,8 +497,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
-JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
+        String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+        JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -638,11 +641,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 }, hour, minute, true);
         timePickerDialog.show();
         Button posBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.cancel));
+        posBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -664,7 +667,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this,R.string.cancel), (dialog, which) -> {
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this, R.string.cancel), (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
                 dialog.dismiss();
@@ -674,11 +677,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.show();
         // Change button colors dynamically after the dialog is shown
         Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -2727,6 +2730,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
+        etAdditionalNotesVS.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
 
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
@@ -3238,10 +3242,10 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-                if(BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
                 else
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
                 if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
@@ -3518,7 +3522,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     // receiver download
     public void registerBroadcastReceiverDynamically() {
-        if(!isDownloadImageBroadcastRecRegisterd) {
+        if (!isDownloadImageBroadcastRecRegisterd) {
             IntentFilter filter = new IntentFilter();
             filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
             ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -4114,7 +4118,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
 
-            if(broadcastReceiverForIamgeDownlaod !=null && isDownloadImageBroadcastRecRegisterd){
+            if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
                 unregisterReceiver(broadcastReceiverForIamgeDownlaod);
             }
         } catch (IllegalArgumentException e) {
@@ -5585,7 +5589,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             if (!value.startsWith("{") && !value.endsWith("}"))
                 value = formatHtmlToJson(value);    // NAS-881
 
-          //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
+            //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
@@ -6413,7 +6417,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                         selectedTests[6] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
                         selectedTests[7] = true;
-                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
+                    Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
                 }
@@ -6433,6 +6437,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         }
         return true;
     }
+
     private void setupDiagnosticsConfig() {
         mRandomGlucoseLinearLayout = findViewById(R.id.ll_glucose_random_container);
         mFastingGlucoseLinearLayout = findViewById(R.id.ll_glucose_fasting_container);
@@ -6447,7 +6452,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
         diagnosticsViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
-                    mPatientDiagnosticsList = it;
+                            mPatientDiagnosticsList = it;
                             CustomLog.v(TAG, new Gson().toJson(mPatientDiagnosticsList));
                             updateUIForDiagnostics();
                         }

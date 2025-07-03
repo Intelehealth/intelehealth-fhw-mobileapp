@@ -321,17 +321,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             presc_remind_block = findViewById(R.id.presc_remind_block);
             icon_presc_details = findViewById(R.id.icon_presc_details);
 
-            if (hasPrescription) {
-                presc_arrowRight.setVisibility(View.VISIBLE);
-                presc_relative.setClickable(true);
-                presc_remind_block.setVisibility(View.GONE);
-                if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                    //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-                    String modifiedDate = obsservermodifieddate;
-                    modifiedDate = timeAgoFormat(modifiedDate);
-                    presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                    icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
-                }
+        if (hasPrescription) {
+            presc_arrowRight.setVisibility(View.VISIBLE);
+            presc_relative.setClickable(true);
+            presc_remind_block.setVisibility(View.GONE);
+            String modifiedDate = "";
+            if (!obsservermodifieddate.equalsIgnoreCase("")) {
+                //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+                modifiedDate = obsservermodifieddate;
+            } else {
+                modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+            }
+            modifiedDate = timeAgoFormat(modifiedDate);
+            presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
 
 /*
             presc_arrowRight.setOnClickListener(v -> {
@@ -421,6 +424,93 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             if (chief_complaint_value == null) {
                 ThreadingUtils.executeInBackground(() -> {
                     chief_complaint_value = getChiefComplaint(visitID);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
+
+
+                                boolean needToShowCoreValue = false;
+                                if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
+                                    try {
+                                        // isInOldFormat = false;
+                                        JSONObject jsonObject = new JSONObject(chief_complaint_value);
+                                        if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                            chief_complaint_value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                            needToShowCoreValue = false;
+                                        } else {
+                                            needToShowCoreValue = true;
+                                            chief_complaint_value = jsonObject.getString("en");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    needToShowCoreValue = true;
+                                }
+
+                                if (needToShowCoreValue) {
+                                    chief_complaint_value = chief_complaint_value.replace("?<b>", Node.bullet_arrow);
+
+                                    String[] complaints = org.apache.commons.lang3.StringUtils.split(chief_complaint_value, Node.bullet_arrow);
+
+                                    chief_complaint_value = "";
+                                    String colon = ":";
+                                    if (complaints != null) {
+                                        for (String comp : complaints) {
+                                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
+                                                chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                            }
+                                        }
+                                        if (!chief_complaint_value.isEmpty()) {
+                                            chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
+                                            chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
+                                            chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                            chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
+                                            chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
+                                            chief_complaint_value = chief_complaint_value.trim();
+                                            while (chief_complaint_value.endsWith(",")) {
+                                                chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
+                                            }
+                                        }
+                                    }
+                                    chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+                                } else {
+                                    chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
+                                    System.out.println(chief_complaint_value);
+                                    CustomLog.v(TAG, chief_complaint_value);
+                                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                                    String[] spt = chief_complaint_value.split("►");
+                                    List<String> list = new ArrayList<>();
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (String s : spt) {
+                                        String complainName = "";
+                                        if (s.isEmpty()) continue;
+                                        //String s1 =  new String(s.getBytes(), "UTF-8");
+                                        System.out.println(s);
+                                        String[] spt1 = s.split("::●");
+                                        complainName = spt1[0];
+
+                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                        if (!complainName.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                            System.out.println(complainName);
+                                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                            stringBuilder.append(complainName);
+                                        }
+
+                                    }
+
+
+                                    chief_complaint_txt.setText(stringBuilder.toString());
+                                }
+                            }
+                            chief_complaint_txt.setTextColor(ContextCompat.getColor(VisitDetailsActivity.this, R.color.headline_text_color));
+                            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+                        }
+                    });
                 });
             }
         //    CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
@@ -441,85 +531,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
         }*/
 
-            if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
-
-                boolean needToShowCoreValue = false;
-                if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
-                    try {
-                        // isInOldFormat = false;
-                        JSONObject jsonObject = new JSONObject(chief_complaint_value);
-                        if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                            chief_complaint_value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                            needToShowCoreValue = false;
-                        } else {
-                            needToShowCoreValue = true;
-                            chief_complaint_value = jsonObject.getString("en");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    needToShowCoreValue = true;
-                }
-
-                if (needToShowCoreValue) {
-                    chief_complaint_value = chief_complaint_value.replace("?<b>", Node.bullet_arrow);
-
-                    String[] complaints = org.apache.commons.lang3.StringUtils.split(chief_complaint_value, Node.bullet_arrow);
-
-                    chief_complaint_value = "";
-                    String colon = ":";
-                    if (complaints != null) {
-                        for (String comp : complaints) {
-                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
-                                chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                            }
-                        }
-                        if (!chief_complaint_value.isEmpty()) {
-                            chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
-                            chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
-                            chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                            chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
-                            chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
-                            chief_complaint_value = chief_complaint_value.trim();
-                            while (chief_complaint_value.endsWith(",")) {
-                                chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
-                            }
-                        }
-                    }
-                    chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
-                } else {
-                    chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
-                    System.out.println(chief_complaint_value);
-                    CustomLog.v(TAG, chief_complaint_value);
-                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
-
-                    String[] spt = chief_complaint_value.split("►");
-                    List<String> list = new ArrayList<>();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (String s : spt) {
-                        String complainName = "";
-                        if (s.isEmpty()) continue;
-                        //String s1 =  new String(s.getBytes(), "UTF-8");
-                        System.out.println(s);
-                        String[] spt1 = s.split("::●");
-                        complainName = spt1[0];
-
-                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                        if (!complainName.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                            System.out.println(complainName);
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                            stringBuilder.append(complainName);
-                        }
-                    }
-
-                    chief_complaint_txt.setText(stringBuilder.toString());
-                }
-            }
-            chief_complaint_txt.setTextColor(ContextCompat.getColor(this, R.color.headline_text_color));
-            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
-            //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+        //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
             visitID_txt = findViewById(R.id.visitID);
             String hideVisitUUID = visitID;
