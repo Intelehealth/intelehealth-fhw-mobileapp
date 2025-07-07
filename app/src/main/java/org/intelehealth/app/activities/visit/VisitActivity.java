@@ -350,7 +350,8 @@ public class VisitActivity extends BaseActivity implements
             if (isForReceivedPrescription) {
                 count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
             } else {
-                count = new VisitsDAO().getVisitCountsByStatus(false);
+                //count = new VisitsDAO().getVisitCountsByStatus(false);
+                count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
             }
             int finalCount = count;
             runOnUiThread(() -> {

@@ -901,8 +901,8 @@
     <string name="country">Country</string>
     <string name="state">State</string>
     <string name="village_town_city">Village/Town/City</string>
-    <string name="_corresponding_address_1">संबंधित पत्ता १</string>
-    <string name="_corresponding_address_2">संबंधित पत्ता २</string>
+    <string name="_corresponding_address_1">Corresponding \nAddress 1</string>
+    <string name="_corresponding_address_2">Corresponding \nAddress 2</string>
     <string name="other_details">Other details</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>

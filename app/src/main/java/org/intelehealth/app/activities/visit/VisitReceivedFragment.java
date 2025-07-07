@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -305,7 +306,8 @@ public class VisitReceivedFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+               // int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {
@@ -882,7 +884,7 @@ public class VisitReceivedFragment extends Fragment {
                 "ORDER BY v.startdate DESC " +
                 "LIMIT ? OFFSET ?";
 
-        Log.d("QQQQQ",query);
+        Log.d("QUERY",query);
 
         Cursor cursor = db.rawQuery(query,
                 new String[]{ENCOUNTER_VISIT_COMPLETE, ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)}

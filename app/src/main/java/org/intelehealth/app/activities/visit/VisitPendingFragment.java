@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -395,7 +396,8 @@ public class VisitPendingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                //int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {
@@ -777,7 +779,7 @@ public class VisitPendingFragment extends Fragment {
                         searchQ +
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null && cursor.moveToFirst()) {// Move cursor to first row
             do {
