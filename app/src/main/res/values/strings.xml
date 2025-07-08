@@ -1763,5 +1763,7 @@
     <string name="hw_mobile_number">Health worker number</string>
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
     <string name="pdf_share_flow_title">Share Prescription</string>
+    <string name="feature_not_found">Feature not found</string>
+
 
 </resources>

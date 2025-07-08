@@ -8,14 +8,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import org.intelehealth.app.utilities.CustomLog;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +29,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,10 +43,16 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
+import org.intelehealth.config.presenter.section.factory.ActiveSectionViewModelFactory;
+import org.intelehealth.config.presenter.section.viewmodel.ActiveSectionViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.ActiveLanguage;
+import org.intelehealth.config.room.entity.ActiveSection;
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder;
 
 import java.io.File;
@@ -79,7 +85,41 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
     private LanguageAdapter languageAdapter;
     private ActiveLanguage selectedLanguage;
     private SwitchCompat switchNotification;
+    private List<ActiveSection> mActiveSectionList;
+    private void loadFeatureActiveStatus() {
+        ActiveSectionRepository repository = new ActiveSectionRepository(ConfigDatabase.getInstance(this).activeSectionDao());
+        ActiveSectionViewModel activeSectionViewModel = new ViewModelProvider(this, new ActiveSectionViewModelFactory(repository)).get(ActiveSectionViewModel.class);
+        activeSectionViewModel.fetchActiveSection().observe(this, activeSections -> {
+            if (activeSections != null) {
+                mActiveSectionList = activeSections;
 
+                boolean isFound = false;
+                for (ActiveSection activeSection : mActiveSectionList) {
+
+                    if (activeSection.getKey().equals("update_protocol")) {
+                        isFound = true;
+                        findViewById(R.id.cvProtocall).setVisibility(activeSection.isEnable() ? View.VISIBLE : View.GONE);
+                        // set text as per local language
+                        String lng = sessionManager.getAppLanguage();
+                        String title = activeSection.getLang().get(lng);
+                        Log.v("Language", "title: " + title);
+
+                        if (title != null && !title.trim().isEmpty()) {
+                            ((TextView)findViewById(R.id.protocol_title_tv)).setText(title);
+
+                        } else {
+                            ((TextView)findViewById(R.id.protocol_title_tv)).setText(activeSection.getName());
+                        }
+                    }
+                }
+                if (!isFound) {
+                    findViewById(R.id.cvProtocall).setVisibility(View.GONE);
+                }
+
+            }
+            ;
+        });
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +132,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 
         handleBackPress();
         initUI();
+        loadFeatureActiveStatus();
     }
 
     @Override

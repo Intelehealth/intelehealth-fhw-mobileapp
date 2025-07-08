@@ -1109,5 +1109,6 @@
     <string name="enter_mobile_number_in_profile">Please update your mobile number under profile section</string>
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
     <string name="pdf_share_flow_title">Share Prescription</string>
+    <string name="feature_not_found">Feature not found</string>
 
 </resources>

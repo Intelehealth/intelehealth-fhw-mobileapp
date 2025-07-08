@@ -1,18 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
-import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -42,13 +30,6 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
-import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
-import org.intelehealth.app.utilities.AddPatientUtils;
-
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -76,6 +57,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -92,7 +74,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -117,6 +98,10 @@ import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
+import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
+import org.intelehealth.app.utilities.AddPatientUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -125,11 +110,15 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
+import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
+import org.intelehealth.config.presenter.section.factory.ActiveSectionViewModelFactory;
+import org.intelehealth.config.presenter.section.viewmodel.ActiveSectionViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.ActiveSection;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
@@ -143,7 +132,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -307,6 +295,53 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         mUpdateFragmentOnEvent = listener;
     }
 
+    private List<ActiveSection> mActiveSectionList;
+    private String mMyAchievementsTitle;
+
+
+    private void loadFeatureActiveStatus() {
+        ActiveSectionRepository repository = new ActiveSectionRepository(ConfigDatabase.getInstance(this).activeSectionDao());
+        ActiveSectionViewModel activeSectionViewModel = new ViewModelProvider(this, new ActiveSectionViewModelFactory(repository)).get(ActiveSectionViewModel.class);
+        activeSectionViewModel.fetchActiveSection().observe(this, activeSections -> {
+            if (activeSections != null) {
+                mActiveSectionList = activeSections;
+                Log.v(TAG, "mActiveSectionList size - " + mActiveSectionList.size());
+                // hide the menu
+                boolean isFound = false;
+                for (ActiveSection activeSection : mActiveSectionList) {
+                    Log.v(TAG, "mActiveSectionList .isEnable() - " + activeSection.isEnable());
+                    Log.v(TAG, "mActiveSectionList .name() - " + activeSection.getName());
+                    if (activeSection.getKey().equals("my_achievement")) {
+                        isFound = true;
+
+                        // bottom menu hide
+                        bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setVisible(activeSection.isEnable());
+                        // mDrawerLayout menu also hide
+                        mNavigationView.getMenu().findItem(R.id.menu_my_achievements).setVisible(activeSection.isEnable());
+                        // set text as per local language
+                        String lng = sessionManager.getAppLanguage();
+                        String title = activeSection.getLang().get(lng);
+                         if (title != null && !title.trim().isEmpty()) {
+                            mMyAchievementsTitle = title;
+
+                        } else {
+                            mMyAchievementsTitle = activeSection.getName();
+
+                        }
+                        bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setTitle(mMyAchievementsTitle);
+                        mNavigationView.getMenu().findItem(R.id.menu_my_achievements).setTitle(mMyAchievementsTitle);
+                    }
+                }
+                if (!isFound) {
+                    bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setVisible(false);
+                    // mDrawerLayout menu also hide
+                    mNavigationView.getMenu().findItem(R.id.menu_my_achievements).setVisible(false);
+                }
+
+            }
+            ;
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,7 +376,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
-        //sessionManager = new SessionManager(this);
+        sessionManager = new SessionManager(this);
 
         backPress();
         initUI();
@@ -356,7 +391,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setFirstTimeLaunched(false);
         sessionManager.setMigration(true);
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
-
+        loadFeatureActiveStatus();
     }
 
     private void checkAlarmAndReminderPermission() {
@@ -934,7 +969,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         super.onDestroy();
         notificationReceiver.unregisterModuleBReceiver(this);
         if (scheduleExactAlarmPermissionLauncher != null)
-        scheduleExactAlarmPermissionLauncher.unregister();
+            scheduleExactAlarmPermissionLauncher.unregister();
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
@@ -1021,12 +1056,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String tag = "";
         int itemId = menuItem.getItemId();
         if (itemId == R.id.menu_my_achievements) {
-            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+            tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tvAppLastSync.setVisibility(View.GONE);
             ivHamburger.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
             imageViewIsNotification.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             fragment = new MyAchievementsFragment();
             tag = TAG_ACHIEVEMENT;
         } else if (itemId == R.id.menu_video_lib) {
@@ -1064,14 +1100,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     }
 
-
     @Override
     protected void onResume() {
-        if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
-            ivNotificationIcon.setVisibility(View.VISIBLE);
-        } else {
-            ivNotificationIcon.setVisibility(View.GONE);
-        }
+
+        setupNotificationDotVisibility();
 
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         ContextCompat.registerReceiver(this, syncBroadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -1108,6 +1140,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         super.onResume();
+    }
+
+    private void setupNotificationDotVisibility() {
+        if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
+            ivNotificationIcon.setVisibility(View.VISIBLE);
+        } else {
+            ivNotificationIcon.setVisibility(View.GONE);
+        }
     }
 
     private void checkAppVer() {
@@ -1358,14 +1398,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
+                    setupNotificationDotVisibility();
                     return true;
                 case R.id.bottom_nav_achievements:
-                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
+                    tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
+                    ivNotificationIcon.setVisibility(View.GONE);
                     fragment = new MyAchievementsFragment();
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_ACHIEVEMENT);
@@ -1376,6 +1418,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvAppLastSync.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
+                    ivNotificationIcon.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     fragment = new HelpFragment_New();
                     //loadFragmentForBottomNav(fragment);
@@ -1409,7 +1452,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }
 
                 String idTitleStr = getString(R.string.chw_id);
-                if(providerDTO.getRole().toLowerCase().contains(AppConstants.MCC_USER_TYPE)){
+                if (providerDTO.getRole().toLowerCase().contains(AppConstants.MCC_USER_TYPE)) {
                     idTitleStr = getString(R.string.mcc_id);
                 }
 
@@ -1562,14 +1605,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
         } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
             bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
-            tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
+            tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tag = TAG_ACHIEVEMENT;
         }
         loadFragment(fragment, tag);
@@ -1669,13 +1714,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void updateLastSyncTime() {
         // Run long operations in background
         //new Thread(() -> {
-            String lastSync = sessionManager.getLastSyncDateTime();
-            String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
-            tvAppLastSync.setText(lastSyncText);
-            // Update UI on main thread
-            //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
-       // }).start();
+        String lastSync = sessionManager.getLastSyncDateTime();
+        String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+        tvAppLastSync.setText(lastSyncText);
+        // Update UI on main thread
+        //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
+        // }).start();
     }
+
     private void syncDataFromHome() {
         Data workData = new Data.Builder()
                 .putString("fromActivity", "home")
