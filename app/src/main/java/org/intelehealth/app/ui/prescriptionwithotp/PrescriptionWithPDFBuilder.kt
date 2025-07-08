@@ -36,6 +36,8 @@ import org.intelehealth.app.databinding.LayoutPrescriptionPdfBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import java.io.File
 import java.io.FileOutputStream
+import android.graphics.BitmapFactory
+import android.util.Base64
 
 class PrescriptionWithPDFBuilder(
     private val context: Activity,
@@ -196,8 +198,8 @@ class PrescriptionWithPDFBuilder(
         binding.tvPatientDetails.text = patientData
     }
 
-    fun createSignatureBitmap(fontFamily: String, context: Activity, drSignText: String, drDetails: ClsDoctorDetails) {
-        val drSignTextView = binding.drSignTextview
+    fun createSignatureBitmap(drDetails: ClsDoctorDetails) {
+      /*  val drSignTextView = binding.drSignTextview
        val font =  getFontFamily(fontFamily)
         val typeface = try {
             Typeface.createFromAsset(context.assets, font)
@@ -219,6 +221,12 @@ class PrescriptionWithPDFBuilder(
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         )
         drSignTextView.layout(0, 0, drSignTextView.measuredWidth, drSignTextView.measuredHeight)
+        */
+        decodeBase64ToBitmap(drDetails.signature)?.let { bitmap ->
+            binding.imageviewDrSign.setImageBitmap(bitmap)
+        } ?: run {
+            binding.imageviewDrSign.setImageDrawable(null)
+        }
 
         val drDetailsVal = "${drDetails.name}\n${drDetails.qualification}, ${drDetails.specialization}\n${drDetails.registrationNumber}"
         binding.drDetailsTextview.text = drDetailsVal
@@ -234,4 +242,20 @@ class PrescriptionWithPDFBuilder(
         return fontFamilyFile
 
     }
+    fun decodeBase64ToBitmap(base64String: String): Bitmap? {
+        return try {
+            val base64Cleaned = if (base64String.contains("base64,")) {
+                base64String.substring(base64String.indexOf("base64,") + 7)
+            } else {
+                base64String
+            }
+
+            val decodedBytes = Base64.decode(base64Cleaned, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }

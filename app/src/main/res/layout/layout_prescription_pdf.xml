@@ -88,7 +88,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvPatientDetails" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="end"
@@ -100,8 +100,8 @@
                 android:id="@+id/drSign_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end
-"
+                android:layout_gravity="end"
+                android:visibility="gone"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="2dp"
                 android:includeFontPadding="false"
@@ -109,7 +109,19 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@id/drDetailsTextview"
                 app:layout_constraintStart_toStartOf="@id/drDetailsTextview" />
-
+            <ImageView
+                android:id="@+id/imageview_dr_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="6dp"
+                android:background="@color/amber"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="2dp"
+                android:backgroundTint="@color/deepBlue0"
+                android:includeFontPadding="false"
+                app:layout_constraintBottom_toTopOf="@id/drDetailsTextview"
+                app:layout_constraintStart_toStartOf="@id/drDetailsTextview" />
             <TextView
                 android:id="@+id/drDetailsTextview"
                 android:layout_width="wrap_content"

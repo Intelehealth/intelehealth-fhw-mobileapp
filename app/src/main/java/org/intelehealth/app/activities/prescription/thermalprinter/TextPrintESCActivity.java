@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,6 +23,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +66,7 @@ import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.databinding.ActivityTextPrintEscactivityBinding;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -75,7 +78,7 @@ import java.util.List;
 public class TextPrintESCActivity extends BaseActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
     private static final String TAG = TextPrintESCActivity.class.getSimpleName();
-    private TextView presTextview, drSignTextview, drDetailsTextview;
+    private TextView presTextview, drDetailsTextview;
     private Button btnTextPrint;
     private String printStr;
     private TextSetting textSetting;
@@ -97,11 +100,16 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
     private CheckBox ckSmallFont, ckAntiWhite, ckDoubleWidth,
             ckDoubleHeight, ckBold, ckUnderline;
     private Spinner spinEscFontType;
+    private TextView drSignTextview;
+    private String base64String;
+    private ImageView imgDrSign;
+    private ActivityTextPrintEscactivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_print_escactivity);
+        binding = ActivityTextPrintEscactivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         sessionManager = new SessionManager(getBaseContext());
         initView();
         addListener();
@@ -110,23 +118,22 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
     @SuppressLint("WrongViewCast")
     public void initView() {
-        View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-        tvTitle.setText(getString(R.string.view_print));
+        ImageView ivBack = binding.toolbarCommon.ivBackArrowCommon;
+        ImageView ivIsInternet = binding.toolbarCommon.imageviewIsInternetCommon;
+        binding.toolbarCommon.tvScreenTitleCommon.setText(getString(R.string.view_print));
         ivBack.setVisibility(View.VISIBLE);
         ivBack.setOnClickListener(v -> onBackPressed());
         ivIsInternet.setVisibility(View.GONE);
 
-        presTextview = findViewById(R.id.pres_textview);
-        drSignTextview = findViewById(R.id.drSign_textview);
-        drDetailsTextview = findViewById(R.id.drDetails_textview);
-        btnTextPrint = findViewById(R.id.btn_txtprint);
-        tvDeviceSelected = findViewById(R.id.tv_device_selected);
-        btnConnect = findViewById(R.id.btn_connect);
-        btnDisConnect = findViewById(R.id.btn_disConnect);
-        pbConnect = findViewById(R.id.pb_connect);
+        presTextview =binding.presTextview;
+        drSignTextview = binding.drSignTextview;
+        drDetailsTextview = binding.drDetailsTextview;
+        btnTextPrint = binding.btnTxtprint;
+        tvDeviceSelected = binding.tvDeviceSelected;
+        btnConnect = binding.btnConnect;
+        btnDisConnect = binding.btnDisConnect;
+        pbConnect = binding.pbConnect;
+        imgDrSign = binding.imageviewDrSign;
     }
 
     public void addListener() {
@@ -170,7 +177,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         if (intent != null) {
             //   prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             prescData = intent.getStringExtra("sms_prescripton");
-
+            Log.d(TAG, "init: prescData : "+prescData);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 presTextview.setText(Html.fromHtml(removeNull(prescData), Html.FROM_HTML_MODE_COMPACT));
             } else {
@@ -186,10 +193,13 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
             if (intent.getStringExtra("drSign-text") != null)
                 drSignText = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
+
+            if (intent.getStringExtra("signature") != null)
+                base64String = Html.fromHtml(intent.getStringExtra("signature")).toString();
         }
         Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
 
-      /*  String fontFamilyFile = "";
+        String fontFamilyFile = "";
         if (fontFamily != null) {
             if (fontFamily.toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "fonts/Youthness.ttf";
@@ -201,8 +211,11 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 fontFamilyFile = "fonts/Almondita.ttf";
             }
         }
-
-        if (fontFamily != null) {
+        Bitmap bitmap = setBase64ToImageView();
+        if(bitmap!=null){
+            imgDrSign.setImageBitmap(bitmap);
+        }
+        /*if (fontFamily != null) {
             Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
             drSignTextview.setTypeface(face);
         }
@@ -218,11 +231,11 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         drSignTextview.layout(0, 0, drSignTextview.getMeasuredWidth(), drSignTextview.getMeasuredHeight());
 
-        mBitmap = drSignTextview.getDrawingCache(); // converting Textview to Bitmap Image.
+        mBitmap = drSignTextview.getDrawingCache(); // converting Textview to Bitmap Image.*/
 
         //  pres_textview.setText(prescData);
         drDetailsTextview.setText(doctorDetails);
-        Log.e("pres:", "prescFinal:" + presTextview.getText().toString() + drSignTextview.getText().toString() +
+       /* Log.e("pres:", "prescFinal:" + presTextview.getText().toString() + drSignTextview.getText().toString() +
                 drDetailsTextview.getText().toString());*/
 
 //        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
@@ -540,7 +553,6 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                         bitmapSetting.setBimtapLimitWidth(576);  // 72mm paper = 576 dots
                         escCmd.append(escCmd.getBitmapCmd(bitmapSetting, bitmap));
                     }
-
                     escCmd.append(escCmd.getLFCRCmd());
                     escCmd.append(new byte[]{0x1D, 0x56, 0x41, 0x10}); // Partial Cut
 
@@ -597,7 +609,32 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
         currentYPosition += staticLayout.getHeight() + 10; // Add space after the wrapped text
 
-        if (drSignText != null && !drSignText.isEmpty()) {
+        try {
+            // Decode Base64 and convert to Bitmap
+            Bitmap signBitmap = setBase64ToImageView(); // Assuming this already returns the decoded Bitmap
+
+            if (signBitmap != null) {
+                Log.d(TAG, "Original Signature Size: " + signBitmap.getWidth() + "x" + signBitmap.getHeight());
+
+                int desiredWidth = 120;  // or 300 based on your requirement
+                float scaleRatio = (float) desiredWidth / signBitmap.getWidth();
+                int desiredHeight = (int) (signBitmap.getHeight() * scaleRatio);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(signBitmap, desiredWidth, desiredHeight, true);
+                canvas.drawBitmap(scaledBitmap, 20, currentYPosition, null);
+
+                // Update Y position
+                currentYPosition += scaledBitmap.getHeight() + 10;
+
+            } else {
+                Log.e(TAG, "Signature bitmap is null.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      /*  if (drSignText != null && !drSignText.isEmpty()) {
             try {
                 Typeface customTypeface = Typeface.createFromAsset(getAssets(), "fonts/Almondita.ttf");
                 Paint textPaint1 = new Paint();
@@ -610,9 +647,12 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 currentYPosition += textPaint1.descent() - textPaint1.ascent() + 10; // Decreased margin
 
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e("SignatureError", "Error while drawing signature: " + e.getMessage());
             }
-        }
+        }*/
+        Log.d(TAG, "generateWrappedBitmap: doctorDetails : " + doctorDetails);
+
         if (doctorDetails != null && !doctorDetails.isEmpty()) {
             try {
                 Paint textPaint2 = new Paint();
@@ -627,10 +667,26 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e("DoctorDetailsError", "Error while drawing doctor's details: " + e.getMessage());
             }
         }
         return bitmap;
     }
 
+    public Bitmap setBase64ToImageView() {
+        try {
+            // Remove "data:image..." prefix if it exists
+            String base64Cleaned = base64String.contains("base64,")
+                    ? base64String.substring(base64String.indexOf("base64,") + 7)
+                    : base64String;
+            byte[] decodedBytes = Base64.decode(base64Cleaned, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
+

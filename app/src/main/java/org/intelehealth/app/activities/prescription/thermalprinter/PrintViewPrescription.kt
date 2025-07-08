@@ -53,6 +53,8 @@ class PrintViewPrescription(
                 putExtra("doctorDetails", htmlDoctorDetails)
                 putExtra("font-family", clsDoctorDetails.fontOfSign)
                 putExtra("drSign-text", clsDoctorDetails.textOfSign)
+                putExtra("signature", clsDoctorDetails.signature)
+
             }
             context.startActivity(intentEsc)
         } else {
@@ -207,7 +209,7 @@ class PrintViewPrescription(
         var htmlDocument = ""
         if (dataModel.testsReturned.isNotEmpty()) {
             htmlDocument =
-                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${replaceDot(dataModel.testsReturned)} <br>"
+                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b>${replaceDot(dataModel.testsReturned).trim()}<br><br>"
         }
         return htmlDocument
     }

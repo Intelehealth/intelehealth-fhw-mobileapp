@@ -139,7 +139,7 @@ class ShowPrescriptionPdfShareDialog(
         builder.setPatientData(createPatientData())
         builder.setPatientDataSections(patientDataSections)
         builder.buildDynamicUI()
-        builder.createSignatureBitmap(fontFamily, activity, doctorSignText, doctorDetails)
+        builder.createSignatureBitmap(doctorDetails)
         builder.build(fileName)
         return builder;
     }

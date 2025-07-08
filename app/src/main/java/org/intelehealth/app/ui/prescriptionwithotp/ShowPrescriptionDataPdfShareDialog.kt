@@ -228,8 +228,7 @@ class ShowPrescriptionDataPdfShareDialog(
         builder.setPatientData(patientData)
         builder.setPatientDataSections(patientDataSections)
         builder.buildDynamicUI()
-        drDetails?.let { builder.createSignatureBitmap(it.fontOfSign, activity, it.textOfSign, it) }
-        Log.d("TAG", "buildAndSavePrescription: drDetails : "+Gson().toJson(drDetails))
+        drDetails?.let { builder.createSignatureBitmap(it) }
        /* drDetails?.let { details ->
             val font = details.fontOfSign
             val text = details.textOfSign
