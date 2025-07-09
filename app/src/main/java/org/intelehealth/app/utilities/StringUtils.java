@@ -31,8 +31,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.PrescriptionDiagnosis;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -5133,4 +5136,34 @@ public final class StringUtils {
         }
     }
 
+    /**
+     * diagnosis field data is not stable
+     * sometime the data format is string and sometimes json
+     * so handling both format here
+     *
+     * @param diagnosisData
+     * @return
+     */
+    public static String formatDiagnosis(String diagnosisData) {
+        //splitting with '::' because some garbage data are coming sometimes
+        //eg format: NA::Fiver:type & status:other fields:newfield
+        //here we don't required 'NA::'
+
+        if (diagnosisData.contains("NA::")) {
+
+            diagnosisData = diagnosisData.replace("NA::", "");
+
+        } else if (diagnosisData.contains("{")) {
+            PrescriptionDiagnosis prescriptionDiagnosis;
+            Gson gson = new Gson();
+            prescriptionDiagnosis = gson.fromJson(diagnosisData, PrescriptionDiagnosis.class);
+            String diagnosis = "", type = "";
+            if (prescriptionDiagnosis.getDiagnosis() != null)
+                diagnosis = prescriptionDiagnosis.getDiagnosis();
+            if (prescriptionDiagnosis.getType() != null) type = prescriptionDiagnosis.getType();
+
+            diagnosisData = diagnosis + ":" + type;
+        }
+        return diagnosisData;
+    }
 }

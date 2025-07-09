@@ -1495,7 +1495,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     diagnosisReturned = value;
                 }
-                diagnosis_txt.setText(addBulletPoints(diagnosisReturned));
+                diagnosis_txt.setText(addBulletPoints(StringUtils.formatDiagnosis(diagnosisReturned)));
                 break;
             }
 
@@ -2578,10 +2578,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         Calendar today = Calendar.getInstance();
         Calendar dob = Calendar.getInstance();
 
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sdf.parse(mPatientDob);
+            dob.setTime(date);
+        }catch (Exception e){}
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = sdf.parse(mPatientDob);
-        dob.setTime(date);
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
