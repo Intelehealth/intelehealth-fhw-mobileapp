@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.category.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,7 @@ class AnemiaFollowUpViewModel(
     val anemiaFollowUpLiveData = _anemiaFollowUpMutableLiveData*/
    private val _anemiaFollowUpMutableLiveData: MutableLiveData<List<PatientVisitDetails>> = MutableLiveData()
     val anemiaFollowUpLiveData = _anemiaFollowUpMutableLiveData
+    private val allPatients = mutableListOf<PatientVisitDetails>()
 
    /* fun getPatientsForAnemiaFollowUp(age: Int) {
         var anemiaFollowUpPatients: MutableList<Patient>
@@ -50,7 +52,9 @@ class AnemiaFollowUpViewModel(
                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
                visitNoteEncounterUuid = Constants.VISIT_NOTE,
            )
-
+           result.forEach {
+               Log.d("PatientVisitDetails", "Name: ${it.firstName} ${it.lastName}, OpenMRS ID: ${it.openmrsId}")
+           }
            // Extract patient and attribute info
            val patientList = result.map {
                Patient(
@@ -59,7 +63,8 @@ class AnemiaFollowUpViewModel(
                    middleName = it.middleName,
                    lastname = it.lastName,
                    gender = it.gender,
-                   dateOfBirth = it.dateOfBirth
+                   dateOfBirth = it.dateOfBirth,
+                   openmrs_id = it.openmrsId
                )
            }.toMutableList()
 
@@ -87,4 +92,16 @@ class AnemiaFollowUpViewModel(
            _anemiaFollowUpMutableLiveData.postValue(filteredResult)
        }
    }
+    fun searchPatient(query: String) {
+        val filtered = if (query.isBlank()) {
+            allPatients
+        } else {
+            allPatients.filter {
+                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
+                val openmrsId = it.openmrsId ?: ""
+                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
+            }
+        }
+        _anemiaFollowUpMutableLiveData.postValue(filtered)
+    }
 }

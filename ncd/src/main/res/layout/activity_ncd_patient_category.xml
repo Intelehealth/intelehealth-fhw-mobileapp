@@ -20,7 +20,7 @@
         android:background="@drawable/search_toolbar"
         android:backgroundTint="?colorPrimary">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_margin_top"
             android:layout_alignParentLeft="true"
@@ -39,7 +39,7 @@
                 android:background="@drawable/ic_arrow_back_white" />
 
             <!-- Frame 100030 -->
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_margin_top"
                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -79,8 +79,8 @@
 
                 <ImageView
                     android:id="@+id/icon_search"
-                    android:layout_width="@dimen/search_icon_toolbar"
-                    android:layout_height="@dimen/search_icon_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_12"

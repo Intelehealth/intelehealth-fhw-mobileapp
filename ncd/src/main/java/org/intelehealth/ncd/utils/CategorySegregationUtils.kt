@@ -34,36 +34,36 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
 
 
-                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
+                if (isHistoryOfAnemiaPresent(attribute.value) /*&& (isCurrentlyTakingAnemiaMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
+                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
+                if (!isHistoryOfAnemiaPresent(attribute.value) /*|| !isCurrentlyTakingAnemiaMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
+                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfDiabetesPresent(attribute.value) && (isCurrentlyTakingDiabetesMedication(
+                if (isHistoryOfDiabetesPresent(attribute.value) /*&& (isCurrentlyTakingDiabetesMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithDiabetesPHC(attribute.value))
+                    ) || isThereAFollowUpWithDiabetesPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetesPresent(attribute.value) || !isCurrentlyTakingDiabetesMedication(
+                if (!isHistoryOfDiabetesPresent(attribute.value) /*|| !isCurrentlyTakingDiabetesMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithDiabetesPHC(attribute.value)
+                    ) && !isThereAFollowUpWithDiabetesPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
 
@@ -71,9 +71,9 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
+                if (isHistoryOfHypertensionPresent(attribute.value) /*&& (isCurrentlyTakingHypertensionMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
+                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
 
@@ -81,9 +81,9 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
+                if (!isHistoryOfHypertensionPresent(attribute.value) /*|| !isCurrentlyTakingHypertensionMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
+                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }

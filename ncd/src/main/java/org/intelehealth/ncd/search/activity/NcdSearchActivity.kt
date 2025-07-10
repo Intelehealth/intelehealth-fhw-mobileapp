@@ -26,7 +26,7 @@ import org.intelehealth.ncd.utils.CategorySegregationUtils
 import org.intelehealth.ncd.utils.hideKeyboard
 import org.intelehealth.ncd.utils.showKeyboard
 
-class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
+class NcdSearchActivity : AppCompatActivity() {
 
     private var binding: ActivityNcdSearchBinding? = null
     private var backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -131,7 +131,7 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
     }
 
     private fun setObservers() {
-        viewModel?.searchMutableLiveData?.observe(this@NcdSearchActivity) {
+        /*viewModel?.searchMutableLiveData?.observe(this@NcdSearchActivity) {
             if (it.isEmpty()) {
                 triggerPatientNotFoundLayout()
             } else {
@@ -147,7 +147,7 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
                     rv.layoutManager = LinearLayoutManager(this@NcdSearchActivity)
                 }
             }
-        }
+        }*/
     }
 
     private fun triggerPatientNotFoundLayout() {
@@ -161,7 +161,7 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
         binding?.rvResults?.visibility = View.VISIBLE
     }
 
-    override fun onPatientClicked(patient: Patient) {
+   /* override fun onPatientClicked(patient: Patient) {
         try {
 
             val intent = Intent(
@@ -186,5 +186,5 @@ class NcdSearchActivity : AppCompatActivity(), PatientClickedListener {
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
-    }
+    }*/
 }

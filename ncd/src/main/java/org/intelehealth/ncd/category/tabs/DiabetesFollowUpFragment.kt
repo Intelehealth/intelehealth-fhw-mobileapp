@@ -22,12 +22,16 @@ import org.intelehealth.ncd.category.viewmodel.DiabetesFollowUpViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class DiabetesFollowUpFragment : Fragment() , PatientClickedListener{
+
+class DiabetesFollowUpFragment : SearchableFragment<DiabetesFollowUpViewModel>(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: DiabetesFollowUpViewModel? = null
+
+    override lateinit var viewModel: DiabetesFollowUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,33 +55,44 @@ class DiabetesFollowUpFragment : Fragment() , PatientClickedListener{
             CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
         val visitsDao: VisitDao = CategoryDatabase.getInstance(requireContext()).visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao,visitsDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@DiabetesFollowUpFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[DiabetesFollowUpViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.diabetesFollowUpLiveData?.observe(requireActivity()) {
+        // Changed requireActivity() to viewLifecycleOwner for lifecycle safety
+        viewModel.diabetesFollowUpLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@DiabetesFollowUpFragment.requireContext())
+                rv.layoutManager = LinearLayoutManager(requireContext())
             }
         }
+
+        // Optional: Shared search observer
+        /*
+        searchViewModel.searchText.observe(viewLifecycleOwner) { query ->
+            viewModel.searchPatient(query)
+        }
+        */
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForDiabetesFollowUp()
+        viewModel.getPatientsForDiabetesFollowUp()
     }
 
-    override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+   /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
@@ -101,6 +116,13 @@ class DiabetesFollowUpFragment : Fragment() , PatientClickedListener{
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
-    }
+    }*/
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+    }
 }

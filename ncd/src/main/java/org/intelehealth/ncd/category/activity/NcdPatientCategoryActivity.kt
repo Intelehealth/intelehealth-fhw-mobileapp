@@ -1,10 +1,14 @@
 package org.intelehealth.ncd.category.activity
 
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.MotionEvent
+import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ncd.R
@@ -16,20 +20,22 @@ import org.intelehealth.ncd.category.tabs.DiabetesScreeningFragment
 import org.intelehealth.ncd.category.tabs.GeneralFragment
 import org.intelehealth.ncd.category.tabs.HypertensionFollowUpFragment
 import org.intelehealth.ncd.category.tabs.HypertensionScreeningFragment
+import org.intelehealth.ncd.category.viewmodel.CommonSearchViewModel
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.databinding.ActivityNcdPatientCategoryBinding
-import org.intelehealth.ncd.search.activity.NcdSearchActivity
 
 class NcdPatientCategoryActivity : AppCompatActivity() {
 
     private var binding: ActivityNcdPatientCategoryBinding? = null
+    private lateinit var adapter: CategoryPagerAdapter
+    private var isPrivacyNotice: Boolean = false
+    val searchViewModel: CommonSearchViewModel by viewModels()
+
     private var backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             finish()
         }
     }
-
-    private var isPrivacyNotice: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,34 +43,20 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         fetchData()
-        //setToolbar()
         setListeners()
         setViewPager()
+        setupSearchListener()
     }
 
     private fun fetchData() {
         isPrivacyNotice = intent.getBooleanExtra(Constants.IS_PRIVACY_NOTICE, false)
     }
 
-   /* private fun setToolbar() {
-        binding?.toolbar?.apply {
-            setSupportActionBar(this)
-            setTitleTextAppearance(this@NcdPatientCategoryActivity, R.style.ToolbarTheme)
-            setTitleTextColor(Color.WHITE)
-        }
-    }
-*/
     private fun setListeners() {
         onBackPressedDispatcher.addCallback(backPressedCallback)
 
         binding?.backbtn?.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
-        }
-
-        binding?.searchTxtEnter?.setOnClickListener {
-            val intent = Intent(this@NcdPatientCategoryActivity, NcdSearchActivity::class.java)
-            intent.putExtra(Constants.IS_PRIVACY_NOTICE, isPrivacyNotice)
-            startActivity(intent)
         }
     }
 
@@ -79,7 +71,7 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
             GeneralFragment()
         )
 
-        val adapter = CategoryPagerAdapter(this, fragmentList)
+        adapter = CategoryPagerAdapter(this, fragmentList)
         binding?.vpCategory?.adapter = adapter
 
         val tabTitles = listOf(
@@ -96,4 +88,40 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
             tab.text = tabTitles[position]
         }.attach()
     }
+
+    private fun setupSearchListener() {
+        val editText = binding?.searchTxtEnter ?: return
+        val ivSearch = binding?.iconSearch ?: return
+        val ivClear = binding?.iconClear ?: return
+
+        // Initial visibility
+        ivSearch.visibility = View.VISIBLE
+        ivClear.visibility = View.GONE
+
+        // Listen to text changes
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val hasText = !s.isNullOrEmpty()
+
+                ivSearch.visibility = if (hasText) View.GONE else View.VISIBLE
+                ivClear.visibility = if (hasText) View.VISIBLE else View.GONE
+
+                // Emit search text
+                searchViewModel.updateSearchText(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // Clear button click
+        ivClear.setOnClickListener {
+            if (editText.text?.isNotEmpty() == true) {
+                editText.text?.clear()
+                // No need to manually toggle icons here – text watcher handles it
+            }
+        }
+    }
+
+
 }

@@ -25,6 +25,8 @@ class DiabetesFollowUpViewModel(
     private val _diabetesFollowUpMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
     val diabetesFollowUpLiveData: LiveData<List<PatientVisitDetails>> = _diabetesFollowUpMutableLiveData
 
+    private val allPatients = mutableListOf<PatientVisitDetails>()
+
     /*fun getPatientsForDiabetesFollowUp(age: Int) {
         var diabetesFollowUpPatients: MutableList<Patient>
 
@@ -60,7 +62,8 @@ class DiabetesFollowUpViewModel(
                     middleName = it.middleName,
                     lastname = it.lastName,
                     gender = it.gender,
-                    dateOfBirth = it.dateOfBirth
+                    dateOfBirth = it.dateOfBirth,
+                    openmrs_id = it.openmrsId
                 )
             }.toMutableList()
 
@@ -79,14 +82,31 @@ class DiabetesFollowUpViewModel(
                 category = Constants.DIABETES_FOLLOW_UP
             )
 
-            // Now, filter original result using the filtered patient UUIDs
             val filteredResult = result.filter { detail ->
                 filteredPatients.any { it.uuid == detail.patientId }
             }
+
+            // Save the full filtered result
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
+
 
             // Post filtered result
             _diabetesFollowUpMutableLiveData.postValue(filteredResult)
         }
     }
+    fun searchPatient(query: String) {
+        val filtered = if (query.isBlank()) {
+            allPatients
+        } else {
+            allPatients.filter {
+                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
+                val openmrsId = it.openmrsId ?: ""
+                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
+            }
+        }
+        _diabetesFollowUpMutableLiveData.postValue(filtered)
+    }
+
 
 }

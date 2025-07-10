@@ -38,7 +38,7 @@ class CategoryViewModelFactory(
                 utils
             )
 
-            GeneralViewModel::class.java -> GeneralViewModel(repository)
+            GeneralViewModel::class.java -> GeneralViewModel(repository,utils)
 
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         } as T

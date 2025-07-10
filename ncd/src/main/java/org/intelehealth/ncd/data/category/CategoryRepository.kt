@@ -30,7 +30,9 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String):String = dataSource.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
-
+        rawDataList.forEach {
+            Log.d("PatientVisitDetailskk", "Name: ${it.firstName} ${it.lastName}, OpenMRS ID: ${it.openmrsId}")
+        }
         val result = buildPatientVisitDetails(rawDataList)
         result.forEachIndexed { index, item ->
             Log.d("StartDate", "[$index] ${item.startDate}")
@@ -57,6 +59,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 lastName = data.lastName,
                 dateOfBirth = data.dateOfBirth,
                 gender = data.gender,
+                openmrsId = data.openmrsId,
                 value = data.value,
                 personAttributeTypeUuid = data.personAttributeTypeUuid,
                 startDate = formattedStartDate,
@@ -94,6 +97,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 lastName = data.lastName,
                 dateOfBirth = data.dateOfBirth,
                 gender = data.gender,
+                openmrsId = data.openmrsId,
                 value = data.value,
                 personAttributeTypeUuid = data.personAttributeTypeUuid,
                 startDate = formattedStartDate,

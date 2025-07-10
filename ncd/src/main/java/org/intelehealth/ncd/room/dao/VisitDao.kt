@@ -57,7 +57,8 @@ interface VisitDao {
         P.first_name AS firstName,
         P.last_name AS lastName,
         P.gender AS gender,
-        P.date_of_birth AS dob
+        P.date_of_birth AS dob,
+        P.openmrs_id AS openmrs_id
 
     FROM tbl_visit V
     JOIN tbl_patient P ON P.uuid = V.patientuuid
@@ -161,6 +162,7 @@ interface VisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.modified_date AS modifiedDate,
+        P.openmrs_id AS openmrs_id,
         NULL AS attributeValue,
         NULL AS attributeTypeUuid,
         V.uuid AS visitId,
@@ -266,6 +268,7 @@ interface VisitDao {
         P.date_of_birth AS dateOfBirth,
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
+        P.openmrs_id AS openmrs_id,
         A.value AS attributeValue,
         A.person_attribute_type_uuid AS attributeTypeUuid,
         V.uuid AS visitId,

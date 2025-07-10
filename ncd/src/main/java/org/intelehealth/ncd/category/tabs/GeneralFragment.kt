@@ -22,11 +22,14 @@ import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class GeneralFragment : Fragment() , PatientClickedListener{
+class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedListener {
+
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: GeneralViewModel? = null
+    override lateinit var viewModel: GeneralViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,38 +48,41 @@ class GeneralFragment : Fragment() , PatientClickedListener{
     }
 
     private fun initializeData() {
-        val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
-        val patientAttributeDao: PatientAttributeDao =
-            CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
-        val visitsDao: VisitDao = CategoryDatabase.getInstance(requireContext()).visitDao()
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
+        val patientDao = database.patientDao()
+        val patientAttributeDao = database.patientAttributeDao()
+        val visitsDao = database.visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao,visitsDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@GeneralFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[GeneralViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.generalLiveData?.observe(requireActivity()) {
+        viewModel.generalLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-
-            binding?.recyclerView?.let { rv ->
-                rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@GeneralFragment.requireContext())
+            binding?.recyclerView?.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                this.adapter = adapter
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForGeneral()
+        viewModel.getPatientsForGeneral()
     }
 
-    override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+   /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
@@ -100,6 +106,13 @@ class GeneralFragment : Fragment() , PatientClickedListener{
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
-    }
+    }*/
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+    }
 }

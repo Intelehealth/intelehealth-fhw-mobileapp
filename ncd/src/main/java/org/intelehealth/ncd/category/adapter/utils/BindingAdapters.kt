@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.category.adapter.utils
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -48,4 +49,25 @@ fun setPrescriptionStatusVisibility(view: View, visitDetail: PatientVisitDetails
         View.VISIBLE
     }
 }
+
+@BindingAdapter("patientDisplayText")
+fun setPatientDisplayText(textView: TextView, visitDetail: PatientVisitDetails?) {
+    visitDetail?.let {
+        val fullName = listOfNotNull(it.firstName, it.lastName)
+            .joinToString(" ")
+            .trim()
+
+        val openmrsId = it.openmrsId?.takeIf { id -> id.isNotBlank() }
+
+        val displayText = listOfNotNull(fullName.takeIf { it.isNotBlank() }, openmrsId)
+            .joinToString(", ")
+
+        Log.d("TAG", "setPatientDisplayText: openmrsId  : "+openmrsId)
+        Log.d("TAG", "setPatientDisplayText: displayText  : "+displayText)
+        Log.d("TAG", "setPatientDisplayText: fullName  : "+fullName)
+
+        textView.text = displayText
+    }
+}
+
 

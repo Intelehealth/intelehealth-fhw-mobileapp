@@ -24,8 +24,69 @@ class HypertensionScreeningViewModel(
 ) : ViewModel() {
 
     private val _hypertensionScreeningMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
-    val hypertensionScreeningLiveData: LiveData<List<PatientVisitDetails>> =
-        _hypertensionScreeningMutableLiveData
+    val hypertensionScreeningLiveData: LiveData<List<PatientVisitDetails>> = _hypertensionScreeningMutableLiveData
+
+    private val allPatients = mutableListOf<PatientVisitDetails>()
+
+    fun getPatientsForHypertensionScreening() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetails(
+                age = Constants.HYPERTENSION_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.VISIT_NOTE,
+            )
+
+            val patientList = result.map {
+                Patient(
+                    uuid = it.patientId ?: "",
+                    firstName = it.firstName,
+                    middleName = it.middleName,
+                    lastname = it.lastName,
+                    gender = it.gender,
+                    dateOfBirth = it.dateOfBirth,
+                    openmrs_id = it.openmrsId
+                )
+            }.toMutableList()
+
+            val attributeList = result.map {
+                PatientAttributes(
+                    uuid = UUID.randomUUID().toString(),
+                    patientUuid = it.patientId ?: "",
+                    value = it.value
+                )
+            }.toMutableList()
+
+            val filteredPatients = utils.segregateAndFetchData(
+                patientList = patientList,
+                patientAttributeList = attributeList,
+                category = Constants.HYPERTENSION_SCREENING
+            )
+
+            val filteredResult = result.filter { detail ->
+                filteredPatients.any { it.uuid == detail.patientId }
+            }
+
+            // Save the full filtered result
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
+
+            // Post initial full list to LiveData
+            _hypertensionScreeningMutableLiveData.postValue(filteredResult)
+        }
+    }
+
+    fun searchPatient(query: String) {
+        val filtered = if (query.isBlank()) {
+            allPatients
+        } else {
+            allPatients.filter {
+                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
+                val openmrsId = it.openmrsId ?: ""
+                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
+            }
+        }
+        _hypertensionScreeningMutableLiveData.postValue(filtered)
+    }
 
     /*fun getPatientsForHypertensionScreening(age: Int) {
         var hypertensionScreeningPatients: MutableList<Patient>
@@ -46,60 +107,59 @@ class HypertensionScreeningViewModel(
             _hypertensionScreeningMutableLiveData.postValue(fetchDataForTags(hypertensionScreeningPatients))
         }
     }*/
-   /* fun getPatientsForHypertensionScreening() {
-        viewModelScope.launch {
-            val result = repository.getPatientVisitDetails(
-                age = Constants.HYPERTENSION_EXCLUSION_AGE,
-                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-                visitNoteEncounterUuid = Constants.VISIT_NOTE,
-            )
-            _hypertensionScreeningMutableLiveData.postValue(result)
-        }
-    }*/
-    fun getPatientsForHypertensionScreening() {
-        viewModelScope.launch {
-            val result = repository.getPatientVisitDetails(
-                age = Constants.HYPERTENSION_EXCLUSION_AGE,
-                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-                visitNoteEncounterUuid = Constants.VISIT_NOTE,
-            )
+    /* fun getPatientsForHypertensionScreening() {
+         viewModelScope.launch {
+             val result = repository.getPatientVisitDetails(
+                 age = Constants.HYPERTENSION_EXCLUSION_AGE,
+                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                 visitNoteEncounterUuid = Constants.VISIT_NOTE,
+             )
+             _hypertensionScreeningMutableLiveData.postValue(result)
+         }
+     }*/
+    /* fun getPatientsForHypertensionScreening() {
+         viewModelScope.launch {
+             val result = repository.getPatientVisitDetails(
+                 age = Constants.HYPERTENSION_EXCLUSION_AGE,
+                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                 visitNoteEncounterUuid = Constants.VISIT_NOTE,
+             )
 
-            // Extract patient and attribute info
-            val patientList = result.map {
-                Patient(
-                    uuid = it.patientId ?: "",
-                    firstName = it.firstName,
-                    middleName = it.middleName,
-                    lastname = it.lastName,
-                    gender = it.gender,
-                    dateOfBirth = it.dateOfBirth
-                )
-            }.toMutableList()
+             // Extract patient and attribute info
+             val patientList = result.map {
+                 Patient(
+                     uuid = it.patientId ?: "",
+                     firstName = it.firstName,
+                     middleName = it.middleName,
+                     lastname = it.lastName,
+                     gender = it.gender,
+                     dateOfBirth = it.dateOfBirth
+                 )
+             }.toMutableList()
 
-            val attributeList = result.map {
-                PatientAttributes(
-                    uuid = UUID.randomUUID().toString(),
-                    patientUuid = it.patientId ?: "",
-                    value = it.value
-                )
-            }.toMutableList()
+             val attributeList = result.map {
+                 PatientAttributes(
+                     uuid = UUID.randomUUID().toString(),
+                     patientUuid = it.patientId ?: "",
+                     value = it.value
+                 )
+             }.toMutableList()
 
-            // Filter using segregation utility
-            val filteredPatients = utils.segregateAndFetchData(
-                patientList = patientList,
-                patientAttributeList = attributeList,
-                category = Constants.HYPERTENSION_SCREENING
-            )
+             // Filter using segregation utility
+             val filteredPatients = utils.segregateAndFetchData(
+                 patientList = patientList,
+                 patientAttributeList = attributeList,
+                 category = Constants.HYPERTENSION_SCREENING
+             )
 
-            // Now, filter original result using the filtered patient UUIDs
-            val filteredResult = result.filter { detail ->
-                filteredPatients.any { it.uuid == detail.patientId }
-            }
+             // Now, filter original result using the filtered patient UUIDs
+             val filteredResult = result.filter { detail ->
+                 filteredPatients.any { it.uuid == detail.patientId }
+             }
 
-            // Post filtered result
-            _hypertensionScreeningMutableLiveData.postValue(filteredResult)
-        }
-    }
-
+             // Post filtered result
+             _hypertensionScreeningMutableLiveData.postValue(filteredResult)
+         }
+     }*/
 
 }

@@ -74,7 +74,7 @@
                                 android:gravity="center_vertical"
                                 android:lineSpacingExtra="3sp"
                                 android:maxLines="1"
-                                android:text='@{visitDetail.firstName + " " + visitDetail.lastName}'
+                                app:patientDisplayText="@{visitDetail}"
                                 android:textAppearance="@style/label"
                                 android:textColor="@null"
                                 android:textSize="@dimen/fu_name_txt_size" />

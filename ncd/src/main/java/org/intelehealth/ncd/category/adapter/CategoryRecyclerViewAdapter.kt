@@ -42,7 +42,6 @@ class CategoryRecyclerViewAdapter(
             binding.executePendingBindings()
 
             binding.root.setOnClickListener {
-                Log.d("TAG", "bind: onclikkk")
                 listener.onPatientClicked(patient)
             }
         }

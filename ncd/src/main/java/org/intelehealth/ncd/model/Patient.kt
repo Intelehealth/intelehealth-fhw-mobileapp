@@ -13,7 +13,7 @@ data class Patient(
     val uuid: String,
 
     @ColumnInfo(name = "openmrs_id")
-    val openmrsId: String? = null,
+    val openmrs_id: String? = null,
 
     @ColumnInfo(name = "first_name")
     val firstName: String? = null,

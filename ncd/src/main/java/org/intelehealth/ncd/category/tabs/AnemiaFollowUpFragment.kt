@@ -22,12 +22,15 @@ import org.intelehealth.ncd.category.viewmodel.AnemiaFollowUpViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class AnemiaFollowUpFragment : Fragment(), PatientClickedListener{
+class AnemiaFollowUpFragment : SearchableFragment<AnemiaFollowUpViewModel>(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: AnemiaFollowUpViewModel? = null
+
+    override lateinit var viewModel: AnemiaFollowUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,38 +49,42 @@ class AnemiaFollowUpFragment : Fragment(), PatientClickedListener{
     }
 
     private fun initializeData() {
-        val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
-        val patientAttributeDao: PatientAttributeDao =
-            CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
-        val visitsDao: VisitDao = CategoryDatabase.getInstance(requireContext()).visitDao()
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao,visitsDao)
+        val patientDao: PatientDao = database.patientDao()
+        val patientAttributeDao: PatientAttributeDao = database.patientAttributeDao()
+        val visitsDao: VisitDao = database.visitDao()
+
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@AnemiaFollowUpFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[AnemiaFollowUpViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.anemiaFollowUpLiveData?.observe(requireActivity()) {
+        viewModel.anemiaFollowUpLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-
-            binding?.recyclerView?.let { rv ->
-                rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@AnemiaFollowUpFragment.requireContext())
+            binding?.recyclerView?.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                this.adapter = adapter
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForAnemiaFollowUp()
+        viewModel.getPatientsForAnemiaFollowUp()
     }
 
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
 
+/*
     override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
@@ -102,6 +109,10 @@ class AnemiaFollowUpFragment : Fragment(), PatientClickedListener{
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
+    }
+*/
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
     }
 
 }

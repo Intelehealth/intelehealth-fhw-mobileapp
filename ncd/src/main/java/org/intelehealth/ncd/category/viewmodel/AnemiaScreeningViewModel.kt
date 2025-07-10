@@ -22,6 +22,7 @@ class AnemiaScreeningViewModel(
     val anemiaScreeningLiveData = _anemiaScreeningMutableLiveData*/
     private val _anemiaScreeningMutableLiveData: MutableLiveData<List<PatientVisitDetails>> = MutableLiveData()
     val anemiaScreeningLiveData = _anemiaScreeningMutableLiveData
+    private val allPatients = mutableListOf<PatientVisitDetails>()
 
     /*fun getPatientsForAnemiaScreening(age: Int) {
         var anemiaScreeningPatients: MutableList<Patient>
@@ -59,7 +60,8 @@ class AnemiaScreeningViewModel(
                     middleName = it.middleName,
                     lastname = it.lastName,
                     gender = it.gender,
-                    dateOfBirth = it.dateOfBirth
+                    dateOfBirth = it.dateOfBirth,
+                    openmrs_id = it.openmrsId
                 )
             }.toMutableList()
 
@@ -78,13 +80,29 @@ class AnemiaScreeningViewModel(
                 category = Constants.ANEMIA_SCREENING
             )
 
-            // Now, filter original result using the filtered patient UUIDs
             val filteredResult = result.filter { detail ->
                 filteredPatients.any { it.uuid == detail.patientId }
             }
+
+            // Save the full filtered result
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
 
             // Post filtered result
             _anemiaScreeningMutableLiveData.postValue(filteredResult)
         }
     }
+    fun searchPatient(query: String) {
+        val filtered = if (query.isBlank()) {
+            allPatients
+        } else {
+            allPatients.filter {
+                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
+                val openmrsId = it.openmrsId ?: ""
+                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
+            }
+        }
+        _anemiaScreeningMutableLiveData.postValue(filtered)
+    }
+
 }

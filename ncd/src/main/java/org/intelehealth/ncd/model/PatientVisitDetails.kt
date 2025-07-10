@@ -32,6 +32,9 @@ data class PatientVisitDetails(
     @ColumnInfo(name = "gender")
     var gender: String? = null,
 
+    @ColumnInfo(name = "openmrs_id")
+    var openmrsId: String? = null,
+
     @ColumnInfo(name = "attributeValue")
     var value: String? = null,
 
