@@ -57,7 +57,7 @@
 
     <string-array name="speciality_values">
         <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>@string/specialty_general_physician</item>
     </string-array>
 
     <string-array name="speciality_value_hindi">

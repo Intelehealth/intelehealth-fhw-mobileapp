@@ -481,7 +481,7 @@
     <string name="profile_photo_updated_new">ప్రొఫైల్ ఫోటో విజయవంతంగా నవీకరించబడింది</string>
     <string name="hello_i_am_ayu">హలో, నేను ఆయుని,</string>
     <string name="ayu_intro">డిజిటల్ హెల్త్ అసిస్టెంట్.\nప్రారంభిద్దాం!</string>
-    <string name="agree_to_terms"><font color='#2F1E91'><u>నిబంధనలు &amp; షరతులు</u></font> మరియు <font color='#2F1E91'><u> గోప్యతా విధానానికి </u></font>అంగీకరిస్తున్నాను.</string>
+    <string name="agree_to_terms"><font color='#2F1E91'><u>నిబంధనలు &amp; షరతులు </u></font> మరియు <font color='#2F1E91'><u> గోప్యతా విధానానికి </u></font>అంగీకరిస్తున్నాను.</string>
     <string name="setup">సెటప్</string>
     <string name="terms_and_conditions">నిబంధనలు &amp; షరతులు</string>
     <string name="privacy_policy">గోప్యతా విధానానికి</string>
@@ -939,5 +939,6 @@
     </plurals>
 
     <string name="action_settings">సెట్టింగులు</string>
+    <string name="specialty_general_physician">జనరల్ ఫిజీషియన్</string>
 
 </resources>
