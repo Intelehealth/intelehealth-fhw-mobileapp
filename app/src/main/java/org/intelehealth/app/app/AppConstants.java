@@ -309,5 +309,6 @@ public class AppConstants {
     public static final String LANGUAGE_KN = "kn";
     public static final String LANGUAGE_OR = "or";
     public static final String LANGUAGE_AS = "as";
+    public static final String LANGUAGE_TA = "ta";
 
 }
