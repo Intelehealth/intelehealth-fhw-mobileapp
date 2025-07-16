@@ -148,8 +148,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-        CustomLog.d("Test1", "Tanvir");
-        CustomLog.d("Test2", "Tanvir2");
+        loadFeatureActiveStatus();
 
         return view;
     }

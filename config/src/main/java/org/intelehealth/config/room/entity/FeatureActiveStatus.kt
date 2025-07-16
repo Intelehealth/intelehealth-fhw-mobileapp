@@ -58,7 +58,7 @@ data class FeatureActiveStatus(
             visitSummeryAttachment = true,
             visitSummeryDoctorSpeciality = true,
             visitSummeryPriorityVisit = true,
-            visitSummeryAppointment = true,
+            visitSummeryAppointment = false,
             visitSummeryFacilityToVisit = false,
             visitSummerySeverityOfCase = false,
             visitSummeryHwFollowUp = false

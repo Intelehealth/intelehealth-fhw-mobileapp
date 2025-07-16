@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -22,6 +23,7 @@ public class InitialSyncIntentService extends IntentService {
     }
 
     static ResponseDTO responseDTO;
+    private static String url;
 
     /**
      * Large amount of data passing not possible with intent
@@ -29,8 +31,10 @@ public class InitialSyncIntentService extends IntentService {
      *
      * @param dto
      */
-    public static void setData(ResponseDTO dto) {
+
+    public static void setData(ResponseDTO dto, String url) {
         responseDTO = dto;
+        InitialSyncIntentService.url = url;
     }
 
     /**
@@ -50,6 +54,9 @@ public class InitialSyncIntentService extends IntentService {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+        Logger.logD("URL", url);
+
         if (sync) {
             int nextPageNo = responseDTO.getData().getPageNo();
             int totalCount = responseDTO.getData().getTotalCount();
@@ -57,14 +64,11 @@ public class InitialSyncIntentService extends IntentService {
 
             if (nextPageNo != -1) {
                 percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
-                Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
-                SyncDAO.setProgress(percentage);
                 syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
+                SyncDAO.setProgress(percentage);
             } else {
                 percentage = 100;
-                Logger.logD(SyncDAO.PULL_ISSUE, "percentage page -1: " + percentage);
                 SyncDAO.setProgress(percentage);
-
                 sessionManager.setPullExcutedTime(sessionManager.isPulled());
                 sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
                 Intent broadcast = new Intent();
@@ -101,4 +105,6 @@ public class InitialSyncIntentService extends IntentService {
             }
         }
     }
+
+
 }

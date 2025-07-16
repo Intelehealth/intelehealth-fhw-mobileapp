@@ -14,6 +14,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
+import androidx.core.net.toUri
 
 
 /**
@@ -30,7 +31,7 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
         val KEY: String = "KEY"
         val PRIVACY_POLICY: String = "Privacy Policy"
         val TERMS_OF_USE: String = "Terms Of Use"
-        var PERSONAL_DATA_PROCESSING_POLICY = "Personal Data Processing  Policy"
+        var PERSONAL_DATA_PROCESSING_POLICY = "Personal Data Processing Policy"
     }
 
     /**
@@ -53,7 +54,10 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
                     putExtra(URL, it)
                 }
                 context.startActivity(intent)
-            } else if (it.contains("intelehealth.org/personal-data-processing-policy")) {
+            } else if (it.contains("intelehealth.org/personal-data-processing-policy")
+                or
+                it.contains("intelehealth.org/consent-form-for-processing-of-personal-data")
+            ) {
                 intent.apply {
                     putExtra(TITLE, PERSONAL_DATA_PROCESSING_POLICY)
                     putExtra(KEY, SessionManager.PERSONAL_DATA_PROCESSING_POLICY)
@@ -68,6 +72,9 @@ class GenericWebViewClient(private var context: Context) : WebViewClient() {
                 context.startActivity(Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse(it)
                 })
+            } else if (it.startsWith("tel:")) {
+                val intent = Intent(Intent.ACTION_DIAL, it.toUri())
+                view?.context?.startActivity(intent)
             } else {
                 //if url type is other then loading the url on same webview if network is available
                 return if (!NetworkConnection.isCapableNetwork(context)) {

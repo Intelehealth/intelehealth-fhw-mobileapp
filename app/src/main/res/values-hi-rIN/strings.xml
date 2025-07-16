@@ -1037,4 +1037,7 @@
     <string name="lbl_clear_all">सभी साफ़ करें</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+
+    <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
+
 </resources>
