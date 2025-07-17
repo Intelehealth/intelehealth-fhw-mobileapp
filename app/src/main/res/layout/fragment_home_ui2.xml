@@ -73,7 +73,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/image_add_patient_margin_start"
@@ -83,10 +83,12 @@
                     android:textSize="@dimen/common_headings_home"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
                     app:layout_constraintStart_toEndOf="@+id/imageview_add_patient"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/imageView2"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_alignParentEnd="true"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_answer_from">%1$s இடமிருந்து பதில் இல்லை</string>
+    <string name="call_canceled_by">%1$s ஆல் அழைப்பு முடிக்கப்பட்டது</string>
+    <string name="call_rejected_by">%1$s ஆல் அழைப்பு நிராகரிக்கப்பட்டது</string>
+    <string name="call_time_up">அழைப்பு நேரம் முடிந்தது</string>
+    <string name="left_the_call">%1$s ஆல் அழைப்பு விடப்பட்டது</string>
+    <string name="you_declined_call">நீங்கள் அழைப்பை நிராகரித்தீர்கள்</string>
+    <string name="reason_not_initiated">தொடங்கப்படாததால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_duplicated_identity">ஒரே மாதிரியான அடையாளம் காரணமாக அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_server_shutdown">சேவையகம் மூடப்பட்டதால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_participant_removed">பங்கேற்பாளர் அகற்றப்பட்டதால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_room_deleted">அறை கிடைக்காததால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_state_mismatch">அறை பொருந்தாததால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_join_failure">அறையில் சேர முடியாததால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="reason_unknown">தெரியாத காரணத்தால் அழைப்பு துண்டிக்கப்பட்டது</string>
+    <string name="call_missed">தவறவிட்ட அழைப்பு</string>
+    <string name="call_outgoing">வெளிச்செல்லும் அழைப்பு</string>
+    <string name="call_ongoing">நடந்து கொண்டிருக்கும் அழைப்பு</string>
+    <string name="call_unknown">தெரியாத அழைப்பு</string>
+    <string name="call_incoming">வரவிருக்கும் அழைப்பு</string>
+    <string name="calling">அழைக்கிறது</string>
+    <string name="call_logs">அழைப்பு பதிவுகள்</string>
+    <string name="an_hour_ago">ஒரு மணி நேரத்திற்கு முன்</string>
+    <string name="hours_ago">%1$s மணி நேரங்களுக்கு முன்</string>
+    <string name="a_min_ago">ஒரு நிமிடத்திற்கு முன்</string>
+    <string name="mins_ago">%1$s நிமிடங்களுக்கு முன்</string>
+    <string name="a_second_ago">ஒரு வினாடிக்கு முன்</string>
+    <string name="seconds_ago">%1$s வினாடிகளுக்கு முன்</string>
+    <string name="today">இன்று</string>
+    <string name="today_at">இன்று</string>
+    <string name="yesterday">நேற்று</string>
+    <string name="yesterday_at">நேற்று</string>
+    <string name="now">இப்போது</string>
+    <string name="decline">நிராகரி</string>
+    <string name="accept">ஏற்கவும்</string>
+    <string name="hang_up">தொங்கவிடு</string>
+</resources>

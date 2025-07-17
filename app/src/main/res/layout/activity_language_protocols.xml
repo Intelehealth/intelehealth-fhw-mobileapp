@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
-        android:layout_height="@dimen/followup_toolbar"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -21,7 +21,7 @@
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
-            android:layout_height="@dimen/followup_toolbar"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -211,6 +211,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/reset_btn"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:text="@string/reset_to_english"
                         android:textColor="@color/hint_text_color"
@@ -226,6 +228,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="4dp"
                             android:layout_centerInParent="true">
 
                             <ImageView
@@ -238,6 +241,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
                                 android:fontFamily="@font/dm_sans"
                                 android:text="@string/reset"
                                 android:textAlignment="center"
@@ -341,8 +345,11 @@
                     android:layout_marginBottom="@dimen/margin_16dp">
 
                     <TextView
+                        android:id="@+id/update_protocols_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/update_protocols_btn"
+                        android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="@string/update_app_protocols"
                         android:textColor="@color/hint_text_color"
@@ -352,6 +359,7 @@
                         android:id="@+id/update_protocols_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="4dp"
                         android:layout_alignParentEnd="true"
                         android:background="@drawable/reset_lang_icon">
 
@@ -416,7 +424,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_toEndOf="@+id/ivNotification"
-                    android:text="Blackout"
+                    android:text="@string/blackout"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -441,7 +449,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="To disable notification between below time period. switch on the blackout period"
+                android:text="@string/to_disable_notification_between_below_time_period_switch_on_the_blackout_period"
                 android:textColor="@color/hint_text_color"
                 android:layout_marginHorizontal="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_12"
@@ -451,7 +459,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="From 9:00 PM To 6:00 AM"
+                android:text="@string/from_9_00_pm_to_6_00_am"
                 android:textColor="@color/black"
                 android:layout_margin="@dimen/margin_12"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />

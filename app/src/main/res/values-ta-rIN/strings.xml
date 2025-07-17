@@ -415,7 +415,7 @@
     <string name="generate_password_tooltip_text">இது தானாகவே புதிய கடவுச்சொல்லை உருவாக்கும்.</string>
     <string name="no_network_tooltip">இணைய இணைப்பு இல்லை!</string>
     <string name="educational_videos">கல்வி வீடியோக்கள்</string>
-    <string name="change_lang">மொழி மற்றும் நெறிமுறைகளை மாற்றவும்</string>
+    <string name="change_lang">மொழி &amp;  நெறிமுறையை மாற்று</string>
     <string name="about_us">எங்களைப் பற்றி</string>
     <string name="log_out">வெளியேறு</string>
     <string name="reset_app_new">பயன்பாட்டை மீட்டமை</string>
@@ -1015,4 +1015,7 @@
     <string name="sending_otp">OTP அனுப்பப்படுகிறது...</string>
 
     <string name="view_prescription_lbl">மருந்தைப் பார்க்கவும்</string>
+    <string name="blackout">மின்மறைப்பு</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">கீழே குறிப்பிடப்பட்ட நேர இடைவெளியில் அறிவிப்புகளை முடக்க, மின்மறைப்பு காலத்தை இயக்கவும்</string>
+    <string name="from_9_00_pm_to_6_00_am">இரவு 9:00 மணி முதல் காலை 6:00 மணி வரை</string>
 </resources>
