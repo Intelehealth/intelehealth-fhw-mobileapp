@@ -37,6 +37,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -63,8 +64,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -73,10 +77,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.activity.CreateAbhaAccountActivity;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
@@ -123,6 +127,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
     private String accessToken, xToken, txnId;
+    private TextView tvCreateNewAbhaAddress;
 
     private LinearLayout linearAbhaNo, linearAbhaAddress;
     private String blockCharacterSet_ABHA_Address = "@";
@@ -205,6 +210,8 @@ public class Fragment_ThirdScreen extends Fragment {
         mOccupationEditText.addTextChangedListener(new MyTextWatcher(mOccupationEditText));
         mOccupationEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
+        tvCreateNewAbhaAddress = view.findViewById(R.id.tv_create_new_abha_address);
+
         secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
@@ -215,6 +222,10 @@ public class Fragment_ThirdScreen extends Fragment {
                 frag3_btn_next.setText(getString(R.string.save));
             } else {
                 // do nothing...
+            }
+
+            if (patient_detail && patientDTO.getAbhaAddress() != null) {
+                tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
             }
 
             // abdm - start
@@ -283,6 +294,15 @@ public class Fragment_ThirdScreen extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+        });
+
+        tvCreateNewAbhaAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CreateAbhaAccountActivity.class);
+            intent.putExtra("isUpdateAbhaAddress", true);
+            intent.putExtra("patientDTO", patientDTO);
+            sessionManager.setCreateAbha(true);
+            startActivity(intent);
+            getActivity().finish();
         });
     }
 

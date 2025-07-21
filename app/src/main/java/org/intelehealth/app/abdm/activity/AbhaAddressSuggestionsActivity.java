@@ -28,14 +28,17 @@ import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaAddressSuggestionsBinding;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.WindowsUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -59,6 +62,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
     private String blockCharacterSet_ABHA_Address = "@";
+
+    private boolean isUpdateAbhaAddress = false;
+    private PatientDTO patientDTO = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +105,15 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
         });
         binding.ivAbhaSuggestion.setOnClickListener(v -> {
-            AbhaAddressSuggestionDialogFragment  abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
-            abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(),"");
+            AbhaAddressSuggestionDialogFragment abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
+            abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(), "");
         });
 
-     }
+        isUpdateAbhaAddress = intent.getBooleanExtra("isUpdateAbhaAddress", false);
+        if (isUpdateAbhaAddress) {
+            patientDTO = (PatientDTO) intent.getSerializableExtra("patientDTO");
+        }
+    }
 
     private InputFilter filter = new InputFilter() {
         @Override
@@ -180,14 +190,28 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
             try {
                 Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
-                Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " +
-                        otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
-                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-                dataIntent.putExtra("accessToken", accessToken);
-                startActivity(dataIntent);
-                finish();
+                Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " + otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
+                patientDTO.setAbhaAddress(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
 
+                if (isUpdateAbhaAddress) {
+                    Intent intent = new Intent(AbhaAddressSuggestionsActivity.this, IdentificationActivity_New.class);
+                    intent.putExtra("patientUuid", patientDTO.getUuid());
+                    intent.putExtra("ScreenEdit", "others_edit");
+                    intent.putExtra("patient_detail", true);
+
+                    Bundle args = new Bundle();
+                    args.putSerializable("patientDTO", patientDTO);
+                    intent.putExtra("BUNDLE", args);
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                    dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                    dataIntent.putExtra("accessToken", accessToken);
+                    startActivity(dataIntent);
+                    finish();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

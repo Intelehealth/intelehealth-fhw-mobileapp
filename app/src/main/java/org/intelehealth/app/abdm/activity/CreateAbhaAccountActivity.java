@@ -40,6 +40,8 @@ import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
+import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -74,7 +76,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private CountDownTimer countDownTimer;
     private static int resendCounter = 2;
-
+    private boolean isUpdateAbhaAddress = false;
+    private PatientDTO patientDTO = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -86,6 +89,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(context);
+        isUpdateAbhaAddress = getIntent().getBooleanExtra("isUpdateAbhaAddress", false);
+        patientDTO = (PatientDTO) getIntent().getSerializableExtra("patientDTO");
 
         binding.ivBackArrow.setOnClickListener(v -> finish());
 
@@ -384,8 +389,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken, boolean isNewUser) {
-        if (isNewUser) {
+        if (isNewUser || isUpdateAbhaAddress) {
             // New user -> fetch address suggestions and navigate to ABHA address screen.
+            // Existing user -> update your abha address
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
             // Existing user -> check user existence.
@@ -415,11 +421,19 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
+                            if (isUpdateAbhaAddress) {
+                                addressList.remove(patientDTO.getAbhaAddress());
+                            }
+
                             if (addressList.size() > 0) {
                                 Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
+                                intent.putExtra("isUpdateAbhaAddress", isUpdateAbhaAddress);
+                                if (isUpdateAbhaAddress) {
+                                    intent.putExtra("patientDTO", patientDTO);
+                                }
                                 startActivity(intent);
                                 finish();
                             }

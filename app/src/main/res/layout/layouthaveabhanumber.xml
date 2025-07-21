@@ -45,7 +45,8 @@
                 android:paddingBottom="@dimen/options_button_padding_bottom"
                 android:text="@string/mobile_number"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/btn_options_text_Size" />
+                android:textSize="@dimen/btn_options_text_Size"
+                android:visibility="gone" />
         </LinearLayout>
 
         <Button

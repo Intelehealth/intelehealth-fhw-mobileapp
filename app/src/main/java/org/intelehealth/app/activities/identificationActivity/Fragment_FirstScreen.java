@@ -125,6 +125,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private OTPVerificationResponse otpVerificationResponse;
     private AbhaProfileResponse abhaProfileResponse;
     private String accessToken, xToken, txnId;
+    private TextView tvPhoneNumberTitle;
 
 
     @Nullable
@@ -194,6 +195,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mDOBEditText.addTextChangedListener(new MyTextWatcher(mDOBEditText));
         mAgeEditText.addTextChangedListener(new MyTextWatcher(mAgeEditText));
         //mPhoneNumberEditText.addTextChangedListener(new MyTextWatcher(mPhoneNumberEditText));
+        tvPhoneNumberTitle = view.findViewById(R.id.tv_phone_number_title);
 
         fragment_secondScreen = new Fragment_SecondScreen();
         if (getArguments() != null) {
@@ -425,7 +427,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         // mobile no.
         if (abhaProfileResponse.getMobile() != null) {
             mPhoneNumberEditText.setText(abhaProfileResponse.getMobile());
-            mPhoneNumberEditText.setEnabled(false);
+            mPhoneNumberEditText.setEnabled(true);
+            tvPhoneNumberTitle.setText(getText(R.string.phone_number_for_communication));
         }
     }
 
