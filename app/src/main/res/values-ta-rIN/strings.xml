@@ -547,7 +547,7 @@
     <string name="aboutus_termscondition">எங்கள் <a href="https://intelehealth.org/terms-of-use">விதிமுறைகள் மற்றும் நிபந்தனைகளை</a> பார்க்கவும்</string>
     <string name="visit_intelehealth_for_more">மேலும் தகவலுக்கு எங்கள் இணையதளமான intelehealth.org ஐப் பார்வையிடவும்</string>
     <string name="aboutus_text">இன்டெலிஹெல்த் ஒரு இலாப நோக்கமற்ற அமைப்பாகும், இது டெலிமெடிசின் மூலம் மருத்துவர் இல்லாத இடங்களில் உயர்தர சுகாதாரத்தை வழங்குகிறது. எங்கள் திறந்த மூல தொழில்நுட்ப தளத்தைப் பயன்படுத்தி, 80+ பராமரிப்பு நெறிமுறைகளுடன் ஒரு புதுமையான டிஜிட்டல் சுகாதார உதவியாளரால் இயக்கப்படுகிறது, நாங்கள் கடைசி மைல் வரை நோயாளிகளையும் முன்னணி சுகாதாரப் பணியாளர்களையும் மருத்துவர்கள், நோயறிதல் மற்றும் மருந்துகளுடன் இணைக்கிறோம்.\n\nஇன்டெலிஹெல்த் மில்லியன் கணக்கான நோயாளிகளை அடைந்துள்ளது, ஆயிரக்கணக்கான சுகாதாரப் பணியாளர்களையும் மருத்துவர்களையும் இணைத்து தொற்று மற்றும் தொற்றாத நோய்களுக்கு சுகாதார சேவைகளை வழங்கியுள்ளது. இந்தியா மற்றும் கிர்கிஸ்தானில் உள்ள சுகாதார அமைச்சகங்களுடனும், யுனிசெஃப், ஜெபிகோ, எம்எஸ்எஃப், ஏகல் ஆரோக்கியம் மற்றும் பல அமைப்புகளுடனும் பங்காளித்தன்மையுடன் பணியாற்றியுள்ளோம். இன்டெலிஹெல்த் உலக பொருளாதார மன்றம் மற்றும் நிதி ஆயோக் இந்தியாவால் ஒரு தாக்கமுள்ள டிஜிட்டல் பொது நன்மையாக அங்கீகரிக்கப்பட்டுள்ளது.</string>
-    <string name="add_patient">நோயாளிகளைச் சேர்க்கவும்</string>
+    <string name="add_patient">நோயாளி சேர்க்கு</string>
 
     <string name="enter_patient_s_body_measurement_details">நோயாளியின் உடல் அளவீடு விவரங்களை உள்ளிடவும்</string>
     <string name="height_cm">உயரம் (செ.மீ)</string>
@@ -579,7 +579,7 @@
     <string name="from">இருந்து</string>
     <string name="to">வரை</string>
     <string name="appointments">நியமனங்கள்</string>
-    <string name="follow_up_visits">பின்தொடரவும் வருகைகள்</string>
+    <string name="follow_up_visits">தொடர்ச்சி சந்திப்பு</string>
     <string name="first_name_mandatory">முதல் பெயர்</string>
     <string name="middle_name_registration">நடுத்தர பெயர்</string>
     <string name="last_name_mandatory">கடைசி பெயர்</string>
@@ -706,7 +706,7 @@
     <string name="treat_cough_at_home">வீட்டில் இருமலை சிகிச்சையளிக்கவும்</string>
     <string name="benefits_of_walking">நடைபயிற்சியின் நன்மைகள்</string>
     <string name="out_of">வெளியே</string>
-    <string name="pending">நிலுவையில் உள்ளது</string>
+    <string name="pending">நிலுவையில்</string>
     <string name="exit_app">பயன்பாட்டை வெளியேறவும்</string>
     <string name="last_sync">கடைசி ஒத்திசைவு</string>
     <string name="help_center">உதவி மையம்</string>
