@@ -179,6 +179,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
             binding.tvResendCounter.setText(getResources().getString(R.string.number_of_retries_left, resendCounter));
         else {
             binding.tvResendCounter.setText(getString(R.string.maximum_number_of_retries_exceeded_please_try_again_after_10_mins));
+            disableUI(false);
             binding.resendBtn.setEnabled(false);
             binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
             binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -188,6 +189,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private void callGenerateTokenApi() {   // Step 1.
         cpd.show(getString(R.string.otp_sending));
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
@@ -213,6 +215,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                             Timber.tag(TAG).e("onError: callGenerateTokenApi: %s", e.toString());
+                            disableUI(true);
                             binding.sendOtpBtn.setEnabled(true);
                             binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                             cancelResendAndHideView();
@@ -263,14 +266,17 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setTag(otpResponse.getTxnId());
                                 binding.sendOtpBtn.setText(getString(R.string.verify));
                                 binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
+                                disableUI(false);
                             } else if (response.code() == 429) {
                                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
                                         StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
 
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
                             } else {
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
@@ -283,6 +289,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             Timber.tag(TAG).e("onError: AadhaarResponse: %s", e.getMessage());
                             Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            disableUI(false);
                             binding.sendOtpBtn.setEnabled(true);
                             binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                             binding.otpBox.setText("");
@@ -312,7 +319,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + mobileNo + ", " + otp);
-
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
 
 
@@ -352,12 +359,15 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             } else if (otpVerificationResponse.code() == 400) {
                                 Toast.makeText(context, getText(R.string.entered_aadhaar_or_mobile_number_is_incorrect), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                disableUI(true);
                             } else if (otpVerificationResponse.code() == 422) {
                                 Toast.makeText(context, getText(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                disableUI(false);
                             } else {
                                 Toast.makeText(context, ABDMUtils.getErrorMessage(otpVerificationResponse), Toast.LENGTH_SHORT).show();
                                 binding.sendOtpBtn.setEnabled(true);
+                                disableUI(false);
                             }
 
                         }
@@ -374,6 +384,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
+                            disableUI(false);
                             binding.sendOtpBtn.setEnabled(true);
                             binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                             binding.otpBox.setText("");
@@ -597,6 +608,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void resendOtp() {
+        disableUI(false);
         binding.resendBtn.setEnabled(false);
         binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
         binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
@@ -617,6 +629,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
             public void onFinish() {
                 if (resendCounter != 0) {
+                    disableUI(true);
                     binding.resendBtn.setEnabled(true);
                     binding.resendBtn.setTextColor(getColor(R.color.colorPrimary));
                 }
@@ -629,5 +642,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         }.start();
     }
 
-
+    private void disableUI(boolean shouldEnable) {
+        binding.layoutDoNotHaveABHANumber.aadharNoBox.setEnabled(shouldEnable);
+        binding.layoutDoNotHaveABHANumber.mobileNoBox.setEnabled(shouldEnable);
+        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setEnabled(shouldEnable);
+    }
 }
