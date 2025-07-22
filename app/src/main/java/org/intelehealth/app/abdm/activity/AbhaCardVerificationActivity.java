@@ -254,6 +254,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      */
     private void callGenerateTokenApi() {   // Step 1.
         cpd.show(getString(R.string.otp_sending));
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
@@ -362,12 +363,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                             Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
                                 }
                                 binding.sendOtpBtn.setEnabled(true);
+                                disableUI(true);
                             } else {
                                 if (searchProfileResponse.errorBody() != null) {
                                     Toast.makeText(context, ABDMUtils.getErrorMessage1(searchProfileResponse.errorBody()), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                             }
                         }
@@ -413,6 +416,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 assert otpResponse.body() != null;
                                 binding.sendOtpBtn.setTag(otpResponse.body().getTxnId());
                                 binding.sendOtpBtn.setText(getString(R.string.verify));
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                             } else if (otpResponse.code() == 404) {
                                 switch (optionSelected) {
@@ -423,11 +427,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                     default ->
                                             Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
                                 }
+                                disableUI(true);
                                 binding.sendOtpBtn.setEnabled(true);
                             } else {
                                 if (otpResponse.errorBody() != null) {
+                                    disableUI(true);
                                     Toast.makeText(context, ABDMUtils.getErrorMessage1(otpResponse.errorBody()), Toast.LENGTH_SHORT).show();
                                 } else {
+                                    disableUI(false);
                                     Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
                                 binding.sendOtpBtn.setEnabled(true);
@@ -436,6 +443,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
+                            disableUI(false);
                             binding.sendOtpBtn.setEnabled(true);
                             binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                             binding.otpBox.setText("");
@@ -459,6 +467,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + otp);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
+        disableUI(false);
 
         // payload
         String url = UrlModifiers.getOTPForMobileLoginVerificationUrl();
@@ -483,6 +492,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         cpd.dismiss();
+                        disableUI(false);
                         binding.sendOtpBtn.setEnabled(true);
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -501,6 +511,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         callFetchUserProfileAPI(null, response.body().getTxnId(), X_TOKEN);
                     } else {
                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        disableUI(false);
                         binding.sendOtpBtn.setEnabled(true);
                     }
                 } else {
@@ -523,17 +534,21 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         binding.sendOtpBtn.setEnabled(true);
+                        disableUI(false);
                     }
                 }
 
             } else {
+                disableUI(false);
                 binding.sendOtpBtn.setEnabled(true);
                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
             }
         } else if (response.code() == 422) {
+            disableUI(false);
             binding.sendOtpBtn.setEnabled(true);
             Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
         } else {
+            disableUI(false);
             binding.sendOtpBtn.setEnabled(true);
             Toast.makeText(context, getString(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
             Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
@@ -554,6 +569,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + otp);
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         // resetting...
 
@@ -595,19 +611,23 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        disableUI(false);
                                         binding.sendOtpBtn.setEnabled(true);
                                     }
 
                                 } else {
                                     Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    disableUI(false);
                                     binding.sendOtpBtn.setEnabled(true);
                                 }
                             } else {
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
                         } else {
                             Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            disableUI(false);
                             binding.sendOtpBtn.setEnabled(true);
                         }
 
@@ -637,6 +657,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         cpd.show(getString(R.string.verifying_otp));
         Timber.tag("callOTPForVerificationApi: ").d("parameters: " + txnId + ", " + otp);
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
 
         // payload
@@ -668,14 +689,17 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                                 } else {
                                     Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    disableUI(false);
                                     binding.sendOtpBtn.setEnabled(true);
                                 }
                             } else {
+                                disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
+                            disableUI(false);
                             binding.sendOtpBtn.setEnabled(true);
                         }
                     }
@@ -683,6 +707,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Timber.tag("callOTPForMobileLoginVerificationApi").e("onError: %s", e.toString());
+                        disableUI(false);
                         binding.sendOtpBtn.setEnabled(true);
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -694,6 +719,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      * This will call the Fetch Profile Details api to fetch the details related to this user.
      */
     private void callFetchUserProfileAPI(String abhaNumber, String txnId, String xToken) {
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
@@ -787,6 +813,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     private void handleOnOtpError() {
         cpd.dismiss();
+        disableUI(false);
         binding.sendOtpBtn.setEnabled(true);
         binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
         binding.otpBox.setText("");
@@ -934,6 +961,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     }
 
     private void resendOtp() {
+        disableUI(false);
+
         binding.resendBtn.setEnabled(false);
         binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
         binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
@@ -956,6 +985,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 if (resendCounter != 0) {
                     binding.resendBtn.setEnabled(true);
                     binding.resendBtn.setTextColor(getColor(R.color.colorPrimary));
+                    disableUI(true);
                 }
 
                 binding.resendBtn.setText(getResources().getString(R.string.resend_otp));
@@ -966,5 +996,21 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         }.start();
     }
 
+    private void disableUI(boolean shouldEnable) {
+        switch (optionSelected) {
+            case AADHAAR_CARD_SELECTION -> {
+                binding.layoutHaveABHANumber.buttonAbhaNumber.setEnabled(shouldEnable);
+                binding.layoutHaveABHANumber.buttonUsername.setEnabled(shouldEnable);
+                binding.layoutHaveABHANumber.edittextUsername.setEnabled(shouldEnable);
+                binding.layoutHaveABHANumber.layoutParentMobileNo.setEnabled(shouldEnable);
+                break;
+            }
 
+            case ABHA_SELECTION -> {
+                binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.setEnabled(shouldEnable);
+                binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.setEnabled(shouldEnable);
+                break;
+            }
+        }
+    }
 }
