@@ -660,12 +660,12 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(initialFollowUpPatients -> {
-                                    if (initialFollowUpPatients.isEmpty()) {
+                                    /*if (initialFollowUpPatients.isEmpty()) {
                                         if (dataLoadingType == DataLoadingType.INITIAL) {
                                             commonLoadingDialog.dismiss();
                                         }
                                         shouldShowNoDataTextViewForAllRecyclerViews(true);
-                                    } else {
+                                    } else {*/
                                         if (filterType != FollowupFilterTypeEnum.NONE) {
                                             finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                             shouldShowNoDataTextViewForAllRecyclerViews(false);
@@ -682,7 +682,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                 commonLoadingDialog.dismiss();
                                             }
                                             isPageLoading = false;
-                                        } else {
+                                        }
+                                        else {
                                             finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                             mTodayRelativeLayout.setVisibility(View.VISIBLE);
                                             mWeekRelativeLayout.setVisibility(View.VISIBLE);
@@ -719,7 +720,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                         Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load todays and tomorrows data"+throwable,Toast.LENGTH_SHORT).show();
                                                     }));
                                         }
-                                    }
+                                  //  }
                                 },
                                 err -> {
                                     if (commonLoadingDialog.isShowing()) {
