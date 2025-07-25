@@ -344,7 +344,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mGenderOthersRadioButton.setEnabled(false);
         mDOBEditText.setEnabled(false);
         mAgeEditText.setEnabled(false);
-        mPhoneNumberEditText.setEnabled(false);
+        mPhoneNumberEditText.setEnabled(true);
     }
 
     private void setAutoFillValuesViaAadhar(OTPVerificationResponse otpVerificationResponse) {
@@ -385,7 +385,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         // mobile no.
         if (otpVerificationResponse.getABHAProfile().getMobile() != null) {
             mPhoneNumberEditText.setText(otpVerificationResponse.getABHAProfile().getMobile());
-            mPhoneNumberEditText.setEnabled(false);
+            mPhoneNumberEditText.setEnabled(true);
         }
     }
 
