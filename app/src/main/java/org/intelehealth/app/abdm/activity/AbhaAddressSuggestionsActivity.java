@@ -198,9 +198,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 if (!newAbhaAddress.endsWith("@sbx")) {
                     newAbhaAddress = newAbhaAddress.concat("@sbx");
                 }
-                patientDTO.setAbhaAddress(newAbhaAddress);
 
                 if (isUpdateAbhaAddress) {
+                    patientDTO.setAbhaAddress(newAbhaAddress);
                     Intent intent = new Intent(AbhaAddressSuggestionsActivity.this, IdentificationActivity_New.class);
                     intent.putExtra("patientUuid", patientDTO.getUuid());
                     intent.putExtra("ScreenEdit", "others_edit");
@@ -213,6 +213,10 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
+                    List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
+                    phrAddresses.add(0, newAbhaAddress);
+                    otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddresses);
+
                     Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
                     dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
                     dataIntent.putExtra("accessToken", accessToken);
