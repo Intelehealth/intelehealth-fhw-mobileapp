@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import org.intelehealth.app.abdm.model.ABDMErrorModel
+import org.intelehealth.app.abdm.model.FetchAuthModesResponse
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse
 import org.intelehealth.app.abdm.model.OTPVerificationResponse
 import retrofit2.Response
@@ -38,7 +39,8 @@ object ABDMUtils {
         return try {
             val gson = Gson()
             val type = object : TypeToken<ABDMErrorModel>() {}.type
-            val errorResponse: ABDMErrorModel? = gson.fromJson(response.errorBody()!!.charStream(), type)
+            val errorResponse: ABDMErrorModel? =
+                gson.fromJson(response.errorBody()!!.charStream(), type)
             errorResponse?.message
         } catch (e: Exception) {
             "Something went wrong"
@@ -60,4 +62,16 @@ object ABDMUtils {
 
     }
 
+    @JvmStatic
+    fun getAuthModes(response: ResponseBody): String? {
+        return try {
+            val gson = Gson()
+            val type = object : TypeToken<FetchAuthModesResponse>() {}.type
+            val errorResponse: FetchAuthModesResponse? = gson.fromJson(response.charStream(), type)
+            val authModes: String = errorResponse?.authMethods?.joinToString(", ") ?: ""
+            "The user has been deleted. Please use the following methods to recreate the user - $authModes"
+        } catch (e: Exception) {
+            return "Something went wrong"
+        }
+    }
 }

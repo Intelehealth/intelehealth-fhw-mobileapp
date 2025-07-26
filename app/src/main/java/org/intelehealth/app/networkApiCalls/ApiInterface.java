@@ -53,6 +53,7 @@ import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -273,6 +274,14 @@ public interface ApiInterface {
                                                   @Header("Authorization") String accessToken,
                                                   @Header("X-TOKEN") String xToken,
                                                   @Body AbhaProfileRequestBody abhaProfileRequestBody);
+
+    @POST
+    Single<ResponseBody> FETCH_AUTH_MODES(
+            @Url String url,
+            @Body Map<String, String> body,
+            @Header("Authorization") String accessToken,
+            @Header("X-TOKEN") String xToken
+    );
 
     @GET
     Single<ExistUserStatusResponse> checkExistingUser(@Url String url,

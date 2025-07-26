@@ -109,6 +109,7 @@ public class UrlModifiers {
         Log.d("TAG", "getAadharOTPVerificationUrl: " + BuildConfig.SERVER_URL + "/abha/enrollOTPReq");
         return BuildConfig.SERVER_URL + "/abha/enrollOTPReq";
     }
+
     public static String getEnrollByAbdmUrl() {
         Log.d("TAG", "getEnrollByAbdmUrl: " + BuildConfig.SERVER_URL + "/abha/enrollByAbdm");
         return BuildConfig.SERVER_URL + "/abha/enrollByAbdm";
@@ -121,25 +122,36 @@ public class UrlModifiers {
     public static String getEnrollABHASuggestionUrl() {
         return BuildConfig.SERVER_URL + "/abha/enrollSuggestion";
     }
+
     public static String getSetPreferredABHAAddressUrl() {
         return BuildConfig.SERVER_URL + "/abha/setPreferredAddress";
     }
+
     public static String getMobileLoginVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/loginOTPReq";
     }
+
     public static String searchMobileVerification() {
         return BuildConfig.SERVER_URL + "/abha/searchAbhaProfiles";
     }
+
     public static String getOTPForMobileLoginVerificationUrl() {
         return BuildConfig.SERVER_URL + "/abha/loginOTPVerify";
     }
+
     public static String getABHAProfileUrl() {
         return BuildConfig.SERVER_URL + "/abha/profile";
     }
+
     public static String getCheckExistingUserUrl() {
         return BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/check/id/";
     }
+
     public static String getABHACardUrl() {
         return BuildConfig.SERVER_URL + "/abha/getCard";
+    }
+
+    public static String getFetchAuthModesUrl() {
+        return BuildConfig.SERVER_URL + "/abha/fetchAuthModes";
     }
 }

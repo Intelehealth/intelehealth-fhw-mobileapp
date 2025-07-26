@@ -38,7 +38,6 @@ import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
-import org.intelehealth.app.abdm.model.Account;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
@@ -51,6 +50,7 @@ import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaCardVerificationBinding;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -64,6 +64,7 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 
@@ -715,6 +717,30 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
+    private void callFetchAuthModesAPI(String abhaAddress, String xToken, String accessToken) {
+        String url = UrlModifiers.getFetchAuthModesUrl();
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("abhaAddress", abhaAddress);
+
+        Single<ResponseBody> fetchAuthModesResponse = AppConstants.apiInterface.FETCH_AUTH_MODES(url, requestBody, accessToken, xToken);
+        fetchAuthModesResponse
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(ResponseBody body) {
+                        String errorMessage = ABDMUtils.getAuthModes(body);
+                        snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(AbhaCardVerificationActivity.this, binding.llActionBar, errorMessage, true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.tag("FETCH_AUTH").d("onFailure: %s", e.toString());
+                    }
+                });
+    }
+
     /**
      * This will call the Fetch Profile Details api to fetch the details related to this user.
      */
@@ -779,8 +805,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
                         Intent intent;
-                        if (response != null && response.getData() != null &&
-                                !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                             abhaProfileResponse.setUuiD(response.getData().getUuid());
                             intent = new Intent(context, IdentificationActivity_New.class);
@@ -790,15 +815,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
                             intent.putExtra("patient_detail", true);
                             startActivity(intent);
+                            finish();
                         } else {
-                            intent = new Intent(context, IdentificationActivity_New.class);
-                            intent.putExtra("mobile_payload", abhaProfileResponse);
-                            intent.putExtra("accessToken", accessToken);
-                            intent.putExtra("xToken", xToken);
-                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
-                            startActivity(intent);
+                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
                         }
-                        finish();
                     }
 
                     @Override
