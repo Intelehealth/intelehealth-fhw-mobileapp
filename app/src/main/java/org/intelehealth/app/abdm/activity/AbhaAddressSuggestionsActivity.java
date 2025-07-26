@@ -20,6 +20,7 @@ import androidx.core.view.ViewCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
+import com.google.gson.Gson;
 
 import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
@@ -138,7 +139,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     }
 
     public boolean isValidAbhaRegex(String input) {
-        String regex = "^(?!.*[._]{2})(?![._])[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
+        String regex = "^(?!.*[._]{2})(?![._])(?=^[^._]*[._]?[^._]*$)[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
@@ -153,18 +154,20 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 startActivity(dataIntent);
                 finish();
                 return; // ie. selected is same as auto-generated than move ahead dont call setPrf api.
-            } else {
+            }
+
+            /*else {
                 List<String> phrAddrList = new ArrayList<>();
                 phrAddrList.add(selectedChip);
                 otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddrList);
-            }
+            }*/
         }
 
         // api - start
         String url = UrlModifiers.getSetPreferredABHAAddressUrl();
         EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
         body.setTxnId(otpVerificationResponse.getTxnId());
-        body.setAbhaAddress(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
+        body.setAbhaAddress(selectedChip);
 
         Single<Response<SetAbhaAddressResponse>> setPhrAddressResponse =
                 AppConstants.apiInterface.PUSH_SET_PREFERRED_ABHA_ADDRESS(url, accessToken, body);
@@ -190,8 +193,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
             try {
                 Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
-                Timber.tag(TAG).d("onSuccess: callSetPreferredABHAAddressAPI: " + otpVerificationResponse.toString() + " \nabha profile: " + otpVerificationResponse.getABHAProfile().toString());
-                patientDTO.setAbhaAddress(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0) + "@sbx");
+
+                String newAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
+                if (!newAbhaAddress.endsWith("@sbx")) {
+                    newAbhaAddress = newAbhaAddress.concat("@sbx");
+                }
+                patientDTO.setAbhaAddress(newAbhaAddress);
 
                 if (isUpdateAbhaAddress) {
                     Intent intent = new Intent(AbhaAddressSuggestionsActivity.this, IdentificationActivity_New.class);
@@ -218,7 +225,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         } else if (setAbhaAddressResponseResponse.code() == 409) {
             Toast.makeText(context, "This ABHA address already exists, please use a different one", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "This ABHA address already exists, please use a different one", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, setAbhaAddressResponseResponse.raw().message(), Toast.LENGTH_SHORT).show();
         }
     }
 
