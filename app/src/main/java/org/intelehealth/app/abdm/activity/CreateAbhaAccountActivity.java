@@ -183,6 +183,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
             binding.resendBtn.setEnabled(false);
             binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
             binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            binding.resendBtn.setVisibility(View.GONE);
         }
     }
 
