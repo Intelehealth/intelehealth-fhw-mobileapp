@@ -82,6 +82,36 @@ public class SnackbarUtils {
         });
     }
 
+    public void showCustomSnackBar(Context context, LinearLayout layoutParent, String message, boolean success) {
+        Snackbar snackbar = Snackbar.make(layoutParent, message, Snackbar.LENGTH_LONG); // LENGTH_LONG for more display time
+
+        View view = snackbar.getView();
+
+        // Modify layout params if needed (optional)
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+        params.gravity = Gravity.BOTTOM;
+        view.setLayoutParams(params);
+
+        // Access internal TextView to allow full message
+        TextView textView = view.findViewById(com.google.android.material.R.id.snackbar_text);
+        textView.setMaxLines(10); // Allow up to 10 lines
+        textView.setEllipsize(null); // Remove ellipsis
+        textView.setTextIsSelectable(true); // Optional: allow user to copy text
+
+        // Optional: padding for better readability
+        int padding = 16;
+        textView.setPadding(padding, padding, padding, padding);
+
+        // Set background color
+        if (success)
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSuccess));
+        else
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorFailure));
+
+        snackbar.show();
+    }
+
+
 
     public void showSnacksWithRelativeLayoutSuccess(Context context, String message,
                                                     RelativeLayout layoutParent) {

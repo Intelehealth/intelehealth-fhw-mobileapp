@@ -425,7 +425,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                     case MOBILE_NUMBER_SELECTION ->
                                             Toast.makeText(context, R.string.the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number, Toast.LENGTH_SHORT).show();
                                     case ABHA_SELECTION ->
-                                            Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
+                                            informDeletedUserAndNavigateToCreateAbha();
                                     default ->
                                             Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
                                 }
@@ -1024,7 +1024,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void informDeletedUserAndNavigateToCreateAbha() {
         binding.otpBox.setEnabled(false);
         snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
-        snackbarUtils.showSnackLinearLayoutParentSuccess(AbhaCardVerificationActivity.this, binding.llActionBar, getString(R.string.abha_records_deleted), true);
+        snackbarUtils.showCustomSnackBar(AbhaCardVerificationActivity.this, binding.llActionBar, getString(R.string.abha_records_deleted), true);
         snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
