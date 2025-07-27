@@ -21,7 +21,9 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -50,7 +52,6 @@ import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityAbhaCardVerificationBinding;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
@@ -62,7 +63,6 @@ import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -431,6 +431,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 }
                                 disableUI(true);
                                 binding.sendOtpBtn.setEnabled(true);
+                            } else if (otpResponse.code() == 400 && optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
+                                informDeletedUserAndNavigateToCreateAbha();
                             } else {
                                 if (otpResponse.errorBody() != null) {
                                     disableUI(true);
@@ -699,6 +701,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
+                        } else if (response.code() == 404) {
+                            informDeletedUserAndNavigateToCreateAbha();
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
                             disableUI(false);
@@ -817,7 +821,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
+                            informDeletedUserAndNavigateToCreateAbha();
+//                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
                         }
                     }
 
@@ -1014,6 +1019,20 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             }
 
         }.start();
+    }
+
+    private void informDeletedUserAndNavigateToCreateAbha() {
+        binding.otpBox.setEnabled(false);
+        snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
+        snackbarUtils.showSnackLinearLayoutParentSuccess(AbhaCardVerificationActivity.this, binding.llActionBar, getString(R.string.abha_records_deleted), true);
+        snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent createAbhaIntent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
+            sessionManager.setCreateAbha(true);
+            finish();
+            startActivity(createAbhaIntent);
+        }, 5000);
     }
 
     private void disableUI(boolean shouldEnable) {

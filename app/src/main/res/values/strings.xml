@@ -1951,4 +1951,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="doctor_additional_document_download_file_exists">Doctor\'s additional document is present in your Downloads folder.</string>
     <string name="unable_to_fetch_slots">Unable to fetch slots.</string>
     <string name="create_new_abha_address">Create New Abha Address</string>
+    <string name="abha_records_deleted">The ABHA records associated with the following user has been deleted. You will be guided to the Create ABHA screen to create a new record.</string>
 </resources>

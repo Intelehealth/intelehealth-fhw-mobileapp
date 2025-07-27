@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -80,6 +81,7 @@ public class SnackbarUtils {
             }
         });
     }
+
 
     public void showSnacksWithRelativeLayoutSuccess(Context context, String message,
                                                     RelativeLayout layoutParent) {
