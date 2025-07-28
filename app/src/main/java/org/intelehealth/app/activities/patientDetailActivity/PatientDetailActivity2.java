@@ -101,6 +101,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardActivity;
+import org.intelehealth.app.abdm.activity.LinkAbhaActivity;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
@@ -193,7 +194,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     //    Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn, btnViewAbhaCard;
-
+    Button btnFetchAndUpdateAbha;
+    String abhaFunctionality;
 
     String privacy_value_selected;
     String phistory = "";
@@ -353,7 +355,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         btnViewAbhaCard.setOnClickListener(v -> {
-           String filename = patientDTO.getAbhaNumber();
+            String filename = patientDTO.getAbhaNumber();
             String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/Intelehealth_AbhaCard/";
             File filePath = new File(imagePath);
             if (!filePath.exists()) {
@@ -577,13 +579,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 @Override
                 public void onChanged(Boolean isSync) {
                     if (isSync) {
-                        Logger.logD("Update data",isSync.toString());
+                        Logger.logD("Update data", isSync.toString());
                         setDisplay(patientDTO.getUuid());
                         IntelehealthApplication.getInstance().isSync.postValue(false);
                     }
                 }
             });
             setDisplay(patientDTO.getUuid());
+            initializeABHAButton();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -731,6 +734,31 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         initForOpenVisit();
         initForPastVisit();
+    }
+
+    private void initializeABHAButton() {
+        btnFetchAndUpdateAbha = findViewById(R.id.btn_fetch_and_update_abha);
+
+        if (patientDTO.getAbhaAddress().isEmpty() || patientDTO.getAbhaNumber().isEmpty()) {
+            btnFetchAndUpdateAbha.setText(getString(R.string.link_abha));
+            abhaFunctionality = CONSTANT_LINK_ABHA;
+        } else {
+            btnFetchAndUpdateAbha.setText(getString(R.string.update_abha));
+            abhaFunctionality = CONSTANT_UPDATE_ABHA;  }
+
+        btnFetchAndUpdateAbha.setVisibility(View.VISIBLE);
+
+        btnFetchAndUpdateAbha.setOnClickListener(v -> {
+            switch (abhaFunctionality) {
+                case CONSTANT_UPDATE_ABHA: {
+
+                }
+
+                case CONSTANT_LINK_ABHA: {
+                    startActivity(new Intent(context, LinkAbhaActivity.class));
+                }
+            }
+        });
     }
 
     private RecyclerView mPastVisitsRecyclerView;
@@ -1948,7 +1976,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
     private void openImageFile(File imageFile) {
-        MediaScannerConnection.scanFile(context, new String[] { imageFile.getAbsolutePath() }, null,
+        MediaScannerConnection.scanFile(context, new String[]{imageFile.getAbsolutePath()}, null,
                 (path, uri) -> {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);

@@ -1,6 +1,6 @@
 package org.intelehealth.app.abdm.utils
 
-object ABDMConstant{
+object ABDMConstant {
     const val SCOPE_AADHAAR = "aadhar"
     const val SCOPE_MOBILE = "mobile"
     const val SCOPE_INDEX = "index"
@@ -15,4 +15,7 @@ object ABDMConstant{
     const val ABHA_OTP_AADHAAR = "AADHAAR_OTP"
     const val ABHA_OTP_MOBILE = "MOBILE_OTP"
     const val BEARER = "Bearer "
+
+    const val CONSTANT_UPDATE_ABHA = "updateAbha"
+    const val CONSTANT_LINK_ABHA = "linkAbha"
 }

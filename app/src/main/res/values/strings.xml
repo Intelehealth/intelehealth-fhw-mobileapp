@@ -1952,4 +1952,16 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="unable_to_fetch_slots">Unable to fetch slots.</string>
     <string name="create_new_abha_address">Create New Abha Address</string>
     <string name="abha_records_deleted">The ABHA records associated with the following user has been deleted. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="link_abha">Link ABHA</string>
+    <string name="update_abha">Update ABHA</string>
+    <string name="compare_data">Compare Data</string>
+    <string name="link_abha_local_string">Local</string>
+    <string name="link_abha_ABHA_string">ABHA</string>
+    <string name="table_row_name">Name</string>
+    <string name="compare_ABHA_row_DOB">DOB</string>
+    <string name="compare_ABHA_row_gender">Gender</string>
+    <string name="compare_ABHA_row_address">Address</string>
+    <string name="compare_and_save_selected_data">Compare &amp; Save Selected Data</string>
+    <string name="edit_manually">Edit Manually</string>
+    <string name="title_activity_link_abha">Link ABHA</string>
 </resources>

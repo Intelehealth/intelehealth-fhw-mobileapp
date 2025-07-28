@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <uses-permission
@@ -12,7 +13,6 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
@@ -48,7 +48,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-
+        <activity
+            android:name=".abdm.activity.LinkAbhaActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".abdm.activity.AbhaCardVerificationActivity"
             android:exported="false"
@@ -73,15 +76,12 @@
             android:name=".abdm.activity.AbhaAddressSuggestionsActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".abdm.activity.AadharMobileVerificationActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
@@ -450,8 +450,8 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:exported="false"
-            android:name=".activities.patientDetailActivity.PatientDetailActivity2$SyncBroadcastReceiver" >
+            android:name=".activities.patientDetailActivity.PatientDetailActivity2$SyncBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.intelehealth.app.SYNC_NOTIFY_INTENT_ACTION" />
             </intent-filter>
