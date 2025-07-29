@@ -117,6 +117,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         if (activeStatus != null) {
             progressDialog.dismiss();
             mFeatureActiveStatus = activeStatus;
+            initLimits();
             endVisits_data();
         }
     }
