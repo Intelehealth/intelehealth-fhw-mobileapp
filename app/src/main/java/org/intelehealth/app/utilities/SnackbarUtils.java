@@ -25,7 +25,7 @@ public class SnackbarUtils {
 
     public void showSnackLinearLayoutParentSuccess(Context context, LinearLayout layoutParent, String message, boolean success) {
         Snackbar snackbar = Snackbar
-                .make(layoutParent, message, Snackbar.LENGTH_SHORT);
+                .make(layoutParent, message, Snackbar.LENGTH_LONG);
         View view = snackbar.getView();
         FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) view.getLayoutParams();
         params1.gravity = Gravity.BOTTOM;

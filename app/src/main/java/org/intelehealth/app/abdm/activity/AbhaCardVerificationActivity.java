@@ -426,8 +426,12 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);
                             } else {
                                 if (otpResponse.errorBody() != null) {
-                                    Toast.makeText(context, ABDMUtils.getErrorMessage1(otpResponse.errorBody()), Toast.LENGTH_SHORT).show();
-                                } else {
+//                                    Toast.makeText(context, ABDMUtils.getErrorMessage1(otpResponse.errorBody()), Toast.LENGTH_SHORT).show();
+                                    if (otpResponse.code() == 422) {
+                                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
+                                                StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
+                                    }
+                                    } else {
                                     Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 }
                                 binding.sendOtpBtn.setEnabled(true);

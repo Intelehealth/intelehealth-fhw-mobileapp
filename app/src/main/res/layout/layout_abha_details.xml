@@ -60,13 +60,15 @@
             android:text="@string/or"
             android:layout_gravity="center"
             android:textSize="14sp"
+            android:visibility="gone"
             />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
              android:layout_marginTop="@dimen/spinner_countries_margin_top"
-             app:hintEnabled="false">
+             app:hintEnabled="false"
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAbhaAddress"
