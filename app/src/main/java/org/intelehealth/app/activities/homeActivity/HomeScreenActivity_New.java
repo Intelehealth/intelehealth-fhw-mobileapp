@@ -1484,6 +1484,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     imageViewIsNotification.setVisibility(View.GONE);
                     fragment = new MyAchievementsFragment();
                     //loadFragmentForBottomNav(fragment);
+                    SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
+
                     loadFragment(fragment, TAG_ACHIEVEMENT);
                     return true;
                 case R.id.bottom_nav_help:

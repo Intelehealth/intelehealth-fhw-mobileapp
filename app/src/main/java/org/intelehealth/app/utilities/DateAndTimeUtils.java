@@ -2,12 +2,14 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.AppConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -999,10 +1001,17 @@ public class DateAndTimeUtils {
 
     public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
-        Date parsedDate = convertStringToDateObject(date, format, localeCode);
-        if (parsedDate != null) {
-            calendar.setTime(parsedDate);
+
+        try{
+            Date parsedDate = convertStringToDateObject(date, format, localeCode);
+            if (parsedDate != null) {
+                calendar.setTime(parsedDate);
+            }
+        }catch (Exception  e){
+            Log.d(TAG, "convertStringToCalendarObject: e: "+e.getLocalizedMessage());
+            e.printStackTrace();
         }
+
         return calendar;
     }
 
@@ -1237,4 +1246,49 @@ public class DateAndTimeUtils {
         Date date = new Date(currentTimeMillis);
         return simpleFormat.format(date);
     }
+    public static String convertInputDateToRequiredFormat(String inputDate, String inputFormat, String outputFormat) {
+        if (inputDate == null || inputDate.trim().isEmpty()) return "";
+
+        try {
+            SimpleDateFormat fromFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            SimpleDateFormat toFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+
+            Date date = fromFormat.parse(inputDate); // Parse input string to Date
+            return toFormat.format(date);            // Format Date to desired output
+        } catch (Exception e) {
+            e.printStackTrace();
+            return inputDate; // fallback to original if conversion fails
+        }
+    }
+    public static Calendar convertStringToCalendarObjectGeneric(String date, String[] possibleFormats, String localeCode) {
+        Calendar calendar = Calendar.getInstance();
+        if (date == null || date.trim().isEmpty()) return calendar;
+
+        for (String format : possibleFormats) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format, new Locale(localeCode));
+                sdf.setLenient(false);
+                Date parsedDate = sdf.parse(date);
+                if (parsedDate != null) {
+                    calendar.setTime(parsedDate);
+                    return calendar;
+                }
+            } catch (Exception ignored) {}
+        }
+
+        Log.d("DateUtils", "Failed to parse date: $date with provided formats");
+        return calendar;
+    }
+     public String convertDateForDisplay(String dateStr) {
+        try {
+            SimpleDateFormat serverFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT_YYYY_MM_DD, Locale.ENGLISH);
+            SimpleDateFormat displayFormat = new SimpleDateFormat(AppConstants.DATE_FORMAT_DD_MMM_YYYY, Locale.ENGLISH);
+            Date date = serverFormat.parse(dateStr);
+            return displayFormat.format(date);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+
 }

@@ -100,6 +100,7 @@ public class UuidDictionary {
     public static final String FOLLOWUP_ENCOUNTER_ID = "b4fcf4dd-7f9c-4c0e-b874-2113963291f0";
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
-
-
+    public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
+    public static final String  ATTRIBUTE_TYPE_DATE_CREATED_NAME= "createdDate";
+    public static final String ATTRIBUTE_TYPE_PROVIDER_ID_NAME = "providerUUID";
 }

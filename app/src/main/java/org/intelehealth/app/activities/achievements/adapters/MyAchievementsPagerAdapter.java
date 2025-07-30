@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.intelehealth.app.activities.achievements.fragments.DailyAchievementsFragment;
+import org.intelehealth.app.activities.achievements.fragments.DailyAchievementsFragmentNew;
 import org.intelehealth.app.activities.achievements.fragments.DateRangeAchievementsFragment;
+import org.intelehealth.app.activities.achievements.fragments.DateRangeAchievementsFragmentNew;
 import org.intelehealth.app.activities.achievements.fragments.OverallAchievementsFragment;
 
 public class MyAchievementsPagerAdapter extends FragmentStateAdapter {
@@ -28,15 +30,17 @@ public class MyAchievementsPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 1:
-                return new DailyAchievementsFragment();
-
-            case 2:
-                return new DateRangeAchievementsFragment();
             case 0:
+                return new DailyAchievementsFragmentNew();
+
+            case 1:
+                return new DateRangeAchievementsFragmentNew();
+          /*  case 0:
 
             default:
-                return new OverallAchievementsFragment();
+                return new OverallAchievementsFragment();*/
+            default:
+                return new DailyAchievementsFragmentNew();
         }
     }
 

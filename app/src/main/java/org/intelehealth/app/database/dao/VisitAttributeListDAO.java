@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -311,5 +312,32 @@ public class VisitAttributeListDAO {
         //db.endTransaction();
 
         return specialityValue;
+    }
+    public boolean insertIsNcdVisitAttribute(String visitUuid, String isNcdVisit) throws DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", isNcdVisit);
+            values.put("visit_attribute_type_uuid", UuidDictionary.IS_NCD_VISIT_ATTRIBUTE);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (count != -1) {
+                isInserted = true;
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isInserted;
     }
 }

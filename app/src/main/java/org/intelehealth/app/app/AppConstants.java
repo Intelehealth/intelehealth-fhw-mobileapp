@@ -310,4 +310,8 @@ public class AppConstants {
     public static final String LANGUAGE_OR = "or";
     public static final String LANGUAGE_AS = "as";
 
+    public static final String DATE_FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String DATE_FORMAT_DD_MMM_YYYY = "dd MMM, yyyy";
+    public static final String DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH = "dd MMMM, yyyy";
+
 }

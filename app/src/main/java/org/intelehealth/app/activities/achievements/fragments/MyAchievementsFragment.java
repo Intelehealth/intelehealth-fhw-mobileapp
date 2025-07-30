@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.achievements.model.SyncViewModel;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -100,6 +103,11 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+
+        /*ivInternet.setOnClickListener(v -> {
+            startSync();
+        });*/
+
         configureTabLayout();
 
     }
@@ -109,7 +117,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         tabLayout.removeAllTabs();
 
         ViewPager2 viewPager = view.findViewById(R.id.pager_achievements);
-        MyAchievementsPagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), 3, getActivity());
+        MyAchievementsPagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), 2, getActivity());
         viewPager.setAdapter(adapter);
         int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
 
@@ -120,8 +128,8 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
-                    case 0 -> tab.setText(getResources().getString(R.string.overall));
-                    case 1 -> tab.setText(getResources().getString(R.string.daily));
+                    //case 0 -> tab.setText(getResources().getString(R.string.overall));
+                    case 0 -> tab.setText(getResources().getString(R.string.daily));
                     default -> tab.setText(getResources().getString(R.string.date_range));
                 }
             }
@@ -175,5 +183,9 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+    private void startSync() {
+        SyncViewModel syncViewModel = new ViewModelProvider(requireActivity()).get(SyncViewModel.class);
+        syncViewModel.startSync();
     }
 }
