@@ -87,8 +87,8 @@
                 android:layout_marginTop="14dp">
 
                 <include
-                    android:id="@+id/layout_doNotHaveABHANumber"
-                    layout="@layout/layout_donothaveabha" />
+                    android:id="@+id/layout_onlyaadhar"
+                    layout="@layout/layout_onlyaadhar" />
 
 
             </FrameLayout>
@@ -170,12 +170,67 @@
 
             </LinearLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_resend_counter"
+                android:layout_marginHorizontal="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:visibility="gone"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mobileNoBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/textbox_outline"
+                    android:hint="@string/enter_mobile_no"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:lineSpacingExtra="3sp"
+                    android:maxLength="10"
+                    android:padding="14dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/type_mobile_no"
+                    android:textColor="@null"
+                    android:textColorHint="@color/hint_color"
+                    android:textSize="@null" />
+
+                <TextView
+                    android:id="@+id/tv_mobile_no_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="@dimen/space_10dp"
+                    android:gravity="center"
+                    android:text="@string/aadhar_otp_information"
+                    android:textAppearance="@style/we_will_sen"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <TextView
+                    android:id="@+id/mobile_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/sendOtpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_resend_counter"
+                android:layout_below="@+id/til_mobile"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="50dp"
                 android:layout_marginTop="30dp"
@@ -183,8 +238,8 @@
                 android:background="@drawable/ui2_common_primary_bg_with_state"
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:drawableTint="@color/iconTintWhite"
-                android:paddingStart="@dimen/common_button_padding_left"
                 android:enabled="false"
+                android:paddingStart="@dimen/common_button_padding_left"
                 android:paddingTop="@dimen/common_button_padding_top"
                 android:paddingEnd="@dimen/common_button_padding_right"
                 android:paddingBottom="@dimen/common_button_padding_bottom"

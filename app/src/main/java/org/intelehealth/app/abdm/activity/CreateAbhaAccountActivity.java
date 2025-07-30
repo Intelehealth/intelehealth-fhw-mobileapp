@@ -119,6 +119,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     binding.flOtpBox.setVisibility(View.VISIBLE);
                     binding.rlResendOTP.setVisibility(View.VISIBLE);
                     binding.llResendCounter.setVisibility(View.VISIBLE);
+                    binding.tilMobile.setVisibility(View.VISIBLE);
                     resendCounterAttemptsTextDisplay();
                     binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 }
@@ -136,21 +137,21 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
                     if (!binding.otpBox.getText().toString().isEmpty()) {
                         String mobileNo;
-                        mobileNo = Objects.requireNonNull(binding.layoutDoNotHaveABHANumber.mobileNoBox.getText()).toString().trim();
+                        mobileNo = Objects.requireNonNull(binding.mobileNoBox.getText()).toString().trim();
                         callOTPForAadhaarVerificationApi((String) binding.sendOtpBtn.getTag(), mobileNo, binding.otpBox.getText().toString());
                     }
                 }
             }
         });
 
-        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setOnClickListener(v -> {
+        binding.layoutOnlyaadhar.cvTermsAndCondition.setOnClickListener(v -> {
 
         });
 
-        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.layoutOnlyaadhar.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         ConsentDialog consentDialog = new ConsentDialog();
-                        consentDialog.setListeners(isCheck -> binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
+                        consentDialog.setListeners(isCheck -> binding.layoutOnlyaadhar.cvTermsAndCondition.setChecked(isCheck));
                         consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
                     }
                     binding.sendOtpBtn.setEnabled(isChecked);
@@ -233,7 +234,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
         String aadhaarNo;
-        aadhaarNo = Objects.requireNonNull(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText()).toString().trim();
+        aadhaarNo = Objects.requireNonNull(binding.layoutOnlyaadhar.aadharNoBox.getText()).toString().trim();
 
         aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAAR);
         aadharApiBody.setValue(aadhaarNo);
@@ -261,6 +262,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                     binding.flOtpBox.setVisibility(View.VISIBLE);
                                     binding.rlResendOTP.setVisibility(View.VISIBLE);
                                     binding.llResendCounter.setVisibility(View.VISIBLE);
+                                    binding.tilMobile.setVisibility(View.VISIBLE);
                                     binding.resendBtn.setPaintFlags(binding.resendBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                                 }
 
@@ -473,49 +475,51 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private boolean checkValidation() {
         boolean isValid = true;
 
-        if (Objects.requireNonNull(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText()).toString().isEmpty()) {
-            binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-            binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.error_field_required));
-            binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+        if (Objects.requireNonNull(binding.layoutOnlyaadhar.aadharNoBox.getText()).toString().isEmpty()) {
+            binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
+            binding.layoutOnlyaadhar.aadharError.setText(getString(R.string.error_field_required));
+            binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
             isValid = false;
         } else { // ie. aadhaar no empty
-            if (binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString().length() < 12) {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutDoNotHaveABHANumber.aadharError.setText(getString(R.string.enter_12_digits));
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            if (binding.layoutOnlyaadhar.aadharNoBox.getText().toString().length() < 12) {
+                binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutOnlyaadhar.aadharError.setText(getString(R.string.enter_12_digits));
+                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isValid = false;
-            } else if (!validateAadhaarNumber(binding.layoutDoNotHaveABHANumber.aadharNoBox.getText().toString())) {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutDoNotHaveABHANumber.aadharError.setText(R.string.aadhar_number_is_not_valid);
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-                isValid = false;
-            } else {
-                binding.layoutDoNotHaveABHANumber.aadharError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-            }
-        }
-        if (Objects.requireNonNull(binding.layoutDoNotHaveABHANumber.mobileNoBox.getText()).toString().isEmpty()) {
-            binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
-            binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.error_field_required));
-            binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-            isValid = false;
-        } else {
-            if (binding.layoutDoNotHaveABHANumber.mobileNoBox.getText().toString().length() < 10) {
-                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.VISIBLE);
-                binding.layoutDoNotHaveABHANumber.mobileError.setText(getString(R.string.enter_10_digits));
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            } else if (!validateAadhaarNumber(binding.layoutOnlyaadhar.aadharNoBox.getText().toString())) {
+                binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutOnlyaadhar.aadharError.setText(R.string.aadhar_number_is_not_valid);
+                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
                 isValid = false;
             } else {
-                binding.layoutDoNotHaveABHANumber.mobileError.setVisibility(View.GONE);
-                binding.layoutDoNotHaveABHANumber.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                binding.layoutOnlyaadhar.aadharError.setVisibility(View.GONE);
+                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             }
         }
+
         // common area...
         if (binding.flOtpBox.getVisibility() == View.VISIBLE) {
             if (binding.otpBox.getText() != null) {
                 if (binding.otpBox.getText().toString().isEmpty()) {
                     Toast.makeText(context, getString(R.string.please_enter_otp_received), Toast.LENGTH_LONG).show();
                     isValid = false;
+                }
+            }
+
+            if (Objects.requireNonNull(binding.mobileNoBox.getText()).toString().isEmpty()) {
+                binding.mobileError.setVisibility(View.VISIBLE);
+                binding.mobileError.setText(getString(R.string.error_field_required));
+                binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                isValid = false;
+            } else {
+                if (binding.mobileNoBox.getText().toString().length() < 10) {
+                    binding.mobileError.setVisibility(View.VISIBLE);
+                    binding.mobileError.setText(getString(R.string.enter_10_digits));
+                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    isValid = false;
+                } else {
+                    binding.mobileError.setVisibility(View.GONE);
+                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 }
             }
         }
@@ -644,8 +648,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void disableUI(boolean shouldEnable) {
-        binding.layoutDoNotHaveABHANumber.aadharNoBox.setEnabled(shouldEnable);
-        binding.layoutDoNotHaveABHANumber.mobileNoBox.setEnabled(shouldEnable);
-        binding.layoutDoNotHaveABHANumber.cvTermsAndCondition.setEnabled(shouldEnable);
+        binding.layoutOnlyaadhar.aadharNoBox.setEnabled(shouldEnable);
+        binding.layoutOnlyaadhar.cvTermsAndCondition.setEnabled(shouldEnable);
     }
 }

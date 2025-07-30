@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.identificationActivity;
 
+import static org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity.BEARER_AUTH;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
@@ -64,6 +65,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -77,10 +79,15 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.abdm.activity.AbhaAddressSuggestionsActivity;
 import org.intelehealth.app.abdm.activity.CreateAbhaAccountActivity;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
+import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
@@ -94,13 +101,20 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class Fragment_ThirdScreen extends Fragment {
     private static final String TAG = Fragment_ThirdScreen.class.getSimpleName();
@@ -942,6 +956,4 @@ public class Fragment_ThirdScreen extends Fragment {
         }
         idCursor1.close();
     }
-
-
 }
