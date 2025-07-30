@@ -97,7 +97,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         // check internet - start
         checkInternetConnection();
         setClickListener();
+        populatePhoneNumberOnUpdate();
+    }
 
+    private void populatePhoneNumberOnUpdate() {
+        if (isUpdateAbhaAddress) {
+            String mobile = patientDTO.getPhonenumber().replace("+91", "");
+            binding.mobileNoBox.setText(mobile);
+        }
     }
 
     private void setClickListener() {
