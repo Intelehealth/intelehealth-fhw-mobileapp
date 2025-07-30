@@ -273,12 +273,18 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                             } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
                                 cpd.dismiss();
-                                AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
-                                dialog.openAuthSelectionDialogDialog(authType -> {
-                                    abhaAuthType = authType;
-                                    sentOtpApi(accessToken, getSendOtpApiRequest());
-                                });
-                                dialog.show(getSupportFragmentManager(), "");
+                                if(!TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText())) {
+                                    AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                                    dialog.openAuthSelectionDialogDialog(authType -> {
+                                        abhaAuthType = authType;
+                                        sentOtpApi(accessToken, getSendOtpApiRequest());
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
+                                }
+                                else { //as abha address + aadhar combination is discontinued from abdm side hence this selection dialog has been removed, and user only has option to get otp via mobile. Hence, no choice given.
+                                    abhaAuthType = ABHA_OTP_MOBILE;
+                                    sentOtpApi(accessToken, getSendOtpApiRequest());   // via. aadhaarEnroll api
+                                }
                             }
 
                         }
