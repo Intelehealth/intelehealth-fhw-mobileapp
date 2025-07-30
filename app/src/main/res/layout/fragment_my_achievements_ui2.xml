@@ -40,6 +40,7 @@
         android:layout_height="@dimen/achievements_badge_height"
         android:layout_below="@+id/layout_toolbar_achievements"
         android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/achievements_badge_margin_start"
         android:layout_marginTop="@dimen/achievements_badge_margin_top"
         android:src="@drawable/ui2_ic_achievements_badge" />
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_toolbar_achievements"
         android:layout_marginStart="@dimen/achievements_userlevel_margin_start"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/achievements_userlevel_margin_top"
         android:layout_toEndOf="@+id/iv_badge"
         android:text="@string/level"
@@ -66,6 +68,7 @@
         android:layout_marginTop="@dimen/achievements_user_score_margin_top"
         android:layout_toEndOf="@+id/iv_badge"
         android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
+        android:visibility="gone"
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/common_info_text_size" />
 
@@ -73,9 +76,9 @@
         android:id="@+id/tablayout_achievements"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_user_points"
+        android:layout_below="@+id/layout_toolbar_achievements"
         android:layout_marginStart="@dimen/achievements_tab_margin_start"
-        android:layout_marginTop="@dimen/achievements_tab_margin_top"
+        android:layout_marginTop="@dimen/achievements_user_score_margin_top"
         android:layout_marginEnd="@dimen/achievements_tab_margin_end"
         android:background="@drawable/ui2_bg_tablayout_achievements"
         android:gravity="center"

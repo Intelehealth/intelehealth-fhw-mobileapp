@@ -335,7 +335,7 @@
     <dimen name="achievements_tab_margin_top">32dp</dimen>
     <dimen name="layout_parent_achi_margin_top">30dp</dimen>
     <dimen name="card_common_achieve_padding">18dp</dimen>
-    <dimen name="card1_achieve_margin_end">13dp</dimen>
+    <dimen name="card1_achieve_margin_end">16dp</dimen>
     <dimen name="card1_achieve_margin_start">13dp</dimen>
     <dimen name="card_achieve_icon_width">40dp</dimen>
     <dimen name="card_achieve_icon_height">45dp</dimen>
