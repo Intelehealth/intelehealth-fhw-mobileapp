@@ -64,9 +64,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private String blockCharacterSet_ABHA_Address = "@";
 
-    private boolean isUpdateAbhaAddress = false;
-    private PatientDTO patientDTO = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +106,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             AbhaAddressSuggestionDialogFragment abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
             abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(), "");
         });
-
-        isUpdateAbhaAddress = intent.getBooleanExtra("isUpdateAbhaAddress", false);
-        if (isUpdateAbhaAddress) {
-            patientDTO = (PatientDTO) intent.getSerializableExtra("patientDTO");
-        }
     }
 
     private InputFilter filter = new InputFilter() {
@@ -154,13 +146,11 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 startActivity(dataIntent);
                 finish();
                 return; // ie. selected is same as auto-generated than move ahead dont call setPrf api.
-            }
-
-            /*else {
+            } else {
                 List<String> phrAddrList = new ArrayList<>();
                 phrAddrList.add(selectedChip);
                 otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddrList);
-            }*/
+            }
         }
 
         // api - start
@@ -199,30 +189,15 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     newAbhaAddress = newAbhaAddress.concat("@sbx");
                 }
 
-                if (isUpdateAbhaAddress) {
-                    patientDTO.setAbhaAddress(newAbhaAddress);
-                    Intent intent = new Intent(AbhaAddressSuggestionsActivity.this, IdentificationActivity_New.class);
-                    intent.putExtra("patientUuid", patientDTO.getUuid());
-                    intent.putExtra("ScreenEdit", "others_edit");
-                    intent.putExtra("patient_detail", true);
+                List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
+                phrAddresses.add(0, newAbhaAddress);
+                otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddresses);
 
-                    Bundle args = new Bundle();
-                    args.putSerializable("patientDTO", patientDTO);
-                    intent.putExtra("BUNDLE", args);
-
-                    startActivity(intent);
-                    finish();
-                } else {
-                    List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
-                    phrAddresses.add(0, newAbhaAddress);
-                    otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddresses);
-
-                    Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                    dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-                    dataIntent.putExtra("accessToken", accessToken);
-                    startActivity(dataIntent);
-                    finish();
-                }
+                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                dataIntent.putExtra("accessToken", accessToken);
+                startActivity(dataIntent);
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }

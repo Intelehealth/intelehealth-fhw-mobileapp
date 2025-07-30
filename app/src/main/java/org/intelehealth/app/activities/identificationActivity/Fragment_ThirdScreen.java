@@ -75,6 +75,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -238,10 +239,6 @@ public class Fragment_ThirdScreen extends Fragment {
                 // do nothing...
             }
 
-            if (patient_detail && patientDTO.getAbhaAddress() != null) {
-                tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
-            }
-
             // abdm - start
             if (getArguments().containsKey(PAYLOAD)) {
                 otpVerificationResponse = (OTPVerificationResponse) getArguments().getSerializable(PAYLOAD);
@@ -254,6 +251,11 @@ public class Fragment_ThirdScreen extends Fragment {
                     setAutoFillValuesViaMobile(abhaProfileResponse);
                 }
             }
+
+            if (!patient_detail && otpVerificationResponse != null) {
+                tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
+            }
+
             if (getArguments().containsKey("accessToken"))
                 accessToken = getArguments().getString("accessToken");
             if (getArguments().containsKey("xToken"))
@@ -311,13 +313,46 @@ public class Fragment_ThirdScreen extends Fragment {
         });
 
         tvCreateNewAbhaAddress.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), CreateAbhaAccountActivity.class);
-            intent.putExtra("isUpdateAbhaAddress", true);
-            intent.putExtra("patientDTO", patientDTO);
-            sessionManager.setCreateAbha(true);
-            startActivity(intent);
-            getActivity().finish();
+            callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         });
+    }
+
+    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
+        ArrayList<String> addressList = new ArrayList<>();
+        String url = UrlModifiers.getEnrollABHASuggestionUrl();
+        EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
+        body.setTxnId(otpVerificationResponse.getTxnId());
+
+        Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle = AppConstants.apiInterface.PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(url, accessToken, body);
+        enrollSuggestionResponseSingle
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
+                        if (enrollSuggestionResponse.getAbhaAddressList() != null) {
+                            addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
+                            addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
+                            addressList.remove(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
+
+                            if (!addressList.isEmpty()) {
+                                Intent intent = new Intent(getActivity(), AbhaAddressSuggestionsActivity.class);
+                                intent.putStringArrayListExtra("addressList", addressList);
+                                intent.putExtra("payload", otpVerificationResponse);
+                                intent.putExtra("accessToken", accessToken);
+                                startActivity(intent);
+                                if (getActivity() != null) {
+                                    getActivity().finish();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.tag(TAG).e("onError: suggestion%s", e.toString());
+                    }
+                });
     }
 
     private void disableAbhaFlowFieldsOnEdit(PatientDTO patientDTO) {

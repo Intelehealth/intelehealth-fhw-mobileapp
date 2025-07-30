@@ -178,6 +178,7 @@
                 android:layout_marginHorizontal="@dimen/margin_20"
                 android:layout_marginTop="@dimen/margin_20"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText

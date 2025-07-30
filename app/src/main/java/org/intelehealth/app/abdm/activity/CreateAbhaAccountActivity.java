@@ -76,7 +76,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private CountDownTimer countDownTimer;
     private static int resendCounter = 2;
-    private boolean isUpdateAbhaAddress = false;
     private PatientDTO patientDTO = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -89,7 +88,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(context);
-        isUpdateAbhaAddress = getIntent().getBooleanExtra("isUpdateAbhaAddress", false);
         patientDTO = (PatientDTO) getIntent().getSerializableExtra("patientDTO");
 
         binding.ivBackArrow.setOnClickListener(v -> finish());
@@ -97,14 +95,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         // check internet - start
         checkInternetConnection();
         setClickListener();
-        populatePhoneNumberOnUpdate();
-    }
-
-    private void populatePhoneNumberOnUpdate() {
-        if (isUpdateAbhaAddress) {
-            String mobile = patientDTO.getPhonenumber().replace("+91", "");
-            binding.mobileNoBox.setText(mobile);
-        }
     }
 
     private void setClickListener() {
@@ -410,7 +400,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken, boolean isNewUser) {
-        if (isNewUser || isUpdateAbhaAddress) {
+        if (isNewUser) {
             // New user -> fetch address suggestions and navigate to ABHA address screen.
             // Existing user -> update your abha address
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
@@ -442,19 +432,11 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
-                            if (isUpdateAbhaAddress) {
-                                addressList.remove(patientDTO.getAbhaAddress());
-                            }
-
                             if (addressList.size() > 0) {
                                 Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
-                                intent.putExtra("isUpdateAbhaAddress", isUpdateAbhaAddress);
-                                if (isUpdateAbhaAddress) {
-                                    intent.putExtra("patientDTO", patientDTO);
-                                }
                                 startActivity(intent);
                                 finish();
                             }
