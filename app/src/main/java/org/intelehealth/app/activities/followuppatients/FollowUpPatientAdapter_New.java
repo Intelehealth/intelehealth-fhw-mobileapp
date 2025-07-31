@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,34 +23,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.DownloadFilesUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by Prajwal Waingankar on 21/08/22.
@@ -70,7 +58,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         sessionManager = new SessionManager(context);
     }
 
-    public void setData(List<FollowUpModel> patients){
+    public void setData(List<FollowUpModel> patients) {
         this.patients = patients;
         notifyDataSetChanged();
     }
@@ -105,7 +93,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         if (patients != null) {
             if (position >= patients.size()) return;
             final FollowUpModel model = patients.get(position);
-            holder.bind(model,position);
+            holder.bind(model, position);
         }
     }
 
@@ -182,7 +170,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             return rootView;
         }
 
-        void bind(FollowUpModel model, int position){
+        void bind(FollowUpModel model, int position) {
             setIsRecyclable(false);
 
             setGenderAgeLocalByCommaContact(context, search_gender, model.getDate_of_birth(), model.getGender(), sessionManager);
@@ -206,7 +194,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             .skipMemoryCache(true)
                             .into(profile_image);
                 } else {
-                    profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                    profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
                 }
                 // photo - end
 
@@ -234,7 +222,14 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         }*/
 
                     CustomLog.v("getFollowup_date", followupDateTimeRaw + "OK");
-                    String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
+                    String followupDateTime = getFormattedDateTime(followupDateTimeRaw);
+                    /*if(followupDateTimeRaw.contains(", Time:")){
+                        followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
+                    }else if(followupDateTimeRaw.contains(",Time:")){
+                        followupDateTime = followupDateTimeRaw.trim().replace(",Time:", "");
+                    }else{
+                        followupDateTime = followupDateTimeRaw.trim();
+                    }*/
                     CustomLog.v("getFollowup_date", "final followupDate " + followupDateTime);
 
                     String todaysDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -249,10 +244,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             tv_time_diff.setVisibility(View.GONE);
                         }
 
-                        itemLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.item_bg_accent));
+                        itemLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.item_bg_accent));
                     } else {
                         tv_time_diff.setVisibility(View.GONE);
-                        itemLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.item_bg_white));
+                        itemLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.item_bg_white));
                     }
 
                     try {
@@ -267,7 +262,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             followupDate = StringUtils.en__hi_dob(followupDate);
                         fu_date_txtview.setText(followupDate);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         fu_date_txtview.setText(followupDateTime);
                     }
                 }
@@ -280,6 +275,26 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             // Patient Age
             //String age = DateAndTimeUtils.getAge_FollowUp(model.getDate_of_birth(), context);
 
+        }
+
+        private String getFormattedDateTime(String followupDateTimeRaw) {
+            try {
+                String[] parts = followupDateTimeRaw.split(",");
+                String date = parts[0];
+                String time = "";
+
+                for (String part : parts) {
+                    if (part.startsWith("Time:")) {
+                        time = part.replace("Time:", "").trim();
+                        break;
+                    }
+                }
+
+                followupDateTimeRaw = date + " " + time;
+            } catch (Exception ignored) {
+            }
+
+            return followupDateTimeRaw;
         }
     }
 

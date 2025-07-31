@@ -546,8 +546,9 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
                 + "AND o.voided='0' and "
                 +" (followup_date = ? or followup_date = ?) "
-                + "AND o.value is NOT NULL "
-                + "AND followup_date is NOT NULL " +
+                + "AND o.value is NOT NULL "+
+                " AND a.enddate is NULL " +
+                "AND followup_date is NOT NULL " +
                 "GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 

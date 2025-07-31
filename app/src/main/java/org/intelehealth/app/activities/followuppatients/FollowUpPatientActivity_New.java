@@ -956,6 +956,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND o.conceptuuid = ? " +
                 "AND o.voided='0' " +
                 "AND  followup_date = ? " +
+                "AND a.enddate is NULL " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
                 "GROUP BY a.patientuuid " +
@@ -1087,6 +1088,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND o.conceptuuid = ? " +
                 "AND o.voided='0' " +
                 "AND  followup_date = ? " +
+                "AND a.enddate is NULL " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL "+
                 "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
@@ -1235,6 +1237,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     "AND o.conceptuuid = ? " +
                     "AND o.voided='0' " +
                     skipTodayAndTomorrowQuery +
+                    "AND a.enddate is NULL " +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
                     "GROUP BY a.patientuuid " +

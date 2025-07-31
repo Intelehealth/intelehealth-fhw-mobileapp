@@ -1374,6 +1374,7 @@ public class PatientsDAO extends BaseDao {
                     "AND o.conceptuuid = ? " +
                     "AND o.voided='0' " +
                     "AND o.value is NOT NULL " +
+                    "AND a.enddate is NULL " +
                     "AND followup_date is NOT NULL " +
                     "GROUP BY a.patientuuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
