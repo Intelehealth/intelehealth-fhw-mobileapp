@@ -123,11 +123,11 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
     fun showAlertDialog(message :String) {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Notification")
+        builder.setTitle(getString(R.string.notification))
         builder.setMessage(message)
 
         // Add the OK button
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             // User clicked OK button
             dialog.dismiss()
         }

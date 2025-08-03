@@ -1081,6 +1081,7 @@
     <string name="blackout">Blackout</string>
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="notification">Notification</string>
 
 
 </resources>
