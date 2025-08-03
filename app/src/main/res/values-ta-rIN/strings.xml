@@ -1018,4 +1018,5 @@
     <string name="blackout">மின்மறைப்பு</string>
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">கீழே குறிப்பிடப்பட்ட நேர இடைவெளியில் அறிவிப்புகளை முடக்க, மின்மறைப்பு காலத்தை இயக்கவும்</string>
     <string name="from_9_00_pm_to_6_00_am">இரவு 9:00 மணி முதல் காலை 6:00 மணி வரை</string>
+    <string name="notification">அறிவிப்பு</string>
 </resources>
