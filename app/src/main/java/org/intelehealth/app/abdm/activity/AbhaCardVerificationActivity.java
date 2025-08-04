@@ -283,7 +283,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 });
                                 dialog.show(getSupportFragmentManager(), "");
                             }
-
                         }
 
                         @Override

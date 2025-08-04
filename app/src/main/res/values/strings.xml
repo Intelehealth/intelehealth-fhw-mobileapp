@@ -1920,7 +1920,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="aadhaar">AADHAAR</string>
     <string name="please_select_the_abha_account">Please select the ABHA account</string>
     <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
-    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retried exceeded. Please try again after 30 mins.</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 30 mins.</string>
     <string name="view_download_abha_card">View/Download ABHA card</string>
     <string name="session_expired_please_try_again">Session Expired. Please try again.</string>
     <string name="abha_consent_line1"><![CDATA[I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India <b>(“UIDAI”)</b>, and my demographic information for the purpose of\n creating an Ayushman Bharat Health Account number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b>. I authorize NHA to use my Aadhaar\n number / Virtual ID for performing Aadhaar based authentication with UIDAI as per the provisions of the Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits\n and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication.]]></string>
@@ -1936,7 +1936,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_select_abha_address">Please select ABHA address.</string>
     <string name="mobile">Mobile</string>
     <string name="the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number">The mobile number you have entered does not match with any of the records. Please enter a different number.</string>
-    <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have requested multiple OTPs Or Exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
+    <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
     <string name="please_enter_valid_abha">Please enter valid ABHA</string>
     <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
     <string name="request_failed_with_status_code_400">Request failed with status code 400</string>
