@@ -11,30 +11,17 @@ import org.intelehealth.app.utilities.UuidDictionary
 class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     private  val TAG = "MyAchievementsDao"
     fun getTodaysDoctorVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
-        Log.d(TAG, "creatorUuid: $creatorUuid")
-        Log.d(TAG, "visitAttributeType: $visitAttributeType")
-        Log.d(TAG, "todaysDate: $todaysDate")
 
         val db = dbHelper.readableDatabase
         var count = 0
 
-        val queryBuilder = StringBuilder(
-            """
-        SELECT COUNT(DISTINCT v.uuid) AS total
-        FROM tbl_visit v
-        LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid
-        WHERE v.creator = ?
-        AND substr(v.startdate, 1, 10) = ?
-    """.trimIndent()
-        )
-
+        val queryBuilder = StringBuilder(""" SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) = ? """.trimIndent())
         val args = mutableListOf(creatorUuid, todaysDate)
 
         if (!visitAttributeType.isNullOrEmpty()) {
             queryBuilder.append(" AND attr.visit_attribute_type_uuid != ?")
             args.add(visitAttributeType)
         }
-
         queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''")
 
         val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
@@ -43,29 +30,14 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
                 count = it.getInt(it.getColumnIndexOrThrow("total"))
             }
         }
-
-        Log.d(TAG, "getTodaysNCDVisitsCount: count: $count")
         return count
     }
 
     fun getTodaysNCDVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
-        Log.d(TAG, "creatorUuid: $creatorUuid")
-        Log.d(TAG, "visitAttributeType: $visitAttributeType")
-        Log.d(TAG, "todaysDate: $todaysDate")
-
         val db = dbHelper.readableDatabase
         var count = 0
 
-        val queryBuilder = StringBuilder(
-            """
-        SELECT COUNT(DISTINCT v.uuid) AS total
-        FROM tbl_visit v
-        LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid
-        WHERE v.creator = ?
-        AND substr(v.startdate, 1, 10) = ?
-    """.trimIndent()
-        )
-
+        val queryBuilder = StringBuilder("""SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) = ? """.trimIndent())
         val args = mutableListOf<String>(creatorUuid, todaysDate)
 
         if (!visitAttributeType.isNullOrEmpty()) {
@@ -81,18 +53,12 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
                 count = it.getInt(it.getColumnIndexOrThrow("total"))
             }
         }
-
-        Log.d(TAG, "getTodaysNCDVisitsCount: count: $count")
         return count
     }
 
     fun getPatientsRegisteredTodayByLoggedInHw(creatorUuidValue: String, todaysDate: String): Int {
         val db = dbHelper.readableDatabase
         var count = 0
-
-        Log.d(TAG, "getPatientsRegisteredTodayByLoggedInHw: creatorUuid = $creatorUuidValue")
-        Log.d(TAG, "getPatientsRegisteredTodayByLoggedInHw: createdDate = $todaysDate")
-
         val query = """
     SELECT COUNT(DISTINCT p.uuid) AS total
     FROM tbl_patient p
@@ -119,8 +85,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
                 creatorUuidValue
             )
         )
-        Log.d(TAG, "kkcckxecuting getPatientsRegisteredTodayByLoggedInHw query:\n$query")
-        Log.d(TAG, "kkcckWith getPatientsRegisteredTodayByLoggedInHw params: ${UuidDictionary.ATTRIBUTE_TYPE_DATE_CREATED_NAME}, $todaysDate, ${UuidDictionary.ATTRIBUTE_TYPE_PROVIDER_ID_NAME}, $creatorUuidValue")
 
         cursor?.use {
             if (it.moveToFirst()) {
@@ -133,20 +97,11 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
 
     fun getHWTodaysActiveStatus(creatorUuid: String, todaysDate: String): Boolean {
-        Log.d(TAG, "getHWTodaysActiveStatus: creatorUuid : "+creatorUuid)
         val db = dbHelper.readableDatabase
-        val query = """
-        SELECT COUNT(DISTINCT v.uuid) AS total
-        FROM tbl_visit v
-        WHERE v.creator = ? 
-        AND v.sync IN (1, 'TRUE') COLLATE NOCASE
-        AND substr(v.startdate, 1, 10) = ?
-    """
+        val query = """SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v WHERE v.creator = ?AND v.sync IN (1, 'TRUE') COLLATE NOCASE AND substr(v.startdate, 1, 10) = ?"""
         db.rawQuery(query, arrayOf(creatorUuid, todaysDate)).use { cursor ->
             if (cursor.moveToFirst()) {
-                val count = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
-                Log.d(TAG, "getHWTodaysActiveStatus: count : "+count)
-
+               val count = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
                 return count > 0
             }
         }
@@ -154,16 +109,9 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     }
 
     fun getBaselineSurveyRegisteredTodaysPatients(creatorUuid: String, todaysDate: String): Int {
-        Log.d(TAG, "kkachi getBaselineSurveyRegisteredTodaysPatients: creatorUuid11111 : "+creatorUuid)
-        Log.d(TAG, "kkachi getBaselineSurveyRegisteredTodaysPatients: todaysDate111 : "+todaysDate)
         val db = dbHelper.readableDatabase
         var count = 0
-        val query = """
-    SELECT COUNT(DISTINCT p.uuid) AS total
-    FROM tbl_patient p
-    JOIN tbl_patient_attribute attr ON p.uuid = attr.patientuuid
-    JOIN tbl_patient_attribute_master master ON attr.person_attribute_type_uuid = master.uuid
-    WHERE master.name IN (
+        val query = """SELECT COUNT(DISTINCT p.uuid) AS total FROM tbl_patient p JOIN tbl_patient_attribute attr ON p.uuid = attr.patientuuid JOIN tbl_patient_attribute_master master ON attr.person_attribute_type_uuid = master.uuid WHERE master.name IN (
         'OCCUPATION', 'Caste', 'Education Level', 'ayushmanCardStatus',
         'mgnregaCardStatus', 'Bank Account', 'Mobile Phone Type',
         'Use WhatsApp', 'martialStatus'
@@ -185,9 +133,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         AND attr2.value = ?
     )
     """.trimIndent()
-        Log.d(TAG, "kkcckxecuting query:\n$query")
-        Log.d(TAG, "kkcckWith params: ${UuidDictionary.ATTRIBUTE_TYPE_DATE_CREATED_NAME}, $todaysDate, ${UuidDictionary.ATTRIBUTE_TYPE_PROVIDER_ID_NAME}, $creatorUuid")
-
         val cursor = db.rawQuery(
             query,
             arrayOf(
@@ -200,7 +145,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 count = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
-                Log.d(TAG, "getBaselineSurveyRegisteredTodaysPatients: count : "+count)
             }
             cursor.close()
         }
@@ -216,24 +160,10 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     ): Int {
         if (startDate.isBlank() || endDate.isBlank())
             return 0
-
-        Log.d(TAG, "creatorUuid: $creatorUuid")
-        Log.d(TAG, "visitAttributeType: $visitAttributeType")
-        Log.d(TAG, "startDate: $startDate")
-        Log.d(TAG, "endDate: $endDate")
-
         val db = dbHelper.readableDatabase
         var count = 0
 
-        val queryBuilder = StringBuilder(
-            """
-        SELECT COUNT(DISTINCT v.uuid) AS total
-        FROM tbl_visit v
-        LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid
-        WHERE v.creator = ?
-          AND substr(v.startdate, 1, 10) BETWEEN ? AND ?
-    """.trimIndent()
-        )
+        val queryBuilder = StringBuilder(""" SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) BETWEEN ? AND ? """.trimIndent())
 
         val args = mutableListOf(creatorUuid, startDate, endDate)
 
@@ -244,17 +174,12 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
         queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''")
 
-        Log.d(TAG, "kkkkkcExecuting getDoctorVisitsCountInGivenDateRange query:\n$queryBuilder.toString()")
-        Log.d(TAG, "kkkkkcWith params: getDoctorVisitsCountInGivenDateRange ${UuidDictionary.ATTRIBUTE_TYPE_DATE_CREATED_NAME}, $startDate, $endDate, ${UuidDictionary.ATTRIBUTE_TYPE_PROVIDER_ID_NAME}, $creatorUuid")
-
         val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
         cursor?.use {
             if (it.moveToFirst()) {
                 count = it.getInt(it.getColumnIndexOrThrow("total"))
             }
         }
-
-        Log.d(TAG, "getDoctorVisitsCountBetweenDates: count: $count")
         return count
     }
 
@@ -265,11 +190,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        Log.d(TAG, "getNCDVisitsCountInDateRange: creatorUuid : $creatorUuid")
-        Log.d(TAG, "getNCDVisitsCountInDateRange: visitAttributeType : $visitAttributeType")
-        Log.d(TAG, "getNCDVisitsCountInDateRange: startDate : $startDate")
-        Log.d(TAG, "getNCDVisitsCountInDateRange: endDate : $endDate")
-
         val db = dbHelper.readableDatabase
         var count = 0
         val query = """
@@ -297,9 +217,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     ): Int {
         val db = dbHelper.readableDatabase
         var count = 0
-
-        Log.d(TAG, "getPatientsRegisteredBetweenDatesByLoggedInHw: creatorUuid = $creatorUuidValue")
-        Log.d(TAG, "Start Date = $startDate, End Date = $endDate")
+        val convertedAttrDateValue = buildSqlDateConversionExpr("attr_date.value")
 
         val query = """
         SELECT COUNT(DISTINCT p.uuid) AS total
@@ -313,7 +231,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         JOIN tbl_patient_attribute_master master_creator
             ON attr_creator.person_attribute_type_uuid = master_creator.uuid
         WHERE master_date.name = ?
-          AND attr_date.value BETWEEN ? AND ?
+          AND $convertedAttrDateValue BETWEEN ? AND ?
           AND master_creator.name = ?
           AND attr_creator.value = ?
         """.trimIndent()
@@ -329,9 +247,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
             )
         )
 
-        Log.d(TAG, "kkkkkcExecuting getPatientsRegisteredBetweenDatesByLoggedInHw query:\n$query")
-        Log.d(TAG, "kkkkkcWith params: ${UuidDictionary.ATTRIBUTE_TYPE_DATE_CREATED_NAME}, $startDate, $endDate, ${UuidDictionary.ATTRIBUTE_TYPE_PROVIDER_ID_NAME}, $creatorUuidValue")
-
         cursor?.use {
             if (it.moveToFirst()) {
                 count = it.getInt(it.getColumnIndexOrThrow("total"))
@@ -342,17 +257,9 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     }
 
     fun getHWActiveStatusInDateRange(creatorUuid: String, startDate: String, endDate: String): Int {
-        Log.d(TAG, "getHWTodaysActiveStatus: creatorUuid : $creatorUuid, startDate: $startDate, endDate: $endDate")
 
         val db = dbHelper.readableDatabase
         var count = 0
-       /* val query = """
-        SELECT COUNT(DISTINCT v.uuid) AS total
-        FROM tbl_visit v
-        WHERE v.creator = ? 
-          AND v.sync IN (1, 'TRUE') COLLATE NOCASE
-          AND substr(v.startdate, 1, 10) BETWEEN ? AND ?
-    """*/
         val query = """
         SELECT COUNT(DISTINCT substr(v.startdate, 1, 10)) AS total
         FROM tbl_visit v
@@ -360,12 +267,10 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
           AND (v.sync = 1 OR v.sync = 'TRUE')
           AND substr(v.startdate, 1, 10) BETWEEN ? AND ?
     """
-        Log.d(TAG, "kkcckxecuting getPatientsRegisteredTodayByLoggedInHw query:\n$query")
 
         db.rawQuery(query, arrayOf(creatorUuid, startDate, endDate)).use { cursor ->
             if (cursor.moveToFirst()) {
                 count = cursor.getInt(cursor.getColumnIndexOrThrow("total"))
-                Log.d(TAG, "getHWTodaysActiveStatus: count : $count")
                // return count > 0
             }
         }
@@ -377,12 +282,9 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        Log.d(TAG, "getBaselineSurveyRegisteredPatientsInDateRange: creatorUuid : $creatorUuid")
-        Log.d(TAG, "getBaselineSurveyRegisteredPatientsInDateRange: startDate : $startDate")
-        Log.d(TAG, "getBaselineSurveyRegisteredPatientsInDateRange: endDate : $endDate")
-
         val db = dbHelper.readableDatabase
         var count = 0
+        val convertedAttrDateValue = buildSqlDateConversionExpr("attr1.value")
 
         val query = """
         SELECT COUNT(DISTINCT p.uuid) AS total
@@ -401,7 +303,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
             FROM tbl_patient_attribute attr1
             JOIN tbl_patient_attribute_master master1 ON attr1.person_attribute_type_uuid = master1.uuid
             WHERE master1.name = ?
-            AND attr1.value BETWEEN ? AND ?
+            AND $convertedAttrDateValue BETWEEN ? AND ?
         )
         AND p.uuid IN (
             SELECT patientuuid
@@ -412,8 +314,6 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         )
     """.trimIndent()
 
-        Log.d(TAG, "Executing query:\n$query")
-        Log.d(TAG, "With params: ${UuidDictionary.ATTRIBUTE_TYPE_DATE_CREATED_NAME}, $startDate, $endDate, ${UuidDictionary.ATTRIBUTE_TYPE_PROVIDER_ID_NAME}, $creatorUuid")
 
         val cursor = db.rawQuery(
             query,
@@ -429,12 +329,33 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         cursor.use {
             if (it.moveToFirst()) {
                 count = it.getInt(it.getColumnIndexOrThrow("total"))
-                Log.d(TAG, "getBaselineSurveyRegisteredPatientsInDateRange: count : $count")
             }
         }
 
         return count
     }
 
+    fun buildSqlDateConversionExpr(dateColumn: String): String {
+        return """
+        strftime('%Y-%m-%d',
+            substr($dateColumn, instr($dateColumn, ',') + 2, 4) || '-' ||
+            CASE
+                WHEN instr($dateColumn, 'January') > 0 THEN '01'
+                WHEN instr($dateColumn, 'February') > 0 THEN '02'
+                WHEN instr($dateColumn, 'March') > 0 THEN '03'
+                WHEN instr($dateColumn, 'April') > 0 THEN '04'
+                WHEN instr($dateColumn, 'May') > 0 THEN '05'
+                WHEN instr($dateColumn, 'June') > 0 THEN '06'
+                WHEN instr($dateColumn, 'July') > 0 THEN '07'
+                WHEN instr($dateColumn, 'August') > 0 THEN '08'
+                WHEN instr($dateColumn, 'September') > 0 THEN '09'
+                WHEN instr($dateColumn, 'October') > 0 THEN '10'
+                WHEN instr($dateColumn, 'November') > 0 THEN '11'
+                WHEN instr($dateColumn, 'December') > 0 THEN '12'
+            END || '-' ||
+            substr($dateColumn, 1, instr($dateColumn, ' ') - 1)
+        )
+    """.trimIndent()
+    }
 
 }
