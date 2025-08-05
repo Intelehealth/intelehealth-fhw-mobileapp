@@ -282,34 +282,27 @@ interface VisitDao {
             ) THEN 1 
             ELSE 0 
         END AS prescriptionExists
-
     FROM tbl_patient P
-
-    -- Inner join ensures patients must have this attribute type
-    INNER JOIN tbl_patient_attribute A 
-        ON A.patientuuid = P.uuid 
-       AND A.person_attribute_type_uuid = :attributeTypeUuid
-
-    -- Get latest visit only per patient
-    LEFT JOIN (
-        SELECT *
-        FROM tbl_visit
-        WHERE startdate IS NOT NULL
-          AND uuid IN (
-              SELECT uuid FROM (
-                  SELECT uuid,
-                         patientuuid,
-                         MAX(datetime(startdate)) AS max_date
-                  FROM tbl_visit
-                  GROUP BY patientuuid
-              )
-          )
-    ) V ON V.patientuuid = P.uuid
-
-    -- Filter by age
+    LEFT JOIN tbl_patient_attribute A 
+        ON A.uuid = (
+            SELECT pa.uuid
+            FROM tbl_patient_attribute pa
+            WHERE pa.patientuuid = P.uuid
+              AND pa.person_attribute_type_uuid = :attributeTypeUuid
+            ORDER BY datetime(pa.modified_date) DESC
+            LIMIT 1
+        )
+    LEFT JOIN tbl_visit V
+        ON V.uuid = (
+            SELECT v2.uuid
+            FROM tbl_visit v2
+            WHERE v2.patientuuid = P.uuid
+              AND v2.startdate IS NOT NULL
+            ORDER BY datetime(v2.startdate) DESC
+            LIMIT 1
+        )
     WHERE DATE('now') >= DATE(P.date_of_birth, :age || ' years')
-
-    ORDER BY datetime(V.startdate) DESC
+    ORDER BY datetime(V.startdate) DESC;
     """
     )
     suspend fun getPatientVisitRawData(
