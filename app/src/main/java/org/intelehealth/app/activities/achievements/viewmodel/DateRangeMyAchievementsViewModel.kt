@@ -23,7 +23,7 @@ class DateRangeMyAchievementsViewModel (application: IntelehealthApplication) : 
     val sevikaVisitCountInDateRange: LiveData<Int> get() = _sevikaVisitCountInDateRange
 
     private val _patientsRegisteredByLoggedInHwInDateRange = MutableLiveData<Int>()
-    val patientsRegisteredTodayByLoggedInHwInDateRange: LiveData<Int> get() = _patientsRegisteredByLoggedInHwInDateRange
+    val patientsRegisteredByLoggedInHwInDateRange: LiveData<Int> get() = _patientsRegisteredByLoggedInHwInDateRange
 
      private val _hwActiveStatusInDateRange = MutableLiveData<Int>()
      val hwActiveStatusInDateRange: LiveData<Int> get() = _hwActiveStatusInDateRange

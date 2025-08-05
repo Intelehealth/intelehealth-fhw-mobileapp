@@ -32,13 +32,17 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutDailyAchievementsFragmentBinding
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
+import org.intelehealth.app.utilities.extensions.hideError
+import org.intelehealth.klivekit.utils.DateTimeUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class DailyAchievementsFragmentNew : Fragment() {
 
@@ -103,14 +107,13 @@ class DailyAchievementsFragmentNew : Fragment() {
 
         viewModel.fetchHWTodaysActiveStatus(
             creatorUuid = sessionManager.creatorID,
-            selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            selectedDate = selectedDate
         )
 
         // 5 Baseline survey registered patients
         viewModel.patientsWithBaselineSurvey.observe(viewLifecycleOwner) { count: Int ->
             binding.tvHouseholdRegisteredValue.text = count.toString()
         }
-        Log.d("TAG", "setObservers: selectedDate : "+selectedDate)
         viewModel.fetchBaselineSurveyRegisteredTodaysPatients(
             creatorUuid = sessionManager.providerID,
             selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
@@ -138,8 +141,6 @@ class DailyAchievementsFragmentNew : Fragment() {
         sessionManager=  SessionManager(requireActivity())
 
 
-        //set default date
-        // Set endDate to today's date
         val calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat(AppConstants.DATE_FORMAT_YYYY_MM_DD, Locale.ENGLISH)
         calendar.time = Date()
@@ -151,20 +152,13 @@ class DailyAchievementsFragmentNew : Fragment() {
             if (event.action == MotionEvent.ACTION_UP) {
                 val textView = v as TextView
                 if (event.x >= (textView.width - textView.compoundPaddingEnd)) {
-                    Log.d("TAG", "Icon Clicked")
-                    v.performClick() // Important for accessibility and proper behavior
-                    selectDate()
+                    v.performClick()
+                    showDatePickerDialog()
                     return@setOnTouchListener true
                 }
             }
             false
         }
-
-        binding.tvStartDate.setOnClickListener {
-            // fallback or default action
-            selectDate()
-        }
-
 
         val dateValueSelected= DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY)
         binding.tvStartDate.text = dateValueSelected
@@ -174,57 +168,6 @@ class DailyAchievementsFragmentNew : Fragment() {
         tooltipCall();
 
         handler.post(updateRunnable)
-
-
-    }
-
-    private fun selectDate() {
-        val language = sessionManager.appLanguage
-        val date = binding.tvStartDate.text.toString()
-
-        val calendar = if (date.isNotBlank()) {
-            DateAndTimeUtils.convertStringToCalendarObject(
-                date,
-                AppConstants.DATE_FORMAT_DD_MMM_YYYY,
-                language
-            )
-        } else {
-            Calendar.getInstance()
-        }
-
-        val datePickerDialog = DatePickerDialog(
-            requireActivity(),
-            R.style.datepicker,
-            { _, year, month, dayOfMonth ->
-                val newDate = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, year)
-                    set(Calendar.MONTH, month)
-                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                }
-
-                val selectedDateValue = newDate.time
-                binding.tvStartDate.text = DateAndTimeUtils.convertDateObjectToString(
-                    selectedDateValue,
-                    AppConstants.DATE_FORMAT_DD_MMM_YYYY
-                )
-
-                selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(
-                    binding.tvStartDate.text.toString(),
-                    AppConstants.DATE_FORMAT_DD_MMM_YYYY,
-                    AppConstants.DATE_FORMAT_YYYY_MM_DD
-                )
-
-                Log.d("TAG", "selectDate: selectedDate : $selectedDate")
-                fetchAllStats()
-
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-        datePickerDialog.show()
     }
 
     private fun fetchAllStats() {
@@ -252,11 +195,10 @@ class DailyAchievementsFragmentNew : Fragment() {
         // 4 Todays HW active status
         viewModel.fetchHWTodaysActiveStatus(
             creatorUuid = sessionManager.creatorID,
-            selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_DD_MMM_YYYY, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            selectedDate = selectedDate
         )
 
         // 5 Baseline survey registered patients
-        Log.d("TAG", "setObservers: selectedDate : "+selectedDate)
         viewModel.fetchBaselineSurveyRegisteredTodaysPatients(
             creatorUuid = sessionManager.providerID,
             selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
@@ -280,90 +222,9 @@ class DailyAchievementsFragmentNew : Fragment() {
         }
     }
     private fun setDailyTimeSpent() {
-        /*val firstLoginMs = DateAndTimeUtils.convertStringDateToMilliseconds(
-            sessionManager.firstProviderLoginTime,
-            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-            sessionManager.appLanguage
-        )
-
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val todayStartMs = calendar.timeInMillis
-        val startDate = maxOf(todayStartMs, firstLoginMs)
-        val endDate = System.currentTimeMillis()
-
-        val usageStatsManager = requireContext().getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val usageMap = usageStatsManager.queryAndAggregateUsageStats(startDate, endDate)
-        val overallUsageStats = usageMap[requireContext().packageName]
-
-        Log.d("DailyTimeSpent", "Start: $startDate, End: $endDate")
-        Log.d("DailyTimeSpent", "Stats: $overallUsageStats")
-
-        requireActivity().runOnUiThread {
-            val timeSpent = overallUsageStats?.let {
-                DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(it.totalTimeInForeground)
-            } ?: "0h 0m"
-            binding.tvDailyTimeSpentValue.text = timeSpent
-        }*/
- /*       val usageMillis = (context as IntelehealthApplication).appUsageTracker.getTotalUsageTimeMillis()
-        val usageFormatted = DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(usageMillis)*/
         val app = requireContext().applicationContext as IntelehealthApplication
         val usageMillis = (app.appUsageTracker?.getTotalUsageTimeMillis()) ?: 0L
-
-        Log.d("TAG", "setDailyTimeSpent: usageFormatted : "+usageMillis)
-
     }
-
-/*
-    private fun showTooltip(anchorView: View, title: String, description: String) {
-        val inflater = LayoutInflater.from(anchorView.context)
-        val popupView = inflater.inflate(R.layout.ui2_layout_tooltip_my_achievements, null)
-
-        popupView.findViewById<TextView>(R.id.tooltip_title).text = title
-        popupView.findViewById<TextView>(R.id.tooltip_description).text = description
-
-        val popupWindow = PopupWindow(
-            popupView,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        popupWindow.isOutsideTouchable = true
-        popupWindow.elevation = 8f
-
-        // Post ensures popupView is measured before showing
-        popupView.measure(
-            View.MeasureSpec.UNSPECIFIED,
-            View.MeasureSpec.UNSPECIFIED
-        )
-
-        anchorView.post {
-            // Get anchor view location on screen
-            val location = IntArray(2)
-            anchorView.getLocationOnScreen(location)
-
-            val anchorX = location[0]
-            val anchorY = location[1]
-            val anchorWidth = anchorView.width
-            val anchorHeight = anchorView.height
-
-            val popupWidth = popupView.measuredWidth
-
-            // Calculate X so that the tooltip is horizontally centered on the icon
-            val xOffset = (anchorWidth - popupWidth) / 2
-
-            // Show tooltip just below the icon, aligned to its center
-            popupWindow.showAsDropDown(anchorView, xOffset, 0)
-        }
-    }
-*/
 
     private fun tooltipCall(){
 
@@ -390,16 +251,9 @@ class DailyAchievementsFragmentNew : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
         override fun run() {
-            Log.d("AppUsageUI", "Runnable called")
             val app = requireContext().applicationContext as IntelehealthApplication
-            //val usageMillis = app.appUsageTracker.getTotalUsageTimeMillis()
             val usageMillis = app?.appUsageTracker?.getTotalUsageTimeMillis() ?: 0L
-
-            Log.d("AppUsageUI", "Usage millis: $usageMillis")
-           // val usageFormatted = DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(usageMillis)
             val usageFormatted = convertMillisecondsToHoursMinutesSeconds(usageMillis)
-
-            Log.d("AppUsageUI", "Formatted usage: $usageFormatted")
             _binding?.let { binding ->
                 binding.tvDailyTimeSpentValue.text = usageFormatted
                 handler.postDelayed(this, 60_000)
@@ -411,9 +265,6 @@ class DailyAchievementsFragmentNew : Fragment() {
         val minutes = (millis / (1000 * 60)) % 60
         val hours = (millis / (1000 * 60 * 60))
         return String.format("%02d hr %02d min", hours, minutes)
-    }
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun showTooltip(anchorView: View, title: String, description: String) {
@@ -441,15 +292,12 @@ class DailyAchievementsFragmentNew : Fragment() {
         )
 
         anchorView.post {
-            // Get anchor view location on screen
             val location = IntArray(2)
             anchorView.getLocationOnScreen(location)
 
             val anchorWidth = anchorView.width
-
             val popupWidth = popupView.measuredWidth
 
-            // Convert 12dp to pixels for left shift
             val leftShiftInDp = 52
             val density = anchorView.context.resources.displayMetrics.density
             val leftShiftInPx = (leftShiftInDp * density).toInt()
@@ -459,6 +307,31 @@ class DailyAchievementsFragmentNew : Fragment() {
 
             // Show tooltip just below the anchor view with offset
             popupWindow.showAsDropDown(anchorView, xOffset, 0)
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val currentTimeMillis = Calendar.getInstance().timeInMillis
+            CalendarDialog.Builder()
+            .maxDate(Calendar.getInstance().timeInMillis)
+            .selectedDate(currentTimeMillis)
+            .format(DateTimeUtils.YYYY_MM_DD_HYPHEN)
+            .listener(dateListener)
+            .build().show(childFragmentManager, CalendarDialog.TAG)
+    }
+    private val dateListener = object : CalendarDialog.OnDatePickListener {
+        override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+            value?.let {
+                selectedDate= it
+                val selectedDateValue = DateAndTimeUtils.convertInputDateToRequiredFormat(it, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY)
+                binding.tvStartDate.text = selectedDateValue
+            }
+            Calendar.getInstance().apply {
+                val formatter = SimpleDateFormat(AppConstants.DATE_FORMAT_YYYY_MM_DD, Locale.getDefault())
+                val date = formatter.parse(selectedDate)
+                timeInMillis = date?.time ?: 0L
+                fetchAllStats()
+            }
         }
     }
 

@@ -129,7 +129,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     //case 0 -> tab.setText(getResources().getString(R.string.overall));
-                    case 0 -> tab.setText(getResources().getString(R.string.daily));
+                    case 0 -> tab.setText(getResources().getString(R.string.todays_tab_achievement));
                     default -> tab.setText(getResources().getString(R.string.date_range));
                 }
             }

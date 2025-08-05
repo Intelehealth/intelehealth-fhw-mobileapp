@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutDailyAchievementsFragmentBinding
 import org.intelehealth.app.databinding.LayoutDateRangeAchievementsFragmentBinding
+import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
@@ -38,6 +40,8 @@ class DateRangeAchievementsFragmentNew : Fragment() {
     private lateinit var  sessionManager : SessionManager
     private var startDate: String =""
     private var endDate: String =""
+    private lateinit var targetTextView: TextView
+    private var selectedDateType: String = "" // "startDate" or "endDate"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,9 +63,6 @@ class DateRangeAchievementsFragmentNew : Fragment() {
     }
 
     private fun setObservers() {
-        Log.d(TAG, "setObservers: startdate : "+startDate)
-        Log.d(TAG, "setObservers: enddate : "+endDate)
-
         //1 Todays doctor visits
         viewModel.doctorVisitCountInDateRange.observe(viewLifecycleOwner) { count: Int ->
             binding.tvDrVisitsToday.text = count.toString()
@@ -80,19 +81,19 @@ class DateRangeAchievementsFragmentNew : Fragment() {
         viewModel.fetchNCDVisitsInGivenDateRange(
             creatorUuid = sessionManager.creatorID,
             attributeTypeUuid = UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate = DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
+            startDate = startDate,
+            endDate = endDate,
         )
 
 
-        // 3 Todays registered patients by logged in hw
-        viewModel.patientsRegisteredTodayByLoggedInHwInDateRange.observe(viewLifecycleOwner) { count: Int ->
+        // 3  registered patients by logged in hw in date range
+        viewModel.patientsRegisteredByLoggedInHwInDateRange.observe(viewLifecycleOwner) { count: Int ->
            binding.tvPatientsBeneficiaryRegistered.text = count.toString()
        }
        viewModel.fetchPatientsRegisteredInGivenDateRangeByLoggedInHw(
            creatorUuid = sessionManager.providerID,
-           startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-           endDate = DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
+           startDate = startDate,
+           endDate = endDate
        )
 
         // 4 Todays HW active status
@@ -102,8 +103,8 @@ class DateRangeAchievementsFragmentNew : Fragment() {
 
         viewModel.fetchHWActiveStatusInRange(
             creatorUuid = sessionManager.creatorID,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate= DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            startDate = startDate,
+            endDate= endDate
         )
 
         // 5 Baseline survey registered patients
@@ -112,8 +113,8 @@ class DateRangeAchievementsFragmentNew : Fragment() {
         }
         viewModel.fetchBaselineSurveyRegisteredPatientsInDateRange(
             creatorUuid = sessionManager.providerID,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate = DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            startDate = startDate,
+            endDate =endDate
         )
 
     }
@@ -138,50 +139,47 @@ class DateRangeAchievementsFragmentNew : Fragment() {
 
 
         binding.tvStartDate.setOnClickListener {
-            selectDate(binding.tvStartDate, "startDate")
+            showDatePickerDialog(binding.tvStartDate, "startDate")
         }
         binding.tvEndDate.setOnClickListener {
-            selectDate(binding.tvEndDate, "endDate")
+            showDatePickerDialog(binding.tvEndDate, "endDate")
         }
         tooltipCall();
         handler.post(updateRunnable)
 
     }
     private fun fetchAllStats() {
-        Log.d(TAG, "fetchAllStats: startDate : "+startDate)
-        Log.d(TAG, "fetchAllStats: enddate : "+endDate)
-
         viewModel.fetchDoctorVisitsCountInGivenDateRange(
             creatorUuid = sessionManager.creatorID,
             attributeTypeUuid = UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,
             startDate = startDate,
-            endDate = endDate,
+            endDate = endDate
         )
 
         viewModel.fetchNCDVisitsInGivenDateRange(
             creatorUuid = sessionManager.creatorID,
             attributeTypeUuid = UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate = DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
+            startDate = startDate,
+            endDate = endDate
         )
 
         viewModel.fetchPatientsRegisteredInGivenDateRangeByLoggedInHw(
             creatorUuid = sessionManager.providerID,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate =DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            startDate = startDate,
+            endDate =endDate
         )
 
 
         viewModel.fetchHWActiveStatusInRange(
             creatorUuid = sessionManager.creatorID,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_DD_MMM_YYYY, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate= DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_DD_MMM_YYYY, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            startDate = startDate,
+            endDate= endDate
         )
 
         viewModel.fetchBaselineSurveyRegisteredPatientsInDateRange(
             creatorUuid = sessionManager.providerID,
-            startDate = DateAndTimeUtils.convertInputDateToRequiredFormat(startDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH),
-            endDate = DateAndTimeUtils.convertInputDateToRequiredFormat(endDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
+            startDate = startDate,
+            endDate = endDate
         )
     }
     private fun selectDate(textView: TextView, type: String) {
@@ -275,6 +273,7 @@ class DateRangeAchievementsFragmentNew : Fragment() {
         binding.tvEndDate.text = DateAndTimeUtils().convertDateForDisplay(endDate)
     }
 
+/*
     private fun showTooltip(anchorView: View, title: String, description: String) {
         val inflater = LayoutInflater.from(anchorView.context)
         val popupView = inflater.inflate(R.layout.ui2_layout_tooltip_my_achievements, null)
@@ -318,6 +317,7 @@ class DateRangeAchievementsFragmentNew : Fragment() {
             popupWindow.showAsDropDown(anchorView, xOffset, 0)
         }
     }
+*/
 
     private fun tooltipCall(){
 
@@ -344,16 +344,11 @@ class DateRangeAchievementsFragmentNew : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
         override fun run() {
-            Log.d("AppUsageUI", "Runnable called")
             val app = requireContext().applicationContext as IntelehealthApplication
             //val usageMillis = app.appUsageTracker.getTotalUsageTimeMillis()
             val usageMillis = app?.appUsageTracker?.getTotalUsageTimeMillis() ?: 0L
-
-            Log.d("AppUsageUI", "Usage millis: $usageMillis")
             // val usageFormatted = DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(usageMillis)
             val usageFormatted = convertMillisecondsToHoursMinutesSeconds(usageMillis)
-
-            Log.d("AppUsageUI", "Formatted usage: $usageFormatted")
             _binding?.let { binding ->
                 binding.tvDailyTimeSpentValue.text = usageFormatted
                 handler.postDelayed(this, 60_000)
@@ -366,4 +361,125 @@ class DateRangeAchievementsFragmentNew : Fragment() {
         val hours = (millis / (1000 * 60 * 60))
         return String.format("%02d hr %02d min", hours, minutes)
     }
+    private fun showDatePickerDialog(textView: TextView, type: String) {
+        targetTextView = textView
+        selectedDateType = type.lowercase()
+
+        val language = sessionManager.appLanguage
+        val storageFormat = AppConstants.DATE_FORMAT_YYYY_MM_DD
+        val displayFormat = AppConstants.DATE_FORMAT_DD_MMM_YYYY
+
+        val today = Calendar.getInstance()
+        val todayMillis = today.timeInMillis
+
+        val existingDateCal = DateAndTimeUtils.convertStringToCalendarObjectGeneric(
+            textView.text.toString(),
+            arrayOf(storageFormat, displayFormat),
+            language
+        ) ?: Calendar.getInstance()
+
+        val selectedDateMillis = existingDateCal.timeInMillis
+
+        val builder = CalendarDialog.Builder()
+            .selectedDate(selectedDateMillis)
+            .format(storageFormat)
+            .maxDate(todayMillis)
+            .listener(dateListener)
+
+        // Add constraints
+        when (selectedDateType) {
+            "startdate" -> {
+                endDate?.let {
+                    val endDateMillis = SimpleDateFormat(storageFormat, Locale.getDefault()).parse(it)?.time
+                    endDateMillis?.let { builder.maxDate(minOf(it, todayMillis)) }
+                }
+            }
+            "enddate" -> {
+                startDate?.let {
+                    val startDateMillis = SimpleDateFormat(storageFormat, Locale.getDefault()).parse(it)?.time
+                    startDateMillis?.let { builder.minDate(it) }
+                }
+            }
+        }
+
+        builder.build().show(childFragmentManager, CalendarDialog.TAG)
+    }
+    private val dateListener = object : CalendarDialog.OnDatePickListener {
+        override fun onDatePick(day: Int, month: Int, year: Int, value: String?) {
+            val storageFormat = AppConstants.DATE_FORMAT_YYYY_MM_DD
+            val displayFormat = AppConstants.DATE_FORMAT_DD_MMM_YYYY
+
+            value?.let { selectedRaw ->
+                val formattedDisplay = DateAndTimeUtils.convertInputDateToRequiredFormat(
+                    selectedRaw, storageFormat, displayFormat
+                )
+
+                // Set display
+                targetTextView.text = formattedDisplay
+
+                // Update backing variables
+                when (selectedDateType) {
+                    "startdate" -> startDate = selectedRaw
+                    "enddate" -> endDate = selectedRaw
+                }
+
+                // Validate & trigger stats
+                if (!startDate.isNullOrBlank() && !endDate.isNullOrBlank()) {
+                    val sdf = SimpleDateFormat(storageFormat, Locale.getDefault())
+                    val startMillis = sdf.parse(startDate!!)?.time ?: 0L
+                    val endMillis = sdf.parse(endDate!!)?.time ?: 0L
+
+                    if (startMillis > endMillis) {
+                        Toast.makeText(requireContext(), "Start date cannot be after end date", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    fetchAllStats()
+                }
+            }
+        }
+    }
+    private fun showTooltip(anchorView: View, title: String, description: String) {
+        val inflater = LayoutInflater.from(anchorView.context)
+        val popupView = inflater.inflate(R.layout.ui2_layout_tooltip_my_achievements, null)
+
+        popupView.findViewById<TextView>(R.id.tooltip_title).text = title
+        popupView.findViewById<TextView>(R.id.tooltip_description).text = description
+
+        val popupWindow = PopupWindow(
+            popupView,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popupWindow.isOutsideTouchable = true
+        popupWindow.elevation = 8f
+
+        // Post ensures popupView is measured before showing
+        popupView.measure(
+            View.MeasureSpec.UNSPECIFIED,
+            View.MeasureSpec.UNSPECIFIED
+        )
+
+        anchorView.post {
+            val location = IntArray(2)
+            anchorView.getLocationOnScreen(location)
+
+            val anchorWidth = anchorView.width
+            val popupWidth = popupView.measuredWidth
+
+            val leftShiftInDp = 52
+            val density = anchorView.context.resources.displayMetrics.density
+            val leftShiftInPx = (leftShiftInDp * density).toInt()
+
+            // Calculate X so tooltip is centered on anchor, but shifted slightly left
+            val xOffset = (anchorWidth - popupWidth) / 2 - leftShiftInPx
+
+            // Show tooltip just below the anchor view with offset
+            popupWindow.showAsDropDown(anchorView, xOffset, 0)
+        }
+    }
+
 }
