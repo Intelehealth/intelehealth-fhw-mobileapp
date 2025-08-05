@@ -4488,7 +4488,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (uuid != null) {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
-            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+            //Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=?", new String[]{uuid, SPECIALITY});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
