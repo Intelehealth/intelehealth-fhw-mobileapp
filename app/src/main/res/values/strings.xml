@@ -1101,4 +1101,6 @@
     <string name="active_status_tooltip_content">Sevika uploaded at least\none visit on the given\nday (Doctor or Sevika/NCD)\nconsidered as active.</string>
     <string name="daily_time_spent_by_sevika_tooltip_title">Daily time spent by sevika</string>
     <string name="daily_time_spent_by_sevika_tooltip_content">The time when sevikas\nhas the app open\nin the foreground.</string>
+    <string name="todays_tab_achievement">Daily</string>
+
 </resources>

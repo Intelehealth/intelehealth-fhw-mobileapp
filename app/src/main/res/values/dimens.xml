@@ -403,7 +403,7 @@
     <dimen name="achievements_tab_margin_end">19dp</dimen>
     <dimen name="achievements_tab_margin_top">25dp</dimen>
     <dimen name="layout_parent_achi_margin_top">28dp</dimen>
-    <dimen name="card_common_achieve_padding">16dp</dimen>
+    <dimen name="card_common_achieve_padding">18dp</dimen>
     <dimen name="card1_achieve_margin_end">8dp</dimen>
     <dimen name="card1_achieve_margin_start">8dp</dimen>
     <dimen name="card_achieve_icon_width">30dp</dimen>
@@ -833,5 +833,6 @@
     <dimen name="disclaimer_text_size">12sp</dimen>
 
     <dimen name="achievements_info_margin_top">5dp</dimen>
+    <dimen name="achievements_value_text_margin_bottom">8dp</dimen>
 
 </resources>
