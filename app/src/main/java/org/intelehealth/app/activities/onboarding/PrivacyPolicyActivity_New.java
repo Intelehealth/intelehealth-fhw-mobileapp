@@ -105,6 +105,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
             Intent intent = new Intent(context, CreateAbhaAccountActivity.class);
             sessionManager.setCreateAbha(true);
             startActivity(intent);
+            finish();
         });
 
         continue_without_abha_btn.setOnClickListener(v -> {
@@ -119,6 +120,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
             sessionManager.setCreateAbha(true);
             intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
             startActivity(intent);
+            finish();
         });
 
         alertDialog.show();
