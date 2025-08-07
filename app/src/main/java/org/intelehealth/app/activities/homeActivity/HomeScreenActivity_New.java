@@ -49,8 +49,10 @@ import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
+import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -352,7 +354,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
-        sessionManager = new SessionManager(this);
+        sessionManager = SessionManager.getInstance(this);
 
         backPress();
         initUI();
@@ -701,8 +703,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
+            sessionManager.setPulled(null);
             sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
             showRefreshDialog();
+            //resetting the sync progress live data
+            //specially for switching location
+            SyncDAO.liveDataSync = null;
+            SyncDAO.liveDataSync = new SyncProgress();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> {
@@ -1117,7 +1124,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
 
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
-        boolean isSynced = syncUtils.syncForeground("home");
+        boolean isSynced = syncUtils.pushDataOnly();/*syncUtils.syncForeground("home");*/
         if (!isSynced) {
             syncDialog.dismiss();
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
@@ -1178,6 +1185,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setFirstTimeLaunched(true);
 
         clearDatabase();
+        WorkManager.getInstance(this).cancelAllWork();
+
         progress.dismiss();
         Intent intent = new Intent(HomeScreenActivity_New.this, HomeScreenActivity_New.class);
         intent.putExtra("intentType", "switchLocation");
@@ -1187,6 +1196,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             intent.putExtra(AppConstants.INTENT_PATIENT_ID, patientUuid);
             intent.putExtra(AppConstants.INTENT_IS_DIFFERENT_LOCATION_PRESCRIPTION, true);
         }
+
 
         startActivity(intent);
         finish();

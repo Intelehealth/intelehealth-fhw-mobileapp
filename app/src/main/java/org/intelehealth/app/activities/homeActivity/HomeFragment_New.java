@@ -562,7 +562,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             int olderPendingCount = VisitsDAO.olderNotEndedVisits().size();
             int totalPendingCount = recentPendingCount + olderPendingCount;
 
-            requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(getResources().getQuantityString(R.plurals.open_no_of_visit, totalPendingCount, totalPendingCount)));
+            if (getActivity() != null && isAdded()) {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        countPendingCloseVisitsTextView.setText(getResources().getQuantityString(R.plurals.open_no_of_visit, totalPendingCount, totalPendingCount));
+                    }
+                });
+            }
         });
     }
 }
