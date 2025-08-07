@@ -58,7 +58,7 @@ public class SyncDAO {
     private SQLiteDatabase db;
     String appLanguage;
 
-    private static final SyncProgress liveDataSync = new SyncProgress();
+    public static SyncProgress liveDataSync = new SyncProgress();
 
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
