@@ -252,7 +252,6 @@ public class Fragment_ThirdScreen extends Fragment {
                 }
             }
 
-            Log.d("TAG", "onViewCreated: "+patient_detail+otpVerificationResponse.toString());
             if (!patient_detail && otpVerificationResponse != null) {
                 tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
             }

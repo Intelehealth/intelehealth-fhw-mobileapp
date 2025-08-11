@@ -279,7 +279,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
                                 cpd.dismiss();
 
-                                if(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText())){
+                                if(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText())){
                                     AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
                                     dialog.openAuthSelectionDialogDialog(BOTH,authType -> {
                                         abhaAuthType = authType;
