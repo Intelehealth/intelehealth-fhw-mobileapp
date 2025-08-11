@@ -127,6 +127,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private String accessToken, xToken, txnId;
     private TextView tvPhoneNumberTitle;
 
+    private Boolean firstRequestFulfilled;
+
 
     @Nullable
     @Override
@@ -221,7 +223,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     patientdto.setOpenmrsId(otpVerificationResponse.getOpenMrsId());
                     patientdto.setUuid(otpVerificationResponse.getUuID());
                 }
-            } else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
+            }
+            else if (getArguments().containsKey(MOBILE_PAYLOAD)) {
                 abhaProfileResponse = (AbhaProfileResponse) getArguments().getSerializable(MOBILE_PAYLOAD);
                 if (abhaProfileResponse != null) {
                     setAutoFillValuesViaMobile(abhaProfileResponse);
@@ -231,6 +234,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 //                    patientdto.getAddress1();
 
                 }
+            }
+
+            if (getArguments().containsKey("firstRequestFulfilled")){
+                firstRequestFulfilled = getArguments().getBoolean("firstRequestFulfilled");
             }
 
             disableAbhaFlowFieldsOnEdit(patientdto);
@@ -1098,6 +1105,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 bundle.putString("accessToken", accessToken);
                 bundle.putString("xToken", xToken);
                 bundle.putString("txnId", txnId);
+                bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
                 fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
                 Log.d(TAG, "onPatientCreateClicked: " + patientdto.toString());
@@ -1133,6 +1141,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 args.putString("accessToken", accessToken);
                 args.putString("xToken", xToken);
                 args.putString("txnId", txnId);
+                args.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

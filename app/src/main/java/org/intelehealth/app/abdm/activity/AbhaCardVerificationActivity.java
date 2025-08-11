@@ -408,6 +408,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         public void onSuccess(Response<OTPResponse> otpResponse) {
                             cpd.dismiss();
                             if (otpResponse.code() == 200) {
+                                OTPResponse otpResponse1 = otpResponse.body();
                                 setOtpVisibility();
                                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
                                         StringUtils.getMessageTranslated(otpResponse.body().getMessage(), sessionManager.getAppLanguage()), true);
