@@ -104,6 +104,8 @@ public class Fragment_SecondScreen extends Fragment {
     private AbhaProfileResponse abhaProfileResponse;
     private String accessToken, xToken, txnId;
 
+    private  Boolean firstRequestFulfilled;
+
 
     @Nullable
     @Override
@@ -201,6 +203,11 @@ public class Fragment_SecondScreen extends Fragment {
                 xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
+
+            if (getArguments().containsKey("firstRequestFulfilled")){
+                firstRequestFulfilled = getArguments().getBoolean("firstRequestFulfilled");
+            }
+
 
             disableAbhaFlowFieldsOnEdit(patientDTO);
             // abdm - end
@@ -794,6 +801,7 @@ public class Fragment_SecondScreen extends Fragment {
         bundle.putString("accessToken", accessToken);
         bundle.putString("xToken", xToken);
         bundle.putString("txnId", txnId);
+        bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -969,6 +977,7 @@ public class Fragment_SecondScreen extends Fragment {
                 bundle.putString("accessToken", accessToken);
                 bundle.putString("xToken", xToken);
                 bundle.putString("txnId", txnId);
+                bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
                 fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
                 Log.d(TAG, "onPatientCreateClicked: " + patientDTO.toString());
@@ -1004,6 +1013,7 @@ public class Fragment_SecondScreen extends Fragment {
                 args.putString("accessToken", accessToken);
                 args.putString("xToken", xToken);
                 args.putString("txnId", txnId);
+                args.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
                 getActivity().finish();

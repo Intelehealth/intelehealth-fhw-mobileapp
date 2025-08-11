@@ -62,13 +62,23 @@ object ABDMUtils {
 
     }
 
-    @JvmStatic
+   /* @JvmStatic
     fun getAuthModes(response: ResponseBody): String? {
         return try {
             val gson = Gson()
             val type = object : TypeToken<FetchAuthModesResponse>() {}.type
             val errorResponse: FetchAuthModesResponse? = gson.fromJson(response.charStream(), type)
             val authModes: String = errorResponse?.authMethods?.joinToString(", ") ?: ""
+            "The user has been deleted. Please use the following methods to recreate the user - $authModes"
+        } catch (e: Exception) {
+            return "Something went wrong"
+        }
+    }*/
+
+    @JvmStatic
+    fun getAuthModes(response: Response<FetchAuthModesResponse>): String? {
+        return try {
+            val authModes: String = response.body()?.authMethods?.joinToString(", ")?:""
             "The user has been deleted. Please use the following methods to recreate the user - $authModes"
         } catch (e: Exception) {
             return "Something went wrong"

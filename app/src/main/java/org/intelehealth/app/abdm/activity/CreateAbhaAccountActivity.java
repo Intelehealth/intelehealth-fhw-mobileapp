@@ -542,6 +542,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             intent.putExtra(PAYLOAD, abhaProfileResponse);
                             intent.putExtra("accessToken", accessToken);
                             intent.putExtra("patient_detail", true);
+                            intent.putExtra("firstRequestFulfilled", true);
                             startActivity(intent);
                         } else {
                             intent = new Intent(context, IdentificationActivity_New.class);

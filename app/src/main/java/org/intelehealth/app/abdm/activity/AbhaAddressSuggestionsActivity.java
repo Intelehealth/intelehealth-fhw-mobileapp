@@ -58,6 +58,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     public static final String TAG = AbhaAddressSuggestionsActivity.class.getSimpleName();
     ActivityAbhaAddressSuggestionsBinding binding;
     private String accessToken;
+    private Boolean firstRequestFulfilled;
 
     private OTPVerificationResponse otpVerificationResponse;
     SnackbarUtils snackbarUtils;
@@ -76,6 +77,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         accessToken = intent.getStringExtra("accessToken");
         otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra("payload");
+        firstRequestFulfilled = intent.getBooleanExtra("firstRequestFulfilled", false);
+
 
         if (intent.hasExtra("addressList")) {
             ArrayList<String> phrAddressSuggestionsList = intent.getStringArrayListExtra("addressList");
@@ -196,6 +199,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
                 dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
                 dataIntent.putExtra("accessToken", accessToken);
+                dataIntent.putExtra("firstRequestFulfilled", firstRequestFulfilled);
                 startActivity(dataIntent);
                 finish();
             } catch (Exception e) {
