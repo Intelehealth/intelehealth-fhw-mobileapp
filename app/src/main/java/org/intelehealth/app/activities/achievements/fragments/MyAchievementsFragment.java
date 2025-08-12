@@ -9,19 +9,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,9 +30,16 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.adapters.MyAchievementsPagerAdapter;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
+import org.intelehealth.config.presenter.section.factory.ActiveSectionViewModelFactory;
+import org.intelehealth.config.presenter.section.viewmodel.ActiveSectionViewModel;
+import org.intelehealth.config.room.ConfigDatabase;
+import org.intelehealth.config.room.entity.ActiveSection;
 
+import java.util.List;
 import java.util.Locale;
 
 public class MyAchievementsFragment extends Fragment implements NetworkUtils.InternetCheckUpdateInterface {
@@ -45,7 +51,41 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
     protected SessionManager sessionManager;
     public UsageStatsManager usageStatsManager;
+    private List<ActiveSection> mActiveSectionList;
+    private void loadFeatureActiveStatus() {
+        ActiveSectionRepository repository = new ActiveSectionRepository(ConfigDatabase.getInstance(requireActivity()).activeSectionDao());
+        ActiveSectionViewModel activeSectionViewModel = new ViewModelProvider(this, new ActiveSectionViewModelFactory(repository)).get(ActiveSectionViewModel.class);
+        activeSectionViewModel.fetchActiveSection().observe(requireActivity(), activeSections -> {
+            if (activeSections != null) {
+                mActiveSectionList = activeSections;
 
+                boolean isFound = false;
+                for (ActiveSection activeSection : mActiveSectionList) {
+
+                    if (activeSection.getKey().equals("my_achievement")) {
+                        isFound = true;
+
+                        // set text as per local language
+                        String lng = sessionManager.getAppLanguage();
+                        String title = activeSection.getLang().get(lng);
+
+                        if (title != null && !title.trim().isEmpty()) {
+
+
+                        } else {
+
+                        }
+                    }
+                }
+                if (!isFound) {
+                    Toast.makeText(requireActivity(), getString(R.string.feature_not_found), Toast.LENGTH_SHORT).show();
+                    requireActivity().recreate();
+                }
+
+            }
+            ;
+        });
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +101,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         ((TextView) view.findViewById(R.id.tv_user_level)).setText(String.format(getString(R.string.level), 1));
         networkUtils = new NetworkUtils(getActivity(), this);
         setLocale(getContext());
+        loadFeatureActiveStatus();
         return view;
     }
 
@@ -150,10 +191,10 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d(TAG, "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_no_internet));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_no_internet));
 
         }
     }

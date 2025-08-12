@@ -8,17 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-
-import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionFragment;
-import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionFragmentK;
-import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionSummaryFragment;
-import org.intelehealth.app.models.DiagnosticsModel;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -45,6 +39,8 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionFragment;
+import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionSummaryFragment;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
@@ -65,6 +61,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.models.DiagnosticsModel;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -73,6 +70,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -88,6 +86,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -278,54 +280,54 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 //                Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
 //            }
 
-        if (featureActiveStatus != null){
-            boolean isVitalsActive = featureActiveStatus.getVitalSection();
-            boolean isDiagnosticsActive = featureActiveStatus.getActiveStatusDiagnosticsSection();
-            CustomLog.d(TAG, "featureActiveStatus vitals first screen : "   + featureActiveStatus.getVitalSection());
-            CustomLog.d(TAG, "featureActiveStatus diagnostics first screen : " + featureActiveStatus.getActiveStatusDiagnosticsSection());
+            if (featureActiveStatus != null) {
+                boolean isVitalsActive = featureActiveStatus.getVitalSection();
+                boolean isDiagnosticsActive = featureActiveStatus.getActiveStatusDiagnosticsSection();
+                CustomLog.d(TAG, "featureActiveStatus vitals first screen : " + featureActiveStatus.getVitalSection());
+                CustomLog.d(TAG, "featureActiveStatus diagnostics first screen : " + featureActiveStatus.getActiveStatusDiagnosticsSection());
 
-            if (!isVitalsActive) {
-                mStep1ProgressBar.setVisibility(View.GONE);
-                mCurrentStep = STEP_2_DIAGNOSTICS;
-                totalScreen = 4;
-                Timber.tag(TAG).d("1 Feature first screen : " +mCurrentStep);
-            }
-            if (!isDiagnosticsActive) {
-                mStep2ProgressBar.setVisibility(View.GONE);
-                mCurrentStep = STEP_1_VITAL;
-                totalScreen = 4;
-                Timber.tag(TAG).d("2 Feature first screen : " +mCurrentStep);
-            }
-            if (isVitalsActive && isDiagnosticsActive) {
-                mStep1ProgressBar.setVisibility(View.VISIBLE);
-                mStep2ProgressBar.setVisibility(View.VISIBLE);
-                mCurrentStep = STEP_1_VITAL;
-                totalScreen = 5;
-                Timber.tag(TAG).d("3 Feature first screen : " +mCurrentStep);
-            }
-            if (!isVitalsActive && isDiagnosticsActive) {
-                mStep1ProgressBar.setVisibility(View.GONE);
-                mStep2ProgressBar.setVisibility(View.VISIBLE);
-                mCurrentStep = STEP_2_DIAGNOSTICS;
-                totalScreen = 4;
-                Timber.tag(TAG).d("4 Feature first screen : " +mCurrentStep);
-            }
-            if (isVitalsActive && !isDiagnosticsActive) {
-                mStep1ProgressBar.setVisibility(View.VISIBLE);
-                mStep2ProgressBar.setVisibility(View.GONE);
-                mCurrentStep = STEP_1_VITAL;
-                totalScreen = 4;
-                Timber.tag(TAG).d("5 Feature first screen : " +mCurrentStep);
-            }
-            if (!isVitalsActive && !isDiagnosticsActive) {
-                mStep1ProgressBar.setVisibility(View.GONE);
-                mStep2ProgressBar.setVisibility(View.GONE);
-                mCurrentStep = STEP_3_VISIT_REASON;
-                totalScreen = 3;
-                Timber.tag(TAG).d("6 Feature first screen : "+ mCurrentStep);
-            }
+                if (!isVitalsActive) {
+                    mStep1ProgressBar.setVisibility(View.GONE);
+                    mCurrentStep = STEP_2_DIAGNOSTICS;
+                    totalScreen = 4;
+                    Timber.tag(TAG).d("1 Feature first screen : " + mCurrentStep);
+                }
+                if (!isDiagnosticsActive) {
+                    mStep2ProgressBar.setVisibility(View.GONE);
+                    mCurrentStep = STEP_1_VITAL;
+                    totalScreen = 4;
+                    Timber.tag(TAG).d("2 Feature first screen : " + mCurrentStep);
+                }
+                if (isVitalsActive && isDiagnosticsActive) {
+                    mStep1ProgressBar.setVisibility(View.VISIBLE);
+                    mStep2ProgressBar.setVisibility(View.VISIBLE);
+                    mCurrentStep = STEP_1_VITAL;
+                    totalScreen = 5;
+                    Timber.tag(TAG).d("3 Feature first screen : " + mCurrentStep);
+                }
+                if (!isVitalsActive && isDiagnosticsActive) {
+                    mStep1ProgressBar.setVisibility(View.GONE);
+                    mStep2ProgressBar.setVisibility(View.VISIBLE);
+                    mCurrentStep = STEP_2_DIAGNOSTICS;
+                    totalScreen = 4;
+                    Timber.tag(TAG).d("4 Feature first screen : " + mCurrentStep);
+                }
+                if (isVitalsActive && !isDiagnosticsActive) {
+                    mStep1ProgressBar.setVisibility(View.VISIBLE);
+                    mStep2ProgressBar.setVisibility(View.GONE);
+                    mCurrentStep = STEP_1_VITAL;
+                    totalScreen = 4;
+                    Timber.tag(TAG).d("5 Feature first screen : " + mCurrentStep);
+                }
+                if (!isVitalsActive && !isDiagnosticsActive) {
+                    mStep1ProgressBar.setVisibility(View.GONE);
+                    mStep2ProgressBar.setVisibility(View.GONE);
+                    mCurrentStep = STEP_3_VISIT_REASON;
+                    totalScreen = 3;
+                    Timber.tag(TAG).d("6 Feature first screen : " + mCurrentStep);
+                }
 
-        }
+            }
 
             if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
 //            getSupportFragmentManager().beginTransaction().
@@ -450,6 +452,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         bundle.putString("patientUuid", patientUuid);
         bundle.putString("visitUuid", visitUuid);
         bundle.putString("encounterUuidVitals", encounterVitals);
+
+        handleDeviceBackPress();
+    }
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //not handling anything
+            }
+        });
     }
 
     public boolean isEditTriggerFromVisitSummary() {
@@ -927,7 +940,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 } else {
                     if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
-                        mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+                        if (mainNode.getOptionsList().get(j).getOptionsList() != null)
+                            mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
                         optionList.add(mainNode.getOptionsList().get(j));
                     }
                 }
@@ -971,47 +985,47 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
 
-/*
-    public void setTitle(int screenId) {
-        Timber.tag(TAG).d("setTitle=>%s", screenId);
-        int currentScreenIndex = 1;
-        String title = getString(R.string._1_4_vitals, currentScreenIndex, totalScreen);
-        if (screenId == STEP_1_VITAL) {
-            title = getString(R.string._1_4_vitals, 1, 5);
-        } else if (screenId == STEP_2_DIAGNOSTICS) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-            title = getString(R.string.diagnostics_section, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_3_VISIT_REASON) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-            title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-            title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
-            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+    /*
+        public void setTitle(int screenId) {
+            Timber.tag(TAG).d("setTitle=>%s", screenId);
+            int currentScreenIndex = 1;
+            String title = getString(R.string._1_4_vitals, currentScreenIndex, totalScreen);
+            if (screenId == STEP_1_VITAL) {
+                title = getString(R.string._1_4_vitals, 1, 5);
+            } else if (screenId == STEP_2_DIAGNOSTICS) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
+                title = getString(R.string.diagnostics_section, currentScreenIndex, totalScreen);
+            } else if (screenId == STEP_3_VISIT_REASON) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
                 title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+            } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
+                title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+                }
+            } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
+                String titleStr = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
+                if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
+                    titleStr = getString(R.string._relapse, currentScreenIndex, totalScreen);
+                } else if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+                    titleStr = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
+                }
+                title = titleStr;
+            } else if (screenId == STEP_4_PAST_MEDICAL_HISTORY) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 4 : 3;
+                title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
+            } else if (screenId == STEP_5_PAST_MEDICAL_HISTORY) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
+                title = getString(R.string.patinet_history, currentScreenIndex, totalScreen);
+            } else if (screenId == STEP_6_FAMILY_HISTORY) {
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
+                title = getString(R.string._medical_family_history, currentScreenIndex, totalScreen);
             }
-        } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-            String titleStr = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-            if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
-                titleStr = getString(R.string._relapse, currentScreenIndex, totalScreen);
-            } else if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
-                titleStr = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
-            }
-            title = titleStr;
-        } else if (screenId == STEP_4_PAST_MEDICAL_HISTORY) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 4 : 3;
-            title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_5_PAST_MEDICAL_HISTORY) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-            title = getString(R.string.patinet_history, currentScreenIndex, totalScreen);
-        } else if (screenId == STEP_6_FAMILY_HISTORY) {
-            currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-            title = getString(R.string._medical_family_history, currentScreenIndex, totalScreen);
+            ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
         }
-        ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
-    }
-*/
+    */
     @Override
     public void onProgress(int progress) {
         switch (mCurrentStep) {
@@ -1695,7 +1709,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+                   /* if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
                         if (data != null) {
@@ -1729,8 +1743,45 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
+                    }*/
+
+
+                    Intent data = result.getData();
+                    if (data != null) {
+                        Uri selectedImage = data.getData();
+                        if (selectedImage != null) {
+                            try {
+                                // Getting bitmap from the selected image URI
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
+                                // Generating random file name
+                                mLastSelectedImageName = UUID.randomUUID().toString();
+                                String fileName = mLastSelectedImageName + ".jpg";
+                                File destFile = new File(AppConstants.IMAGE_PATH, fileName);
+
+                                // Saving bitmap as a valid JPEG image
+                                FileOutputStream outputStream = new FileOutputStream(destFile);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                                outputStream.flush();
+                                outputStream.close();
+
+                                // Passing the image path back
+                                Bundle bundle = new Bundle();
+                                bundle.putString("image", destFile.getAbsolutePath());
+                                imageUtilsListener.onImageReady(bundle);
+
+                                CustomLog.i(TAG, "Saved image from gallery: " + destFile.getAbsolutePath());
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(VisitCreationActivity.this, "Failed to process selected image", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+
             });
 
     private String mLastSelectedImageName = "";
@@ -1945,5 +1996,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         // Update the subtitle TextView
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
+
 
 }

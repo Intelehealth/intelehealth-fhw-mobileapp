@@ -5,12 +5,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
@@ -20,13 +23,19 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class ProviderDAO {
+public class ProviderDAO extends BaseDao{
     private static final String TAG = "ProviderDAO";
     long createdRecordsCount = 0;
 
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> providersList = new ArrayList<>();
+        for (ProviderDTO providerDTO : providerDTOS) {
+            providersList.add(createProviderMap(providerDTO));
+        }
+        executeInBackground(bulkInsert(providersList));
+
+        /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -41,7 +50,7 @@ public class ProviderDAO {
             db.endTransaction();
 
         }
-
+*/
         return isInserted;
     }
 
@@ -164,8 +173,8 @@ public class ProviderDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
         //if db in transaction then return null
-        if (db.inTransaction()) return null;
-        db.beginTransaction();
+      /*  Commented while sync issue due to db locked exception if (db.inTransaction()) return null;
+       db.beginTransaction();*/
 
         try {
             String query = "select * from tbl_provider where uuid = ?";
@@ -190,12 +199,12 @@ public class ProviderDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return providerDTO;
@@ -401,4 +410,29 @@ public class ProviderDAO {
             return "Test Doctor";
 
     }
+    @Override
+    String tableName() {
+      return "tbl_provider";
+    }
+    public HashMap<String, Object> createProviderMap(ProviderDTO provider) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", provider.getUuid());
+        values.put("identifier", provider.getIdentifier());
+        values.put("given_name", provider.getGivenName());
+        values.put("family_name", provider.getFamilyName());
+        values.put("voided", provider.getVoided());
+        values.put("role", provider.getRole());
+        values.put("useruuid", provider.getUseruuid());
+        values.put("emailId", provider.getEmailId());
+        values.put("telephoneNumber", provider.getTelephoneNumber());
+        values.put("dateofbirth", provider.getDateofbirth());
+        values.put("gender", provider.getGender());
+        values.put("providerId", provider.getProviderId());
+        values.put("middle_name", provider.getMiddle_name());
+        values.put("countryCode", provider.getCountryCode());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", "false");
+        return values;
+    }
+
 }

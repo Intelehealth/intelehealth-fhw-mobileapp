@@ -293,6 +293,7 @@
                     android:src="@drawable/protocols_icon" />
 
                 <TextView
+                    android:id="@+id/protocol_title_tv"
                     style="@style/text_title_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -416,7 +417,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
                     android:layout_toEndOf="@+id/ivNotification"
-                    android:text="Blackout"
+                    android:text="@string/blackout"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -441,20 +442,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="To disable notification between below time period. switch on the blackout period"
-                android:textColor="@color/hint_text_color"
                 android:layout_marginHorizontal="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/blackout_info"
+                android:textColor="@color/hint_text_color"
                 android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="From 9:00 PM To 6:00 AM"
-                android:textColor="@color/black"
                 android:layout_margin="@dimen/margin_12"
-                android:textSize="@dimen/txtsize_patdetail_16sp" />
+                android:text="@string/from_9_00_pm_to_6_00_am"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txtsize_patdetail_16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -64,6 +64,7 @@ import android.print.PrintManager;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -71,6 +72,7 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.bill.VisitSummaryBillModel;
 import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
 import org.intelehealth.app.ui.billgeneration.models.BillDetails;
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -397,6 +399,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
     private String visitType = "Consultation";
+    private boolean isDownloadImageBroadcastRecRegisterd = false;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -494,7 +497,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-
+        String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+        JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -636,8 +640,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
                 }, hour, minute, true);
         timePickerDialog.show();
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+        Button posBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
+        posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        Button negBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        posBt.setText(ContextCompat.getString(this, R.string.cancel));
+        negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void showDatePickerDialog() {
@@ -658,7 +667,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this, R.string.cancel), (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
                 dialog.dismiss();
@@ -667,8 +676,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         datePickerDialog.show();
         // Change button colors dynamically after the dialog is shown
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
-        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
+        Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
+        posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
+
+        Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
+        negBt.setText(ContextCompat.getString(this, R.string.cancel));
+        negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
     private void setupSpecialization() {
@@ -2716,6 +2730,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
+        etAdditionalNotesVS.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
 
 //        android:hint="@string/leave_a_note_for_doctor"
         etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
@@ -3088,7 +3103,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             startActivity(in);
             finish();
         } else {
-            CustomLog.d("CCCCCV", "Destry" + VisitSummaryActivity_New.this);
+
         }
     }
 
@@ -3112,9 +3127,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-                    CustomLog.d("PPPPP", prescription_link);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
+                    //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link))));
 
                     // isreturningWhatsapp = true;
 
@@ -3226,8 +3241,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
+                else
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
                 if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
@@ -3504,9 +3521,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     // receiver download
     public void registerBroadcastReceiverDynamically() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
-        ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        if (!isDownloadImageBroadcastRecRegisterd) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+            ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+            isDownloadImageBroadcastRecRegisterd = true;
+        }
     }
 
     public void registerDownloadPrescription() {
@@ -4096,6 +4116,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
+
+            if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
+                unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -5561,6 +5585,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
+            if (!value.startsWith("{") && !value.endsWith("}"))
+                value = formatHtmlToJson(value);    // NAS-881
+
+            //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
@@ -5590,7 +5618,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 reports_relative.setVisibility(View.VISIBLE);
                 denies_relative.setVisibility(View.VISIBLE);
 
-                valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
+                valueArray = value.split("\\s*►<b>\\s*" + Node.ASSOCIATE_SYMPTOMS + "\\s*</b>:\\s*<br/>\\s*");    // NAS-881 : this regex expression removes any extra spaces before and after the words. Here for the NAS 3.0 data the space was not matchign due to which it was not spillting the string.
                 isAssociateSymptomFound = valueArray.length >= 2;
                 CustomLog.v(TAG, "complaint: " + valueArray[0]);
                 CustomLog.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
@@ -5777,6 +5805,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         // family history - end
         // medical history data - end
+    }
+
+    private String formatHtmlToJson(String value) {
+        // Convert to JSON
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("en", value);
+        } catch (Exception e) {
+            Timber.tag(TAG).e(String.valueOf(e));
+        }
+
+        // Output JSON string
+        if (jsonObject.length() > 0)
+            return jsonObject.toString();
+        else
+            return value;
     }
 
     List<String> mChiefComplainList = new ArrayList<>();
@@ -6372,7 +6416,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         selectedTests[6] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
                         selectedTests[7] = true;
-                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
+                    Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
                 }
@@ -6392,6 +6436,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         return true;
     }
+
     private void setupDiagnosticsConfig() {
         mRandomGlucoseLinearLayout = findViewById(R.id.ll_glucose_random_container);
         mFastingGlucoseLinearLayout = findViewById(R.id.ll_glucose_fasting_container);
@@ -6406,7 +6451,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
         diagnosticsViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
-                    mPatientDiagnosticsList = it;
+                            mPatientDiagnosticsList = it;
                             CustomLog.v(TAG, new Gson().toJson(mPatientDiagnosticsList));
                             updateUIForDiagnostics();
                         }

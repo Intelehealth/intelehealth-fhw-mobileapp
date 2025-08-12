@@ -233,12 +233,102 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
+    private void escPrint() {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
+                try {
+                    CmdFactory escFac = new EscFactory();
+                    Cmd escCmd = escFac.create();
 
+                    // Initialize ESC Command
+                    escCmd.append(escCmd.getHeaderCmd()); // Printer initialization
+
+                    // Set Charset
+                    escCmd.setChartsetName(mChartsetName);
+
+                    // Common Settings
+                    CommonSetting commonSetting = new CommonSetting();
+                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
+
+                    // Text Settings
+                    TextSetting textSetting = new TextSetting();
+                    Position txtPosition = new Position(0, 0);
+                    textSetting.setTxtPrintPosition(txtPosition);
+
+                    // Print Prescription Text
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        escCmd.append(escCmd.getTextCmd(textSetting,
+                                String.valueOf(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT))));
+                    } else {
+                        presTextview.setText(Html.fromHtml(prescData));
+                        escCmd.append(escCmd.getTextCmd(textSetting,
+                                String.valueOf(Html.fromHtml(prescData))));
+                    }
+
+                    // Add Line Feeds
+                    escCmd.append(escCmd.getLFCRCmd());
+                    escCmd.append(escCmd.getLFCRCmd());
+
+                    // Bitmap Printing Setup
+                    if (mBitmap != null) {
+                        BitmapSetting bitmapSetting = new BitmapSetting();
+                        bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
+                        bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
+                        escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
+                    }
+
+                    // Move Cursor and Print Doctor Details
+                    txtPosition.x = 20;
+                    textSetting.setTxtPrintPosition(txtPosition);
+                    escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
+
+                    // Add Line Feeds
+                    escCmd.append(escCmd.getLFCRCmd());
+                    escCmd.append(escCmd.getLFCRCmd());
+
+                    // Finalize with Paper Cut (if supported)
+                    escCmd.append(new byte[]{0x1D, 0x56, 0x41, 0x10}); // Partial cut
+
+                    // Log ESC Commands for Debugging
+                    byte[] cmds = escCmd.getAppendCmds();
+                    Log.i(TAG, "ESC Commands: " + FuncUtils.ByteArrToHex(cmds));
+
+                    // Send to Printer
+                    rtPrinter.writeMsgAsync(cmds);
+
+                    // Show Printing Dialog
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(TextPrintESCActivity.this,
+                            R.drawable.ui2_bell_icon_primary,
+                            getResources().getString(R.string.printing),
+                            getResources().getString(R.string.prescription_printing),
+                            true, getResources().getString(R.string.ok),
+                            getResources().getString(R.string.cancel), action -> finish());
+
+                } catch (UnsupportedEncodingException | SdkException e) {
+                    Log.e(TAG, "Printing Error: ", e);
+                    Toast.makeText(TextPrintESCActivity.this,
+                           "Print failed", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(TextPrintESCActivity.this,
+                        getResources().getString(R.string.tip_have_no_paired_device),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+/*
     private void escPrint() {
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
+
+                if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
+                    rtPrinter.writeMsgAsync("Test Print\n".getBytes());
+                }
+
                 if (rtPrinter != null) {
                     CmdFactory escFac = new EscFactory();
                     Cmd escCmd = escFac.create();
@@ -256,6 +346,12 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                     // textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
                     // commonSetting.setEscLineSpacing(getInputLineSpacing());
                     escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
+                    try {
+                        escCmd.append(escCmd.getTextCmd(textSetting, "Test Print"));
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             escCmd.append(escCmd.getTextCmd(textSetting, String.valueOf(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT))));
@@ -298,7 +394,8 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                         DialogUtils dialogUtils = new DialogUtils();
                         dialogUtils.showCommonDialog(TextPrintESCActivity.this, R.drawable.ui2_bell_icon_primary, getResources().getString(R.string.printing), getResources().getString(R.string.prescription_printing), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), action -> {
                         });
-                     /*   // If without selecting Bluetooth user click Print button crash happens so added this condition.
+                     */
+/*   // If without selecting Bluetooth user click Print button crash happens so added this condition.
                         rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
 
                         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(TextPrintESCActivity.this);
@@ -317,7 +414,8 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
                         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);*/
+                        IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);*//*
+
                     } else {
                         Toast.makeText(TextPrintESCActivity.this, getResources().getString
                                 (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
@@ -326,6 +424,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+*/
 
     @Override
     public void onClick(View view) {

@@ -177,6 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
+                        style="@style/AppTheme.InputBox.Address1"
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:maxLength="16"

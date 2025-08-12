@@ -33,6 +33,8 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.WindowManager;
@@ -423,6 +425,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             myProfilePOJO.setNewCountryCode(countryCodePicker.getSelectedCountryCodeWithPlus());
             shouldActivateSaveButton();
         });
+
+        etEmail.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
 
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override

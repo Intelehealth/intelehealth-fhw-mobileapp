@@ -134,7 +134,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
             //2.
-            if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+            /*if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
@@ -144,7 +144,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
-            }
+            }*/
 
             if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
@@ -314,10 +314,13 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+               /* String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                         phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                 + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
-                                + model.getOpenmrs_id());
+                                + model.getOpenmrs_id());*/
+                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                        phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link);
                 CustomLog.v("whatsappMessage", whatsappMessage);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(whatsappMessage)));

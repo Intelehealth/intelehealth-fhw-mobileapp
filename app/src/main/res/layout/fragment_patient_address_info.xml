@@ -467,7 +467,6 @@
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoCompleteVillageDropdown"
-                                style="@style/AppTheme.InputBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_drop_down_village"

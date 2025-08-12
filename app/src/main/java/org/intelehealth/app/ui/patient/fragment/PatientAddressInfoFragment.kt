@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.text.InputFilter.LengthFilter
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -31,6 +32,8 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Alphabets_And_Numbers
+import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -119,7 +122,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             address2 = binding.textInputAddress2.text?.toString()
             registrationAddressOfHf = binding.textInputRegistrationAddressOfHf.text?.toString()
 
-             address1 = binding.textInputAddress1.text?.toString()
+            //householdNumber = binding.textInputHouseholdNumber.text?.toString()
+            address1 = binding.textInputAddress1.text?.toString()
             address6 = binding.textInputHouseholdNumber.text?.toString()
 
 
@@ -166,9 +170,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun applyFilter() {
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+     //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress1.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
         binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+       // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputOtherBlock.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
     }
 
     private fun setInputTextChangListener() {
@@ -324,14 +330,30 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.addressInfoConfig?.let {
-            val bPostalCode = if (it.postalCode?.isEnabled == true && it.postalCode?.isMandatory == true) {
-                binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
-                    binding.textInputLayPostalCode.validateDigit(
-                        binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
+            val bPostalCode =
+                if (it.postalCode?.isEnabled == true && it.postalCode?.isMandatory == true) {
+                    binding.textInputLayPostalCode.validate(binding.textInputPostalCode, error).and(
+                        binding.textInputLayPostalCode.validateDigit(
+                            binding.textInputPostalCode, R.string.postal_code_6_dig_invalid_txt, 6
+                        )
                     )
-                )
 
-            } else true
+                } else {
+                    binding.textInputPostalCode.let { postCodeEt ->
+                        if ((postCodeEt.text ?: "").isNotEmpty()) {
+                            binding.textInputLayPostalCode.validate(
+                                binding.textInputPostalCode,
+                                error
+                            ).and(
+                                binding.textInputLayPostalCode.validateDigit(
+                                    binding.textInputPostalCode,
+                                    R.string.postal_code_6_dig_invalid_txt,
+                                    6
+                                )
+                            )
+                        } else true
+                    }
+                }
 
 
             val bCountry = if (it.country?.isEnabled == true && it.country?.isMandatory == true) {
@@ -346,11 +368,12 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 )
             } else true
 
-            val bDistrict = if (it.district?.isEnabled == true && it.district?.isMandatory == true) {
-                binding.textInputLayDistrict.validateDropDowb(
-                    binding.autoCompleteState, error
-                )
-            } else true
+            val bDistrict =
+                if (it.district?.isEnabled == true && it.district?.isMandatory == true) {
+                    binding.textInputLayDistrict.validateDropDowb(
+                        binding.autoCompleteState, error
+                    )
+                } else true
 
             val bCityVillage =
                 if (it.cityVillage?.isEnabled == true && it.cityVillage?.isMandatory == true && !it.block!!.isEnabled) {
@@ -364,12 +387,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         )
                 } else true
 
-            val bProvince = if (it.province?.isEnabled == true && it.province?.isMandatory == true) {
-                binding.textInputLayProvince.validateDropDowb(
-                    binding.autoCompleteProvince,
-                    error
-                )
-            } else true
+            val bProvince =
+                if (it.province?.isEnabled == true && it.province?.isMandatory == true) {
+                    binding.textInputLayProvince.validateDropDowb(
+                        binding.autoCompleteProvince,
+                        error
+                    )
+                } else true
 
             val bCity = if (it.city?.isEnabled == true && it.city?.isMandatory == true) {
                 binding.textInputLayCity.validateDropDowb(
@@ -387,15 +411,17 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                 } else true
 
 
-            val bAddress1 = if (it.address1?.isEnabled == true && it.address1?.isMandatory == true) {
-                binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
-            } else true
+            val bAddress1 =
+                if (it.address1?.isEnabled == true && it.address1?.isMandatory == true) {
+                    binding.textInputLayAddress1.validate(binding.textInputAddress1, error)
+                } else true
 
-            val bAddress2 = if (it.address2?.isEnabled == true && it.address2?.isMandatory == true) {
-                binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
-            } else true
+            val bAddress2 =
+                if (it.address2?.isEnabled == true && it.address2?.isMandatory == true) {
+                    binding.textInputLayAddress2.validate(binding.textInputAddress2, error)
+                } else true
 
-            val bBlock =if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
+            val bBlock = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
                 binding.textInputLayBlock.validateDropDowb(
                     binding.autoCompleteBlock, error
                 )
@@ -515,7 +541,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                         val selectedVillage = villages[i]
                         if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
-                         else patient.cityvillage = selectedVillage.name
+                        else patient.cityvillage = selectedVillage.name
                     }
                 } else {
                 }
@@ -540,7 +566,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             applyFilter()
             setInputTextChangListener()
             setClickListener()
-            if(BuildConfig.FLAVOR_client == FlavorKeys.UNFPA){
+            if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
         }

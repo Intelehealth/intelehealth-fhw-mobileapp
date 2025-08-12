@@ -25,7 +25,7 @@ android {
         applicationId "org.intelehealth.app"
         minSdk 23
         targetSdk 34
-        versionCode 67
+        versionCode 80
         versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
@@ -45,9 +45,10 @@ android {
                 checkReleaseBuilds false
                 abortOnError false
             }
+            debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
         }
     }
 

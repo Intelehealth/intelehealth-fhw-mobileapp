@@ -37,7 +37,7 @@ public class AppConstants {
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final String MCC_USER_TYPE = "mcc";
 
-    public static final int PAGE_LIMIT = 50;
+    public static final int PAGE_LIMIT = 1000;
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;

@@ -125,33 +125,35 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+        String age = "";
         try {
             date = originalFormat.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String formattedDate = targetFormat.format(date);  // 20120821
-        String[] components = formattedDate.split("\\-");
+            String formattedDate = targetFormat.format(date);  // 20120821
+            String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-        String age = "";
-        String tyears = "", tmonth = "", tdays = "";
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            String tyears = "", tmonth = "", tdays = "";
 
        /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
         }*/
 
-        if (period.getValue(0) > 0) {  // o index -> years
-            tyears = String.valueOf(period.getValue(0));
-            age = tyears;
-            //CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
-        } else {
+            if (period.getValue(0) > 0) {  // o index -> years
+                tyears = String.valueOf(period.getValue(0));
+                age = tyears;
+                //CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
+            } else {
+                age = "0";
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
             age = "0";
         }
 
@@ -258,35 +260,36 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+        String age = "";
         try {
             date = originalFormat.parse(s);
+            String formattedDate = targetFormat.format(date);  // 20120821
+
+            String[] components = formattedDate.split("\\-");
+
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
+
+            //call to function to pass this year and month for age mindmaps questions...
+            //getAge_Year_Month(year, month, day);
+
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+
+            String tyears = "";
+            //String xyears = "", xmonths = "";
+
+            if (period.getYears() > 0) {
+                tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+                //xyears = String.valueOf(period.getYears());
+            }
+            age = tyears;
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
-
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
-
-        //call to function to pass this year and month for age mindmaps questions...
-        //getAge_Year_Month(year, month, day);
-
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
-        String age = "";
-        String tyears = "";
-        //String xyears = "", xmonths = "";
-
-        if (period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-            //xyears = String.valueOf(period.getYears());
-        }
-        age = tyears;
         return age;
     }
 
@@ -1195,5 +1198,9 @@ public class DateAndTimeUtils {
             e.printStackTrace();
             return false; // Return false if there's an error parsing the date
         }
+    }
+    public String getVisitUploadDateTime() {
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+        return date.format(new Date());
     }
 }

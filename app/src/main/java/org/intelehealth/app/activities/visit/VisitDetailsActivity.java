@@ -28,7 +28,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
@@ -91,6 +93,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -132,7 +135,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private String vitalsUUID, adultInitialUUID, obsservermodifieddate, pat_phoneno, dr_MobileNo, dr_WhatsappNo, drDetails;
     private Button btn_end_visit, yes_followup_btn;
     private ClsDoctorDetails clsDoctorDetails;
-    private NetworkUtils networkUtils;
+    private DialogUtils dialogUtils;
+  //  private NetworkUtils networkUtils;    // TODO: commented since heavy load on app.
 
     private RecyclerView mPastVisitsRecyclerView;
     private Context context;
@@ -142,7 +146,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         super.onFeatureActiveStatusLoaded(activeStatus);
         if (activeStatus != null) {
             mFeatureActiveStatus = activeStatus;
-            if (activeStatus != null && !activeStatus.getChatSection()) {
+            if (!activeStatus.getChatSection()) {
                 findViewById(R.id.fabStartChat).setVisibility(View.GONE);
             } else findViewById(R.id.fabStartChat).setVisibility(View.VISIBLE);
         }
@@ -160,8 +164,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
             handleBackPress();
 
-            networkUtils = new NetworkUtils(this, this);
+         //   networkUtils = new NetworkUtils(this, this);
             context = VisitDetailsActivity.this;
+            dialogUtils = new DialogUtils();
 
             Intent intent = this.getIntent(); // The intent was passed to the activity
             if (intent != null) {
@@ -178,8 +183,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 visit_speciality = intent.getStringExtra("visit_speciality");
 
                 followupDate = intent.getStringExtra("followup_date");
-                if (followupDate == null)
+                if (followupDate == null) {
                     followupDate = getFollowupDataForVisitUUID(visitID);
+                }
                 isEmergency = intent.getBooleanExtra("priority_tag", false);
                 hasPrescription = intent.getBooleanExtra("hasPrescription", false);
                 patient_photo_path = intent.getStringExtra("patient_photo");
@@ -208,16 +214,21 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             }
             CustomLog.v("VD", "vd_pat_phone: " + pat_phoneno);
 
-            // Fetching dr details from Local db.
-            drDetails = fetchDrDetailsFromLocalDb(visitID);
-            Gson gson = new Gson();
-            clsDoctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
-
-            if (clsDoctorDetails != null) {
-                CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails.toString());
-                dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
-                dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
-            }
+            ThreadingUtils.executeInBackground(() -> {
+                // Fetching dr details from Local db.
+                drDetails = fetchDrDetailsFromLocalDb(visitID);
+                Gson gson = new Gson();
+                ClsDoctorDetails doctorDetails = gson.fromJson(drDetails, ClsDoctorDetails.class);
+                if (doctorDetails != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        // Now updating UI safely on the main thread
+                        clsDoctorDetails = doctorDetails;
+                        CustomLog.e("TAG", "TEST VISIT: " + clsDoctorDetails);
+                        dr_MobileNo = "+91" + clsDoctorDetails.getPhoneNumber();
+                        dr_WhatsappNo = "+91" + clsDoctorDetails.getWhatsapp();
+                    });
+                }
+            });
             // end
 
             // calling and whatsapp - start
@@ -228,14 +239,6 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             pat_whatsapp_btn.setOnClickListener(v -> {
                 whatsapp_feature(pat_phoneno);
             });
-
-        /*dr_call_btn.setOnClickListener(v -> {
-            calling_feature(dr_MobileNo);
-        });
-
-        dr_whatsapp_btn.setOnClickListener(v -> {
-            whatsapp_feature(dr_WhatsappNo);
-        });*/
             // calling and whatsapp - end
 
             backArrow.setOnClickListener(v -> {
@@ -244,6 +247,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
             // Patient Photo
             profile_image = findViewById(R.id.profile_image);
+
+            if (patient_photo_path != null) {
+                Glide.with(this)
+                        .load(patient_photo_path)
+                        .thumbnail(Glide.with(this).load(patient_photo_path).sizeMultiplier(0.25f)) // Efficient preview
+                        .centerCrop()
+                        .placeholder(R.drawable.avatar1)  // Show default avatar while loading
+                        .error(R.drawable.avatar1)        // Show default if loading fails
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache images for better performance
+                        .into(profile_image);
+            } else {
+                profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
+            }
+            /*profile_image = findViewById(R.id.profile_image);
             if (patient_photo_path != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(this)
                         .asDrawable().sizeMultiplier(0.3f);
@@ -256,14 +273,18 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                         .into(profile_image);
             } else {
                 profile_image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.avatar1));
-            }
+            }*/
 
             // visit summary - start
             vs_arrowRight = findViewById(R.id.vs_arrowRight);
             vs_card = findViewById(R.id.vs_card);
             presc_relative = findViewById(R.id.presc_relative);
-            vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
-            adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+            /*vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+            adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);*/
+            ThreadingUtils.executeInBackground(() -> {
+                vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
+                adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
+            });
 
 /*
         vs_arrowRight.setOnClickListener(v -> {
@@ -300,17 +321,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             presc_remind_block = findViewById(R.id.presc_remind_block);
             icon_presc_details = findViewById(R.id.icon_presc_details);
 
-            if (hasPrescription) {
-                presc_arrowRight.setVisibility(View.VISIBLE);
-                presc_relative.setClickable(true);
-                presc_remind_block.setVisibility(View.GONE);
-                if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                    //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-                    String modifiedDate = obsservermodifieddate;
-                    modifiedDate = timeAgoFormat(modifiedDate);
-                    presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                    icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
-                }
+        if (hasPrescription) {
+            presc_arrowRight.setVisibility(View.VISIBLE);
+            presc_relative.setClickable(true);
+            presc_remind_block.setVisibility(View.GONE);
+            String modifiedDate = "";
+            if (!obsservermodifieddate.equalsIgnoreCase("")) {
+                //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
+                modifiedDate = obsservermodifieddate;
+            } else {
+                modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+            }
+            modifiedDate = timeAgoFormat(modifiedDate);
+            presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
 
 /*
             presc_arrowRight.setOnClickListener(v -> {
@@ -397,9 +421,99 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             // priority - end
 
             chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
-            if (chief_complaint_value == null)
-                chief_complaint_value = getChiefComplaint(visitID);
-            CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
+            if (chief_complaint_value == null) {
+                ThreadingUtils.executeInBackground(() -> {
+                    chief_complaint_value = getChiefComplaint(visitID);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
+
+
+                                boolean needToShowCoreValue = false;
+                                if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
+                                    try {
+                                        // isInOldFormat = false;
+                                        JSONObject jsonObject = new JSONObject(chief_complaint_value);
+                                        if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                            chief_complaint_value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                            needToShowCoreValue = false;
+                                        } else {
+                                            needToShowCoreValue = true;
+                                            chief_complaint_value = jsonObject.getString("en");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    needToShowCoreValue = true;
+                                }
+
+                                if (needToShowCoreValue) {
+                                    chief_complaint_value = chief_complaint_value.replace("?<b>", Node.bullet_arrow);
+
+                                    String[] complaints = org.apache.commons.lang3.StringUtils.split(chief_complaint_value, Node.bullet_arrow);
+
+                                    chief_complaint_value = "";
+                                    String colon = ":";
+                                    if (complaints != null) {
+                                        for (String comp : complaints) {
+                                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
+                                                chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                            }
+                                        }
+                                        if (!chief_complaint_value.isEmpty()) {
+                                            chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
+                                            chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
+                                            chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                            chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
+                                            chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
+                                            chief_complaint_value = chief_complaint_value.trim();
+                                            while (chief_complaint_value.endsWith(",")) {
+                                                chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
+                                            }
+                                        }
+                                    }
+                                    chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+                                } else {
+                                    chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
+                                    System.out.println(chief_complaint_value);
+                                    CustomLog.v(TAG, chief_complaint_value);
+                                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                                    String[] spt = chief_complaint_value.split("►");
+                                    List<String> list = new ArrayList<>();
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (String s : spt) {
+                                        String complainName = "";
+                                        if (s.isEmpty()) continue;
+                                        //String s1 =  new String(s.getBytes(), "UTF-8");
+                                        System.out.println(s);
+                                        String[] spt1 = s.split("::●");
+                                        complainName = spt1[0];
+
+                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                        if (!complainName.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                            System.out.println(complainName);
+                                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                            stringBuilder.append(complainName);
+                                        }
+
+                                    }
+
+
+                                    chief_complaint_txt.setText(stringBuilder.toString());
+                                }
+                            }
+                            chief_complaint_txt.setTextColor(ContextCompat.getColor(VisitDetailsActivity.this, R.color.headline_text_color));
+                            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
+                        }
+                    });
+                });
+            }
+        //    CustomLog.v(TAG, "chief_Complaint: " + chief_complaint_value);
 
         /*if (chief_complaint_value != null) {
             int first = chief_complaint_value.indexOf("<b>");
@@ -417,89 +531,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
         }*/
 
-            if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
-
-
-                boolean needToShowCoreValue = false;
-                if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
-                    try {
-                        // isInOldFormat = false;
-                        JSONObject jsonObject = new JSONObject(chief_complaint_value);
-                        if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                            chief_complaint_value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                            needToShowCoreValue = false;
-                        } else {
-                            needToShowCoreValue = true;
-                            chief_complaint_value = jsonObject.getString("en");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    needToShowCoreValue = true;
-                }
-
-                if (needToShowCoreValue) {
-                    chief_complaint_value = chief_complaint_value.replace("?<b>", Node.bullet_arrow);
-
-                    String[] complaints = org.apache.commons.lang3.StringUtils.split(chief_complaint_value, Node.bullet_arrow);
-
-                    chief_complaint_value = "";
-                    String colon = ":";
-                    if (complaints != null) {
-                        for (String comp : complaints) {
-                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
-                                chief_complaint_value = chief_complaint_value + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
-                            }
-                        }
-                        if (!chief_complaint_value.isEmpty()) {
-                            chief_complaint_value = chief_complaint_value.replaceAll(Node.bullet_arrow, "");
-                            chief_complaint_value = chief_complaint_value.replaceAll("<br/>", ", ");
-                            chief_complaint_value = chief_complaint_value.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                            chief_complaint_value = chief_complaint_value.replaceAll("<b>", "");
-                            chief_complaint_value = chief_complaint_value.replaceAll("</b>", "");
-                            chief_complaint_value = chief_complaint_value.trim();
-                            while (chief_complaint_value.endsWith(",")) {
-                                chief_complaint_value = chief_complaint_value.substring(0, chief_complaint_value.length() - 1).trim();
-                            }
-                        }
-                    }
-                    chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
-                } else {
-                    chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
-                    System.out.println(chief_complaint_value);
-                    CustomLog.v(TAG, chief_complaint_value);
-                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
-
-                    String[] spt = chief_complaint_value.split("►");
-                    List<String> list = new ArrayList<>();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (String s : spt) {
-                        String complainName = "";
-                        if (s.isEmpty()) continue;
-                        //String s1 =  new String(s.getBytes(), "UTF-8");
-                        System.out.println(s);
-                        String[] spt1 = s.split("::●");
-                        complainName = spt1[0];
-
-                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                        if (!complainName.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                            System.out.println(complainName);
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                            stringBuilder.append(complainName);
-                        }
-
-                    }
-
-
-                    chief_complaint_txt.setText(stringBuilder.toString());
-                }
-            }
-            chief_complaint_txt.setTextColor(ContextCompat.getColor(this, R.color.headline_text_color));
-            chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
-            //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+        //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
             visitID_txt = findViewById(R.id.visitID);
             String hideVisitUUID = visitID;
@@ -590,7 +622,41 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             // follow up - end
 
             // end visit - start
-            PrescriptionModel pres = isVisitNotEnded(visitID);
+            ThreadingUtils.executeInBackground(() -> {
+                PrescriptionModel pres = isVisitNotEnded(visitID);
+                boolean visitNotEnded = pres != null && pres.getVisitUuid() != null;
+
+                // Switch to the main thread to update UI
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (visitNotEnded) {
+                        endvisit_relative_block.setVisibility(View.VISIBLE);
+                        btn_end_visit.setOnClickListener(v -> {
+                            if (!hasPrescription) {
+                                if (mFeatureActiveStatus.getRestrictEndVisit()) {
+                                    if (dialogUtils == null) {
+                                        dialogUtils = new DialogUtils(); // Ensure a single instance
+                                    }
+                                    dialogUtils.showCommonDialog(context,
+                                            R.drawable.dialog_close_visit_icon,
+                                            context.getString(R.string.alert_label_txt),
+                                            context.getString(R.string.prescription_notprovided_msg),
+                                            true,
+                                            context.getString(R.string.ok),
+                                            context.getString(R.string.cancel),
+                                            action -> {});
+                                } else {
+                                    checkIfAppointmentExistsForVisit(visitID);
+                                }
+                            } else {
+                                triggerEndVisit();
+                            }
+                        });
+                    } else {
+                        endvisit_relative_block.setVisibility(View.GONE);
+                    }
+                });
+            });
+            /*PrescriptionModel pres = isVisitNotEnded(visitID);
             if (pres.getVisitUuid() != null) {
                 endvisit_relative_block.setVisibility(View.VISIBLE);
                 btn_end_visit.setOnClickListener(v -> {
@@ -609,14 +675,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 });
             } else {
                 endvisit_relative_block.setVisibility(View.GONE);
-            }
+            }*/
             // end visit - end
 
             mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
             mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
             initForPastVisit();
 
-            mBroadcastReceiver = new BroadcastReceiver() {
+            /*mBroadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
@@ -633,14 +699,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     mBroadcastReceiver,
                     filterSend,
                     ContextCompat.RECEIVER_NOT_EXPORTED
-            );
+            );*/    // TODO: unwanted app load.
 
             syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
             syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
             syncAnimator.setInterpolator(new LinearInterpolator());
         }
 
-        private BroadcastReceiver mBroadcastReceiver;
+     //   private BroadcastReceiver mBroadcastReceiver; // TODO: unwanted app load.
         private ObjectAnimator syncAnimator;
         private List<PastVisitData> mPastVisitDataList = new ArrayList<PastVisitData>();
 
@@ -914,18 +980,18 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         public void onStart () {
             super.onStart();
             //register receiver for internet check
-            networkUtils.callBroadcastReceiver();
+          //  networkUtils.callBroadcastReceiver();
         }
 
         @Override
         public void onStop () {
             super.onStop();
-            try {
+            /*try {
                 //unregister receiver for internet check
                 networkUtils.unregisterNetworkReceiver();
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         public void startTextChat (View view){
