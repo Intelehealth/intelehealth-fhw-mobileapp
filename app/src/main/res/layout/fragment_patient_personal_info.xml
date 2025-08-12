@@ -357,14 +357,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textInputLayGuardianType"
-                    app:prefixText="@{patient.countryCode != null ? patient.countryCode + ` | ` : `+91 | `}"
+                    app:prefixText="91"
                     app:startIconDrawable="@drawable/img"
                     app:startIconTint="@null"
                     tools:hint="@string/phone_number">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputETPhoneNumber"
-                        style="@style/AppTheme.InputBox.Phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:cursorVisible="true"
