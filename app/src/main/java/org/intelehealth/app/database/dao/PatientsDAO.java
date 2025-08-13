@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -135,7 +137,7 @@ public class PatientsDAO {
 
     }
 
-    public boolean updatePatientToDB_PatientDTO(PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+    public boolean updatePatientToDB_PatientDTO(@NonNull PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -166,9 +168,52 @@ public class PatientsDAO {
             values.put("abha_address", patientDTO.getAbhaAddress());
             values.put("sync", false);
 
-            insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
+            if (patientDTO.getPatientAttributesDTOList() != null) {
+                insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
+            }
+
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isCreated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isCreated;
+
+    }
+
+
+    public boolean updatePatientWithABHA(@NonNull PatientDTO patientDTO) throws DAOException {
+        boolean isCreated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String whereclause = "Uuid=?";
+        db.beginTransaction();
+        try {
+
+            Logger.logD("create", "create has to happen");
+            values.put("first_name", patientDTO.getFirstname());
+            values.put("last_name", patientDTO.getLastname());
+            values.put("phone_number", patientDTO.getPhonenumber());
+            values.put("address1", patientDTO.getAddress1());
+            // values.put("address2", patientDTO.getAddress2());
+            values.put("date_of_birth", patientDTO.getDateofbirth());
+            values.put("gender", patientDTO.getGender());
+            //values.put("postal_code", patientDTO.getPostalcode());
+            //values.put("city_village", patientDTO.getCityvillage());
+            //values.put("state_province", patientDTO.getStateprovince());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
+            values.put("sync", false);
+
+            Logger.logD("pulldata", "datadumper" + values);
+            createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{patientDTO.getUuid()});
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
@@ -837,6 +882,137 @@ public class PatientsDAO {
         cursor.close();
 
         return patientDTO;
+    }
+
+    public static PatientDTO getPatientDetailsByPhoneNum(String phoneNum, String gender, String dob, String firstName, String lastName, String postCode) {
+        List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        final Cursor cursor = db.rawQuery("select p.* from tbl_patient as p, tbl_patient_attribute as pa where p.uuid = pa.patientuuid and " +
+                "(p.sync = 1 OR p.sync = 'true' OR p.sync = 'TRUE') and p.voided = 0 and pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' and pa.value = ?", new String[]{phoneNum});
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    PatientDTO model = new PatientDTO();
+                    model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                    model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                    model.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+                    modelList.add(model);
+                } while (cursor.moveToNext());
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (modelList.size() > 1) {
+            List<PatientDTO> modelListAfterGender = new ArrayList<PatientDTO>();
+            for (int i = 0; i < modelList.size(); i++) {
+                if (modelList.get(i).getGender().equals(gender)) {
+                    modelListAfterGender.add(modelList.get(i));
+                }
+            }
+
+            if (modelListAfterGender.size() > 1) {
+                // Step 1: Filter by Year
+                List<PatientDTO> modelListAfterYear = new ArrayList<>();
+                String dobYear = dob.substring(0, 4); // "1996"
+
+                for (PatientDTO patient : modelListAfterGender) {
+                    if (patient.getDateofbirth().substring(0, 4).equals(dobYear)) {
+                        modelListAfterYear.add(patient);
+                    }
+                }
+
+                if (modelListAfterYear.size() > 1) {
+                    // Step 2: Filter by Month
+                    List<PatientDTO> modelListAfterMonth = new ArrayList<>();
+                    String dobMonth = dob.substring(5, 7); // "09"
+
+                    for (PatientDTO patient : modelListAfterYear) {
+                        if (patient.getDateofbirth().substring(5, 7).equals(dobMonth)) {
+                            modelListAfterMonth.add(patient);
+                        }
+                    }
+
+                    if (modelListAfterMonth.size() > 1) {
+                        // Step 3: Filter by Day
+                        List<PatientDTO> modelListAfterDay = new ArrayList<>();
+                        String dobDay = dob.substring(8, 10); // "01"
+
+                        for (PatientDTO patient : modelListAfterMonth) {
+                            if (patient.getDateofbirth().substring(8, 10).equals(dobDay)) {
+                                modelListAfterDay.add(patient);
+                            }
+                        }
+
+                        if (modelListAfterDay.size() > 1) {
+                            // Step 4: Filter by First Name
+                            List<PatientDTO> modelListAfterFirstName = new ArrayList<>();
+                            for (PatientDTO patient : modelListAfterDay) {
+                                if (patient.getFirstname().equalsIgnoreCase(firstName)) {
+                                    modelListAfterFirstName.add(patient);
+                                }
+                            }
+
+                            if (modelListAfterFirstName.size() > 1) {
+                                // Step 5: Filter by Last Name
+                                List<PatientDTO> modelListAfterLastName = new ArrayList<>();
+                                for (PatientDTO patient : modelListAfterFirstName) {
+                                    if (patient.getLastname().equalsIgnoreCase(lastName)) {
+                                        modelListAfterLastName.add(patient);
+                                    }
+                                }
+
+                                if (modelListAfterLastName.size() > 1) {
+                                    List<PatientDTO> modelListAfterPostCode = new ArrayList<>();
+                                    for (PatientDTO patient : modelListAfterLastName) {
+
+                                        if (/*patient.getPostalcode() == null || */patient.getPostalcode().equalsIgnoreCase(postCode)) {
+                                            modelListAfterPostCode.add(patient);
+                                        }
+                                    }
+                                    if (!modelListAfterPostCode.isEmpty()) {
+                                        return modelListAfterPostCode.get(0);
+                                    } else {
+                                        return null;
+                                    }
+
+                                } else {
+                                    return modelListAfterFirstName.get(0);
+                                }
+
+
+                            } else {
+                                return modelListAfterFirstName.get(0);
+                            }
+
+                        } else {
+                            return modelListAfterDay.get(0);
+                        }
+
+                    } else {
+                        return modelListAfterMonth.get(0);
+                    }
+
+                } else {
+                    return modelListAfterYear.get(0);
+                }
+            } else {
+                return modelListAfterGender.get(0);
+            }
+        } else {
+            return modelList.get(0);
+        }
     }
 
 }

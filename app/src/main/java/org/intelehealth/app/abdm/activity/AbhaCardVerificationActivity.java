@@ -51,8 +51,11 @@ import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityAbhaCardVerificationBinding;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
@@ -808,7 +811,42 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
                         Intent intent;
-                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                        PatientDTO patientDTO = PatientsDAO.getPatientDetailsByPhoneNum(
+                                "+91"+abhaProfileResponse.getMobile(),
+                                abhaProfileResponse.getGender(),
+                                abhaProfileResponse.getYearOfBirth()+"-"+abhaProfileResponse.getMonthOfBirth()+"-"+abhaProfileResponse.getDayOfBirth(),
+                                abhaProfileResponse.getFirstName(),
+                                abhaProfileResponse.getLastName(),
+                                abhaProfileResponse.getPincode()
+                        );
+
+                        if(patientDTO != null){
+                            intent = new Intent(context, CompareDataActivity.class);
+                            intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
+                            intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            Toast.makeText(AbhaCardVerificationActivity.this, R.string.local_user_is_not_found, Toast.LENGTH_SHORT).show();
+                            if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                                abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                                abhaProfileResponse.setUuiD(response.getData().getUuid());
+                                intent = new Intent(context, IdentificationActivity_New.class);
+                                intent.putExtra("mobile_payload", abhaProfileResponse);
+                                intent.putExtra("accessToken", accessToken);
+                                intent.putExtra("xToken", xToken);
+                                intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
+                                intent.putExtra("patient_detail", true);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                informDeletedUserAndNavigateToCreateAbha();
+//                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
+                            }
+                        }
+
+
+                      /*  if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
                             abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                             abhaProfileResponse.setUuiD(response.getData().getUuid());
                             intent = new Intent(context, IdentificationActivity_New.class);
@@ -822,7 +860,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         } else {
                             informDeletedUserAndNavigateToCreateAbha();
 //                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
-                        }
+                        }*/
                     }
 
                     @Override

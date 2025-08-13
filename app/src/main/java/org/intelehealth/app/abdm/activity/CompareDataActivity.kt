@@ -1,0 +1,153 @@
+package org.intelehealth.app.abdm.activity
+
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import org.intelehealth.app.R
+import org.intelehealth.app.abdm.model.AbhaProfileResponse
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
+import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.databinding.ActivityCompareDataBinding
+import org.intelehealth.app.models.UserData
+import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.IntentKeys
+import java.io.Serializable
+
+class CompareDataActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityCompareDataBinding
+    var patientsDAO: PatientsDAO = PatientsDAO()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_compare_data)
+
+        val abhaProfileResponse =
+            intent.getSerializableExtra(IntentKeys.ABHA_PATIENT) as AbhaProfileResponse
+        val patientDto = intent.getSerializableExtra(IntentKeys.LOCAL_PATIENT) as PatientDTO
+
+        val addressStringBuilder = StringBuilder()
+        addressStringBuilder
+            .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 else "")
+            .append(if (!patientDto.address2.isNullOrEmpty()) patientDto.address2 else "")
+            .append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage else "")
+            .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince else "")
+            .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")
+
+        val localUser = UserData(
+            fName = patientDto.firstname,
+            lName = patientDto.lastname,
+            dob = patientDto.dateofbirth,
+            gender = patientDto.gender,
+            address = addressStringBuilder.toString().ifEmpty { "Not Found" }
+        )
+
+        val abhaUser = UserData(
+            fName = abhaProfileResponse.firstName,
+            lName = abhaProfileResponse.lastName,
+            dob = "${abhaProfileResponse.yearOfBirth}-${abhaProfileResponse.monthOfBirth}-${abhaProfileResponse.dayOfBirth}",
+            gender = abhaProfileResponse.gender,
+            address = abhaProfileResponse.address.ifEmpty { "Not Found" }
+        )
+
+        binding.localData = localUser
+        binding.abhaData = abhaUser
+
+        // Auto-select if same
+        autoSelectIfSame(binding.rbFNameLocal, binding.rbFNameAbha, localUser.fName, abhaUser.fName)
+        autoSelectIfSame(binding.rbLNameLocal, binding.rbLNameAbha, localUser.lName, abhaUser.lName)
+        autoSelectIfSame(binding.rbDobLocal, binding.rbDobAbha, localUser.dob, abhaUser.dob)
+        autoSelectIfSame(
+            binding.rbGenderLocal,
+            binding.rbGenderAbha,
+            localUser.gender,
+            abhaUser.gender
+        )
+        autoSelectIfSame(
+            binding.rbAddressLocal,
+            binding.rbAddressAbha,
+            localUser.address,
+            abhaUser.address
+        )
+
+        binding.btnConfirm.setOnClickListener {
+            val selectedFName = getSelectedRadioText(binding.rgFName)
+            val selectedLName = getSelectedRadioText(binding.rgLName)
+            val selectedDob = getSelectedRadioText(binding.rgDob)
+            val selectedGender = getSelectedRadioText(binding.rgGender)
+            val selectedAddress = getSelectedRadioText(binding.rgAddress)
+
+            if(selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty()){
+                Toast.makeText(this, "Please select all the fields to continue", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            patientDto.firstname = selectedFName
+            patientDto.lastname = selectedLName
+            patientDto.dateofbirth = selectedDob
+            patientDto.gender = selectedGender
+            patientDto.address1 = selectedAddress
+            patientDto.abhaNumber = abhaProfileResponse.abhaNumber
+            patientDto.abhaAddress = abhaProfileResponse.preferredAbhaAddress
+
+            val isUpdated = patientsDAO.updatePatientWithABHA(
+                patientDto
+            )
+            SyncUtils().syncBackground()
+
+            if (isUpdated) {
+                Intent(this, PatientDetailActivity2::class.java).apply {
+                    putExtra("patientUuid", patientDto.uuid)
+                    putExtra(
+                        "patientName",
+                        patientDto.firstname + " " + patientDto.lastname
+                    )
+                    putExtra("tag", "searchPatient")
+                    putExtra("hasPrescription", "false")
+                    val args = Bundle()
+                    args.putSerializable("patientDTO", patientDto as Serializable?)
+                    putExtra("BUNDLE", args)
+                    putExtra("patientUuid", patientDto.uuid)
+                    startActivity(this)
+                    finish()
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Unable to update the patient. Try again later.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        binding.btnEdit.setOnClickListener {
+            Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun autoSelectIfSame(
+        localRb: RadioButton,
+        abhaRb: RadioButton,
+        firstValue: String,
+        secondValue: String
+    ) {
+        if (firstValue == secondValue) {
+            localRb.isChecked = true
+            localRb.isEnabled = false
+            abhaRb.isEnabled = false
+        }
+    }
+
+    private fun getSelectedRadioText(rg: RadioGroup): String {
+        val selectedId = rg.checkedRadioButtonId
+        return if (selectedId != -1) findViewById<RadioButton>(selectedId).text.toString() else ""
+    }
+}

@@ -80,6 +80,8 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardActivity;
+import org.intelehealth.app.abdm.activity.CompareDataActivity;
+import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.app.activities.help.activities.HelpFragment_New;
@@ -93,10 +95,12 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
@@ -106,6 +110,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -303,6 +308,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
 //        catchFCMMessageData();
 
+
         loadFragment(new HomeFragment_New(), TAG_HOME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
@@ -312,6 +318,32 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager = new SessionManager(this);
         initUI();
         clickListeners();
+
+        /*PatientDTO patientDTO = PatientsDAO.getPatientDetailsByPhoneNum(
+                "+919958392968",
+
+                "F",
+                "1997-08-22",
+                "NISHITA",
+                "GOYAL"
+        );
+        AbhaProfileResponse abhaProfileResponse = new AbhaProfileResponse();
+        abhaProfileResponse.setFirstName("NiSHItaa");
+        abhaProfileResponse.setLastName("Goyal");
+        abhaProfileResponse.setDayOfBirth("22");
+        abhaProfileResponse.setMonthOfBirth("08");
+        abhaProfileResponse.setYearOfBirth("1997");
+        abhaProfileResponse.setGender("F");
+        abhaProfileResponse.setMobile("+919958392967");
+        abhaProfileResponse.setAddress("Test");
+
+        Intent intent = new Intent(context, CompareDataActivity.class);
+        intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
+        intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
+        startActivity(intent);
+        finish();
+        Log.d("PPPPPP",""+new Gson().toJson(patientDTO));*/
+
     }
 
     private void clickListeners() {
