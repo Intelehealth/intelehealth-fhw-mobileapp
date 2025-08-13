@@ -912,7 +912,10 @@ public class PatientsDAO {
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
         }
+
+        if(modelList.isEmpty()) return null;
 
         if (modelList.size() > 1) {
             List<PatientDTO> modelListAfterGender = new ArrayList<PatientDTO>();
@@ -955,7 +958,7 @@ public class PatientsDAO {
                             }
                         }
 
-                        if (modelListAfterDay.size() > 1) {
+                        if (modelListAfterDay.size() > 1 && lastName!=null) {
                             // Step 4: Filter by First Name
                             List<PatientDTO> modelListAfterFirstName = new ArrayList<>();
                             for (PatientDTO patient : modelListAfterDay) {
@@ -964,7 +967,7 @@ public class PatientsDAO {
                                 }
                             }
 
-                            if (modelListAfterFirstName.size() > 1) {
+                            if (modelListAfterFirstName.size() > 1 && lastName!=null) {
                                 // Step 5: Filter by Last Name
                                 List<PatientDTO> modelListAfterLastName = new ArrayList<>();
                                 for (PatientDTO patient : modelListAfterFirstName) {
@@ -973,7 +976,7 @@ public class PatientsDAO {
                                     }
                                 }
 
-                                if (modelListAfterLastName.size() > 1) {
+                                if (modelListAfterLastName.size() > 1 && postCode!=null ) {
                                     List<PatientDTO> modelListAfterPostCode = new ArrayList<>();
                                     for (PatientDTO patient : modelListAfterLastName) {
 
@@ -1010,9 +1013,13 @@ public class PatientsDAO {
             } else {
                 return modelListAfterGender.get(0);
             }
-        } else {
+        }
+
+        else {
             return modelList.get(0);
         }
+
+
     }
 
 }
