@@ -262,6 +262,10 @@ public class Fragment_ThirdScreen extends Fragment {
                 xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
+            if (getArguments().containsKey("firstRequestFulfilled")){
+                if(getArguments().getBoolean("firstRequestFulfilled"))
+                    tvCreateNewAbhaAddress.setVisibility(View.GONE);
+            }
 
             disableAbhaFlowFieldsOnEdit(patientDTO);
             // abdm - end
@@ -340,6 +344,7 @@ public class Fragment_ThirdScreen extends Fragment {
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
+                                intent.putExtra("firstRequestFulfilled", true);
                                 startActivity(intent);
                                 if (getActivity() != null) {
                                     getActivity().finish();

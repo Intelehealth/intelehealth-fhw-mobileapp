@@ -4,6 +4,7 @@ import static org.intelehealth.app.abdm.utils.ABDMConstant.AADHAAR_CARD_SELECTIO
 import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_AADHAAR;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_OTP_MOBILE;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.ABHA_SELECTION;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.BOTH;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.MOBILE_NUMBER_SELECTION;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_AADHAAR;
 import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_ABHA_ADDRESS;
@@ -41,6 +42,7 @@ import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
+import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -279,12 +281,18 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                             } else if (optionSelected.equalsIgnoreCase(ABHA_SELECTION)) {
                                 cpd.dismiss();
-                                AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
-                                dialog.openAuthSelectionDialogDialog(authType -> {
-                                    abhaAuthType = authType;
-                                    sentOtpApi(accessToken, getSendOtpApiRequest());
-                                });
-                                dialog.show(getSupportFragmentManager(), "");
+
+                                if(TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText())){
+                                    AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                                    dialog.openAuthSelectionDialogDialog(BOTH,authType -> {
+                                        abhaAuthType = authType;
+                                        sentOtpApi(accessToken, getSendOtpApiRequest());
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
+                                }else{
+                                    callFetchAuthModesAPI(Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString(),"",accessToken);
+                                }
+
                             }
                         }
 
@@ -411,6 +419,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         public void onSuccess(Response<OTPResponse> otpResponse) {
                             cpd.dismiss();
                             if (otpResponse.code() == 200) {
+                                OTPResponse otpResponse1 = otpResponse.body();
                                 setOtpVisibility();
                                 snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
                                         StringUtils.getMessageTranslated(otpResponse.body().getMessage(), sessionManager.getAppLanguage()), true);
@@ -728,13 +737,27 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("abhaAddress", abhaAddress);
 
-        Single<ResponseBody> fetchAuthModesResponse = AppConstants.apiInterface.FETCH_AUTH_MODES(url, requestBody, accessToken, xToken);
+        Single<Response<FetchAuthModesResponse>> fetchAuthModesResponse = AppConstants.apiInterface.FETCH_AUTH_MODES(url, requestBody, accessToken, xToken);
         fetchAuthModesResponse
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
-                    public void onSuccess(ResponseBody body) {
+                    public void onSuccess(Response<FetchAuthModesResponse> body) {
+                        var response = body.body();
+                        if(response.getAuthMethods().size()==1 && response.getAuthMethods().contains(ABHA_OTP_MOBILE)){
+                            abhaAuthType = ABHA_OTP_MOBILE;
+                        }else if(response.getAuthMethods().size()==1 && response.getAuthMethods().contains(ABHA_OTP_AADHAAR)){
+                            abhaAuthType = ABHA_OTP_AADHAAR;
+                        }else{
+                            abhaAuthType = BOTH;
+                        }
+                        AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                        dialog.openAuthSelectionDialogDialog(abhaAuthType,authType -> {
+                            abhaAuthType = authType;
+                            sentOtpApi(accessToken, getSendOtpApiRequest());
+                        });
+                        dialog.show(getSupportFragmentManager(), "");
                         String errorMessage = ABDMUtils.getAuthModes(body);
                         snackbarUtils.hideKeyboard(AbhaCardVerificationActivity.this);
                         snackbarUtils.showSnackLinearLayoutParentSuccess(AbhaCardVerificationActivity.this, binding.llActionBar, errorMessage, true);

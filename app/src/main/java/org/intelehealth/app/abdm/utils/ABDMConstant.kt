@@ -14,5 +14,6 @@ object ABDMConstant{
     const val ABHA_SELECTION = "abha"
     const val ABHA_OTP_AADHAAR = "AADHAAR_OTP"
     const val ABHA_OTP_MOBILE = "MOBILE_OTP"
+    const val BOTH = "Both"
     const val BEARER = "Bearer "
 }

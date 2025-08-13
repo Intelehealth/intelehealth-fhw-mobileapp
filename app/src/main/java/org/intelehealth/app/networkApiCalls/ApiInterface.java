@@ -9,6 +9,7 @@ import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.EnrollNumberWithABDMRequest;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
+import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
@@ -276,7 +277,7 @@ public interface ApiInterface {
                                                   @Body AbhaProfileRequestBody abhaProfileRequestBody);
 
     @POST
-    Single<ResponseBody> FETCH_AUTH_MODES(
+    Single<Response<FetchAuthModesResponse>> FETCH_AUTH_MODES(
             @Url String url,
             @Body Map<String, String> body,
             @Header("Authorization") String accessToken,
@@ -298,4 +299,6 @@ public interface ApiInterface {
             @Url String url,
             @Header("Authorization") String accessToken
     );
+
+
 }

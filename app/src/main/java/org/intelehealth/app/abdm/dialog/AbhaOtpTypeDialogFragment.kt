@@ -16,6 +16,8 @@ class AbhaOtpTypeDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAbhaOtpTypeDialogBinding
     private var onAuthTypeSelection: OnAuthTypeSelection? = null
     private var authType = ABHA_OTP_AADHAAR
+    private var authMethods = ABHA_OTP_AADHAAR
+
 
 
 
@@ -30,9 +32,20 @@ class AbhaOtpTypeDialogFragment : BottomSheetDialogFragment() {
             container,
             false
         )
-
+        setUi()
         setListeners()
         return binding.root
+    }
+
+    fun setUi(){
+        if(authMethods.equals(ABHA_OTP_AADHAAR)){
+            binding.btnAbha.visibility = View.GONE
+        }else if(authMethods.equals(ABHA_OTP_MOBILE)){
+            binding.btnAadhaar.visibility = View.GONE
+        }else{
+            binding.btnAadhaar.visibility = View.VISIBLE
+            binding.btnAbha.visibility = View.VISIBLE
+        }
     }
 
     private fun setListeners() {
@@ -63,10 +76,11 @@ class AbhaOtpTypeDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    fun openAuthSelectionDialogDialog(
+    fun openAuthSelectionDialogDialog(authMethods:String,
         onAuthTypeSelection: OnAuthTypeSelection,
     ) {
         this.onAuthTypeSelection = onAuthTypeSelection
+        this.authMethods = authMethods
     }
 
     interface OnAuthTypeSelection {
