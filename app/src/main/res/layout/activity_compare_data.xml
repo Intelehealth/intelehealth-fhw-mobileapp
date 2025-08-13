@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="localData"
+            type="org.intelehealth.app.models.UserData" />
+        <variable
+            name="abhaData"
+            type="org.intelehealth.app.models.UserData" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Compare Data"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingBottom="20dp"
+                android:textColor="@android:color/black" />
+
+            <!-- TableLayout -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="1"
+                android:padding="8dp"
+                android:background="@drawable/table_border">
+
+                <!-- Header Row -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="Local"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="ABHA"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+                </TableRow>
+
+                <View
+                    android:layout_height="1dp"
+                    android:background="@color/medium_gray"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    />
+
+                <!-- First Name -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="First Name"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgFName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbFNameLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.fName}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbFNameAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.fName}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+
+
+                <!-- Last Name -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Last Name"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgLName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbLNameLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.lName}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbLNameAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.lName}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+
+                <!-- DOB -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DOB"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgDob"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbDobLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.dob}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbDobAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.dob}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+
+                <!-- Gender -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Gender"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgGender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbGenderLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.gender}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbGenderAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.gender}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+
+                <!-- Address -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Address"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbAddressLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.address}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbAddressAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.address}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+            </TableLayout>
+
+            <!-- Confirm Button -->
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm and Save Selected Data"
+                android:textSize="16sp"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="24dp"
+                android:padding="12dp" />
+
+            <!-- Edit Manually -->
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Manually"
+                android:visibility="gone"
+                android:textSize="16sp"
+                android:backgroundTint="@android:color/darker_gray"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="8dp"
+                android:padding="12dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

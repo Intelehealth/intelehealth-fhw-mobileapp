@@ -15,17 +15,23 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.ajalt.timberkt.Timber;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.adapter.MultipleAccountsAdapter;
 import org.intelehealth.app.abdm.model.ABHAProfile;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.Account;
+import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityAccountSelectionLoginBinding;
+import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -35,6 +41,7 @@ import org.intelehealth.app.utilities.WindowsUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -100,8 +107,7 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
                 if (isChecked) {
                     Log.d(TAG, "OnItemSelected: " + account.toString());
                     selectedAccount = account;
-                }
-                else
+                } else
                     selectedAccount = null;
             }
         });
@@ -113,8 +119,7 @@ public class AccountSelectionLoginActivity extends AppCompatActivity {
             if (selectedAccount != null) {
                 // pass this account payload to fetch details api and move to Identification screen...
                 callFetchUserProfileAPI(selectedAccount.getABHANumber(), txnId, X_TOKEN);
-            }
-            else {
+            } else {
                 snackbarUtils.showSnackConstraintLayoutParentSuccess(context, binding.layoutParent,
                         StringUtils.getMessageTranslated(getString(R.string.please_select_the_abha_account_through_which_you_wish_to_login), sessionManager.getAppLanguage()), false);
             }
