@@ -890,7 +890,7 @@ public class PatientsDAO {
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         final Cursor cursor = db.rawQuery("select p.* from tbl_patient as p, tbl_patient_attribute as pa where p.uuid = pa.patientuuid and " +
-                "(p.sync = 1 OR p.sync = 'true' OR p.sync = 'TRUE') and p.voided = 0 and pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' and pa.value = ?", new String[]{phoneNum});
+                /*"(p.sync = 1 OR p.sync = 'true' OR p.sync = 'TRUE') and*/ "p.voided = 0 and pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' and pa.value = ?", new String[]{phoneNum});
 
         try {
             if (cursor.moveToFirst()) {

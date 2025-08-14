@@ -2,18 +2,21 @@ package org.intelehealth.app.abdm.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.R
 import org.intelehealth.app.abdm.model.AbhaProfileResponse
+import org.intelehealth.app.abdm.model.OTPVerificationResponse
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.database.dao.PatientsDAO
-import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.databinding.ActivityCompareDataBinding
 import org.intelehealth.app.models.UserData
 import org.intelehealth.app.models.dto.PatientDTO
@@ -25,10 +28,28 @@ class CompareDataActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCompareDataBinding
     var patientsDAO: PatientsDAO = PatientsDAO()
+    private val disposables = CompositeDisposable()
+
+    var accessToken = ""
+    var xToken = ""
+    var txnId = ""
+    var firstRequestFulfilled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_compare_data)
+
+
+
+        val intentRx = this.intent
+
+        if (intentRx != null) {
+            accessToken = intentRx.getStringExtra("accessToken")?:""
+            xToken = intentRx.getStringExtra("xToken")?:""
+            txnId = intentRx.getStringExtra("txnId")?:""
+            firstRequestFulfilled = intentRx.getBooleanExtra("firstRequestFulfilled", false)
+        }
 
         val abhaProfileResponse =
             intent.getSerializableExtra(IntentKeys.ABHA_PATIENT) as AbhaProfileResponse
@@ -36,10 +57,10 @@ class CompareDataActivity : AppCompatActivity() {
 
         val addressStringBuilder = StringBuilder()
         addressStringBuilder
-            .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1+", " else "")
-            .append(if (!patientDto.address2.isNullOrEmpty()) patientDto.address2+", " else "")
-            .append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage+", " else "")
-            .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince+", " else "")
+            .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 + ", " else "")
+            .append(if (!patientDto.address2.isNullOrEmpty()) patientDto.address2 + ", " else "")
+            .append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage + ", " else "")
+            .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince + ", " else "")
             .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")
 
         val localUser = UserData(
@@ -85,8 +106,9 @@ class CompareDataActivity : AppCompatActivity() {
             val selectedGender = getSelectedRadioText(binding.rgGender)
             val selectedAddress = getSelectedRadioText(binding.rgAddress)
 
-            if(selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty()){
-                Toast.makeText(this, "Please select all the fields to continue", Toast.LENGTH_SHORT).show()
+            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty()) {
+                Toast.makeText(this, "Please select all the fields to continue", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -105,17 +127,32 @@ class CompareDataActivity : AppCompatActivity() {
 
             if (isUpdated) {
                 Intent(this, PatientDetailActivity2::class.java).apply {
-                    putExtra("patientUuid", patientDto.uuid)
-                    putExtra(
-                        "patientName",
-                        patientDto.firstname + " " + patientDto.lastname
-                    )
+                    /*putExtra("patientUuid", patientDto.uuid)
+                    putExtra("patientName", patientDto.firstname + " " + patientDto.lastname)
                     putExtra("tag", "searchPatient")
                     putExtra("hasPrescription", "false")
                     val args = Bundle()
                     args.putSerializable("patientDTO", patientDto as Serializable?)
                     putExtra("BUNDLE", args)
                     putExtra("patientUuid", patientDto.uuid)
+                    startActivity(this)
+                    finish()*/
+
+                    putExtra("patientUuid", patientDto.uuid)
+                    putExtra(
+                        "patientName",
+                        patientDto.firstname + " " + patientDto.lastname
+                    )
+                    putExtra("tag", "newPatient")
+                    putExtra("hasPrescription", "false")
+
+                    val args = Bundle()
+                    args.putSerializable("patientDTO", patientDto as Serializable?)
+
+                    args.putString("accessToken", accessToken)
+                    args.putString("xToken", xToken)
+                    args.putString("txnId", txnId)
+                    putExtra("BUNDLE", args)
                     startActivity(this)
                     finish()
                 }
@@ -131,6 +168,11 @@ class CompareDataActivity : AppCompatActivity() {
         binding.btnEdit.setOnClickListener {
             Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
     private fun autoSelectIfSame(

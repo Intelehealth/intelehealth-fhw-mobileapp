@@ -858,9 +858,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                     Log.d("PATIENT_DTO",""+new Gson().toJson(patientDTO));
 
                                                     if (patientDTO != null) {
+                                                        abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
+                                                        abhaProfileResponse.setUuiD(response.getData().getUuid());
                                                         intent = new Intent(context, CompareDataActivity.class);
                                                         intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
                                                         intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
+                                                        intent.putExtra("mobile_payload", abhaProfileResponse);
+                                                        intent.putExtra("accessToken", accessToken);
+                                                        intent.putExtra("xToken", xToken);
+                                                        intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
+                                                        intent.putExtra("patient_detail", true);
                                                         startActivity(intent);
                                                         finish();
                                                     } else {
