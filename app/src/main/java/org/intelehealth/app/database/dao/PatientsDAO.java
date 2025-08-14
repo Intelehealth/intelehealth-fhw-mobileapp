@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -907,6 +908,10 @@ public class PatientsDAO {
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
                     model.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+                    model.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                    model.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                    model.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+                    model.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
                     modelList.add(model);
                 } while (cursor.moveToNext());
             }
@@ -914,9 +919,11 @@ public class PatientsDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
+        Log.d("MODEL_LIST",""+new Gson().toJson(modelList));
 
         if(modelList.isEmpty()) return null;
 
+        Log.d("MODEL_LIST",""+new Gson().toJson(modelList));
         if (modelList.size() > 1) {
             List<PatientDTO> modelListAfterGender = new ArrayList<PatientDTO>();
             for (int i = 0; i < modelList.size(); i++) {
