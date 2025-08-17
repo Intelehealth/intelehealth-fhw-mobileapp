@@ -57,11 +57,11 @@ class CompareDataActivity : AppCompatActivity() {
 
         val addressStringBuilder = StringBuilder()
         addressStringBuilder
-            .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 + ", " else "")
-            .append(if (!patientDto.address2.isNullOrEmpty()) patientDto.address2 + ", " else "")
-            .append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage + ", " else "")
+            .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 else "")
+            .append(if (!patientDto.address2.isNullOrEmpty()) ", " + patientDto.address2 else "")
+            /*.append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage + ", " else "")
             .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince + ", " else "")
-            .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")
+            .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")*/
 
         val localUser = UserData(
             fName = patientDto.firstname,
