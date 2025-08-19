@@ -56,5 +56,10 @@
     <string name="please_enter_6_digit_valid_otp">Please enter 6 digit valid OTP</string>
     <string name="i_agree_terms_amp_conditions"><![CDATA[I Agree Terms & Conditions]]></string>
     <string name="local_user_is_not_found">Local user is not found</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="confirm_and_save_selected_data">Confirm and Save Selected Data</string>
+    <string name="compare_data">Compare Data</string>
+    <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
+    <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
 
 </resources>

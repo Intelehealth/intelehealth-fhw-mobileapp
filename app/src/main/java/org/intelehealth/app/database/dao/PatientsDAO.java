@@ -202,15 +202,12 @@ public class PatientsDAO {
             values.put("last_name", patientDTO.getLastname());
             values.put("phone_number", patientDTO.getPhonenumber());
             values.put("address1", patientDTO.getAddress1());
-            // values.put("address2", patientDTO.getAddress2());
             values.put("date_of_birth", patientDTO.getDateofbirth());
             values.put("gender", patientDTO.getGender());
-            //values.put("postal_code", patientDTO.getPostalcode());
-            //values.put("city_village", patientDTO.getCityvillage());
-            //values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("abha_number", patientDTO.getAbhaNumber());
             values.put("abha_address", patientDTO.getAbhaAddress());
+            values.put("postal_code", patientDTO.getPostalcode());
             values.put("sync", false);
 
             Logger.logD("pulldata", "datadumper" + values);
@@ -919,11 +916,11 @@ public class PatientsDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
-        Log.d("MODEL_LIST",""+new Gson().toJson(modelList));
+        Log.d("MODEL_LIST", "" + new Gson().toJson(modelList));
 
-        if(modelList.isEmpty()) return null;
+        if (modelList.isEmpty()) return null;
 
-        Log.d("MODEL_LIST",""+new Gson().toJson(modelList));
+        Log.d("MODEL_LIST", "" + new Gson().toJson(modelList));
         if (modelList.size() > 1) {
             List<PatientDTO> modelListAfterGender = new ArrayList<PatientDTO>();
             for (int i = 0; i < modelList.size(); i++) {
@@ -965,7 +962,7 @@ public class PatientsDAO {
                             }
                         }
 
-                        if (modelListAfterDay.size() > 1 && lastName!=null) {
+                        if (modelListAfterDay.size() > 1 && firstName != null) {
                             // Step 4: Filter by First Name
                             List<PatientDTO> modelListAfterFirstName = new ArrayList<>();
                             for (PatientDTO patient : modelListAfterDay) {
@@ -974,7 +971,7 @@ public class PatientsDAO {
                                 }
                             }
 
-                            if (modelListAfterFirstName.size() > 1 && lastName!=null) {
+                            if (modelListAfterFirstName.size() > 1 && lastName != null) {
                                 // Step 5: Filter by Last Name
                                 List<PatientDTO> modelListAfterLastName = new ArrayList<>();
                                 for (PatientDTO patient : modelListAfterFirstName) {
@@ -983,7 +980,7 @@ public class PatientsDAO {
                                     }
                                 }
 
-                                if (modelListAfterLastName.size() > 1 && postCode!=null ) {
+                                if (modelListAfterLastName.size() > 1 && postCode != null) {
                                     List<PatientDTO> modelListAfterPostCode = new ArrayList<>();
                                     for (PatientDTO patient : modelListAfterLastName) {
 
@@ -997,33 +994,65 @@ public class PatientsDAO {
                                         return null;
                                     }
 
-                                } else {
-                                    return modelListAfterFirstName.get(0);
+                                }
+                                else {
+                                    if (!modelListAfterLastName.isEmpty()) {
+                                        return modelListAfterLastName.get(0);
+                                    } else {
+                                        return null;
+                                    }
                                 }
 
 
-                            } else {
-                                return modelListAfterFirstName.get(0);
+                            }
+                            else {
+                                if (!modelListAfterFirstName.isEmpty()) {
+                                    return modelListAfterFirstName.get(0);
+                                } else {
+                                    return null;
+                                }
                             }
 
-                        } else {
-                            return modelListAfterDay.get(0);
+                        }
+                        else {
+                            if (!modelListAfterDay.isEmpty()) {
+                                return modelListAfterDay.get(0);
+                            } else {
+                                return null;
+                            }
                         }
 
-                    } else {
-                        return modelListAfterMonth.get(0);
+                    }
+                    else {
+                        if (!modelListAfterMonth.isEmpty()) {
+                            return modelListAfterMonth.get(0);
+                        } else {
+                            return null;
+                        }
                     }
 
-                } else {
-                    return modelListAfterYear.get(0);
                 }
-            } else {
-                return modelListAfterGender.get(0);
+                else {
+                    if (!modelListAfterYear.isEmpty()) {
+                        return modelListAfterYear.get(0);
+                    } else {
+                        return null;
+                    }
+                }
             }
-        }
-
-        else {
-            return modelList.get(0);
+            else {
+                if (!modelListAfterGender.isEmpty()) {
+                    return modelListAfterGender.get(0);
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            if (!modelList.isEmpty()) {
+                return modelList.get(0);
+            } else {
+                return null;
+            }
         }
 
 

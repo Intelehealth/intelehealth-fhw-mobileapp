@@ -68,7 +68,8 @@ class CompareDataActivity : AppCompatActivity() {
             lName = patientDto.lastname,
             dob = patientDto.dateofbirth,
             gender = patientDto.gender,
-            address = addressStringBuilder.toString().ifEmpty { "Not Found" }
+            address = addressStringBuilder.toString().ifEmpty { "Not Found" },
+            pinCode = (patientDto.postalcode?:"").ifEmpty { "Not Found" },
         )
 
         val abhaUser = UserData(
@@ -76,7 +77,8 @@ class CompareDataActivity : AppCompatActivity() {
             lName = abhaProfileResponse.lastName,
             dob = "${abhaProfileResponse.yearOfBirth}-${abhaProfileResponse.monthOfBirth}-${abhaProfileResponse.dayOfBirth}",
             gender = abhaProfileResponse.gender,
-            address = abhaProfileResponse.address.ifEmpty { "Not Found" }
+            address = (abhaProfileResponse.address?:"").ifEmpty { "Not Found" },
+            pinCode = (abhaProfileResponse.pincode?:"").ifBlank { "Not Found" },
         )
 
         binding.localData = localUser
@@ -99,15 +101,24 @@ class CompareDataActivity : AppCompatActivity() {
             abhaUser.address
         )
 
+        autoSelectIfSame(
+            binding.rbPinCodeLocal,
+            binding.rbPinCodeAbha,
+            localUser.pinCode,
+            abhaUser.pinCode
+        )
+
         binding.btnConfirm.setOnClickListener {
             val selectedFName = getSelectedRadioText(binding.rgFName)
             val selectedLName = getSelectedRadioText(binding.rgLName)
             val selectedDob = getSelectedRadioText(binding.rgDob)
             val selectedGender = getSelectedRadioText(binding.rgGender)
             val selectedAddress = getSelectedRadioText(binding.rgAddress)
+            val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
 
-            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty()) {
-                Toast.makeText(this, "Please select all the fields to continue", Toast.LENGTH_SHORT)
+            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty()) {
+                Toast.makeText(this,
+                    getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
@@ -117,6 +128,7 @@ class CompareDataActivity : AppCompatActivity() {
             patientDto.dateofbirth = selectedDob
             patientDto.gender = selectedGender
             patientDto.address1 = selectedAddress
+            patientDto.postalcode = selectedPinCode
             patientDto.abhaNumber = abhaProfileResponse.abhaNumber
             patientDto.abhaAddress = abhaProfileResponse.preferredAbhaAddress
 
@@ -159,14 +171,14 @@ class CompareDataActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     this,
-                    "Unable to update the patient. Try again later.",
+                    getString(R.string.unable_to_update_the_patient_try_again_later),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
         binding.btnEdit.setOnClickListener {
-            Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1954,4 +1954,9 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="abha_records_deleted">The ABHA records associated with the following user has been deleted. You will be guided to the Create ABHA screen to create a new record.</string>
     <string name="aadhar_otp_information">It is preferable to use your Aadhaar-linked mobile number. If you choose to use a different mobile number, it will need to be validated again and will be used for all communication related to ABHA.</string>
     <string name="local_user_is_not_found">Local user is not found</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="confirm_and_save_selected_data">Confirm and Save Selected Data</string>
+    <string name="compare_data">Compare Data</string>
+    <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
+    <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
 </resources>

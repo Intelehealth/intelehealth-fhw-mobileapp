@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Compare Data"
+                android:text="@string/compare_data"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:paddingBottom="20dp"
@@ -85,7 +85,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="First Name"
+                        android:text="@string/first_name"
                         android:gravity="center_vertical"
                         android:padding="8dp"
                         android:textColor="@android:color/black" />
@@ -130,7 +130,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Last Name"
+                        android:text="@string/last_name"
                         android:gravity="center_vertical"
                         android:padding="8dp"
                         android:textColor="@android:color/black" />
@@ -174,7 +174,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="DOB"
+                        android:text="@string/row_dob"
                         android:gravity="center_vertical"
                         android:padding="8dp"
                         android:textColor="@android:color/black" />
@@ -218,7 +218,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Gender"
+                        android:text="@string/gender"
                         android:gravity="center_vertical"
                         android:padding="8dp"
                         android:textColor="@android:color/black" />
@@ -262,7 +262,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Address"
+                        android:text="@string/row_address"
                         android:gravity="center_vertical"
                         android:padding="8dp"
                         android:textColor="@android:color/black" />
@@ -297,6 +297,50 @@
                             android:buttonTint="@android:color/black" />
                     </RadioGroup>
                 </TableRow>
+
+                <!-- PinCode -->
+                <TableRow
+                    android:layout_marginBottom="@dimen/margin_8"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/pin_code"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgPinCode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbPinCodeLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.pinCode}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbPinCodeAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.pinCode}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
             </TableLayout>
 
             <!-- Confirm Button -->
@@ -304,7 +348,7 @@
                 android:id="@+id/btnConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Confirm and Save Selected Data"
+                android:text="@string/confirm_and_save_selected_data"
                 android:textSize="16sp"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:textColor="@android:color/white"

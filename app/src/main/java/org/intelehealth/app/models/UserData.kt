@@ -6,5 +6,6 @@ data class UserData(
     val lName: String,
     val dob: String,
     val gender: String,
-    val address: String
+    val address: String,
+    val pinCode: String,
 )
