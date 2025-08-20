@@ -245,7 +245,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
-       String language = sessionManager.getAppLanguage(); //as locale already set
+        String language = sessionManager.getAppLanguage(); //as locale already set
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -254,7 +254,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             requireActivity().getResources().updateConfiguration(config, requireActivity().getResources().getDisplayMetrics());
         }
 
-       sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
 
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
@@ -324,7 +324,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
             int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
             //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-           // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
+            // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
             if (isAdded()) {
@@ -540,21 +540,24 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 "o.value as follow_up_info,"
                 + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
                 + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                + "AND o.voided='0' and "
-                +" (followup_date = ? or followup_date = ?) "
-                + "AND o.value is NOT NULL "+
-                " AND a.enddate is NULL " +
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                "WHERE " +
+                "a.uuid = c.visit_uuid " +
+                "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not counting
+                "AND a.patientuuid = b.uuid " +
+                "AND a.uuid = d.visituuid " +
+                "AND d.uuid = o.encounteruuid " +
+                "AND o.conceptuuid = ? " +
+                "AND o.voided='0' " +
+                "AND (followup_date = ? or followup_date = ?) " +
+                "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
                 "GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
-        CustomLog.d("COUNT_QUERY",query);
+        CustomLog.d("COUNT_QUERY", query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT,todaysDateStr,tomorrowsDateStr});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT, todaysDateStr, tomorrowsDateStr});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
             do {
                 try {
@@ -563,22 +566,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
 //                    CustomLog.v(TAG, "value_text - " + value_text);
 //                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
-                        modelList.add(new FollowUpModel(visitUuid,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("followup_date")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                                ))); // ie. visit is emergency visit.
+                    modelList.add(new FollowUpModel(visitUuid,
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                            cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("followup_date")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                            true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                            ))); // ie. visit is emergency visit.
 
                 } catch (Exception e) {
                     e.printStackTrace();

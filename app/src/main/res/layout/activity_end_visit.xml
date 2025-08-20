@@ -71,6 +71,7 @@
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_weight="0.3"
                 android:background="@null"
                 android:src="@drawable/ic_refreshbtn" />

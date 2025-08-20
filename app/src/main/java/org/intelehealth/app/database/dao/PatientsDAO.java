@@ -1368,13 +1368,13 @@ public class PatientsDAO extends BaseDao {
                     "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
                     "WHERE " +
                     "a.uuid = c.visit_uuid " +
+                    "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
                     "AND a.patientuuid = b.uuid " +
                     "AND a.uuid = d.visituuid " +
                     "AND d.uuid = o.encounteruuid " +
                     "AND o.conceptuuid = ? " +
                     "AND o.voided='0' " +
                     "AND o.value is NOT NULL " +
-                    "AND a.enddate is NULL " +
                     "AND followup_date is NOT NULL " +
                     "GROUP BY a.patientuuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
