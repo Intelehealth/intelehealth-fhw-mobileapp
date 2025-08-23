@@ -1266,6 +1266,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
                 if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
                     updateNavHeaderUserDetails();
+                    mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
                     //hideSyncProgressBar(true);
                 }
             }
