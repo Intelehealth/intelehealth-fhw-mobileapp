@@ -4,7 +4,7 @@
             android:shape="ring"
             android:thicknessRatio="16"
             android:useLevel="false">
-            <solid android:color="#4A38B0" />
+            <solid android:color="@color/colorPrimaryBlackOverlay" />
         </shape>
     </item>
     <item>
@@ -12,7 +12,7 @@
             android:shape="ring"
             android:thicknessRatio="16"
             android:useLevel="true">
-            <solid android:color="#7A65F1" />
+            <solid android:color="@color/colorAccent" />
         </shape>
     </item>
 </layer-list>

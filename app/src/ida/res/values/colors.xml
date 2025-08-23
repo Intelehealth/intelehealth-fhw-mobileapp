@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2E1E91</color>
+<color name="colorPrimary">#2E1E91</color>
     <color name="colorPrimaryDark">#201560</color>
     <color name="colorAccent">#0FD197</color>
     <color name="color_splash_bg">@color/colorPrimary</color>
@@ -8,6 +8,7 @@
     <color name="colorPrimaryLightCard">#1a2E1E91</color>
     <color name="colorAccentLightCard">#1a0FD197</color>
     <color name="colorGreenLightCard">#F1FBF7</color>
+    <color name="colorAccentProgress">#330FD197</color>
 
 <!--    <color name="colorPrimary">#B388FF</color>-->
 <!--    <color name="colorPrimaryDark">#775CAB</color>-->
