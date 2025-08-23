@@ -11,7 +11,7 @@
     </item>
     <item android:bottom="@dimen/std_24dp" android:end="@dimen/std_24dp" android:start="@dimen/std_24dp" android:top="@dimen/std_24dp">
         <shape android:shape="oval">
-            <solid android:color="#1E1471"/>
+            <solid android:color="@color/colorAccentProgress"/>
         </shape>
     </item>
 </layer-list>
