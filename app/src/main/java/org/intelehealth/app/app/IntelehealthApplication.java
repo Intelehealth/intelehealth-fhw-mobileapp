@@ -36,6 +36,7 @@ import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.ncd.fhir.FhirInitializer;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -129,6 +130,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+        FhirInitializer.INSTANCE.init();
     }
 
     private void configureCrashReporting() {

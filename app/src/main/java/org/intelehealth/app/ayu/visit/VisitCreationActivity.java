@@ -5,6 +5,7 @@ import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;

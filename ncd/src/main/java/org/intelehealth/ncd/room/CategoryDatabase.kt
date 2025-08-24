@@ -24,7 +24,7 @@ abstract class CategoryDatabase : RoomDatabase() {
         private var INSTANCE: CategoryDatabase? = null
 
         @VisibleForTesting
-        private val DATABASE_NAME = "localrecords.db"
+        private val DATABASE_NAME = "ekal-localrecords.db"
 
         @JvmStatic
         fun getInstance(context: Context): CategoryDatabase =

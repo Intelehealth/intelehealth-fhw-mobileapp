@@ -16,11 +16,11 @@ static def getDateTime() {
 
 android {
     namespace 'org.intelehealth.app'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdk 24
+        minSdk 26
         targetSdk 34
         versionCode 100
         versionName '5.0'
@@ -33,6 +33,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     buildTypes {
@@ -101,7 +102,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.2.0'
-
+// Required for core library desugaring
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
     //fingerprint lock
     implementation 'androidx.biometric:biometric:1.1.0'
 
