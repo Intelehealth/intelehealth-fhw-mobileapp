@@ -58,6 +58,7 @@
     <string-array name="speciality_values">
         <item>Select Specialization</item>
         <item>General Physician</item>
+        <item>NCD Consultation</item>
     </string-array>
 
     <string-array name="speciality_value_hindi">

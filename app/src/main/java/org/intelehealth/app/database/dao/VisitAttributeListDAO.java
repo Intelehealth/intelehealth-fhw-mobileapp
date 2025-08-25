@@ -22,16 +22,20 @@ import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.ayu.visit.notification.ReminderWorker;
+import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
@@ -313,6 +317,7 @@ public class VisitAttributeListDAO {
 
         return specialityValue;
     }
+
     public boolean insertIsNcdVisitAttribute(String visitUuid, String isNcdVisit) throws DAOException {
         boolean isInserted = false;
 
@@ -323,7 +328,9 @@ public class VisitAttributeListDAO {
             values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
             values.put("visit_uuid", visitUuid);
             values.put("value", isNcdVisit);
-            values.put("visit_attribute_type_uuid", UuidDictionary.IS_NCD_VISIT_ATTRIBUTE);
+
+            values.put("visit_attribute_type_uuid", AppConstants.IS_NCD_VISIT_ATTRIBUTE);
+
             values.put("voided", "0");
             values.put("sync", "0");
 
@@ -340,4 +347,30 @@ public class VisitAttributeListDAO {
 
         return isInserted;
     }
+
+    public static int deleteVisitAttributeUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_visit_attribute";
+        String whereClause = "visit_uuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
+    }
+
+    public static boolean isVisitNCD(String visitUuid) {
+        boolean isNcdVisit = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=? and voided=0",
+                new String[]{visitUuid, AppConstants.IS_NCD_VISIT_ATTRIBUTE});
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                if (value.equalsIgnoreCase("true")) {
+                    isNcdVisit = true;
+                }
+            }
+        }
+        cursor.close();
+        return isNcdVisit;
+    }
+
 }

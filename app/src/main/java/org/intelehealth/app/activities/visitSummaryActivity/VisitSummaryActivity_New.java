@@ -408,6 +408,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedSeverity = null;
     private String selectedFollowupDate, selectedFollowupTime;
 
+    private boolean mIsNCDVisit = false;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -470,24 +472,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
             findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
             findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.vitalsCard).setVisibility(activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_notes_relative).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_doc_relative).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.relative_speciality_block).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.vitalsCard).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_notes_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.add_doc_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.relative_speciality_block).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
             // visit reason header
-            findViewById(R.id.vs_visitreason_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.btn_up_visitreason_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            //findViewById(R.id.vs_visitreason_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+            //findViewById(R.id.btn_up_visitreason_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.openall_btn).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.vs_header_expandview).setVisibility(mIsNCDVisit ? View.VISIBLE : View.GONE);
             // physical examination header
-            findViewById(R.id.vs_phyexam_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.btn_up_phyexam_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.vs_phyexam_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.btn_up_phyexam_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
             // medical history header
-            findViewById(R.id.vs_medhist_header_expandview).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.btn_up_medhist_header).setVisibility(isSevikaVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.vs_medhist_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+            findViewById(R.id.btn_up_medhist_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
             findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cardPriorityVisit).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cvFollowup).setVisibility(isSevikaVisit ? View.GONE : activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cardPriorityVisit).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+            findViewById(R.id.cvFollowup).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
             Button btn = findViewById(R.id.btn_vs_appointment);
             boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
@@ -517,6 +521,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         initUI();
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
+
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
         mBinding.tvtFollowUpDate.setOnClickListener(new View.OnClickListener() {
@@ -530,6 +535,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             showTimePickerDialog();
 
         });
+
 
         loadFeatureActiveStatus();
         setupVitalConfig();
@@ -672,7 +678,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        SpecializationRepository repository = new SpecializationRepository(db.specializationDao());
 //        viewModel = new ViewModelProvider(this, new SpecializationViewModelFactory(repository)).get(SpecializationViewModel.class);
 //        viewModel.fetchSpecialization().observe(this, specializations -> {
-        List<Specialization> specializations = SpecializationsEnabledFieldsHelper.INSTANCE.getSpecializations();
+        List<Specialization> specializations = SpecializationsEnabledFieldsHelper.INSTANCE.getSpecializations(mIsNCDVisit);
         setupSpecializationDataSpinner(specializations);
 //        setFacilityToVisitSpinner();
 //        setSeveritySpinner();
@@ -739,13 +745,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mCommonVisitData.setPastVisit(isPastVisit);
 
             }
-            isSevikaVisit = intent.getBooleanExtra("is_sevika_visit", false);
-            if (isSevikaVisit) {
+            //isSevikaVisit = intent.getBooleanExtra("is_sevika_visit", false);
+            /*if (isSevikaVisit) {
                 mBinding.addNotesRelative.setVisibility(View.GONE);
                 mBinding.addDocRelative.setVisibility(View.GONE);
                 mBinding.relativeSpecialityBlock.setVisibility(View.GONE);
                 mBinding.bottomBtnRelative.setVisibility(View.GONE);
-            }
+            }*/
 
             mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
             try {
@@ -767,7 +773,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             queryData(String.valueOf(patientUuid));
         }
 
+        mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        if (mIsNCDVisit) {
+            findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
+            findViewById(R.id.ll_associated_sympt).setVisibility(View.GONE);
+            findViewById(R.id.reports_relative).setVisibility(View.GONE);
+            findViewById(R.id.denies_relative).setVisibility(View.GONE);
+            findViewById(R.id.vitalsCard).setVisibility(View.GONE);
+            findViewById(R.id.physExamCard).setVisibility(View.GONE);
+            findViewById(R.id.cardMedicalHistory).setVisibility(View.GONE);
 
+
+        }
         // receiver
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
@@ -2089,15 +2106,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
 //        List<String> items = providerAttributeLIstDAO.getAllValues();
         CustomLog.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
+        speciality_selected = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, SPECIALITY);
         //Hashmap to List<String> add all value
         specializations.add(0, new Specialization("select_specialization_text", getString(R.string.select_specialization_text)));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
 //        SpecializationArrayAdapter stringArrayAdapter = new SpecializationArrayAdapter(this, specializations);
         speciality_spinner.setAdapter(adapter);
-        speciality_spinner.setSelection(1);
+        int index = mIsNCDVisit ? 2 : 1;
+        speciality_spinner.setSelection(index);
         speciality_spinner.setEnabled(false);
-        speciality_selected = "General Physician";
+        if (speciality_selected == null || speciality_selected.isEmpty()) {
+            speciality_selected = speciality_spinner.getSelectedItem().toString();
+        }
+
+        //speciality_selected = mIsNCDVisit ? "NCD Consultation": "General Physician";
+
 
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
 //        if (items != null) {
@@ -2925,6 +2948,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // navigation for book appointmnet
         btnAppointment = findViewById(R.id.btn_vs_appointment);
+        if (mIsNCDVisit) btnAppointment.setVisibility(View.GONE);
         btnAppointment.setOnClickListener(v -> {
             if (!NetworkConnection.isOnline(context)) {
                 setAppointmentButtonStatus();
@@ -3322,6 +3346,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 boolean isUpdateVisitDone = false;
                 try {
                     if (!isVisitSpecialityExists) {
+                        // check ncd
+
                         isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
                     }
                     if (selectedFacilityToVisit != null) {
@@ -3507,9 +3533,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         }
                         uploaded = true;
                         uploadButton.setEnabled(true);
+                        endSevikaVisitOnUpload();
                     }, 4000);
                 } else {
                     runOnUiThread(() -> {
+                        endSevikaVisitOnUpload();
                         add_additional_doc.setVisibility(View.GONE);
                         fetchingIntent();
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
@@ -4488,7 +4516,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (uuid != null) {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
-            //Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+
             Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=?", new String[]{uuid, SPECIALITY});
 
             if (cursor.getCount() != 0) {
@@ -5839,8 +5867,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             boolean isAssociateSymptomFound = false;
             if (isCCInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
-                findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
-                findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+                if (!mIsNCDVisit) {
+                    findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
+                    findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+                }
 
                 valueArray = value.split("►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
@@ -6610,5 +6640,30 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } catch (Exception e) {
 
         }
+    }
+
+    private void hideSectionsForSevikaVisit() {
+//        vitalsCardView.setVisibility(View.GONE);
+//        physicalExamCardView.setVisibility(View.GONE);
+//        patientHistoryCardView.setVisibility(View.GONE);
+//        familyHistoryCardView.setVisibility(View.GONE);
+    }
+
+    private void endSevikaVisitOnUpload() {
+        if (!mIsNCDVisit) return;
+
+        String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endDateTime);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        new SyncUtils().syncForeground("");
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+//        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
     }
 }

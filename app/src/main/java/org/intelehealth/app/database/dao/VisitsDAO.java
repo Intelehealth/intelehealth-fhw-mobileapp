@@ -1280,4 +1280,12 @@ public class VisitsDAO {
 
         return doctorVisit;
     }
+
+    public static int deleteVisitUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_visit";
+        String whereClause = "uuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
+    }
 }

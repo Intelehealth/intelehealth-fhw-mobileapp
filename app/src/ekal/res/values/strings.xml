@@ -436,4 +436,9 @@
 
     <string name="prescription_disclaimer">Note - If your condition does not improve after treatment, please visit your nearest hospital or consult a doctor as soon as possible. Telemedicine services are a limited consultation and are not a substitute for an in-person examination.</string>
 
+
+    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
+    <string name="yes_move_ahead">"Yes, move ahead."</string>
+    <string name="no_go_back">No, go back.</string>
+
 </resources>

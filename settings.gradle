@@ -1,6 +1,23 @@
 pluginManagement {
     repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com' }
         gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com' }
+        flatDir {
+            dirs 'ncd/libs'
+        }
     }
 }
 include ':app'
@@ -11,3 +28,4 @@ include ':fcm'
 include ':config'
 include ':core'
 include ':videolibrary'
+include ':ncd'

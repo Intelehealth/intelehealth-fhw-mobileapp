@@ -1246,6 +1246,7 @@ public class DateAndTimeUtils {
         Date date = new Date(currentTimeMillis);
         return simpleFormat.format(date);
     }
+
     public static String convertInputDateToRequiredFormat(String inputDate, String inputFormat, String outputFormat) {
         if (inputDate == null || inputDate.trim().isEmpty()) return "";
 
@@ -1290,5 +1291,12 @@ public class DateAndTimeUtils {
         }
     }
 
+
+
+    public static String getCurrentTimeAsVisitEndedTime() {
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        return currentDateFormat.format(todayDate);
+    }
 
 }

@@ -7,14 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,9 +28,11 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -42,8 +50,13 @@ import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.knowledgeEngine.ncd.NCDNodeValidationLogic;
+import org.intelehealth.app.knowledgeEngine.ncd.NCDValidationResult;
+import org.intelehealth.app.knowledgeEngine.ncd.ValidationConstants;
+import org.intelehealth.app.knowledgeEngine.ncd.ValidationRules;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.InputFilterMinMax;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.ihutils.ui.CameraActivity;
@@ -238,8 +251,13 @@ public class Node implements Serializable {
 
             this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
 
-
+            this.validation = jsonNode.optString("validation");
             this.text = jsonNode.getString("text");
+            this.isRecurring = jsonNode.optBoolean("is-recurring");
+            this.isLazyPopuShow = jsonNode.optBoolean("is-lazy-popup");
+            this.isSupportNode = jsonNode.optBoolean("is-support-node");
+            this.recurringMaxCount = jsonNode.optInt("max-recurring-count");
+            this.recurringWaitTimeInMin = jsonNode.optInt("recurring-wait-time");
 
             this.gender = jsonNode.optString("gender");
 
@@ -421,7 +439,17 @@ public class Node implements Serializable {
             this.autoPopulateDataType = jsonNode.optString("auto-populate-data-type");
             this.isDisabled = jsonNode.optBoolean("is-disabled");
             this.isPreviousVisitRequired = jsonNode.optBoolean("is-previous-visit-required");
-        } catch (JSONException e) {
+
+            this.isNcdProtocol = jsonNode.optBoolean("is-ncd-protocol");
+
+            JSONObject validationRulesObject = jsonNode.optJSONObject("validation-rules");
+            if (validationRulesObject != null) {
+                this.validationRules = new ValidationRules(validationRulesObject);
+            }
+
+            this.flowEnd = jsonNode.optBoolean("flowEnd");
+            this.isAutoFill = jsonNode.optBoolean("is-auto-fill");
+        } catch (JSONException | NullPointerException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
@@ -441,6 +469,13 @@ public class Node implements Serializable {
         this.isMultiChoice = source.isMultiChoice;
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
+
+        this.isRecurring = source.isRecurring;
+        this.isLazyPopuShow = source.isLazyPopuShow;
+        this.isSupportNode = source.isSupportNode;
+        this.recurringMaxCount = source.recurringMaxCount;
+        this.recurringWaitTimeInMin = source.recurringWaitTimeInMin;
+
         this.display = source.display;
         this.display_hindi = source.display_hindi;
         this.display_oriya = source.display_oriya;
@@ -694,6 +729,9 @@ public class Node implements Serializable {
             case "text":
                 askText(questionNode, context, adapter);
                 break;
+            case "bloodpressure":
+                askBP(questionNode, context, adapter);
+                break;
             case "date":
                 askDate(questionNode, context, adapter);
                 break;
@@ -701,13 +739,22 @@ public class Node implements Serializable {
                 askLocation(questionNode, context, adapter);
                 break;
             case "number":
-                askNumber(questionNode, context, adapter);
+                askNumber(questionNode, context, adapter, false);
+                break;
+            case "number-pair":
+                askNumberPair(questionNode, context, adapter, false);
+                break;
+            case "decimal":
+                askNumber(questionNode, context, adapter, true);
                 break;
             case "area":
                 askArea(questionNode, context, adapter);
                 break;
             case "duration":
                 askDuration(questionNode, context, adapter);
+                break;
+            case "timeduration":
+                askTimeDuration(questionNode, context, adapter);
                 break;
             case "range":
                 askRange(questionNode, context, adapter);
@@ -719,6 +766,420 @@ public class Node implements Serializable {
                 openCamera(context, imagePath, imageName);
                 break;
         }
+    }
+
+    public static void askTimeDuration(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder durationDialog = new MaterialAlertDialogBuilder(context);
+        durationDialog.setTitle(R.string.question_duration_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
+        durationDialog.setView(convertView);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
+        middleText.setVisibility(View.GONE);
+        final String[] units = new String[]{context.getString(R.string.Minute)}; //supports Hindi Translations as well...
+
+        unitPicker.setDisplayedValues(units);
+        quantityPicker.setMinValue(1);
+        quantityPicker.setMaxValue(60);
+        unitPicker.setMinValue(0);
+        unitPicker.setMaxValue(0);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().length() != 0) {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if (value >= quantityPicker.getMinValue()) quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
+        durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                quantityPicker.setValue(quantityPicker.getValue());
+                unitPicker.setValue(unitPicker.getValue());
+
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]);//for Hindi
+                unit_text = or_en(units[unitPicker.getValue()]);//for Odiya
+                unit_text = gu_en(units[unitPicker.getValue()]);//for Gujrati
+                unit_text = as_en(units[unitPicker.getValue()]);//for Assamese
+
+                String durationString = quantityPicker.getValue() + " " + unit_text;
+
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                } else {
+                    if (node.isRequired()) {
+                        node.setSelected(false);
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                    }
+                }
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+
+                /*if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }*/
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = durationDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private static EditText findInput(ViewGroup np) {
+        int count = np.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = np.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findInput((ViewGroup) child);
+            } else if (child instanceof EditText) {
+                return (EditText) child;
+            }
+        }
+        return null;
+    }
+
+    public static void askNumberPair(final Node node, Activity context, final QuestionsAdapter adapter, boolean isDecimalType) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setCancelable(false);
+        numberDialog.setTitle(node.findDisplay());
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_number_pair_picker, null);
+        numberDialog.setView(convertView);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);*/
+        double max1 = 1000;
+        double max2 = 1000;
+        double min1 = 1;
+        double min2 = 1;
+        Node node1 = node.getOptionsList().get(0);
+        Node node2 = node.getOptionsList().get(1);
+        String validation1 = node1.getValidation();
+        String validation2 = node2.getValidation();
+        if (validation1 != null && !validation1.isEmpty()) {
+            min1 = Double.parseDouble(validation1.split("-")[0]);
+            max1 = Double.parseDouble(validation1.split("-")[1]);
+        }
+        double finalMin1 = min1;
+        double finalMax1 = max1;
+
+        if (validation2 != null && !validation2.isEmpty()) {
+            min2 = Double.parseDouble(validation2.split("-")[0]);
+            max2 = Double.parseDouble(validation2.split("-")[1]);
+        }
+        double finalMin2 = min2;
+        double finalMax2 = max2;
+        EditText firstValueEditText = convertView.findViewById(R.id.etv_1st_value);
+        firstValueEditText.setHint(node1.findDisplay() + "(" + min1 + " to " + max1 + ")");
+        EditText secondValueEditText = convertView.findViewById(R.id.etv_2nd_value);
+        secondValueEditText.setHint(node2.findDisplay() + "(" + min2 + " to " + max2 + ")");
+
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        if (isDecimalType) {
+            firstValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            firstValueEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
+
+            secondValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            secondValueEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
+
+        } /*else {
+            firstValueEditText.setFilters(new InputFilter[]{new InputFilterMinMax(finalMin1, finalMax1)});
+
+            secondValueEditText.setFilters(new InputFilter[]{new InputFilterMinMax(finalMin2, finalMax2)});
+        }*/
+
+        AlertDialog alertDialog = numberDialog.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        positive_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value1 = firstValueEditText.getText().toString().trim();
+                String value2 = secondValueEditText.getText().toString().trim();
+                double valueDouble1 = value1.isEmpty() ? 0d : Double.parseDouble(value1);
+                double valueDouble2 = value2.isEmpty() ? 0d : Double.parseDouble(value2);
+
+                if (value1.isEmpty()) {
+                    Toast.makeText(context, context.getString(R.string.node_input_empty_error, node1.findDisplay()), Toast.LENGTH_SHORT).show();
+
+                } else if ((finalMin1 != 0 && finalMax1 != 0) && valueDouble1 < finalMin1 || valueDouble1 > finalMax1) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_error, node1.findDisplay(), String.valueOf(finalMin1), String.valueOf(finalMax1)), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCaptured(false);
+
+                } else if (value2.isEmpty()) {
+                    Toast.makeText(context, context.getString(R.string.node_input_empty_error, node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                } else if ((finalMin2 != 0 && finalMax2 != 0) && valueDouble2 < finalMin2 || valueDouble2 > finalMax2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_error, node2.findDisplay(), String.valueOf(finalMin2), String.valueOf(finalMax2)), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCaptured(false);
+
+                } else if (node.getValidation() != null && node.getValidation().equals(">") && valueDouble1 < valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_gtr_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCaptured(false);
+
+                } else if (node.getValidation() != null && node.getValidation().equals("<") && valueDouble1 > valueDouble2) {
+                    Toast.makeText(context, context.getString(R.string.node_input_range_less_error, node1.findDisplay(), node2.findDisplay()), Toast.LENGTH_SHORT).show();
+                    node.setSelected(false);
+                    node.setDataCaptured(false);
+
+                } else {
+                    //valueDouble1 = Double.parseDouble(value1);
+                    //valueDouble2 = Double.parseDouble(value2);
+
+                        /*if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                        } else {
+                            node.addLanguage(et_enter_value.getText().toString());
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }*/
+                    node1.setLanguage(node1.getText() + ":" + value1);
+                    node2.setLanguage(node2.getText() + ":" + value2);
+                    node1.setSelected(true);
+                    node2.setSelected(true);
+                    node.getRecurringCapturedDataList().add(value1 + "/" + value2);
+                    node.setSelected(true);
+                    node.setDataCaptured(true);
+                    NCDValidationResult ncdValidationResult = NCDNodeValidationLogic.validateAndFindNextPath(context, "", null, -1, node, false, null, false);
+                    if (ncdValidationResult.getActionResult() != null) {
+                        String target = ncdValidationResult.getActionResult().getTarget();
+                        if (target.equals("[ALT]")) {
+                            node.setRecurringCurrentCount(node.getRecurringCurrentCount() + 1);
+                            if (node.getRecurringCurrentCount() > node.getRecurringMaxCount()) {
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("move_next", true);
+                                //context.sendBroadcast(intent);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                            } else {
+                                Toast.makeText(context, ncdValidationResult.getActionResult().getTargetData(), Toast.LENGTH_SHORT).show();
+                                // count limit if it exceeded then move to next question
+                                // show countdown timer
+                                Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                                intent.putExtra("recurring_wait_time_min", node.getRecurringWaitTimeInMin());
+                                intent.putExtra("recurring_max_try_count", node.getRecurringMaxCount());
+                                intent.putExtra("recurring_current_step", node.getRecurringCurrentCount());
+                                intent.putExtra("move_next", false);
+                                intent.putExtra("node_text", node.getDisplay());
+                                //context.sendBroadcast(intent);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                            }
+
+
+                        } else {
+                            Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                            intent.putExtra("move_next", true);
+                            //context.sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                        }
+                    } else {
+                        //// go to next question
+                        Intent intent = new Intent(ValidationConstants.ACTION_QUESTION_STATUS_UPDATE);
+                        intent.putExtra("move_next", true);
+                        //context.sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    }
+
+                }
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+
+                alertDialog.dismiss();
+               /* if (!value.equalsIgnoreCase("")) {
+
+
+
+                } else {
+                    node.setSelected(false);
+                    node.setDataCapture(false);
+                    //} else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }*/
+                // node.setSelected(true);
+            }
+        });
+//        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//            }
+//        });
+//        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                /*if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+//                    if (node.getLanguage().contains("_")) {
+//                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+//                    } else {
+//                        node.addLanguage(et_enter_value.getText().toString());
+//                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+//                    }
+//                } else {
+//                    if (node.getLanguage().contains("_")) {
+//                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+//                    } else {
+//                        node.addLanguage("Question not answered");
+//                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+//                    }
+//                }*/
+//                node.setSelected(false);
+//                node.setDataCaptured(false);
+//                adapter.refreshChildAdapter();
+//                adapter.notifyDataSetChanged();
+//                alertDialog.dismiss();
+//            }
+//        });
+        negative_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                node.setDataCaptured(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+        //AlertDialog dialog = numberDialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+        //IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+    }
+
+    public static void askBP(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
+        textInput.setTitle(R.string.question_text_input);
+        final EditText dialogEditText = new EditText(context);
+        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        InputFilter inputFilter = (charSequence, i, i1, spanned, i2, i3) -> {
+            if (!charSequence.toString().matches("[0-9/]"))
+                return charSequence.toString().replace(charSequence.toString(), "");
+            else return charSequence;
+        };
+
+        dialogEditText.setFilters(new InputFilter[]{inputFilter});
+
+        textInput.setView(dialogEditText);
+        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                } else {
+                    node.setSelected(false);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+
+                node.setSelected(true);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+//                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = textInput.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     public static void openCamera(Activity activity, String imagePath, String imageName) {
@@ -790,6 +1251,110 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+    }
+
+    public static void askNumber(final Node node, Activity context, final QuestionsAdapter adapter, boolean isDecimalType) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setCancelable(false);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+        numberDialog.setView(convertView);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);*/
+        double max = 0d;
+        double min = 0d;
+        String validation = node.getValidation();
+        if (validation != null && !validation.isEmpty()) {
+            min = Double.parseDouble(validation.split("-")[0]);
+            max = Double.parseDouble(validation.split("-")[1]);
+        }
+        double finalMin = min;
+        double finalMax = max;
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        if (isDecimalType) {
+            et_enter_value.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            et_enter_value.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 1)});
+
+        } else {
+            et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+        }
+
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value = et_enter_value.getText().toString();
+
+                if (!value.equalsIgnoreCase("")) {
+                    double valueDouble = Double.parseDouble(value);
+
+                    if ((finalMin != 0d && finalMax != 0d) && valueDouble < finalMin || valueDouble > finalMax) {
+                        Toast.makeText(context, context.getString(R.string.hemoglobin_error, String.valueOf(finalMin), String.valueOf(finalMax)), Toast.LENGTH_SHORT).show();
+                        node.setSelected(false);
+                        node.setDataCaptured(false);
+
+                    } else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                        } else {
+                            node.addLanguage(et_enter_value.getText().toString());
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        node.setSelected(true);
+                        node.setDataCaptured(true);
+                    }
+                } else {
+                    node.setSelected(false);
+                    node.setDataCaptured(false);
+                    //} else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                // node.setSelected(true);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
+                    } else {
+                        node.addLanguage(et_enter_value.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                } else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                node.setSelected(false);
+                node.setDataCaptured(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1088,6 +1653,40 @@ public class Node implements Serializable {
                 break;
 
             case "વર્ષ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String as_en(String unit) {
+        switch (unit) {
+
+            case "মিনিটবোৰ":
+                unit = "Minutes";
+                break;
+
+            case "ঘণ্টা":
+                unit = "Hours";
+                break;
+
+            case "দিনবোৰ":
+                unit = "Days";
+                break;
+
+            case "সপ্তাহ":
+                unit = "Weeks";
+                break;
+
+            case "মাহবোৰ":
+                unit = "Months";
+                break;
+
+            case "বছৰবোৰ":
                 unit = "Years";
                 break;
 
@@ -1815,6 +2414,128 @@ public class Node implements Serializable {
         }
     }
 
+    public String findDisplay(String language) {
+        switch (language) {
+            case "en": {
+
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
+
+            }
+
+            case "or": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "gu": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+            }
+
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+            case "as": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+
+            default: {
+                {
+                    if (display != null && display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+        }
+    }
+
     public String getPositiveCondition() {
         return positiveCondition;
     }
@@ -1948,6 +2669,121 @@ public class Node implements Serializable {
         }
     }
 
+    public String generateRegional_Language(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (language.equalsIgnoreCase("hi"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "एच/ओ विशिष्ट बीमारी");
+                    else if (language.equalsIgnoreCase("bn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নির্দিষ্ট অসুস্থতা");
+                    else if (language.equalsIgnoreCase("kn"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ನಿರ್ದಿಷ್ಟ ಅನಾರೋಗ್ಯ");
+                    else if (language.equalsIgnoreCase("mr"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o विशिष्ट आजार");
+                    else if (language.equalsIgnoreCase("or"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ନିର୍ଦ୍ଦିଷ୍ଟ ରୋଗ");
+                    else if (language.equalsIgnoreCase("gu"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o ચોક્કસ બીમારી");
+                    else if (language.equalsIgnoreCase("as"))
+                        associatedTest = associatedTest.replace("H/o specific illness", "H/o নিৰ্দিষ্ট ৰোগ");
+
+                    Log.v("insertion_tag", "associatedTest: " + associatedTest);
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("H/o specific illness")) || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ"))) {
+
+                            if (!generateAssociatedSymptomsOrHistory_REG(language, node_opt).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                if (language.equalsIgnoreCase("hi"))
+                                    raw = raw + bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language) + next_line;
+                                else if (language.equalsIgnoreCase("or"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("gu"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("as"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("bn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("kn"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else if (language.equalsIgnoreCase("mr"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_marathi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else
+                                    raw = raw + bullet + " " + node_opt.getDisplay() + " - " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("hi")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("or")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("gu")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("as")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("bn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("kn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("mr")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_marathi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else {
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                                }
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+                        if (!generateAssociatedSymptomsOrHistory_REG(language, node_opt).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory_REG(language, node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
     public String generateLanguage() {
 
         String raw = "";
@@ -2025,6 +2861,460 @@ public class Node implements Serializable {
             return formatted;
         }
         return null;
+    }
+
+    public String generateLanguage(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("H/o specific illness")) || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ"))) {
+
+                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("hi")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("or")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_oriya() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("gu")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_gujarati() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("as")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_assamese() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("bn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_bengali() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("kn")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_kannada() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else if (language.equalsIgnoreCase("mr")) {
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_marathi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                } else {
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                                }
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("সংশ্লিষ্ট উপসর্গ") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("সংশ্লিষ্ট লক্ষণ")))) {
+                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+
+    public String formLanguageHindi() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "").equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        }
+        return mLanguage;
+    }
+
+    public String formLanguage(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();    // 100 varsh    // Pain radiates to
+
+                 /*   if (language.equalsIgnoreCase("hi")) {
+                        test = mOptions.get(i).getDisplay_hindi();
+                    } else if (language.equalsIgnoreCase("or")) {
+                        test = mOptions.get(i).getDisplay_oriya();
+                    } else if (language.equalsIgnoreCase("gu")) {
+                        test = mOptions.get(i).getDisplay_gujarati();
+                    } else if (language.equalsIgnoreCase("as")) {
+                        test = mOptions.get(i).getDisplay_assamese();
+                    }else if (language.equalsIgnoreCase("bn")) {
+                        test = mOptions.get(i).getDisplay_bengali();
+                    }else if (language.equalsIgnoreCase("kn")) {
+                        test = mOptions.get(i).getDisplay_kannada();
+                    }*/
+
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "").equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    if (language.equalsIgnoreCase("hi")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("gu")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("as")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("bn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("mr")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else {
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                    }
+
+                                    // in case not answered than
+                                    //  stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("")
+                                    /*&& mOptions.get(i).getInputType().equalsIgnoreCase("text")*/) {
+                                    if (language.equalsIgnoreCase("hi") /*&& !mOptions.get(i).getDisplay_hindi().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_hindi());
+                                    } else if (language.equalsIgnoreCase("or") /*&& !mOptions.get(i).getDisplay_oriya().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_oriya());
+                                    } else if (language.equalsIgnoreCase("gu") /*&& !mOptions.get(i).getDisplay_gujarati().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_gujarati());
+                                    } else if (language.equalsIgnoreCase("as") /*&& !mOptions.get(i).getDisplay_assamese().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_assamese());
+                                    } else if (language.equalsIgnoreCase("bn") /*&& !mOptions.get(i).getDisplay_bengali().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_bengali());
+                                    } else if (language.equalsIgnoreCase("kn") /*&& !mOptions.get(i).getDisplay_kannada().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_kannada());
+                                    } else if (language.equalsIgnoreCase("mr") /*&& !mOptions.get(i).getDisplay_kannada().startsWith("[")*/) {
+                                        stringsList.add(mOptions.get(i).getDisplay_marathi());
+                                    } else {
+                                        stringsList.add(mOptions.get(i).getDisplay());
+                                    }
+                                    //   stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi(language));
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        }
+        return mLanguage;
+    }
+
+    public String formLanguageHindi(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "").equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    /*if (language.equalsIgnoreCase("hi")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("gu")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("as")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("bn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("mr")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else {
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                    //   stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    /*if (language.equalsIgnoreCase("hi")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("or")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("gu")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("as")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("bn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("kn")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else if (language.equalsIgnoreCase("mr")) {
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    } else {
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                    }*/
+                                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().isEmpty())
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                    //  stringsList.add(mOptions.get(i).getLanguage());
+
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্ৰশ্নৰ উত্তৰ নাই");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರವಿಲ್ಲ");
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            mLanguage = mLanguage.replaceAll("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही");
+        }
+        return mLanguage;
     }
 
     public String generateLanguageSingleNode() {
@@ -2643,6 +3933,161 @@ public class Node implements Serializable {
         isPreviousVisitRequired = previousVisitRequired;
     }
 
+    private String generateAssociatedSymptomsOrHistory_REG(String appLanguage, Node associatedSymptomNode) {
+
+        List<String> positiveAssociations = new ArrayList<>();
+        List<String> negativeAssociations = new ArrayList<>();
+        List<String> finalTexts = new ArrayList<>();
+        List<Node> mOptions = associatedSymptomNode.getOptionsList();
+        boolean flagPositive = false;
+        boolean flagNegative = false;
+
+        String mLanguagePositive = "";
+        String mLanguageNegative = "";
+
+        if (appLanguage.equalsIgnoreCase("hi")) {
+            mLanguagePositive = "पेशेंट की रिपोर्ट -" + next_line;
+            mLanguageNegative = "पेशेंट इनकार करता है -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("bn")) {
+            mLanguagePositive = "রোগীর রিপোর্ট -" + next_line;
+            mLanguageNegative = "রোগী অস্বীকার করে -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("kn")) {
+            mLanguagePositive = "ರೋಗಿಯ ವರದಿಗಳು -" + next_line;
+            mLanguageNegative = "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("mr")) {
+            mLanguagePositive = "रुग्ण अहवाल -" + next_line;
+            mLanguageNegative = "रुग्ण नकार देतो -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("or")) {
+            mLanguagePositive = "ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି -" + next_line;
+            mLanguageNegative = "ରୋଗୀ ମନା କରୁଛନ୍ତି -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("gu")) {
+            mLanguagePositive = "દર્દીના અહેવાલો -" + next_line;
+            mLanguageNegative = "દર્દી નકારે છે -" + next_line;
+        } else if (appLanguage.equalsIgnoreCase("as")) {
+            mLanguagePositive = "ৰোগীৰ ৰিপৰ্ট -" + next_line;
+            mLanguageNegative = "ৰোগীয়ে অস্বীকাৰ কৰিছে -" + next_line;
+        } else {
+            mLanguagePositive = "Patient reports -" + next_line;
+            mLanguageNegative = "Patient denies -" + next_line;
+        }
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
+
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String pos_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        pos_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        pos_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        pos_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("mr"))
+                        pos_REG = mOptions.get(i).getDisplay_marathi();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        pos_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        pos_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        pos_REG = mOptions.get(i).getDisplay_assamese();
+                    else pos_REG = mOptions.get(i).getDisplay();
+
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        positiveAssociations.add(pos_REG); //
+                    } else {
+                        positiveAssociations.add(pos_REG); //
+                    }
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " + mOptions.get(i).formLanguage(appLanguage); // using formLang(appLang) here so to work for regional Langs.
+
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
+                }
+
+            } else if (mOptions.get(i).isNoSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    String neg_REG = "";
+                    if (appLanguage.equalsIgnoreCase("hi"))
+                        neg_REG = mOptions.get(i).getDisplay_hindi();
+                    else if (appLanguage.equalsIgnoreCase("bn"))
+                        neg_REG = mOptions.get(i).getDisplay_bengali();
+                    else if (appLanguage.equalsIgnoreCase("kn"))
+                        neg_REG = mOptions.get(i).getDisplay_kannada();
+                    else if (appLanguage.equalsIgnoreCase("mr"))
+                        neg_REG = mOptions.get(i).getDisplay_marathi();
+                    else if (appLanguage.equalsIgnoreCase("or"))
+                        neg_REG = mOptions.get(i).getDisplay_oriya();
+                    else if (appLanguage.equalsIgnoreCase("gu"))
+                        neg_REG = mOptions.get(i).getDisplay_gujarati();
+                    else if (appLanguage.equalsIgnoreCase("as"))
+                        neg_REG = mOptions.get(i).getDisplay_assamese();
+                    else neg_REG = mOptions.get(i).getDisplay();
+
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        negativeAssociations.add(neg_REG); //
+                    } else {
+                        negativeAssociations.add(neg_REG); //
+                    }
+                }
+            }
+
+        }
+
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                if (!flagPositive) {
+                    flagPositive = true;
+                    finalTexts.add(mLanguagePositive + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                if (!flagNegative) {
+                    flagNegative = true;
+                    finalTexts.add(mLanguageNegative + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+        String final_language = "";
+
+        if (!finalTexts.isEmpty()) {
+            for (int l = 0; l < finalTexts.size(); l++) {
+                final_language = final_language + ", " + finalTexts.get(l);
+            }
+        }
+
+        final_language = final_language.replaceAll("- ,", "- ");
+        final_language = final_language.replaceAll("of,", "of");
+        final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory_REG: " + final_language);
+
+        return final_language;
+    }
+
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode, boolean isForAssociatedSymptoms) {
 
         List<String> positiveAssociations = new ArrayList<>();
@@ -2752,6 +4197,103 @@ public class Node implements Serializable {
         final_language = final_language.replaceAll("\\, \\[", " [");
         final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
         CustomLog.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
+
+        return final_language;
+
+    }
+
+    private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
+
+        List<String> positiveAssociations = new ArrayList<>();
+        List<String> negativeAssociations = new ArrayList<>();
+        List<String> finalTexts = new ArrayList<>();
+        List<Node> mOptions = associatedSymptomNode.getOptionsList();
+        boolean flagPositive = false;
+        boolean flagNegative = false;
+//        String mLanguagePositive = associatedSymptomNode.positiveCondition;
+        String mLanguagePositive = "Patient reports -" + next_line;
+//        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+        String mLanguageNegative = "Patient denies -" + next_line;
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
+
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        positiveAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        positiveAssociations.add(mOptions.get(i).getLanguage());
+                    }
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " + mOptions.get(i).formLanguage();
+
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
+                }
+
+            } else if (mOptions.get(i).isNoSelected()) {
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        negativeAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        negativeAssociations.add(mOptions.get(i).getLanguage());
+                    }
+                }
+            }
+
+        }
+
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                if (!flagPositive) {
+                    flagPositive = true;
+                    finalTexts.add(mLanguagePositive + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                if (!flagNegative) {
+                    flagNegative = true;
+                    finalTexts.add(mLanguageNegative + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
+            }
+        }
+
+        String final_language = "";
+
+        if (!finalTexts.isEmpty()) {
+            for (int l = 0; l < finalTexts.size(); l++) {
+                final_language = final_language + ", " + finalTexts.get(l);
+            }
+        }
+
+        final_language = final_language.replaceAll("- ,", "- ");
+        final_language = final_language.replaceAll("of,", "of");
+        final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
 
         return final_language;
 
@@ -2963,6 +4505,111 @@ public class Node implements Serializable {
         Timber.tag(TAG).
 
                 i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
+
+        return mLanguage;
+    }
+
+    public String formQuestionAnswer(int level) {
+        List<String> stringsList = new ArrayList<>();
+        List<String> stringsListNoSelected = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean flag = false;
+        boolean isAssociatedSymEmpty = false;
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            //isSelected set from  thisNode.setUnselected(); method
+            if (mOptions.get(i).isSelected() && !mOptions.get(i).getHidden()) {
+                String question;
+                if (level == 0) {
+                    question = big_bullet + " " + mOptions.get(i).findDisplay();
+                    if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms")) || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण")) || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")) || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) || (mOptions.get(i).getText().equalsIgnoreCase("संबद्ध लक्षणे")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
+                        question = question + next_line + "Patient reports -";
+                    }
+                } else {
+                    //
+                    question = bullet + " " + mOptions.get(i).findDisplay();
+                }
+                String answer = mOptions.get(i).getLanguage();
+                if (mOptions.get(i).isTerminal()) {
+                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
+                        Log.i(TAG, "ipt: " + mOptions.get(i).getInputType());
+                        if (mOptions.get(i).getInputType().equals("camera")) {
+                        } else {
+                            if (!answer.isEmpty()) {
+                                if (answer.equals("%")) {
+                                } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                } else if (answer.substring(0, 1).equals("%")) {
+                                    stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                } else {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                }
+                            }
+                        }
+                    } else {
+                        if (getNcdProtocol() && mOptions.get(i).getLanguage() != null && !mOptions.get(i).getLanguage().isEmpty() || !mOptions.get(i).getLanguage().equalsIgnoreCase("%")) {
+                            stringsList.add(bullet_hollow + mOptions.get(i).getLanguage() + next_line);
+                        } else {
+                            stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                        }
+                    }
+                } else {
+                    stringsList.add(question + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                }
+            } else if (mOptions.get(i).getText() != null && ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms")) || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण")) || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")) || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) || (mOptions.get(i).getText().equalsIgnoreCase("संबद्ध लक्षणे")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")))) {
+
+                if (!mOptions.get(i).isTerminal()) {
+                    stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                }
+
+                //                if (mOptions.get(i).getOptionsList().size() > 0) {
+                //
+                //                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+                //
+                //                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                //                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+                //
+                //                            if (!mOptions.get(i).isTerminal()) {
+                //                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                //                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                //                            }
+                //                        }
+                //                    }
+                //                }
+            } else {
+                //in case of weird null exception...
+            }
+
+            // to add Patient denies entry
+            if (mOptions.get(i).isNoSelected()) {
+                if (!flag) {
+                    flag = true;
+                    stringsListNoSelected.add("Patient denies -" + next_line);
+                }
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                Log.e("List", "" + stringsListNoSelected);
+            }
+        }
+
+        if (stringsListNoSelected.size() > 0) {
+            stringsList.addAll(stringsListNoSelected);
+        }
+
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+
+            if (!stringsList.get(i).isEmpty()) {
+                mLanguage = mLanguage.concat(stringsList.get(i));
+            }
+
+        }
+        Log.i(TAG, "formQuestionAnswer: " + mLanguage);
+
+        if (mLanguage.equalsIgnoreCase("")) {
+            mLanguage = "Question not answered" + next_line;
+        }
 
         return mLanguage;
     }
@@ -3949,5 +5596,209 @@ public class Node implements Serializable {
     }
 
     /*End*/
+    public List<String> getRecurringCapturedDataList() {
+        return recurringCapturedDataList;
+    }
+
+    public void setRecurringCapturedDataList(List<String> recurringCapturedDataList) {
+        this.recurringCapturedDataList = recurringCapturedDataList;
+    }
+
+    public int getRecurringCurrentCount() {
+        return recurringCurrentCount;
+    }
+
+    public void setRecurringCurrentCount(int recurringCurrentCount) {
+        this.recurringCurrentCount = recurringCurrentCount;
+    }
+
+
+    public int getRecurringWaitTimeInMin() {
+        return recurringWaitTimeInMin;
+    }
+
+    public void setRecurringWaitTimeInMin(int recurringWaitTimeInMin) {
+        this.recurringWaitTimeInMin = recurringWaitTimeInMin;
+    }
+
+    public int getRecurringMaxCount() {
+        return recurringMaxCount;
+    }
+
+    public void setRecurringMaxCount(int recurringMaxCount) {
+        this.recurringMaxCount = recurringMaxCount;
+    }
+
+    public Boolean isSupportNode() {
+        return isSupportNode;
+    }
+
+    public void setSupportNode(Boolean supportNode) {
+        isSupportNode = supportNode;
+    }
+
+    private List<String> recurringCapturedDataList = new ArrayList<>(); // if isRecurring then data will add to this list
+
+    public boolean isRecurring() {
+        return isRecurring;
+    }
+
+    public void setRecurring(boolean recurring) {
+        isRecurring = recurring;
+    }
+
+    private boolean isRecurring;
+
+    public boolean isLazyPopuShow() {
+        return isLazyPopuShow;
+    }
+
+    public void setLazyPopuShow(boolean lazyPopuShow) {
+        isLazyPopuShow = lazyPopuShow;
+    }
+
+
+    public Boolean getNcdProtocol() {
+        return isNcdProtocol;
+    }
+
+    public void setNcdProtocol(Boolean ncdProtocol) {
+        isNcdProtocol = ncdProtocol;
+    }
+
+
+    public ValidationRules getValidationRules() {
+        return validationRules;
+    }
+
+    public void setValidationRules(ValidationRules validationRules) {
+        this.validationRules = validationRules;
+    }
+
+    public Boolean getHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        isHidden = hidden;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public void setValidation(String validation) {
+        this.validation = validation;
+    }
+
+    public Boolean getFlowEnd() {
+        return flowEnd;
+    }
+
+    public void setFlowEnd(Boolean flowEnd) {
+        this.flowEnd = flowEnd;
+    }
+
+    public Boolean getAutoFill() {
+        return isAutoFill;
+    }
+
+    public void setAutoFill(Boolean autoFill) {
+        isAutoFill = autoFill;
+    }
+
+    private boolean isLazyPopuShow;
+    private int recurringWaitTimeInMin;
+
+    private int recurringMaxCount;
+
+    private int recurringCurrentCount = 1;
+    // NCD Attributes
+    private Boolean isNcdProtocol = false;
+
+    /*public ValidationRules getValidationRules() {
+        return validationRules;
+    }
+
+    public void setValidationRules(ValidationRules validationRules) {
+        this.validationRules = validationRules;
+    }*/
+
+    private ValidationRules validationRules;
+
+    private Boolean isAutoFill;
+    private Boolean isHidden = false;
+
+
+    private Boolean isSupportNode = false;
+    private String validation = ""; // MAX_TODAY , MIN_TODAY
+
+
+    static public String dateformate_hi_or_gu_as_en(String displayStr, SessionManager sessionManager) {
+        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+            displayStr = displayStr.replaceAll("मिनट", "Minutes").replaceAll("घंटे", "Hours").replaceAll("दिन", "Days").replaceAll("हफ्तों", "Weeks").replaceAll("महीने", "Months").replaceAll("वर्ष", "Years")
+
+                    .replaceAll("जन", "Jan").replaceAll("फ़र", "Feb").replaceAll("मार्च", "Mar").replaceAll("अप्रै", "Apr").replaceAll("मई", "May").replaceAll("जून", "Jun").replaceAll("जुला", "Jul").replaceAll("अग", "Aug").replaceAll("सित", "Sep").replaceAll("अक्टू", "Oct").replaceAll("नव", "Nov").replaceAll("दिस", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+            displayStr = displayStr.replaceAll("ମିନିଟ୍ \\|", "Minutes").replaceAll("ଘଣ୍ଟା", "Hours").replaceAll("ଦିନଗୁଡିକ", "Days").replaceAll("ସପ୍ତାହଗୁଡିକ", "Weeks").replaceAll("ମାସଗୁଡିକ", "Months").replaceAll("ବର୍ଷଗୁଡିକ", "Years")
+
+                    .replaceAll("ଜାନୁଆରୀ", "Jan").replaceAll("ଫେବୃଆରୀ", "Feb").replaceAll("ମାର୍ଚ୍ଚ", "Mar").replaceAll("ଅପ୍ରେଲ", "Apr").replaceAll("ମଲ", "May").replaceAll("ଜୁନ୍", "Jun").replaceAll("ଜୁଲାଇ", "Jul").replaceAll("ଅଗଷ୍ଟ", "Aug").replaceAll("ସେପ୍ଟେମ୍ବର", "Sep").replaceAll("ଅକ୍ଟୋବର", "Oct").replaceAll("ନଭେମ୍ବର", "Nov").replaceAll("ଡିସେମ୍ବର", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
+            displayStr = displayStr.replaceAll("মিনিট", "Minutes").replaceAll("ঘন্টার", "Hours").replaceAll("দিন", "Days").replaceAll("সপ্তাহ", "Weeks").replaceAll("মাস", "Months").replaceAll("বছর", "Years")
+
+                    .replaceAll("জান", "Jan").replaceAll("ফেব্রুয়ারী", "Feb").replaceAll("মার", "Mar").replaceAll("এপ্রিল", "Apr").replaceAll("মে", "May").replaceAll("জুন", "Jun").replaceAll("জুল", "Jul").replaceAll("অগাস্ট", "Aug").replaceAll("সেপ্টেম্বর", "Sep").replaceAll("অক্টো", "Oct").replaceAll("নভেম্বর", "Nov").replaceAll("ডিসেম্বর", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+            displayStr = displayStr.replaceAll("ನಿಮಿಷಗಳು", "Minutes").replaceAll("ಗಂಟೆಗಳು", "Hours").replaceAll("ದಿನಗಳು", "Days").replaceAll("ವಾರಗಳು", "Weeks").replaceAll("ತಿಂಗಳುಗಳು", "Months").replaceAll("ವರ್ಷಗಳು", "Years")
+
+                    .replaceAll("ಜನವರಿ", "Jan").replaceAll("ಫೆಬ್ರವರಿ", "Feb").replaceAll("ಮಾರ್", "Mar").replaceAll("ಎಪ್ರಿಲ್", "Apr").replaceAll("ಮೇ", "May").replaceAll("ಜೂನ್", "Jun").replaceAll("ಜುಲೈ", "Jul").replaceAll("ಆಗಸ್ಟ್", "Aug").replaceAll("ಸೆ", "Sep").replaceAll("ಅಕ್ಟೋಬರ್", "Oct").replaceAll("ನವೆಂಬರ್", "Nov").replaceAll("ಡಿಸೆಂಬರ್", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+            displayStr = displayStr.replaceAll("मिनिट", "Minutes").replaceAll("तास", "Hours").replaceAll("दिवस", "Days").replaceAll("आठवडे", "Weeks").replaceAll("महिने", "Months").replaceAll("वर्षे", "Years")
+
+                    .replaceAll("जानेवारी", "Jan").replaceAll("फेब्रुवारी", "Feb").replaceAll("मार्च", "Mar").replaceAll("एप्रिल", "Apr").replaceAll("मे", "May").replaceAll("जून", "Jun").replaceAll("जुलै", "Jul").replaceAll("ऑगस्ट", "Aug").replaceAll("सप्टेंबर", "Sep").replaceAll("ऑक्टोबर", "Oct").replaceAll("नोव्हेंबर", "Nov").replaceAll("डिसेंबर", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+            displayStr = displayStr.replaceAll("મિનિટ", "Minutes").replaceAll("કલાકો", "Hours").replaceAll("દિવસ", "Days").replaceAll("અઠવાડિયા", "Weeks").replaceAll("મહિનાઓ", "Months").replaceAll("વર્ષ", "Years")
+
+                    .replaceAll("જાન્યુ", "Jan").replaceAll("ફેબ્રુ", "Feb").replaceAll("માર્ચ", "Mar").replaceAll("એપ્રિલ", "Apr").replaceAll("મે", "May").replaceAll("જુન", "Jun").replaceAll("જુલાઇ", "Jul").replaceAll("ઓગસ્ટ", "Aug").replaceAll("સપ્ટે", "Sep").replaceAll("ઑક્ટો", "Oct").replaceAll("નવે", "Nov").replaceAll("ડિસે", "Dec");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
+            displayStr = displayStr.replaceAll("মিনিটবোৰ", "Minutes").replaceAll("ঘণ্টা", "Hours").replaceAll("দিনবোৰ", "Days").replaceAll("সপ্তাহ", "Weeks").replaceAll("মাহবোৰ", "Months").replaceAll("বছৰবোৰ", "Years")
+
+                    .replaceAll("জানুৱাৰী", "Jan").replaceAll("ফেব্ৰুৱাৰী", "Feb").replaceAll("মাৰ্চ", "Mar").replaceAll("এপ্ৰিল", "Apr").replaceAll("হয়তো", "May").replaceAll("জুন", "Jun").replaceAll("জুলাই", "Jul").replaceAll("আগষ্ট", "Aug").replaceAll("ছেপ্টেম্বৰ", "Sep").replaceAll("অক্টোবৰ", "Oct").replaceAll("নৱেম্বৰ", "Nov").replaceAll("ডিচেম্বৰ", "Dec");
+        }
+        return displayStr;
+    }
+
+    static public String dateformat_en_hi_or_gu_as(String displayStr, SessionManager sessionManager) {
+        if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+            displayStr = displayStr.replaceAll("Minutes", "मिनट").replaceAll("Hours", "घंटे").replaceAll("Days", "दिन").replaceAll("Weeks", "हफ्तों").replaceAll("Months", "महीने").replaceAll("Years", "वर्ष")
+
+                    .replaceAll("Jan", "जन").replaceAll("Feb", "फ़र").replaceAll("Mar", "मार्च").replaceAll("Apr", "अप्रै").replaceAll("May", "मई").replaceAll("Jun", "जून").replaceAll("Jul", "जुला").replaceAll("Aug", "अग").replaceAll("Sep", "सित").replaceAll("Oct", "अक्टू").replaceAll("Nov", "नव").replaceAll("Dec", "दिस");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("or")) {
+            displayStr = displayStr.replaceAll("Minutes", "ମିନିଟ୍ |").replaceAll("Hours", "ଘଣ୍ଟା").replaceAll("Days", "ଦିନଗୁଡିକ").replaceAll("Weeks", "ସପ୍ତାହଗୁଡିକ").replaceAll("Months", "ମାସଗୁଡିକ").replaceAll("Years", "ବର୍ଷଗୁଡିକ")
+
+                    .replaceAll("Jan", "ଜାନୁଆରୀ").replaceAll("Feb", "ଫେବୃଆରୀ").replaceAll("Mar", "ମାର୍ଚ୍ଚ").replaceAll("Apr", "ଅପ୍ରେଲ").replaceAll("May", "ମଲ").replaceAll("Jun", "ଜୁନ୍").replaceAll("Jul", "ଜୁଲାଇ").replaceAll("Aug", "ଅଗଷ୍ଟ").replaceAll("Sep", "ସେପ୍ଟେମ୍ବର").replaceAll("Oct", "ଅକ୍ଟୋବର").replaceAll("Nov", "ନଭେମ୍ବର").replaceAll("Dec", "ଡିସେମ୍ବର");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("bn")) {
+            displayStr = displayStr.replaceAll("Minutes", "মিনিট").replaceAll("Hours", "ঘন্টার").replaceAll("Days", "দিন").replaceAll("Weeks", "সপ্তাহ").replaceAll("Months", "মাস").replaceAll("Years", "বছর")
+
+                    .replaceAll("Jan", "জান").replaceAll("Feb", "ফেব্রুয়ারী").replaceAll("Mar", "মার").replaceAll("Apr", "এপ্রিল").replaceAll("May", "মে").replaceAll("Jun", "জুন").replaceAll("Jul", "জুল").replaceAll("Aug", "অগাস্ট").replaceAll("Sep", "সেপ্টেম্বর").replaceAll("Oct", "অক্টো").replaceAll("Nov", "নভেম্বর").replaceAll("Dec", "ডিসেম্বর");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
+            displayStr = displayStr.replaceAll("Minutes", "ನಿಮಿಷಗಳು").replaceAll("Hours", "ಗಂಟೆಗಳು").replaceAll("Days", "ದಿನಗಳು").replaceAll("Weeks", "ವಾರಗಳು").replaceAll("Months", "ತಿಂಗಳುಗಳು").replaceAll("Years", "ವರ್ಷಗಳು")
+
+                    .replaceAll("Jan", "ಜನವರಿ").replaceAll("Feb", "ಫೆಬ್ರವರಿ").replaceAll("Mar", "ಮಾರ್").replaceAll("Apr", "ಎಪ್ರಿಲ್").replaceAll("May", "ಮೇ").replaceAll("Jun", "ಜೂನ್").replaceAll("Jul", "ಜುಲೈ").replaceAll("Aug", "ಆಗಸ್ಟ್").replaceAll("Sep", "ಸೆ").replaceAll("Oct", "ಅಕ್ಟೋಬರ್").replaceAll("Nov", "ನವೆಂಬರ್").replaceAll("Dec", "ಡಿಸೆಂಬರ್");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+            displayStr = displayStr.replaceAll("Minutes", "मिनिट").replaceAll("Hours", "तास").replaceAll("Days", "दिवस").replaceAll("Weeks", "आठवडे").replaceAll("Months", "महिने").replaceAll("Years", "वर्षे")
+
+                    .replaceAll("Jan", "जानेवारी").replaceAll("Feb", "फेब्रुवारी").replaceAll("Mar", "मार्च").replaceAll("Apr", "एप्रिल").replaceAll("May", "मे").replaceAll("Jun", "जून").replaceAll("Jul", "जुलै").replaceAll("Aug", "ऑगस्ट").replaceAll("Sep", "सप्टेंबर").replaceAll("Oct", "ऑक्टोबर").replaceAll("Nov", "नोव्हेंबर").replaceAll("Dec", "डिसेंबर");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
+            displayStr = displayStr.replaceAll("Minutes", "મિનિટ").replaceAll("Hours", "કલાકો").replaceAll("Days", "દિવસ").replaceAll("Weeks", "અઠવાડિયા").replaceAll("Months", "મહિનાઓ").replaceAll("Years", "વર્ષ")
+
+                    .replaceAll("Jan", "જાન્યુ").replaceAll("Feb", "ફેબ્રુ").replaceAll("Mar", "માર્ચ").replaceAll("Apr", "એપ્રિલ").replaceAll("May", "મે").replaceAll("Jun", "જુન").replaceAll("Jul", "જુલાઇ").replaceAll("Aug", "ઓગસ્ટ").replaceAll("Sep", "સપ્ટે").replaceAll("Oct", "ઑક્ટો").replaceAll("Nov", "નવે").replaceAll("Dec", "ડિસે");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("as")) {
+            displayStr = displayStr.replaceAll("Minutes", "মিনিটবোৰ").replaceAll("Hours", "ঘণ্টা").replaceAll("Days", "দিনবোৰ").replaceAll("Weeks", "সপ্তাহ").replaceAll("Months", "মাহবোৰ").replaceAll("Years", "বছৰবোৰ")
+
+                    .replaceAll("Jan", "জানুৱাৰী").replaceAll("Feb", "ফেব্ৰুৱাৰী").replaceAll("Mar", "মাৰ্চ").replaceAll("Apr", "এপ্ৰিল").replaceAll("May", "হয়তো").replaceAll("Jun", "জুন").replaceAll("Jul", "জুলাই").replaceAll("Aug", "আগষ্ট").replaceAll("Sep", "ছেপ্টেম্বৰ").replaceAll("Oct", "অক্টোবৰ").replaceAll("Nov", "নৱেম্বৰ").replaceAll("Dec", "ডিচেম্বৰ");
+        }
+        return displayStr;
+    }
+
 }
 

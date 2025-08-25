@@ -537,6 +537,7 @@
             android:layout_marginStart="@dimen/toolbar_margin_left"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:layout_marginBottom="@dimen/margin_16"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
             app:cardElevation="@dimen/margin_5">
@@ -889,7 +890,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/visitReasonCard"
             android:layout_marginStart="@dimen/toolbar_margin_left"
-            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginTop="@dimen/margin_16"
             android:layout_marginEnd="@dimen/toolbar_margin_left"
             android:elevation="16dp"
             app:cardCornerRadius="@dimen/margin_5"
