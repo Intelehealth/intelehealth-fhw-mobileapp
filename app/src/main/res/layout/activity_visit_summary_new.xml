@@ -1273,7 +1273,8 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/btn_vs_sendvisit"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/btn_vs_sendvisit"

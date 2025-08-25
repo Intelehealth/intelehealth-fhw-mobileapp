@@ -1,52 +1,60 @@
 package org.intelehealth.app.activities.complaintNodeActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ncd.constants.Constants;
+import org.intelehealth.ncd.fhir.CommonQuestionnaireActivity;
+import org.intelehealth.ncd.room.dao.PatientDao;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
 import org.json.JSONException;
@@ -55,25 +63,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-
-import org.intelehealth.app.utilities.exception.DAOException;
-
-import org.intelehealth.app.database.dao.PatientsDAO;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
@@ -392,7 +384,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String name = node.getText();
                     ReasonData data = new ReasonData();
                     data.setReasonName(name);
-                    data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(ComplaintNodeActivity.this, name));
+                    data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocaleNCD(ComplaintNodeActivity.this, name));
                     mSelectedComplains.add(data);
                 }
             }
@@ -442,9 +434,29 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                                 intent.putExtra("tag", intentTag);
                             }
                             intent.putStringArrayListExtra("complaints", selection);
+                            String fileLocation = AppConstants.NCD_PROTOCOL_DIRECTORY + "/" + selection.get(0) + ".json";
+                            //JSONObject currentFile = FileUtils.encodeJSON(ComplaintNodeActivity.this, fileLocation);
+                            String questionnaireTitle = selection.get(0);
+                            Intent in = new Intent(ComplaintNodeActivity.this, CommonQuestionnaireActivity.class);
+                            //in.setComponent(new ComponentName("com.example.fhir_sdk_poc", "com.example.fhir_sdk_poc.MainActivity"));
+                            //in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            in.putExtra("questionnaire_title", questionnaireTitle);  // replace with the actual key
+                            in.putExtra("patient_dob", PatientsDAO.fetchDateOfBirth(patientUuid));
+                            in.putExtra("patient_age", float_ageYear_Month);
+                            in.putExtra("patient_gender", mgender);
 
-                            startActivity(intent);
-                            finish();
+                            questionnaireLauncher.launch(in);
+
+
+
+
+
+
+                            /*Intent in = new Intent();
+                            in.setComponent(new ComponentName("com.example.fhir_sdk_poc", "com.example.fhir_sdk_poc.MainActivity"));
+                            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(in);*/
+                            //finish();
                         }
                     }
                 });
@@ -498,6 +510,76 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 //nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
             }
+        }
+    }
+
+    private ActivityResultLauncher<Intent> questionnaireLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d("onActivityResult", "received!");
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
+                        String questionnaireResponseJson = data.getStringExtra("questionnaire_response");
+                        Log.d("onActivityResult", "Response JSON: " + questionnaireResponseJson);
+
+                        // show response rest in a alert dialog
+                       /* AlertDialog alertDialog = new AlertDialog.Builder(ComplaintNodeActivity.this)
+                                .setTitle("Questionnaire Response")
+                                .setMessage(questionnaireResponseJson)
+                                .setPositiveButton("OK", null)
+                                .create();
+                        alertDialog.show();*/
+                        updateDatabase(questionnaireResponseJson, UuidDictionary.CURRENT_COMPLAINT);
+                        JSONObject object = new JSONObject();
+                        try {
+                            object.put("text_" + sessionManager.getAppLanguage(), questionnaireResponseJson);
+                            //  object.put("text_en", insertion_REG);
+                            updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // You can parse or handle the response here
+                        Intent intent = new Intent(ComplaintNodeActivity.this, VisitSummaryActivity_New.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("tag", intentTag);
+                        intent.putExtra("advicefrom", intentAdviceFrom);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+    );
+
+    private void updateDatabase(String string, String conceptID) {
+        Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + conceptID);
+
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(conceptID);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, conceptID));
+            obsDAO.updateObs(obsDTO);
+        } catch (DAOException dao) {
+            FirebaseCrashlytics.getInstance().recordException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

@@ -1038,6 +1038,8 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
 
+    <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
+
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
     <string name="yes_move_ahead">"Yes, move ahead."</string>
     <string name="no_go_back">No, go back.</string>
@@ -1053,5 +1055,6 @@
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
 
 </resources>

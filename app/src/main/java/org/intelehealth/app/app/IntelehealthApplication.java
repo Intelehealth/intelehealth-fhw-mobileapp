@@ -24,6 +24,7 @@ import com.parse.Parse;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.achievements.utils.AppUsageTracker;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
@@ -36,6 +37,7 @@ import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.ncd.fhir.FhirInitializer;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -72,6 +74,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
     private final SocketManager socketManager = SocketManager.getInstance();
+    public AppUsageTracker appUsageTracker;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -89,6 +92,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        appUsageTracker = new AppUsageTracker(mContext);
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
+
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();
@@ -129,6 +135,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+        FhirInitializer.INSTANCE.init();
     }
 
     private void configureCrashReporting() {

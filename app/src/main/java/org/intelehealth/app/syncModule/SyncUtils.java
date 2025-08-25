@@ -35,12 +35,8 @@ public class SyncUtils {
      * @param fromActivity
      */
     public void initialSync(String fromActivity, Context context) {
-        Timber.d("Thread: %s", Thread.currentThread().getName());
         SyncDAO syncDAO = new SyncDAO();
-        Logger.logD(TAG, "Pull Started");
         syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, 0);
-        Logger.logD(TAG, "Pull ended");
-        // sync data
         AppointmentSync.getAppointments(context);
     }
 

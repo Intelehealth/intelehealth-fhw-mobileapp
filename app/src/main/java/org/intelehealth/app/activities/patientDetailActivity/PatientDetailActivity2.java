@@ -52,6 +52,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -605,6 +606,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             intent2.putExtra("advicefrom", "Sevika");
                             intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                             startActivity(intent2);
+
+
                             /*if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
                                 insertIsNcdSevikaVisitAttribute(uuid);
                                 navigateToComplaintScreen(uuid);

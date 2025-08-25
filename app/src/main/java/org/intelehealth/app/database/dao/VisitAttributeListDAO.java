@@ -36,6 +36,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+
 /**
  * Created by Prajwal Waingankar
  * on 20-Jul-20.
@@ -322,7 +328,9 @@ public class VisitAttributeListDAO {
             values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
             values.put("visit_uuid", visitUuid);
             values.put("value", isNcdVisit);
+
             values.put("visit_attribute_type_uuid", AppConstants.IS_NCD_VISIT_ATTRIBUTE);
+
             values.put("voided", "0");
             values.put("sync", "0");
 
@@ -339,6 +347,7 @@ public class VisitAttributeListDAO {
 
         return isInserted;
     }
+
     public static int deleteVisitAttributeUsingVisitUuid(String visitUuid) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_visit_attribute";
@@ -363,4 +372,5 @@ public class VisitAttributeListDAO {
         cursor.close();
         return isNcdVisit;
     }
+
 }

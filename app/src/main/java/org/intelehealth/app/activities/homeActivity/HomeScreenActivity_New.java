@@ -49,6 +49,7 @@ import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
+import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -220,6 +221,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     public void setCallback(CountCallback callback) {
         this.callback = callback;
     }
+
+    SyncProgress syncProgress;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -703,7 +706,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (sessionManager.isFirstTimeLaunched()) {
             sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
             showRefreshDialog();
-            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+            syncProgress = new SyncProgress();
+            SyncDAO.setProgress(0);
+            SyncDAO.getSyncProgressLiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> {
                 syncUtils.initialSync("home", this);
@@ -1117,7 +1122,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
 
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
-        boolean isSynced = syncUtils.syncForeground("home");
+        boolean isSynced = syncUtils.syncForeground("");
         if (!isSynced) {
             syncDialog.dismiss();
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
@@ -1164,6 +1169,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void switchLocationSetup(Map.Entry<String, String> villageName, String patientUuid, String visitUuid) {
+        SyncDAO.setProgress(0);
+
         ProgressDialog progress;
         progress = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle);
         progress.setTitle(getString(R.string.please_wait_progress));
@@ -1176,6 +1183,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setCurrentLocationUuid(villageName.getKey());
         sessionManager.setFirstTimeSyncExecute(true);
         sessionManager.setFirstTimeLaunched(true);
+        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
+        sessionManager.setPulled("2006-08-22 22:21:48");
 
         clearDatabase();
         progress.dismiss();
@@ -1233,6 +1242,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+            lastSync = StringUtils.en__te_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -1324,8 +1335,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }
 
                 CustomLog.v("syncBroadcastReceiver", new Gson().toJson(mTempSyncHelperList));
-                if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) &&
-                        mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
+                if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE) && mTempSyncHelperList.contains(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)) {
                     hideSyncProgressBar(true);
                 }
 
@@ -1474,6 +1484,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     imageViewIsNotification.setVisibility(View.GONE);
                     fragment = new MyAchievementsFragment();
                     //loadFragmentForBottomNav(fragment);
+                    SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
+
                     loadFragment(fragment, TAG_ACHIEVEMENT);
                     return true;
                 case R.id.bottom_nav_help:
@@ -1720,27 +1732,24 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     /**
      * observing sync status here
      */
-    private final Observer<Integer> syncLiveData = new Observer<Integer>() {
+
+
+    private final Observer<Integer> syncLiveData = new Observer<>() {
         @Override
         public void onChanged(Integer progress) {
-            Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
                 syncProgressbar.setProgress(progress);
-                if (progress <= 100) {
-                    progressTvStart.setText((progress) + "%");
-                    progressTvEnd.setText(progress + "/100");
-                }
-                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+                String progressPercentage = progress + "%";
+                String progressNumber = progress + "/100";
+                progressTvStart.setText(progressPercentage);
+                progressTvEnd.setText(progressNumber);
 
                 if (progress == 100) {
-                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
-                    Logger.logD(SyncDAO.PULL_ISSUE, "progress is 100 so close");
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSyncAlertDialog.dismiss();
-                            callback.fetchCount();
-                        }
+                    SyncDAO.getSyncProgressLiveData().removeObserver(syncLiveData);
+                    new Handler().postDelayed(() -> {
+                        mSyncAlertDialog.dismiss();
+                        callback.fetchCount();
                     }, 2000);
                 }
             }

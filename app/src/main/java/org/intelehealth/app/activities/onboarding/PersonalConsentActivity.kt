@@ -63,6 +63,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
             text += "</body></html>"
 
             runOnUiThread {
+                webView?.settings?.apply {
+                    domStorageEnabled = true
+                    javaScriptEnabled = true
+                }
+
                 webView?.loadDataWithBaseURL(
                     null,
                     text,

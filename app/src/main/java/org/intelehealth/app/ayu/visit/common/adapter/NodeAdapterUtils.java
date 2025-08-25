@@ -70,6 +70,21 @@ public class NodeAdapterUtils {
             return mainNode.findDisplay();
         } else return "";
     }
+public static String getTheChiefComplainNameWRTLocaleNCD(Context context, String chiefComplainName) {
+
+        JSONObject currentFile = null;
+        if (!new SessionManager(context).getLicenseKey().isEmpty()) {
+            currentFile = FileUtils.encodeJSONFromFile(context, chiefComplainName + ".json");
+        } else {
+            String fileLocation = "engines/ncd/" + chiefComplainName + ".json";
+            currentFile = FileUtils.encodeJSON(context, fileLocation);
+        }
+        //JSONObject currentFile = FileUtils.encodeJSON(context, fileLocation);
+        if (currentFile != null) {
+            Node mainNode = new Node(currentFile);
+            return mainNode.findDisplay();
+        } else return "";
+    }
 
     // ger the start and char of the locale
 
