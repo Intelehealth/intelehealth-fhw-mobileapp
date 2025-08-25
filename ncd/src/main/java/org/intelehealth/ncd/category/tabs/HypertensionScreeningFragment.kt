@@ -5,27 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.ncd.callbacks.PatientClickedListener
+import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
+import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
+import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
 import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
-import org.intelehealth.ncd.model.Patient
+import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.CategoryDatabase
-import org.intelehealth.ncd.room.dao.PatientAttributeDao
-import org.intelehealth.ncd.room.dao.PatientDao
-import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.category.viewmodel.HypertensionScreeningViewModel
-import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
-
+class HypertensionScreeningFragment : SearchableFragment<HypertensionScreeningViewModel>(), PatientClickedListener{
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: HypertensionScreeningViewModel? = null
+    private lateinit var visitsDao: VisitDao
+
+    override lateinit var viewModel: HypertensionScreeningViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,61 +45,58 @@ class HypertensionScreeningFragment : Fragment(), PatientClickedListener {
     }
 
     private fun initializeData() {
-        val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
-        val patientAttributeDao: PatientAttributeDao =
-            CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
+        val patientDao = database.patientDao()
+        val patientAttributeDao = database.patientAttributeDao()
+        visitsDao = database.visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@HypertensionScreeningFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[HypertensionScreeningViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.hypertensionScreeningLiveData?.observe(requireActivity()) {
+        viewModel.hypertensionScreeningLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-
-            binding?.recyclerView?.let { rv ->
-                rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@HypertensionScreeningFragment.requireContext())
+            binding?.recyclerView?.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                this.adapter = adapter
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForHypertensionScreening(Constants.HYPERTENSION_EXCLUSION_AGE)
+        viewModel.getPatientsForHypertensionScreening()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+    /*override fun onPatientClicked(patient: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
-            )
-
-            val status = "returning"
-            val tag = "search"
-            val hasPrescription = "false"
-
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
-            intent.putExtra(
-                Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
-            )
-            intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
-            intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
-            intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
-
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
+            ).apply {
+                putExtra(Constants.INTENT_PATIENT_UUID, patient.patientId)
+                putExtra(Constants.INTENT_PATIENT_NAME, "${patient.firstName} ${patient.lastName}")
+                putExtra(Constants.INTENT_PATIENT_STATUS, "returning")
+                putExtra(Constants.INTENT_PATIENT_TAG, "search")
+                putExtra(Constants.INTENT_HAS_PRESCRIPTION, "false")
+            }
             startActivity(intent)
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
+    }*/
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
     }
-
-
 }

@@ -13,7 +13,9 @@
         <activity
             android:name=".category.activity.NcdPatientCategoryActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" />
+
+            android:theme="@style/AppThemeMaterialNew" />
+
     </application>
 
 </manifest>

@@ -11,6 +11,8 @@ data class PatientWithAttribute(
     @ColumnInfo(name = "middle_name") var middleName: String? = null,
     @ColumnInfo(name = "last_name") var lastname: String? = null,
     @ColumnInfo(name = "date_of_birth") var dateOfBirth: String? = null,
+    @ColumnInfo(name = "gender") var gender: String? = null,
+    @ColumnInfo(name = "patient_photo") var patient_photo: String? = null,
     @ColumnInfo(name = "value") var value: String? = null,
     @ColumnInfo(name = "person_attribute_type_uuid") var personAttributeTypeUuid: String? = null,
 ) {

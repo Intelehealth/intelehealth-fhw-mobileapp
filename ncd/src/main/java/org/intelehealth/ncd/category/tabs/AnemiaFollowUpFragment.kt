@@ -20,12 +20,17 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.AnemiaFollowUpViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class AnemiaFollowUpFragment : Fragment(), PatientClickedListener {
+class AnemiaFollowUpFragment : SearchableFragment<AnemiaFollowUpViewModel>(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: AnemiaFollowUpViewModel? = null
+
+    override lateinit var viewModel: AnemiaFollowUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,51 +49,57 @@ class AnemiaFollowUpFragment : Fragment(), PatientClickedListener {
     }
 
     private fun initializeData() {
-        val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
-        val patientAttributeDao: PatientAttributeDao =
-            CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val patientDao: PatientDao = database.patientDao()
+        val patientAttributeDao: PatientAttributeDao = database.patientAttributeDao()
+        val visitsDao: VisitDao = database.visitDao()
+
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@AnemiaFollowUpFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[AnemiaFollowUpViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.anemiaFollowUpLiveData?.observe(requireActivity()) {
+        viewModel.anemiaFollowUpLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-
-            binding?.recyclerView?.let { rv ->
-                rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@AnemiaFollowUpFragment.requireContext())
+            binding?.recyclerView?.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                this.adapter = adapter
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForAnemiaFollowUp(Constants.ANEMIA_EXCLUSION_AGE)
+        viewModel.getPatientsForAnemiaFollowUp()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+/*
+    override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
             )
 
             val status = "returning"
             val tag = "search"
             val hasPrescription = "false"
 
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
+            intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
             intent.putExtra(
                 Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
+                "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
             )
             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
@@ -99,4 +110,9 @@ class AnemiaFollowUpFragment : Fragment(), PatientClickedListener {
             exception.printStackTrace()
         }
     }
+*/
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+    }
+
 }

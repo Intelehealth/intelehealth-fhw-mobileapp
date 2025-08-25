@@ -1,7 +1,9 @@
 package org.intelehealth.ncd.utils
 
 import android.content.res.Resources
+import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.constants.Constants
@@ -17,6 +19,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         patientAttributeList: MutableList<PatientAttributes>,
         category: String
     ): MutableList<Patient> {
+        Log.d("HypertensionDebug", "Full Patient Attribute List:\n${patientAttributeList.joinToString("\n")}")
+        Log.d("HypertensionDebug", "Full Patient Attribute List size:\n${patientAttributeList.size}")
+
         when (category) {
 
             Constants.ANEMIA_SCREENING -> patientAttributeList.forEach { attribute ->
@@ -29,36 +34,36 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
 
 
-                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
+                if (isHistoryOfAnemiaPresent(attribute.value) /*&& (isCurrentlyTakingAnemiaMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
+                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
+                if (!isHistoryOfAnemiaPresent(attribute.value) /*|| !isCurrentlyTakingAnemiaMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
+                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfDiabetesPresent(attribute.value) && (isCurrentlyTakingDiabetesMedication(
+                if (isHistoryOfDiabetesPresent(attribute.value) /*&& (isCurrentlyTakingDiabetesMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithDiabetesPHC(attribute.value))
+                    ) || isThereAFollowUpWithDiabetesPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
 
             Constants.DIABETES_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfDiabetesPresent(attribute.value) || !isCurrentlyTakingDiabetesMedication(
+                if (!isHistoryOfDiabetesPresent(attribute.value) /*|| !isCurrentlyTakingDiabetesMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithDiabetesPHC(attribute.value)
+                    ) && !isThereAFollowUpWithDiabetesPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
 
@@ -66,9 +71,9 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
+                if (isHistoryOfHypertensionPresent(attribute.value) /*&& (isCurrentlyTakingHypertensionMedication(
                         attribute.value
-                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
+                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))*/
                 ) {
                     removePatientsFromList(patientList, attribute)
 
@@ -76,14 +81,17 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
+                if (!isHistoryOfHypertensionPresent(attribute.value) /*|| !isCurrentlyTakingHypertensionMedication(
                         attribute.value
-                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
+                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)*/
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
         }
+        Log.d("HypertensionDebug", "patientListkkkk:\n${patientList.joinToString("\n")}")
+        Log.d("HypertensionDebug", "patientListkkkk size:\n${patientList.size}")
+        Log.d("HypertensionDebug", "patientListkkkk category :\n${category}")
 
         return patientList
     }
@@ -198,6 +206,7 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isHistoryOfHypertensionPresent(medicalHistoryJson: String?): Boolean {
+        Log.d("testingkk", "isHistoryOfHypertensionPresent: medicalHistoryJson : "+medicalHistoryJson)
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -210,6 +219,7 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isCurrentlyTakingHypertensionMedication(medicalHistoryJson: String?): Boolean {
+        Log.d("testingkk", "isCurrentlyTakingHypertensionMedication: medicalHistoryJson : "+medicalHistoryJson)
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -222,6 +232,8 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isThereAFollowUpWithHypertensionPHC(medicalHistoryJson: String?): Boolean {
+        Log.d("testingkk", "isThereAFollowUpWithHypertensionPHC: medicalHistoryJson : "+medicalHistoryJson)
+
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -283,7 +295,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientList
     }
 
-    private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
+    /*private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
         medicalHistoryJson?.let {
             return Gson().fromJson(
                 medicalHistoryJson,
@@ -291,5 +303,26 @@ class CategorySegregationUtils(private val resources: Resources) {
             )
         }
         return emptyList()
+    }*/
+    //due to crash changed this method
+    private fun convertJsonToList(medicalHistoryJson: String?): List<MedicalHistory> {
+        if (medicalHistoryJson.isNullOrBlank()) return emptyList()
+
+        return try {
+            val gson = Gson()
+            val jsonElement = JsonParser().parse(medicalHistoryJson)
+            when {
+                jsonElement.isJsonArray -> {
+                    gson.fromJson(jsonElement, object : TypeToken<List<MedicalHistory>>() {}.type)
+                }
+                jsonElement.isJsonObject -> {
+                    listOf(gson.fromJson(jsonElement, MedicalHistory::class.java))
+                }
+                else -> emptyList()
+            }
+        } catch (e: Exception) {
+            Log.e("MedicalHistoryParser", "Failed to parse: ${e.message}")
+            emptyList()
+        }
     }
 }

@@ -20,15 +20,23 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.AnemiaScreeningViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class AnemiaScreeningFragment : Fragment(), PatientClickedListener {
+class AnemiaScreeningFragment : SearchableFragment<AnemiaScreeningViewModel>(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: AnemiaScreeningViewModel? = null
+    private lateinit var visitsDao: VisitDao
+
+    override lateinit var viewModel: AnemiaScreeningViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = LayoutNcdPatientCategoryBinding.inflate(layoutInflater)
         return binding!!.root
@@ -42,59 +50,63 @@ class AnemiaScreeningFragment : Fragment(), PatientClickedListener {
     }
 
     private fun initializeData() {
-        val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
-        val patientAttributeDao: PatientAttributeDao =
-            CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
+        val patientDao = database.patientDao()
+        val patientAttributeDao = database.patientAttributeDao()
+        visitsDao = database.visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@AnemiaScreeningFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[AnemiaScreeningViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.anemiaScreeningLiveData?.observe(requireActivity()) {
+        viewModel.anemiaScreeningLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-
-            binding?.recyclerView?.let { rv ->
-                rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@AnemiaScreeningFragment.requireContext())
+            binding?.recyclerView?.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                this.adapter = adapter
             }
         }
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForAnemiaScreening(Constants.ANEMIA_EXCLUSION_AGE)
+        viewModel.getPatientsForAnemiaScreening()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+   /* override fun onPatientClicked(patient: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
-            )
-
-            val status = "returning"
-            val tag = "search"
-            val hasPrescription = "false"
-
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
-            intent.putExtra(
-                Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
-            )
-            intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
-            intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
-            intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
-
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
+            ).apply {
+                putExtra(Constants.INTENT_PATIENT_UUID, patient.patientId)
+                putExtra(Constants.INTENT_PATIENT_NAME, "${patient.firstName} ${patient.lastName}")
+                putExtra(Constants.INTENT_PATIENT_STATUS, "returning")
+                putExtra(Constants.INTENT_PATIENT_TAG, "search")
+                putExtra(Constants.INTENT_HAS_PRESCRIPTION, "false")
+            }
             startActivity(intent)
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
+    }*/
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
     }
 }

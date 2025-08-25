@@ -20,12 +20,18 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.DiabetesFollowUpViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.VisitDao
+import org.intelehealth.ncd.search.SearchableFragment
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import org.intelehealth.ncd.utils.PatientNavigationUtils
 
-class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
+
+class DiabetesFollowUpFragment : SearchableFragment<DiabetesFollowUpViewModel>(), PatientClickedListener {
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
-    private var viewModel: DiabetesFollowUpViewModel? = null
+
+    override lateinit var viewModel: DiabetesFollowUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,48 +53,60 @@ class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
         val patientDao: PatientDao = CategoryDatabase.getInstance(requireContext()).patientDao()
         val patientAttributeDao: PatientAttributeDao =
             CategoryDatabase.getInstance(requireContext()).patientAttributeDao()
+        val visitsDao: VisitDao = CategoryDatabase.getInstance(requireContext()).visitDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
         viewModel = ViewModelProvider(
-            owner = this@DiabetesFollowUpFragment,
-            factory = CategoryViewModelFactory(repository, utils)
+            this,
+            CategoryViewModelFactory(repository, utils)
         )[DiabetesFollowUpViewModel::class.java]
     }
 
     private fun setObservers() {
-        viewModel?.diabetesFollowUpLiveData?.observe(requireActivity()) {
+        // Changed requireActivity() to viewLifecycleOwner for lifecycle safety
+        viewModel.diabetesFollowUpLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
 
             binding?.recyclerView?.let { rv ->
                 rv.adapter = adapter
-                rv.layoutManager =
-                    LinearLayoutManager(this@DiabetesFollowUpFragment.requireContext())
+                rv.layoutManager = LinearLayoutManager(requireContext())
             }
         }
+
+        // Optional: Shared search observer
+        /*
+        searchViewModel.searchText.observe(viewLifecycleOwner) { query ->
+            viewModel.searchPatient(query)
+        }
+        */
     }
 
     private fun fetchAndSetPatients() {
-        viewModel?.getPatientsForDiabetesFollowUp(Constants.DIABETES_EXCLUSION_AGE)
+        viewModel.getPatientsForDiabetesFollowUp()
     }
 
-    override fun onPatientClicked(patient: Patient) {
+    override fun onSearchQueryChanged(query: String) {
+        viewModel.searchPatient(query)
+    }
+
+   /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
         try {
             val intent = Intent(
                 requireActivity(),
-                Class.forName("org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity")
+                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
             )
 
             val status = "returning"
             val tag = "search"
             val hasPrescription = "false"
 
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patient.uuid)
+            intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
             intent.putExtra(
                 Constants.INTENT_PATIENT_NAME,
-                "${patient.firstName} ${patient.lastname}"
+                "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
             )
             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
@@ -98,6 +116,13 @@ class DiabetesFollowUpFragment : Fragment(), PatientClickedListener {
         } catch (exception: ClassNotFoundException) {
             exception.printStackTrace()
         }
-    }
+    }*/
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+    override fun onPatientClicked(patient: PatientVisitDetails) {
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+    }
 }

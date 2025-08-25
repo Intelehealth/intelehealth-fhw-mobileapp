@@ -68,6 +68,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
+import org.intelehealth.ncd.category.activity.NcdPatientCategoryActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -344,8 +345,12 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
 
-        textlayout_find_patient.setOnClickListener(v -> {
+        /*textlayout_find_patient.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);
+            startActivity(intent);
+        });*/
+        textlayout_find_patient.setOnClickListener(v -> {
+            Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivity.class);
             startActivity(intent);
         });
 
