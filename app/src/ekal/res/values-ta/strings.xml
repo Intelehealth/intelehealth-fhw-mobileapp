@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general_economic_status">பொருளாதார நிலை</string>
+    <string name="weight_loss_alert_msg">உங்கள் உயரத்தைப் பொறுத்து உங்கள் எடை குறைவாக உள்ளது.</string>
+    <string name="weight_gain_alert_msg">உங்கள் உயரத்தைப் பொறுத்து உங்கள் எடை அதிகமாக உள்ளது</string>
+    <string name="vital_alert_bp_dia_button">உங்கள் டயஸ்டாலிக் இரத்த அழுத்தம் சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_bp_sys_button">உங்கள் சிஸ்டாலிக் இரத்த அழுத்தம் சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_spo2_button">உங்கள் எஸ்பிஓ2 சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_pulse_button">உங்கள் துடிப்பு சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_resp_button">உங்கள் சுவாச விகிதம் சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_temperature_button">உங்கள் வெப்பநிலை சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_hgb_button">உங்கள் HGB சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_sugar_random_button">உங்கள் சர்க்கரை சீரற்ற அளவு சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_sugar_fasting_button">உங்கள் உண்ணாவிரத சர்க்கரை அளவு சாதாரணமாக இல்லை.</string>
+    <string name="vital_alert_sugar_aftermeal_button">உங்கள் உணவுக்குப் பிறகு சர்க்கரை அளவு சாதாரணமாக இல்லை.</string>
+    <string name="prescription_patient_id">நோயாளி ஐடி: %1$s</string>
+    <string name="prescription_age">வயது: %1$s</string>
+    <string name="prescription_gender">பாலினம்: %1$s</string>
+    <string name="prescription_address">முகவரி: %1$s</string>
+    <string name="prescription_date_of_visit">Date of Visit: %1$s</string>
+    <string name="enter_url">உருளை உள்ளிடுக</string>
+    <string name="select_location">இருப்பிடத்தைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="which_server_would_you_like_to_connect_to">எந்த சேவையகத்துடன் இணைக்க விரும்புகிறீர்கள்?</string>
+    <string name="choose_a_location_to_login">உள்நுழைய ஒரு இடத்தைத் தேர்வுசெய்யவும்</string>
+    <string name="sample_text">மாதிரி உரை</string>
+
+</resources>

@@ -310,8 +310,13 @@ public class AppConstants {
     public static final String LANGUAGE_OR = "or";
     public static final String LANGUAGE_AS = "as";
 
+
+    public static final String DATE_FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String DATE_FORMAT_DD_MMM_YYYY = "dd MMM, yyyy";
+    public static final String DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH = "dd MMMM, yyyy";
     public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
     public static final String NCD_PROTOCOL_DIRECTORY = "engines/ncd";
     public static final String PROTOCOL_DIRECTORY = "engines";
+
 
 }

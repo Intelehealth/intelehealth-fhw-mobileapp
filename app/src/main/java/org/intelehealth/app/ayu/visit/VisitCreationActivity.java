@@ -53,6 +53,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -245,6 +246,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         //startActivity(intent2);
         //finish();
+
+        //added new visit attribute to identify ncd visits - like ncd project - required for my achievements section
+        if(IntelehealthApplication.getInstance().getVisitType().equals(AppConstants.VISIT_TYPE_SEVIKA)){
+            VisitAttributeListDAO dao = new VisitAttributeListDAO();
+            try {
+                boolean isInserted = dao.insertIsNcdVisitAttribute(visitUuid, "true");
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     @Override

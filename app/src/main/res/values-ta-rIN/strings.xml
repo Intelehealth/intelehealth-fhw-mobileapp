@@ -225,7 +225,7 @@
     <string name="per_Month">ஒரு மாதத்திற்கு</string>
     <string name="per_Year">வருடத்திற்கு</string>
     <!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
-    <string name="title_activity_question_node" translatable="false">Question node activity</string>
+    <string name="title_activity_question_node" translatable="false">கேள்விமுனைசெயல்பாடு</string>
     <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
     <!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
 <!--    <string name="speciality">சிறப்பு</string>-->
@@ -268,7 +268,7 @@
     <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
     <string name="doctor_is_not_available">Doctor is not available</string>
     <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
+    <string name="others">மற்றவை</string>
     <string name="please_enter_the_reason_details">Please enter the reason details</string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
 
@@ -300,16 +300,16 @@
     //----download protocol failed alert dialog-----------
     <string name="app_version_string">App Version - %1$s</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
-    <string name="height_cm">Height (cm)</string>
-    <string name="weight_kg">Weight (kg)</string>
-    <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
-    <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
-    <string name="bp_sys">BP Systolic</string>
-    <string name="bp_dia">BP Diastolic</string>
-    <string name="pulse_bpm">Pulse (bpm)</string>
+    <string name="height_cm">உயரம் (செ.மீ)</string>
+    <string name="weight_kg">எடை (கிலோ)</string>
+    <string name="bmi_index_auto_calculated">தமிழில் இருந்து ஆங்கிலம்</string>
+    <string name="enter_the_patient_s_vitals">நோயாளியின் முக்கியத் தகவல்களை உள்ளிடவும்</string>
+    <string name="bp_sys">பிபி சிஸ்டாலிக்</string>
+    <string name="bp_dia">பிபி டயஸ்டாலிக்</string>
+    <string name="pulse_bpm">நாடி (பிபிஎம்)</string>
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
-    <string name="temperature_f_new">Temperature (F)</string>
+    <string name="temperature_f_new">வெப்பநிலை (F)</string>
     <string name="confirm">Confirm</string>
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
@@ -331,7 +331,7 @@
     <string name="education">Education</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
-    <string name="confirm_end_visit_reason">End this visit?</string>
+    <string name="confirm_end_visit_reason">இந்த வருகையை முடிக்கவா?</string>
     <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
@@ -349,12 +349,12 @@
     <string name="select_date_hint">Select date</string>
     <string name="error_field_valid_village_required">Please enter the valid village name (Min 3 char)</string>
     <string name="patinet_history">%1$d/%2$d Medical history: Patient history</string>
-    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
+    <string name="_1_4_vitals">%1$d/%2$d உயிரணுக்கள்</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
     <string name="duration_type">Duration Type</string>
     <string name="number_label">Number</string>
-    <string name="associated_symptoms_header_visit_creation">Associated symptoms</string>
+    <string name="associated_symptoms_header_visit_creation">தொடர்புடைய அறிகுறிகள்</string>
     <string name="edit">Edit</string>
     <string name="references">References:</string>
     <string name="already_selected_lbl">Already selected!</string>
@@ -396,12 +396,12 @@
     <string name="are_you_sure_you_want_to_delete_all_notifications">Are you sure you want to delete all notifications?</string>
     <string name="view_prescription_lbl">View Prescription</string>
     <string name="facility_to_visit">Facility to visit</string>
-    <string name="follow_up_date">Follow up date</string>
+    <string name="follow_up_date">தொடர்பு தேதி</string>
     <string name="please_select_valid_followup_date">Please select valid followup date</string>
     <string name="reminder">Reminder</string>
     <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
     <string name="open_followup">Open Followup</string>
-    <string name="find_patients_hint">Find patients</string>
+    <string name="find_patients_hint">நோயாளிகளைக் கண்டுபிடி</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="range">Range</string>
     <string name="apply">Apply</string>
@@ -409,8 +409,42 @@
     <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
     <string name="forgot_your_username">Forgot your username?</string>
     <string name="contact_your_admin">Contact your admin</string>
-    <string name="sync">Refresh</string>
+    <string name="sync">புதுப்பிப்பு</string>
     <string name="sending_otp">Sending OTP...</string>
+
+    <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>
+    <string name="phone_number">தொலைபேசி எண்</string>
+    <string name="visitDetails_text">வருகை சுருக்கம்</string>
+    <string name="_phy_examination">%1$d/%2$d உடல் பரிசோதனை</string>
+    <string name="setup">அமைவு</string>
+    <string name="setup_new">அமைவு</string>
+    <string name="error_login_title">உள்நுழைவில் பிழை</string>
+    <string name="camera">கேமரா</string>
+    <string name="permission_camera_rationale">கேமரா முன்னோட்டத்தைக் காட்ட கேமரா அனுமதி தேவை.</string>
+    <string name="permission_camera_denied">கேமரா அனுமதி மறுக்கப்பட்டது. கேமராவை அணுக அதை வழங்குவதைக் கருத்தில் கொள்ளவும்!</string>
+    <string name="permission_camera_never_askagain">மீண்டும் ஒருபோதும் கேட்க வேண்டாம் என்பதன் மூலம் கேமரா அனுமதி மறுக்கப்பட்டது.</string>
+    <string name="button_allow">அனுமதி</string>
+    <string name="button_deny">மறுக்கவும்</string>
+    <string name="switch_flash">ஃப்ளாஷை மாற்றவும்</string>
+    <string name="switch_camera">கேமராவை மாற்றவும்</string>
+    <string name="flash_auto">ஃப்ளாஷ் ஆட்டோ</string>
+    <string name="flash_off">ஃப்ளாஷ் ஆஃப் செய்யவும்</string>
+    <string name="flash_on">ஃப்ளாஷ் ஆன் செய்யவும்</string>
+
+    //SEND SMS Permissions
+    <string name="permission_sms_rationale">எஸ்எம்எஸ் அனுப்ப எஸ்எம்எஸ் அனுமதி தேவை.</string>
+    <string name="permission_sms_denied">எஸ்எம்எஸ் அனுமதி மறுக்கப்பட்டது. பயன்பாட்டிலிருந்து எஸ்எம்எஸ் அனுப்ப அதை வழங்குவதைக் கருத்தில் கொள்ளவும்!</string>
+    <string name="permission_sms_never_askagain">மீண்டும் ஒருபோதும் கேட்க வேண்டாம் என்பதன் மூலம் எஸ்எம்எஸ் அனுமதி மறுக்கப்பட்டது.</string>
+    //Camera Dialog
+    <string name="camera_dialog_default">நல்ல வெளிச்சத்தில் மட்டும் ஆவணப் புகைப்படத்தைக் கிளிக் செய்யவும். ஆவணப் புகைப்படம் தெளிவாக இல்லை என்றால், ஆவணப் புகைப்படத்தை மீண்டும் எடுக்கவும்.</string>
+    <string name="skip_new">தவிர்</string>
+    <string name="login_success">உள்நுழைவு வெற்றி!</string>
+    <string name="enter_password1">உங்கள் கடவுச்சொல்லை உள்ளிடவும்</string>
+    <string name="forgot_password">கடவுச்சொல் மறந்துவிட்டதா?</string>
+    <string name="end_visit">வருகையை முடிக்கவும்</string>
+    <string name="help"><u>உதவி</u></string>
+    <string name="hello_i_am_ayu">வணக்கம், நான் ஆயு,</string>
+
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>
@@ -423,5 +457,6 @@
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
 </resources>
 

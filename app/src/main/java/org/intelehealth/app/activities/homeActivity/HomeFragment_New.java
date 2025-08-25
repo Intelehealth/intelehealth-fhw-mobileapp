@@ -148,8 +148,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-        CustomLog.d("Test1", "Tanvir");
-        CustomLog.d("Test2", "Tanvir2");
+        loadFeatureActiveStatus();
 
         return view;
     }
@@ -310,37 +309,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
-        //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
-//        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
-//        new Thread(() -> {
-//            int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
-//            if (isAdded()) {
-//                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)));
-//
-//            }
-//        }).start();
-
-        // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
-//        Executors.newSingleThreadExecutor().execute(() -> {
-//            countStrPendingFollowupVisits();
-//
-//            if (isAdded()) {
-//                activity.runOnUiThread(() -> {
-//                    StringBuilder followupCount = new StringBuilder()
-//                            .append(todaysCount)
-//                            .append(" ")
-//                            .append(getActivity().getString(R.string.today))
-//                            .append("\n")
-//                            .append(tomorrowsCount)
-//                            .append(" ")
-//                            .append(getActivity().getString(R.string.tomorrow));
-//
-//                    mCountPendingFollowupVisitsTextView.setText(
-//                            followupCount
-//                    );
-//                });
-//            }
-//        });
         getUpcomingAppointments();
     }
 
@@ -366,6 +334,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         setLocale(getContext());
         initUI();
         fetchAndSetPrescriptionCount(true);
+        fetchAndSetCloseVisitCount(true);
     }
 
     @Override
@@ -555,6 +524,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void fetchCount() {
         fetchAndSetPrescriptionCount(false);
+        fetchAndSetCloseVisitCount(false);
     }
 
     private void fetchAndSetPrescriptionCount(boolean calledFromOnResume) {
@@ -565,8 +535,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         Executors.newSingleThreadExecutor().execute(() -> {
             int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
             int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-//            int pendingCountTotalVisits = getCurrentMonthsVisits(false);
-//            int countReceivedPrescription = getCurrentMonthsVisits(true);
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
@@ -582,5 +550,18 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
     }
-}
 
+    private void fetchAndSetCloseVisitCount(boolean calledFromOnResume) {
+        if (isPrescriptionCountLoaded && calledFromOnResume)
+            return;
+
+        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int recentPendingCount = VisitsDAO.recentNotEndedVisits().size();
+            int olderPendingCount = VisitsDAO.olderNotEndedVisits().size();
+            int totalPendingCount = recentPendingCount + olderPendingCount;
+
+            requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(getResources().getQuantityString(R.plurals.open_no_of_visit, totalPendingCount, totalPendingCount)));
+        });
+    }
+}

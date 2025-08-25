@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/date_frag_daily_parent_margin_top"
+            android:orientation="vertical">
+
+
+            <FrameLayout
+                android:id="@+id/progressOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="#80000000"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/date_frag_text_margin_start"
+                android:background="@drawable/ui2_card_bg_gray_border_new"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_selected_date_daily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/daily_tab_date_margin_start"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="1 March, 2022"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/date_frag_text_size"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/iv_select_date_daily"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="@dimen/daily_tab_date_margin_start"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ui2_ic_calendar" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/tv_start_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/date_frag_date_margin_top"
+                android:background="@drawable/ui2_date_picker_bg"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:layout_weight="1"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="10 july 2025"
+                android:layout_marginStart="@dimen/date_frag_text_margin_start"
+                android:textColor="@color/textColorBlack"
+                android:layout_marginEnd="@dimen/card1_achieve_margin_start"
+                android:textSize="@dimen/date_frag_date_text_size"
+                app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                android:clickable="true"
+                android:focusable="true"
+                app:drawableTint="@color/iconTintGray" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/date_frag_date_margin_top"
+                android:background="@drawable/ui2_date_picker_bg"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:layout_weight="1"
+                android:paddingStart="15dp"
+                android:visibility="invisible"
+                android:paddingEnd="15dp"
+                android:layout_marginStart="@dimen/date_frag_text_margin_start"
+                android:textColor="@color/textColorBlack"
+                android:layout_marginEnd="@dimen/card1_achieve_margin_start"
+                android:textSize="@dimen/date_frag_date_text_size"
+                app:drawableEndCompat="@drawable/ui2_ic_calendar"
+                app:drawableTint="@color/iconTintGray" />
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
+                android:layout_marginTop="@dimen/card_daily_frag_margin_top"
+                android:layout_marginEnd="@dimen/card1_common_achieve_margin_end"
+                android:layout_marginBottom="@dimen/card1_common_achieve_margin_bottom"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/card1_achieve_margin_end"
+                    android:background="@drawable/ui2_patients_card_bg_1"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card2"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_doctor"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:padding="3dp"
+                        android:src="@drawable/ui2_doctor_visits"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_info_doctor_visits"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="@dimen/achievements_info_margin_top"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:tooltipText="@string/app_name"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_doctor"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_doctor_visits"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/doctor_visits"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_doctor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_dr_visits_today"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_doctor_visits"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_card2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ui2_patients_card_bg_blue"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/card1_achieve_margin_start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card3"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_sevika_visits"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:padding="3dp"
+                        android:src="@drawable/ui2_sevika_visits"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_info_sevika_visits"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:layout_marginTop="@dimen/achievements_info_margin_top"
+                        android:tooltipText="@string/app_name"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_sevika_visits"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_sevika_visits"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/sevika_or_ncd_visits"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_sevika_visits"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_sevika_visits_daily"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sevika_visits"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
+                android:layout_marginEnd="@dimen/card2_common_achieve_margin_end"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:id="@+id/layout_card3"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/card1_achieve_margin_end"
+                    android:background="@drawable/ui2_patients_card_bg_green"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card2"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_beneficiary_registered"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:src="@drawable/ui2_ic_patients_add"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_info_beneficiary_registered"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:layout_marginTop="@dimen/achievements_info_margin_top"
+                        android:tooltipText="@string/app_name"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_beneficiary_registered"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_beneficiary_registered"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/beneficiary_registered"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_beneficiary_registered"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_patients_beneficiary_registered"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_beneficiary_registered"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_card4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ui2_patients_card_bg_1"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/card1_achieve_margin_start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card3"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_household_registered"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:src="@drawable/ui2_ic_household_registered"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_household_registered"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:layout_marginTop="@dimen/achievements_info_margin_top"
+                        android:tooltipText="@string/app_name"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_household_registered"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_household_registered"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/household_registered"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_household_registered"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_household_registered_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_household_registered"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
+                android:layout_marginTop="@dimen/card_daily_frag_margin_top"
+                android:layout_marginEnd="@dimen/card1_common_achieve_margin_end"
+                android:layout_marginBottom="@dimen/card1_common_achieve_margin_bottom"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:id="@+id/layout_card5"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/card1_achieve_margin_end"
+                    android:background="@drawable/ui2_patients_card_bg_blue"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card2"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_status"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:src="@drawable/ui2_ic_user_status"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_info_status"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:tooltipText="@string/app_name"
+                        android:layout_marginTop="@dimen/achievements_info_margin_top"
+                        app:layout_constraintTop_toTopOf="@id/iv_icon_status"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/status"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_status"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_patients_status"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_status"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_card6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ui2_patients_card_bg_1"
+                    android:padding="@dimen/card_common_achieve_padding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/card1_achieve_margin_start"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layout_card3"
+                    app:layout_constraintHorizontal_weight="1">
+
+
+                    <!-- Patient Icon -->
+                    <ImageView
+                        android:id="@+id/iv_icon_daily_time_spent"
+                        android:layout_width="@dimen/card_achieve_icon_width"
+                        android:layout_height="@dimen/card_achieve_icon_height"
+                        android:src="@drawable/ui2_ic_time_spent_new"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="3dp"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Info Icon -->
+                    <ImageView
+                        android:id="@+id/iv_daily_time_spent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ui2_ic_info"
+                        android:contentDescription="@string/info"
+                        android:layout_marginTop="-5dp"
+                        android:tooltipText="@string/app_name"
+                        app:layout_constraintTop_toTopOf="@id/iv_daily_time_spent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tv_daily_time_spent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_title_margin_top"
+                        android:text="@string/daily_time_spent"
+                        android:textSize="@dimen/date_frag_layout_text_size"
+                        app:layout_constraintTop_toBottomOf="@id/iv_icon_daily_time_spent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Value -->
+                    <TextView
+                        android:id="@+id/tv_daily_time_spent_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/card_achieve_value_margin_top"
+                        android:gravity="top"
+                        android:lineHeight="@dimen/card_achieve_value_line_height"
+                        android:lineSpacingExtra="@dimen/card_achieve_value_line_spacing"
+                        android:textColor="@color/textColorBlack"
+                        android:textSize="@dimen/card_achieve_value_textsize"
+                        android:paddingBottom="@dimen/achievements_value_text_margin_bottom"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/tv_daily_time_spent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

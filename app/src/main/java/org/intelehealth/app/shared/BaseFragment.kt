@@ -35,4 +35,8 @@ open class BaseFragment : Fragment() {
     open fun onFeatureStatusLoaded(status: FeatureActiveStatus) {
         Timber.d { "Feature status =>${Gson().toJson(status)}" }
     }
+
+    protected fun loadFeatureActiveStatus() {
+        onFeatureStatusLoaded(FeatureActiveStatus.Companion.getDefaultFeatureStatus())
+    }
 }

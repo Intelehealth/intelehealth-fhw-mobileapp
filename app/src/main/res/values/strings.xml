@@ -712,8 +712,8 @@
     <string name="open_visit">Open Visit</string>
     <string name="open_visits">Open Visits</string>
     <plurals name="open_no_of_visit">
-        <item quantity="one">%d Open Visit</item>
-        <item quantity="other">%d Open Visits</item>
+        <item quantity="one">%d open visit</item>
+        <item quantity="other">%d open visits</item>
     </plurals>
 
     <string name="all_patients_txt">All Patients</string>
@@ -789,7 +789,7 @@
     <string name="protocols_successfully_changed">Protocols have been successfully changed!</string>
     <string name="overall">Overall</string>
     <string name="daily">Daily</string>
-    <string name="date_range">Date Range</string>
+    <string name="date_range">Date range</string>
     <string name="visit_date">Visit Date</string>
     <string name="patient_registered">Patient Registered!</string>
     <string name="does_patient_start_visit_now">Does the patient want to start the visit now?</string>
@@ -1079,6 +1079,30 @@
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
 
+    <string name="doctor_visits">Doctor Visits</string>
+    <string name="sevika_or_ncd_visits">Sevika/ NCD Visits</string>
+    <string name="beneficiary_registered">Beneficiary Registered</string>
+    <string name="household_registered">Household Registered</string>
+    <string name="status">Status</string>
+    <string name="daily_time_spent">Daily time spent</string>
+    <string name="active">Active</string>
+    <string name="non_active">Not Active</string>
+    <string name="days_active">Days Active</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">Doctor Visits Uploaded</string>
+    <string name="doctor_visits_uploaded_tooltip_content">Number of doctor visits\nuploaded by the Sevika.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">Sevika Visits Uploaded</string>
+    <string name="sevika_visits_uploaded_tooltip_content">Number of Sevika/ NCD\nvisits uploaded.</string>
+    <string name="beneficiaries_registered_tooltip_title">Beneficiaries Registered</string>
+    <string name="beneficiaries_registered_tooltip_content">Number of beneficiary\nregistered by the Sevika.</string>
+    <string name="households_registered_tooltip_title">Households Registered</string>
+    <string name="households_registered_tooltip_content">Total number of unique\nhousehold entries made.</string>
+    <string name="active_status_tooltip_title">Active status</string>
+    <string name="active_status_tooltip_content">Sevika uploaded at least\none visit on the given\nday (Doctor or Sevika/NCD)\nconsidered as active.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">Daily time spent by sevika</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">The time when sevikas\nhas the app open\nin the foreground.</string>
+    <string name="todays_tab_achievement">Daily</string>
+
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
     <string name="yes_move_ahead">"Yes, move ahead."</string>
     <string name="no_go_back">No, go back.</string>
@@ -1094,5 +1118,6 @@
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
 
 </resources>
