@@ -74,14 +74,4 @@ object ABDMUtils {
             return "Something went wrong"
         }
     }*/
-
-    @JvmStatic
-    fun getAuthModes(response: Response<FetchAuthModesResponse>): String? {
-        return try {
-            val authModes: String = response.body()?.authMethods?.joinToString(", ")?:""
-            "The user has been deleted. Please use the following methods to recreate the user - $authModes"
-        } catch (e: Exception) {
-            return "Something went wrong"
-        }
-    }
 }
