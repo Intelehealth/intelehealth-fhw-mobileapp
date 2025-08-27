@@ -833,6 +833,19 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
+                        if (response == null || response.getData() == null || Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
+                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.please_enter_valid_abha), Toast.LENGTH_LONG).show();
+                            disableUI(true);
+                            binding.sendOtpBtn.setEnabled(true);
+                            binding.otpBox.setText("");
+                            binding.flOtpBox.setVisibility(View.GONE);
+                            binding.rlResendOTP.setVisibility(View.GONE);
+                            binding.llResendCounter.setVisibility(View.GONE);
+                            binding.sendOtpBtn.setText(getString(R.string.send_otp));
+                            resendCounterAttemptsTextDisplay();
+                            return;
+                        }
+
                         disposables.add(
                                 Observable.fromCallable(() -> PatientsDAO.getPatientDetailsByPhoneNum(
                                                         "+91" + abhaProfileResponse.getMobile(),
@@ -848,7 +861,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                         .subscribe(
                                                 patientDTO -> {
                                                     Intent intent;
-                                                    Log.d("PATIENT_DTO",""+new Gson().toJson(patientDTO));
+                                                    Log.d("PATIENT_DTO", "" + new Gson().toJson(patientDTO));
 
                                                     if (patientDTO != null) {
                                                         abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
@@ -877,7 +890,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                             startActivity(intent);
                                                             finish();
                                                         } else {
-                                                            Log.d("PATIENT_DTO","NOT_FOUND");
+                                                            Log.d("PATIENT_DTO", "NOT_FOUND");
 //                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
                                                         }
                                                     }
@@ -897,7 +910,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                         startActivity(intent);
                                                         finish();
                                                     } else {
-                                                        Log.d("MMMMMM","ERROR");
+                                                        Log.d("MMMMMM", "ERROR");
 //                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
                                                     }
                                                     throwable.printStackTrace();
@@ -1011,6 +1024,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.GONE);
             binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.GONE);
             boolean isAbhaNumber = !TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText());
+            String abhaAddress = binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText().toString();
+
             if (TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()) && TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText())) {
                 binding.layoutHaveABHANumber.abhaDetails.tvAbhaNumberError.setVisibility(View.VISIBLE);
                 binding.layoutHaveABHANumber.abhaDetails.tvAbhaAddressError.setVisibility(View.VISIBLE);
@@ -1018,8 +1033,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             } else if (isAbhaNumber && binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().length() < 14) {
                 Toast.makeText(context, getText(R.string.please_enter_valid_abha), Toast.LENGTH_SHORT).show();
                 isValid = false;
+            } else if (!abhaAddress.endsWith("@sbx")) {
+                Toast.makeText(context, getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
+                isValid = false;
             }
-
         }
 
         return isValid;
@@ -1117,6 +1134,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             }
 
             case ABHA_SELECTION -> {
+                binding.layoutHaveABHANumber.buttonUsername.setEnabled(shouldEnable);
                 binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.setEnabled(shouldEnable);
                 binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.setEnabled(shouldEnable);
                 break;
