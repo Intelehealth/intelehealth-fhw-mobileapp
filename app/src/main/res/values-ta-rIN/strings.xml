@@ -39,10 +39,10 @@
     <string name="identification_screen_checkbox_female">பெண்</string>
     <string name="identification_screen_checkbox_other">மற்றவை</string>
     <string name="identification_screen_prompt_age">வயது:</string>
-    <string name="identification_screen_prompt_city">கிராமம் / நகரம் / நகரம்*</string>
-    <string name="identification_screen_prompt_state">மாநிலம்*</string>
+    <string name="identification_screen_prompt_city">கிராமம் / நகரம் / நகரம்</string>
+    <string name="identification_screen_prompt_state">மாநிலம்</string>
     <string name="identification_screen_prompt_district">மாவட்டம்</string>
-    <string name="identification_screen_prompt_country">நாடு*</string>
+    <string name="identification_screen_prompt_country">நாடு</string>
     <string name="identification_screen_prompt_postal_code">அஞ்சல் குறியீடு</string>
     <string name="identification_screen_text_years">ஆண்டுகள்</string>
     <string name="identification_screen_text_months">மாதங்கள்</string>
@@ -874,7 +874,7 @@
     <string name="physical_examination">உடல் பரிசோதனை</string>
     <string name="general_exams">பொது பரிசோதனைகள்</string>
     <string name="do_you_have_family_history">பின்வருவனவற்றில் ஏதேனும் குடும்ப வரலாறு உங்களுக்கு உள்ளதா?</string>
-    <string name="enter_postal_code">அஞ்சல் குறியீட்டை உள்ளிடவும்</string>
+    <string name="enter_postal_code">குறியீட்டை உள்ளிடவும்</string>
     <string name="type_here_patient_survey">இங்கே உள்ளிடவும்...</string>
     <string name="enter_date_of_birth">பிறந்த தேதியை உள்ளிடவும்</string>
     <string name="enter_age">வயதை உள்ளிடவும்</string>
