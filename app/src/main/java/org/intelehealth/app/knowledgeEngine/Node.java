@@ -3276,6 +3276,9 @@ public class Node implements Serializable {
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
                             break;
+                        case "ta":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_tamil);
+                            break;
                     }
                     answerResult.result = false;
                 }
@@ -3287,6 +3290,9 @@ public class Node implements Serializable {
                             break;
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
+                            break;
+                        case "ta":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_tamil);
                             break;
                     }
                     answerResult.result = false;

@@ -348,6 +348,8 @@ AB NEGATIVE = 1231*/
             return "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "रुग्ण नकार देतो-";
+        } else if (localeCode.equalsIgnoreCase("ta")) {
+            return "நோயாளி மறுக்கிறார்-";
         } else {
             return "Patient denies -";
         }
@@ -368,6 +370,8 @@ AB NEGATIVE = 1231*/
             return "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣಗಳನ್ನು ಹೊಂದಿದ್ದೀರಾ?";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "तुम्हाला खालील लक्षण (लक्षणे) आहेत का?";
+        } else if (localeCode.equalsIgnoreCase("ta")) {
+            return "பின்வரும் அறிகுறிகள் உங்களிடம் உள்ளதா?*";
         } else {
             return "Do you have the following symptom(s)?";
         }
@@ -389,6 +393,8 @@ AB NEGATIVE = 1231*/
             return "ಸಾಮಾನ್ಯ ಪರೀಕ್ಷೆಗಳು:";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "सामान्य परीक्षण:";
+        }else if (localeCode.equalsIgnoreCase("ta")) {
+            return "பொது தேர்வுகள்:";
         } else {
             return "General exams:";
         }
