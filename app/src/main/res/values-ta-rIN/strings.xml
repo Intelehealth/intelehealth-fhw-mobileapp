@@ -444,5 +444,32 @@
     <string name="help"><u>உதவி</u></string>
     <string name="hello_i_am_ayu">வணக்கம், நான் ஆயு,</string>
 
+    <string name="doctor_visits">டாக்டர் வருகைகள்</string>
+    <string name="sevika_or_ncd_visits">சேவிகா/என்சிடி வருகைகள்</string>
+    <string name="beneficiary_registered">பயனாளி பதிவு</string>
+    <string name="household_registered">குடும்பம் பதிவு</string>
+    <string name="status">நிலை</string>
+    <string name="daily_time_spent">செலவிட்ட மொத்த நேரம்</string>
+    <string name="active">செயல்படும்</string>
+    <string name="non_active">செயலற்றது</string>
+    <string name="days_active">செயல்படும் நாட்கள்</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">டாக்டர் வருகைகள் பதிவேற்றம்</string>
+    <string name="doctor_visits_uploaded_tooltip_content">சேவிகா பதிவேற்றிய \nடாக்டர் வருகைகள் \nஎண்ணிக்கை.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">சேவிகா வருகைகள் பதிவேற்றம்</string>
+    <string name="sevika_visits_uploaded_tooltip_content">பதிவேற்றிய சேவிகா/\nஎன்சிடி வருகைகள் \nஎண்ணிக்கை.</string>
+    <string name="beneficiaries_registered_tooltip_title">பதிவு செய்யப்பட்ட பயனாளிகள்</string>
+    <string name="beneficiaries_registered_tooltip_content">சேவிகா பதிவு செய்த \nபயனாளிகள் எண்ணிக்கை.</string>
+    <string name="households_registered_tooltip_title">பதிவு செய்யப்பட்ட குடும்பங்கள்</string>
+    <string name="households_registered_tooltip_content">உருவாக்கப்பட்ட தனிப்பட்ட \nகுடும்ப பதிவுகளின் \nமொத்த எண்ணிக்கை.</string>
+    <string name="active_status_tooltip_title">செயல்படும் நிலை</string>
+    <string name="active_status_tooltip_content">கொடுக்கப்பட்ட நாளில் சேவிகா \nகுறைந்தது ஒரு வருகையை \n(டாக்டர் அல்லது சேவிகா/என்சிடி) \nபதிவேற்றினால் செயல்படும் \nஎனக் கருதப்படும்.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">சேவிகா செலவிட்ட மொத்த நேரம்</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">சேவிகா ஆப்பை \nமுன்பக்கத்தில் திறந்து \nவைத்திருக்கும் நேரம்.</string>
+    <string name="todays_tab_achievement">தினசரி</string>
+    <string name="date_range">தேதி வரம்பு</string>
+    <string name="my_achievements">என் சாதனைகள்</string>
+
+
 </resources>
 

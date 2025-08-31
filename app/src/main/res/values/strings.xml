@@ -1084,7 +1084,7 @@
     <string name="beneficiary_registered">Beneficiary Registered</string>
     <string name="household_registered">Household Registered</string>
     <string name="status">Status</string>
-    <string name="daily_time_spent">Daily time spent</string>
+    <string name="daily_time_spent">Total time spent</string>
     <string name="active">Active</string>
     <string name="non_active">Not Active</string>
     <string name="days_active">Days Active</string>
@@ -1099,7 +1099,7 @@
     <string name="households_registered_tooltip_content">Total number of unique\nhousehold entries made.</string>
     <string name="active_status_tooltip_title">Active status</string>
     <string name="active_status_tooltip_content">Sevika uploaded at least\none visit on the given\nday (Doctor or Sevika/NCD)\nconsidered as active.</string>
-    <string name="daily_time_spent_by_sevika_tooltip_title">Daily time spent by sevika</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">Total time spent by sevika</string>
     <string name="daily_time_spent_by_sevika_tooltip_content">The time when sevikas\nhas the app open\nin the foreground.</string>
     <string name="todays_tab_achievement">Daily</string>
 

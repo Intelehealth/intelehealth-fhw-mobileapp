@@ -577,7 +577,6 @@
     <string name="accept_new">स्वीकारा</string>
     <string name="next_new">पुढे</string>
     <string name="okay">ठीक आहे</string>
-    <string name="my_achievements">माझे यश</string>
     <string name="achievements">उपलब्धी</string>
     <string name="my_profile">माझे प्रोफाइल</string>
     <string name="setup_tooltip_text">इंटेलेहेल्थ टीमने दिलेली क्रेडेन्शियल्स एंटर करा.</string>
@@ -830,7 +829,6 @@
     <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
     <string name="overall">एकूणच</string>
     <string name="daily">दररोज</string>
-    <string name="date_range">तारीख श्रेणी</string>
     <string name="visit_date">भेट तारीख</string>
     <string name="patient_registered">रुग्ण नोंदणीकृत!</string>
     <string name="does_patient_start_visit_now">रुग्णाला आता भेट सुरू करायची आहे का?</string>
@@ -1016,5 +1014,32 @@
     <string name="the_to_date_cannot_be_less_than_the_from_date">\'ते\' तारीख \'पासून\' तारखेपेक्षा कमी असू शकत नाही</string>
     <string name="profile_picture_is_mandatory">प्रोफाइल चित्र अनिवार्य आहे</string>
     <string name="lbl_clear_all">सर्व साफ करा</string>
+
+    <string name="doctor_visits">डॉक्टर भेटी</string>
+    <string name="sevika_or_ncd_visits">सेविका/एनसीडी भेटी</string>
+    <string name="beneficiary_registered">लाभार्थी नोंदणीकृत</string>
+    <string name="household_registered">कुटुंब नोंदणीकृत</string>
+    <string name="status">स्थिती</string>
+    <string name="daily_time_spent">एकूण वेळ खर्च</string>
+    <string name="active">सक्रिय</string>
+    <string name="non_active">निष्क्रिय</string>
+    <string name="days_active">सक्रिय दिवस</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">डॉक्टर भेटी अपलोड केल्या</string>
+    <string name="doctor_visits_uploaded_tooltip_content">सेविकेद्वारे अपलोड केलेल्या \nडॉक्टर भेटींची संख्या.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">सेविका भेटी अपलोड केल्या</string>
+    <string name="sevika_visits_uploaded_tooltip_content">अपलोड केलेल्या सेविका/\nएनसीडी भेटींची संख्या.</string>
+    <string name="beneficiaries_registered_tooltip_title">नोंदणीकृत लाभार्थी</string>
+    <string name="beneficiaries_registered_tooltip_content">सेविकेने नोंदवलेले \nलाभार्थींची संख्या.</string>
+    <string name="households_registered_tooltip_title">नोंदणीकृत कुटुंब</string>
+    <string name="households_registered_tooltip_content">तयार केलेल्या अद्वितीय कुटुंब \nनोंदींची एकूण संख्या.</string>
+    <string name="active_status_tooltip_title">सक्रिय स्थिती</string>
+    <string name="active_status_tooltip_content">सेविकेने दिलेल्या दिवशी किमान \nएक भेट (डॉक्टर किंवा सेविका/\nएनसीडी) अपलोड केल्यास सक्रिय \nमानले जाते.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">सेविकेने खर्च केलेला एकूण वेळ</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">सेविकेने ॲप अग्रभागात उघडे \nठेवलेला वेळ.</string>
+    <string name="todays_tab_achievement">दैनिक</string>
+    <string name="date_range">दिनांक श्रेणी</string>
+    <string name="my_achievements">माझी कामगिरी</string>
+
 
 </resources>

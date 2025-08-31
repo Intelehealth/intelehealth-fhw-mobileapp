@@ -461,7 +461,6 @@
     <string name="accept_new">গ্ৰহণ কৰা</string>
     <string name="next_new">পৰৱৰ্তী</string>
     <string name="okay">অ\'কে</string>
-    <string name="my_achievements">মোৰ কৃতিত্ব</string>
     <string name="achievements">কৃতিত্ব</string>
     <string name="my_profile">মোৰ প্ৰফাইল</string>
     <string name="setup_tooltip_text">ইণ্টেলিহেল্ঠ দলে দিয়া ক্রেডেন্সীয়েলসমূহ লিখক।</string>
@@ -792,7 +791,6 @@
     <string name="protocols_successfully_changed">প্ৰট’কলসমূহ সফলতাৰে সলনি কৰা হৈছে!</string>
     <string name="overall">সামগ্ৰিক</string>
     <string name="daily">দৈনিক</string>
-    <string name="date_range">তাৰিখৰ পৰিসৰ</string>
     <string name="visit_date">ভিজিটৰ তাৰিখ</string>
     <string name="patient_registered">ৰোগী পঞ্জীয়ন কৰা হৈছে!</string>
     <string name="does_patient_start_visit_now">ৰোগীয়ে এতিয়াই ভিজিট আৰম্ভ কৰিব বিচাৰে নেকি?</string>
@@ -1068,5 +1066,34 @@
     <string name="contact_your_admin">Contact your admin</string>
     <string name="sync">Refresh</string>
     <string name="sending_otp">Sending OTP...</string>
+
+
+    <string name="doctor_visits">ডাক্তৰ ভিজিট</string>
+    <string name="sevika_or_ncd_visits">সেৱিকা/এনচিডি ভিজিট</string>
+    <string name="beneficiary_registered">উপকৃত পঞ্জীয়ন</string>
+    <string name="household_registered">পৰিয়াল পঞ্জীয়ন</string>
+    <string name="status">অৱস্থা</string>
+    <string name="daily_time_spent">মোট সময় ব্যয়</string>
+    <string name="active">সক্ৰিয়</string>
+    <string name="non_active">নিষ্ক্ৰিয়</string>
+    <string name="days_active">সক্ৰিয় দিন</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">ডাক্তৰ ভিজিট আপলোড</string>
+    <string name="doctor_visits_uploaded_tooltip_content">সেৱিকা আপলোড কৰা ডাক্তৰ \nভিজিট সংখ্যা।</string>
+    <string name="sevika_visits_uploaded_tooltip_title">সেৱিকা ভিজিট আপলোড</string>
+    <string name="sevika_visits_uploaded_tooltip_content">আপলোড কৰা সেৱিকা/এনচিডি \nভিজিট সংখ্যা।</string>
+    <string name="beneficiaries_registered_tooltip_title">পঞ্জীয়ন কৰা উপকৃত</string>
+    <string name="beneficiaries_registered_tooltip_content">সেৱিকা পঞ্জীয়ন কৰা \nউপকৃতৰ সংখ্যা।</string>
+    <string name="households_registered_tooltip_title">পঞ্জীয়ন কৰা পৰিয়াল</string>
+    <string name="households_registered_tooltip_content">সৃষ্ট অনন্য পৰিয়াল এন্ট্ৰীৰ \nসংখ্যা।</string>
+    <string name="active_status_tooltip_title">সক্ৰিয় অৱস্থা</string>
+    <string name="active_status_tooltip_content">নিৰ্দিষ্ট দিনত সেৱিকাই \nঅন্তত এটা ভিজিট (ডাক্তৰ বা \nসেৱিকা/এনচিডি) আপলোড \nকৰিলে সক্ৰিয় ধৰা হয়।</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">সেৱিকা ব্যয় কৰা মোট সময়</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">সেৱিকাই এপ্প খোলা ৰাখে \nসামনের পৰ্দাত।</string>
+    <string name="todays_tab_achievement">দৈনিক</string>
+    <string name="date_range">তাৰিখ সীমা</string>
+    <string name="my_achievements">মোৰ সফলতা</string>
+
+
 
 </resources>

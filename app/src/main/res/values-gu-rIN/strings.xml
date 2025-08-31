@@ -599,7 +599,6 @@
     <string name="protocols_successfully_changed">પ્રોટોકોલ સફળતાપૂર્વક બદલવામાં આવ્યા છે!</string>
     <string name="overall">એકંદરે</string>
     <string name="daily">દૈનિક</string>
-    <string name="date_range">તારીખ શ્રેણી</string>
     <string name="visit_date">મુલાકાત તારીખ</string>
     <string name="patient_registered">દર્દી નોંધાયેલ છે!</string>
     <string name="does_patient_start_visit_now">શું દર્દી હવે મુલાકાત શરૂ કરવા માંગે છે?</string>
@@ -905,7 +904,6 @@
     <string name="accept_new">સ્વીકારો</string>
     <string name="next_new">આગળ</string>
     <string name="okay">ઠીક છે</string>
-    <string name="my_achievements">મારી સિદ્ધિઓ</string>
     <string name="achievements">સિદ્ધિઓ</string>
     <string name="my_profile">મારી પ્રોફાઇલ</string>
     <string name="setup_tooltip_text">આપેલ ઓળખપત્રો દાખલ કરો \nIntelehealth ટીમ દ્વારા.</string>
@@ -1032,5 +1030,31 @@
     <string name="address_to_other_info">અન્ય માહિતી માટે સરનામું</string>
     <string name="personal_to_address_info">સરનામા માટે વ્યક્તિગત માહિતી</string>
     <string name="lbl_clear_all">બધું સાફ કરો</string>
+
+    <string name="doctor_visits">ડૉક્ટર મુલાકાતો</string>
+    <string name="sevika_or_ncd_visits">સેવિકા/NCD મુલાકાતો</string>
+    <string name="beneficiary_registered">લાભાર્થી નોંધાયેલ</string>
+    <string name="household_registered">લાભાર્થી નોંધાયેલ</string>
+    <string name="status">સ્થિતિ</string>
+    <string name="daily_time_spent">કુલ વિતાવેલો સમય</string>
+    <string name="active">સક્રિય</string>
+    <string name="non_active">અસક્રિય</string>
+    <string name="days_active">સક્રિય દિવસો</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">ડૉક્ટર મુલાકાતો અપલોડ</string>
+    <string name="doctor_visits_uploaded_tooltip_content">સેવિકાએ અપલોડ કરેલ ડૉક્ટર \nમુલાકાતોની સંખ્યા.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">સેવિકા મુલાકાતો અપલોડ</string>
+    <string name="sevika_visits_uploaded_tooltip_content">અપલોડ કરેલી સેવિકા/NCD \nમુલાકાતોની સંખ્યા</string>
+    <string name="beneficiaries_registered_tooltip_title">નોંધાયેલ પરિવાર</string>
+    <string name="beneficiaries_registered_tooltip_content">સેવિકાએ નોંધેલા લાભાર્થીઓની \nસંખ્યા.</string>
+    <string name="households_registered_tooltip_title">નોંધાયેલ પરિવાર</string>
+    <string name="households_registered_tooltip_content">બનાવેલા વિશિષ્ટ પરિવાર એન્ટ્રીની \nકુલ સંખ્યા.</string>
+    <string name="active_status_tooltip_title">એક્ટિવ  સ્થિતિ</string>
+    <string name="active_status_tooltip_content">આપેલા દિવસે સેવિકાએ ઓછામાં \nઓછું એક મુલાકાત (ડૉક્ટર અથવા \nસેવિકા/NCD) અપલોડ કરી હોય તો \nસક્રિય ગણાય છે.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">સેવિકાએ વિતાવેલો કુલ \nસમય</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">સેવિકા જ્યારે એપ ફ્રન્ટગ્રાઉન્ડમાં \nખોલેલી હોય તે સમય.</string>
+    <string name="todays_tab_achievement">દૈનિક</string>
+    <string name="date_range">તારીખ શ્રેણી</string>
+    <string name="my_achievements">મારી સિદ્ધિઓ</string>
 
 </resources>

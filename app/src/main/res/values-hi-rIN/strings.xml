@@ -586,7 +586,6 @@
     <string name="accept_new">स्वीकार करें</string>
     <string name="next_new">आगे</string>
     <string name="okay">ठीक है</string>
-    <string name="my_achievements">मेरी उपलब्धियां</string>
     <string name="achievements">उपलब्धियां</string>
     <string name="my_profile">मेरी प्रोफ़ाइल</string>
     <string name="setup_tooltip_text">इंटेलिहेल्थ टीम द्वारा प्रदान किए गए क्रेडेंशियल एंटर करें।</string>
@@ -786,7 +785,6 @@
     <string name="protocols_successfully_changed">प्रोटोकॉल सफलतापूर्वक बदल दिए गए हैं!</string>
     <string name="overall">समग्र</string>
     <string name="daily">दैनिक</string>
-    <string name="date_range">तिथि सीमा</string>
     <string name="patient_registered">पंजीकृत रोगी</string>
     <string name="does_patient_start_visit_now">क्या रोगी अभी विज़िट शुरू करना चाहते हैं?</string>
     <string name="no_address_added">पता नहीं जुड़ा है</string>
@@ -1039,5 +1037,31 @@
     <string name="sending_otp">Sending OTP...</string>
 
     <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
+
+    <string name="doctor_visits">डॉक्टर विज़िट</string>
+    <string name="sevika_or_ncd_visits">सेविका/एनसीडी विज़िट</string>
+    <string name="beneficiary_registered">लाभार्थी पंजीकृत</string>
+    <string name="household_registered">परिवार पंजीकृत</string>
+    <string name="status">स्थिति</string>
+    <string name="daily_time_spent">कुल समय व्यतीत</string>
+    <string name="active">सक्रिय</string>
+    <string name="non_active">निष्क्रिय</string>
+    <string name="days_active">सक्रिय दिन</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">डॉक्टर विज़िट अपलोड</string>
+    <string name="doctor_visits_uploaded_tooltip_content">सेविका द्वारा अपलोड किए गए डॉक्टर विज़िट की संख्या।</string>
+    <string name="sevika_visits_uploaded_tooltip_title">सेविका विज़िट अपलोड \nकिए गए</string>
+    <string name="sevika_visits_uploaded_tooltip_content">अपलोड की गई सेविका/एनसीडी \nविज़िट की संख्या।</string>
+    <string name="beneficiaries_registered_tooltip_title">लाभार्थी पंजीकृत</string>
+    <string name="beneficiaries_registered_tooltip_content">सेविका द्वारा पंजीकृत लाभार्थियों \nकी संख्या।</string>
+    <string name="households_registered_tooltip_title">परिवार पंजीकृत</string>
+    <string name="households_registered_tooltip_content">बनाए गए अद्वितीय परिवार \nप्रविष्टियों की कुल संख्या।</string>
+    <string name="active_status_tooltip_title">सक्रिय स्थिति</string>
+    <string name="active_status_tooltip_content">सेविका ने दिए गए दिन कम से \nकम एक विज़िट (डॉक्टर \nया सेविका/एनसीडी) अपलोड \nकी हो, तो सक्रिय मानी जाती है।</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">सेविका द्वारा बिताया गया \nकुल समय</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">वह समय जब सेविकाएं \nऐप को अग्रभूमि में खोले \nरखती हैं।</string>
+    <string name="todays_tab_achievement">दैनिक</string>
+    <string name="date_range">दिनांक सीमा</string>
+    <string name="my_achievements">मेरी उपलब्धियां</string>
 
 </resources>
