@@ -106,9 +106,13 @@ public class SessionManager {
     private Context _context;
     // Shared pref mode
     private int PRIVATE_MODE = 0;
+    private static final String KEY_LAST_SYNC_DATE = "last_sync_date";
+    private static final String KEY_IS_SYNCED_TODAY = "is_synced_today";
+
 
     //UI2.0
     private static final String IS_LOGGED_IN = "IS_LOGGED_IN";
+    private static final String LAST_API_CALL_DATE = "lastApiCallDate";
 
 
     public SessionManager(Context context) {
@@ -800,4 +804,5 @@ public class SessionManager {
     public String getCustomLogVersion() {
         return pref.getString(CUSTOM_LOG_VERSION, "");
     }
+
 }

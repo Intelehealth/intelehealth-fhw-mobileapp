@@ -274,6 +274,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
+    public static final String CREATE_USER_SESSION =
+            "CREATE TABLE IF NOT EXISTS tbl_user_session (" +
+                    "sessionId INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "userId TEXT," +
+                    "startTime TEXT," +
+                    "endTime TEXT," +
+                    "sessionDuration TEXT," +
+                    "sync TEXT DEFAULT 'false' " +
+                    ")";
+
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -342,6 +352,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
         db.execSQL(CREATE_LOCATION_NEW);
+        db.execSQL(CREATE_USER_SESSION);
         // create index
 
         uuidInsert(db);

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import org.intelehealth.app.user.UserSessionDao;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -78,6 +79,7 @@ public class SyncDAO {
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        UserSessionDao userSessionDao = new UserSessionDao(IntelehealthApplication.getAppContext());
 
         try {
             Logger.logD(TAG, "pull sync started");
@@ -93,7 +95,8 @@ public class SyncDAO {
             providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
-
+            Log.d(TAG, "kzSyncData: provider attributes : "+new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
+            userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);

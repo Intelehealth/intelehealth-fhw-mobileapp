@@ -47,9 +47,12 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
+import org.intelehealth.app.activities.user.api.DailyApiWorker;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.user.UserSessionDao;
+import org.intelehealth.app.user.UserSessionRepository;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -81,7 +84,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
@@ -497,8 +503,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void resetApp() {
         // to insert time spent by user into the db
-        insertTimeSpentByUserIntoDb();
+        //insertTimeSpentByUserIntoDb();
+        UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+        repo.endSession();
+
+
         showResetConfirmationDialog();
+    }
+
+    private void apiCallforSaveTimeSpentValues() {
+        //new SessionRepository().syncUserSessions(HomeScreenActivity_New.this);
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
+                .setConstraints(
+                        new Constraints.Builder()
+                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                .build()
+                )
+                .build();
+
+        WorkManager.getInstance(context).enqueue(workRequest);
+
     }
 
     private void showResetConfirmationDialog() {
@@ -519,6 +543,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             if (isSynced) {
 
                 new Handler().postDelayed(() -> {
+                    apiCallforSaveTimeSpentValues();
 
                     // next we're displaying the sync successful message - Added by Arpan Sircar
                     updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_login_success));
@@ -1049,6 +1074,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String tag = "";
         int itemId = menuItem.getItemId();
         if (itemId == R.id.menu_my_achievements) {
+            SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tvAppLastSync.setVisibility(View.GONE);
@@ -1561,9 +1587,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
     }
 
-    public void logout() {
+    /*public void logout() {
         // to insert time spent by user into the db
-        insertTimeSpentByUserIntoDb();
+        //insertTimeSpentByUserIntoDb();
+        showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
+
+        UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+        repo.endSession();
+        apiCallforSaveTimeSpentValues();
+
         IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
@@ -1577,8 +1609,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         startActivity(intent);
         finish();
 
-
-    }
+    }*/
 
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
@@ -1686,6 +1717,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
+            SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
         }
         loadFragment(fragment, tag);
 
@@ -1778,5 +1810,74 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
+    public void logout() {
+        showSimpleDialog(
+                resetAlertDialogBuilder,
+                getString(R.string.app_sync_dialog_title),
+                getString(R.string.please_wait_sync_progress),
+                ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in)
+        );
+
+        new Thread(() -> {
+            // Step 1: End session (DB write)
+            UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+            repo.endSession(); // blocking DB insert
+
+            // Step 2: Wait a bit to ensure DB commit
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Step 3: Back to main thread to start WorkManager and observe it
+            runOnUiThread(() -> {
+                if (NetworkConnection.isOnline(this)) {
+                    OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
+                            .setConstraints(
+                                    new Constraints.Builder()
+                                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                                            .build()
+                            )
+                            .build();
+
+                    WorkManager.getInstance(context).enqueue(workRequest);
+
+                    // Observe worker completion
+                    WorkManager.getInstance(context)
+                            .getWorkInfoByIdLiveData(workRequest.getId())
+                            .observe(this, workInfo -> {
+                                if (workInfo != null && workInfo.getState().isFinished()) {
+                                    proceedWithLogout();
+                                }
+                            });
+                } else {
+                    proceedWithLogout();
+                }
+            });
+        }).start();
+    }
+
+    private void proceedWithLogout() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            IntelehealthApplication.getInstance().disconnectSocket();
+            OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+            syncUtils.syncBackground();
+            sessionManager.setReturningUser(false);
+            sessionManager.setLogout(true);
+            unregisterReceiver(syncBroadcastReceiver);
+
+            if (resetDialog != null && resetDialog.isShowing()) {
+                resetDialog.dismiss();
+            }
+
+            Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }, 3000);
+    }
+
+
 
 }

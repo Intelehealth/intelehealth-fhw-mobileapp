@@ -103,4 +103,7 @@ public class UuidDictionary {
     public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
     public static final String  ATTRIBUTE_TYPE_DATE_CREATED_NAME= "createdDate";
     public static final String ATTRIBUTE_TYPE_PROVIDER_ID_NAME = "providerUUID";
+    public static final String ATTRIBUTE_TYPE_USER_SESSION_TIME = "6f15d5cd-d4b3-4708-90ac-fcaacf30c924";
+
+
 }

@@ -582,7 +582,12 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        Log.d(TAG, "getJWTToken: finalURL : "+finalURL);
+
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Log.d(TAG, "getJWTToken: authBody1 : "+authBody);
+        Log.d(TAG, "getJWTToken: authBody2 : "+new Gson().toJson(authBody));
+
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
         authJWTResponseObservable
@@ -602,6 +607,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             showErrorDialog();
                             return;
                         }
+                        Log.d(TAG, "onNext: authJWTResponse  : "+new Gson().toJson(authJWTResponse));
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password);
@@ -1224,6 +1230,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     protected void onResume() {
         super.onResume();
         //temporary added
-        sessionManager.setIsLoggedIn(false);
+        //sessionManager.setIsLoggedIn(false);
     }
 }

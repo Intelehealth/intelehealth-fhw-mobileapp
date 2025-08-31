@@ -1,16 +1,25 @@
 package org.intelehealth.app.activities.achievements.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.intelehealth.app.activities.achievements.MyAchievementsRepository
+import org.intelehealth.app.activities.user.api.AppUsageTrackerNew
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.InteleHealthDatabaseHelper
+import org.intelehealth.app.user.UserSessionDao
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
+import org.intelehealth.klivekit.utils.DateTimeUtils.formatMillisToHourMinute
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DailyMyAchievementsViewModel(application: IntelehealthApplication) : BaseViewModel() {
 
@@ -31,6 +40,12 @@ class DailyMyAchievementsViewModel(application: IntelehealthApplication) : BaseV
 
     private val _patientsWithBaselineSurvey = MutableLiveData<Int>()
     val patientsWithBaselineSurvey: LiveData<Int> get() = _patientsWithBaselineSurvey
+
+    private val _averageSessionDuration = MutableLiveData<String?>()
+    val averageSessionDuration: MutableLiveData<String?> get() = _averageSessionDuration
+
+
+    private val context = application.applicationContext
 
     fun fetchTodaysDoctorVisits(creatorUuid: String, attributeTypeUuid: String, selectedDate: String) {
         viewModelScope.launch {
@@ -76,5 +91,24 @@ class DailyMyAchievementsViewModel(application: IntelehealthApplication) : BaseV
             _patientsWithBaselineSurvey.value = count
         }
     }
+   fun getUserAverageTimeSpentByDate(date: String) {
+       viewModelScope.launch {
+           val dbDurationMillis = withContext(Dispatchers.IO) {
+               UserSessionDao(context)
+                   .getAverageSessionDurationByDate(SessionManager(context).providerID, date)
+           }
+
+           // Get today's date in yyyy-MM-dd format for comparison
+           val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+           val unsavedMillis = if (date == today) {
+               AppUsageTrackerNew(context, SessionManager(context)).getUnsavedTime()
+           } else { 0L }
+
+           val totalDurationMillis = dbDurationMillis + unsavedMillis
+           _averageSessionDuration.value = formatMillisToHourMinute(totalDurationMillis)
+       }
+   }
+
 
 }

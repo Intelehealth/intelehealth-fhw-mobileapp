@@ -4,8 +4,6 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +19,6 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.achievements.viewmodel.DateRangeMyAchievementsViewModel
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.databinding.LayoutDailyAchievementsFragmentBinding
 import org.intelehealth.app.databinding.LayoutDateRangeAchievementsFragmentBinding
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -117,12 +114,24 @@ class DateRangeAchievementsFragmentNew : Fragment() {
             endDate =endDate
         )
 
+        viewModel.getUserAverageTimeSpentBetweenDates(startDate,endDate)
+        viewModel.averageSessionDuration.observe(viewLifecycleOwner) { totalTime: String? ->
+            // binding.tvHouseholdRegisteredValue.text = totalTime.toString()
+            if(totalTime!=null)
+                binding.tvDailyTimeSpentValue.text = totalTime
+            else
+                binding.tvDailyTimeSpentValue.text = "00h 00m"
+
+            Log.d("TAG", "setObservers: totalTime daterange : "+totalTime)
+
+        }
+
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        handler.removeCallbacks(updateRunnable)
+       // handler.removeCallbacks(updateRunnable)
         _binding = null
     }
 
@@ -145,7 +154,7 @@ class DateRangeAchievementsFragmentNew : Fragment() {
             showDatePickerDialog(binding.tvEndDate, "endDate")
         }
         tooltipCall();
-        handler.post(updateRunnable)
+        //handler.post(updateRunnable)
 
     }
     private fun fetchAllStats() {
@@ -181,6 +190,9 @@ class DateRangeAchievementsFragmentNew : Fragment() {
             startDate = startDate,
             endDate = endDate
         )
+
+        viewModel.getUserAverageTimeSpentBetweenDates(startDate,endDate)
+
     }
     private fun selectDate(textView: TextView, type: String) {
         val language = sessionManager.appLanguage
@@ -341,7 +353,7 @@ class DateRangeAchievementsFragmentNew : Fragment() {
         }
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+ /*   private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
         override fun run() {
             val app = requireContext().applicationContext as IntelehealthApplication
@@ -354,7 +366,7 @@ class DateRangeAchievementsFragmentNew : Fragment() {
                 handler.postDelayed(this, 60_000)
             }
         }
-    }
+    }*/
     fun convertMillisecondsToHoursMinutesSeconds(millis: Long): String {
         //val seconds = (millis / 1000) % 60
         val minutes = (millis / (1000 * 60)) % 60
