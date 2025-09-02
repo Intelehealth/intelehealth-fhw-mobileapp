@@ -512,7 +512,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         cpd.dismiss();
-                        disableUI(false);
+                        disableUI(true);
                         binding.sendOtpBtn.setEnabled(true);
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -631,17 +631,17 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                        disableUI(false);
+                                        disableUI(true);
                                         binding.sendOtpBtn.setEnabled(true);
                                     }
 
                                 } else {
                                     Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                    disableUI(false);
+                                    disableUI(true);
                                     binding.sendOtpBtn.setEnabled(true);
                                 }
                             } else {
-                                disableUI(false);
+                                disableUI(true);
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
@@ -709,17 +709,17 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                                 } else {
                                     Toast.makeText(context, mobileLoginOnOTPVerifiedResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                    disableUI(false);
+                                    disableUI(true);
                                     binding.sendOtpBtn.setEnabled(true);
                                 }
                             } else {
-                                disableUI(false);
+                                disableUI(true);
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
-                            disableUI(false);
+                            disableUI(true);
                             binding.sendOtpBtn.setEnabled(true);
                         }
                     }
@@ -748,19 +748,26 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Response<FetchAuthModesResponse> body) {
                         var response = body.body();
-                        if (response.getAuthMethods().size() == 1 && response.getAuthMethods().contains(ABHA_OTP_MOBILE)) {
-                            abhaAuthType = ABHA_OTP_MOBILE;
-                        } else if (response.getAuthMethods().size() == 1 && response.getAuthMethods().contains(ABHA_OTP_AADHAAR)) {
-                            abhaAuthType = ABHA_OTP_AADHAAR;
-                        } else {
-                            abhaAuthType = BOTH;
+
+                        if (response != null) {
+                            if (response.getAuthMethods().size() == 1 && response.getAuthMethods().contains(ABHA_OTP_MOBILE)) {
+                                abhaAuthType = ABHA_OTP_MOBILE;
+                            } else if (response.getAuthMethods().size() == 1 && response.getAuthMethods().contains(ABHA_OTP_AADHAAR)) {
+                                abhaAuthType = ABHA_OTP_AADHAAR;
+                            } else {
+                                abhaAuthType = BOTH;
+                            }
+                            AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                            dialog.openAuthSelectionDialogDialog(abhaAuthType, authType -> {
+                                abhaAuthType = authType;
+                                sentOtpApi(accessToken, getSendOtpApiRequest());
+                            });
+                            dialog.show(getSupportFragmentManager(), "");
+                        } else  {
+                            disableUI(true);
+                            binding.sendOtpBtn.setEnabled(true);
+                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.please_enter_valid_abha), Toast.LENGTH_LONG).show();
                         }
-                        AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
-                        dialog.openAuthSelectionDialogDialog(abhaAuthType, authType -> {
-                            abhaAuthType = authType;
-                            sentOtpApi(accessToken, getSendOtpApiRequest());
-                        });
-                        dialog.show(getSupportFragmentManager(), "");
                     }
 
                     @Override
@@ -832,19 +839,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
-                        Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
-                        if (response == null || response.getData() == null || Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
-                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.please_enter_valid_abha), Toast.LENGTH_LONG).show();
-                            disableUI(true);
-                            binding.sendOtpBtn.setEnabled(true);
-                            binding.otpBox.setText("");
-                            binding.flOtpBox.setVisibility(View.GONE);
-                            binding.rlResendOTP.setVisibility(View.GONE);
-                            binding.llResendCounter.setVisibility(View.GONE);
-                            binding.sendOtpBtn.setText(getString(R.string.send_otp));
-                            resendCounterAttemptsTextDisplay();
-                            return;
-                        }
 
                         disposables.add(
                                 Observable.fromCallable(() -> PatientsDAO.getPatientDetailsByPhoneNum(
@@ -1146,5 +1140,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    private void resetOTPField() {
+        binding.sendOtpBtn.setEnabled(true);
+        binding.otpBox.setText("");
+        binding.flOtpBox.setVisibility(View.GONE);
+        binding.rlResendOTP.setVisibility(View.GONE);
+        binding.llResendCounter.setVisibility(View.GONE);
+        binding.sendOtpBtn.setText(getString(R.string.send_otp));
+        resendCounterAttemptsTextDisplay();
     }
 }
