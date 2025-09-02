@@ -94,7 +94,7 @@ public class AbhaProfileResponse implements Serializable {
     @SerializedName("wardCode")
     @Expose
     private Object wardCode;
-    @SerializedName("pincode")
+    @SerializedName(value = "pincode", alternate = {"pinCode"})
     @Expose
     private String pincode;
     @SerializedName("address")
