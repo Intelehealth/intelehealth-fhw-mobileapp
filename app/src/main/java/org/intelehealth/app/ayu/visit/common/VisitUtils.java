@@ -244,6 +244,19 @@ AB NEGATIVE = 1231*/
                     .replace("times per week", "வாரத்திற்கு முறை")
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை");
+
+        }else if (locale.equalsIgnoreCase("tl")) {
+            result = result.replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
+                    .replace("Patient reports -", "రోగి వెల్లడిస్తారు-")
+                    .replace("Patient denies -", "రోగి నిరాకరిస్తారు-")
+                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
+                    .replace("Weeks", "వారం").replace("Months", "నెలలు")
+                    .replace("Years", "సంవత్సరాలు")
+                    .replace("times per hour", "ఒక గంటకు సార్లు")
+                    .replace("time per day", "ఒక రోజుకు సారి")
+                    .replace("times per week", "వారం కు సార్లు")
+                    .replace("times per month", "నెలకు సార్లు")
+                    .replace("times per year", "వర్షం కు సార్లు");
         }
         CustomLog.v("VisitUtils", "OUT - " + result);
 
@@ -327,6 +340,13 @@ AB NEGATIVE = 1231*/
                     .replace("ஆண்டுகள்", "Years");
 
 
+        }else if (locale.equalsIgnoreCase("tl")) {
+            result = result.replace("గంటలు", "Hours")
+                    .replace("రోజులు", "Days")
+                    .replace("వారం", "Weeks")
+                    .replace("నెలలు", "Months")
+                    .replace("సంవత్సరాలు", "Years");
+
         }
         CustomLog.v("VisitUtils", "OUT - " + result);
 
@@ -350,6 +370,8 @@ AB NEGATIVE = 1231*/
             return "रुग्ण नकार देतो-";
         } else if (localeCode.equalsIgnoreCase("ta")) {
             return "நோயாளி மறுக்கிறார்-";
+        } else if (localeCode.equalsIgnoreCase("tl")) {
+            return "రోగి నిరాకరిస్తారు-";
         } else {
             return "Patient denies -";
         }
@@ -371,8 +393,11 @@ AB NEGATIVE = 1231*/
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "तुम्हाला खालील लक्षण (लक्षणे) आहेत का?";
         } else if (localeCode.equalsIgnoreCase("ta")) {
-            return "பின்வரும் அறிகுறிகள் உங்களிடம் உள்ளதா?*";
-        } else {
+            return "உங்களுக்கு பின்வரும் அறிகுறிகள் உள்ளதா?*";
+        }else if (localeCode.equalsIgnoreCase("tl")) {
+            return "మీకు క్రింది లక్షణాలు ఉన్నాయా?*";
+        }
+        else {
             return "Do you have the following symptom(s)?";
         }
     }
@@ -395,6 +420,9 @@ AB NEGATIVE = 1231*/
             return "सामान्य परीक्षण:";
         }else if (localeCode.equalsIgnoreCase("ta")) {
             return "பொது தேர்வுகள்:";
+        }
+        else if (localeCode.equalsIgnoreCase("tl")) {
+            return "సాధారణ పరీక్షలు:";
         } else {
             return "General exams:";
         }
