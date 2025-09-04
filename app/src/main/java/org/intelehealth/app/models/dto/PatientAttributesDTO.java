@@ -116,6 +116,10 @@ public class PatientAttributesDTO implements Serializable {
         COOKING_FUEL("cookingFuel"),
         HOUSEHOLD_LIGHTING("householdLighting"),
         SOAP_HAND_WASHING_OCCASION("soapHandWashingOccasion"),
+        TAKING_ANY_MEDICATION_FOR_ANEMIA("areYouTakingMedicationsForAnemia"),
+        HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA("haveYouBeenSeenByHealthcareWorkerForAnemia"),
+        REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION("whyAreYouNotMedicationForAnemia"),
+        OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION("hbChecked"),
         TAKE_OUR_SERVICE("TakeOurService");
         public final String value;
 

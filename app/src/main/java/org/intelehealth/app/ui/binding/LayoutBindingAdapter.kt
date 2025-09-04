@@ -117,4 +117,29 @@ fun bindAutoCompleteValue(
 fun bindCheckBoxesValue(linearLayout: LinearLayout, data: String) {
     linearLayout.setSelectedCheckboxes(data)
 }
+@BindingAdapter("bindRadioButtonValueNew")
+fun bindRadioButtonValueNew(radioGroup: RadioGroup?, data: String?) {
+    if (radioGroup == null) return
+
+    if (data.isNullOrEmpty() || data == "-") {
+        // No default selection
+        radioGroup.clearCheck()
+        return
+    }
+
+    radioGroup.forEach { view ->
+        if (view is RadioButton) {
+            val englishLocaleResources = LanguageUtils.getSpecificLocalResource(
+                view.context,
+                "en"
+            )
+            val tag: Int = view.tag as Int
+            val englishText = englishLocaleResources.getString(tag)
+
+            if (englishText == data) {
+                view.isChecked = true
+            }
+        }
+    }
+}
 

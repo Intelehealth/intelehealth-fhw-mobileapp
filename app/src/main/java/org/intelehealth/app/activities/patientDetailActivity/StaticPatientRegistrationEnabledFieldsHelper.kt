@@ -710,6 +710,50 @@ object StaticPatientRegistrationEnabledFieldsHelper {
 
         fields.add(currentField)
 
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_ANEMIA,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
         return fields
     }
 

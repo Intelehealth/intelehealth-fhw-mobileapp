@@ -208,6 +208,10 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.ALCOHOL_RATE -> alcoholRate = it
                     PatientRegConfigKeys.ALCOHOL_DURATION -> alcoholDuration = it
                     PatientRegConfigKeys.ALCOHOL_FREQUENCY -> alcoholFrequency = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_ANEMIA -> takingAnyMedicationForAnemia = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA -> haveYouSeenToHWinPastOneYearForAnemia = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> reasonForNotTakingAnemiaMedication = it
+                    PatientRegConfigKeys.OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> otherRreasonForNotTakingAnemiaMedication = it
                 }
             }
         }

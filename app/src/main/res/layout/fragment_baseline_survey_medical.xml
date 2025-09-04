@@ -338,8 +338,15 @@
                     </RadioGroup>
 
                 </LinearLayout>
-
-                <LinearLayout
+                <include
+                    android:id="@+id/layout_anemia_medication"
+                    layout="@layout/layout_anemia_medication_baseline"
+                    tools:visibility="visible"
+                    app:baseline="@{baseline}"
+                    app:medicalConfig="@{medicalConfig}"
+                    app:baselineEditMode="@{baselineEditMode}"
+                    android:visibility="@{medicalConfig.anemiaValue.enabled ? View.VISIBLE : View.GONE}"/>
+             <!--   <LinearLayout
                     android:id="@+id/llAnemiaLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -389,7 +396,9 @@
                             android:text="@string/no" />
                     </RadioGroup>
 
-                </LinearLayout>
+
+
+                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/llSurgeryLabel"

@@ -46,7 +46,10 @@ fun bindMedicalBaselinePatientAttributes(
                 baseline.arthritisValue,
                 baseline.anemiaValue,
                 baseline.surgeryValue,
-                baseline.surgeryReason
+                baseline.surgeryReason,
+                baseline.takingAnyMedicationForAnemia,
+                baseline.haveYouSeenToHWinPastOneYearForAnemia,
+                baseline.reasonForNotTakingAnemiaMedication
             ),
             patientsDAO
         )
@@ -114,7 +117,10 @@ private fun getMedicalHistory(
     arthritisCheck: String,
     anemiaCheck: String,
     surgeryCheck: String,
-    reasonForSurgery: String
+    reasonForSurgery: String,
+    medicationForAnemia: String,
+    healthWorkerForAnemia: String,
+    reasonForNoAnemiaMedication: String
 ): String = Gson().toJson(
     listOf(
         MedicalHistory(
@@ -123,7 +129,10 @@ private fun getMedicalHistory(
             arthritisCheck.storeHyphenIfEmpty(),
             anemiaCheck.storeHyphenIfEmpty(),
             surgeryCheck.storeHyphenIfEmpty(),
-            reasonForSurgery.storeHyphenIfEmpty()
+            reasonForSurgery.storeHyphenIfEmpty(),
+            medicationForAnemia.storeHyphenIfEmpty(),
+            healthWorkerForAnemia.storeHyphenIfEmpty(),
+            reasonForNoAnemiaMedication.storeHyphenIfEmpty()
         )
     )
 )
@@ -156,4 +165,26 @@ private fun createPatientAttribute(
         personAttributeTypeUuid = patientsDAO.getUuidForAttribute(attrName)
         this.value = value
     }
+/*
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.TAKING_ANY_MEDICATION_FOR_ANEMIA.value,
+            baseline.takingAnyMedicationForAnemia.storeHyphenIfEmpty(),
+            patientsDAO
+        )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA.value,
+            baseline.haveYouSeenToHWinPastOneYearForAnemia.storeHyphenIfEmpty(),
+            patientsDAO
+        )
+    )
+    add(
+        createPatientAttribute(
+            patientId, PatientAttributesDTO.Column.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION.value,
+            baseline.reasonForNotTakingAnemiaMedication.storeHyphenIfEmpty(),
+            patientsDAO
+        )
+    )*/
 }
