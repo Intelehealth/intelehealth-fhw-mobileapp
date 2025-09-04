@@ -151,11 +151,13 @@ public class SyncDAO {
 
                     //handling response data from background thread
                     //to prevent lagging
-                  /*  Single.fromCallable(() -> populatePullSuccessBackground(response, context))
+                    Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();*/
-                    Single.fromCallable(() -> populatePullSuccessBackground(response, context))
+                            .subscribe();
+                   /*
+                   tp prevent crash
+                   Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -169,7 +171,7 @@ public class SyncDAO {
                                         throwable);
                                 // You can also take additional action like showing a
                                 // user-friendly error message or retrying the operation
-                            });
+                            });*/
                 }
 
                 Logger.logD("End Pull request", "Ended");
