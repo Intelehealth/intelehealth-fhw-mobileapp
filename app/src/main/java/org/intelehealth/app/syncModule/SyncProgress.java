@@ -3,9 +3,12 @@ package org.intelehealth.app.syncModule;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class SyncProgress {
+public class SyncProgress extends LiveData<Integer> {
 
-    private final MutableLiveData<Integer> liveData = new MutableLiveData<>();
+    public void updateProgress(int progress) {
+        postValue(progress);
+    }
+  /*  private final MutableLiveData<Integer> liveData = new MutableLiveData<>();
 
     public LiveData<Integer> getLiveData() {
         return liveData;
@@ -13,5 +16,5 @@ public class SyncProgress {
 
     public void updateProgress(int progress) {
         liveData.postValue(progress);
-    }
+    }*/
 }
