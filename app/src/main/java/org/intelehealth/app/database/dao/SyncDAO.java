@@ -62,7 +62,8 @@ public class SyncDAO {
     private SQLiteDatabase db;
     String appLanguage;
 
-    private static final SyncProgress syncProgress = new SyncProgress();
+    public static SyncProgress liveDataSync = new SyncProgress();
+
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -155,23 +156,6 @@ public class SyncDAO {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe();
-                   /*
-                   tp prevent crash
-                   Single.fromCallable(() -> populatePullSuccessBackground(response, context))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(result -> {
-                                // Handle success here, `result` is the output of
-                                // `populatePullSuccessBackground`
-                            }, throwable -> {
-                                // Handle error here, `throwable` will contain the exception
-                                Log.e("RxJavaError",
-                                        "Error occurred in populatePullSuccessBackground",
-                                        throwable);
-                                // You can also take additional action like showing a
-                                // user-friendly error message or retrying the operation
-                            });*/
                 }
 
                 Logger.logD("End Pull request", "Ended");
@@ -305,14 +289,14 @@ public class SyncDAO {
                         if (nextPageNo != -1) {
                             percentage = (int) Math.round(nextPageNo * 100.0 / totalCount);
                             Logger.logD(PULL_ISSUE, "percentage: " + percentage);
-//                            setProgress(percentage);
+                            setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
                         } else {
                             percentage = 100;
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
-//                            setProgress(percentage);
+                            setProgress(percentage);
                             Intent broadcast = new Intent();
                             broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                             broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -412,6 +396,7 @@ public class SyncDAO {
      * @return
      */
     public boolean pullDataBackgroundService(final Context context, String fromActivity, int pageNo) {
+
         mDbHelper = new InteleHealthDatabaseHelper(context);
         if (db == null) {
             db = mDbHelper.getWriteDb();
@@ -419,10 +404,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String initialTime = "2006-08-22 22:21:48 ";
 
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
-                + sessionManager.getCurrentLocationUuid() + "/" + initialTime
+                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
                 + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
@@ -440,7 +424,7 @@ public class SyncDAO {
                     ResponseDTO responseDTO = response.body();
                     //Large amount of data passing not possible with intent
                     //we passing data through static function
-                    InitialSyncIntentService.setData(responseDTO, url);
+                    InitialSyncIntentService.setData(responseDTO);
 
                     //Inserting huge data to database is a heavy operation
                     //that's why we using service here for initial data push
@@ -726,11 +710,12 @@ public class SyncDAO {
         sessionManager.setLastTimeAgo(finalTime);
     }
 
+
     public static void setProgress(int progress) {
-        syncProgress.updateProgress(progress);
+        liveDataSync.updateProgress(progress);
     }
 
-    public static LiveData<Integer> getSyncProgressLiveData() {
-        return syncProgress.getLiveData();
+    public static SyncProgress getSyncProgress_LiveData() {
+        return liveDataSync;
     }
 }

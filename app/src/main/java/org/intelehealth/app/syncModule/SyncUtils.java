@@ -95,7 +95,19 @@ public class SyncUtils {
 
     }
 
-
+    /**
+     * added this function to handle efficient location switching
+     * we do not need to pull data while location is switching
+     * as data will not be used
+     * @return
+     */
+    public boolean pushDataOnly(){
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        SyncDAO syncDAO = new SyncDAO();
+        imagesPushDAO.patientProfileImagesPush();
+        imagesPushDAO.loggedInUserProfileImagesPush();
+        return syncDAO.pushDataApi();
+    }
     public boolean syncForeground(String fromActivity) {
         boolean isSynced = false;
         SyncDAO syncDAO = new SyncDAO();

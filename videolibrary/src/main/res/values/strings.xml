@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="video_library">Video Library</string>
-    <string name="video_player">Video Player</string>
-    <string name="search_for_videos">Search for videos</string>
-    <string name="no_categories_found_on_server">No categories found on the server</string>
-    <string name="no_videos_found_on_server_for_category">No videos found on the server for category: %1$s</string>
+    <string name="video_library">வீடியோ நூலகம்</string>
+    <string name="video_player">வீடியோ பிளேயர்</string>
+    <string name="search_for_videos">வீடியோக்களைத் தேடு</string>
+    <string name="no_categories_found_on_server">சேவையகத்தில் எந்தப் பிரிவுகளும் கிடைக்கவில்லை</string>
+    <string name="no_videos_found_on_server_for_category">பிரிவுக்கு சேவையகத்தில் எந்த வீடியோக்களும் கிடைக்கவில்லை: %1$s</string>
 </resources>

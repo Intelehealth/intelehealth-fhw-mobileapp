@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -23,7 +22,6 @@ public class InitialSyncIntentService extends IntentService {
     }
 
     static ResponseDTO responseDTO;
-    private static String url;
 
     /**
      * Large amount of data passing not possible with intent
@@ -31,10 +29,8 @@ public class InitialSyncIntentService extends IntentService {
      *
      * @param dto
      */
-
-    public static void setData(ResponseDTO dto, String url) {
+    public static void setData(ResponseDTO dto) {
         responseDTO = dto;
-        InitialSyncIntentService.url = url;
     }
 
     /**
@@ -45,7 +41,7 @@ public class InitialSyncIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        SessionManager sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext());
         boolean sync = false;
         SyncDAO syncDAO = new SyncDAO();
         String fromActivity = intent.getStringExtra("from");
@@ -54,9 +50,6 @@ public class InitialSyncIntentService extends IntentService {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
-        Logger.logD("URL", url);
-
         if (sync) {
             int nextPageNo = responseDTO.getData().getPageNo();
             int totalCount = responseDTO.getData().getTotalCount();
@@ -64,16 +57,22 @@ public class InitialSyncIntentService extends IntentService {
 
             if (nextPageNo != -1) {
                 percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0 / totalCount);
-                syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
+                Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
                 SyncDAO.setProgress(percentage);
+                syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
             } else {
                 percentage = 100;
+                Logger.logD(SyncDAO.PULL_ISSUE, "percentage page -1: " + percentage);
+
+
                 SyncDAO.setProgress(percentage);
-                sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
                 Intent broadcast = new Intent();
                 broadcast.putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE);
                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+
+                sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
+
                 sendBroadcast(broadcast);
                 if (fromActivity.equalsIgnoreCase("home")) {
                     //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
@@ -105,6 +104,4 @@ public class InitialSyncIntentService extends IntentService {
             }
         }
     }
-
-
 }

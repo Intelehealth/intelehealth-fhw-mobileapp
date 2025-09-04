@@ -5835,6 +5835,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     complaintLocalString = value;
                 }*//*
              */
+
+            /*Log.d(TAG, "complaintLocalString: "+value);
+            if (!isCCInOldFormat)
+                complaintLocalString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());*/
+
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
             if (isCCInOldFormat) {
@@ -5951,6 +5956,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }*//* else {
                     physicalExamLocaleString = value;
                 }*/
+           /* Log.d(TAG, "isPhysicalExamInOldFormat: "+value);
+            if (!isPhysicalExamInOldFormat)
+                physicalExamLocaleString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());*/
+
             CustomLog.v(TAG, "phyExam : " + value);
             if (isPhysicalExamInOldFormat) {
                 physFindingsView.setVisibility(View.VISIBLE);
@@ -5992,6 +6001,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
+            Log.d(TAG, "isPatientHistoryInOldFormat: "+value);
             if (!isPatientHistoryInOldFormat)
                 patientHistoryLocaleString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
 

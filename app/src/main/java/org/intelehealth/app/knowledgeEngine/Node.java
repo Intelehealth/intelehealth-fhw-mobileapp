@@ -10,6 +10,7 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -84,6 +85,7 @@ public class Node implements Serializable {
     public static String bullet_arrow = "\u25BA";
     public static String right_pointing = "\u25BB";
     public static String next_line = "<br/>";
+    private JSONObject jsonNode = new JSONObject();
     String space = "\t";
     private String engineVersion;
     private boolean needToHide;
@@ -217,6 +219,7 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
+            this.jsonNode = jsonNode;
             this.flowEnd = jsonNode.optBoolean("flowEnd");
 
             this.placeholder = jsonNode.optString("placeholder");
@@ -3273,6 +3276,9 @@ public class Node implements Serializable {
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
                             break;
+                        case "ta":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_tamil);
+                            break;
                     }
                     answerResult.result = false;
                 }
@@ -3284,6 +3290,9 @@ public class Node implements Serializable {
                             break;
                         case "hi":
                             stringBuilder.append("\n").append(bullet + " ").append(display_hindi);
+                            break;
+                        case "ta":
+                            stringBuilder.append("\n").append(bullet + " ").append(display_tamil);
                             break;
                     }
                     answerResult.result = false;
@@ -3918,7 +3927,25 @@ public class Node implements Serializable {
         return isAlert;
     }
 
+    /**
+     * added this function to fetch localized hint
+     * @return
+     */
     public String getHint() {
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (hasPlaceholder()) return placeholder;
+        String localizeDisplay = sessionManager.getCurrentLang().equals("en")? "display" : "display-"+sessionManager.getCurrentLang();
+        if (getInputType().equals("text")) {
+            if(jsonNode.optString(localizeDisplay).contains("[") && jsonNode.optString(localizeDisplay).contains("]")){
+                return jsonNode.optString(localizeDisplay).substring(jsonNode.optString(localizeDisplay).indexOf("[") + 1, jsonNode.optString(localizeDisplay).indexOf("]"));
+            }else{
+                return jsonNode.optString(localizeDisplay);
+            }
+        }
+        return getText();
+    }
+
+  /*  public String getHint() {
         if (hasPlaceholder()) return placeholder;
         if (getInputType().equals("text") && getText().contains("[") && getText().contains("]")) {
             String hint = getText().substring(getText().indexOf("[") + 1, getText().indexOf("]"));
@@ -3926,6 +3953,7 @@ public class Node implements Serializable {
         }
         return getText();
     }
+*/
 
     public int getInputTypeFlag() {
         if (isDateType()) return InputType.TYPE_CLASS_TEXT;
