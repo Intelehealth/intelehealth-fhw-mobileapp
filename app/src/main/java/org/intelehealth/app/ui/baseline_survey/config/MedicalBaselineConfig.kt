@@ -15,6 +15,7 @@ class MedicalBaselineConfig {
     var diabetesValue: PatientRegistrationFields? = null
     var arthritisValue: PatientRegistrationFields? = null
     var anemiaValue: PatientRegistrationFields? = null
+    var hypertensionValue: PatientRegistrationFields? = null
     var surgeryValue: PatientRegistrationFields? = null
     var surgeryReason: PatientRegistrationFields? = null
     var smokingHistory: PatientRegistrationFields? = null
@@ -30,11 +31,9 @@ class MedicalBaselineConfig {
     var haveYouSeenToHWinPastOneYearForAnemia: PatientRegistrationFields? = null
     var reasonForNotTakingAnemiaMedication: PatientRegistrationFields? = null
     var otherRreasonForNotTakingAnemiaMedication: PatientRegistrationFields? = null
-    var takingAnyMedicationForBP: PatientRegistrationFields? = null
-    var haveYouSeenToHWinPastOneYearForBP: PatientRegistrationFields? = null
-    var reasonForNotTakingBPMedication: PatientRegistrationFields? = null
-    var takingAnyMedicationForDiabetes: PatientRegistrationFields? = null
-    var haveYouSeenToHWinPastOneYearForDiabetes: PatientRegistrationFields? = null
-    var reasonForNotTakingDiabetesMedication: PatientRegistrationFields? = null
+    var takingAnyMedicationForHypertension: PatientRegistrationFields? = null
+    var haveYouSeenToHWinPastOneYearForHypertension: PatientRegistrationFields? = null
+    var reasonForNotTakingHypertensionMedication: PatientRegistrationFields? = null
+    var otherRreasonForNotTakingHypertensionMedication: PatientRegistrationFields? = null
 
 }

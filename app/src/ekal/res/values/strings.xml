@@ -441,4 +441,6 @@
     <string name="yes_move_ahead">"Yes, move ahead."</string>
     <string name="no_go_back">No, go back.</string>
 
+    <string name="hypertension_label">Hypertension</string>
+
 </resources>

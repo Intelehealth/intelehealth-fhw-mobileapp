@@ -104,7 +104,7 @@ class BaselineMedicalFragment :
         binding.radioSurgeryYes.tag = R.string.yes
         binding.radioSurgeryNo.tag = R.string.no
 
-        binding.radioSmoker.tag = R.string.smoker
+        binding.radioSmoker.tag = R.string. smoker
         binding.radioNonSmoker.tag = R.string.non_smoker
         binding.radioDeclined.tag = R.string.denied_to_answer
 
@@ -156,10 +156,23 @@ class BaselineMedicalFragment :
         binding.layoutAnemiaMedication.radioAnemiaSeenByHwYes.tag = R.string.yes
         binding.layoutAnemiaMedication.radioAnemiaSeenByHwNo.tag = R.string.no
 
+        binding.layoutHypertensionMedication.radioHypertensionYes.tag = R.string.yes
+        binding.layoutHypertensionMedication.radioHypertensionNo.tag = R.string.no
+
+        binding.layoutHypertensionMedication.radioTakingMedicationHypertensionYes.tag = R.string.yes
+        binding.layoutHypertensionMedication.radioTakingMedicationHypertensionNo.tag = R.string.no
+
+        binding.layoutHypertensionMedication.radioHypertensionSeenByHwYes.tag = R.string.yes
+        binding.layoutHypertensionMedication.radioHypertensionSeenByHwNo.tag = R.string.no
+
     }
 
     private fun setupFilter() {
         binding.etSurgeryReasonCheck.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(AllowAllLettersInputFilter())
+        }
+        binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason.apply {
             addFilter(FirstLetterUpperCaseInputFilter())
             addFilter(AllowAllLettersInputFilter())
         }
@@ -177,6 +190,7 @@ class BaselineMedicalFragment :
         setupSmokingHistory()
         setupAlcoholConsumption()
         anemiaHistory()
+        hypertensionHistory()
     }
 
     private fun setupAlcoholConsumption() {
@@ -316,9 +330,15 @@ class BaselineMedicalFragment :
             //newly added for ncd protocols
             takingAnyMedicationForAnemia =  binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.getSelectedDataInEnglishLocale(requireContext())
             haveYouSeenToHWinPastOneYearForAnemia = binding.layoutAnemiaMedication.rgAnemiaSeenByHwMedicationYes.getSelectedDataInEnglishLocale(requireContext())
-            reasonForNotTakingAnemiaMedication =  binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.text.toString()
-            otherReasonForNotTakingAnemiaMedication  = binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason.text.toString()
-            //reason - add
+            reasonForNotTakingAnemiaMedication = getNotTakingMedicationReasonForDb()
+
+            hypertensionValue = binding.layoutHypertensionMedication.rgHypertensionOptions.getSelectedDataInEnglishLocale(requireContext())
+            takingAnyMedicationForHypertension =  binding.layoutHypertensionMedication.rgHypertensionTakingMedicationOptions.getSelectedDataInEnglishLocale(requireContext())
+            haveYouSeenToHWinPastOneYearForHypertension = binding.layoutHypertensionMedication.rgHypertensionSeenByHwMedicationYes.getSelectedDataInEnglishLocale(requireContext())
+            reasonForNotTakingHypertensionMedication = getNotTakingHypertensionMedicationReasonForDb()
+
+
+
             Log.d("kktest", "saveSurveyData: baseline data : " + this)
             Log.d("kktest", "saveSurveyData: baseline data : "+Gson().toJson(this))
 
@@ -362,9 +382,9 @@ class BaselineMedicalFragment :
                     binding.rgArthritisOptions.validate()
                 } else true
 
-            val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory) {
+         /*   val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory) {
                 binding.layoutAnemiaMedication.rgAnemiaOptions.validate()
-            } else true
+            } else true*/
 
             val surgeryValue = if (it.surgeryValue!!.isEnabled && it.surgeryValue!!.isMandatory) {
                 binding.rgSurgeryOptions.validate()
@@ -419,28 +439,95 @@ class BaselineMedicalFragment :
                     binding.rgAlcoholFrequencyOptions.validate()
                 } else true
 
-           //check age  - here in excel age is 11 for anemia
-//            val takingAnyMedicationForAnemia =
-//                if (it.takingAnyMedicationForAnemia!!.isEnabled && it.takingAnyMedicationForAnemia!!.isMandatory && isAgeGreaterThan18) {
-//                    binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.validate()
-//                } else true
-//
-//            val haveYouSeenToHWinPastOneYearForAnemia =
-//                if (it.haveYouSeenToHWinPastOneYearForAnemia!!.isEnabled && it.haveYouSeenToHWinPastOneYearForAnemia!!.isMandatory && isAgeGreaterThan18) {
-//                    binding.layoutAnemiaMedication.rgAnemiaSeenByHwMedicationYes.validate()
-//                } else true
-//
-//            val reasonForNotTakingAnemiaMedication =
-//                if (it.reasonForNotTakingAnemiaMedication!!.isEnabled && it.reasonForNotTakingAnemiaMedication!!.isMandatory && isAgeGreaterThan18) {
-//                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication.validateDropDowb(binding.acSugarCheck, error)
-//                } else true
+            //Hypertension
 
+            // Hypertension - Q1: Do you have hypertension?
+            val hypertensionValue = if (it.hypertensionValue!!.isEnabled && it.hypertensionValue!!.isMandatory) {
+                binding.layoutHypertensionMedication.rgHypertensionOptions.validate()
+            } else true
+
+            // Hypertension - Q2: Taking any medication?
+            val takingAnyMedicationForHypertension =
+                if (it.takingAnyMedicationForHypertension!!.isEnabled &&
+                    it.takingAnyMedicationForHypertension!!.isMandatory &&
+                    binding.layoutHypertensionMedication.layoutHypertensionMedication.isVisible
+                ) {
+                    binding.layoutHypertensionMedication.rgHypertensionTakingMedicationOptions.validate()
+                } else true
+
+            // Hypertension - Q3: Seen by health worker in past year?
+            val haveYouSeenToHWinPastOneYearForHypertension =
+                if (it.haveYouSeenToHWinPastOneYearForHypertension!!.isEnabled &&
+                    it.haveYouSeenToHWinPastOneYearForHypertension!!.isMandatory &&
+                    binding.layoutHypertensionMedication.layoutHypertensionSeenByHw.isVisible
+                ) {
+                    binding.layoutHypertensionMedication.rgHypertensionSeenByHwMedicationYes.validate()
+                } else true
+
+            // Hypertension - Q4: Reason for not taking medication
+            val reasonForNotTakingHypertensionMedication =
+                if (it.reasonForNotTakingHypertensionMedication!!.isEnabled &&
+                    it.reasonForNotTakingHypertensionMedication!!.isMandatory &&
+                    binding.layoutHypertensionMedication.layoutHypertensionReasonNotTaking.isVisible
+                ) {
+                    binding.layoutHypertensionMedication.autotvlayoutReasonForNotTakingHypertensionMedication.validateDropDowb(binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication, error)
+                } else true
+
+            // Anemia
+
+            // Anemia - Q1: Do you have anemia?
+            val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory) {
+                binding.layoutAnemiaMedication.rgAnemiaOptions.validate()
+            } else true
+
+            // Anemia - Q2: Taking any medication?
+            val takingAnyMedicationForAnemia =
+                if (it.takingAnyMedicationForAnemia!!.isEnabled &&
+                    it.takingAnyMedicationForAnemia!!.isMandatory &&
+                    binding.layoutAnemiaMedication.layoutAnemiaMedication.isVisible
+                ) {
+                    binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.validate()
+                } else true
+
+                // Anemia - Q3: Seen by health worker in past year?
+            val haveYouSeenToHWinPastOneYearForAnemia =
+                if (it.haveYouSeenToHWinPastOneYearForAnemia!!.isEnabled &&
+                    it.haveYouSeenToHWinPastOneYearForAnemia!!.isMandatory &&
+                    binding.layoutAnemiaMedication.layoutAnemiaSeenByHw.isVisible
+                ) {
+                    binding.layoutAnemiaMedication.rgAnemiaSeenByHwMedicationYes.validate()
+                } else true
+
+            // Anemia - Q4: Reason for not taking medication
+            val reasonForNotTakingAnemiaMedication =
+                if (it.reasonForNotTakingAnemiaMedication!!.isEnabled &&
+                    it.reasonForNotTakingAnemiaMedication!!.isMandatory &&
+                    binding.layoutAnemiaMedication.layoutAnemiaReasonNotTaking.isVisible
+                ) {
+                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication
+                        .validateDropDowb(
+                            binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication,
+                            error
+                        )
+                } else true
+
+
+            Log.d("Validation", "Hypertension dropdown value: '${binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication.text}'")
+
+            Log.d("kkvalid", "validateForm: hypertensionValue : "+hypertensionValue)
+            Log.d("kkvalid", "validateForm: takingAnyMedicationForHypertension : "+takingAnyMedicationForHypertension)
+            Log.d("kkvalid", "validateForm: haveYouSeenToHWinPastOneYearForHypertension : "+haveYouSeenToHWinPastOneYearForHypertension)
+            Log.d("kkvalid", "validateForm: reasonForNotTakingHypertensionMedication : "+reasonForNotTakingHypertensionMedication)
 
             if (hbCheck.and(bpCheck).and(sugarCheck).and(bpValue).and(diabetesValue)
                     .and(arthritisValue).and(anemiaValue).and(surgeryValue).and(surgeryReason)
                     .and(smokingHistory).and(smokingRate).and(smokingDuration).and(smokingFrequency)
                     .and(chewTobacco).and(alcoholHistory).and(alcoholRate).and(alcoholDuration)
-                    .and(alcoholFrequency)
+                    .and(alcoholFrequency).and(hypertensionValue)
+                    .and(takingAnyMedicationForHypertension)
+                    .and(haveYouSeenToHWinPastOneYearForHypertension)
+                    .and(reasonForNotTakingHypertensionMedication)
+                    .and(takingAnyMedicationForAnemia).and(haveYouSeenToHWinPastOneYearForAnemia).and(reasonForNotTakingAnemiaMedication)
             ) {
                 block.invoke()
             } else {
@@ -516,112 +603,84 @@ class BaselineMedicalFragment :
         }
     }
 
-    /*  private fun anemiaHistory() {
-          with(binding.layoutAnemiaMedication) {
+    fun getNotTakingMedicationReasonForDb(): String {
+        val selected = binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.text.toString()
+        return if (selected.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+            "Unknown / Other:reason ${binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason.text}"
+        } else {
+            selected
+        }
+    }
+    private fun hypertensionHistory() {
+        with(binding.layoutHypertensionMedication) {
 
-              // Q1: Do you have anemia?
-              rgAnemiaOptions.setOnCheckedChangeListener { _, checkedId ->
-                  if (checkedId == radioAnemiaYes.id) {
-                      //  Show medication container
-                      layoutAnemiaMedication.visibility = View.VISIBLE
-                  } else {
-                      //  Hide everything else
-                      layoutAnemiaMedication.visibility = View.GONE
-                      layoutAnemiaSeenByHw.visibility = View.GONE
-                      layoutAnemiaReasonNotTaking.visibility = View.GONE
+            // Q1: Do you have anemia?
+            rgHypertensionOptions.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == radioHypertensionYes.id) {
+                    layoutHypertensionMedication.visibility = View.VISIBLE
+                } else {
+                    // Clear values
+                    rgHypertensionTakingMedicationOptions.clearCheck()
+                    rgHypertensionSeenByHwMedicationYes.clearCheck()
+                    autotvReasonForNotTakingHypertensionMedication.text = null
+                    etHypertensionMedicationNotTakingOtherReason.setText("")
 
-                      // Clear values
-                      rgAnemiaTakingMedicationOptions.clearCheck()
-                      rgAnemiaSeenByHwMedicationYes.clearCheck()
-                      autotvReasonForNotTakingAnemiaMedication.text = null
-                      etAnemiaMedicationNotTakingOtherReason.setText("")
-                  }
-              }
+                    layoutHypertensionMedication.visibility = View.GONE
+                    layoutHypertensionSeenByHw.visibility = View.GONE
+                    layoutHypertensionReasonNotTaking.visibility = View.GONE
+                    layoutHypertensionOtherReasonNotTaking.visibility = View.GONE
 
-              // Q2: Taking any medication?
-              rgAnemiaTakingMedicationOptions.setOnCheckedChangeListener { _, checkedId ->
-                  if (checkedId == radioTakingMedicationAnemiaYes.id) {
-                      //  Show "Seen by HW" container
-                      layoutAnemiaSeenByHw.visibility = View.VISIBLE
-
-                      //  Hide & clear "Reason not taking" container
-                      layoutAnemiaReasonNotTaking.visibility = View.GONE
-                      autotvReasonForNotTakingAnemiaMedication.text = null
-                      etAnemiaMedicationNotTakingOtherReason.setText("")
-                  } else if (checkedId == radioTakingMedicationAnemiaNo.id) {
-                      //Show "Reason not taking" container
-                      layoutAnemiaReasonNotTaking.visibility = View.VISIBLE
-
-                      //  Hide & clear "Seen by HW"
-                      layoutAnemiaSeenByHw.visibility = View.GONE
-                      rgAnemiaSeenByHwMedicationYes.clearCheck()
-                  }
-              }
-
-              //  Dropdown adapter
-              val adapter = ArrayAdapterUtils.getArrayAdapter(
-                  requireContext(),
-                  R.array.reason_for_not_taking_bp_medication
-              )
-              autotvReasonForNotTakingAnemiaMedication.setAdapter(adapter)
-
-              // Handle dropdown selection
-              autotvReasonForNotTakingAnemiaMedication.setOnItemClickListener { _, _, i, _ ->
-                  autotvlayoutReasonForNotTakingAnemiaMedication.hideError()
-                  autotvReasonForNotTakingAnemiaMedication.setText(
-                      resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i],
-                      false
-                  )
-              }
-          }
-      }
-  */
-  /*  private fun anemiaHistory() {
-        //taking any medication ques- on click on bp medical history yes option
-        binding.layoutAnemiaMedication.rgAnemiaOptions.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.layoutAnemiaMedication.radioAnemiaYes.id -> {
-                    binding.layoutAnemiaMedication.tvAnemiaMedicationQues.visibility = View.VISIBLE
-                    binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.visibility = View.VISIBLE
-                }
-
-                else -> {
-                    binding.layoutAnemiaMedication.tvAnemiaMedicationQues.visibility = View.GONE
-                    binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.visibility = View.GONE
-                    binding.layoutAnemiaMedication.tvAnemiaNotTakingMedicationNoOption.visibility = View.GONE
-                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication.visibility = View.GONE
 
                 }
             }
-        }
-        //taking any medication options - on click on yes
-        binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.layoutAnemiaMedication.radioTakingMedicationAnemiaYes.id -> {
-                    binding.layoutAnemiaMedication.tvAnemiaYesOptionSeenByHwMedicationYes.visibility = View.VISIBLE
-                    binding.layoutAnemiaMedication.rgAnemiaSeenByHwMedicationYes.visibility = View.VISIBLE
-                    binding.layoutAnemiaMedication.tvAnemiaNotTakingMedicationNoOption.visibility = View.GONE
-                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication.visibility = View.GONE
-                }
 
-                else -> {
-                    binding.layoutAnemiaMedication.tvAnemiaYesOptionSeenByHwMedicationYes.visibility = View.GONE
-                    binding.layoutAnemiaMedication.rgAnemiaSeenByHwMedicationYes.visibility = View.GONE
-                    binding.layoutAnemiaMedication.tvAnemiaNotTakingMedicationNoOption.visibility = View.VISIBLE
-                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication.visibility = View.VISIBLE
+            // Q2: Taking any medication?
+            rgHypertensionTakingMedicationOptions.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == radioTakingMedicationHypertensionYes.id) {
+                    layoutHypertensionSeenByHw.visibility = View.VISIBLE
+                    layoutHypertensionReasonNotTaking.visibility = View.GONE
+                    layoutHypertensionOtherReasonNotTaking.visibility = View.GONE
+                    autotvReasonForNotTakingHypertensionMedication.text = null
+                    etHypertensionMedicationNotTakingOtherReason.setText("")
+                } else if (checkedId == radioTakingMedicationHypertensionNo.id) {
+                    layoutHypertensionReasonNotTaking.visibility = View.VISIBLE
+                    layoutHypertensionSeenByHw.visibility = View.GONE
+                    rgHypertensionSeenByHwMedicationYes.clearCheck()
+                }
+            }
+
+            // 🔹 Dropdown adapter
+            val adapter = ArrayAdapterUtils.getArrayAdapter(
+                requireContext(),
+                R.array.reason_for_not_taking_bp_medication
+            )
+            autotvReasonForNotTakingHypertensionMedication.setAdapter(adapter)
+
+            // Handle dropdown selection
+            autotvReasonForNotTakingHypertensionMedication.setOnItemClickListener { _, _, i, _ ->
+                autotvlayoutReasonForNotTakingHypertensionMedication.hideError()
+
+                val selectedText = resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i]
+                autotvReasonForNotTakingHypertensionMedication.setText(selectedText, false)
+
+                if (selectedText.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+                    //  Show "Other reason" input
+                    layoutHypertensionOtherReasonNotTaking.visibility = View.VISIBLE
+                } else {
+                    //  Hide & clear "Other reason" input
+                    layoutHypertensionOtherReasonNotTaking.visibility = View.GONE
+                    etHypertensionMedicationNotTakingOtherReason.setText("")
                 }
             }
         }
-        //last ques radio handling pending -db part
-
-        //set values to not taking medication dropdown
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.reason_for_not_taking_bp_medication)
-        binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.setAdapter(adapter)
-
-        binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.setOnItemClickListener { _, _, i, _ ->
-            binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication.hideError()
-            binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.setText(resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i], false)
+    }
+    fun getNotTakingHypertensionMedicationReasonForDb(): String {
+        val selected = binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication.text.toString()
+        return if (selected.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+            "Unknown / Other:reason ${binding.layoutHypertensionMedication.etHypertensionMedicationNotTakingOtherReason.text}"
+        } else {
+            selected
         }
-    }*/
+    }
 
 }

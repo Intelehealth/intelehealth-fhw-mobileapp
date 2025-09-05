@@ -1122,14 +1122,17 @@
     <string name="are_you_taking_any_medication_for_bp">Are you taking any medication for BP?</string>
     <string name="are_you_taking_any_medication_for_diabetes">Are you taking any medication for diabetes?</string>
     <string name="are_you_taking_any_medication_for_anemia">Are you taking any medication for anemia?</string>
+    <string name="are_you_taking_any_medication_for_hypertension">Are you taking any medication for hypertension?</string>
 
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_hypertension">Have you been seen by a healthcare worker within the past 1 year for your hypertension?</string>
 
     <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+    <string name="why_are_you_not_taking_your_hypertension_medication">Why are you not taking your hypertension medication?</string>
 
     <string name="never_prescribed_medication">I was never prescribed medications.</string>
     <string name="forgot_to_take_it">I forgot to take it.</string>

@@ -24,6 +24,7 @@ data class Baseline(
     var diabetesValue: String = "",
     var arthritisValue: String = "",
     var anemiaValue: String = "",
+    var hypertensionValue: String = "",
     var surgeryValue: String = "",
     var surgeryReason: String = "",
     var smokingHistory: String = "",
@@ -47,6 +48,10 @@ data class Baseline(
     var haveYouSeenToHWinPastOneYearForAnemia: String = "",
     var reasonForNotTakingAnemiaMedication: String = "",
     var otherReasonForNotTakingAnemiaMedication: String = "",
+    var takingAnyMedicationForHypertension: String = "",
+    var haveYouSeenToHWinPastOneYearForHypertension: String = "",
+    var reasonForNotTakingHypertensionMedication: String = "",
+    var otherReasonForNotTakingHypertensionMedication: String = "",
     // Other
     var headOfHousehold: String = "",
     var rationCardCheck: String = "",

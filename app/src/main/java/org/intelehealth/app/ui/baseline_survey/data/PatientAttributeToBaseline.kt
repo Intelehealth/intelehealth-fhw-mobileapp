@@ -173,7 +173,7 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         val medicalHistory: MedicalHistory = medicalHistoryList[0]
 
         baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
-        baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
+        baseline.bpValue = medicalHistory.bp.returnEmptyIfHyphen()
         baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
         baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()
         baseline.surgeryValue = medicalHistory.anySurgeries.returnEmptyIfHyphen()
@@ -181,6 +181,11 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         baseline.takingAnyMedicationForAnemia = medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
         baseline.haveYouSeenToHWinPastOneYearForAnemia = medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
         baseline.reasonForNotTakingAnemiaMedication = medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForHypertension = medicalHistory.medicationForHypertension.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForHypertension = medicalHistory.healthWorkerForHypertension.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingHypertensionMedication = medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
+        baseline.hypertensionValue = medicalHistory.hypertension.returnEmptyIfHyphen()
+
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {

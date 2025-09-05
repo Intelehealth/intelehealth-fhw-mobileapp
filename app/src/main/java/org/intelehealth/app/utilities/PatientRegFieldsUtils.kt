@@ -212,6 +212,10 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA -> haveYouSeenToHWinPastOneYearForAnemia = it
                     PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> reasonForNotTakingAnemiaMedication = it
                     PatientRegConfigKeys.OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> otherRreasonForNotTakingAnemiaMedication = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_HYPERTENSION -> takingAnyMedicationForHypertension = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_HYPERTENSION -> haveYouSeenToHWinPastOneYearForHypertension = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_HYPERTENSION_MEDICATION -> reasonForNotTakingHypertensionMedication = it
+                    PatientRegConfigKeys.HYPERTENSION_VALUE -> hypertensionValue = it
                 }
             }
         }

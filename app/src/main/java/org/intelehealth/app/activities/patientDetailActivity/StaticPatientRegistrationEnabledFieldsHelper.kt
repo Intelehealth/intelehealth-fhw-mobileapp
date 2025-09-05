@@ -754,6 +754,51 @@ object StaticPatientRegistrationEnabledFieldsHelper {
         )
         fields.add(currentField)
 
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_HYPERTENSION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_HYPERTENSION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.REASON_FOR_NOT_TAKING_HYPERTENSION_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HYPERTENSION_VALUE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
         return fields
     }
 

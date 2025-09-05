@@ -119,7 +119,9 @@ public class PatientAttributesDTO implements Serializable {
         TAKING_ANY_MEDICATION_FOR_ANEMIA("areYouTakingMedicationsForAnemia"),
         HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA("haveYouBeenSeenByHealthcareWorkerForAnemia"),
         REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION("whyAreYouNotMedicationForAnemia"),
-        OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION("hbChecked"),
+        TAKING_ANY_MEDICATION_FOR_HYPERTENSION("areYouTakingMedicationsForAnemia"),
+        HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_HYPERTENSION("haveYouBeenSeenByHealthcareWorkerForAnemia"),
+        REASON_FOR_NOT_TAKING_HYPERTENSION_MEDICATION("whyAreYouNotMedicationForAnemia"),
         TAKE_OUR_SERVICE("TakeOurService");
         public final String value;
 

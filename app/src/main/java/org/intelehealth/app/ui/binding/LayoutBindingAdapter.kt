@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.binding
 
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.NumberPicker
@@ -13,6 +14,7 @@ import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.textfield.TextInputEditText
 import org.intelehealth.app.R
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.extensions.setSelectedCheckboxes
@@ -141,5 +143,44 @@ fun bindRadioButtonValueNew(radioGroup: RadioGroup?, data: String?) {
             }
         }
     }
+    @BindingAdapter(
+        value = ["bindAutoCompleteForOtherReason", "stringArrayResId", "otherReasonView"],
+        requireAll = false
+    )
+    fun bindAutoCompleteForOtherReason(
+        autoComplete: AutoCompleteTextView,
+        value: String?,
+        stringArrayResId: Int?,
+        etOther: TextInputEditText?
+    ) {
+        // Dropdown setup
+        stringArrayResId?.let {
+            val items = autoComplete.context.resources.getStringArray(it).toList()
+            val adapter = ArrayAdapter(autoComplete.context, android.R.layout.simple_dropdown_item_1line, items)
+            autoComplete.setAdapter(adapter)
+        }
+
+        // Handle DB/ViewModel value
+        if (value.isNullOrEmpty()) {
+            autoComplete.setText("", false)
+            etOther?.visibility = View.GONE
+            etOther?.setText("")
+            return
+        }
+
+        if (value.contains(":reason ")) {
+            val parts = value.split(":reason ")
+            if (parts.size == 2) {
+                autoComplete.setText(parts[0], false) // e.g. "Unknown / Other"
+                etOther?.visibility = View.VISIBLE
+                etOther?.setText(parts[1])            // e.g. "kz gdhd"
+            }
+        } else {
+            autoComplete.setText(value, false)       // normal option
+            etOther?.visibility = View.GONE
+            etOther?.setText("")
+        }
+    }
+
 }
 
