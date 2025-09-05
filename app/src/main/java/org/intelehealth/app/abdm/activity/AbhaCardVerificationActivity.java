@@ -763,7 +763,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 sentOtpApi(accessToken, getSendOtpApiRequest());
                             });
                             dialog.show(getSupportFragmentManager(), "");
-                        } else  {
+                        } else {
                             disableUI(true);
                             binding.sendOtpBtn.setEnabled(true);
                             Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.please_enter_valid_abha), Toast.LENGTH_LONG).show();
@@ -839,6 +839,13 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
+
+                        if (abhaProfileResponse.getABHANumber() == null) {
+                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.please_enter_valid_abha), Toast.LENGTH_LONG).show();
+                            disableUI(true);
+                            resetOTPField();
+                            return;
+                        }
 
                         disposables.add(
                                 Observable.fromCallable(() -> PatientsDAO.getPatientDetailsByPhoneNum(
