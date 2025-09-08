@@ -3,11 +3,14 @@ package org.intelehealth.app.ui.baseline_survey.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
@@ -29,6 +32,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.storeReasonIfAnswerIsPositive
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import java.util.Locale
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -42,6 +46,8 @@ class BaselineMedicalFragment :
 
     private lateinit var binding: FragmentBaselineSurveyMedicalBinding
     private var isAgeGreaterThan18: Boolean = false
+    var selectedHypertensionNoMedicationReason: String = ""
+    var selectedAnemiaNoMedicationReason: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyMedicalBinding.bind(view)
@@ -53,9 +59,32 @@ class BaselineMedicalFragment :
         super.onBaselineDataLoaded(baselineData)
         fetchMedicalBaselineConfig()
         binding.baseline = baselineData
-        Log.d("TAG", "onBaselineDataLoaded: baseline from db  : "+Gson().toJson(baselineData))
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
         checkPatientAge()
+
+
+        val reasons = R.array.reason_for_not_taking_bp_medication
+
+        setupAutoCompleteWithOther(
+            autoCompleteTextView = binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication,
+            layoutOtherReason = binding.layoutHypertensionMedication.layoutHypertensionOtherReasonNotTaking,
+            savedValue = baselineData.reasonForNotTakingHypertensionMedication,
+            stringArrayResId = reasons,
+            editText = binding.layoutHypertensionMedication.etHypertensionMedicationNotTakingOtherReason
+        ){ englishValue ->
+            selectedHypertensionNoMedicationReason = englishValue
+            baselineData.reasonForNotTakingHypertensionMedication = englishValue
+        }
+        setupAutoCompleteWithOther(
+            autoCompleteTextView = binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication,
+            layoutOtherReason = binding.layoutAnemiaMedication.layoutAnemiaOtherReasonNotTaking,
+            savedValue = baselineData.reasonForNotTakingAnemiaMedication,
+            stringArrayResId = reasons,
+            editText = binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason
+        ){ englishValue ->
+            selectedAnemiaNoMedicationReason = englishValue
+            baselineData.reasonForNotTakingAnemiaMedication = englishValue
+        }
     }
 
     private fun checkPatientAge() {
@@ -337,9 +366,6 @@ class BaselineMedicalFragment :
             haveYouSeenToHWinPastOneYearForHypertension = binding.layoutHypertensionMedication.rgHypertensionSeenByHwMedicationYes.getSelectedDataInEnglishLocale(requireContext())
             reasonForNotTakingHypertensionMedication = getNotTakingHypertensionMedicationReasonForDb()
 
-
-
-            Log.d("kktest", "saveSurveyData: baseline data : " + this)
             Log.d("kktest", "saveSurveyData: baseline data : "+Gson().toJson(this))
 
             baselineSurveyViewModel.updateBaselineData(this)
@@ -470,8 +496,32 @@ class BaselineMedicalFragment :
                     it.reasonForNotTakingHypertensionMedication!!.isMandatory &&
                     binding.layoutHypertensionMedication.layoutHypertensionReasonNotTaking.isVisible
                 ) {
-                    binding.layoutHypertensionMedication.autotvlayoutReasonForNotTakingHypertensionMedication.validateDropDowb(binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication, error)
+                    val isValidDropdown = binding.layoutHypertensionMedication
+                        .autotvlayoutReasonForNotTakingHypertensionMedication
+                        .validateDropDowb(
+                            binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication,
+                            error
+                        )
+
+                    if (isValidDropdown) {
+                        val selectedValue = binding.layoutHypertensionMedication
+                            .autotvReasonForNotTakingHypertensionMedication.text?.toString()?.trim()
+
+                        if (selectedHypertensionNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
+                            // If "Unknown / Other" → EditText should not be empty
+                            val otherReason = binding.layoutHypertensionMedication.etHypertensionMedicationNotTakingOtherReason.text?.toString()?.trim()
+
+                            if (otherReason.isNullOrEmpty()) {
+                                binding.layoutHypertensionMedication.tilHypertensionMedicationNotTakingOtherReason.error =getString(R.string.please_enter_reason_txt)
+                                false
+                            } else true
+                        } else {
+                            // For any other option, no need to check EditText
+                            true
+                        }
+                    } else false
                 } else true
+
 
             // Anemia
 
@@ -504,20 +554,34 @@ class BaselineMedicalFragment :
                     it.reasonForNotTakingAnemiaMedication!!.isMandatory &&
                     binding.layoutAnemiaMedication.layoutAnemiaReasonNotTaking.isVisible
                 ) {
-                    binding.layoutAnemiaMedication.autotvlayoutReasonForNotTakingAnemiaMedication
+                    val isValidDropdown = binding.layoutAnemiaMedication
+                        .autotvlayoutReasonForNotTakingAnemiaMedication
                         .validateDropDowb(
                             binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication,
                             error
                         )
+
+                    if (isValidDropdown) {
+                        val selectedValue = binding.layoutAnemiaMedication
+                            .autotvReasonForNotTakingAnemiaMedication.text?.toString()?.trim()
+
+                        if (selectedHypertensionNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
+                            // If "Unknown / Other" → EditText should not be empty
+                            val otherReason = binding.layoutAnemiaMedication
+                                .etAnemiaMedicationNotTakingOtherReason.text?.toString()?.trim()
+
+                            if (otherReason.isNullOrEmpty()) {
+                                binding.layoutAnemiaMedication
+                                    .tilAnemiaMedicationNotTakingOtherReason.error =
+                                    getString(R.string.please_enter_reason_txt)
+                                false
+                            } else true
+                        } else {
+                            // For any other option, no need to check EditText
+                            true
+                        }
+                    } else false
                 } else true
-
-
-            Log.d("Validation", "Hypertension dropdown value: '${binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication.text}'")
-
-            Log.d("kkvalid", "validateForm: hypertensionValue : "+hypertensionValue)
-            Log.d("kkvalid", "validateForm: takingAnyMedicationForHypertension : "+takingAnyMedicationForHypertension)
-            Log.d("kkvalid", "validateForm: haveYouSeenToHWinPastOneYearForHypertension : "+haveYouSeenToHWinPastOneYearForHypertension)
-            Log.d("kkvalid", "validateForm: reasonForNotTakingHypertensionMedication : "+reasonForNotTakingHypertensionMedication)
 
             if (hbCheck.and(bpCheck).and(sugarCheck).and(bpValue).and(diabetesValue)
                     .and(arthritisValue).and(anemiaValue).and(surgeryValue).and(surgeryReason)
@@ -577,7 +641,7 @@ class BaselineMedicalFragment :
                 }
             }
 
-            // 🔹 Dropdown adapter
+            // Dropdown adapter
             val adapter = ArrayAdapterUtils.getArrayAdapter(
                 requireContext(),
                 R.array.reason_for_not_taking_bp_medication
@@ -591,7 +655,7 @@ class BaselineMedicalFragment :
                 val selectedText = resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i]
                 autotvReasonForNotTakingAnemiaMedication.setText(selectedText, false)
 
-                if (selectedText.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+                if (selectedText.equals("Unknown / Other", ignoreCase = true)) {
                     //  Show "Other reason" input
                     layoutAnemiaOtherReasonNotTaking.visibility = View.VISIBLE
                 } else {
@@ -603,13 +667,13 @@ class BaselineMedicalFragment :
         }
     }
 
-    fun getNotTakingMedicationReasonForDb(): String {
-        val selected = binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.text.toString()
-        return if (selected.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+    private fun getNotTakingMedicationReasonForDb(): String {
+       // val selected = binding.layoutAnemiaMedication.autotvReasonForNotTakingAnemiaMedication.text.toString()
+        return if (selectedAnemiaNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
             "Unknown / Other:reason ${binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason.text}"
-        } else {
-            selected
-        }
+        } else
+            selectedAnemiaNoMedicationReason
+
     }
     private fun hypertensionHistory() {
         with(binding.layoutHypertensionMedication) {
@@ -649,7 +713,7 @@ class BaselineMedicalFragment :
                 }
             }
 
-            // 🔹 Dropdown adapter
+            // Dropdown adapter
             val adapter = ArrayAdapterUtils.getArrayAdapter(
                 requireContext(),
                 R.array.reason_for_not_taking_bp_medication
@@ -663,7 +727,7 @@ class BaselineMedicalFragment :
                 val selectedText = resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i]
                 autotvReasonForNotTakingHypertensionMedication.setText(selectedText, false)
 
-                if (selectedText.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+                if (selectedText.equals("Unknown / Other", ignoreCase = true)) {
                     //  Show "Other reason" input
                     layoutHypertensionOtherReasonNotTaking.visibility = View.VISIBLE
                 } else {
@@ -675,12 +739,102 @@ class BaselineMedicalFragment :
         }
     }
     fun getNotTakingHypertensionMedicationReasonForDb(): String {
-        val selected = binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication.text.toString()
-        return if (selected.equals(getString(R.string.unknown_other), ignoreCase = true)) {
+        //val selected = binding.layoutHypertensionMedication.autotvReasonForNotTakingHypertensionMedication.text.toString()
+        return if (selectedHypertensionNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
             "Unknown / Other:reason ${binding.layoutHypertensionMedication.etHypertensionMedicationNotTakingOtherReason.text}"
+        } else
+            selectedHypertensionNoMedicationReason
+    }
+    fun setupAutoCompleteWithOther(
+        autoCompleteTextView: AutoCompleteTextView,
+        layoutOtherReason: LinearLayout,
+        savedValue: String?,           // e.g., "Unknown / Other:my reason"
+        stringArrayResId: Int,
+        editText: TextInputEditText,
+        onSave: (String) -> Unit       // callback gives you English value to save
+    ) {
+        val context = autoCompleteTextView.context
+
+        // Split saved value into main + other
+        val parts = savedValue?.split(":", limit = 2)
+        val mainValue = parts?.getOrNull(0)?.trim()
+        var otherValue = parts?.getOrNull(1)?.trim()
+
+        //  Remove leading "reason" if present in saved value
+        if (!otherValue.isNullOrEmpty() && otherValue.startsWith("reason", ignoreCase = true)) {
+            otherValue = otherValue.removePrefix("reason").trim()
+        }
+
+        // English + localized arrays
+        val englishResources = LanguageUtils.getSpecificLocalResource(context, "en")
+        val englishArray = englishResources.getStringArray(stringArrayResId)
+
+        val localizedResources = LanguageUtils.getSpecificLocalResource(
+            context,
+            Locale.getDefault().language
+        )
+        val localizedArray = localizedResources.getStringArray(stringArrayResId)
+
+        // --- Set initial selection ---
+        mainValue?.let { data ->
+            val index = englishArray.indexOf(data)
+            if (index != -1) {
+                autoCompleteTextView.setText(localizedArray[index], false)
+            } else {
+                autoCompleteTextView.setText(data, false)
+            }
+        }
+
+        // --- Set Other reason field ---
+        if (mainValue?.contains("Unknown / Other", ignoreCase = true) == true) {
+            layoutOtherReason.visibility = View.VISIBLE
+            editText.setText(otherValue ?: "")
         } else {
-            selected
+            layoutOtherReason.visibility = View.GONE
+        }
+
+        // --- Always call onSave for prefilled case (in English) ---
+        if (mainValue != null) {
+            val englishValue = englishArray.find { it.equals(mainValue, ignoreCase = true) } ?: mainValue
+            val finalValue = if (englishValue.contains("Unknown / Other", ignoreCase = true)) {
+                if (!otherValue.isNullOrEmpty()) "$englishValue:$otherValue" else englishValue
+            } else {
+                englishValue
+            }
+            onSave(finalValue)
+        }
+
+        // --- Handle user selection dynamically ---
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedLocalized = parent.getItemAtPosition(position).toString()
+            val index = localizedArray.indexOf(selectedLocalized)
+
+            if (index != -1) {
+                val englishValue = englishArray[index]
+                if (englishValue.contains("Unknown / Other", ignoreCase = true)) {
+                    layoutOtherReason.visibility = View.VISIBLE
+                } else {
+                    editText.setText("")
+                    layoutOtherReason.visibility = View.GONE
+                }
+
+                // Always return English value to save
+                val finalValue = if (englishValue.contains("Unknown / Other", ignoreCase = true)) {
+                    var other = editText.text.toString().trim()
+
+                    // Remove leading "reason" if user typed it
+                    if (other.startsWith("reason", ignoreCase = true)) {
+                        other = other.removePrefix("reason").trim()
+                    }
+
+                    if (other.isNotEmpty()) "$englishValue:$other" else englishValue
+                } else {
+                    englishValue
+                }
+                onSave(finalValue)
+            }
         }
     }
+
 
 }

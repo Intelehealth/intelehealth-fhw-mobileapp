@@ -185,8 +185,6 @@
                 <AutoCompleteTextView
                     android:id="@+id/autotv_reason_for_not_taking_hypertension_medication"
                     style="@style/AppTheme.InputBox"
-                    bindAutoCompleteValue="@{baseline.reasonForNotTakingHypertensionMedication}"
-                    stringArrayResId="@{baseline.reasonForNotTakingMedicationValues}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_your_choice"
@@ -214,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/specify_the_reason"
                         android:inputType="none"
-                        android:text="@{baseline.otherReasonForNotTakingHypertensionMedication}" />
+                      />
                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
             </LinearLayout>
         </LinearLayout>
