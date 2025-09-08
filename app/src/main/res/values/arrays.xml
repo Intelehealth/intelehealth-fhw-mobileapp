@@ -2529,6 +2529,14 @@
         <item>पति/पत्नी</item>
     </string-array>
 
+    <string-array name="guardian_type_ta">
+        <item>தேர்ந்தெடு</item>
+        <item>தாய்</item>
+        <item>தந்தை</item>
+        <item>பாட்டி/தாத்தா</item>
+        <item>கணவர்/மனைவி</item>
+    </string-array>
+
     <string-array name="contact_type">
         <item>Self</item>
         <item>Family</item>
@@ -2544,6 +2552,12 @@
         <item>चयन करें</item>
         <item>स्वयं</item>
         <item>परिवार</item>
+    </string-array>
+
+    <string-array name="contact_type_ta">
+        <item>தேர்ந்தெடு</item>
+        <item>தன்னை</item>
+        <item>குடும்பம்</item>
     </string-array>
 
     <string-array name="occupation">
@@ -3451,6 +3465,96 @@
         <item>8అడుగులు 1అంగుళం.</item>
         <item>8అడుగులు 2అంగుళం.</item>
         <item>8అడుగులు 3అంగుళం.</item>
+    </string-array>
+
+
+    <string-array name="height_ta">
+        <item>தேர்ந்தெடு</item>
+        <item>1அடி 3அங்குலம்</item>
+        <item>1அடி 4அங்குலம்</item>
+        <item>1அடி 5அங்குலம்</item>
+        <item>1அடி 6அங்குலம்</item>
+        <item>1அடி 7அங்குலம்</item>
+        <item>1அடி 8அங்குலம்</item>
+        <item>1அடி 9அங்குலம்</item>
+        <item>1அடி 10அங்குலம்</item>
+        <item>1அடி 11அங்குலம்</item>
+        <item>2அடி 0அங்குலம்</item>
+        <item>2அடி 1அங்குலம்</item>
+        <item>2அடி 2அங்குலம்</item>
+        <item>2அடி 3அங்குலம்</item>
+        <item>2அடி 4அங்குலம்</item>
+        <item>2அடி 5அங்குலம்</item>
+        <item>2அடி 6அங்குலம்</item>
+        <item>2அடி 7அங்குலம்</item>
+        <item>2அடி 8அங்குலம்</item>
+        <item>2அடி 9அங்குலம்</item>
+        <item>2அடி 10அங்குலம்</item>
+        <item>2அடி 11அங்குலம்</item>
+        <item>3அடி 0அங்குலம்</item>
+        <item>3அடி 1அங்குலம்</item>
+        <item>3அடி 2அங்குலம்</item>
+        <item>3அடி 3அங்குலம்</item>
+        <item>3அடி 4அங்குலம்</item>
+        <item>3அடி 5அங்குலம்</item>
+        <item>3அடி 6அங்குலம்</item>
+        <item>3அடி 7அங்குலம்</item>
+        <item>3அடி 8அங்குலம்</item>
+        <item>3அடி 9அங்குலம்</item>
+        <item>3அடி 10அங்குலம்</item>
+        <item>3அடி 11அங்குலம்</item>
+        <item>4அடி 0அங்குலம்</item>
+        <item>4அடி 1அங்குலம்</item>
+        <item>4அடி 2அங்குலம்</item>
+        <item>4அடி 3அங்குலம்</item>
+        <item>4அடி 4அங்குலம்</item>
+        <item>4அடி 5அங்குலம்</item>
+        <item>4அடி 6அங்குலம்</item>
+        <item>4அடி 7அங்குலம்</item>
+        <item>4அடி 8அங்குலம்</item>
+        <item>4அடி 9அங்குலம்</item>
+        <item>4அடி 10அங்குலம்</item>
+        <item>4அடி 11அங்குலம்</item>
+        <item>5அடி 0அங்குலம்</item>
+        <item>5அடி 1அங்குலம்</item>
+        <item>5அடி 2அங்குலம்</item>
+        <item>5அடி 3அங்குலம்</item>
+        <item>5அடி 4அங்குலம்</item>
+        <item>5அடி 5அங்குலம்</item>
+        <item>5அடி 6அங்குலம்</item>
+        <item>5அடி 7அங்குலம்</item>
+        <item>5அடி 8அங்குலம்</item>
+        <item>5அடி 9அங்குலம்</item>
+        <item>5அடி 10அங்குலம்</item>
+        <item>5அடி 11அங்குலம்</item>
+        <item>6அடி 0அங்குலம்</item>
+        <item>6அடி 1அங்குலம்</item>
+        <item>6அடி 2அங்குலம்</item>
+        <item>6அடி 3அங்குலம்</item>
+        <item>6அடி 4அங்குலம்</item>
+        <item>6அடி 5அங்குலம்</item>
+        <item>6அடி 6அங்குலம்</item>
+        <item>6அடி 7அங்குலம்</item>
+        <item>6அடி 8அங்குலம்</item>
+        <item>6அடி 9அங்குலம்</item>
+        <item>6அடி 10அங்குலம்</item>
+        <item>6அடி 11அங்குலம்</item>
+        <item>7அடி 0அங்குலம்</item>
+        <item>7அடி 1அங்குலம்</item>
+        <item>7அடி 2அங்குலம்</item>
+        <item>7அடி 3அங்குலம்</item>
+        <item>7அடி 4அங்குலம்</item>
+        <item>7அடி 5அங்குலம்</item>
+        <item>7அடி 6அங்குலம்</item>
+        <item>7அடி 7அங்குலம்</item>
+        <item>7அடி 8அங்குலம்</item>
+        <item>7அடி 9அங்குலம்</item>
+        <item>7அடி 10அங்குலம்</item>
+        <item>7அடி 11அங்குலம்</item>
+        <item>8அடி 0அங்குலம்</item>
+        <item>8அடி 1அங்குலம்</item>
+        <item>8அடி 2அங்குலம்</item>
+        <item>8அடி 3அங்குலம்</item>
     </string-array>
 
 </resources>
