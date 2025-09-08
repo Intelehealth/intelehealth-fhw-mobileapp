@@ -1034,4 +1034,13 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
+    <string name="never_prescribed_medication">আমাকে কখনই ওষুধ দেওয়া হয়নি</string>
+    <string name="forgot_to_take_it">নিতে ভুলে গেছি</string>
+    <string name="cannot_afford_medications">আমি ওষুধ দিতে পারি না</string>
+    <string name="ran_out_of_medication">আমার ওষুধ ফুরিয়ে গেছে/ ওষুধ হারিয়ে গেছে</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">আমার পিএইচসি এর সাথে ফলোআপ করা দরকার</string>
+    <string name="i_dont_think_i_need_it">আমি এটা প্রয়োজন মনে করি না</string>
+    <string name="side_effect_related_to_medication">ওষুধের সাথে সম্পর্কিত পার্শ্ব প্রতিক্রিয়া</string>
+    <string name="unknown_other">অজানা/অন্য</string>
+
 </resources>

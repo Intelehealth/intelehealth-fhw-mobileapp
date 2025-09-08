@@ -1029,4 +1029,12 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
+    <string name="never_prescribed_medication">मला कधीच औषधे लिहून दिली नाहीत</string>
+    <string name="forgot_to_take_it">मी ते घ्यायला विसरलो</string>
+    <string name="cannot_afford_medications">मला औषधे परवडत नाहीत</string>
+    <string name="ran_out_of_medication">माझी औषधे संपली / औषधे हरवली</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">मला माझ्या PHC कडे पाठपुरावा करायचा आहे</string>
+    <string name="i_dont_think_i_need_it">मला त्याची गरज वाटत नाही</string>
+    <string name="side_effect_related_to_medication">औषधांशी संबंधित दुष्परिणाम</string>
+    <string name="unknown_other">अज्ञात/इतर</string>
 </resources>

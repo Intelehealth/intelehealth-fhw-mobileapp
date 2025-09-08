@@ -1045,4 +1045,12 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
+    <string name="never_prescribed_medication">મને ક્યારેય દવાઓ સૂચવવામાં આવી ન હતી</string>
+    <string name="forgot_to_take_it">હું લેવાનું ભૂલી ગયો</string>
+    <string name="cannot_afford_medications">મને દવાઓ પોસાય તેમ નથી</string>
+    <string name="ran_out_of_medication">મારી  દવાઓ સમાપ્ત થઈ ગઈ/દવાઓ ખોવાઈ ગઈ </string>
+    <string name="i_am_needing_follow_up_with_my_PHC">મારે મારા PHC સાથે ફોલોઅપની જરૂર છે</string>
+    <string name="i_dont_think_i_need_it">મને નથી લાગતું કે મારે તેની જરૂર છે</string>
+    <string name="side_effect_related_to_medication">દવા સંબંધિત આડઅસર</string>
+    <string name="unknown_other">અજ્ઞાત/અન્ય</string>
 </resources>

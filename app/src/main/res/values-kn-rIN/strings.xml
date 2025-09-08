@@ -999,4 +999,12 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
+    <string name="never_prescribed_medication">ನಾನು ಎಂದಿಗೂ ಔಷಧಿಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಿಲ್ಲ</string>
+    <string name="forgot_to_take_it">ನಾನು ಅದನ್ನು ತೆಗೆದುಕೊಳ್ಳಲು ಮರೆತಿದ್ದೇನೆ</string>
+    <string name="cannot_afford_medications">ನಾನು ಔಷಧಿಗಳನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ</string>
+    <string name="ran_out_of_medication">ನನ್ನಲ್ಲಿ ಔಷಧಿಗಳು ಖಾಲಿಯಾದವು / ಕಳೆದುಹೋದ ಔಷಧಿಗಳು</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">ನನ್ನ ಪಿಎಚ್‌ಸಿಯನ್ನು ಅನುಸರಿಸುವ ಅಗತ್ಯವಿದೆ</string>
+    <string name="i_dont_think_i_need_it">ನನಗೆ ಅದರ ಅವಶ್ಯಕತೆ ಇಲ್ಲ ಎಂದು ನಾನು ಭಾವಿಸುತ್ತೇನೆ</string>
+    <string name="side_effect_related_to_medication">ಔಷಧಿಗೆ ಸಂಬಂಧಿಸಿದ ಅಡ್ಡ ಪರಿಣಾಮ</string>
+    <string name="unknown_other">ಅಜ್ಞಾತ / ಇತರೆ</string>
 </resources>
