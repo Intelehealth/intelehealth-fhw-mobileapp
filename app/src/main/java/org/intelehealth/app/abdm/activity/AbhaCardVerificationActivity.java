@@ -73,6 +73,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
@@ -848,15 +849,22 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         }
 
                         disposables.add(
-                                Observable.fromCallable(() -> PatientsDAO.getPatientDetailsByPhoneNum(
-                                                        "+91" + abhaProfileResponse.getMobile(),
-                                                        abhaProfileResponse.getGender(),
-                                                        abhaProfileResponse.getYearOfBirth() + "-" + abhaProfileResponse.getMonthOfBirth() + "-" + abhaProfileResponse.getDayOfBirth(),
-                                                        abhaProfileResponse.getFirstName(),
-                                                        abhaProfileResponse.getLastName(),
-                                                        abhaProfileResponse.getPincode()
+                                Observable.fromCallable(() -> {
+                                                    String patientUuid = PatientsDAO.getPatientUuidIfAbhaAddressIsPresent(abhaProfileResponse.getPreferredAbhaAddress());
 
-                                                )
+                                                    if (patientUuid != null) {
+                                                        return PatientsDAO.getPatientDetailsByUuid(patientUuid);
+                                                    } else {
+                                                        return PatientsDAO.getPatientDetailsByPhoneNum(
+                                                                "+91" + abhaProfileResponse.getMobile(),
+                                                                abhaProfileResponse.getGender(),
+                                                                abhaProfileResponse.getYearOfBirth() + "-" + abhaProfileResponse.getMonthOfBirth() + "-" + abhaProfileResponse.getDayOfBirth(),
+                                                                abhaProfileResponse.getFirstName(),
+                                                                abhaProfileResponse.getLastName(),
+                                                                abhaProfileResponse.getPincode()
+                                                        );
+                                                    }
+                                                }
                                         ).subscribeOn(Schedulers.io())               // Run DB call in background
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(

@@ -849,14 +849,10 @@ public class PatientsDAO {
     public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
         PatientDTO patientDTO = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
-                "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
-
+        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? /*and (sync = 1 OR sync = 'true' OR sync = 'TRUE')*/ and voided = 0 ORDER BY modified_date DESC", new String[]{patientUuid});
 
         if (cursor.moveToFirst()) {
             do {
-
-
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
@@ -872,8 +868,8 @@ public class PatientsDAO {
                 patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
                 patientDTO.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-
-
+                patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
             }
             while (cursor.moveToNext());
         }
@@ -994,8 +990,7 @@ public class PatientsDAO {
                                         return null;
                                     }
 
-                                }
-                                else {
+                                } else {
                                     if (!modelListAfterLastName.isEmpty()) {
                                         return modelListAfterLastName.get(0);
                                     } else {
@@ -1004,8 +999,7 @@ public class PatientsDAO {
                                 }
 
 
-                            }
-                            else {
+                            } else {
                                 if (!modelListAfterFirstName.isEmpty()) {
                                     return modelListAfterFirstName.get(0);
                                 } else {
@@ -1013,8 +1007,7 @@ public class PatientsDAO {
                                 }
                             }
 
-                        }
-                        else {
+                        } else {
                             if (!modelListAfterDay.isEmpty()) {
                                 return modelListAfterDay.get(0);
                             } else {
@@ -1022,8 +1015,7 @@ public class PatientsDAO {
                             }
                         }
 
-                    }
-                    else {
+                    } else {
                         if (!modelListAfterMonth.isEmpty()) {
                             return modelListAfterMonth.get(0);
                         } else {
@@ -1031,16 +1023,14 @@ public class PatientsDAO {
                         }
                     }
 
-                }
-                else {
+                } else {
                     if (!modelListAfterYear.isEmpty()) {
                         return modelListAfterYear.get(0);
                     } else {
                         return null;
                     }
                 }
-            }
-            else {
+            } else {
                 if (!modelListAfterGender.isEmpty()) {
                     return modelListAfterGender.get(0);
                 } else {
@@ -1058,4 +1048,17 @@ public class PatientsDAO {
 
     }
 
+    public static String getPatientUuidIfAbhaAddressIsPresent(String abhaAddress) {
+        String patientUuid = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String query = "SELECT uuid FROM tbl_patient WHERE abha_address = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{abhaAddress})) {
+            if (cursor.moveToFirst()) {
+                patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return patientUuid;
+    }
 }
