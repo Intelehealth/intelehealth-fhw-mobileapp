@@ -19,6 +19,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.filter.AllowAllLettersInputFilter
+import org.intelehealth.app.ui.filter.LettersNumbersSelectedSymbolsInputFilter
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.BaselineSurveyStage
 import org.intelehealth.app.utilities.LanguageUtils
@@ -48,6 +49,7 @@ class BaselineMedicalFragment :
     private var isAgeGreaterThan18: Boolean = false
     var selectedHypertensionNoMedicationReason: String = ""
     var selectedAnemiaNoMedicationReason: String = ""
+    private var isAgeGreaterThan11: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyMedicalBinding.bind(view)
@@ -92,9 +94,13 @@ class BaselineMedicalFragment :
             .getPatientAge(baselineSurveyViewModel.patientId)
             .observe(viewLifecycleOwner) {
                 it ?: return@observe
-                baselineSurveyViewModel.handleResponse(it) { age -> setUp18Fields(age) }
+                baselineSurveyViewModel.handleResponse(it) { age ->
+                    setUp18Fields(age)
+                    setUp11Fields(age)
+                }
             }
     }
+
 
     private fun setUp18Fields(age: Int) {
         if (age >= 18) {
@@ -105,6 +111,7 @@ class BaselineMedicalFragment :
         binding.llHbCheck.visibility = View.GONE
         binding.llBpCheck.visibility = View.GONE
         binding.llSugarCheck.visibility = View.GONE
+        binding.layoutHypertensionMedication.llHypertensionLabel.visibility = View.GONE
     }
 
 
@@ -203,7 +210,11 @@ class BaselineMedicalFragment :
         }
         binding.layoutAnemiaMedication.etAnemiaMedicationNotTakingOtherReason.apply {
             addFilter(FirstLetterUpperCaseInputFilter())
-            addFilter(AllowAllLettersInputFilter())
+            addFilter(LettersNumbersSelectedSymbolsInputFilter())
+        }
+        binding.layoutHypertensionMedication.etHypertensionMedicationNotTakingOtherReason.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(LettersNumbersSelectedSymbolsInputFilter())
         }
     }
 
@@ -468,7 +479,7 @@ class BaselineMedicalFragment :
             //Hypertension
 
             // Hypertension - Q1: Do you have hypertension?
-            val hypertensionValue = if (it.hypertensionValue!!.isEnabled && it.hypertensionValue!!.isMandatory) {
+            val hypertensionValue = if (it.hypertensionValue!!.isEnabled && it.hypertensionValue!!.isMandatory && isAgeGreaterThan18) {
                 binding.layoutHypertensionMedication.rgHypertensionOptions.validate()
             } else true
 
@@ -526,7 +537,7 @@ class BaselineMedicalFragment :
             // Anemia
 
             // Anemia - Q1: Do you have anemia?
-            val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory) {
+            val anemiaValue = if (it.anemiaValue!!.isEnabled && it.anemiaValue!!.isMandatory && isAgeGreaterThan11) {
                 binding.layoutAnemiaMedication.rgAnemiaOptions.validate()
             } else true
 
@@ -836,5 +847,13 @@ class BaselineMedicalFragment :
         }
     }
 
+    private fun setUp11Fields(age: Int) {
+        if (age > 11) {
+            isAgeGreaterThan11 = true
+            return
+        }
+        binding.layoutAnemiaMedication.llAnemiaLabel.visibility =View.GONE
+
+    }
 
 }
