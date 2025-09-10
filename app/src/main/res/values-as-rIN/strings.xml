@@ -1089,4 +1089,17 @@
     <string name="i_dont_think_i_need_it">মোৰ প্ৰয়োজন নাই বুলি ভাবো</string>
     <string name="side_effect_related_to_medication">ঔষধৰ লগত জড়িত পাৰ্শ্বক্ৰিয়া</string>
     <string name="unknown_other">অজ্ঞাত / অন্যান্য</string>
+
+    <string name="are_you_taking_any_medication_for_bp">বৰ্তমান আপুনি বিপি ৰ বাবে ঔষধ খাই আছেনে?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">বৰ্তমান আপুনি diabetes ৰ বাবে ঔষধ খাই আছেনে?</string>
+    <string name="are_you_taking_any_medication_for_anemia">বৰ্তমান আপুনি ৰক্তহীনতা ৰ বাবে ঔষধ খাই আছেনে?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ বিপি ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ diabetes ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">যোৱা ১ বছৰৰ ভিতৰত আপোনাৰ ৰক্তহীনতা ৰ বাবে স্বাস্থ্যসেৱা কৰ্মীয়ে দেখা পাইছেনে?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">আপুনি আপোনাৰ বিপি ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">আপুনি আপোনাৰ diabetes ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">আপুনি আপোনাৰ ৰক্তহীনতা ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
+
 </resources>

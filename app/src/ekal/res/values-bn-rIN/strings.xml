@@ -106,7 +106,7 @@
     <string name="hb_check_question">শেষবার কখন আপনি আপনার HB স্তর পরীক্ষা করেছিলেন?</string>
     <string name="bp_check_question">শেষ কবে আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?</string>
     <string name="sugar_check_question">শেষবার কখন আপনি আপনার চিনির মাত্রা পরীক্ষা করেছিলেন?</string>
-    <string name="bp_label">BP</string>
+    <string name="bp_label">বিপি</string>
     <string name="diabetes_label">ডায়াবেটিস</string>
     <string name="arthritis_label">বাত</string>
     <string name="anemia_label">রক্তশূন্যতা</string>

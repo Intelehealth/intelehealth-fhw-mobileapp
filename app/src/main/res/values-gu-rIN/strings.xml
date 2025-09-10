@@ -1053,4 +1053,16 @@
     <string name="i_dont_think_i_need_it">મને નથી લાગતું કે મારે તેની જરૂર છે</string>
     <string name="side_effect_related_to_medication">દવા સંબંધિત આડઅસર</string>
     <string name="unknown_other">અજ્ઞાત/અન્ય</string>
+
+    <string name="are_you_taking_any_medication_for_bp">શું તમે હાલમાં બીપી માટે દવાઓ લઈ રહ્યા છો?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">શું તમે હાલમાં ડાયાબિટીસ માટે દવાઓ લઈ રહ્યા છો?</string>
+    <string name="are_you_taking_any_medication_for_anemia">શું તમે હાલમાં એનિમિયા માટે દવાઓ લઈ રહ્યા છો?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">શું તમને તમારા બીપી માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">શું તમને તમારા ડાયાબિટીસ માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">શું તમને તમારા એનિમિયા માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">તમે તમારી બીપી દવાઓ કેમ નથી લેતા?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">તમે તમારી ડાયાબિટીસ દવાઓ કેમ નથી લેતા?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">તમે તમારી એનિમિયા દવાઓ કેમ નથી લેતા?</string>
 </resources>

@@ -893,4 +893,17 @@
     <string name="i_dont_think_i_need_it">ମୁଁ ଭାବୁନାହିଁ ଯେ ଏହା ମୋର ଦରକାର ବୋଲି </string>
     <string name="side_effect_related_to_medication">ଔଷଧ ସମ୍ବନ୍ଧୀୟ ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା |</string>
     <string name="unknown_other">ଅଜ୍ଞାତ / ଅନ୍ୟ</string>
+
+    <string name="are_you_taking_any_medication_for_bp">ଆପଣ ବର୍ତ୍ତମାନ ବିପି ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ମଧୁମେହ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ଆପଣ ବର୍ତ୍ତମାନ ରକ୍ତହୀନତା ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ତୁମର ବିପି ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ତୁମର ମଧୁମେହ ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ତୁମର ରକ୍ତହୀନତା ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">ତୁମେ ତୁମର ବିପି ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ତୁମେ ତୁମର ରକ୍ତହୀନତା ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+
 </resources>

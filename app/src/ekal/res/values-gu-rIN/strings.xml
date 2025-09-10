@@ -106,7 +106,7 @@
     <string name="hb_check_question">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?</string>
     <string name="bp_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
     <string name="sugar_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
-    <string name="bp_label">બી.પી</string>
+    <string name="bp_label">બીપી</string>
     <string name="diabetes_label">સુગર</string>
     <string name="arthritis_label">ગાંઠ</string>
     <string name="anemia_label">એનીમિયા</string>

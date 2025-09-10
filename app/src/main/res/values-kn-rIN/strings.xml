@@ -1007,4 +1007,17 @@
     <string name="i_dont_think_i_need_it">ನನಗೆ ಅದರ ಅವಶ್ಯಕತೆ ಇಲ್ಲ ಎಂದು ನಾನು ಭಾವಿಸುತ್ತೇನೆ</string>
     <string name="side_effect_related_to_medication">ಔಷಧಿಗೆ ಸಂಬಂಧಿಸಿದ ಅಡ್ಡ ಪರಿಣಾಮ</string>
     <string name="unknown_other">ಅಜ್ಞಾತ / ಇತರೆ</string>
+
+    <string name="are_you_taking_any_medication_for_bp">ನೀವು ಪ್ರಸ್ತುತ ಬಿಪಿ ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ನೀವು ಪ್ರಸ್ತುತ ಮಧುಮೇಹ ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+    <string name="are_you_taking_any_medication_for_anemia">ನೀವು ಪ್ರಸ್ತುತ ರಕ್ತಹೀನತೆ ಮತ್ತು ಗಾಗಿ ಔಷಧಿಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿರುವಿರಾ?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ನಿಮ್ಮ ಬಿಪಿ ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ನಿಮ್ಮ ಮಧುಮೇಹ ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ನಿಮ್ಮ ರಕ್ತಹೀನತೆ ಗಾಗಿ ಕಳೆದ 1 ವರ್ಷದಲ್ಲಿ ನೀವು ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರಿಂದ ನೋಡಿದ್ದೀರಾ?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">ನೀವು ನಿಮ್ಮ ಬಿಪಿ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ನೀವು ನಿಮ್ಮ ಮಧುಮೇಹ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">ನೀವು ನಿಮ್ಮ ರಕ್ತಹೀನತೆ ಔಷಧಿಗಳನ್ನು ಏಕೆ ತೆಗೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ?</string>
+
 </resources>

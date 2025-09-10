@@ -1043,4 +1043,15 @@
     <string name="side_effect_related_to_medication">ওষুধের সাথে সম্পর্কিত পার্শ্ব প্রতিক্রিয়া</string>
     <string name="unknown_other">অজানা/অন্য</string>
 
+    <string name="are_you_taking_any_medication_for_bp">আপনি কি বর্তমানে বিপি এর জন্য ওষুধ খাচ্ছেন?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">আপনি কি বর্তমানে ডায়াবেটিস এর জন্য ওষুধ খাচ্ছেন? </string>
+    <string name="are_you_taking_any_medication_for_anemia">আপনি কি বর্তমানে রক্তাল্পতা এর জন্য ওষুধ খাচ্ছেন?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">আপনার বিপি জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">আপনার ডায়াবেটিস জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">আপনার রক্তাল্পতা জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">কেন আপনি আপনার বিপি ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">কেন আপনি আপনার ডায়াবেটিস ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">কেন আপনি আপনার রক্তাল্পতা ওষুধ খাচ্ছেন না?</string>
 </resources>
