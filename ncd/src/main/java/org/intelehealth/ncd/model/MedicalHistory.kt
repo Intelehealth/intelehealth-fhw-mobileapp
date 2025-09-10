@@ -5,7 +5,7 @@ data class MedicalHistory(
     val anySurgeries: String,
     val arthritis: String,
     val diabetes: String,
-    val hypertension: String,
+    val bp: String,
     val reasonForSurgery: String,
 
     val medicationForBP: String,
@@ -15,6 +15,5 @@ data class MedicalHistory(
     val healthWorkerForDiabetes: String,
     val reasonForNoDiabetesMedication: String,
     val medicationForAnemia: String,
-    val healthWorkerForAnemia: String,
-    val reasonForNoAnemiaMedication: String
+    val healthWorkerForAnemia: String
 )

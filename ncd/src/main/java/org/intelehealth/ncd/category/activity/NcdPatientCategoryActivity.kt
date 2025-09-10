@@ -64,8 +64,8 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         val fragmentList: List<Fragment> = listOf(
             AnemiaScreeningFragment(),
             AnemiaFollowUpFragment(),
-            DiabetesScreeningFragment(),
-            DiabetesFollowUpFragment(),
+            //DiabetesScreeningFragment(),
+            //DiabetesFollowUpFragment(),
             HypertensionScreeningFragment(),
             HypertensionFollowUpFragment(),
             GeneralFragment()
@@ -74,11 +74,18 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         adapter = CategoryPagerAdapter(this, fragmentList)
         binding?.vpCategory?.adapter = adapter
 
-        val tabTitles = listOf(
+        /*val tabTitles = listOf(
             getString(R.string.tab_anemia_screening),
             getString(R.string.tab_anemia_follow_up),
             getString(R.string.tab_diabetes_screening),
             getString(R.string.tab_diabetes_follow_up),
+            getString(R.string.tab_hypertension_screening),
+            getString(R.string.tab_hypertension_follow_up),
+            getString(R.string.tab_general)
+        )*/
+        val tabTitles = listOf(
+            getString(R.string.tab_anemia_screening),
+            getString(R.string.tab_anemia_follow_up),
             getString(R.string.tab_hypertension_screening),
             getString(R.string.tab_hypertension_follow_up),
             getString(R.string.tab_general)

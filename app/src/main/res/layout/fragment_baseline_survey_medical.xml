@@ -183,7 +183,15 @@
                     tools:text="Medical History"
                     tools:textFontWeight="700" />
 
-                <LinearLayout
+                <include
+                    android:id="@+id/layout_bp_medication"
+                    layout="@layout/layout_hypertension_medication_basline"
+                    tools:visibility="visible"
+                    app:baseline="@{baseline}"
+                    app:medicalConfig="@{medicalConfig}"
+                    app:baselineEditMode="@{baselineEditMode}"
+                    android:visibility="@{medicalConfig.bpValue.enabled ? View.VISIBLE : View.GONE}"/>
+              <!--  <LinearLayout
                     android:id="@+id/llBpLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -233,7 +241,7 @@
                             android:text="@string/no" />
                     </RadioGroup>
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/llDiabetesLabel"
@@ -347,14 +355,7 @@
                     app:baselineEditMode="@{baselineEditMode}"
                     android:visibility="@{medicalConfig.anemiaValue.enabled ? View.VISIBLE : View.GONE}"/>
 
-                <include
-                    android:id="@+id/layout_hypertension_medication"
-                    layout="@layout/layout_hypertension_medication_basline"
-                    tools:visibility="visible"
-                    app:baseline="@{baseline}"
-                    app:medicalConfig="@{medicalConfig}"
-                    app:baselineEditMode="@{baselineEditMode}"
-                    android:visibility="@{medicalConfig.hypertensionValue.enabled ? View.VISIBLE : View.GONE}"/>
+
                 <LinearLayout
                     android:id="@+id/llSurgeryLabel"
                     android:layout_width="match_parent"

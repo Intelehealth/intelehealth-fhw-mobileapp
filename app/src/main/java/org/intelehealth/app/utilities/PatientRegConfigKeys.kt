@@ -74,10 +74,9 @@ class PatientRegConfigKeys {
         const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA = "have_you_seen_to_hw_in_past_one_year_for_anemia"
         const val REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION = "reason_for_not_taking_anemia_medication"
         const val OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION = "other_reason_for_not_taking_anemia_medication"
-        const val TAKING_ANY_MEDICATION_FOR_HYPERTENSION = "taking_any_medication_for_hypertension"
-        const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_HYPERTENSION = "have_you_seen_to_hw_in_past_one_year_for_hypertension"
-        const val REASON_FOR_NOT_TAKING_HYPERTENSION_MEDICATION = "reason_for_not_taking_hypertension_medication"
-        const val HYPERTENSION_VALUE = "hypertension_value"
+        const val TAKING_ANY_MEDICATION_FOR_BP = "taking_any_medication_for_bp"
+        const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_BP = "have_you_seen_to_hw_in_past_one_year_for_bp"
+        const val REASON_FOR_NOT_TAKING_BP_MEDICATION = "reason_for_not_taking_bp_medication"
 
         // OTHERS
         const val HEAD_OF_HOUSEHOLD = "HEAD_OF_HOUSEHOLD"

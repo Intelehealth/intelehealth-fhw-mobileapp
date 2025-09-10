@@ -22,57 +22,57 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/llHypertensionLabel"
+        android:id="@+id/llBPLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/std_12dp"
         android:orientation="vertical">
 
-        <!-- Q1: Do you have Hypertension? -->
+        <!-- Q1: Do you have BP? -->
         <LinearLayout
-            android:id="@+id/layout_hypertension_question"
+            android:id="@+id/layout_bp_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_hypertension_label"
+                android:id="@+id/tv_bp_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="@{ medicalConfig.hypertensionValue.mandatory ? @string/hypertension_label + ` *` : @string/hypertension_label}"
+                android:text="@{ medicalConfig.bpValue.mandatory ? @string/bp_label + ` *` : @string/bp_label}"
                 android:textAppearance="@style/blur_txtview"
-                tools:text="@string/hypertension_label" />
+                tools:text="@string/bp_label" />
 
             <RadioGroup
-                android:id="@+id/rg_hypertension_options"
+                android:id="@+id/rg_bp_options"
                 style="@style/RadioButtonStyleSelection"
-                config="@{medicalConfig.hypertensionValue}"
+                config="@{medicalConfig.bpValue}"
                 editMode="@{baselineEditMode}"
-                radioButtonValue="@{baseline.hypertensionValue}"
+                radioButtonValue="@{baseline.bpValue}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_5">
 
                 <RadioButton
-                    android:id="@+id/radioHypertensionYes"
+                    android:id="@+id/radioBPYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_20"
                     android:text="@string/yes" />
 
                 <RadioButton
-                    android:id="@+id/radioHypertensionNo"
+                    android:id="@+id/radioBPNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no" />
             </RadioGroup>
         </LinearLayout>
 
-        <!-- Q2: Are you taking any medication for Hypertension? -->
+        <!-- Q2: Are you taking any medication for BP? -->
         <LinearLayout
-            android:id="@+id/layout_hypertension_medication"
+            android:id="@+id/layout_bp_medication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -80,34 +80,34 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_hypertension_medication_ques"
+                android:id="@+id/tv_bp_medication_ques"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="@{ medicalConfig.takingAnyMedicationForHypertension.mandatory ? @string/are_you_taking_any_medication_for_hypertension + ` *` : @string/are_you_taking_any_medication_for_hypertension}"
+                android:text="@{ medicalConfig.takingAnyMedicationForBP.mandatory ? @string/are_you_taking_any_medication_for_bp + ` *` : @string/are_you_taking_any_medication_for_bp}"
                 android:textAppearance="@style/blur_txtview"
-                tools:text="@string/are_you_taking_any_medication_for_hypertension" />
+                tools:text="@string/are_you_taking_any_medication_for_bp" />
 
             <RadioGroup
-                android:id="@+id/rg_hypertension_taking_medication_options"
+                android:id="@+id/rg_bp_taking_medication_options"
                 style="@style/RadioButtonStyleSelection"
-                config="@{medicalConfig.takingAnyMedicationForHypertension}"
+                config="@{medicalConfig.takingAnyMedicationForBP}"
                 editMode="@{baselineEditMode}"
-                bindRadioButtonValueNew="@{baseline.takingAnyMedicationForHypertension}"
+                bindRadioButtonValueNew="@{baseline.takingAnyMedicationForBP}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_5">
 
                 <RadioButton
-                    android:id="@+id/radio_taking_medication_hypertension_yes"
+                    android:id="@+id/radio_taking_medication_bp_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_20"
                     android:text="@string/yes" />
 
                 <RadioButton
-                    android:id="@+id/radio_taking_medication_hypertension_no"
+                    android:id="@+id/radio_taking_medication_bp_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no" />
@@ -116,7 +116,7 @@
 
         <!-- Q3: Seen by healthcare worker? -->
         <LinearLayout
-            android:id="@+id/layout_hypertension_seen_by_hw"
+            android:id="@+id/layout_bp_seen_by_hw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -124,33 +124,33 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_hypertension_yes_option_seen_by_hw_medication_yes"
+                android:id="@+id/tv_bp_yes_option_seen_by_hw_medication_yes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_hypertension"
+                android:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP"
                 android:textAppearance="@style/blur_txtview"
-                tools:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_hypertension" />
+                tools:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP" />
 
             <RadioGroup
-                android:id="@+id/rg_hypertension_seen_by_hw_medication_yes"
+                android:id="@+id/rg_bp_seen_by_hw_medication_yes"
                 style="@style/RadioButtonStyleSelection"
-                config="@{medicalConfig.haveYouSeenToHWinPastOneYearForHypertension}"
+                config="@{medicalConfig.haveYouSeenToHWinPastOneYearForBP}"
                 editMode="@{baselineEditMode}"
-                bindRadioButtonValueNew="@{baseline.haveYouSeenToHWinPastOneYearForHypertension}"
+                bindRadioButtonValueNew="@{baseline.haveYouSeenToHWinPastOneYearForBP}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_5">
 
                 <RadioButton
-                    android:id="@+id/radio_hypertension_seen_by_hw_yes"
+                    android:id="@+id/radio_bp_seen_by_hw_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_20"
                     android:text="@string/yes" />
 
                 <RadioButton
-                    android:id="@+id/radio_hypertension_seen_by_hw_no"
+                    android:id="@+id/radio_bp_seen_by_hw_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no" />
@@ -159,7 +159,7 @@
 
         <!-- Q4: Reason for not taking medication -->
         <LinearLayout
-            android:id="@+id/layout_hypertension_reason_not_taking"
+            android:id="@+id/layout_bp_reason_not_taking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -167,15 +167,15 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_hypertension_not_taking_medication_no_option"
+                android:id="@+id/tv_bp_not_taking_medication_no_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/why_are_you_not_taking_your_hypertension_medication"
+                android:text="@string/why_are_you_not_taking_your_bp_medication"
                 android:textAppearance="@style/blur_txtview"
-                tools:text="@string/why_are_you_not_taking_your_hypertension_medication" />
+                tools:text="@string/why_are_you_not_taking_your_bp_medication" />
 
             <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                android:id="@+id/autotvlayout_reason_for_not_taking_hypertension_medication"
+                android:id="@+id/autotvlayout_reason_for_not_taking_bp_medication"
                 style="@style/AppTheme.OutlineInputBox.DropDown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                 app:hintEnabled="false">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autotv_reason_for_not_taking_hypertension_medication"
+                    android:id="@+id/autotv_reason_for_not_taking_bp_medication"
                     style="@style/AppTheme.InputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,14 +191,14 @@
                     android:inputType="none" />
             </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
             <LinearLayout
-                android:id="@+id/layout_hypertension_other_reason_not_taking"
+                android:id="@+id/layout_bp_other_reason_not_taking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
                 <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
-                    android:id="@+id/til_hypertension_medication_not_taking_other_reason"
+                    android:id="@+id/til_bp_medication_not_taking_other_reason"
                     style="@style/AppTheme.OutlineInputBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_hypertension_medication_not_taking_other_reason"
+                        android:id="@+id/et_bp_medication_not_taking_other_reason"
                         style="@style/AppTheme.InputBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
