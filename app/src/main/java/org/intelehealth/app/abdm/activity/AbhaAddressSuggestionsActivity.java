@@ -64,6 +64,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
     private String blockCharacterSet_ABHA_Address = "@";
+    private String initialAbhaAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra("payload");
         firstRequestFulfilled = intent.getBooleanExtra("firstRequestFulfilled", false);
 
+        if (otpVerificationResponse.getABHAProfile() != null) {
+            initialAbhaAddress = otpVerificationResponse.getABHAProfile().getPhrAddress().get(0);
+        }
 
         if (intent.hasExtra("addressList")) {
             ArrayList<String> phrAddressSuggestionsList = intent.getStringArrayListExtra("addressList");
@@ -90,6 +94,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         }
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
+            resetPhrAddresses();
+
             Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getCheckedChipId());
             String selectedChip = chip != null ? chip.getText().toString() : "";
             EditText abhaAddressET = binding.etAbhaAddress;
@@ -109,6 +115,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             AbhaAddressSuggestionDialogFragment abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
             abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(), "");
         });
+    }
+
+    private void resetPhrAddresses() {
+        List<String> phrAddressesList = new ArrayList<>();
+        phrAddressesList.add(initialAbhaAddress);
+        otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddressesList);
     }
 
     private InputFilter filter = new InputFilter() {

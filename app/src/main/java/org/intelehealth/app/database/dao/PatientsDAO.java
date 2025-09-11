@@ -1048,11 +1048,11 @@ public class PatientsDAO {
 
     }
 
-    public static String getPatientUuidIfAbhaAddressIsPresent(String abhaAddress) {
+    public static String getPatientUuidByAbhaDetails(String abhaAddress, String abhaNumber) {
         String patientUuid = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        String query = "SELECT uuid FROM tbl_patient WHERE abha_address = ?";
-        try (Cursor cursor = db.rawQuery(query, new String[]{abhaAddress})) {
+        String query = "SELECT uuid FROM tbl_patient WHERE abha_address = ? AND abha_number = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{abhaAddress, abhaNumber})) {
             if (cursor.moveToFirst()) {
                 patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }

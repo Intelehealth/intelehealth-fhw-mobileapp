@@ -194,9 +194,9 @@ class CompareDataActivity : AppCompatActivity() {
         secondValue: String
     ) {
         if (firstValue == secondValue) {
-            localRb.isChecked = true
-            localRb.isEnabled = false
+            abhaRb.isChecked = true
             abhaRb.isEnabled = false
+            localRb.isEnabled = false
         }
     }
 

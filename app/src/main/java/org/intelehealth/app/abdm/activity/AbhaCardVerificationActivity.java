@@ -850,7 +850,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
                         disposables.add(
                                 Observable.fromCallable(() -> {
-                                                    String patientUuid = PatientsDAO.getPatientUuidIfAbhaAddressIsPresent(abhaProfileResponse.getPreferredAbhaAddress());
+                                                    String patientUuid = PatientsDAO.getPatientUuidByAbhaDetails(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse.getABHANumber());
 
                                                     if (patientUuid != null) {
                                                         return PatientsDAO.getPatientDetailsByUuid(patientUuid);
