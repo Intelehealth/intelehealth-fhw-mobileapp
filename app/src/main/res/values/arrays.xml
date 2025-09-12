@@ -57,7 +57,7 @@
 
     <string-array name="speciality_values">
         <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>@string/specialty_general_physician</item>
     </string-array>
 
     <string-array name="speciality_value_hindi">
@@ -3376,6 +3376,95 @@
         <item>8அடி 1அங்குலம்</item>
         <item>8அடி 2அங்குலம்</item>
         <item>8அடி 3அங்குலம்</item>
+    </string-array>
+
+    <string-array name="height_te">
+        <item>ఎంచుకోండి</item>
+        <item>1అడుగులు 3అంగుళం.</item>
+        <item>1అడుగులు 4అంగుళం.</item>
+        <item>1అడుగులు 5అంగుళం.</item>
+        <item>1అడుగులు 6అంగుళం.</item>
+        <item>1అడుగులు 7అంగుళం.</item>
+        <item>1అడుగులు 8అంగుళం.</item>
+        <item>1అడుగులు 9అంగుళం.</item>
+        <item>1అడుగులు 10అంగుళం.</item>
+        <item>1అడుగులు 11అంగుళం.</item>
+        <item>2అడుగులు 0అంగుళం.</item>
+        <item>2అడుగులు 1అంగుళం.</item>
+        <item>2అడుగులు 2అంగుళం.</item>
+        <item>2అడుగులు 3అంగుళం.</item>
+        <item>2అడుగులు 4అంగుళం.</item>
+        <item>2అడుగులు 5అంగుళం.</item>
+        <item>2అడుగులు 6అంగుళం.</item>
+        <item>2అడుగులు 7అంగుళం.</item>
+        <item>2అడుగులు 8అంగుళం.</item>
+        <item>2అడుగులు 9అంగుళం.</item>
+        <item>2అడుగులు 10అంగుళం.</item>
+        <item>2అడుగులు 11అంగుళం.</item>
+        <item>3అడుగులు 0అంగుళం.</item>
+        <item>3అడుగులు 1అంగుళం.</item>
+        <item>3అడుగులు 2అంగుళం.</item>
+        <item>3అడుగులు 3అంగుళం.</item>
+        <item>3అడుగులు 4అంగుళం.</item>
+        <item>3అడుగులు 5అంగుళం.</item>
+        <item>3అడుగులు 6అంగుళం.</item>
+        <item>3అడుగులు 7అంగుళం.</item>
+        <item>3అడుగులు 8అంగుళం.</item>
+        <item>3అడుగులు 9అంగుళం.</item>
+        <item>3అడుగులు 10అంగుళం.</item>
+        <item>3అడుగులు 11అంగుళం.</item>
+        <item>4అడుగులు 0అంగుళం.</item>
+        <item>4అడుగులు 1అంగుళం.</item>
+        <item>4అడుగులు 2అంగుళం.</item>
+        <item>4అడుగులు 3అంగుళం.</item>
+        <item>4అడుగులు 4అంగుళం.</item>
+        <item>4అడుగులు 5అంగుళం.</item>
+        <item>4అడుగులు 6అంగుళం.</item>
+        <item>4అడుగులు 7అంగుళం.</item>
+        <item>4అడుగులు 8అంగుళం.</item>
+        <item>4అడుగులు 9అంగుళం.</item>
+        <item>4అడుగులు 10అంగుళం.</item>
+        <item>4అడుగులు 11అంగుళం.</item>
+        <item>5అడుగులు 0అంగుళం.</item>
+        <item>5అడుగులు 1అంగుళం.</item>
+        <item>5అడుగులు 2అంగుళం.</item>
+        <item>5అడుగులు 3అంగుళం.</item>
+        <item>5అడుగులు 4అంగుళం.</item>
+        <item>5అడుగులు 5అంగుళం.</item>
+        <item>5అడుగులు 6అంగుళం.</item>
+        <item>5అడుగులు 7అంగుళం.</item>
+        <item>5అడుగులు 8అంగుళం.</item>
+        <item>5అడుగులు 9అంగుళం.</item>
+        <item>5అడుగులు 10అంగుళం.</item>
+        <item>5అడుగులు 11అంగుళం.</item>
+        <item>6అడుగులు 0అంగుళం.</item>
+        <item>6అడుగులు 1అంగుళం.</item>
+        <item>6అడుగులు 2అంగుళం.</item>
+        <item>6అడుగులు 3అంగుళం.</item>
+        <item>6అడుగులు 4అంగుళం.</item>
+        <item>6అడుగులు 5అంగుళం.</item>
+        <item>6అడుగులు 6అంగుళం.</item>
+        <item>6అడుగులు 7అంగుళం.</item>
+        <item>6అడుగులు 8అంగుళం.</item>
+        <item>6అడుగులు 9అంగుళం.</item>
+        <item>6అడుగులు 10అంగుళం.</item>
+        <item>6అడుగులు 11అంగుళం.</item>
+        <item>7అడుగులు 0అంగుళం.</item>
+        <item>7అడుగులు 1అంగుళం.</item>
+        <item>7అడుగులు 2అంగుళం.</item>
+        <item>7అడుగులు 3అంగుళం.</item>
+        <item>7అడుగులు 4అంగుళం.</item>
+        <item>7అడుగులు 5అంగుళం.</item>
+        <item>7అడుగులు 6అంగుళం.</item>
+        <item>7అడుగులు 7అంగుళం.</item>
+        <item>7అడుగులు 8అంగుళం.</item>
+        <item>7అడుగులు 9అంగుళం.</item>
+        <item>7అడుగులు 10అంగుళం.</item>
+        <item>7అడుగులు 11అంగుళం.</item>
+        <item>8అడుగులు 0అంగుళం.</item>
+        <item>8అడుగులు 1అంగుళం.</item>
+        <item>8అడుగులు 2అంగుళం.</item>
+        <item>8అడుగులు 3అంగుళం.</item>
     </string-array>
 
 </resources>

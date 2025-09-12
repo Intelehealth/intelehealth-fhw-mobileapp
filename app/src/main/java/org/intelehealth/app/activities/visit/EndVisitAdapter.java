@@ -174,6 +174,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 CustomLog.v("startdate", "startDAte: " + startDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                    startDate = StringUtils.en_te_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
             }
 

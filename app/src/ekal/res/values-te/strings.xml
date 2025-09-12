@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Ekal Arogya</string>
+    <string name="intro_title_1">మనం ఎవరం?</string>
+    <string name="intro_tagline_1">ఏకల్ ఆరోగ్య అనేది ఒక వినూత్న టెలిమెడిసిన్ ప్లాట్‌ఫామ్, ఇది మారుమూల ప్రాంతాలలో ఆరోగ్య సంరక్షణ అంతరాన్ని తగ్గించడానికి, ఫ్రంట్‌లైన్ ఆరోగ్య కార్యకర్త మరియు రోగిని వర్చువల్ వైద్యుడితో అనుసంధానించి అధిక-నాణ్యత ఆరోగ్య సేవలను అందించడానికి రూపొందించబడింది.</string>
+    <string name="intro_title_2">రోగుల సందర్శనలను తీసుకుంటాము</string>
+    <string name="intro_tagline_2">ఈ ప్లాట్‌ఫామ్ ఆయు ద్వారా ఆధారితం, ఇది ప్రోగ్రామబుల్ డిజిటల్ అసిస్టెంట్, ఇది ప్రాంతీయ భాషలలో ప్రాథమిక ఆరోగ్య సంరక్షణ కోసం ఆధారాల ఆధారిత ప్రోటోకాల్‌లతో ఫ్రంట్‌లైన్ ఆరోగ్య కార్యకర్తలకు మద్దతు ఇస్తుంది.</string>
+    <string name="intro_title_3">ప్రిస్క్రిప్షన్లు అందించబడును</string>
+    <string name="intro_tagline_3">తక్కువ వనరుల వాతావరణం కోసం రూపొందించబడిన క్లౌడ్-ఆధారిత ఓపెన్-సోర్స్ ప్లాట్‌ఫామ్, అనుకూలీకరించిన అమలు వ్యూహంతో కలిపి, ప్రభావవంతమైన ఆరోగ్య ఫలితాల కోసం డిజిటల్ ఆరోగ్య పరిష్కారాన్ని సృష్టిస్తుంది.</string>
+
+    <string name="are_you_sure_you_want_to_send_visit">మీరు సందర్శనను ఖచ్చితంగా సేవ్ చేయాలనుకుంటున్నారా?</string>
+    <string name="send_visit">సందర్శనను సేవ్ చేయాలా?</string>
+    <string name="visit_successfully_sent">సందర్శన విజయవంతంగా సేవ్ చేయబడింది!</string>
+    <string name="patient_visit_sent">రోగి సందర్శన విజయవంతంగా సేవ్ చేయబడింది.</string>
+    <string name="visit_data_failed">డేటాను సందర్శించడం విఫలమైంది</string>
+    <string name="visit_uploaded_failed">ఇంటర్నెట్ అందుబాటులోకి వచ్చినప్పుడు అప్‌లోడ్ చేయబడుతుంది.</string>
+
+    <string name="prescription_not_received">ప్రిస్క్రిప్షన్ అందలేదు</string>
+    <string name="please_wait_for_the_doctor_to_share_the_prescription_before_closing_the_visit">సందర్శనను ముగించే ముందు డాక్టర్ ప్రిస్క్రిప్షన్ పంచుకునే వరకు వేచి ఉండండి.</string>
+    <string name="confirm_end_visit_reason">ఈ సందర్శనను ముగించాలా?</string>
+    <string name="confirm_end_visit_reason_message">మీరు ఈ సందర్శనను ఖచ్చితంగా ముగించాలనుకుంటున్నారా?</string>
+    <string name="select_caste">కులాన్ని ఎంచుకోండి</string>
+    <string name="select_education">విద్యను ఎంచుకోండి</string>
+    <string name="select_economic_category">ఆర్థిక స్థితిని ఎంచుకోండి</string>
+    <string name="select_phone_ownership">ఫోన్ యాజమాన్యాన్ని ఎంచుకోండి</string>
+    <string name="select_your_choice">మీ ఎంపికను ఎంచుకోండి</string>
+
+    <string name="schedule_caste">షెడ్యూల్ కులం</string>
+    <string name="schedule_tribe">షెడ్యూల్ తెగ</string>
+    <string name="survey_other_backward_caste">ఇతర వెనుకబడిన కులాలు (OBC)</string>
+    <string name="survey_general">జనరల్</string>
+    <string name="survey_other">ఇతర</string>
+
+    <string name="smoker">ధూమపానం చేసేవాడు</string>
+    <string name="non_smoker">ధూమపానం చేయనివారు</string>
+    <string name="denied_to_answer">సమాధానం ఇవ్వడానికి నిరాకరించబడింది</string>
+    <string name="medical_history">వైద్య చరిత్ర</string>
+
+    <string name="less_than_5_bidis_or_cigarette">5 బీడీలు / సిగరెట్ కంటే తక్కువ</string>
+    <string name="five_to_ten_bidis_or_cigarette">5 – 10 బీడీలు / సిగరెట్లు</string>
+    <string name="more_than_10_bidis_or_cigarette">10 కంటే ఎక్కువ బీడీలు / సిగరెట్లు</string>
+
+    <string name="less_than_a_year">ఒక సంవత్సరం కన్నా తక్కువ</string>
+    <string name="from_1_year_to_5_years">1 సంవత్సరం నుండి 5 సంవత్సరాల వరకు</string>
+    <string name="from_5_year_to_10_years">5 నుండి 10 సంవత్సరాల వరకు</string>
+    <string name="more_than_10_years">10 సంవత్సరాలకు పైగా</string>
+
+    <string name="frequency_daily">ప్రతిరోజు</string>
+    <string name="frequency_once_a_week">వారానికి ఒకసారి</string>
+    <string name="frequency_twice_a_week">వారానికి రెండుసార్లు</string>
+    <string name="frequency_occasionally">అప్పుడప్పుడు (నెలకు ఒకసారి లేదా అంతకంటే తక్కువ)</string>
+
+    <string name="zero_fifty_ml">0 – 50 మి.లీ.</string>
+    <string name="fifty_hundred_ml">50 – 100 మి.లీ.</string>
+    <string name="hundred_two_hundred_fifty_ml">100 – 250 మి.లీ.</string>
+    <string name="two_fifty_five_hundred_ml">250 – 500 మి.లీ.</string>
+    <string name="more_than_five_hundred_ml">500 మి.లీ కంటే ఎక్కువ</string>
+
+    <string name="specify_the_reason">కారణాన్ని పేర్కొనండి</string>
+
+    <string name="zero_thirty_thousand">0 – 30,000</string>
+    <string name="thirty_fifty_thousand">30,000 – 50,000</string>
+    <string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+    <string name="more_than_two_lakh_fifty_thousand">2,50,000 కంటే ఎక్కువ</string>
+
+    <string name="religion_hindu">హిందూ</string>
+    <string name="religion_muslim">ముస్లిం</string>
+    <string name="religion_christian">క్రైస్తవుడు</string>
+    <string name="religion_sikh">సిక్కు</string>
+    <string name="religion_buddhist_neo_buddhist">బౌద్ధ లేదా నవీన బౌద్ధ</string>
+    <string name="religion_jain">జైన్</string>
+    <string name="religion_jewish">యూదు</string>
+    <string name="parsi_zoroastrian">పార్సీ లేదా జొరాస్ట్రియన్</string>
+    <string name="no_religion">ఇతరులు</string>
+
+    <string name="economic_status_apl">ఎపిఎల్</string>
+    <string name="economic_status_bpl">బిపిఎల్</string>
+
+    <string name="toilet_facility_open_defecation">బహిరంగ మలవిసర్జన</string>
+    <string name="toilet_facility_own_a_toilet_but_it_unusable">సొంత టాయిలెట్ ఉంది కానీ అది నిరుపయోగంగా ఉంది</string>
+    <string name="toilet_facility_use_toilet_at_home">ఇంట్లో టాయిలెట్ వాడండి</string>
+    <string name="toilet_facility_use_community_toilet">కమ్యూనిటీ టాయిలెట్ వాడండి</string>
+    <string name="toilet_facility_shared_toilet_with_other_households">ఇతర ఇంటితో కలిసి మరుగుదొడ్డి</string>
+    <string name="toilet_facility_declined_to_answer">సమాధానం చెప్పడానికి నిరాకరించారు</string>
+
+    <string name="house_structure_kutcha_house">కచ్చా ఇల్లు</string>
+    <string name="house_structure_pakka_house">పక్కా ఇల్లు</string>
+    <string name="house_structure_homeless">నిరాశ్రయుడు</string>
+
+    <string name="cultivable_land_bigha">బిఘా</string>
+    <string name="cultivable_land_gunta">గుంట</string>
+    <string name="cultivable_land_acre">ఎకరం</string>
+    <string name="cultivable_land_hectare">హెక్టారు</string>
+    <string name="cultivable_land_landless">భూమిలేని</string>
+
+    <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">నివసిస్తున్న సభ్యుల సంఖ్య కుటుంబంలోని మొత్తం సభ్యుల సంఖ్య కంటే ఎక్కువగా ఉండకూడదు</string>
+    <string name="load_shedding_hours_error">గంటల సంఖ్య 0 మరియు 24 మధ్య ఉండాలి..</string>
+    <string name="load_shedding_days_error">రోజుల సంఖ్య 0 మరియు 7 మధ్య ఉండాలి.</string>
+
+    <string name="availability_of_water_supply">నీటి సరఫరా లభ్యత</string>
+
+    <string name="hb_check_question">మీరు మీ HB స్థాయిని చివరిసారి ఎప్పుడు తనిఖీ చేసారు?</string>
+    <string name="bp_check_question">మీరు చివరిసారిగా మీ బిపిని ఎప్పుడు చెక్ చేసుకున్నారు?</string>
+    <string name="sugar_check_question">మీరు చివరిసారిగా మీ చక్కెర స్థాయిని ఎప్పుడు తనిఖీ చేసుకున్నారు?</string>
+    <string name="bp_label">BP</string>
+    <string name="diabetes_label">మధుమేహం</string>
+    <string name="arthritis_label">ఆర్థరైటిస్</string>
+    <string name="anemia_label">రక్తహీనత</string>
+    <string name="surgery_label">ఏదైనా శస్త్రచికిత్సలు?</string>
+    <string name="surgery_reason_label">శస్త్రచికిత్సకు కారణం</string>
+    <string name="smoking_history_question">వ్యక్తి ధూమపానం చేస్తాడా?</string>
+    <string name="smoking_rate_label">ధూమపానం రేటు</string>
+    <string name="smoking_duration_question">మీరు ఎంతకాలం నుండి ధూమపానం చేస్తున్నారు</string>
+    <string name="smoking_frequency_label">వినియోగం యొక్క ఫ్రీక్వెన్సీ</string>
+    <string name="chew_tobacco_question">ఆ వ్యక్తి పొగాకు నమలుతారా?</string>
+    <string name="alcohol_history_question">మద్యం సేవించిన చరిత్ర ఏదైనా ఉందా?</string>
+    <string name="alcohol_rate_label">మద్యం వినియోగం రేటు</string>
+    <string name="alcohol_consumption_question">మీరు ఎంతకాలం మద్యం సేవిస్తున్నారు?</string>
+    <string name="alcohol_frequency_label">వినియోగం యొక్క ఫ్రీక్వెన్సీ</string>
+
+    <string name="head_of_household_question">మీరు కుటుంబ పెద్దవా?</string>
+    <string name="ration_card_question">మీకు రేషన్ కార్డు ఉందా?</string>
+    <string name="other_religion_label">మతం</string>
+    <string name="total_members_question">కుటుంబంలోని మొత్తం సభ్యుల సంఖ్య*</string>
+    <string name="usual_members_question">మీ ఇంటిలో సాధారణంగా ఎంత మంది సభ్యులు నివసిస్తున్నారు లేదా ఇప్పుడు మీతో ఉంటున్నారు*</string>
+    <string name="smart_phone_label">ఇంట్లో స్మార్ట్‌ఫోన్‌ల సంఖ్య</string>
+    <string name="feature_phone_label">ఇంట్లో ఫీచర్ ఫోన్‌ల సంఖ్య</string>
+    <string name="earning_members_label">ఇంట్లో సంపాదించే సభ్యుల సంఖ్య</string>
+    <string name="electricity_check_question">ఇంటికి కరెంటు ఉందా?</string>
+    <string name="load_shedding">లోడ్ షెడ్డింగ్</string>
+    <string name="load_shedding_hours_question">రోజుకు గంటల సంఖ్య</string>
+    <string name="load_shedding_days_question">వారానికి రోజుల సంఖ్య</string>
+    <string name="water_check_question">ఇంట్లో రన్నింగ్ వాటర్ అందుబాటులో ఉందా?</string>
+    <string name="water_availability_hours_per_day">రోజుకు గంటల సంఖ్య</string>
+    <string name="water_availability_days_per_week">వారానికి రోజుల సంఖ్య</string>
+
+    <string name="source_of_water_question">మీ ఇంటి సభ్యులకు తాగునీటికి ప్రధాన వనరు ఏది?</string>
+    <string name="safequard_question">నీటిని సురక్షితంగా త్రాగడానికి మీరు సాధారణంగా ఏమి చేస్తారు?</string>
+    <string name="distance_from_water_question">ఇంటి నుండి తిరిగి వెళ్ళడానికి 30 నిమిషాల లోపు తాగునీటి వనరు ఉందా?</string>
+    <string name="toilet_facility_question">మీ ఇంటి సభ్యులు సాధారణంగా ఎలాంటి టాయిలెట్ సౌకర్యాన్ని ఉపయోగిస్తారు?</string>
+    <string name="house_structure_label">గృహ నిర్మాణ రకం</string>
+    <string name="cultivable_land_question">కుటుంబానికి చెందిన సాగు భూమి మొత్తం</string>
+    <string name="average_income_label">సగటు వార్షిక గృహ ఆదాయం (INR)</string>
+    <string name="fuel_type_question">మీ ఇంట్లో వంట చేయడానికి ప్రధానంగా ఏ రకమైన ఇంధనాన్ని ఉపయోగిస్తారు?</string>
+    <string name="source_of_lighting_question">ఈ గృహంలో లైటింగ్ యొక్క ప్రధాన మూలం ఏమిటి?</string>
+    <string name="hand_wash_Label">మీ హ్యాండ్ వాష్ ప్రాక్టీస్ గురించి వివరించండి</string>
+    <string name="ekal_service_check_question">మీ గ్రామంలో ప్రాథమిక ఆరోగ్య సంరక్షణ అందించడానికి ఏకల్ ఒక టెలిమెడిసిన్ కార్యక్రమాన్ని ప్రారంభిస్తోంది - వీటిలో HB పరీక్ష, BP పరీక్ష, షుగర్ పరీక్ష మరియు అవసరమైన విధంగా డాక్టర్ సంప్రదింపులు ఉన్నాయి. మీరు మా సేవను తీసుకోవాలనుకుంటున్నారా?</string>
+    <string name="relation_with_household">ఇంటి యజమానితో మీకు ఎలాంటి సంబంధం ఉంది?</string>
+
+    <string name="which_server_would_you_like_to_connect_to">మీరు ఏ సర్వర్‌కి కనెక్ట్ చేయాలనుకుంటున్నారు?</string>
+    <string name="enter_url">URLని నమోదు చేయండి</string>
+    <string name="please_enter_a_valid_url">దయచేసి చెల్లుబాటు అయ్యే URL ని నమోదు చేయండి.</string>
+    <string name="select_location">స్థానాన్ని ఎంచుకోండి</string>
+    <string name="select_state">రాష్ట్రం ఎంచుకోండి</string>
+    <string name="select_district">జిల్లాను ఎంచుకోండి</string>
+    <string name="sanch">సాంచ్</string>
+    <string name="select_sanch">సాంచ్ ఎంచుకోండి</string>
+    <string name="primary_village">ప్రాథమిక గ్రామం</string>
+    <string name="select_primary_village">ప్రాథమిక గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="secondary_village">ద్వితీయ గ్రామం</string>
+    <string name="select_secondary_village">ద్వితీయ గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="location_survey_enter_following_details">కింది వివరాలను నమోదు చేయండి</string>
+    <string name="choose_a_location_to_login">లాగిన్ చేయడానికి ఒక స్థానాన్ని ఎంచుకోండి</string>
+    <string name="distance_to_sub_centre_in_walking_time">ఉప కేంద్రానికి దూరం (నడక సమయంలో)*</string>
+    <string name="within_5_minutes">5 నిమిషాలలోపు</string>
+    <string name="five_fifteen_minutes">5 – 15 నిమిషాలు</string>
+    <string name="fifteen_thirty_minutes">15 – 30 నిమిషాలు</string>
+    <string name="more_than_thirty_minutes">30 నిమిషాల కంటే ఎక్కువ</string>
+    <string name="error_sub_centre_distance_not_selected">దయచేసి ఉప కేంద్రానికి దూరాన్ని సెట్ చేయండి</string>
+    <string name="distance_to_nearest_primary_health_centre_in_kms">సమీప ప్రాథమిక ఆరోగ్య కేంద్రాలకు దూరం*</string>
+    <string name="within_1_km">1 కి.మీ లోపల</string>
+    <string name="one_three_km">1 – 3 కి.మీ</string>
+    <string name="three_five_km">3 – 5 కి.మీ</string>
+    <string name="more_than_five_km">5 కి.మీ కంటే ఎక్కువ</string>
+    <string name="error_primary_health_centre_distance_not_selected">దయచేసి ప్రాథమిక ఆరోగ్య కేంద్రానికి దూరాన్ని సెట్ చేయండి (కి.మీ.లలో)</string>
+    <string name="distance_to_nearest_community_health_centre_in_kms">సమీప కమ్యూనిటీ హెల్త్ సెంటర్లకు దూరం*</string>
+    <string name="within_three_km">3 కి.మీ లోపల</string>
+    <string name="three_six_km">3 – 6 కి.మీ</string>
+    <string name="six_ten_km">6 – 10 కి.మీ</string>
+    <string name="more_than_ten_km">10 కి.మీ కంటే ఎక్కువ</string>
+    <string name="error_community_health_centre_distance_not_selected">దయచేసి కమ్యూనిటీ హెల్త్ సెంటర్ కు దూరాన్ని సెట్ చేయండి.</string>
+    <string name="distance_to_nearest_district_hospital">సమీప జిల్లా ఆసుపత్రికి దూరం*</string>
+    <string name="within_five_km">5 కి.మీ లోపల</string>
+    <string name="five_ten_km">5 – 10 కి.మీ</string>
+    <string name="ten_twenty_km">10 – 20 కి.మీ</string>
+    <string name="twenty_thirty_km">20 – 30 కి.మీ</string>
+    <string name="more_than_thirty_km">30 కి.మీ కంటే ఎక్కువ</string>
+    <string name="error_district_hospital_distance_not_selected">దయచేసి జిల్లా ఆసుపత్రికి దూరాన్ని సెట్ చేయండి.</string>
+    <string name="distance_to_nearest_medical_store">సమీప మెడికల్ దుకాణానికి దూరం*</string>
+    <string name="distance_to_nearest_pathological_lab">సమీప రోగలక్షణ ప్రయోగశాలకు దూరం*</string>
+    <string name="error_medical_store_distance_not_selected">దయచేసి మెడికల్ స్టోర్ కు దూరాన్ని సెట్ చేయండి.</string>
+    <string name="error_pathological_lab_distance_not_selected">దయచేసి పాథలాజికల్ ల్యాబ్ కు దూరాన్ని సెట్ చేయండి.</string>
+    <string name="distance_to_nearest_private_clinic">సమీప ప్రైవేట్ క్లినిక్‌కి దూరం (MBBS డాక్టర్‌తో)*</string>
+    <string name="distance_to_nearest_private_clinic_with_alternate_medicine">సమీప ప్రైవేట్ క్లినిక్‌కి దూరం (ప్రత్యామ్నాయ వైద్య నిపుణులతో – BAMS, BHMS, ఆయుర్వేదం మొదలైనవి)*</string>
+    <string name="error_private_clinic_not_selected">దయచేసి MBBS డాక్టర్ ఉన్న దగ్గరలోని ప్రైవేట్ క్లినిక్ కు దూరాన్ని ఎంచుకోండి.</string>
+    <string name="error_private_clinic_alternate_medicine_distance_not_selected">దయచేసి ప్రత్యామ్నాయ వైద్య నిపుణులు ఉన్న సమీప ప్రైవేట్ క్లినిక్‌కు దూరాన్ని ఎంచుకోండి.</string>
+    <string name="does_this_village_get_water_under_jal_jeevan_yojana_scheme">ఈ గ్రామానికి జల్ జీవన్ యోజన పథకం కింద నీరు అందుతుందా?*</string>
+    <string name="error_jal_jeevan_yojana_not_selected">దయచేసి గ్రామానికి జల్ జీవన్ యోజన పథకం కింద నీరు అందుతుందో లేదో ఎంచుకోండి.</string>
+    <string name="please_select_all_the_required_fields">దయచేసి అవసరమైన అన్ని ఫీల్డ్‌లను ఎంచుకోండి.</string>
+
+    <string name="setup_select_state_str">రాష్ట్రం ఎంచుకోండి</string>
+    <string name="setup_select_dropdown_state_msg">డ్రాప్‌డౌన్ నుండి రాష్ట్రాన్ని ఎంచుకోండి</string>
+    <string name="setup_select_district_str">జిల్లాను ఎంచుకోండి</string>
+    <string name="setup_select_dropdown_district_msg">డ్రాప్‌డౌన్ నుండి జిల్లాను ఎంచుకోండి</string>
+    <string name="setup_select_sanch_str">సాంచ్ ఎంచుకోండి</string>
+    <string name="setup_select_dropdown_sanch_msg">డ్రాప్‌డౌన్ నుండి Sanchని ఎంచుకోండి</string>
+    <string name="setup_select_village_str">గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="setup_select_primary_village_str">ప్రాథమిక గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="setup_select_secondary_village_str">ద్వితీయ గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="setup_select_dropdown_village_msg">డ్రాప్‌డౌన్ నుండి గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="switch_location">స్థానాన్ని మార్చు</string>
+    <string name="no_network_sync">మీరు ఇంటర్నెట్‌కు కనెక్ట్ కాలేదు. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="confirm_switch_location">మీరు ప్రస్తుతం \'%1$s\' గ్రామంలోకి లాగిన్ అయ్యారు. మీరు ఖచ్చితంగా \'%2$s\' గ్రామానికి మారాలనుకుంటున్నారా?</string>
+    <string name="start_sevika_visit">సేవిక సందర్శన ప్రారంభించండి</string>
+    <string name="start_doctor_visit">డాక్టర్ సందర్శన ప్రారంభించండి</string>
+    <string name="haemoglobin">హిమోగ్లోబిన్</string>
+    <string name="sugar_random">చక్కెర స్థాయి (యాదృచ్ఛికం)</string>
+
+    <string name="hint_drop_down_hb_check">వ్యవధిని ఎంచుకోండి</string>
+    <string name="enter_number">సంఖ్యను నమోదు చేయండి</string>
+    <string name="baseline_survey_completed">బేస్‌లైన్ సర్వే పూర్తయింది</string>
+
+    <string name="bullet">\u2022</string>
+    <string name="fields_not_filled">ఖాళీలు పూరించబడలేదు</string>
+    <string name="following_fields_are_not_filled">కింది ఫీల్డ్‌లు పూరించబడలేదు:</string>
+    <string name="do_you_still_want_to_continue">మీరు ఇంకా కొనసాగించాలనుకుంటున్నారా?</string>
+    <string name="at_least_one_of_the_fields_is_mandatory">కింది ఫీల్డ్‌లలో కనీసం ఒకటి తప్పనిసరి: </string>
+
+    <string name="weight_loss_alert_msg">మీ ఎత్తును బట్టి మీ బరువు తక్కువగా ఉంటుంది.</string>
+    <string name="weight_gain_alert_msg">మీ ఎత్తును బట్టి మీ బరువు ఎక్కువగా ఉంటుంది.</string>
+    <string name="vital_alert_bp_dia_button">మీ డయాస్టొలిక్ BP సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_bp_sys_button">మీ సిస్టోలిక్ BP సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_spo2_button">మీ SpO2 సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_pulse_button">మీ పల్స్ సాధారణం కాదు.</string>
+    <string name="vital_alert_resp_button">మీ శ్వాసకోశ రేటు సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_temperature_button">మీ ఉష్ణోగ్రత సాధారణంగా లేదు.</string>
+    <string name="vital_alert_hgb_button">మీ HGB సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_sugar_random_button">మీ షుగర్ రాండమ్ స్థాయి సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_sugar_fasting_button">మీ షుగర్ ఫాస్టింగ్ స్థాయి సాధారణమైనది కాదు.</string>
+    <string name="vital_alert_sugar_aftermeal_button">భోజనం తర్వాత మీ షుగర్ స్థాయి సాధారణమైనది కాదు.</string>
+
+    <string name="generic_not_sure">ఖచ్చితంగా తెలియదు</string>
+    <string name="generic_yes_personal">అవును (వ్యక్తిగతం)</string>
+    <string name="generic_yes_family">అవును (కుటుంబ సభ్యుడు)</string>
+    <string name="decline_to_answer">సమాధానం చెప్పడానికి నిరాకరించారు</string>
+    <string name="married">వివాహితులు</string>
+    <string name="unmarried">అవివాహితుడు</string>
+    <string name="widowed">వితంతువు</string>
+
+    // Relation with household
+    <string name="spouse">జీవిత భాగస్వామి</string>
+    <string name="son_or_daughter">కొడుకు లేదా కూతురు</string>
+    <string name="son_or_daughter_in_law">కొడుకు లేదా కోడలు</string>
+    <string name="grandchild">మనవడు</string>
+    <string name="father_mother">తండ్రి లేదా తల్లి</string>
+    <string name="father_mother_in_law">తండ్రి లేదా అత్తగారు</string>
+    <string name="brother_sister">సోదరుడు లేదా సోదరి</string>
+    <string name="brother_sister_in_law">సోదరుడు లేదా కోడలు</string>
+    <string name="niece_nephew">మేనకోడలు లేదా మేనల్లుడు</string>
+    <string name="grandparent">తాత లేదా తాత-అత్తగారు</string>
+    <string name="other_relative">మరొక బంధువు</string>
+    <string name="adopted">దత్తత లేదా పెంపుడు లేదా సవతి బిడ్డ</string>
+    <string name="servant">గృహ సేవకుడు</string>
+    <string name="other_not_related">ఇతర సంబంధం లేదు</string>
+    <string name="other_specify">ఇతర (పేర్కొనండి)</string>
+    <string name="not_stated">పేర్కొనబడలేదు</string>
+
+    <string name="error_incorrect_server_url">దయచేసి మీ సర్వర్ URL ని తనిఖీ చేయండి.</string>
+    <string name="error_state_not_selected">దయచేసి స్టేట్ డ్రాప్‌డౌన్ నుండి ఒక విలువను ఎంచుకోండి.</string>
+    <string name="error_district_not_selected">దయచేసి జిల్లా డ్రాప్‌డౌన్ నుండి ఒక విలువను ఎంచుకోండి.</string>
+    <string name="error_sanch_not_selected">దయచేసి సాంచ్ డ్రాప్‌డౌన్ నుండి ఒక విలువను ఎంచుకోండి.</string>
+    <string name="error_primary_village_not_selected">దయచేసి ప్రాథమిక గ్రామ డ్రాప్‌డౌన్ నుండి ఒక విలువను ఎంచుకోండి.</string>
+    <string name="error_secondary_village_not_selected">దయచేసి ద్వితీయ గ్రామ డ్రాప్‌డౌన్ నుండి ఒక విలువను ఎంచుకోండి.</string>
+
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
+    <string name="haemoglobin_error">హిమోగ్లోబిన్ %1$s మరియు %2$s మధ్య ఉండాలి</string>
+    <string name="sugar_random_error">చక్కెర స్థాయి %1$s మరియు %2$s మధ్య ఉండాలి</string>
+
+    <string name="ft">అడుగులు</string>
+    <string name="ft_new">అడుగులు</string>
+    <string name="height_ft">ఎత్తు (అడుగులు)</string>
+    <string name="ayushman_card_mandatory">ఆయుష్మాన్ కార్డ్</string>
+    <string name="general_occupation">వృత్తి</string>
+    <string name="general_caste">కులం</string>
+    <string name="general_education">విద్య</string>
+    <string name="general_economic_status">ఆర్థిక స్థితి</string>
+    <string name="ayushman_card_question">మీ దగ్గర ఆయుష్మాన్ కార్డ్ ఉందా?</string>
+    <string name="mgnrega_card_question">మీ దగ్గర MGNREGA కార్డు ఉందా?</string>
+    <string name="bank_account_question">మీ దగ్గర బ్యాంక్ అకౌంట్ నంబర్ ఉందా?</string>
+    <string name="phone_ownership">ఫోన్ యాజమాన్యం</string>
+    <string name="family_whatsapp_question">మీరు లేదా మీ కుటుంబ సభ్యులలో ఎవరైనా WhatsApp ఉపయోగిస్తున్నారా?*</string>
+    <string name="marital_status_question">మీ వైవాహిక స్థితి ఏమిటి?</string>
+
+    <string name="please_install_whatsapp">ఈ ప్రిస్క్రిప్షన్ షేర్ చేయడానికి దయచేసి వాట్సాప్ ఇన్‌స్టాల్ చేసుకోండి.</string>
+    <string name="select_occupation_txt">వృత్తిని ఎంచుకోండి</string>
+    <string name="in_new">అంగుళం.</string>
+    <string name="inch_new">అంగుళం.</string>
+    <string name="close_baseline_survey">బేస్‌లైన్ సర్వేను మూసివేయాలా?</string>
+    <string name="sure_you_want_close_baseline_survey">మీరు ఖచ్చితంగా బేస్‌లైన్ సర్వేను మూసివేయాలనుకుంటున్నారా?</string>
+    <string name="baseline_general">జనరల్</string>
+    <string name="baseline_medical">వైద్యపరం</string>
+
+    <string name="family_members">కుటుంబ సభ్యులు</string>
+    <string name="baseline_survey">బేస్‌లైన్ సర్వే</string>
+
+    <string name="prescription_ekal_telemedicine_project">Ekal Telemedicine Project</string>
+    <string name="prescription_subtitle">ePrescription</string>
+    <string name="prescription_age">Age: %1$s</string>
+    <string name="prescription_gender">Gender: %1$s</string>
+    <string name="prescription_address">Address: %1$s</string>
+    <string name="prescription_patient_id">Patient Id: %1$s</string>
+    <string name="prescription_date_of_visit">Date of Visit: %1$s</string>
+    <string name="prescription_presenting_complaints">Presenting Complaints</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_height">Height: %1$s</string>
+    <string name="prescription_weight">Weight: %1$s</string>
+    <string name="prescription_bmi">BMI: %1$s</string>
+    <string name="prescription_bp">Blood Pressure: %1$s</string>
+    <string name="prescription_pulse_value">Pulse (bpm): %1$s</string>
+    <string name="prescription_temperature">Temperature (F): %1$s</string>
+    <string name="prescription_respiratory_rate">Respiratory Rate: %1$s</string>
+    <string name="prescription_spo2">SpO2 (%%): %1$s</string>
+    <string name="prescription_haemoglobin">Haemoglobin: %1$s</string>
+    <string name="prescription_blood_group">Blood Group: %1$s</string>
+    <string name="prescription_sugar_fasting">Sugar Level (Fasting): %1$s</string>
+    <string name="prescription_sugar_random">Sugar Level (Random): %1$s</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_medication">Medication</string>
+    <string name="prescription_recommended_investigation">Recommended Investigation</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up">Follow Up</string>
+
+    <string name="sample_text">sample text</string>
+
+    <string name="prescription_dr_email">Email: %1$s</string>
+    <string name="prescription_dr_registration">Registration No: %1$s</string>
+
+    <string name="medical_to_other_info">Medical to Other info</string>
+    <string name="general_to_medical_info">General to medical info</string>
+    <string name="start_newadvice_confirmation_msg">మీరు ఖచ్చితంగా సేవిక సలహాను ప్రారంభించాలనుకుంటున్నారా?</string>
+    <string name="start_newadvice_confirmation_title">సేవిక సలహా ప్రారంభించండి</string>
+    <string name="doctor_advice_alert_title">టెలి-కన్సల్టేషన్ ప్రారంభించండి</string>
+    <string name="doctor_advice_alert_msg">మీకు డాక్టర్ నుండి టెలి-కన్సల్టేషన్ కావాలా?</string>
+    <string name="vital_alert_continue_button">అవును, కొనసాగించు</string>
+    <string name="vital_alert_save_button">సేవ్ చేయండి</string>
+    <string name="alert_save_and_exit_button">సేవ్ చేసి నిష్క్రమించు</string>
+    <string name="alert_start_button">ప్రారంభించండి</string>
+
+    <string name="piped_into_dwelling">నివాసస్థలంలోకి పైప్ చేయబడింది</string>
+    <string name="piped_into_yard_plot">యార్డ్ లేదా ప్లాట్‌లోకి పైప్ చేయబడింది</string>
+    <string name="public_tap_standpipe">పబ్లిక్ ట్యాప్ లేదా స్టాండ్ పైప్</string>
+    <string name="tube_well_borehole">ట్యూబ్ వెల్ లేదా బోరుబావి</string>
+    <string name="protected_well_checkbox">బాగా రక్షించబడింది</string>
+    <string name="unprotected_well">రక్షణ లేని బావి</string>
+    <string name="protected_spring">రక్షిత వసంతం</string>
+    <string name="unprotected_spring">అసురక్షిత వసంతం</string>
+    <string name="rainwater">వర్షపు నీరు</string>
+    <string name="tanker_truck">ట్యాంకర్ ట్రక్</string>
+    <string name="cart_with_small_tank">చిన్న ట్రక్కుతో కార్ట్</string>
+    <string name="surface_water">ఉపరితల నీరు</string>
+    <string name="common_hand_pump">సాధారణ చేతి పంపు</string>
+    <string name="hand_pump_at_home">ఇంట్లో చేతి పంపు</string>
+
+    <string name="boil">ఉడకబెట్టండి</string>
+    <string name="use_alum">Alum ఉపయోగించండి</string>
+    <string name="add_bleach_chlorine_tablets_drops">బ్లీచ్ జోడించండి</string>
+    <string name="strain_through_a_cloth">ఒక క్లాత్ ద్వారా స్ట్రెయిన్</string>
+    <string name="use_water_filter_ceramic_sand_composite_etc">వాటర్ ఫిల్టర్</string>
+    <string name="handmade_purifier">చేతితో తయారు చేసిన ప్యూరిఫైయర్</string>
+    <string name="do_nothing">ఏమీ చేయవద్దు</string>
+
+    <string name="electricity">విద్యుత్</string>
+    <string name="lpg_natural_gas">LPG లేదా సహజ వాయువు</string>
+    <string name="biogas_checkbox">బయోగ్యాస్</string>
+    <string name="kerosene">కిరోసిన్</string>
+    <string name="coal_lignite">బొగ్గు లేదా లిగ్నైట్</string>
+    <string name="wood">చెక్క</string>
+    <string name="charcoal">బొగ్గు</string>
+    <string name="straw_shrubs_grass">గడ్డి లేదా పొదలు లేదా గడ్డి</string>
+    <string name="agricultural_crop_waste">వ్యవసాయ పంట వ్యర్థాలు</string>
+    <string name="dung_cakes">పేడ కేకులు</string>
+
+    <string name="lantern_kerosenelamp_candle">లాంతరు/కిరోసిన్ దీపం/కొవ్వొత్తి</string>
+    <string name="electric">విద్యుత్</string>
+    <string name="solar_energy">సౌర శక్తి</string>
+    <string name="none">ఏదీ లేదు</string>
+
+    <string name="use_soap">సబ్బు వాడండి</string>
+    <string name="use_other_means_wash_hands">చేతులు కడుక్కోవడానికి ఇతర మార్గాలను ఉపయోగించండి</string>
+    <string name="wash_after_using_toilet">టాయిలెట్ ఉపయోగించిన తర్వాత కడగాలి</string>
+    <string name="wash_before_cooking">వంట చేసే ముందు కడగాలి</string>
+    <string name="wash_before_after_eating">తినడానికి ముందు మరియు తరువాత కడగాలి</string>
+
+    <string name="never_checked">ఎన్నడూ తనిఖీ చేయబడలేదు</string>
+    <string name="in_past_one_week">6 నెలల క్రితం కంటే ఎక్కువ</string>
+    <string name="within_last_month">గత 6 నెలల్లో</string>
+
+    <string name="own_smartphone">స్మార్ట్‌ఫోన్‌ను కలిగి ఉంది</string>
+    <string name="own_feature_phone">ఫీచర్ ఫోన్ స్వంతం</string>
+    <string name="shared_smartphone">షేర్డ్ స్మార్ట్‌ఫోన్</string>
+    <string name="shared_feature_phone">షేర్డ్ ఫీచర్ ఫోన్</string>
+
+    <string name="cannot_read_and_write">చదవడం, రాయడం రాదు</string>
+    <string name="can_read_and_write">చదవడం, రాయడం వచ్చు</string>
+    <string name="primary_education_till_class_five">ప్రాథమిక విద్య (5వ తరగతి వరకు)</string>
+    <string name="middle_school_sixth_eighth">మధ్య పాఠశాల (6వ - 8వ)</string>
+    <string name="passed_secondary_school">మాధ్యమిక పాఠశాలలో ఉత్తీర్ణత (10వ తరగతి బోర్డులు)</string>
+    <string name="passed_senior_secondary_school">సీనియర్ సెకండరీ పాఠశాలలో ఉత్తీర్ణత (12వ తరగతి బోర్డులు)</string>
+    <string name="graduation_and_above">గ్రాడ్యుయేషన్ మరియు అంతకంటే ఎక్కువ</string>
+
+    <string name="salaried_government_job">జీతంతో కూడిన ప్రభుత్వ ఉద్యోగం</string>
+    <string name="salaried_private_job">జీతంతో కూడిన ప్రైవేట్ ఉద్యోగం</string>
+    <string name="petty_business_shop_owner">చిన్న వ్యాపారం లేదా దుకాణ యజమాని</string>
+    <string name="technician_craftsman_other_skilled_work">సాంకేతిక నిపుణుడు లేదా హస్తకళాకారుడు లేదా ఇతర నైపుణ్యం కలిగిన పని (డ్రైవర్, మేసన్, మొదలైనవి)</string>
+    <string name="agricultural_farmer">వ్యవసాయ రైతు</string>
+    <string name="tenant_farmer_agricultural_daily_wage_worker">కౌలు రైతు లేదా వ్యవసాయ దినసరి కూలీ</string>
+    <string name="daily_wage_worker_unskilled_workers">రోజువారీ వేతన కార్మికుడు (నైపుణ్యం లేని కార్మికుడు)</string>
+    <string name="household_work">గృహ పని</string>
+    <string name="student">విద్యార్థి</string>
+    <string name="unemployed">నిరుద్యోగులు</string>
+    <string name="retired_with_pension">రిటైర్డ్ (పెన్షన్‌తో)</string>
+    <string name="retired_without_pension">రిటైర్డ్ (పెన్షన్ లేకుండా)</string>
+    <string name="not_applicable">వర్తించదు</string>
+    <string name="no_family_member_registered">కుటుంబ సభ్యులెవరూ నమోదు కాలేదు</string>
+    <string name="enter_valid_phone_number">చెల్లుబాటు అయ్యే ఫోన్ నంబర్‌ను నమోదు చేయండి.</string>
+
+    <string-array name="baseline_survey_items">
+        <item>జనరల్ సర్వే</item>
+        <item>వైద్య సర్వే</item>
+        <item>ఇతర సర్వే</item>
+    </string-array>
+
+    <string name="prescription_disclaimer">గమనిక: చికిత్స తర్వాత కూడా మీ ఆరోగ్య పరిస్థితి మెరుగుపడకపోతే, దయచేసి మీ దగ్గరలోని ఆసుపత్రిని సందర్శించండి లేదా వెంటనే ఒక డాక్టరును సంప్రదించండి. టెలిమెడిసిన్ సేవలు పరిమిత సలహాలకి మాత్రమే ,  ప్రత్యక్ష పరిశీలనకు అనుకూలముగా ఉండవు.</string>
+    <string name="decline">తిరస్కరించు</string>
+
+</resources>

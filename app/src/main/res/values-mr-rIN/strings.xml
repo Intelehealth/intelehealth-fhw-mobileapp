@@ -1046,4 +1046,9 @@
     <string name="my_achievements">माझी कामगिरी</string>
 
 
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d खुली भेट</item>
+        <item quantity="other">%d खुल्या भेटी</item>
+    </plurals>
+
 </resources>

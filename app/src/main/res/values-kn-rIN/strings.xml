@@ -797,6 +797,7 @@
     <string name="protocols_successfully_changed">ಪ್ರೋಟೋಕಾಲ್‌ಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಬದಲಾಯಿಸಲಾಗಿದೆ!</string>
     <string name="overall">ಒಟ್ಟಾರೆ</string>
     <string name="daily">ದೈನಂದಿನ</string>
+    <string name="date_range">ದಿನಾಂಕ ಶ್ರೇಣಿ</string>
     <string name="visit_date">ಭೇಟಿ ದಿನಾಂಕ</string>
     <string name="patient_registered">ರೋಗಿಯನ್ನು ನೋಂದಾಯಿಸಲಾಗಿದೆ!</string>
     <string name="does_patient_start_visit_now">ರೋಗಿಯು ಈಗ ಭೇಟಿಯನ್ನು ಪ್ರಾರಂಭಿಸಲು ಬಯಸುತ್ತಾರೆಯೇ?</string>
@@ -1016,5 +1017,10 @@
     <string name="my_achievements">ನನ್ನ ಸಾಧನೆಗಳು</string>
 
 
+
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ಮುಕ್ತ ಭೇಟಿ</item>
+        <item quantity="other">%d ಮುಕ್ತ ಭೇಟಿಗಳು</item>
+    </plurals>
 
 </resources>

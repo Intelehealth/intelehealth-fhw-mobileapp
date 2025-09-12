@@ -93,6 +93,15 @@ object StaticLanguageEnabledFieldsHelper {
 
         fields.add(currentField)
 
+        currentField = ActiveLanguage(
+            generalName = "Telugu",
+            name = "తెలుగు",
+            code = AppConstants.LANGUAGE_TE,
+            isDefault = false
+        )
+
+        fields.add(currentField)
+
         return fields
     }
 

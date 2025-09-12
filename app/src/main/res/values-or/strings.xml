@@ -901,4 +901,9 @@
     <string name="date_range">ତାରିଖ ସୀମା</string>
     <string name="my_achievements">ମୋର ସଫଳତା</string>
 
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+        <item quantity="other">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+    </plurals>
+
 </resources>
