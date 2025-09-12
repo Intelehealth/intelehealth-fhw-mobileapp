@@ -489,7 +489,6 @@
     <string name="accept_new">అంగీకరించు</string>
     <string name="next_new">తరువాత</string>
     <string name="okay">సరే</string>
-    <string name="my_achievements">నా విజయాలు</string>
     <string name="achievements">విజయాలు</string>
     <string name="my_profile">నా ప్రొఫైల్</string>
     <string name="setup_tooltip_text">ఇచ్చిన ఆధారాలను నమోదు చేయండి \nఇంటెలెహెల్త్ బృందం ద్వారా.</string>
@@ -741,7 +740,6 @@
     <string name="protocols_successfully_changed">ప్రోటోకాల్‌లు విజయవంతంగా మార్చబడ్డాయి!</string>
     <string name="overall">మొత్తం మీద</string>
     <string name="daily">రోజువారీ</string>
-    <string name="date_range">తేదీ పరిధి</string>
     <string name="visit_date">సందర్శన తేదీ</string>
     <string name="patient_registered">రోగి నమోదు చేయబడ్డాడు!</string>
     <string name="does_patient_start_visit_now">రోగి ఇప్పుడు సందర్శన ప్రారంభించాలనుకుంటున్నారా?</string>
@@ -940,5 +938,31 @@
 
     <string name="action_settings">సెట్టింగులు</string>
     <string name="specialty_general_physician">జనరల్ ఫిజీషియన్</string>
+
+    <string name="doctor_visits">డాక్టర్ సందర్శనలు</string>
+    <string name="sevika_or_ncd_visits">సేవిక/ఎన్‌సీడీ సందర్శనలు</string>
+    <string name="beneficiary_registered">లబ్ధిదారు నమోదు</string>
+    <string name="household_registered">గృహం నమోదు</string>
+    <string name="status">స్థితి</string>
+    <string name="daily_time_spent">మొత్తం ఖర్చైన సమయం</string>
+    <string name="active">సక్రియ</string>
+    <string name="non_active">నిర్క్రియ</string>
+    <string name="days_active">సక్రియ రోజులు</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">డాక్టర్ సందర్శన అప్లోడ్</string>
+    <string name="doctor_visits_uploaded_tooltip_content">సేవిక అప్లోడ్ చేసిన \nడాక్టర్ సందర్శనల సంఖ్య.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">సేవిక సందర్శన అప్లోడ్</string>
+    <string name="sevika_visits_uploaded_tooltip_content">అప్లోడ్ చేసిన సేవిక/ఎన్‌సీడీ \nసందర్శనల సంఖ్య.</string>
+    <string name="beneficiaries_registered_tooltip_title">నమోదు చేసిన లబ్ధిదారులు</string>
+    <string name="beneficiaries_registered_tooltip_content">సేవిక నమోదు చేసిన \nలబ్ధిదారుల సంఖ్య.</string>
+    <string name="households_registered_tooltip_title">నమోదు చేసిన గృహాలు</string>
+    <string name="households_registered_tooltip_content">సృష్టించిన ప్రత్యేక గృహాల \nమొత్తం సంఖ్య.</string>
+    <string name="active_status_tooltip_title">సక్రియ స్థితి</string>
+    <string name="active_status_tooltip_content">ఇచ్చిన రోజున సేవిక కనీసం \nఒక సందర్శన (డాక్టర్ లేదా \nసేవిక/ఎన్‌సీడీ) అప్లోడ్ \nచేస్తే సక్రియంగా పరిగణిస్తారు.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">సేవిక ఖర్చు చేసిన \nమొత్తం సమయం</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">సేవిక యాప్‌ను ముందుభాగంలో \nతెరిచి ఉంచిన సమయం.</string>
+    <string name="todays_tab_achievement">దైనందిన</string>
+    <string name="date_range">తేదీ పరిధి</string>
+    <string name="my_achievements">నా విజయాలు</string>
 
 </resources>
