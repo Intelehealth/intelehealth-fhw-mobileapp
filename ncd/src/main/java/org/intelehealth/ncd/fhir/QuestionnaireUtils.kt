@@ -4,6 +4,7 @@ import org.json.JSONObject
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 object QuestionnaireUtils {
 
@@ -284,7 +285,6 @@ object QuestionnaireUtils {
         }
 
 
-
         /*val filteredBullets = if (!showAllMeasurements) {
             val sbpVal = bullets.lastOrNull { it.contains("Systolic Blood Pressure", ignoreCase = true) }
                 ?.substringAfterLast("-")?.trim()
@@ -334,10 +334,12 @@ object QuestionnaireUtils {
 
                 val value = it.substringAfterLast("-").trim()
                 if (it.contains("Systolic Blood Pressure", ignoreCase = true) ||
-                    it.contains("sbp_", ignoreCase = true)) {
+                    it.contains("sbp_", ignoreCase = true)
+                ) {
                     bpGroups[measurementNum] = (value to (bpGroups[measurementNum]?.second))
                 } else if (it.contains("Diastolic Blood Pressure", ignoreCase = true) ||
-                    it.contains("dbp_", ignoreCase = true)) {
+                    it.contains("dbp_", ignoreCase = true)
+                ) {
                     bpGroups[measurementNum] = (bpGroups[measurementNum]?.first to value)
                 }
             }
@@ -552,5 +554,114 @@ object QuestionnaireUtils {
         }
         return null
     }
+
+
+    /**
+     * Check required questions in a FHIR Questionnaire against a QuestionnaireResponse,
+     */
+
+
+    fun checkRequiredWithConditionalsKotlin(
+        questionnaireJsonStr: String,
+        responseJsonStr: String
+    ): List<String> {
+        val questionnaire = JSONObject(questionnaireJsonStr)
+        val response = JSONObject(responseJsonStr)
+
+        // 1) Index response items by linkId (may be multiple entries)
+        val respIndex: MutableMap<String, MutableList<JSONObject>> = mutableMapOf()
+
+        fun indexResponse(items: JSONArray?) {
+            if (items == null) return
+            for (i in 0 until items.length()) {
+                val it = items.getJSONObject(i)
+                val lid = it.optString("linkId")
+                if (lid.isNotEmpty()) {
+                    respIndex.computeIfAbsent(lid) { mutableListOf() }.add(it)
+                }
+                if (it.has("item")) indexResponse(it.getJSONArray("item"))
+            }
+        }
+
+        indexResponse(response.optJSONArray("item"))
+
+        // 2) Helper: does this response item count as answered?
+        fun responseItemHasAnswerOneLevel(rItem: JSONObject): Boolean {
+            val ans = rItem.optJSONArray("answer")
+            if (ans != null && ans.length() > 0) return true
+
+            val childItems = rItem.optJSONArray("item")
+            if (childItems != null) {
+                for (ci in 0 until childItems.length()) {
+                    val child = childItems.getJSONObject(ci)
+                    val cans = child.optJSONArray("answer")
+                    if (cans != null && cans.length() > 0) return true
+                }
+            }
+            return false
+        }
+
+        // 3) Build respAnsweredMap: linkId -> answered(boolean)
+        val respAnsweredMap: MutableMap<String, Boolean> = mutableMapOf()
+        for ((linkId, entries) in respIndex) {
+            var anyAnswered = false
+            for (entry in entries) {
+                if (responseItemHasAnswerOneLevel(entry)) {
+                    anyAnswered = true
+                    break
+                }
+            }
+            respAnsweredMap[linkId] = anyAnswered
+        }
+
+        // 4) Index questionnaire items by linkId for quick lookup (deep)
+        val qIndex: MutableMap<String, JSONObject> = mutableMapOf()
+
+        fun indexQuestionnaire(items: JSONArray?) {
+            if (items == null) return
+            for (i in 0 until items.length()) {
+                val it = items.getJSONObject(i)
+                val lid = it.optString("linkId")
+                if (lid.isNotEmpty()) qIndex[lid] = it
+                if (it.has("item")) indexQuestionnaire(it.getJSONArray("item"))
+            }
+        }
+
+        indexQuestionnaire(questionnaire.optJSONArray("item"))
+
+        val missing = mutableListOf<String>()
+
+        // 5) For each linkId present in response index, if it's not answered check if questionnaire marks it required
+        for ((linkId, answered) in respAnsweredMap) {
+            if (!answered) {
+                // skip display suffix ids
+                if (linkId.endsWith("_display")) continue
+                if (linkId.endsWith("_page")) continue
+                val qItem = qIndex[linkId]
+                if (qItem != null && qItem.optBoolean("required", false)) {
+                    missing.add(qItem.optString("text").ifEmpty { linkId })
+                }
+            }
+        }
+
+        // 6) Also check questionnaire items that are required but have no entry in response at all
+        /*for ((linkId, qItem) in qIndex) {
+            if (linkId.endsWith("_display")) continue
+            val required = qItem.optBoolean("required", false)
+            if (!required) continue
+
+            val answered = respAnsweredMap[linkId] ?: false
+            // if no response entry or response exists but not answered, add to missing
+            if (!answered) {
+                // avoid duplicates
+                val label = qItem.optString("text").ifEmpty { linkId }
+                if (!missing.contains(label)) missing.add(label)
+            }
+        }*/
+
+        return missing
+    }
+
+
 
 }

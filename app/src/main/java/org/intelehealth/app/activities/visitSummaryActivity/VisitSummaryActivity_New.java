@@ -775,6 +775,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
         if (mIsNCDVisit) {
+            findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
             findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
             findViewById(R.id.ll_associated_sympt).setVisibility(View.GONE);
             findViewById(R.id.reports_relative).setVisibility(View.GONE);
@@ -893,7 +894,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 editMedHist.setVisibility(View.VISIBLE);
                 editAddDocs.setVisibility(View.VISIBLE);*/
                 editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
+                if (!mIsNCDVisit)
+                    editComplaint.setVisibility(View.VISIBLE);
                 //cc_details_edit.setVisibility(View.VISIBLE);
                 //ass_symp_edit.setVisibility(View.VISIBLE);
                 editPhysical.setVisibility(View.VISIBLE);
