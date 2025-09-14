@@ -965,4 +965,9 @@
     <string name="date_range">తేదీ పరిధి</string>
     <string name="my_achievements">నా విజయాలు</string>
 
+    <string name="blackout">బ్లాక్‌అవుట్</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">కింద తెలిపిన సమయావధిలో నోటిఫికేషన్‌లు అడ్డుకోవడానికి బ్లాక్‌అవుట్ పీరియడ్‌ను ఆన్ చేయండి</string>
+    <string name="from_9_00_pm_to_6_00_am">రాత్రి 9:00 నుండి ఉదయం 6:00 వరకు</string>
+
+
 </resources>
