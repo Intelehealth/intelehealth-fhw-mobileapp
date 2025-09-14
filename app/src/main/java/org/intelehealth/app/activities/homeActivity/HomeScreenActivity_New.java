@@ -1267,7 +1267,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
             lastSync = StringUtils.en__te_dob(lastSync);
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
             lastSync = StringUtils.en__ta_dob(lastSync);
@@ -1383,6 +1383,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 lastSync = StringUtils.en__hi_dob(lastSync);
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
                 lastSync = StringUtils.en__ta_dob(lastSync);
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                lastSync = StringUtils.en__te_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
 
