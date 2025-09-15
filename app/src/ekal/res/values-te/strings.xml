@@ -103,7 +103,7 @@
     <string name="hb_check_question">మీరు మీ HB స్థాయిని చివరిసారి ఎప్పుడు తనిఖీ చేసారు?</string>
     <string name="bp_check_question">మీరు చివరిసారిగా మీ బిపిని ఎప్పుడు చెక్ చేసుకున్నారు?</string>
     <string name="sugar_check_question">మీరు చివరిసారిగా మీ చక్కెర స్థాయిని ఎప్పుడు తనిఖీ చేసుకున్నారు?</string>
-    <string name="bp_label">BP</string>
+    <string name="bp_label">బిపి</string>
     <string name="diabetes_label">మధుమేహం</string>
     <string name="arthritis_label">ఆర్థరైటిస్</string>
     <string name="anemia_label">రక్తహీనత</string>
@@ -371,7 +371,7 @@
     <string name="do_nothing">ఏమీ చేయవద్దు</string>
 
     <string name="electricity">విద్యుత్</string>
-    <string name="lpg_natural_gas">LPG లేదా సహజ వాయువు</string>
+    <string name="lpg_natural_gas">ఎల్‌పిజి లేదా సహజ వాయువు</string>
     <string name="biogas_checkbox">బయోగ్యాస్</string>
     <string name="kerosene">కిరోసిన్</string>
     <string name="coal_lignite">బొగ్గు లేదా లిగ్నైట్</string>

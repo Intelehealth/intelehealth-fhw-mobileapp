@@ -103,7 +103,7 @@
     <string name="hb_check_question">கடைசியாக உங்கள் HB அளவை எப்போது சோதனை செய்தீர்கள்?</string>
     <string name="bp_check_question">கடைசியாக உங்கள் BP ஐ எப்போது சோதனை செய்தீர்கள்?</string>
     <string name="sugar_check_question">கடைசியாக உங்கள் சர்க்கரை அளவை எப்போது சோதனை செய்தீர்கள்?</string>
-    <string name="bp_label">BP</string>
+    <string name="bp_label">பிபி</string>
     <string name="diabetes_label">நீரிழிவு</string>
     <string name="arthritis_label">மூட்டு வலி</string>
     <string name="anemia_label">குருதிச்சோகை</string>
@@ -374,7 +374,7 @@
 
     <!-- Fuel types -->
     <string name="electricity">மின்சாரம்</string>
-    <string name="lpg_natural_gas">LPG அல்லது இயற்கை எரிவாயு</string>
+    <string name="lpg_natural_gas">எல்பிஜி அல்லது இயற்கை எரிவாயு</string>
     <string name="biogas_checkbox">பயோகேஸ்</string>
     <string name="kerosene">மண்ணெண்ணெய்</string>
     <string name="coal_lignite">நிலக்கரி</string>

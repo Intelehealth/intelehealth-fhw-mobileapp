@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_answer_from">No answer from %1$s</string>
-    <string name="call_canceled_by">Call end by %1$s</string>
-    <string name="call_rejected_by">Call rejected by %1$s</string>
-    <string name="call_time_up">Call time up</string>
-    <string name="left_the_call">Call left by %1$s</string>
-    <string name="you_declined_call">You declined call</string>
-    <string name="reason_not_initiated">Call disconnected due to not initiated</string>
-    <string name="reason_duplicated_identity">Call disconnected due to duplicated identity</string>
-    <string name="reason_server_shutdown">Call disconnected due to server shutdown</string>
-    <string name="reason_participant_removed">Call disconnected due to participant removed</string>
-    <string name="reason_room_deleted">Call disconnected due to room not found</string>
-    <string name="reason_state_mismatch">Call disconnected due to room mismatch</string>
-    <string name="reason_join_failure">Call disconnected due to fail to join room</string>
-    <string name="reason_unknown">Call disconnected due to fail to unknown reason</string>
+    <string name="no_answer_from">%1$s నుండి సమాధానం లేదు</string>
+    <string name="call_canceled_by">%1$s కాల్ ముగించాడు</string>
+    <string name="call_rejected_by">%1$s కాల్ తిరస్కరించాడు</string>
+    <string name="call_time_up">కాల్ సమయం ముగిసింది</string>
+    <string name="left_the_call">%1$s కాల్ వదిలివేశాడు</string>
+    <string name="you_declined_call">మీరు కాల్ తిరస్కరించారు</string>
+    <string name="reason_not_initiated">ప్రారంభించకపోవడం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_duplicated_identity">నకిలీ ఐడెంటిటీ కారణంగా కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_server_shutdown">సర్వర్ షట్‌డౌన్ కారణంగా కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_participant_removed">పాల్గొనేవారిని తీసివేయడం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_room_deleted">గది కనబడకపోవడం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_state_mismatch">గది సరిపోకపోవడం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_join_failure">గదిలో చేరలేకపోవడం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
+    <string name="reason_unknown">తెలియని కారణం వల్ల కాల్ డిస్కనెక్ట్ అయింది</string>
 
-    <string name="call_missed">Missed Call</string>
-    <string name="call_outgoing">Outgoing Call</string>
-    <string name="call_ongoing">Ongoing call</string>
-    <string name="call_unknown">Unknown</string>
-    <string name="call_incoming">Incoming Call</string>
-    <string name="calling">Calling</string>
-    <string name="call_logs">కాల్ లాగ్‌లు</string>
+    <string name="call_missed">మిస్‌డ్ కాల్</string>
+    <string name="call_outgoing">అవుట్‌గోయింగ్ కాల్</string>
+    <string name="call_ongoing">జరుగుతున్న కాల్</string>
+    <string name="call_unknown">తెలియదు</string>
+    <string name="call_incoming">ఇన్‌కమింగ్ కాల్</string>
+    <string name="calling">కాల్ అవుతోంది</string>
+    <string name="call_logs">కాల్ లాగ్స్</string>
 
-    <string name="an_hour_ago">An hr ago</string>
-    <string name="hours_ago">%1$s hrs ago</string>
-    <string name="a_min_ago">A min ago</string>
-    <string name="mins_ago">%1$s mins ago</string>
-    <string name="a_second_ago">A sec ago</string>
-    <string name="seconds_ago">%1$s secs ago</string>
-    <string name="today">Today</string>
-    <string name="today_at">Today at</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="yesterday_at">Yesterday at</string>
-    <string name="now">Now</string>
+    <string name="an_hour_ago">ఒక గంట క్రితం</string>
+    <string name="hours_ago">%1$s గంటల క్రితం</string>
+    <string name="a_min_ago">ఒక నిమిషం క్రితం</string>
+    <string name="mins_ago">%1$s నిమిషాల క్రితం</string>
+    <string name="a_second_ago">ఒక సెకను క్రితం</string>
+    <string name="seconds_ago">%1$s సెకన్ల క్రితం</string>
+    <string name="today">ఈ రోజు</string>
+    <string name="today_at">ఈ రోజు</string>
+    <string name="yesterday">నిన్న</string>
+    <string name="yesterday_at">నిన్న</string>
+    <string name="now">ఇప్పుడే</string>
 
-    <string name="decline">Decline</string>
-    <string name="accept">Accept</string>
-    <string name="hang_up">Hang Up</string>
+    <string name="decline">తిరస్కరించు</string>
+    <string name="accept">అంగీకరించు</string>
+    <string name="hang_up">కాల్ ముగించు</string>
 </resources>
