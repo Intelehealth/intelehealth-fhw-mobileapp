@@ -41,13 +41,12 @@ class CompareDataActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_compare_data)
 
 
-
         val intentRx = this.intent
 
         if (intentRx != null) {
-            accessToken = intentRx.getStringExtra("accessToken")?:""
-            xToken = intentRx.getStringExtra("xToken")?:""
-            txnId = intentRx.getStringExtra("txnId")?:""
+            accessToken = intentRx.getStringExtra("accessToken") ?: ""
+            xToken = intentRx.getStringExtra("xToken") ?: ""
+            txnId = intentRx.getStringExtra("txnId") ?: ""
             firstRequestFulfilled = intentRx.getBooleanExtra("firstRequestFulfilled", false)
         }
 
@@ -59,9 +58,9 @@ class CompareDataActivity : AppCompatActivity() {
         addressStringBuilder
             .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 else "")
             .append(if (!patientDto.address2.isNullOrEmpty()) ", " + patientDto.address2 else "")
-            /*.append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage + ", " else "")
-            .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince + ", " else "")
-            .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")*/
+        /*.append(if (!patientDto.cityvillage.isNullOrEmpty()) patientDto.cityvillage + ", " else "")
+        .append(if (!patientDto.stateprovince.isNullOrEmpty()) patientDto.stateprovince + ", " else "")
+        .append(if (!patientDto.postalcode.isNullOrEmpty()) patientDto.postalcode else "")*/
 
         val localUser = UserData(
             fName = patientDto.firstname,
@@ -69,7 +68,7 @@ class CompareDataActivity : AppCompatActivity() {
             dob = patientDto.dateofbirth,
             gender = patientDto.gender,
             address = addressStringBuilder.toString().ifEmpty { "Not Found" },
-            pinCode = (patientDto.postalcode?:"").ifEmpty { "Not Found" },
+            pinCode = (patientDto.postalcode ?: "").ifEmpty { "Not Found" },
         )
 
         val abhaUser = UserData(
@@ -77,8 +76,8 @@ class CompareDataActivity : AppCompatActivity() {
             lName = abhaProfileResponse.lastName,
             dob = "${abhaProfileResponse.yearOfBirth}-${abhaProfileResponse.monthOfBirth}-${abhaProfileResponse.dayOfBirth}",
             gender = abhaProfileResponse.gender,
-            address = (abhaProfileResponse.address?:"").ifEmpty { "Not Found" },
-            pinCode = (abhaProfileResponse.pincode?:"").ifBlank { "Not Found" },
+            address = (abhaProfileResponse.address ?: "").ifEmpty { "Not Found" },
+            pinCode = (abhaProfileResponse.pincode ?: "").ifBlank { "Not Found" },
         )
 
         binding.localData = localUser
@@ -117,8 +116,10 @@ class CompareDataActivity : AppCompatActivity() {
             val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
 
             if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty()) {
-                Toast.makeText(this,
-                    getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    this,
+                    getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT
+                )
                     .show()
                 return@setOnClickListener
             }
@@ -178,7 +179,7 @@ class CompareDataActivity : AppCompatActivity() {
         }
 
         binding.btnEdit.setOnClickListener {
-           // Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -193,11 +194,9 @@ class CompareDataActivity : AppCompatActivity() {
         firstValue: String,
         secondValue: String
     ) {
-        if (firstValue == secondValue) {
-            abhaRb.isChecked = true
-            abhaRb.isEnabled = false
-            localRb.isEnabled = false
-        }
+        abhaRb.isChecked = true
+        abhaRb.isEnabled = false
+        localRb.isEnabled = false
     }
 
     private fun getSelectedRadioText(rg: RadioGroup): String {

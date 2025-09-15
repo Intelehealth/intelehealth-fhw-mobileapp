@@ -882,8 +882,10 @@ public class PatientsDAO {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select p.* from tbl_patient as p, tbl_patient_attribute as pa where p.uuid = pa.patientuuid and " +
-                /*"(p.sync = 1 OR p.sync = 'true' OR p.sync = 'TRUE') and*/ "p.voided = 0 and pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' and pa.value = ?", new String[]{phoneNum});
+        final Cursor cursor = db.rawQuery(
+                "select distinct p.* from tbl_patient as p join tbl_patient_attribute as pa on p.uuid = pa.patientuuid where p.date_of_birth = ? and " +
+                        " p.voided = 0 and pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' and pa.value = ? order by p.modified_date desc limit 1",
+                new String[]{dob, phoneNum});
 
         try {
             if (cursor.moveToFirst()) {
@@ -912,6 +914,8 @@ public class PatientsDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
+
+        cursor.close();
         Log.d("MODEL_LIST", "" + new Gson().toJson(modelList));
 
         if (modelList.isEmpty()) return null;
