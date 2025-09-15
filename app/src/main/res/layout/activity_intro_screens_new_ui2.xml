@@ -20,14 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layoutDots_intro"
-        android:layout_below="@+id/iv_back_arrow" />
+        android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:id="@+id/layoutDots_intro"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_dots_height"
         android:layout_above="@+id/btn_skip_intro"
-        android:layout_marginTop="@dimen/layout_dots_margin_top"
         android:gravity="center"
         android:orientation="horizontal" />
 
