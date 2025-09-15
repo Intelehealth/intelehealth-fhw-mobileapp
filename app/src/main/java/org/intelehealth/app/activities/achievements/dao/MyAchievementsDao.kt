@@ -10,7 +10,7 @@ import org.intelehealth.app.utilities.UuidDictionary
 
 class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     private  val TAG = "MyAchievementsDao"
-    fun getTodaysDoctorVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
+    /*fun getTodaysDoctorVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
 
         val db = dbHelper.readableDatabase
         var count = 0
@@ -31,7 +31,53 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
             }
         }
         return count
+    }*/
+    fun getTodaysDoctorVisitsCount(
+        creatorUuid: String,
+        visitAttributeType: String?,
+        todaysDate: String
+    ): Int {
+        val db = dbHelper.readableDatabase
+        var count = 0
+
+        val queryBuilder = StringBuilder(
+            """
+        SELECT COUNT(DISTINCT v.uuid) AS total 
+        FROM tbl_visit v 
+        LEFT JOIN tbl_visit_attribute attr 
+               ON v.uuid = attr.visit_uuid
+        LEFT JOIN tbl_visit_attribute speciality
+               ON v.uuid = speciality.visit_uuid 
+              AND speciality.visit_attribute_type_uuid = ?
+        WHERE v.creator = ? 
+          AND substr(v.startdate, 1, 10) = ? 
+          AND v.sync IN (1, 'TRUE') COLLATE NOCASE
+        """.trimIndent()
+        )
+
+        val args = mutableListOf(UuidDictionary.SPECIALITY, creatorUuid, todaysDate)
+
+        // Exclude given attribute type if provided
+        if (!visitAttributeType.isNullOrEmpty()) {
+            queryBuilder.append(" AND attr.visit_attribute_type_uuid != ?")
+            args.add(visitAttributeType)
+        }
+
+        // Must have a valid attribute
+        queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''")
+
+        // Exclude records where speciality contains "doctor"
+        queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%')")
+
+        val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
+        cursor?.use {
+            if (it.moveToFirst()) {
+                count = it.getInt(it.getColumnIndexOrThrow("total"))
+            }
+        }
+        return count
     }
+
 
     fun getTodaysNCDVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
         val db = dbHelper.readableDatabase
