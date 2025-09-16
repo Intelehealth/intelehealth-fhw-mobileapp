@@ -246,7 +246,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //startActivity(intent2);
         //finish();
 
-        //added new visit attribute to identify ncd visits - like ncd project - required for my achievements section
+       /* commenting temporary for ekal 4.0 prod, as ncd not on prod yet
+       //added new visit attribute to identify ncd visits - like ncd project - required for my achievements section
         if(IntelehealthApplication.getInstance().getVisitType().equals(AppConstants.VISIT_TYPE_SEVIKA)){
             VisitAttributeListDAO dao = new VisitAttributeListDAO();
             try {
@@ -255,7 +256,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 throw new RuntimeException(e);
             }
         }
-
+*/
     }
 
     @Override
