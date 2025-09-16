@@ -112,7 +112,8 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
 
     @Override
     public void showNotification(@NonNull ChatMessage chatMessage) {
-        if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
+        //commented this code beacuse getting featureActiveStatus null and not showing chat notification -AEAT-1907
+        //if (featureActiveStatus != null && featureActiveStatus.getChatSection()) {
             RtcArgs args = new RtcArgs();
             args.setPatientName(chatMessage.getPatientName());
             args.setPatientId(chatMessage.getPatientId());
@@ -131,7 +132,7 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
-        }
+       /// }
     }
 
     private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
