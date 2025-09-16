@@ -74,8 +74,9 @@
     <string name="parsi_zoroastrian">பார்சி அல்லது ஜோரோஸ்ட்ரியன்</string>
     <string name="no_religion">மற்றவை</string>
 
-    <string name="economic_status_apl">APL</string>
-    <string name="economic_status_bpl">BPL</string>
+    <string name="economic_status_apl">ஏபிஎல்</string>
+    <string name="economic_status_bpl">பிஎப்எல்</string>
+
 
     <string name="toilet_facility_open_defecation">திறந்த இடத்தில் மலங்கழித்தல்</string>
     <string name="toilet_facility_own_a_toilet_but_it_unusable">உடைமையில் உள்ளது ஆனால் பயன்படுத்த முடியாது</string>
