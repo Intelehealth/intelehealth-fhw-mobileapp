@@ -666,7 +666,7 @@
 
 
 
-    //fingerprint IDA_613
+<!--    //fingerprint IDA_613-->
     <string name="fingerprint_lock">Fingerprint Lock</string>
     <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
     <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
