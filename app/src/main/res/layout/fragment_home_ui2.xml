@@ -48,14 +48,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.12" />
+                app:layout_constraintGuide_percent="0.13" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_275"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.275" />
+                app:layout_constraintGuide_percent="0.25" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/addpatient_cardview"
@@ -68,7 +68,7 @@
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".12"
+                app:layout_constraintHeight_percent=".13"
                 app:layout_constraintStart_toStartOf="@id/guideline_12"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -133,7 +133,7 @@
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".275"
+                app:layout_constraintHeight_percent=".25"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
@@ -216,7 +216,7 @@
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".275"
+                app:layout_constraintHeight_percent=".25"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
