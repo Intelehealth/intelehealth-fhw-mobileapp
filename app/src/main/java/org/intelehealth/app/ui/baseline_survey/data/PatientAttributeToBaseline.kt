@@ -52,6 +52,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
 
                 Column.AYUSHMAN_CARD_STATUS.value -> baseline.ayushmanCard =
                     it.value.returnEmptyIfHyphen()
+
+                Column.SELF_OR_FAMILY_WHATSAPP.value -> baseline.selfOrFamilyWhatsappNumber =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.CAN_EKAL_SEND_WHATSAPP_MESSAGE.value -> baseline.canEkalSendFreeWhatsAppMessageForVisitSummary =
+                    it.value.returnEmptyIfHyphen()
             }
         }
     }

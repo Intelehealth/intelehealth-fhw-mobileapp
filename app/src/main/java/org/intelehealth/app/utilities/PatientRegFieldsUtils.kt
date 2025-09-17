@@ -179,6 +179,8 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.GENERAL_CASTE -> caste = it
                     PatientRegConfigKeys.GENERAL_EDUCATION -> education = it
                     PatientRegConfigKeys.GENERAL_ECONOMIC_STATUS -> economicStatus = it
+                    PatientRegConfigKeys.SELF_FAMILY_WHATSAPP_NUMBER -> selfOrFamilyWhatsappNumber = it
+                    PatientRegConfigKeys.CAN_EKAL_SEND_WHATSAPP_MESSAGE -> canEkalSendFreeWhatsAppMessageForVisitSummary = it
                 }
             }
         }

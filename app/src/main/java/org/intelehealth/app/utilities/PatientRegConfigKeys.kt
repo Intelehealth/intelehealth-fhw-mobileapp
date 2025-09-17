@@ -50,6 +50,8 @@ class PatientRegConfigKeys {
         const val GENERAL_CASTE = "general_caste"
         const val GENERAL_EDUCATION = "general_education"
         const val GENERAL_ECONOMIC_STATUS = "general_economic_status"
+        const val SELF_FAMILY_WHATSAPP_NUMBER = "self_or_family_whatsapp_number"
+        const val CAN_EKAL_SEND_WHATSAPP_MESSAGE = "can_ekal_send_free_whatsapp_message_for_visit_summary"
 
         // MEDICAL
         const val HB_CHECK = "hb_check"

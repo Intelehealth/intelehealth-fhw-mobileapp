@@ -18,4 +18,6 @@ class GeneralBaselineConfig {
     var caste: PatientRegistrationFields? = null
     var education: PatientRegistrationFields? = null
     var economicStatus: PatientRegistrationFields? = null
+    var selfOrFamilyWhatsappNumber: PatientRegistrationFields? = null
+    var canEkalSendFreeWhatsAppMessageForVisitSummary: PatientRegistrationFields? = null
 }

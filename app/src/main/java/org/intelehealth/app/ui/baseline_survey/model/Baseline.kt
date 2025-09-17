@@ -15,6 +15,9 @@ data class Baseline(
     var phoneOwnership: String = "",
     var familyWhatsApp: String = "",
     var martialStatus: String = "",
+    var selfOrFamilyWhatsappNumber: String = "",
+    var canEkalSendFreeWhatsAppMessageForVisitSummary: String = "",
+
 
     // Medical
     var hbCheck: String = "",

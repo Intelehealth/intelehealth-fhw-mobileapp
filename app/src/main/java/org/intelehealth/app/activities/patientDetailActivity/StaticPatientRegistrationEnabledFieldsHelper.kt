@@ -487,6 +487,30 @@ object StaticPatientRegistrationEnabledFieldsHelper {
 
         fields.add(currentField)
 
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SELF_FAMILY_WHATSAPP_NUMBER,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.CAN_EKAL_SEND_WHATSAPP_MESSAGE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
 
         return fields
     }
