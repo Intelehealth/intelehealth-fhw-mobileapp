@@ -1073,5 +1073,6 @@
     <string name="yes_family_member">હા (કુટુંબના સભ્ય)</string>
     <string name="yes_personal">હા (વ્યક્તિગત)</string>
     <string name="send_summary_on_whatsApp">સારાંશ હ્વોટ્સએપ પર મોકલો</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">તમે અથવા તમારા પરિવારના કોઈ સભ્ય હ્વોટ્સએપ નો ઉપયોગ કરો છો?*</string>
 
 </resources>

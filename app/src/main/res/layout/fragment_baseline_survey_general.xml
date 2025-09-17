@@ -418,10 +418,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{generalConfig.familyWhatsapp.mandatory ? @string/family_whatsapp_question + ` *` : @string/family_whatsapp_question}"
+                        android:text="@{generalConfig.familyWhatsapp.mandatory ? @string/do_you_or_any_of_your_family_member_use_whatsapp + ` *` : @string/do_you_or_any_of_your_family_member_use_whatsapp}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/family_whatsapp_question" />
+                        tools:text="@string/do_you_or_any_of_your_family_member_use_whatsapp" />
 
                     <RadioGroup
                         android:id="@+id/rg_family_whatsapp_options"
@@ -479,7 +479,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        titleAsPerOptionSelected="@{baseline.familyWhatsApp}"
                         android:textAppearance="@style/blur_txtview"
                         tools:text="@string/what_is_the_phone_number_associated_with_your_family_member_whatsapp_account" />
 

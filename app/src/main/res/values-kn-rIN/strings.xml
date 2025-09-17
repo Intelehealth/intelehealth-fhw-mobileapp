@@ -1028,5 +1028,6 @@
     <string name="yes_family_member">ಹೌದು (ಕುಟುಂಬದ ಸದಸ್ಯ)</string>
     <string name="yes_personal">ಹೌದು (ವೈಯಕ್ತಿಕ)</string>
     <string name="send_summary_on_whatsApp">ಸಾರಾಂಶವನ್ನು ವಾಟ್ಸಾಪ್ ನಲ್ಲಿ ಕಳುಹಿಸಿ</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ನೀವು ಅಥವಾ ನಿಮ್ಮ ಕುಟುಂಬದ ಯಾರಾದರೂ ವಾಟ್ಸಾಪ್ ಬಳಸುತ್ತೀರಾ?*</string>
 
 </resources>

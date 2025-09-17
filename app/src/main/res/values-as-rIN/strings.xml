@@ -1109,5 +1109,6 @@
     <string name="yes_family_member">হয় (পৰিয়ালৰ সদস্য)</string>
     <string name="yes_personal">হয় (ব্যক্তিগত)</string>
     <string name="send_summary_on_whatsApp">সাৰাংশ হোৱাটছএপত পঠাওক</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপুনি বা আপোনাৰ পৰিয়ালৰ কোনোবাই হোৱাট্‌ছএপ ব্যৱহাৰ কৰে নেকি?*</string>
 
 </resources>

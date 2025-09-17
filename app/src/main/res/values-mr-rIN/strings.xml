@@ -1059,5 +1059,6 @@
     <string name="yes_family_member">होय (कुटुंब सदस्य)</string>
     <string name="yes_personal">होय (वैयक्तिक)</string>
     <string name="send_summary_on_whatsApp">सारांश व्हॉट्सॲप वर पाठवा</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा आपल्या कुटुंबातील कोण व्हॉट्सॲप वापरतो का?*</string>
 
 </resources>

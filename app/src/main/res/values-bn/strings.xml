@@ -1061,5 +1061,6 @@
     <string name="yes_family_member">হ্যাঁ (পরিবারের সদস্য)</string>
     <string name="yes_personal">হ্যাঁ (ব্যক্তিগত)</string>
     <string name="send_summary_on_whatsApp">সারাংশ হোয়াটসঅ্যাপে পাঠান</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি অথবা আপনার পরিবারের কেউ কি হোয়াটসঅ্যাপ ব্যবহার করেন?*</string>
 
 </resources>

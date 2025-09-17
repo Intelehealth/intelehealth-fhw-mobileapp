@@ -57,7 +57,6 @@ class BaselineGeneralFragment :
         Log.d("TAG", "onBaselineDataLoaded: baselineData : "+Gson().toJson(baselineData))
         //setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
-        setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
     }
 
     private fun fetchGeneralBaselineConfig() {
@@ -77,6 +76,7 @@ class BaselineGeneralFragment :
         setupPhoneOwnershipCheck()
         initializeRadioButtonTags()
         manageWhatsappQuestions()
+       // setTitleAsPerSelectedOptionForDbValue(binding.tvWhatsappNumberLabel, binding.baseline?.familyWhatsApp, "dbload")
     }
 
     private fun initializeRadioButtonTags() {
@@ -279,12 +279,21 @@ class BaselineGeneralFragment :
             val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
             val selectedValue = selectedRadioButton?.text?.toString()
 
+            Log.d("kk", "kaveri manageWhatsappQuestions: selectedValue : "+selectedValue)
             when (checkedId) {
-                R.id.radioPersonal, R.id.radioFamilyMember -> {
+                R.id.radioPersonal -> {
                     binding.layoutWhatsappNumber.visibility = View.VISIBLE
                     binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
 
-                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, selectedValue)
+                    // pass English keyword, not localized text
+                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, "personal", "manage")
+                }
+                R.id.radioFamilyMember -> {
+                    binding.layoutWhatsappNumber.visibility = View.VISIBLE
+                    binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
+
+                    // pass English keyword, not localized text
+                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, "family", "manage")
                 }
                 R.id.radioFamilyWhatsappNo -> {
                     binding.layoutWhatsappNumber.visibility = View.GONE
@@ -306,29 +315,29 @@ class BaselineGeneralFragment :
         }
 
     }
-    fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?) {
-        Log.d("TAG", "setTitleAsPerSelectedOption: selectedValue : "+selectedValue)
-
+    private fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?, tag: String) {
         if (selectedValue.isNullOrBlank()) {
             textView.text = ""
             return
         }
 
-        val englishResources = LanguageUtils.getSpecificLocalResource(textView.context, "en")
+        //val englishResources = LanguageUtils.getSpecificLocalResource(textView.context, "en")
+        val appResources = textView.context.resources
 
         textView.text = when {
             selectedValue.contains("family", ignoreCase = true) -> {
-                englishResources.getString(
+                appResources.getString(
                     R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account
                 )
             }
             selectedValue.contains("personal", ignoreCase = true) -> {
-                englishResources.getString(
+                appResources.getString(
                     R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account
                 )
             }
             else -> ""
         }
+        Log.d("kk", "setTitleAsPerSelectedOption: textView.text : "+textView.text.toString())
     }
     private fun getWhatsappNumberForDb(): String {
         return if (binding.cbWhatsappNumberUnknown.isChecked) {

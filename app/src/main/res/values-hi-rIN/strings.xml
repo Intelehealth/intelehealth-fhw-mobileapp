@@ -1085,5 +1085,6 @@
     <string name="yes_family_member">हां (परिवार के सदस्य)</string>
     <string name="yes_personal">हां (व्यक्तिगत)</string>
     <string name="send_summary_on_whatsApp">सारांश व्हाट्सऐप पर भेजें</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family members use WhatsApp?*</string>
 
 </resources>
