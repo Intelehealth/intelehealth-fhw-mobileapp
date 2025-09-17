@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="video_library">video_library</string>
+    <string name="no_videos_found_on_server">No videos found on the server</string>
+
+    <string name="type_to_search">Type to Search…</string>
+
+    // Search Patient Screen Tabs
+    <string name="tab_anemia_screening">Anemia Screening</string>
+    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
+    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
+    <string name="tab_hypertension_screening">Hypertension Screening</string>
+    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_general">General</string>
+    <string name="search_patient">Search Patient</string>
+
+    <string name="medical_history_yes">Yes</string>
+    <string name="age">Age</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
+    <string name="days">days</string>
+    <string name="sample_name_open_mrs_id_text">Ravi Kumar, 2AGY-87</string>
+    <string name="sample_age_text">Age: 16 years 10 months 16 days</string>
+    <string name="sample_disease_category">Sample Disease</string>
+
+    <string name="search_text_filed_hint">Find patient by name, ID or mobile</string>
+    <string name="no_data_found">No data found</string>
+    <string name="patient_not_found">Patient not found!</string>
+    <string name="correct_search_string_message">Use correct patient name, or ID, or mobile number to search or you can register a new patient.</string>
+    <string name="add_new_patient">Add New Patient</string>
+    <string name="presc_pending">Prescription pending</string>
+    <string name="priority">Priority</string>
+    <string name="search_date_txt">24 May, at 3:15 pm</string>
+    <string name="five_presc_received">%1$s prescriptions received</string>
+    <string name="presc_received">Prescription received</string>
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="search_gender">M 22</string>
+    <string name="search_txt_enter">Type Patient name or ID</string>
+    <string name="search_hint_text">Previously searched</string>
+    <string name="all_patients_txt">All Patients</string>
+    <string name="clear">Clear</string>
+    <string name="search_pat_not_found_txt">Patient not found!</string>
+
+    <!-- values-bn/strings.xml -->
+    <!-- 1.1 Navigation -->
+    <string name="button_pagination_next">পরবর্তী</string>
+    <string name="button_pagination_previous">পূর্ববর্তী</string>
+    <string name="back_button_text">ফিরে যান</string>
+    <string name="edit_button_text">সম্পাদনা করুন</string>
+    <string name="review_answers_text">উত্তর পর্যালোচনা করুন</string>
+    <string name="button_review">পর্যালোচনা</string>
+    <string name="submit_questionnaire">জমা দিন</string>
+    <string name="cancel_questionnaire">@android:string/cancel</string>
+    <string name="questionnaire_review_mode_title">জমা দেওয়ার আগে উত্তর পর্যালোচনা করুন</string>
+
+    <!-- 1.2 Submit Pop-up -->
+    <string name="questionnaire_validation_error_headline">ত্রুটি পাওয়া গেছে</string>
+    <string name="questionnaire_validation_error_supporting_text">নিম্নলিখিত প্রশ্ন ঠিক করুন:</string>
+    <string name="questionnaire_validation_error_item_text_with_bullet">• %s</string>
+    <string name="questionnaire_validation_error_submit_button_text">যাই হোক জমা দিন</string>
+    <string name="questionnaire_validation_error_fix_button_text">প্রশ্ন ঠিক করুন</string>
+
+    <!-- 1.3 Cancel Pop-up -->
+    <string name="questionnaire_cancel_text">আপনি কি প্রশ্নাবলী থেকে বের হতে চান?</string>
+
+    <!-- 2.1 All Widgets -->
+    <string name="not_answered">উত্তর দেওয়া হয়নি</string>
+    <string name="help">সাহায্য</string>
+
+    <!-- 2.2 Boolean -->
+    <string name="no">না</string>
+    <string name="yes">হ্যাঁ</string>
+
+    <!-- 2.3 Drop Down -->
+    <string name="hyphen">-</string>
+
+    <!-- 2.4 Multi Select / Open Choice -->
+    <string name="open_choice_other">অন্যান্য</string>
+    <string name="open_choice_other_hint">কাস্টম বিকল্প লিখুন</string>
+    <string name="open_choice_other_add_another">আরও একটি উত্তর যোগ করুন</string>
+    <string name="multi_select_dialog_subtitle">যা প্রযোজ্য সব নির্বাচন করুন</string>
+    <string name="save">সংরক্ষণ করুন</string>
+    <string name="cancel">বাতিল</string>
+
+    <!-- 2.5 Date / DateTime -->
+    <string name="date">তারিখ</string>
+    <string name="time">সময়</string>
+    <string name="select_date">তারিখ নির্বাচন করুন</string>
+    <string name="select_time">সময় নির্বাচন করুন</string>
+
+    <!-- 2.6 Attachment widget -->
+    <string name="take_photo">ফটো তুলুন</string>
+    <string name="cd_photo_preview">ফটো প্রিভিউ</string>
+    <string name="cd_file_icon_preview">ফাইল আইকন প্রিভিউ</string>
+    <string name="upload_photo">ফটো আপলোড করুন</string>
+    <string name="upload_audio">অডিও আপলোড করুন</string>
+    <string name="upload_video">ভিডিও আপলোড করুন</string>
+    <string name="upload_document">ডকুমেন্ট আপলোড করুন</string>
+    <string name="upload_file">ফাইল আপলোড করুন</string>
+    <string name="delete">মুছে ফেলুন</string>
+    <string name="max_size_image_above_limit_validation_error_msg">ত্রুটি: ছবির আকার %1$s MB এর বেশি</string>
+    <string name="max_size_file_above_limit_validation_error_msg">ত্রুটি: ফাইলের আকার %1$s MB এর বেশি</string>
+    <string name="upload_failed">আপলোড ব্যর্থ হয়েছে</string>
+    <string name="mime_type_wrong_media_format_validation_error_msg">ত্রুটি: ভুল মিডিয়া ফরম্যাট</string>
+    <string name="uploaded">আপলোড করা হয়েছে</string>
+    <string name="image_uploaded">ছবি আপলোড করা হয়েছে</string>
+    <string name="file_uploaded">ফাইল আপলোড করা হয়েছে</string>
+    <string name="video_uploaded">ভিডিও আপলোড করা হয়েছে</string>
+    <string name="audio_uploaded">অডিও আপলোড করা হয়েছে</string>
+    <string name="image_deleted">ছবি মুছে ফেলা হয়েছে</string>
+    <string name="file_deleted">ফাইল মুছে ফেলা হয়েছে</string>
+    <string name="video_deleted">ভিডিও মুছে ফেলা হয়েছে</string>
+    <string name="audio_deleted">অডিও মুছে ফেলা হয়েছে</string>
+
+    <!-- 2.7 Group -->
+    <string name="group_header_add_item_button">আইটেম যোগ করুন</string>
+
+    <!-- 3.1 Validation -->
+    <string name="required_constraint_validation_error_msg">প্রয়োজনীয় ফিল্ডের উত্তর নেই।</string>
+    <string name="min_value_validation_error_msg">ন্যূনতম অনুমোদিত মান: <xliff:g id="min_value">%1$s</xliff:g></string>
+    <string name="max_value_validation_error_msg">সর্বাধিক অনুমোদিত মান: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="min_length_validation_error_msg">উত্তরের জন্য ন্যূনতম অক্ষরের সংখ্যা হতে হবে: <xliff:g id="min_length">%1$s</xliff:g></string>
+    <string name="max_decimal_validation_error_msg">উত্তরে অনুমোদিত সর্বাধিক দশমিক স্থান: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="regex_validation_error_msg">উত্তর নিয়মিত প্রকাশের সাথে মেলে না: <xliff:g id="answer_value">%1$s</xliff:g></string>
+    <string name="number_format_validation_error_msg">দুটি সংখ্যার মধ্যে শুধুমাত্র (.) ব্যবহার করুন। অন্যান্য বিশেষ অক্ষর সমর্থিত নয়।</string>
+    <string name="date_format_validation_error_msg">তারিখের ফরম্যাট হতে হবে <xliff:g id="locale_format">%1$s</xliff:g> (যেমন %2$s)</string>
+    <string name="integer_format_validation_error_msg">সংখ্যা <xliff:g id="min_value">%1$s</xliff:g> এবং <xliff:g id="max_value">%2$s</xliff:g> এর মধ্যে হতে হবে</string>
+    <string name="decimal_format_validation_error_msg">অবৈধ সংখ্যা</string>
+    <string name="optional_helper_text">ঐচ্ছিক</string>
+    <string name="required">প্রয়োজনীয়</string>
+    <string name="required_text_and_new_line">প্রয়োজনীয়\n</string>
+    <string name="space_asterisk">\u0020\u002a</string>
+    <string name="repeated_group_title">%1$s. %2$s</string>
+    <string name="add_repeated_group_item">%1$s যোগ করুন</string>
+
+</resources>

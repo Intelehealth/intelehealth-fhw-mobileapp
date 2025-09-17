@@ -59,9 +59,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     // create the filename & title list
     // for the questionnaire
     private val questionnaireFiles =
-        listOf("hypertension_screening.json", "anemia_screening.json", "diabetes_screening.json")
+        listOf("hypertension_screening.json", "anemia_screening.json", "diabetes_screening.json","hypertension_followup.json")
     private val questionnaireTitles =
-        listOf("Hypertension Screening", "Anemia Screening", "Diabetes Screening")
+        listOf("Hypertension Screening", "Anemia Screening", "Diabetes Screening","Hypertension Followup")
     private var isRecurring = false // set to true if you want to use recurring questionnaire
 
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
@@ -87,7 +87,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
         supportActionBar?.title = questionnaireTitle
-        if (questionnaireTitle.equals("Hypertension Screening", true)) {
+        if (questionnaireTitle.equals("Hypertension Screening", true) || questionnaireTitle.equals("Hypertension Followup", true)) {
             isRecurring = true // set to true if you want to use recurring questionnaire
         }
         Log.d("FHIR", "Questionnaire Title: $questionnaireTitle")
