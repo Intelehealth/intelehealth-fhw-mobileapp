@@ -434,4 +434,13 @@
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">మీరు లేదా మీ కుటుంబ సభ్యులు ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా?*</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">మీ కుటుంబ సభ్యుడు లేదా వాట్సాప్ ఖాతాతో అనుసంధానమైన మొబైల్ నంబర్ ఏమిటి?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">మీ వ్యక్తిగత వాట్సాప్ ఖాతాతో అనుసంధానమైన మొబైల్ నంబర్ ఏమిటి?</string>
+    <string name="i_dont_know">నాకు తెలియదు</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">మా సందర్శన సారాంశాన్ని ఎకల్ ఉచితంగా వాట్సాప్ సందేశంగా మీకు పంపగలదా?</string>
+    <string name="yes_family_member">అవును (కుటుంబ సభ్యుడు)</string>
+    <string name="yes_personal">అవును (వ్యక్తిగతం)</string>
+    <string name="send_summary_on_whatsApp">సారాంశాన్ని హ్వాట్సాప్‌లో పంపండి</string>
 </resources>

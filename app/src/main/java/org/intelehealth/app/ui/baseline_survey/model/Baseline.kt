@@ -15,6 +15,9 @@ data class Baseline(
     var phoneOwnership: String = "",
     var familyWhatsApp: String = "",
     var martialStatus: String = "",
+    var selfOrFamilyWhatsappNumber: String = "",
+    var canEkalSendFreeWhatsAppMessageForVisitSummary: String = "",
+
 
     // Medical
     var hbCheck: String = "",
@@ -35,7 +38,18 @@ data class Baseline(
     var alcoholRate: String = "",
     var alcoholDuration: String = "",
     var alcoholFrequency: String = "",
-
+    var takingAnyMedicationForBP: String = "",
+    var haveYouSeenToHWinPastOneYearForBP: String = "",
+    var reasonForNotTakingBPMedication: String = "",
+    var otherReasonForNotTakingBPMedication: String = "",
+    var takingAnyMedicationForDiabetes: String = "",
+    var haveYouSeenToHWinPastOneYearForDiabetes: String = "",
+    var reasonForNotTakingDiabetesMedication: String = "",
+    var otherReasonForNotTakingDiabetesMedication: String = "",
+    var takingAnyMedicationForAnemia: String = "",
+    var haveYouSeenToHWinPastOneYearForAnemia: String = "",
+    var reasonForNotTakingAnemiaMedication: String = "",
+    var otherReasonForNotTakingAnemiaMedication: String = "",
     // Other
     var headOfHousehold: String = "",
     var rationCardCheck: String = "",
@@ -109,5 +123,7 @@ data class Baseline(
     var toiletFacilityArrayConstants: Int = R.array.baseline_toilet_facilities
     var houseStructureArrayConstants: Int = R.array.baseline_house_structure
     var cultivableLandArrayConstants: Int = R.array.baseline_cultivable_land
+
+    var reasonForNotTakingMedicationValues: Int = R.array.reason_for_not_taking_bp_medication
 
 }

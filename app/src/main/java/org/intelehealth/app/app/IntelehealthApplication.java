@@ -97,14 +97,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
         // keeping the base url in one singleton object for using in apprtc module
 
-        configureCrashReporting();
+       /* configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
-                .replace(' ', '0');
+                .replace(' ', '0');*/
 
 //        String url = BuildConfig.SERVER_URL;
 //        if (url == null) {

@@ -26,4 +26,13 @@ class MedicalBaselineConfig {
     var alcoholRate: PatientRegistrationFields? = null
     var alcoholDuration: PatientRegistrationFields? = null
     var alcoholFrequency: PatientRegistrationFields? = null
+    var takingAnyMedicationForAnemia: PatientRegistrationFields? = null
+    var haveYouSeenToHWinPastOneYearForAnemia: PatientRegistrationFields? = null
+    var reasonForNotTakingAnemiaMedication: PatientRegistrationFields? = null
+    var otherRreasonForNotTakingAnemiaMedication: PatientRegistrationFields? = null
+    var takingAnyMedicationForBP: PatientRegistrationFields? = null
+    var haveYouSeenToHWinPastOneYearForBP: PatientRegistrationFields? = null
+    var reasonForNotTakingBPMedication: PatientRegistrationFields? = null
+    var otherRreasonForNotTakingBPMedication: PatientRegistrationFields? = null
+
 }

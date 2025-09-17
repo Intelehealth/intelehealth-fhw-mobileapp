@@ -1,18 +1,25 @@
 package org.intelehealth.app.ui.binding
 
+import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
 import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.textfield.TextInputEditText
 import org.intelehealth.app.R
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.extensions.setSelectedCheckboxes
@@ -117,4 +124,122 @@ fun bindAutoCompleteValue(
 fun bindCheckBoxesValue(linearLayout: LinearLayout, data: String) {
     linearLayout.setSelectedCheckboxes(data)
 }
+@BindingAdapter("bindRadioButtonValueNew")
+fun bindRadioButtonValueNew(radioGroup: RadioGroup?, data: String?) {
+    if (radioGroup == null) return
+
+    if (data.isNullOrEmpty() || data == "-") {
+        // No default selection
+        radioGroup.clearCheck()
+        return
+    }
+
+    radioGroup.forEach { view ->
+        if (view is RadioButton) {
+            val englishLocaleResources = LanguageUtils.getSpecificLocalResource(
+                view.context,
+                "en"
+            )
+            val tag: Int = view.tag as Int
+            val englishText = englishLocaleResources.getString(tag)
+
+            if (englishText == data) {
+                view.isChecked = true
+            }
+        }
+    }
+    @BindingAdapter(
+        value = ["bindAutoCompleteForOtherReason", "stringArrayResId", "otherReasonView"],
+        requireAll = false
+    )
+    fun bindAutoCompleteForOtherReason(
+        autoComplete: AutoCompleteTextView,
+        value: String?,
+        stringArrayResId: Int?,
+        etOther: TextInputEditText?
+    ) {
+        // Dropdown setup
+        stringArrayResId?.let {
+            val items = autoComplete.context.resources.getStringArray(it).toList()
+            val adapter = ArrayAdapter(autoComplete.context, android.R.layout.simple_dropdown_item_1line, items)
+            autoComplete.setAdapter(adapter)
+        }
+
+        // Handle DB/ViewModel value
+        if (value.isNullOrEmpty()) {
+            autoComplete.setText("", false)
+            etOther?.visibility = View.GONE
+            etOther?.setText("")
+            return
+        }
+
+        if (value.contains(":reason ")) {
+            val parts = value.split(":reason ")
+            if (parts.size == 2) {
+                autoComplete.setText(parts[0], false) // e.g. "Unknown / Other"
+                etOther?.visibility = View.VISIBLE
+                etOther?.setText(parts[1])            // e.g. "kz gdhd"
+            }
+        } else {
+            autoComplete.setText(value, false)       // normal option
+            etOther?.visibility = View.GONE
+            etOther?.setText("")
+        }
+    }
+
+}
+
+@BindingAdapter("setNullOrEmptyChecked")
+fun setNullOrEmptyChecked(checkBox: CheckBox, value: String?) {
+    //isNullOrEmptyChecked
+    checkBox.isChecked = value.isNullOrEmpty()
+}
+
+
+@BindingAdapter("titleAsPerOptionSelected")
+fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?) {
+    Log.d("TAG", "setTitleAsPerSelectedOption: selectedValue : "+selectedValue)
+
+    if (selectedValue.isNullOrBlank()) {
+        textView.text = ""
+        return
+    }
+
+    val englishResources = LanguageUtils.getSpecificLocalResource(textView.context, "en")
+
+    textView.text = when {
+        selectedValue.contains("family", ignoreCase = true) -> {
+            englishResources.getString(
+                R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account
+            )
+        }
+        selectedValue.contains("personal", ignoreCase = true) -> {
+            englishResources.getString(
+                R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account
+            )
+        }
+        else -> ""
+    }
+}
+
+
+@BindingAdapter(value = ["whatsappText", "dontKnowCheckBox"], requireAll = true)
+fun setWhatsappText(editText: TextInputEditText, value: String?, checkBox: CheckBox) {
+    if (value.equals("I don't know", ignoreCase = true)) {
+        if (editText.text.toString().isNotEmpty()) {
+            editText.setText("")
+        }
+        if (!checkBox.isChecked) {
+            checkBox.isChecked = true
+        }
+    } else {
+        if (editText.text.toString() != value.orEmpty()) {
+            editText.setText(value ?: "")
+        }
+        if (checkBox.isChecked) {
+            checkBox.isChecked = false
+        }
+    }
+}
+
 

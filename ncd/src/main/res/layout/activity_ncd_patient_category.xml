@@ -349,7 +349,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tab_anemia_follow_up" />
 
-        <com.google.android.material.tabs.TabItem
+     <!--   <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_diabetes_screening" />
@@ -357,7 +357,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_diabetes_follow_up" />
+            android:text="@string/tab_diabetes_follow_up" />-->
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

@@ -487,6 +487,30 @@ object StaticPatientRegistrationEnabledFieldsHelper {
 
         fields.add(currentField)
 
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.SELF_FAMILY_WHATSAPP_NUMBER,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.CAN_EKAL_SEND_WHATSAPP_MESSAGE,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
 
         return fields
     }
@@ -703,6 +727,95 @@ object StaticPatientRegistrationEnabledFieldsHelper {
             groupId = "",
             name = "",
             idKey = PatientRegConfigKeys.ALCOHOL_FREQUENCY,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_ANEMIA,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_BP,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_BP,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.REASON_FOR_NOT_TAKING_BP_MEDICATION,
+            isMandatory = true,
+            isEditable = true,
+            isEnabled = true
+        )
+        fields.add(currentField)
+
+        currentField = PatientRegistrationFields(
+            id = 0,
+            groupId = "",
+            name = "",
+            idKey = PatientRegConfigKeys.BP_VALUE,
             isMandatory = true,
             isEditable = true,
             isEnabled = true

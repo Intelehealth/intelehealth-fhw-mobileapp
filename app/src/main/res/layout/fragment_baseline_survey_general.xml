@@ -464,6 +464,54 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_whatsapp_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llFamilyWhatsapp"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_whatsapp_number_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3sp"
+                        titleAsPerOptionSelected="@{baseline.familyWhatsApp}"
+                        android:textAppearance="@style/blur_txtview"
+                        tools:text="@string/what_is_the_phone_number_associated_with_your_family_member_whatsapp_account" />
+
+                    <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/til_whatsapp_number"
+                        style="@style/AppTheme.OutlineInputBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_4"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_whatsapp_number"
+                            style="@style/AppTheme.InputBox.Phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_mobile_no"
+                            app:whatsappText="@{baseline.selfOrFamilyWhatsappNumber}"
+                            app:dontKnowCheckBox="@{cbWhatsappNumberUnknown}"
+                            android:inputType="phone" />
+                    </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                    <!-- Checkbox for 'I don’t know' -->
+                    <CheckBox
+                        android:id="@+id/cb_whatsapp_number_unknown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:text="@string/i_dont_know" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llMaritalStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -472,7 +520,7 @@
                     android:visibility="@{generalConfig.maritalStatus.enabled ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llFamilyWhatsapp">
+                    app:layout_constraintTop_toBottomOf="@id/layout_whatsapp_number">
 
                     <TextView
                         android:id="@+id/tv_marital_status_label"

@@ -52,6 +52,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
 
                 Column.AYUSHMAN_CARD_STATUS.value -> baseline.ayushmanCard =
                     it.value.returnEmptyIfHyphen()
+
+                Column.SELF_OR_FAMILY_WHATSAPP.value -> baseline.selfOrFamilyWhatsappNumber =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.CAN_EKAL_SEND_WHATSAPP_MESSAGE.value -> baseline.canEkalSendFreeWhatsAppMessageForVisitSummary =
+                    it.value.returnEmptyIfHyphen()
             }
         }
     }
@@ -173,11 +179,17 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         val medicalHistory: MedicalHistory = medicalHistoryList[0]
 
         baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
-        baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
+        baseline.bpValue = medicalHistory.bp.returnEmptyIfHyphen()
         baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
         baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()
         baseline.surgeryValue = medicalHistory.anySurgeries.returnEmptyIfHyphen()
         baseline.surgeryReason = medicalHistory.reasonForSurgery.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForAnemia = medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForAnemia = medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingAnemiaMedication = medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForBP = medicalHistory.medicationForHypertension.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForBP = medicalHistory.healthWorkerForHypertension.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingBPMedication = medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {

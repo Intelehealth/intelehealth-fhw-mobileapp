@@ -183,7 +183,15 @@
                     tools:text="Medical History"
                     tools:textFontWeight="700" />
 
-                <LinearLayout
+                <include
+                    android:id="@+id/layout_bp_medication"
+                    layout="@layout/layout_hypertension_medication_basline"
+                    tools:visibility="visible"
+                    app:baseline="@{baseline}"
+                    app:medicalConfig="@{medicalConfig}"
+                    app:baselineEditMode="@{baselineEditMode}"
+                    android:visibility="@{medicalConfig.bpValue.enabled ? View.VISIBLE : View.GONE}"/>
+              <!--  <LinearLayout
                     android:id="@+id/llBpLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -233,7 +241,7 @@
                             android:text="@string/no" />
                     </RadioGroup>
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/llDiabetesLabel"
@@ -338,58 +346,15 @@
                     </RadioGroup>
 
                 </LinearLayout>
+                <include
+                    android:id="@+id/layout_anemia_medication"
+                    layout="@layout/layout_anemia_medication_baseline"
+                    tools:visibility="visible"
+                    app:baseline="@{baseline}"
+                    app:medicalConfig="@{medicalConfig}"
+                    app:baselineEditMode="@{baselineEditMode}"
+                    android:visibility="@{medicalConfig.anemiaValue.enabled ? View.VISIBLE : View.GONE}"/>
 
-                <LinearLayout
-                    android:id="@+id/llAnemiaLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_12dp"
-                    android:orientation="vertical"
-                    android:visibility="@{medicalConfig.anemiaValue.enabled ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llEducation">
-
-                    <TextView
-                        android:id="@+id/tv_anemia_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:text="@{ medicalConfig.anemiaValue.mandatory ? @string/anemia_label + ` *` : @string/anemia_label}"
-                        android:textAppearance="@style/blur_txtview"
-                        android:textSize="@null"
-                        tools:text="@string/anemia_label" />
-
-                    <RadioGroup
-                        android:id="@+id/rg_anemia_options"
-                        style="@style/RadioButtonStyleSelection"
-                        config="@{medicalConfig.anemiaValue}"
-                        editMode="@{baselineEditMode}"
-                        radioButtonValue="@{baseline.anemiaValue}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioAnemiaYes"
-                            config="@{medicalConfig.anemiaValue}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/margin_20"
-                            android:text="@string/yes" />
-
-                        <RadioButton
-                            android:id="@+id/radioAnemiaNo"
-                            config="@{medicalConfig.anemiaValue}"
-                            editMode="@{baselineEditMode}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/no" />
-                    </RadioGroup>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llSurgeryLabel"

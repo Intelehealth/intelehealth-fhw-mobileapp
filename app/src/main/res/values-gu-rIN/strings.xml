@@ -1045,4 +1045,33 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
+    <string name="never_prescribed_medication">મને ક્યારેય દવાઓ સૂચવવામાં આવી ન હતી</string>
+    <string name="forgot_to_take_it">હું લેવાનું ભૂલી ગયો</string>
+    <string name="cannot_afford_medications">મને દવાઓ પોસાય તેમ નથી</string>
+    <string name="ran_out_of_medication">મારી  દવાઓ સમાપ્ત થઈ ગઈ/દવાઓ ખોવાઈ ગઈ </string>
+    <string name="i_am_needing_follow_up_with_my_PHC">મારે મારા PHC સાથે ફોલોઅપની જરૂર છે</string>
+    <string name="i_dont_think_i_need_it">મને નથી લાગતું કે મારે તેની જરૂર છે</string>
+    <string name="side_effect_related_to_medication">દવા સંબંધિત આડઅસર</string>
+    <string name="unknown_other">અજ્ઞાત/અન્ય</string>
+
+    <string name="are_you_taking_any_medication_for_bp">શું તમે હાલમાં બીપી માટે દવાઓ લઈ રહ્યા છો?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">શું તમે હાલમાં ડાયાબિટીસ માટે દવાઓ લઈ રહ્યા છો?</string>
+    <string name="are_you_taking_any_medication_for_anemia">શું તમે હાલમાં એનિમિયા માટે દવાઓ લઈ રહ્યા છો?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">શું તમને તમારા બીપી માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">શું તમને તમારા ડાયાબિટીસ માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">શું તમને તમારા એનિમિયા માટે છેલ્લા 1 વર્ષમાં કોઈ હેલ્થકેર વર્કર દ્વારા જોવામાં આવ્યા છે?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">તમે તમારી બીપી દવાઓ કેમ નથી લેતા?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">તમે તમારી ડાયાબિટીસ દવાઓ કેમ નથી લેતા?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">તમે તમારી એનિમિયા દવાઓ કેમ નથી લેતા?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">તમારા કુટુંબના સભ્ય હ્વોટ્સએપ એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">તમારા વ્યક્તિગત હ્વોટ્સએપ એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
+
+    <string name="i_dont_know">અથવા મને ખબર નથી</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">શું એકલ તમને અમારી મુલાકાતના સારાંશનો મફત હ્વોટ્સએપ સંદેશ મોકલી શકે છે?</string>
+    <string name="yes_family_member">હા (કુટુંબના સભ્ય)</string>
+    <string name="yes_personal">હા (વ્યક્તિગત)</string>
+    <string name="send_summary_on_whatsApp">સારાંશ હ્વોટ્સએપ પર મોકલો</string>
+
 </resources>

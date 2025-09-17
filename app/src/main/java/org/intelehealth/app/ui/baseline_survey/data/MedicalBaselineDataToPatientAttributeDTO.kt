@@ -46,8 +46,14 @@ fun bindMedicalBaselinePatientAttributes(
                 baseline.arthritisValue,
                 baseline.anemiaValue,
                 baseline.surgeryValue,
-                baseline.surgeryReason
-            ),
+                baseline.surgeryReason,
+                baseline.takingAnyMedicationForAnemia,
+                baseline.haveYouSeenToHWinPastOneYearForAnemia,
+                baseline.reasonForNotTakingAnemiaMedication,
+                baseline.takingAnyMedicationForBP,
+                baseline.haveYouSeenToHWinPastOneYearForBP,
+                baseline.reasonForNotTakingBPMedication
+                ),
             patientsDAO
         )
     )
@@ -114,8 +120,14 @@ private fun getMedicalHistory(
     arthritisCheck: String,
     anemiaCheck: String,
     surgeryCheck: String,
-    reasonForSurgery: String
-): String = Gson().toJson(
+    reasonForSurgery: String,
+    medicationForAnemia: String,
+    healthWorkerForAnemia: String,
+    reasonForNoAnemiaMedication: String,
+    medicationForBP: String,
+    healthWorkerForBP: String,
+    reasonForNoBPMedication: String
+    ): String = Gson().toJson(
     listOf(
         MedicalHistory(
             bpCheck.storeHyphenIfEmpty(),
@@ -123,8 +135,14 @@ private fun getMedicalHistory(
             arthritisCheck.storeHyphenIfEmpty(),
             anemiaCheck.storeHyphenIfEmpty(),
             surgeryCheck.storeHyphenIfEmpty(),
-            reasonForSurgery.storeHyphenIfEmpty()
-        )
+            reasonForSurgery.storeHyphenIfEmpty(),
+            medicationForAnemia.storeHyphenIfEmpty(),
+            healthWorkerForAnemia.storeHyphenIfEmpty(),
+            reasonForNoAnemiaMedication.storeHyphenIfEmpty(),
+            medicationForBP.storeHyphenIfEmpty(),
+            healthWorkerForBP.storeHyphenIfEmpty(),
+            reasonForNoBPMedication.storeHyphenIfEmpty(),
+            )
     )
 )
 
