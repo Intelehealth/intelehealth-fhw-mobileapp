@@ -1050,4 +1050,14 @@
     <string name="why_are_you_not_taking_your_diabetes_medication">तुम्ही तुमची मधुमेह औषधे का घेत नाही?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">तुम्ही तुमची ॲनिमिया औषधे का घेत नाही?</string>
 
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">तुमच्या कुटुंब सदस्य व्हॉट्सॲप खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">तुमच्या वैयक्तिक व्हॉट्सॲप खात्याशी संबंधित मोबाईल नंबर काय आहे?</string>
+
+    <string name="i_dont_know">मला माहित नाही</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">एकल तुम्हाला आपल्या भेटीचा सारांश मोफत व्हॉट्सॲप मेसेज पाठवू शकेल का?</string>
+
+    <string name="yes_family_member">होय (कुटुंब सदस्य)</string>
+    <string name="yes_personal">होय (वैयक्तिक)</string>
+    <string name="send_summary_on_whatsApp">सारांश व्हॉट्सॲप वर पाठवा</string>
+
 </resources>

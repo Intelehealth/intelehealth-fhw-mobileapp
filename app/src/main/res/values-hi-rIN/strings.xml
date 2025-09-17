@@ -1076,4 +1076,14 @@
     <string name="why_are_you_not_taking_your_bp_medication">आप अपनी बीपी दवाएँ क्यों नहीं ले रहे हैं?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">आप अपनी मधुमेह दवाएँ क्यों नहीं ले रहे हैं?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">आप अपनी एनीमिया दवाएँ क्यों नहीं ले रहे हैं?</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">परिवार के सदस्य व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">व्यक्तिगत व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+
+    <string name="i_dont_know">मुझे नहीं पता</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">क्या एकल आपको हमारी यात्रा के सारांश का एक मुफ्त व्हाट्सएप संदेश भेज सकता है?</string>
+    <string name="yes_family_member">हां (परिवार के सदस्य)</string>
+    <string name="yes_personal">हां (व्यक्तिगत)</string>
+    <string name="send_summary_on_whatsApp">सारांश व्हाट्सऐप पर भेजें</string>
+
 </resources>

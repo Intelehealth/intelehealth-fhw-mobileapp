@@ -1102,4 +1102,12 @@
     <string name="why_are_you_not_taking_your_diabetes_medication">আপুনি আপোনাৰ diabetes ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">আপুনি আপোনাৰ ৰক্তহীনতা ঔষধ কিয় গ্ৰহণ কৰা নাই?</string>
 
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">আপোনাৰ পৰিয়ালৰ সদস্য হোৱাটছএপ একাউণ্টৰ লগত জড়িত মোবাইল নম্বৰটো কি?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">আপোনাৰ ব্যক্তিগত হোৱাটছএপ একাউণ্টৰ লগত জড়িত মোবাইল নম্বৰটো কি?</string>
+    <string name="i_dont_know">মই নাজানো</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">একালে আপোনাৰ ওচৰলৈ আমাৰ ভ্ৰমণৰ সাৰাংশৰ বিনামূলীয়া হোৱাটছএপ মেছেজ দিব পাৰিবনে?</string>
+    <string name="yes_family_member">হয় (পৰিয়ালৰ সদস্য)</string>
+    <string name="yes_personal">হয় (ব্যক্তিগত)</string>
+    <string name="send_summary_on_whatsApp">সাৰাংশ হোৱাটছএপত পঠাওক</string>
+
 </resources>
