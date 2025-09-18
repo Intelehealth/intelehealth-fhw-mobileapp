@@ -247,21 +247,25 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //startActivity(intent2);
         //finish();
 
-        //added new visit attribute to identify ncd visits - like ncd project - required for my achievements section
-        if(IntelehealthApplication.getInstance().getVisitType().equals(AppConstants.VISIT_TYPE_SEVIKA)){
-            VisitAttributeListDAO dao = new VisitAttributeListDAO();
-            try {
-                boolean isInserted = dao.insertIsNcdVisitAttribute(visitUuid, "true");
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
     }
 
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         featureActiveStatus = activeStatus;
         if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
             CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
