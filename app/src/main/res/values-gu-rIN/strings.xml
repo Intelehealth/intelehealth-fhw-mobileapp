@@ -1065,6 +1065,7 @@
     <string name="why_are_you_not_taking_your_bp_medication">તમે તમારી બીપી દવાઓ કેમ નથી લેતા?</string>
     <string name="why_are_you_not_taking_your_diabetes_medication">તમે તમારી ડાયાબિટીસ દવાઓ કેમ નથી લેતા?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">તમે તમારી એનિમિયા દવાઓ કેમ નથી લેતા?</string>
+
     <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">તમારા કુટુંબના સભ્ય હ્વોટ્સએપ એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
     <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">તમારા વ્યક્તિગત હ્વોટ્સએપ એકાઉન્ટ સાથે સંકળાયેલ મોબાઇલ નંબર શું છે?</string>
 
@@ -1073,6 +1074,6 @@
     <string name="yes_family_member">હા (કુટુંબના સભ્ય)</string>
     <string name="yes_personal">હા (વ્યક્તિગત)</string>
     <string name="send_summary_on_whatsApp">સારાંશ હ્વોટ્સએપ પર મોકલો</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">તમે અથવા તમારા પરિવારના કોઈ સભ્ય હ્વોટ્સએપ નો ઉપયોગ કરો છો?*</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">તમે અથવા તમારા પરિવારના કોઈ સભ્ય હ્વોટ્સએપ નો ઉપયોગ કરો છો?</string>
 
 </resources>
