@@ -202,6 +202,7 @@
     <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
     <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
     <!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
+    <string name="spo2_error">ऑक्सिजन संतृप्तता %1$s आणि %2$s च्या दरम्यान असावी.</string>
     <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -446,6 +447,7 @@
     <string name="select_date_hint">तारीख निवडा</string>
     <string name="error_field_valid_village_required">कृपया वैध गावाचे नाव प्रविष्ट करा (किमान 3 अक्षर)</string>
     <string name="patinet_history">%1$d/%2$d वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
+    <string name="_medical_family_history">%1$d/%2$d. वैद्यकीय इतिहास: कौटुंबिक इतिहास</string>
     <string name="_1_4_vitals">%1$d/%2$d महत्वपूर्ण</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys नेहमी > BP Dia असावा]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia नेहमी < BP Sys असावा]]></string>

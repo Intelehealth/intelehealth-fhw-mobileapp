@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -85,6 +87,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1728,17 +1731,28 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             // copy & rename the file
                             mLastSelectedImageName = UUID.randomUUID().toString();
                             currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
+
+
+                            //compress image if more than 2MB
+                            File file = new File(currentPhotoPath);
+                            long fileSizeInBytes = file.length();              // size in bytes
+                            long fileSizeInKB = fileSizeInBytes / 1024;        // size in KB
+                            long fileSizeInMB = fileSizeInKB / 1024;
+                            if (fileSizeInMB > 2) {
+                                String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg";
+                                compressImage(currentPhotoPath, compressedPath);
+                                currentPhotoPath = compressedPath; // replace with compressed one
+                            }
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
                             // Handle the Intent
-
-
                             Bundle bundle = new Bundle();
                             bundle.putString("image", currentPhotoPath);
                             imageUtilsListener.onImageReady(bundle);
 
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             CustomLog.i(TAG, currentPhotoPath);
+
                             //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
                             //updateImageDatabase(mLastSelectedImageName);
                         } else {
@@ -1748,6 +1762,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             });
+
+    private void compressImage(String inputPath, String outputPath) {
+        // Load the bitmap
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(inputPath, options);
+
+        try {
+            FileOutputStream out = new FileOutputStream(outputPath);
+            // 80 means 80% quality (adjust as needed)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private String mLastSelectedImageName = "";
 
