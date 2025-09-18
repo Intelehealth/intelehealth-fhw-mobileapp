@@ -315,7 +315,7 @@ class BaselineGeneralFragment :
         }
 
     }
-    private fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?, tag: String) {
+  /*  private fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?, tag: String) {
         if (selectedValue.isNullOrBlank()) {
             textView.text = ""
             return
@@ -337,8 +337,9 @@ class BaselineGeneralFragment :
             }
             else -> ""
         }
+
         Log.d("kk", "setTitleAsPerSelectedOption: textView.text : "+textView.text.toString())
-    }
+    }*/
     private fun getWhatsappNumberForDb(): String {
         return if (binding.cbWhatsappNumberUnknown.isChecked) {
             "I don't know"
@@ -363,4 +364,41 @@ class BaselineGeneralFragment :
             }
         }
     }
+
+    private fun setTitleAsPerSelectedOption(
+        textView: TextView,
+        selectedValue: String?,
+        tag: String
+    ) {
+        if (selectedValue.isNullOrBlank()) {
+            textView.text = ""
+            return
+        }
+
+        val appResources = textView.context.resources
+        val generalConfig = binding.generalConfig
+
+        var baseText = when {
+            selectedValue.contains("family", ignoreCase = true) -> {
+                appResources.getString(
+                    R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account
+                )
+            }
+            selectedValue.contains("personal", ignoreCase = true) -> {
+                appResources.getString(
+                    R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account
+                )
+            }
+            else -> ""
+        }
+
+        // Append "*" if the field is mandatory
+        if (generalConfig?.selfOrFamilyWhatsappNumber?.isMandatory == true) {
+            baseText += " *"
+        }
+
+        textView.text = baseText
+        Log.d("kk", "setTitleAsPerSelectedOption: textView.text : ${textView.text}")
+    }
+
 }
