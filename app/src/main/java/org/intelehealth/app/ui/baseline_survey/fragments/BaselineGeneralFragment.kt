@@ -50,14 +50,14 @@ class BaselineGeneralFragment :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onBaselineDataLoaded(baselineData: Baseline) {
+    /*override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
         fetchGeneralBaselineConfig()
         binding.baseline = baselineData
         Log.d("TAG", "onBaselineDataLoaded: baselineData : "+Gson().toJson(baselineData))
         //setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
-    }
+    }*/
 
     private fun fetchGeneralBaselineConfig() {
         val it = getStaticPatientRegistrationFields()
@@ -150,6 +150,7 @@ class BaselineGeneralFragment :
     private fun setClickListener() {
         binding.btnGeneralBaselineNext.setOnClickListener {
             validateForm {
+                isInitializing = true
                 confirmEkalCanSendSummaryOnWhatsapp() }
         }
     }
@@ -272,74 +273,7 @@ class BaselineGeneralFragment :
             }
         }
     }
-    private fun manageWhatsappQuestions(){
-        binding.tilWhatsappNumber.hideDigitErrorOnTextChang(binding.etWhatsappNumber, 10
-        )
-        binding.rgFamilyWhatsappOptions.setOnCheckedChangeListener { group, checkedId ->
-            val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
-            val selectedValue = selectedRadioButton?.text?.toString()
 
-            Log.d("kk", "kaveri manageWhatsappQuestions: selectedValue : "+selectedValue)
-            when (checkedId) {
-                R.id.radioPersonal -> {
-                    binding.layoutWhatsappNumber.visibility = View.VISIBLE
-                    binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
-
-                    // pass English keyword, not localized text
-                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, "personal", "manage")
-                }
-                R.id.radioFamilyMember -> {
-                    binding.layoutWhatsappNumber.visibility = View.VISIBLE
-                    binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
-
-                    // pass English keyword, not localized text
-                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, "family", "manage")
-                }
-                R.id.radioFamilyWhatsappNo -> {
-                    binding.layoutWhatsappNumber.visibility = View.GONE
-                    binding.etWhatsappNumber.text = null
-                    binding.cbWhatsappNumberUnknown.isChecked = false
-                    binding.tvWhatsappNumberLabel.text = ""
-                }
-            }
-        }
-
-        // Manage "I don’t know" checkbox state
-        binding.cbWhatsappNumberUnknown.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.etWhatsappNumber.isEnabled = false
-                binding.etWhatsappNumber.text = null
-            } else {
-                binding.etWhatsappNumber.isEnabled = true
-            }
-        }
-
-    }
-  /*  private fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?, tag: String) {
-        if (selectedValue.isNullOrBlank()) {
-            textView.text = ""
-            return
-        }
-
-        //val englishResources = LanguageUtils.getSpecificLocalResource(textView.context, "en")
-        val appResources = textView.context.resources
-
-        textView.text = when {
-            selectedValue.contains("family", ignoreCase = true) -> {
-                appResources.getString(
-                    R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account
-                )
-            }
-            selectedValue.contains("personal", ignoreCase = true) -> {
-                appResources.getString(
-                    R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account
-                )
-            }
-            else -> ""
-        }
-
-        Log.d("kk", "setTitleAsPerSelectedOption: textView.text : "+textView.text.toString())
-    }*/
     private fun getWhatsappNumberForDb(): String {
         return if (binding.cbWhatsappNumberUnknown.isChecked) {
             "I don't know"
@@ -367,8 +301,7 @@ class BaselineGeneralFragment :
 
     private fun setTitleAsPerSelectedOption(
         textView: TextView,
-        selectedValue: String?,
-        tag: String
+        selectedValue: String?
     ) {
         if (selectedValue.isNullOrBlank()) {
             textView.text = ""
@@ -400,5 +333,64 @@ class BaselineGeneralFragment :
         textView.text = baseText
         Log.d("kk", "setTitleAsPerSelectedOption: textView.text : ${textView.text}")
     }
+    private fun manageWhatsappQuestions(){
+        binding.tilWhatsappNumber.hideDigitErrorOnTextChang(binding.etWhatsappNumber, 10
+        )
+        binding.rgFamilyWhatsappOptions.setOnCheckedChangeListener { group, checkedId ->
 
+            val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
+            val selectedValue = selectedRadioButton?.text?.toString()
+
+            when (checkedId) {
+                R.id.radioPersonal, R.id.radioFamilyMember -> {
+                    binding.layoutWhatsappNumber.visibility = View.VISIBLE
+                    binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
+
+                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, selectedValue)
+                }
+                R.id.radioFamilyWhatsappNo -> {
+                    binding.layoutWhatsappNumber.visibility = View.GONE
+                    binding.tvWhatsappNumberLabel.text = ""
+                }
+            }
+            if (isInitializing) {
+                isInitializing = false
+                return@setOnCheckedChangeListener
+            }
+            // reset the etWhatsappNumber and uncheck the cbWhatsappNumberUnknown
+            binding.etWhatsappNumber.text = null
+            binding.cbWhatsappNumberUnknown.isChecked = false
+
+
+        }
+
+        // Manage "I don't know" checkbox state
+        binding.cbWhatsappNumberUnknown.setOnCheckedChangeListener { _, isChecked ->
+           /* if (isInitializing) {
+                isInitializing = false
+                return@setOnCheckedChangeListener
+            }*/
+            if (isChecked) {
+                binding.etWhatsappNumber.isEnabled = false
+                binding.etWhatsappNumber.text = null
+            } else {
+                binding.etWhatsappNumber.isEnabled = true
+            }
+        }
+
+    }
+    private var isInitializing = false
+    override fun onBaselineDataLoaded(baselineData: Baseline) {
+        super.onBaselineDataLoaded(baselineData)
+        fetchGeneralBaselineConfig()
+        // prevent listeners from reacting to programmatic population
+        isInitializing = true
+        binding.baseline = baselineData
+        Log.d("TAG", "onBaselineDataLoaded: baselineData : "+Gson().toJson(baselineData))
+        //setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
+        binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
+        // now turn off initialization mode, then run any UI logic that should happen after load
+        //isInitializing = false
+        setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
+    }
 }
