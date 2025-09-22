@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterConstantKt.FEMALE;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
@@ -1154,7 +1156,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         //   findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
         //   startVisitBtn.setVisibility(View.GONE);
 
-        String rawQuery ="SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+        String rawQuery = "SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
                 "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NULL " +
                 "OR v.enddate = '')  AND e.encounter_type_uuid != ? ";
 
@@ -1178,110 +1180,113 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
                 if (!isCompletedExitedSurvey) {*/
 
-                    String encounterlocalAdultintial = "";
-                    String encountervitalsLocal = null;
-                    String encounterIDSelection = "visituuid = ?";
+                String encounterlocalAdultintial = "";
+                String encountervitalsLocal = null;
+                String encounterIDSelection = "visituuid = ?";
 
-                    String[] encounterIDArgs = {visit_id};
+                String[] encounterIDArgs = {visit_id};
 
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                    if (previsitCursor != null && previsitCursor.moveToLast()) {
-
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                        boolean needToShowCoreValue = false;
-                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                            try {
-                                // isInOldFormat = false;
-                                JSONObject jsonObject = new JSONObject(visitValue);
-                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                    needToShowCoreValue = false;
-                                } else {
-                                    needToShowCoreValue = true;
-                                    visitValue = jsonObject.getString("en");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                CustomLog.e(TAG, e.getMessage());
-                            }
-                        } else {
-                            needToShowCoreValue = true;
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
 
-                        if (visitValue != null && !visitValue.isEmpty()) {
+                    } while (encounterCursor.moveToNext());
+                }
+                encounterCursor.close();
 
-                            if (needToShowCoreValue) {
+                String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                if (previsitCursor != null && previsitCursor.moveToLast()) {
 
-                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
-
-                                visitValue = "";
-                                String colon = ":";
-                                if (complaints != null) {
-                                    for (String comp : complaints) {
-                                        if (!comp.trim().isEmpty() && comp.indexOf(colon) > 0) {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        }
-                                    }
-                                    if (!visitValue.isEmpty()) {
-                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", ", ");
-                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                        visitValue = visitValue.replaceAll("<b>", "");
-                                        visitValue = visitValue.replaceAll("</b>", "");
-                                        visitValue = visitValue.trim();
-                                        while (visitValue.endsWith(",")) {
-                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
-                                        }
-                                    }
-                                }
+                    String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                    boolean needToShowCoreValue = false;
+                    if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                        try {
+                            // isInOldFormat = false;
+                            JSONObject jsonObject = new JSONObject(visitValue);
+                            if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                needToShowCoreValue = false;
                             } else {
-                                String chiefComplain = "";
-                                visitValue = visitValue.replaceAll("<.*?>", "");
-                                System.out.println(visitValue);
-                                CustomLog.v(TAG, visitValue);
-                                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+                                needToShowCoreValue = true;
+                                visitValue = jsonObject.getString("en");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            CustomLog.e(TAG, e.getMessage());
+                        }
+                    } else {
+                        needToShowCoreValue = true;
+                    }
 
-                                String[] spt = visitValue.split("►");
-                                List<String> list = new ArrayList<>();
+                    if (visitValue != null && !visitValue.isEmpty()) {
 
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (String s : spt) {
-                                    String complainName = "";
-                                    if (s.isEmpty()) continue;
-                                    //String s1 =  new String(s.getBytes(), "UTF-8");
-                                    System.out.println(s);
-                                    String[] spt1 = s.split("::●");
-                                    complainName = spt1[0];
+                        if (needToShowCoreValue) {
 
-                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                        System.out.println(complainName);
-                                        if (!stringBuilder.toString().isEmpty())
-                                            stringBuilder.append(", ");
-                                        stringBuilder.append(complainName);
+                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                            String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                            visitValue = "";
+                            String colon = ":";
+                            if (complaints != null) {
+                                for (String comp : complaints) {
+                                    if (!comp.trim().isEmpty() && comp.indexOf(colon) > 0) {
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
                                     }
-
                                 }
+                                if (!visitValue.isEmpty()) {
+                                    visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                    visitValue = visitValue.replaceAll("<br/>", ", ");
+                                    visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                    //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                    visitValue = visitValue.replaceAll("<b>", "");
+                                    visitValue = visitValue.replaceAll("</b>", "");
+                                    visitValue = visitValue.trim();
+                                    while (visitValue.endsWith(",")) {
+                                        visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
+                                    }
+                                }
+                            }
+                        } else {
+                            String chiefComplain = "";
+                            visitValue = visitValue.replaceAll("<.*?>", "");
+                            System.out.println(visitValue);
+                            CustomLog.v(TAG, visitValue);
+                            //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                            String[] spt = visitValue.split("►");
+                            List<String> list = new ArrayList<>();
+                            String appLanguage = sessionManager.getAppLanguage();
+
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (String s : spt) {
+                                String complainName = "";
+                                if (s.isEmpty()) continue;
+                                if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                    continue;
+                                }
+
+                                String[] spt1 = s.split("::●");
+                                complainName = spt1[0];
+
+                                //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                    System.out.println(complainName);
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(", ");
+                                    stringBuilder.append(complainName);
+                                }
+
+                            }
                                 /*StringBuilder stringBuilder = new StringBuilder();
                                 int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
@@ -1297,30 +1302,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             stringBuilder.append(complainName);
                                         }
                                     }*/
-                                visitValue = stringBuilder.toString();
+                            visitValue = stringBuilder.toString();
 
-                            }
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
+                        }
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        try {
 
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                PastVisitData pastVisitData = new PastVisitData();
-                                pastVisitData.setVisitDate(visitDate);
-                                pastVisitData.setVisitUUID(visit_id);
-                                pastVisitData.setChiefComplain(visitValue);
-                                pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                mCurrentVisitDataList.add(pastVisitData);
-                                CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                            Date formatted = currentDate.parse(date);
+                            String visitDate = currentDate.format(formatted);
+                            //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                            PastVisitData pastVisitData = new PastVisitData();
+                            pastVisitData.setVisitDate(visitDate);
+                            pastVisitData.setVisitUUID(visit_id);
+                            pastVisitData.setChiefComplain(visitValue);
+                            pastVisitData.setEncounterVitals(encountervitalsLocal);
+                            pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                            mCurrentVisitDataList.add(pastVisitData);
+                            CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                                CustomLog.e(TAG, e.getMessage());
-                            }
+                        } catch (ParseException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            CustomLog.e(TAG, e.getMessage());
                         }
                     }
+                }
 
 
                 //}
@@ -2685,12 +2690,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-       // String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
+        // String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         //String[] visitArgs = {patientDTO.getUuid()};
         //String[] visitColumns = {"uuid", "startdate", "enddate"};
         //String visitOrderBy = "startdate";
         //Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-        String rawQuery ="SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+        String rawQuery = "SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
                 "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NOT NULL " +
                 "AND v.enddate != '' OR e.encounter_type_uuid = ? )";
         String[] selectionArgs = {patientDTO.getUuid(), UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY};
@@ -2715,109 +2720,112 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                     if (isCompletedExitedSurvey) {*/
 
-                        String encounterlocalAdultintial = "";
-                        String encountervitalsLocal = null;
-                        String encounterIDSelection = "visituuid = ?";
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
 
-                        String[] encounterIDArgs = {visit_id};
+                    String[] encounterIDArgs = {visit_id};
 
-                        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                            do {
-                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                    encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    encounterCursor.close();
+
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                    if (previsitCursor != null && previsitCursor.moveToLast()) {
+
+                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        boolean needToShowCoreValue = false;
+                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                            try {
+                                // isInOldFormat = false;
+                                JSONObject jsonObject = new JSONObject(visitValue);
+                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                    needToShowCoreValue = false;
+                                } else {
+                                    needToShowCoreValue = true;
+                                    visitValue = jsonObject.getString("en");
                                 }
-                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                                }
-
-                            } while (encounterCursor.moveToNext());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            needToShowCoreValue = true;
                         }
-                        encounterCursor.close();
+                        if (visitValue != null && !visitValue.isEmpty()) {
 
-                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                        String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                        Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                        if (previsitCursor != null && previsitCursor.moveToLast()) {
+                            if (needToShowCoreValue) {
 
-                            String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                            boolean needToShowCoreValue = false;
-                            if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                                try {
-                                    // isInOldFormat = false;
-                                    JSONObject jsonObject = new JSONObject(visitValue);
-                                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                        needToShowCoreValue = false;
-                                    } else {
-                                        needToShowCoreValue = true;
-                                        visitValue = jsonObject.getString("en");
+                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                                visitValue = "";
+                                String colon = ":";
+                                if (complaints != null) {
+                                    for (String comp : complaints) {
+                                        if (!comp.trim().isEmpty() && comp.contains(colon)) {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                        }
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    if (!visitValue.isEmpty()) {
+                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                        visitValue = visitValue.replaceAll("<br/>", ", ");
+                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                        visitValue = visitValue.replaceAll("<b>", "");
+                                        visitValue = visitValue.replaceAll("</b>", "");
+                                        visitValue = visitValue.trim();
+                                        while (visitValue.endsWith(",")) {
+                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
+                                        }
+                                    }
                                 }
                             } else {
-                                needToShowCoreValue = true;
-                            }
-                            if (visitValue != null && !visitValue.isEmpty()) {
+                                String chiefComplain = "";
+                                visitValue = visitValue.replaceAll("<.*?>", "");
+                                System.out.println(visitValue);
+                                CustomLog.v(TAG, visitValue);
+                                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                if (needToShowCoreValue) {
+                                String[] spt = visitValue.split("►");
+                                List<String> list = new ArrayList<>();
+                                String appLanguage = sessionManager.getAppLanguage();
+                                StringBuilder stringBuilder = new StringBuilder();
 
-                                    visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                                    String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
-
-                                    visitValue = "";
-                                    String colon = ":";
-                                    if (complaints != null) {
-                                        for (String comp : complaints) {
-                                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
-                                                visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
-                                            }
-                                        }
-                                        if (!visitValue.isEmpty()) {
-                                            visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                            visitValue = visitValue.replaceAll("<br/>", ", ");
-                                            visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                            visitValue = visitValue.replaceAll("<b>", "");
-                                            visitValue = visitValue.replaceAll("</b>", "");
-                                            visitValue = visitValue.trim();
-                                            while (visitValue.endsWith(",")) {
-                                                visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
-                                            }
-                                        }
+                                for (String s : spt) {
+                                    String complainName = "";
+                                    if (s.isEmpty()) continue;
+                                    if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                        continue;
                                     }
-                                } else {
-                                    String chiefComplain = "";
-                                    visitValue = visitValue.replaceAll("<.*?>", "");
-                                    System.out.println(visitValue);
-                                    CustomLog.v(TAG, visitValue);
-                                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                    String[] spt = visitValue.split("►");
-                                    List<String> list = new ArrayList<>();
+                                    String[] spt1 = s.split("::●");
+                                    complainName = spt1[0];
 
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    for (String s : spt) {
-                                        String complainName = "";
-                                        if (s.isEmpty()) continue;
-                                        //String s1 =  new String(s.getBytes(), "UTF-8");
-                                        System.out.println(s);
-                                        String[] spt1 = s.split("::●");
-                                        complainName = spt1[0];
-
-                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                            System.out.println(complainName);
-                                            if (!stringBuilder.toString().isEmpty())
-                                                stringBuilder.append(", ");
-                                            stringBuilder.append(complainName);
-                                        }
-
+                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                        System.out.println(complainName);
+                                        if (!stringBuilder.toString().isEmpty())
+                                            stringBuilder.append(", ");
+                                        stringBuilder.append(complainName);
                                     }
+
+                                }
                                 /*StringBuilder stringBuilder = new StringBuilder();
                                 int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
@@ -2833,30 +2841,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             stringBuilder.append(complainName);
                                         }
                                     }*/
-                                    visitValue = stringBuilder.toString();
+                                visitValue = stringBuilder.toString();
 
-                                }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                try {
+                            }
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            try {
 
-                                    Date formatted = currentDate.parse(date);
-                                    String visitDate = currentDate.format(formatted);
-                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                    PastVisitData pastVisitData = new PastVisitData();
-                                    pastVisitData.setVisitDate(visitDate);
-                                    pastVisitData.setVisitUUID(visit_id);
-                                    pastVisitData.setChiefComplain(visitValue);
-                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                    mPastVisitDataList.add(pastVisitData);
-                                    //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
-                                    //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                PastVisitData pastVisitData = new PastVisitData();
+                                pastVisitData.setVisitDate(visitDate);
+                                pastVisitData.setVisitUUID(visit_id);
+                                pastVisitData.setChiefComplain(visitValue);
+                                pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                mPastVisitDataList.add(pastVisitData);
+                                //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
 
-                                } catch (ParseException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
+                            } catch (ParseException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }
+                    }
 
 
                     //}
@@ -2891,10 +2899,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private String getVillageTranslated(String state, String district, String block, String village, String language) {
-        Log.d(TAG, "getVillageTranslated: state : "+state);
-        Log.d(TAG, "getVillageTranslated: block : "+block);
-        Log.d(TAG, "getVillageTranslated: village : "+village);
-        Log.d(TAG, "getVillageTranslated: language : "+language);
+        Log.d(TAG, "getVillageTranslated: state : " + state);
+        Log.d(TAG, "getVillageTranslated: block : " + block);
+        Log.d(TAG, "getVillageTranslated: village : " + village);
+        Log.d(TAG, "getVillageTranslated: language : " + language);
 
         String json = FileUtils.encodeJSON(this, "state_district_tehsil.json").toString();
         StateDistMaster stateDistMaster = new Gson().fromJson(json, StateDistMaster.class);
