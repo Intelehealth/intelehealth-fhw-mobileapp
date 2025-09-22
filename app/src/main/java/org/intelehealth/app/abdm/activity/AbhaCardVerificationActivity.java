@@ -43,6 +43,7 @@ import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
+import org.intelehealth.app.abdm.model.Data;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
@@ -848,6 +849,30 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             return;
                         }
 
+                        if (response == null || response.getData() == null) {
+                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Data responseData = response.getData();
+                        if (responseData == null || responseData.getUuid() == null) {
+                            Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+
+                        if (responseData.getUuid().equalsIgnoreCase("NA")) { // NA response indicates that the patient isn't present on our local db.
+                            Intent intent = new Intent(context, IdentificationActivity_New.class);
+                            intent.putExtra("mobile_payload", abhaProfileResponse);
+                            intent.putExtra("accessToken", accessToken);
+                            intent.putExtra("xToken", xToken);
+                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
+                            intent.putExtra("patient_detail", true);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
+
                         disposables.add(
                                 Observable.fromCallable(() -> {
                                                     String patientUuid = PatientsDAO.getPatientUuidByAbhaDetails(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse.getABHANumber());
@@ -865,17 +890,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                         );
                                                     }
                                                 }
-                                        ).subscribeOn(Schedulers.io())               // Run DB call in background
+                                        ).subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(
                                                 patientDTO -> {
-                                                    Intent intent;
-                                                    Log.d("PATIENT_DTO", "" + new Gson().toJson(patientDTO));
-
                                                     if (patientDTO != null) {
                                                         abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
                                                         abhaProfileResponse.setUuiD(response.getData().getUuid());
-                                                        intent = new Intent(context, CompareDataActivity.class);
+                                                        Intent intent = new Intent(context, CompareDataActivity.class);
                                                         intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
                                                         intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
                                                         intent.putExtra("mobile_payload", abhaProfileResponse);
@@ -885,42 +907,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                         intent.putExtra("patient_detail", true);
                                                         startActivity(intent);
                                                         finish();
-                                                    } else {
-                                                        if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
-                                                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
-                                                            abhaProfileResponse.setUuiD(response.getData().getUuid());
-                                                            intent = new Intent(context, IdentificationActivity_New.class);
-                                                            intent.putExtra("mobile_payload", abhaProfileResponse);
-                                                            intent.putExtra("accessToken", accessToken);
-                                                            intent.putExtra("xToken", xToken);
-                                                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
-                                                            intent.putExtra("patient_detail", true);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        } else {
-                                                            Log.d("PATIENT_DTO", "NOT_FOUND");
-//                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
-                                                        }
                                                     }
-                                                },
-                                                throwable -> {
-                                                    Intent intent;
-                                                    if (response != null && response.getData() != null && !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
-                                                        abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
-                                                        abhaProfileResponse.setUuiD(response.getData().getUuid());
-                                                        intent = new Intent(context, IdentificationActivity_New.class);
-                                                        intent.putExtra("mobile_payload", abhaProfileResponse);
-                                                        intent.putExtra("accessToken", accessToken);
-                                                        intent.putExtra("xToken", xToken);
-                                                        intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
-                                                        intent.putExtra("patient_detail", true);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    } else {
-                                                        Log.d("MMMMMM", "ERROR");
-//                            callFetchAuthModesAPI(abhaProfileResponse.getPreferredAbhaAddress(), xToken, accessToken);
-                                                    }
-                                                    throwable.printStackTrace();
                                                 }
                                         )
                         );
@@ -931,7 +918,9 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").e("onError: %s", e.toString());
                     }
-                })).start();
+                })).
+
+                start();
 
     }
 
