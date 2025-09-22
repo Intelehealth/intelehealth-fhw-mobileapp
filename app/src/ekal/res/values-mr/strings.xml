@@ -436,5 +436,5 @@
     </string-array>
 
     <string name="prescription_disclaimer">सूचना: उपचारानंतरही जर तुमच्या स्थितीत सुधारणा होत नसेल, तर कृपया शक्य तितक्या लवकर जवळच्या रुग्णालयात जा किंवा डॉक्टरांचा सल्ला घ्या. टेलिमेडिसिन सेवा ही मर्यादित सल्ला सेवा आहे आणि प्रत्यक्ष तपासणीची जागा घेऊ शकत नाही.</string>
-
+    <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
 </resources>

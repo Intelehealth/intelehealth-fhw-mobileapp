@@ -123,7 +123,7 @@
     <string name="max_value_validation_error_msg">Maximum value allowed is: <xliff:g id="max_value">%1$s</xliff:g></string>
     <string name="min_length_validation_error_msg">The minimum number of characters that are permitted in the answer is: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">The maximum number of decimal places that are permitted in the answer is: <xliff:g id="max_value">%1$s</xliff:g></string>
-    <string name="regex_validation_error_msg">The answer doesn't match regular expression: <xliff:g id="answer_value">%1$s</xliff:g></string>
+    <string name="regex_validation_error_msg">The answer doesn\'t match regular expression: <xliff:g id="answer_value">%1$s</xliff:g></string>
     <string name="number_format_validation_error_msg">Only use (.) between two numbers. Other special characters are not supported.</string>
     <string name="date_format_validation_error_msg">Date format needs to be <xliff:g id="locale_format">%1$s</xliff:g> (e.g. %2$s)</string>
     <string name="integer_format_validation_error_msg">Number must be between <xliff:g id="min_value">%1$s</xliff:g> and <xliff:g id="max_value">%2$s</xliff:g></string>
@@ -134,6 +134,25 @@
     <string name="space_asterisk">\u0020\u002a</string>
     <string name="repeated_group_title">%1$s. %2$s</string>
     <string name="add_repeated_group_item">Add %1$s</string>
+
+
+
+    <string name="abnormal_bp_message">
+    Abnormal BP detected. Please recheck BP after 5 minutes.
+    &#10;&#10;This dialog will close in %1$02d:%2$02d
+  </string>
+    <string name="bp_alert_title">BP Alert</string>
+    <string name="input_error_title">Input Error</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">Systolic BP (SBP) should be greater than Diastolic BP (DBP). Please correct the values.</string>
+    <string name="ok_btn_lbl">OK</string>
+
+    <string name="questionnaire_title_hypertension_screening">Hypertension Screening</string>
+    <string name="questionnaire_title_anemia_screening">Anemia Screening</string>
+    <string name="questionnaire_title_diabetes_screening">Diabetes Screening</string>
+    <string name="questionnaire_title_hypertension_followup">Hypertension Followup</string>
+
+    <string name="bp_measurement">BP Measurement - %1$s/%2$s</string>
+
 
 
 </resources>

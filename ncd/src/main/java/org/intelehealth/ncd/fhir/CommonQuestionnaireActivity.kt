@@ -43,11 +43,13 @@ import org.hl7.fhir.r4.model.Enumerations
 import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
+import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.intelehealth.ncd.R
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
+import java.util.Locale
 
 class CommonQuestionnaireActivity : AppCompatActivity() {
     companion object {
@@ -62,6 +64,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         listOf("hypertension_screening.json", "anemia_screening.json", "diabetes_screening.json","hypertension_followup.json")
     private val questionnaireTitles =
         listOf("Hypertension Screening", "Anemia Screening", "Diabetes Screening","Hypertension Followup")
+
+
+
     private var isRecurring = false // set to true if you want to use recurring questionnaire
 
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
@@ -75,18 +80,26 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var bottomActionController: QuestionnaireBottomActionController? = null
     lateinit var rootView: View
     val matchedViews = mutableListOf<View>()
+    var appLang:String? = "en"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        val questionnaireTitlesResources = listOf(
+            getString(R.string.questionnaire_title_hypertension_screening),
+            getString(R.string.questionnaire_title_anemia_screening),
+            getString(R.string.questionnaire_title_diabetes_screening),
+            getString(R.string.questionnaire_title_hypertension_followup)
+        )
         questionnaireTitle = intent.getStringExtra("questionnaire_title")
         patientAge = intent.getFloatExtra("patient_age", 0f)
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
-        supportActionBar?.title = questionnaireTitle
+        appLang = intent.getStringExtra("appLang")
+        //supportActionBar?.title = questionnaireTitle
+        supportActionBar?.title = questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
         if (questionnaireTitle.equals("Hypertension Screening", true) || questionnaireTitle.equals("Hypertension Followup", true)) {
             isRecurring = true // set to true if you want to use recurring questionnaire
         }
@@ -162,7 +175,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
 
         latestQuestionnaire =
-            assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
+            assets.open("tv/"+questionnaireFileName).bufferedReader().use { it.readText() }
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
@@ -433,11 +446,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
             // show toast
 
-            Toast.makeText(
+           /* Toast.makeText(
                 this@CommonQuestionnaireActivity,
                 "Questionnaire submitted successfully",
                 Toast.LENGTH_SHORT
-            ).show()
+            ).show()*/
             // clean finish the activity
             // set the result to the activity
             //
@@ -453,29 +466,43 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             // convert this json string to json object
             val questionnaireJsonObject = JSONObject(json)
             val responseJsonObject = JSONObject(json)
-            val summaryHtml = questionnaireJSONObject?.let { it1 ->
+            /*val (summaryHtmlEnglish,summaryHtmlLocale)  = questionnaireJSONObject?.let { it1 ->
                 questionnaireTitle?.let { it2 ->
-                    /*QuestionnaireUtils.questionnaireResponseToSummary(
-                        it2,
-                        it1, responseJsonObject
-                    )*/
-                    /*QuestionnaireUtils.questionnaireResponseToSummaryV1(
-                        it2,
-                        it1, responseJsonObject
-                    )*/
 
-                    QuestionnaireUtils.questionnaireResponseToSummaryV3(
-                        it2,
-                        it1, responseJsonObject, false
-                    )
+
+                    appLang?.let { it3 ->
+                        QuestionnaireUtils.questionnaireResponseToSummaryV3(this@CommonQuestionnaireActivity,
+                            it2,
+                            it1, responseJsonObject, false, it3
+                        )
+                    }
                 }
-            }
+            }*/
+            val (summaryHtmlEnglish, summaryHtmlLocale) = questionnaireJSONObject?.let { questionnaireJson ->
+                questionnaireTitle?.let { titleEn ->
+                    appLang?.let { lang ->
+                        QuestionnaireUtils.questionnaireResponseToSummaryV3(
+                            context = this@CommonQuestionnaireActivity,
+                            title = titleEn,
+                            questionnaire = questionnaireJson,
+                            response = responseJsonObject,
+                            showAllMeasurements = false,
+                            localeLang = lang
+                        )
+                    }
+                }
+            } ?: Pair("", "")
+
+
+            Log.d("FHIR", "summaryHtmlEnglish = $summaryHtmlEnglish")
+            Log.d("FHIR", "summaryHtmlLocale = $summaryHtmlLocale")
 
 
             // set the result to the activity
             // Convert your result to JSON
             val resultIntent = Intent().apply {
-                putExtra("questionnaire_response", summaryHtml)
+                putExtra("questionnaire_response", summaryHtmlEnglish)
+                putExtra("questionnaire_response_local", summaryHtmlLocale)
             }
             setResult(Activity.RESULT_OK, resultIntent)
             Log.d("FHIR", "sending back...")
@@ -483,6 +510,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun showHospitalPopup() {
         AlertDialog.Builder(this)
@@ -648,10 +676,10 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             bpReadingsHelper[index]?.validationDialogShownOnce = true
                             // show alert dialog new
                             AlertDialog.Builder(this)
-                                .setTitle("Input Error")
+                                .setTitle(getString(R.string.input_error_title))
                                 .setCancelable(false)
-                                .setMessage("Systolic BP (SBP) should be greater than Diastolic BP (DBP). Please correct the values.")
-                                .setPositiveButton("OK") { dialog, _ ->
+                                .setMessage(getString(R.string.systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values))
+                                .setPositiveButton(getString(R.string.ok_btn_lbl)) { dialog, _ ->
                                     dialog.dismiss()
 
                                 }
@@ -760,7 +788,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 lastDialogShownTime = currentTime
 
                 val builder = AlertDialog.Builder(this)
-                builder.setTitle("BP Alert")
+                builder.setTitle(getString(R.string.bp_alert_title))
 
                 val messageView = TextView(this)
                 messageView.setPadding(40, 40, 40, 40)
@@ -786,14 +814,14 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     override fun onTick(millisUntilFinished: Long) {
                         val minutes = (millisUntilFinished / 1000) / 60
                         val seconds = (millisUntilFinished / 1000) % 60
-                        messageView.text =
-                            "Abnormal BP detected. Please recheck BP after 5 minutes.\n\n" +
+                        messageView.text = getString(R.string.abnormal_bp_message, minutes, seconds)
+                            /*"Abnormal BP detected. Please recheck BP after 5 minutes.\n\n" +
                                     "This dialog will close in ${
                                         "%02d:%02d".format(
                                             minutes,
                                             seconds
                                         )
-                                    }"
+                                    }"*/
                     }
 
                     override fun onFinish() {

@@ -34,9 +34,7 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
 
 
-                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
-                        attribute.value
-                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
+                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(attribute.value) || isThereAFollowUpWithAnemiaPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }

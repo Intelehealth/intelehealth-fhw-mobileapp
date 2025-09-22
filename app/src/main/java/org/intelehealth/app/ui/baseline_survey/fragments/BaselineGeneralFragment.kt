@@ -49,14 +49,18 @@ class BaselineGeneralFragment :
         baselineSurveyViewModel.updateBaselineStage(BaselineSurveyStage.GENERAL)
         super.onViewCreated(view, savedInstanceState)
     }
-
+    private var isInitializing = false
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
         fetchGeneralBaselineConfig()
+        // prevent listeners from reacting to programmatic population
+        isInitializing = true
         binding.baseline = baselineData
         Log.d("TAG", "onBaselineDataLoaded: baselineData : "+Gson().toJson(baselineData))
         //setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
+        // now turn off initialization mode, then run any UI logic that should happen after load
+        isInitializing = false
         setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
     }
 
@@ -276,6 +280,7 @@ class BaselineGeneralFragment :
         binding.tilWhatsappNumber.hideDigitErrorOnTextChang(binding.etWhatsappNumber, 10
         )
         binding.rgFamilyWhatsappOptions.setOnCheckedChangeListener { group, checkedId ->
+            if (isInitializing) return@setOnCheckedChangeListener
             val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
             val selectedValue = selectedRadioButton?.text?.toString()
 
@@ -288,15 +293,18 @@ class BaselineGeneralFragment :
                 }
                 R.id.radioFamilyWhatsappNo -> {
                     binding.layoutWhatsappNumber.visibility = View.GONE
-                    binding.etWhatsappNumber.text = null
-                    binding.cbWhatsappNumberUnknown.isChecked = false
                     binding.tvWhatsappNumberLabel.text = ""
                 }
             }
+            // reset the etWhatsappNumber and uncheck the cbWhatsappNumberUnknown
+            binding.etWhatsappNumber.text = null
+            binding.cbWhatsappNumberUnknown.isChecked = false
+
         }
 
         // Manage "I don’t know" checkbox state
         binding.cbWhatsappNumberUnknown.setOnCheckedChangeListener { _, isChecked ->
+            if (isInitializing) return@setOnCheckedChangeListener
             if (isChecked) {
                 binding.etWhatsappNumber.isEnabled = false
                 binding.etWhatsappNumber.text = null

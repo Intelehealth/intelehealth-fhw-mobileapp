@@ -134,4 +134,23 @@
     <string name="repeated_group_title">%1$s. %2$s</string>
     <string name="add_repeated_group_item">%1$s যোগ করুন</string>
 
+    <string name="abnormal_bp_message">
+    অস্বাভাবিক রক্তচাপ ধরা পড়েছে। অনুগ্রহ করে 5 মিনিট পরে পুনরায় পরীক্ষা করুন।
+    &#10;&#10;এই সংলাপটি %1$02d:%2$02d সময় পরে বন্ধ হবে
+</string>
+
+    <string name="bp_alert_title">রক্তচাপ সতর্কতা</string>
+    <string name="input_error_title">ইনপুট ত্রুটি</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+    সিস্টোলিক BP (SBP) ডায়াস্টোলিক BP (DBP) এর চেয়ে বেশি হওয়া উচিত। দয়া করে মান ঠিক করুন।
+</string>
+    <string name="ok_btn_lbl">ঠিক আছে</string>
+
+    <string name="questionnaire_title_hypertension_screening">হাইপারটেনশন স্ক্রিনিং</string>
+    <string name="questionnaire_title_anemia_screening">অ্যানিমিয়া স্ক্রিনিং</string>
+    <string name="questionnaire_title_diabetes_screening">ডায়াবেটিস স্ক্রিনিং</string>
+    <string name="questionnaire_title_hypertension_followup">হাইপারটেনশন ফলো-আপ</string>
+
+    <string name="bp_measurement">BP মাপ - %1$s/%2$s</string>
+
 </resources>
