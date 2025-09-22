@@ -491,5 +491,7 @@
     <string name="i_dont_think_i_need_it">எனக்கு அது தேவையில்லை என்று நினைக்கிறேன்</string>
     <string name="side_effect_related_to_medication">மருந்துகளின் பக்கவிளைவுகள்</string>
     <string name="unknown_other">தெரியாது / பிற</string>
+    <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>
+
 </resources>
 

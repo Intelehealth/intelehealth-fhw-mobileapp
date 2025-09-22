@@ -467,4 +467,6 @@
     <string name="i_dont_think_i_need_it">నాకు అది అవసరం లేదని అనుకుంటున్నాను</string>
     <string name="side_effect_related_to_medication">మందుల వల్ల దుష్ప్రభావాలు</string>
     <string name="unknown_other">తెలియదు / ఇతర</string>
+    <string name="enter_mobile_no">మొబైల్ నంబర్ నమోదు చేయండి</string>
+
 </resources>

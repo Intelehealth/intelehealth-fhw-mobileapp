@@ -1149,7 +1149,9 @@
     <string name="yes_personal">Yes (Personal)</string>
     <string name="send_summary_on_whatsApp">Send Summary on WhatsApp</string>
 
-    <string name="view_ncd_module">View NCD Module</string>
-    <string name="share_ncd_module">Share NCD Module</string>
+    <string name="view_ncd_module">View NCD info</string>
+    <string name="share_ncd_module">Share NCD info</string>
+    <string name="share_ncd_info_dialog_title">NCD information will be share to this whatsapp number</string>
+
 
 </resources>
