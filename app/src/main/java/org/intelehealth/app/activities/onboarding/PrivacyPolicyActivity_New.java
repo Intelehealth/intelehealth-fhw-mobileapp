@@ -140,7 +140,9 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
 
     @Override
     public void onPageFinish() {
-        loadingDialog.dismiss();
+        if(!isFinishing() && !isDestroyed()){
+            loadingDialog.dismiss();
+        }
     }
 
     @Override

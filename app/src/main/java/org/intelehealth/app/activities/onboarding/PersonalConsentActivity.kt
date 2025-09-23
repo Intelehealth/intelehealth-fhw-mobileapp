@@ -122,7 +122,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     override fun onPageFinish() {
-        loadingDialog?.dismiss()
+        if(!isFinishing && !isDestroyed){
+            loadingDialog?.dismiss()
+        }
     }
 
     override fun onPageError(error: String) {

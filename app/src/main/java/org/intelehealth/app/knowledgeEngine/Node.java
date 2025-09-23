@@ -117,7 +117,7 @@ public class Node implements Serializable {
     private String choiceType;
     private String inputType;
     private String physicalExams;
-    private List<Node> optionsList;
+    private List<Node> optionsList = new ArrayList<>();
     private String associatedComplaint;
     private String jobAidFile;
     private String jobAidType;
@@ -571,7 +571,9 @@ public class Node implements Serializable {
 
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
                 if (node.anySubSelected() && node.anySubPopUp()) {
                     node.generatePopUp(context);
                 }
@@ -617,7 +619,9 @@ public class Node implements Serializable {
             }
             node.setSelected(true);
             adapter.notifyDataSetChanged();
-            dialog.dismiss();
+            if(!context.isFinishing() && !context.isDestroyed()){
+                dialog.dismiss();
+            }
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -781,14 +785,17 @@ public class Node implements Serializable {
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
-
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
 
             }
         });
@@ -834,13 +841,17 @@ public class Node implements Serializable {
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
 
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = areaDialog.show();
@@ -883,13 +894,17 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = rangeDialog.show();
@@ -952,13 +967,17 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = frequencyDialog.show();
@@ -1028,13 +1047,17 @@ public class Node implements Serializable {
 
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = durationDialog.show();
@@ -1273,7 +1296,9 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -1341,13 +1366,17 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
 
             }
         });
@@ -1425,13 +1454,17 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = areaDialog.show();
@@ -1474,13 +1507,17 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         AlertDialog dialog = rangeDialog.show();
@@ -1533,7 +1570,9 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(!context.isFinishing() && !context.isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {

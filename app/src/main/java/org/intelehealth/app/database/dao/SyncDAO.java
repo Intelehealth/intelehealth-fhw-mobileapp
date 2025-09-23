@@ -9,7 +9,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import org.intelehealth.app.user.UserSessionDao;
 import org.intelehealth.app.utilities.CustomLog;
@@ -27,7 +29,7 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
-import org.intelehealth.app.services.InitialSyncIntentService;
+import org.intelehealth.app.syncModule.InitialSyncWorker;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
@@ -439,13 +441,23 @@ public class SyncDAO {
                     ResponseDTO responseDTO = response.body();
                     //Large amount of data passing not possible with intent
                     //we passing data through static function
-                    InitialSyncIntentService.setData(responseDTO);
+                    InitialSyncWorker.setData(responseDTO);
 
                     //Inserting huge data to database is a heavy operation
-                    //that's why we using service here for initial data push
-                    Intent intent = new Intent(context, InitialSyncIntentService.class);
+                    //that's why we using workmanager here for initial data push
+
+                    Data inputData = new Data.Builder()
+                            .putString("from", fromActivity)
+                            .build();
+                    OneTimeWorkRequest workRequest =
+                            new OneTimeWorkRequest.Builder(InitialSyncWorker.class)
+                                    .setInputData(inputData)
+                                    .build();
+                    WorkManager.getInstance(context).enqueue(workRequest);
+
+                   /* Intent intent = new Intent(context, InitialSyncWorker.class);
                     intent.putExtra("from", fromActivity);
-                    context.startService(intent);
+                    context.startService(intent);*/
 
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {

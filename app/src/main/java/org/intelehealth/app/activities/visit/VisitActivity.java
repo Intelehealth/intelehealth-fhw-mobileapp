@@ -257,7 +257,7 @@ public class VisitActivity extends BaseActivity implements
     }
 
     private void hideProgressbar() {
-        if(syncClicked && !this.isFinishing()){
+        if(syncClicked && !this.isFinishing() && !isDestroyed()){
             loadingDialog.dismiss();
         }
     }

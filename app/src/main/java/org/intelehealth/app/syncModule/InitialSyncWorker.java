@@ -1,9 +1,11 @@
-package org.intelehealth.app.services;
+package org.intelehealth.app.syncModule;
 
-import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -15,13 +17,13 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class InitialSyncIntentService extends IntentService {
-
-    public InitialSyncIntentService() {
-        super("InitialSyncIntentService");
-    }
+public class InitialSyncWorker extends Worker {
 
     static ResponseDTO responseDTO;
+
+    public InitialSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
     /**
      * Large amount of data passing not possible with intent
@@ -34,17 +36,17 @@ public class InitialSyncIntentService extends IntentService {
     }
 
     /**
-     * The reason of the service is to push initial data to local db
+     * The reason of the worker is to push initial data to local db
      * to prevent ANR crash
      *
-     * @param intent
      */
+    @NonNull
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public Result doWork() {
         SessionManager sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext());
         boolean sync = false;
         SyncDAO syncDAO = new SyncDAO();
-        String fromActivity = intent.getStringExtra("from");
+        String fromActivity = getInputData().getString("from");
         try {
             sync = syncDAO.SyncData(responseDTO);
         } catch (DAOException e) {
@@ -73,7 +75,7 @@ public class InitialSyncIntentService extends IntentService {
                 sessionManager.setPullExcutedTime(sessionManager.isPulled());
                 sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
 
-                sendBroadcast(broadcast);
+                getApplicationContext().sendBroadcast(broadcast);
                 if (fromActivity.equalsIgnoreCase("home")) {
                     //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                 } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
@@ -86,6 +88,8 @@ public class InitialSyncIntentService extends IntentService {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
             }
+
+            return Result.success();
         } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
             if (fromActivity.equalsIgnoreCase("home")) {
@@ -102,6 +106,8 @@ public class InitialSyncIntentService extends IntentService {
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
             }
+
+            return Result.failure();
         }
     }
 }

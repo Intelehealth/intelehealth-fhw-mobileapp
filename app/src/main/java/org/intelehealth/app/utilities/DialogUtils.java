@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -59,8 +60,9 @@ public class DialogUtils {
         alertDialog.setPositiveButton(ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
+                        if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                            dialog.dismiss();
+                        }
                     }
                 });
         AlertDialog dialog = alertDialog.show();
@@ -78,8 +80,9 @@ public class DialogUtils {
         alertDialog.setPositiveButton(ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
+                        if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                            dialog.dismiss();
+                        }
                     }
                 });
         AlertDialog dialog = alertDialog.show();
@@ -122,19 +125,25 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         alertDialog.show();
     }
 
-    public void showCommonDialog(Context context, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
+    public void showCommonDialog(Context context, int iconResource, String title, String message,
+                                 boolean isSingleButton, String positiveBtnText, String negativeBtnText,
+                                 CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message, null);
@@ -165,12 +174,16 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
@@ -206,12 +219,16 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 

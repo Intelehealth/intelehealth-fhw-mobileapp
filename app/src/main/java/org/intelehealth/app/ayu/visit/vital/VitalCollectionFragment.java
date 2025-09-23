@@ -319,7 +319,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onSelect(SimpleItemData data) {
                         if (mBloodGroupAlertDialog != null) {
-                            mBloodGroupAlertDialog.dismiss();
+                            if(!requireActivity().isFinishing() && !requireActivity().isDestroyed()){
+                                mBloodGroupAlertDialog.dismiss();
+                            }
                         }
                         mBloodGroupTextView.setText(data.getTitle());
                         //as we are saving code not text for blood group
@@ -380,7 +382,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBmiStatusTextView.setText("");
             }
             mheightSpinner.setSelection(position);
-            listPopupWindow.dismiss();
+            if(!requireActivity().isFinishing() && !requireActivity().isDestroyed()){
+                listPopupWindow.dismiss();
+            }
 
             boolean isValid = isValidaForm();
             setDisabledSubmit(!isValid);

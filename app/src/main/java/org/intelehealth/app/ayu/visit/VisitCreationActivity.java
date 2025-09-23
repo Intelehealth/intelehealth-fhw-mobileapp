@@ -727,15 +727,25 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private List<Node> loadPhysicalExam() {
         ArrayList<String> physicalExams = new ArrayList<>();
-        ArrayList<String> childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        ArrayList<String> childNodeSelectedPhysicalExams = new ArrayList<>();
+        if(mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        }
         if (!childNodeSelectedPhysicalExams.isEmpty())
             physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-        ArrayList<String> rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        ArrayList<String> rootNodePhysicalExams = new ArrayList<>();
+        if(mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        }
         if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
             physicalExams.addAll(rootNodePhysicalExams); //For Root Node
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-        mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+
+        if(mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+        }
+
         String[] exm = mLastChiefComplainPhysicalString.split(";");
         HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         for (String s : exm) {
@@ -1618,7 +1628,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void selectImage() {
         if (mImagePickerAlertDialog != null && mImagePickerAlertDialog.isShowing()) {
-            mImagePickerAlertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                mImagePickerAlertDialog.dismiss();
+            }
         }
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
             @Override

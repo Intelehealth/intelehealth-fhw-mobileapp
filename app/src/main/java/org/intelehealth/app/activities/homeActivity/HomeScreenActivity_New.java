@@ -576,14 +576,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    networkFailureDialog.dismiss();
+                }
                 checkNetworkConnectionAndPerformSync();
             });
         }
     }
 
     private void showResetProgressbar() {
-        resetDialog.dismiss();
+        if(!isFinishing() && !isDestroyed()){
+            resetDialog.dismiss();
+        }
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
         showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
     }
@@ -618,7 +622,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void clearAppData() {
-        resetDialog.dismiss();
+        if(!isFinishing() && !isDestroyed()){
+            resetDialog.dismiss();
+        }
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
@@ -891,11 +897,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                alertDialog.dismiss();
+            }
         });
 
         yesButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                alertDialog.dismiss();
+            }
             moveTaskToBack(true);
 
 
@@ -930,11 +940,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                alertDialog.dismiss();
+            }
         });
 
         yesButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                alertDialog.dismiss();
+            }
             logout();
 
 //            if (CallListenerBackgroundService.isInstanceCreated()) {
@@ -962,7 +976,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogRefreshInProgress.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    dialogRefreshInProgress.dismiss();
+                }
             }
         }, 3000);
     }
@@ -982,7 +998,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogRefreshInProgress.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    dialogRefreshInProgress.dismiss();
+                }
             }
         }, 3000);
     }
@@ -990,8 +1008,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        notificationReceiver.unregisterModuleBReceiver(this);
-        scheduleExactAlarmPermissionLauncher.unregister();
+        if (notificationReceiver != null) {
+            notificationReceiver.unregisterModuleBReceiver(this);
+        }
+
+        if (scheduleExactAlarmPermissionLauncher != null) {
+            scheduleExactAlarmPermissionLauncher.unregister();
+        }
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
@@ -1049,7 +1072,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogLoginSuccess.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    dialogLoginSuccess.dismiss();
+                }
             }
         }, 2000);
     }
@@ -1151,14 +1176,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
         boolean isSynced = syncUtils.pushDataOnly();/*syncUtils.syncForeground("home");*/
         if (!isSynced) {
-            syncDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                syncDialog.dismiss();
+            }
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             return;
         }
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            syncDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                syncDialog.dismiss();
+            }
             showSwitchLocationConfirmationDialog();
         }, 3000);
     }
@@ -1211,8 +1240,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         clearDatabase();
         WorkManager.getInstance(this).cancelAllWork();
-
-        progress.dismiss();
+        if(!isFinishing() && !isDestroyed()){
+            progress.dismiss();
+        }
         Intent intent = new Intent(HomeScreenActivity_New.this, HomeScreenActivity_New.class);
         intent.putExtra("intentType", "switchLocation");
 
@@ -1259,7 +1289,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            dialogRefreshInProgress.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                dialogRefreshInProgress.dismiss();
+            }
         }
         CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
@@ -1405,7 +1437,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
 
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            dialogRefreshInProgress.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                dialogRefreshInProgress.dismiss();
+            }
         }
 
         if (isSuccess) {

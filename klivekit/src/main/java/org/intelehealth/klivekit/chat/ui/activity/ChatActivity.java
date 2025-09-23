@@ -788,7 +788,9 @@ public class ChatActivity extends AppCompatActivity {
                     browseStartForPdf();
 
                 } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
+                    if(!isFinishing() && !isDestroyed()){
+                        dialog.dismiss();
+                    }
                 }
             }
         });

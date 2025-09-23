@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.searchPatientActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -269,15 +270,18 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
-                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                                    .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(requestBuilder)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(holder.profile_imgview);
+                            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                        .asDrawable().sizeMultiplier(0.3f);
+                                Glide.with(context)
+                                        .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
+                                        .thumbnail(requestBuilder)
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .into(holder.profile_imgview);
+                            }
+
                         }
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;

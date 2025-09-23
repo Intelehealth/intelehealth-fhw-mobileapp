@@ -91,14 +91,20 @@ class PatientPersonalInfoFragment :
                     it.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
                 }
 
-                dialogBinding.btnCancelPicker.setOnClickListener { dialog.dismiss() }
+                dialogBinding.btnCancelPicker.setOnClickListener {
+                    if (!requireActivity().isFinishing && !requireActivity().isDestroyed) {
+                        dialog.dismiss()
+                    }
+                }
                 dialogBinding.buttonOkPicker.setOnClickListener {
                     val month = dialogBinding.dialog2NumbersUnit.value
                     val year = dialogBinding.dialog2NumbersQuantity.value
                     val days = dialogBinding.dialog3NumbersUnit.value
 
                     bindAgeAndDobValue(year, month, days)
-                    dialog.dismiss()
+                    if (!requireActivity().isFinishing && !requireActivity().isDestroyed) {
+                        dialog.dismiss()
+                    }
                 }
 
             }.show()

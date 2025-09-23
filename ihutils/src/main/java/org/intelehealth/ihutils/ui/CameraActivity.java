@@ -1,6 +1,7 @@
 package org.intelehealth.ihutils.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -366,7 +367,10 @@ public class CameraActivity extends AppCompatActivity {
                     .setNeutralButton(getString(R.string.util_button_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                            if(!isFinishing() && !isDestroyed()){
+                                dialog.dismiss();
+                            }
+
                         }
                     });
             AlertDialog dialog = builder.show();

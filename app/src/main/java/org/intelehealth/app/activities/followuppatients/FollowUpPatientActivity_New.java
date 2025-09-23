@@ -598,7 +598,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             try {
                 List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB();
                 if (initialFollowUpPatients.isEmpty()) {
-                    if(dataLoadingType == DataLoadingType.INITIAL){
+                    if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
                         commonLoadingDialog.dismiss();
                     }
                     runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
@@ -611,7 +611,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             mWeekRelativeLayout.setVisibility(View.GONE);
                             othersTitle.setVisibility(View.GONE);
                             setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                            if(dataLoadingType == DataLoadingType.INITIAL){
+                            if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
                                 commonLoadingDialog.dismiss();
                             }
                         });
@@ -633,7 +633,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             setTodaysDatesInRecyclerView(todaysFollowUpDates);
                             setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
                             setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                            if(dataLoadingType == DataLoadingType.INITIAL){
+                            if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
                                 commonLoadingDialog.dismiss();
                             }
                         });

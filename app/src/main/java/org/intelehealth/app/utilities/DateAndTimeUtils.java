@@ -184,6 +184,9 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(date == null) return "";
+
         String formattedDate = targetFormat.format(date);  // 20120821
         String[] components = formattedDate.split("\\-");
 

@@ -1231,7 +1231,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         positive_btn.setOnClickListener(v -> {
             /*Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
-            alertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                alertDialog.dismiss();
+            }
         });
 
         alertDialog.show();

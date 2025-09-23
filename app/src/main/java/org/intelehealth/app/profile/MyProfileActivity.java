@@ -516,7 +516,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    networkFailureDialog.dismiss();
+                }
                 checkInternetAndUpdateProfile();
             });
         }
@@ -868,7 +870,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
             public void onActionDone(int action) {
-                mImagePickerAlertDialog.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    mImagePickerAlertDialog.dismiss();
+                }
                 if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
                     Intent cameraIntent = new Intent(MyProfileActivity.this, CameraActivity.class);
                     String imageName = UUID.randomUUID().toString();

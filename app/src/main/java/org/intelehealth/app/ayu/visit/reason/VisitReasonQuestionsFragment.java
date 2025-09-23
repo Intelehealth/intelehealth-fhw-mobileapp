@@ -58,8 +58,17 @@ public class VisitReasonQuestionsFragment extends Fragment {
     public static VisitReasonQuestionsFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, List<Node> nodeList) {
         VisitReasonQuestionsFragment fragment = new VisitReasonQuestionsFragment();
         fragment.mIsEditMode = isEditMode;
-        fragment.mChiefComplainRootNodeList = nodeList;
-        fragment.mCurrentNode = fragment.mChiefComplainRootNodeList.get(fragment.mCurrentComplainNodeIndex);
+        if(nodeList != null && !nodeList.isEmpty()){
+            fragment.mChiefComplainRootNodeList = nodeList;
+        }
+
+        //added null and size checking to prevent crash
+        if (fragment.mChiefComplainRootNodeList != null && !fragment.mChiefComplainRootNodeList.isEmpty()) {
+            if (fragment.mCurrentComplainNodeIndex < 0 || fragment.mCurrentComplainNodeIndex >= fragment.mChiefComplainRootNodeList.size()) {
+                fragment.mCurrentComplainNodeIndex = 0;
+            }
+            fragment.mCurrentNode = fragment.mChiefComplainRootNodeList.get(fragment.mCurrentComplainNodeIndex);
+        }
         return fragment;
     }
 
@@ -119,18 +128,57 @@ public class VisitReasonQuestionsFragment extends Fragment {
         DefaultOnItemSelection itemSelectionListener = new DefaultOnItemSelection(recyclerView);
         //mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
-            CustomLog.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
-            ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
-            complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
-            complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
-            complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
-            if (complainBasicInfo.getComplainName().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
-                complainBasicInfo.setComplainNameByLocale(getString(R.string.associated_symptoms_header_visit_creation));
-                complainBasicInfo.setAssociateSymptom(true);
+        /*for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+            if(mChiefComplainRootNodeList.get(i) != null){
+                CustomLog.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
+                ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+                complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
+                complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
+                complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
+                if (complainBasicInfo.getComplainName().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
+                    complainBasicInfo.setComplainNameByLocale(getString(R.string.associated_symptoms_header_visit_creation));
+                    complainBasicInfo.setAssociateSymptom(true);
+                }
+                mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
             }
-            mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
+        }*/
+
+        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+            Node node = mChiefComplainRootNodeList.get(i);
+
+            if (node != null) {
+                CustomLog.v("VISIT_REASON", new Gson().toJson(node));
+
+                ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+
+                // Safely get complain name
+                String complainName = node.getText();
+                if (complainName == null) complainName = "";
+                complainBasicInfo.setComplainName(complainName);
+
+                // Safely get display name
+                String displayName = node.findDisplay();
+                if (displayName == null) displayName = "";
+                complainBasicInfo.setComplainNameByLocale(displayName);
+
+                // Safely get options list size
+                List<Node> options = node.getOptionsList();
+                int optionSize = (options != null) ? options.size() : 0;
+                complainBasicInfo.setOptionSize(optionSize);
+
+                // Handle special case
+                if (complainName.equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
+                    complainBasicInfo.setComplainNameByLocale(
+                            getString(R.string.associated_symptoms_header_visit_creation)
+                    );
+                    complainBasicInfo.setAssociateSymptom(true);
+                }
+
+                // Put into map
+                mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
+            }
         }
+
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, mIsEditMode, itemSelectionListener);
 //        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
 //            @Override

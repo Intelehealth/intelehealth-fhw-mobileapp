@@ -703,7 +703,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         alertDialog.setCancelable(false);
 
         btnCancelCalendar.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if(!requireActivity().isFinishing() && !requireActivity().isDestroyed()){
+                alertDialog.dismiss();
+            }
         });
 
         btnOkCalendar.setOnClickListener(v -> {
@@ -726,7 +728,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 }
             } catch (Exception e) {
             }
-            alertDialog.dismiss();
+            if(!requireActivity().isFinishing() && !requireActivity().isDestroyed()){
+                alertDialog.dismiss();
+            }
         });
         alertDialog.show();
         return alertDialog;

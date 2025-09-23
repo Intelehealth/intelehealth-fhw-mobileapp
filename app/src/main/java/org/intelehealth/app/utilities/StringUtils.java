@@ -4245,6 +4245,10 @@ public final class StringUtils {
         //  1. Age
         String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
 
+        if (gender == null) {
+            gender = "";
+        }
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             if (gender.equalsIgnoreCase("M")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);

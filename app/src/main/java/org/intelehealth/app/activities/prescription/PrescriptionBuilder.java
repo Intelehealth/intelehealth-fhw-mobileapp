@@ -1392,7 +1392,7 @@ public class PrescriptionBuilder {
     }
 
     private Typeface getSignatureTypeface(String font) {
-        String directory = "";
+        String directory = "font/youthness.ttf";
 
         if (font.equalsIgnoreCase("Youthness")) {
             directory = "font/youthness.ttf";

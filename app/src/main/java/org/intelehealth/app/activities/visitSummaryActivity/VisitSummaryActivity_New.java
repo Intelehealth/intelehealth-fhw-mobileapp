@@ -657,7 +657,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
-                dialog.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    dialog.dismiss();
+                }
             }
         });
 
