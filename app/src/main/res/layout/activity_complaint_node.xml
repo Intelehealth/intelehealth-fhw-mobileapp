@@ -208,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="1sp"
-            android:text="Screening"
+            android:text="@string/screening_lbl"
             android:textColor="@color/gray_3"
             android:textSize="@dimen/terms_link_text_size"
             android:textStyle="bold" />

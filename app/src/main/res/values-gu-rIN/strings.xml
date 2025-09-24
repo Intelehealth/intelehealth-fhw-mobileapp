@@ -1042,7 +1042,7 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">મુલાકાતનો કારણ</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="never_prescribed_medication">મને ક્યારેય દવાઓ સૂચવવામાં આવી ન હતી</string>
@@ -1073,5 +1073,6 @@
     <string name="yes_family_member">હા (કુટુંબના સભ્ય)</string>
     <string name="yes_personal">હા (વ્યક્તિગત)</string>
     <string name="send_summary_on_whatsApp">સારાંશ હ્વોટ્સએપ પર મોકલો</string>
+    <string name="screening_lbl">સ્ક્રીનિંગ</string>
 
 </resources>

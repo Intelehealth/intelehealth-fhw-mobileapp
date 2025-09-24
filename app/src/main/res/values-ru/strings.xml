@@ -511,4 +511,5 @@
     <string name="visit_reason_txt">Visit Reason</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
     <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+    <string name="screening_lbl">Screening</string>
 </resources>

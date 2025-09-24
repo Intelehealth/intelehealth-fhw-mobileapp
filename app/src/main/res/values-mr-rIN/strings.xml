@@ -1059,5 +1059,6 @@
     <string name="yes_family_member">होय (कुटुंब सदस्य)</string>
     <string name="yes_personal">होय (वैयक्तिक)</string>
     <string name="send_summary_on_whatsApp">सारांश व्हॉट्सॲप वर पाठवा</string>
+    <string name="screening_lbl">Screening</string>
 
 </resources>

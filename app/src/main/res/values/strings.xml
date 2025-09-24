@@ -1148,6 +1148,7 @@
     <string name="yes_personal">Yes (Personal)</string>
     <string name="send_summary_on_whatsApp">Send Summary on WhatsApp</string>
     <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+    <string name="screening_lbl">Screening</string>
 
 
 </resources>

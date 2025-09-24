@@ -1109,5 +1109,6 @@
     <string name="yes_family_member">হয় (পৰিয়ালৰ সদস্য)</string>
     <string name="yes_personal">হয় (ব্যক্তিগত)</string>
     <string name="send_summary_on_whatsApp">সাৰাংশ হোৱাটছএপত পঠাওক</string>
+    <string name="screening_lbl">Screening</string>
 
 </resources>

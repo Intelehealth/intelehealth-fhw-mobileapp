@@ -466,5 +466,6 @@
     <string name="yes_family_member">ஆம் (குடும்ப உறுப்பினர்)</string>
     <string name="yes_personal">ஆம் (தனிப்பட்ட)</string>
     <string name="send_summary_on_whatsApp">சுருக்கத்தை வாட்ஸ்அப் இல் அனுப்பவும்</string>
+    <string name="screening_lbl">Screening</string>
 </resources>
 

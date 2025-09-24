@@ -443,4 +443,5 @@
     <string name="yes_family_member">అవును (కుటుంబ సభ్యుడు)</string>
     <string name="yes_personal">అవును (వ్యక్తిగతం)</string>
     <string name="send_summary_on_whatsApp">సారాంశాన్ని హ్వాట్సాప్‌లో పంపండి</string>
+    <string name="screening_lbl">Screening</string>
 </resources>
