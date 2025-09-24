@@ -13,7 +13,7 @@ import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientWithAttribute
 
 class CategorySegregationUtils(private val resources: Resources) {
-
+    private  val TAG = "CategorySegregationUtil"
     fun segregateAndFetchData(
         patientList: MutableList<Patient>,
         patientAttributeList: MutableList<PatientAttributes>,
@@ -32,7 +32,14 @@ class CategorySegregationUtils(private val resources: Resources) {
                 if (attribute.value == null) {
                     return@forEach
                 }
-
+                Log.d(TAG, "segregateAndFetchData: attribute.value : "+attribute.value)
+                Log.d(TAG, "segregateAndFetchData: isHistoryOfAnemiaPresent : "+isHistoryOfAnemiaPresent(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: isCurrentlyTakingAnemiaMedication : "+isCurrentlyTakingAnemiaMedication(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: isThereAFollowUpWithAnemiaPHC : "+isThereAFollowUpWithAnemiaPHC(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: isHistoryOfHypertensionPresent : "+isHistoryOfHypertensionPresent(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: hyisCurrentlyTakingHypertensionMedication : "+isCurrentlyTakingHypertensionMedication(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: hyisThereAFollowUpWithHypertensionPHC : "+isThereAFollowUpWithHypertensionPHC(attribute.value))
+                Log.d(TAG, "segregateAndFetchData: hyanemia followup  : "+!isHistoryOfAnemiaPresent(attribute.value))
 
                 if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
                         attribute.value
@@ -43,13 +50,20 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfAnemiaPresent(attribute.value)) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+
+
+          /*  Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
                         attribute.value
                     ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
-            }
+            }*/
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (isHistoryOfDiabetesPresent(attribute.value) && (isCurrentlyTakingDiabetesMedication(
@@ -81,13 +95,18 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                if (!isHistoryOfHypertensionPresent(attribute.value)){
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+           /* Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
                         attribute.value
                     ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
-            }
+            }*/
         }
         Log.d("HypertensionDebug", "patientListkkkk:\n${patientList.joinToString("\n")}")
         Log.d("HypertensionDebug", "patientListkkkk size:\n${patientList.size}")
@@ -177,7 +196,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].anaemia == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].anemia == resources.getString(R.string.medical_history_yes)
         }
     }
 

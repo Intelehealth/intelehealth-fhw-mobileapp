@@ -88,6 +88,10 @@ class AnemiaFollowUpViewModel(
                filteredPatients.any { it.uuid == detail.patientId }
            }
 
+           // Save the full filtered result
+           allPatients.clear()
+           allPatients.addAll(filteredResult)
+
            // Post filtered result
            _anemiaFollowUpMutableLiveData.postValue(filteredResult)
        }

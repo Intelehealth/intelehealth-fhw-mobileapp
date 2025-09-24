@@ -1,5 +1,7 @@
 package org.intelehealth.app.ui.baseline_survey.fragments
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -31,6 +33,7 @@ import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 import org.intelehealth.app.utilities.extensions.validateIllogicalPhoneNumber
+import java.util.Locale
 
 /**
  * Created by Shazzad H Kanon on 06-12-2024 - 11:00.
@@ -331,7 +334,6 @@ class BaselineGeneralFragment :
         }
 
         textView.text = baseText
-        Log.d("kk", "setTitleAsPerSelectedOption: textView.text : ${textView.text}")
     }
     private fun manageWhatsappQuestions(){
         binding.tilWhatsappNumber.hideDigitErrorOnTextChang(binding.etWhatsappNumber, 10
@@ -346,7 +348,14 @@ class BaselineGeneralFragment :
                     binding.layoutWhatsappNumber.visibility = View.VISIBLE
                     binding.etWhatsappNumber.isEnabled = !binding.cbWhatsappNumberUnknown.isChecked
 
-                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, selectedValue)
+                    val englishValue = when (checkedId) {
+                        R.id.radioPersonal -> getEnglishString(requireContext(), R.string.generic_yes_personal)
+                        R.id.radioFamilyMember -> getEnglishString(requireContext(), R.string.generic_yes_family)
+                        else -> ""
+                    }
+
+                    setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, englishValue)
+
                 }
                 R.id.radioFamilyWhatsappNo -> {
                     binding.layoutWhatsappNumber.visibility = View.GONE
@@ -386,11 +395,11 @@ class BaselineGeneralFragment :
         // prevent listeners from reacting to programmatic population
         isInitializing = true
         binding.baseline = baselineData
-        Log.d("TAG", "onBaselineDataLoaded: baselineData : "+Gson().toJson(baselineData))
-        //setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
-        // now turn off initialization mode, then run any UI logic that should happen after load
-        //isInitializing = false
-        setTitleAsPerSelectedOption(binding.tvWhatsappNumberLabel, baselineData.familyWhatsApp)
+    }
+    private fun getEnglishString(context: Context, resId: Int): String {
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(Locale.ENGLISH)
+        return context.createConfigurationContext(config).resources.getString(resId)
     }
 }

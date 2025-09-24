@@ -187,8 +187,8 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         baseline.takingAnyMedicationForAnemia = medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
         baseline.haveYouSeenToHWinPastOneYearForAnemia = medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
         baseline.reasonForNotTakingAnemiaMedication = medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
-        baseline.takingAnyMedicationForBP = medicalHistory.medicationForHypertension.returnEmptyIfHyphen()
-        baseline.haveYouSeenToHWinPastOneYearForBP = medicalHistory.healthWorkerForHypertension.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForBP = medicalHistory.medicationForBP.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForBP = medicalHistory.healthWorkerForBP.returnEmptyIfHyphen()
         baseline.reasonForNotTakingBPMedication = medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
     }
 
