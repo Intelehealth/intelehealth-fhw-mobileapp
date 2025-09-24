@@ -1139,7 +1139,8 @@
     <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
     <string name="side_effect_related_to_medication">Side effect related to medication.</string>
     <string name="unknown_other">Unknown / Other</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family members use WhatsApp?*</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family members use WhatsApp?</string>
     <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">What is the mobile number associated with your family member WhatsApp account?</string>
     <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">What is the mobile number associated with your personal WhatsApp account?</string>
     <string name="i_dont_know">I don\’t know</string>
@@ -1150,5 +1151,11 @@
     <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
     <string name="screening_lbl">Screening</string>
 
+    <string name="view_ncd_module">View info module</string>
+    <string name="share_ncd_module">Share info module</string>
+    <string name="share_ncd_info_dialog_title">NCD health information will be share to this whatsapp number</string>
+    <string name="suggested_info_modules">Suggested NCD health information modules</string>
+    <string name="ncd_info_whatsapp_msg">Hello, Thank you for using Intelehealth.\nTo download your health info module for hypertension, Click here</string>
+    <string name="enter_whatsapp_number">Please enter whatsapp number</string>
 
 </resources>

@@ -466,6 +466,46 @@
     <string name="yes_family_member">ஆம் (குடும்ப உறுப்பினர்)</string>
     <string name="yes_personal">ஆம் (தனிப்பட்ட)</string>
     <string name="send_summary_on_whatsApp">சுருக்கத்தை வாட்ஸ்அப் இல் அனுப்பவும்</string>
+
+    <string name="family_whatsapp_question">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களோ வாட்ஸ்அப் பயன்படுத்துகிறீர்களா?</string>
+    <string name="generic_yes_personal">ஆம் (தனிப்பட்ட)</string>
+    <string name="generic_yes_family">ஆம் (குடும்ப உறுப்பினர்)</string>
+
+    <string name="are_you_taking_any_medication_for_bp">நீங்கள் தற்போது இரத்த அழுத்தம் க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">நீங்கள் தற்போது நீரிழிவு நோய் க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+    <string name="are_you_taking_any_medication_for_anemia">நீங்கள் தற்போது இரத்தச்சோகை க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">கடந்த 1 ஆண்டில் இரத்த அழுத்தம் க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">கடந்த 1 ஆண்டில் நீரிழிவு க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">கடந்த 1 ஆண்டில் இரத்தச்சோகை க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?
+</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">நீங்கள் ஏன் இரத்த அழுத்தம் மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">நீங்கள் ஏன் நீரிழிவு மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">நீங்கள் ஏன் இரத்தச்சோகை மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+
+    <string name="never_prescribed_medication">எனக்கு எப்போதும் மருந்துகள் பரிந்துரைக்கப்படவில்லை</string>
+    <string name="forgot_to_take_it">நான் எடுத்துக் கொள்ள மறந்துவிட்டேன்</string>
+    <string name="cannot_afford_medications">நான் மருந்துகளை வாங்க முடியாது</string>
+    <string name="ran_out_of_medication">என் மருந்துகள் முடிந்துவிட்டது / தொலைந்துவிட்டது</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">எனக்கு என் PHC-இல் பின்தொடர்பு தேவை</string>
+    <string name="i_dont_think_i_need_it">எனக்கு அது தேவையில்லை என்று நினைக்கிறேன்</string>
+    <string name="side_effect_related_to_medication">மருந்துகளின் பக்கவிளைவுகள்</string>
+    <string name="unknown_other">தெரியாது / பிற</string>
+    <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>
+    <string name="select_your_choice">உங்கள் தேர்வைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="bp_label">இரத்த அழுத்தம்</string>
+    <string name="anemia_label">இரத்தச்சோகை</string>
+
+    <string name="view_ncd_module">தகவல் தொகுதியைப் பார்க்க</string>
+    <string name="share_ncd_module">தகவல் தொகுதியைப் பகிர்</string>
+    <string name="suggested_info_modules">பரிந்துரைக்கப்பட்ட NCD சுகாதாரத் தகவல் தொகுதிகள்</string>
+    <string name="ncd_info_whatsapp_msg">வணக்கம், Intelehealth பயன்படுத்தியதற்கு நன்றி.\nHypertension க்கான உங்கள் சுகாதாரத் தகவல் தொகுதியைப் பதிவிறக்கம் செய்ய இங்கே சொடுக்கவும்</string>
+    <string name="enter_whatsapp_number">தயவுசெய்து WhatsApp எண்ணை உள்ளிடவும்</string>
+    <string name="share_ncd_info_dialog_title">இந்த NCD சுகாதாரத் தகவல் இந்த WhatsApp எண்ணுக்கு பகிரப்படும்</string>
+
+
+
     <string name="screening_lbl">Screening</string>
 </resources>
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.intelehealth.app.models.ActivePatientModel;
 import org.intelehealth.app.utilities.CustomLog;
@@ -1230,5 +1231,40 @@ public class PatientsDAO {
         }
         return houseHoldID;
     }
+    public String getPatientAttributeByPatientUuid(String patientUuid, String attributeName) throws DAOException {
+        Log.d(TAG, "getPatientAttributeByPatientUuid: patientUuid : " + patientUuid);
+        Log.d(TAG, "getPatientAttributeByPatientUuid: attributeName : " + attributeName);
 
-}
+            String value = "";
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            db.beginTransaction();
+            Cursor cursor = null;
+            try {
+                // Single query with JOIN
+                String sql = "SELECT pa.value\n" +
+                        "FROM tbl_patient_attribute pa\n" +
+                        "INNER JOIN tbl_patient_attribute_master pam\n" +
+                        "    ON pa.person_attribute_type_uuid = pam.uuid\n" +
+                        "WHERE pa.patientuuid = ?\n" +
+                        "  AND pam.name = ?\n" +
+                        "  AND pa.voided = '0' COLLATE NOCASE\n"+  " ORDER BY pa.rowid DESC " +
+                        "LIMIT 1";
+                Log.d(TAG, "getPatientAttributeByPatientUuid:sql :  "+sql);
+                cursor = db.rawQuery(sql, new String[]{patientUuid, attributeName});
+
+                if (cursor.moveToLast()) {
+                    value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                }
+
+                db.setTransactionSuccessful();
+            } catch (SQLException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                throw new DAOException(e);
+            } finally {
+                if (cursor != null) cursor.close();
+                db.endTransaction();
+            }
+            return value;
+        }
+    }
+

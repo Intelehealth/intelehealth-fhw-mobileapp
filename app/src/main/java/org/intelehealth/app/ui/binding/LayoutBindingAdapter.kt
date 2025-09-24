@@ -195,34 +195,6 @@ fun setNullOrEmptyChecked(checkBox: CheckBox, value: String?) {
     checkBox.isChecked = value.isNullOrEmpty()
 }
 
-
-@BindingAdapter("titleAsPerOptionSelected")
-fun setTitleAsPerSelectedOption(textView: TextView, selectedValue: String?) {
-    Log.d("TAG", "setTitleAsPerSelectedOption: selectedValue : "+selectedValue)
-
-    if (selectedValue.isNullOrBlank()) {
-        textView.text = ""
-        return
-    }
-
-    val englishResources = LanguageUtils.getSpecificLocalResource(textView.context, "en")
-
-    textView.text = when {
-        selectedValue.contains("family", ignoreCase = true) -> {
-            englishResources.getString(
-                R.string.what_is_the_phone_number_associated_with_your_family_member_whatsapp_account
-            )
-        }
-        selectedValue.contains("personal", ignoreCase = true) -> {
-            englishResources.getString(
-                R.string.what_is_the_phone_number_associated_with_your_personal_whatsapp_account
-            )
-        }
-        else -> ""
-    }
-}
-
-
 @BindingAdapter(value = ["whatsappText", "dontKnowCheckBox"], requireAll = true)
 fun setWhatsappText(editText: TextInputEditText, value: String?, checkBox: CheckBox) {
     if (value.equals("I don't know", ignoreCase = true)) {

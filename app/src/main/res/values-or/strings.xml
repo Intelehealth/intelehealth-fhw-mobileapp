@@ -906,7 +906,7 @@
     <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">ତୁମେ ତୁମର ରକ୍ତହୀନତା ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
 
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାରର କେହି ହ୍ୱାଟସ୍‌ଆପ୍ ବ୍ୟବହାର କରନ୍ତି କି?*</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାରର କେହି ହ୍ୱାଟସ୍‌ଆପ୍ ବ୍ୟବହାର କରନ୍ତି କି?</string>
 
     <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">ପରିବାର ସଦସ୍ୟ ହ୍ୱାଟସ୍ଆପ୍ ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
     <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ବ୍ୟକ୍ତିଗତ ହ୍ୱାଟସ୍ଆପ୍ ଆକାଉଣ୍ଟ୍ ସହିତ ମୋବାଇଲ୍ ନମ୍ବର କ’ଣ ଜଡିତ?</string>
@@ -918,5 +918,13 @@
     <string name="send_summary_on_whatsApp">ସାରାଂଶ ହ୍ୱାଟସ୍ଆପ୍‌ରେ ପଠାନ୍ତୁ</string>
     <string name="new_ncd_sevika_visit">ନୂତନ NCD/ସେବିକା ଭ୍ରମଣ</string>
     <string name="screening_lbl">ସ୍କ୍ରିନିଂ</string>
+
+
+    <string name="view_ncd_module">ସୂଚନା ମଡ୍ୟୁଲ୍ ଦେଖନ୍ତୁ</string>
+    <string name="share_ncd_module">ସୂଚନା ମଡ୍ୟୁଲ୍ ସେୟାର୍ କରନ୍ତୁ</string>
+    <string name="suggested_info_modules">ସୁପାରିଶିତ NCD ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା ମଡ୍ୟୁଲ୍</string>
+    <string name="ncd_info_whatsapp_msg">ନମସ୍କାର, Intelehealth ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ।\nHypertension ପାଇଁ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା ମଡ୍ୟୁଲ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
+    <string name="enter_whatsapp_number">ଦୟାକରି WhatsApp ନମ୍ବର ଦିୟନ୍ତୁ</string>
+    <string name="share_ncd_info_dialog_title">ଏହି NCD ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନାଟି ଏହି WhatsApp ନମ୍ବରକୁ ସେୟାର୍ କରାଯିବ</string>
 
 </resources>

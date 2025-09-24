@@ -1086,6 +1086,17 @@
     <string name="yes_family_member">हां (परिवार के सदस्य)</string>
     <string name="yes_personal">हां (व्यक्तिगत)</string>
     <string name="send_summary_on_whatsApp">सारांश व्हाट्सऐप पर भेजें</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?</string>
+
+    <string name="view_ncd_module">जानकारी मॉड्यूल देखें</string>
+    <string name="share_ncd_module">जानकारी मॉड्यूल साझा करें</string>
+    <string name="suggested_info_modules">अनुशंसित NCD स्वास्थ्य जानकारी मॉड्यूल</string>
+    <string name="ncd_info_whatsapp_msg">नमस्ते, Intelehealth का उपयोग करने के लिए धन्यवाद।\nहाइपरटेंशन के लिए अपना स्वास्थ्य जानकारी मॉड्यूल डाउनलोड करने के लिए, यहाँ क्लिक करें</string>
+    <string name="enter_whatsapp_number">कृपया व्हाट्सएप नंबर दर्ज करें</string>
+    <string name="share_ncd_info_dialog_title">यह NCD स्वास्थ्य जानकारी इस व्हाट्सएप नंबर पर साझा की जाएगी</string>
+
     <string name="screening_lbl">स्क्रीनिंग</string>
+
 
 </resources>

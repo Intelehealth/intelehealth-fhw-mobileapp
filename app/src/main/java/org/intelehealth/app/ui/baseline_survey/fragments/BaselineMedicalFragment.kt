@@ -64,7 +64,6 @@ class BaselineMedicalFragment :
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
         checkPatientAge()
 
-
         val reasons = R.array.reason_for_not_taking_bp_medication
 
         setupAutoCompleteWithOther(

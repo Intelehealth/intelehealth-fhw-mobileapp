@@ -1109,6 +1109,17 @@
     <string name="yes_family_member">হয় (পৰিয়ালৰ সদস্য)</string>
     <string name="yes_personal">হয় (ব্যক্তিগত)</string>
     <string name="send_summary_on_whatsApp">সাৰাংশ হোৱাটছএপত পঠাওক</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপুনি বা আপোনাৰ পৰিয়ালৰ কোনোবাই হোৱাট্‌ছএপ ব্যৱহাৰ কৰে নেকি?</string>
+
+    <string name="view_ncd_module">তথ্য মডিউল চাওক</string>
+    <string name="share_ncd_module">তথ্য মডিউল শ্বেয়াৰ কৰক</string>
+    <string name="suggested_info_modules">পৰামৰ্শ দিয়া NCD স্বাস্থ্য তথ্য মডিউলসমূহ</string>
+    <string name="ncd_info_whatsapp_msg">নমস্কাৰ, Intelehealth ব্যৱহাৰ কৰাৰ বাবে ধন্যবাদ।\nHypertension ৰ বাবে আপোনাৰ স্বাস্থ্য তথ্য মডিউল ডাউনলোড কৰিবলৈ ইয়াত ক্লিক কৰক</string>
+    <string name="enter_whatsapp_number">অনুগ্ৰহ কৰি WhatsApp নম্বৰ লিখক</string>
+    <string name="share_ncd_info_dialog_title">এই NCD স্বাস্থ্য তথ্যটো এই WhatsApp নম্বৰলৈ শ্বেয়াৰ কৰা হ’ব</string>
+
     <string name="screening_lbl">Screening</string>
+
 
 </resources>

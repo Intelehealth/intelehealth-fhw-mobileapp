@@ -10,8 +10,8 @@ data class MedicalHistory(
     var medicationForAnemia: String = "-",
     var healthWorkerForAnemia: String = "-",
     var reasonForNoAnemiaMedication: String = "-",
-    var medicationForHypertension: String = "-",
-    var healthWorkerForHypertension: String = "-",
+    var medicationForBP: String = "-",
+    var healthWorkerForBP: String = "-",
     var reasonForNoHypertensionMedication: String = "-",
     var hypertension: String = "-"
 
