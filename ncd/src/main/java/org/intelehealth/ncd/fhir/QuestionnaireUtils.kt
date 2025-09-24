@@ -1,5 +1,8 @@
 package org.intelehealth.ncd.fhir
 
+import android.content.Context
+import org.hl7.fhir.r4.model.Questionnaire
+import org.intelehealth.ncd.R
 import org.json.JSONObject
 import org.json.JSONArray
 import java.text.SimpleDateFormat
@@ -141,134 +144,322 @@ object QuestionnaireUtils {
         return "►<b>${title}</b>: <br/>$bulletStr.<br/>"
     }
 
+    fun findQuestionByLinkId(itemArray: JSONArray, linkId: String): JSONObject? {
+        for (i in 0 until itemArray.length()) {
+            val item = itemArray.getJSONObject(i)
+            if (item.optString("linkId") == linkId) return item
+            val childItems = item.optJSONArray("item")
+            if (childItems != null) {
+                val found = findQuestionByLinkId(childItems, linkId)
+                if (found != null) return found
+            }
+        }
+        return null
+    }
+
+    fun getLocalText(questionnaire: JSONObject, linkId: String, locale: String = "en"): String {
+        val items = questionnaire.optJSONArray("item") ?: JSONArray()
+        val questionObj = findQuestionByLinkId(items, linkId) ?: return linkId
+
+        // If English, just return "text"
+        if (locale.equals("en", ignoreCase = true)) return questionObj.optString("text")
+
+        // Otherwise, look for _text.extension with the locale
+        val textObj = questionObj.optJSONObject("_text")
+        val extArray = textObj?.optJSONArray("extension")
+        if (extArray != null) {
+            for (i in 0 until extArray.length()) {
+                val extItem = extArray.getJSONObject(i)
+                if (extItem.optString("url") == "http://hl7.org/fhir/StructureDefinition/translation") {
+                    val innerExt = extItem.optJSONArray("extension")
+                    if (innerExt != null) {
+                        var langCode: String? = null
+                        var content: String? = null
+                        for (j in 0 until innerExt.length()) {
+                            val e = innerExt.getJSONObject(j)
+                            when (e.optString("url")) {
+                                "lang" -> langCode = e.optString("valueCode")
+                                "content" -> content = e.optString("valueString")
+                            }
+                        }
+                        if (langCode.equals(locale, ignoreCase = true)) return content
+                            ?: questionObj.optString("text")
+                    }
+                }
+            }
+        }
+
+        return questionObj.optString("text") // fallback to English
+    }
+
+    fun getCodingDisplayWithLocale(
+        valueCoding: JSONObject,
+        locale: String = "en"
+    ): Pair<String, String> {
+        // Default English display
+        val displayEn = valueCoding.optString("display").ifEmpty { valueCoding.optString("code") }
+
+        // Check for _display.extension for locale
+        val textLocale = try {
+            val displayObj = valueCoding.optJSONObject("_display")
+            val extArray = displayObj?.optJSONArray("extension")
+            if (extArray != null) {
+                for (i in 0 until extArray.length()) {
+                    val extItem = extArray.getJSONObject(i)
+                    if (extItem.optString("url") == "http://hl7.org/fhir/StructureDefinition/translation") {
+                        val innerExt = extItem.optJSONArray("extension")
+                        if (innerExt != null) {
+                            var langCode: String? = null
+                            var content: String? = null
+                            for (j in 0 until innerExt.length()) {
+                                val e = innerExt.getJSONObject(j)
+                                when (e.optString("url")) {
+                                    "lang" -> langCode = e.optString("valueCode")
+                                    "content" -> content = e.optString("valueString")
+                                }
+                            }
+                            if (langCode.equals(locale, ignoreCase = true)) return Pair(
+                                displayEn,
+                                content ?: displayEn
+                            )
+                        }
+                    }
+                }
+            }
+            displayEn
+        } catch (e: Exception) {
+            displayEn
+        }
+
+        return Pair(displayEn, textLocale)
+    }
+
+    fun checkChoiceType(questionnaire: JSONObject, linkId: String): Boolean {
+        val items = questionnaire.optJSONArray("item") ?: JSONArray()
+        val questionObj = findQuestionByLinkId(items, linkId) ?: return false
+
+        val type = questionObj.optString("type")
+        return type.equals("choice", ignoreCase = true) || type.equals(
+            "open-choice",
+            ignoreCase = true
+        )
+    }
+
+    fun getAnswerOptionDisplay(
+        answerOptions: JSONArray,
+        valueString: String,
+        locale: String = "en"
+    ): Pair<String, String> {
+        for (i in 0 until answerOptions.length()) {
+            val option = answerOptions.getJSONObject(i)
+            val coding = option.optJSONObject("valueCoding") ?: continue
+
+            val code = coding.optString("code")
+            val displayEn = coding.optString("display").ifEmpty { code }
+
+            if (displayEn.equals(valueString, ignoreCase = true) || code.equals(
+                    valueString,
+                    ignoreCase = true
+                )
+            ) {
+                // Check _display.extension for locale
+                val displayLocale = try {
+                    val displayObj = coding.optJSONObject("_display")
+                    val extArray = displayObj?.optJSONArray("extension")
+                    if (extArray != null) {
+                        for (j in 0 until extArray.length()) {
+                            val extItem = extArray.getJSONObject(j)
+                            if (extItem.optString("url") == "http://hl7.org/fhir/StructureDefinition/translation") {
+                                val innerExt = extItem.optJSONArray("extension")
+                                if (innerExt != null) {
+                                    var langCode: String? = null
+                                    var content: String? = null
+                                    for (k in 0 until innerExt.length()) {
+                                        val e = innerExt.getJSONObject(k)
+                                        when (e.optString("url")) {
+                                            "lang" -> langCode = e.optString("valueCode")
+                                            "content" -> content = e.optString("valueString")
+                                        }
+                                    }
+                                    if (langCode.equals(locale, ignoreCase = true)) return Pair(
+                                        displayEn,
+                                        content ?: displayEn
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    displayEn
+                } catch (e: Exception) {
+                    displayEn
+                }
+
+                return Pair(displayEn, displayLocale)
+            }
+        }
+
+        // fallback
+        return Pair(valueString, valueString)
+    }
+    fun getQuestionnaireTitle(questionnaire: JSONObject, locale: String = "en"): Pair<String, String> {
+        // Default English title
+        val titleEn = questionnaire.optString("title")
+
+        // Look for _title.extension
+        val titleLocale = try {
+            val titleObj = questionnaire.optJSONObject("_title")
+            val extArray = titleObj?.optJSONArray("extension")
+            if (extArray != null) {
+                for (i in 0 until extArray.length()) {
+                    val extItem = extArray.getJSONObject(i)
+                    if (extItem.optString("url") == "http://hl7.org/fhir/StructureDefinition/translation") {
+                        val innerExt = extItem.optJSONArray("extension")
+                        if (innerExt != null) {
+                            var langCode: String? = null
+                            var content: String? = null
+                            for (j in 0 until innerExt.length()) {
+                                val e = innerExt.getJSONObject(j)
+                                when (e.optString("url")) {
+                                    "lang" -> langCode = e.optString("valueCode")
+                                    "content" -> content = e.optString("valueString")
+                                }
+                            }
+                            if (langCode.equals(locale, ignoreCase = true)) return Pair(titleEn, content ?: titleEn)
+                        }
+                    }
+                }
+            }
+            titleEn
+        } catch (e: Exception) {
+            titleEn
+        }
+
+        return Pair(titleEn, titleLocale)
+    }
 
     fun questionnaireResponseToSummaryV3(
+        context: Context,
         title: String,
         questionnaire: JSONObject,
         response: JSONObject,
-        showAllMeasurements: Boolean
-    ): String {
+        showAllMeasurements: Boolean,
+        localeLang: String
+    ): Pair<String, String> {
 
         val bullets = mutableListOf<String>()
+        val bulletsEnglish = mutableListOf<String>()
+        val bulletsLocal = mutableListOf<String>()
 
-        /*fun collectAnswers(arr: JSONArray, parentTitle: String? = null) {
-            for (i in 0 until arr.length()) {
-                val obj = arr.getJSONObject(i)
-
-                val questionText = obj.optString("text").ifEmpty { obj.optString("linkId") }
-                val fullText = parentTitle?.let { "$it - $questionText" } ?: questionText
-
-                val ansArr = obj.optJSONArray("answer")
-                if (ansArr != null) {
-                    val vals = mutableListOf<String>()
-                    for (a in 0 until ansArr.length()) {
-                        val ans = ansArr.getJSONObject(a)
-
-                        if (ans.has("valueInteger")) vals.add(ans.getInt("valueInteger").toString())
-                        if (ans.has("valueDecimal")) vals.add(ans.getDouble("valueDecimal").toString())
-
-                        if (ans.has("valueDate")) {
-                            val v = ans.getString("valueDate")
-                            if (v.isNotEmpty()) {
-                                val inf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                                val outf = SimpleDateFormat("dd/MMM/yyyy", Locale.US)
-                                vals.add(outf.format(inf.parse(v)!!))
-                            }
-                        }
-
-                        if (ans.has("valueString")) vals.add(ans.getString("valueString"))
-
-                        if (ans.has("valueCoding")) {
-                            val coding = ans.getJSONObject("valueCoding")
-                            vals.add(coding.optString("display").ifEmpty { coding.optString("code") })
-                        }
-                    }
-
-                    if (vals.isNotEmpty()) {
-                        bullets.add("• $fullText - ${vals.joinToString(", ")}")
-                    }
-                }
-
-                val nextParent = if (ansArr == null && obj.optJSONArray("item") != null) questionText else parentTitle
-                obj.optJSONArray("item")?.let { collectAnswers(it, nextParent) }
-            }
-        }*/
+        // Collect all answers
         fun collectAnswers(arr: JSONArray, parentTitle: String? = null) {
             for (i in 0 until arr.length()) {
                 val obj = arr.getJSONObject(i)
 
                 var questionText = obj.optString("text").ifEmpty { obj.optString("linkId") }
+                var questionTextLocal =
+                    getLocalText(questionnaire, obj.optString("linkId"), localeLang).takeIf { it.isNotEmpty() } ?: questionText
+                var questionTextEnglish = getLocalText(questionnaire, obj.optString("linkId"), "en").takeIf { it.isNotEmpty() } ?: questionText
                 // Skip parent title if it ends with _page
                 val effectiveParent =
                     if (parentTitle?.endsWith("_page") == true) null else parentTitle
                 val fullText = effectiveParent?.let { "$it - $questionText" } ?: questionText
+                val fullTextEnglish =
+                    effectiveParent?.let { "$it - $questionTextEnglish" } ?: questionTextEnglish
+                val fullTextLocal =
+                    effectiveParent?.let { "$it - $questionTextLocal" } ?: questionTextLocal
 
                 val ansArr = obj.optJSONArray("answer")
                 if (ansArr != null) {
                     val vals = mutableListOf<String>()
+                    val valsEnglish = mutableListOf<String>()
+                    val valsLocal = mutableListOf<String>()
                     for (a in 0 until ansArr.length()) {
                         val ans = ansArr.getJSONObject(a)
 
-                        if (ans.has("valueInteger")) vals.add(ans.getInt("valueInteger").toString())
-                        if (ans.has("valueDecimal")) vals.add(
-                            ans.getDouble("valueDecimal").toString()
-                        )
+                        if (ans.has("valueInteger")) {
+                            vals.add(ans.getInt("valueInteger").toString())
+                            valsEnglish.add(ans.getInt("valueInteger").toString())
+                            valsLocal.add(ans.getInt("valueInteger").toString())
+                        }
+                        if (ans.has("valueDecimal")) {
+                            vals.add(ans.getDouble("valueDecimal").toString())
+                            valsEnglish.add(ans.getDouble("valueDecimal").toString())
+                            valsLocal.add(ans.getDouble("valueDecimal").toString())
+                        }
 
                         if (ans.has("valueDate")) {
                             val v = ans.getString("valueDate")
                             if (v.isNotEmpty()) {
                                 val inf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                                val outf = SimpleDateFormat("dd/MMM/yyyy", Locale.US)
+                                var outf = SimpleDateFormat("dd/MMM/yyyy", Locale.US)
                                 vals.add(outf.format(inf.parse(v)!!))
+                                valsEnglish.add(outf.format(inf.parse(v)!!))
+                                outf = SimpleDateFormat("dd/MMM/yyyy", Locale(localeLang))
+                                valsLocal.add(outf.format(inf.parse(v)!!))
                             }
                         }
 
-                        if (ans.has("valueString")) vals.add(ans.getString("valueString"))
+                        if (ans.has("valueString")) {
+                            val valueStr = ans.getString("valueString")
+                            val isChoiceType =
+                                checkChoiceType(questionnaire, obj.optString("linkId"))
+
+                            if (isChoiceType) {
+                                // Find the answerOption array in the question
+                                val questionObj = findQuestionByLinkId(
+                                    questionnaire.optJSONArray("item")!!,
+                                    obj.optString("linkId")
+                                )
+                                val answerOptions =
+                                    questionObj?.optJSONArray("answerOption") ?: JSONArray()
+
+                                val (displayEn, displayLocale) = getAnswerOptionDisplay(
+                                    answerOptions,
+                                    valueStr,
+                                    localeLang
+                                )
+
+                                vals.add(displayEn)
+                                valsEnglish.add(displayEn)
+                                valsLocal.add(displayLocale)
+                            } else {
+                                vals.add(valueStr)
+                                valsEnglish.add(valueStr)
+                                valsLocal.add(valueStr)
+                            }
+                        }
 
                         if (ans.has("valueCoding")) {
                             val coding = ans.getJSONObject("valueCoding")
-                            vals.add(
-                                coding.optString("display").ifEmpty { coding.optString("code") })
+                            val (displayEn, displayLocale) = getCodingDisplayWithLocale(
+                                coding,
+                                localeLang
+                            ) // or "bn", "gu", etc.
+                            /*vals.add(
+                                coding.optString("display").ifEmpty { coding.optString("code") })*/
+                            vals.add(displayEn)
+                            valsEnglish.add(displayEn)
+                            valsLocal.add(displayLocale)
                         }
                     }
 
                     if (vals.isNotEmpty()) {
                         bullets.add("• $fullText - ${vals.joinToString(", ")}")
                     }
+
+                    if (vals.isNotEmpty()) {
+                        bulletsEnglish.add("• $fullTextEnglish - ${vals.joinToString(", ")}")
+                    }
+                    if (valsLocal.isNotEmpty()) {
+                        bulletsLocal.add("• $fullTextLocal - ${valsLocal.joinToString(", ")}")
+                    }
                 }
 
                 val nextParent =
-                    if (ansArr == null && obj.optJSONArray("item") != null) questionText else effectiveParent
+                    if (ansArr == null && obj.optJSONArray("item") != null) questionTextEnglish else effectiveParent
                 obj.optJSONArray("item")?.let { collectAnswers(it, nextParent) }
             }
         }
-
-        // Collect all answers
-        /*response.optJSONArray("item")?.let { collectAnswers(it) }
-
-        val filteredBullets = if (!showAllMeasurements) {
-            val sbp = bullets.filter { it.contains("Systolic Blood Pressure", ignoreCase = true) }
-                .lastOrNull()
-            val dbp = bullets.filter { it.contains("Diastolic Blood Pressure", ignoreCase = true) }
-                .lastOrNull()
-
-            val adjusted = mutableListOf<String>()
-            sbp?.let { adjusted.add(it.replace(Regex("BP Measurement \\d+"), "BP Measurement")) }
-            dbp?.let { adjusted.add(it.replace(Regex("BP Measurement \\d+"), "BP Measurement")) }
-
-            // Add remaining items except BP readings
-            bullets.filter {
-                !it.contains("Systolic Blood Pressure", ignoreCase = true) &&
-                        !it.contains("Diastolic Blood Pressure", ignoreCase = true)
-            }.let { adjusted.addAll(it) }
-
-            adjusted
-        } else {
-            bullets
-        }
-
-        val bulletStr = filteredBullets.joinToString("<br/>")
-        return "►<b>${title}</b>: <br/>$bulletStr.<br/>"*/
 
         // Collect all answers
         response.optJSONArray("item")?.let { collectAnswers(it) }
@@ -284,47 +475,52 @@ object QuestionnaireUtils {
                 .joinToString(" - ")
         }
 
+        for (i in bulletsLocal.indices) {
+            val bulletPrefix = if (bulletsLocal[i].startsWith("•")) "• " else ""
+            val content = bulletsLocal[i].removePrefix("•").trim()
 
-        /*val filteredBullets = if (!showAllMeasurements) {
-            val sbpVal = bullets.lastOrNull { it.contains("Systolic Blood Pressure", ignoreCase = true) }
-                ?.substringAfterLast("-")?.trim()
-            val dbpVal = bullets.lastOrNull { it.contains("Diastolic Blood Pressure", ignoreCase = true) }
-                ?.substringAfterLast("-")?.trim()
+            bulletsLocal[i] = bulletPrefix + content
+                .split("-")
+                .map { it.trim() }
+                .filterNot { it.endsWith("_measurement", ignoreCase = true) }
+                .joinToString(" - ")
+        }
 
-            val adjusted = mutableListOf<String>()
-            if (sbpVal != null && dbpVal != null) {
-                adjusted.add("• BP Measurement - SBP($sbpVal)/DBP($dbpVal)")
-            }
-
-            // Add remaining non-BP items
-            bullets.filter {
-                !it.contains("Systolic Blood Pressure", ignoreCase = true) &&
-                        !it.contains("Diastolic Blood Pressure", ignoreCase = true)
-            }.let { adjusted.addAll(it) }
-
-            adjusted
-        } else {
-            bullets
-        }*/
-        val filteredBullets = if (!showAllMeasurements) {
+        val (filteredBulletsEnglish, filteredBulletsLocal) = if (!showAllMeasurements) {
             val sbpVal = bullets.findLast { it.contains("sbp_", ignoreCase = true) }
                 ?.substringAfterLast("-")?.trim()
             val dbpVal = bullets.findLast { it.contains("dbp_", ignoreCase = true) }
                 ?.substringAfterLast("-")?.trim()
 
-            val adjusted = mutableListOf<String>()
+            val adjustedEnglish = mutableListOf<String>()
+            val adjustedLocal = mutableListOf<String>()
             if (sbpVal != null && dbpVal != null) {
-                adjusted.add("• BP Measurement - $sbpVal/$dbpVal")
+                // for en
+                adjustedEnglish.add("• BP Measurement - $sbpVal/$dbpVal")
+                // for locale lang
+                val bpMeasurement = context.getString(R.string.bp_measurement, sbpVal, dbpVal)
+
+                adjustedLocal.add("• $bpMeasurement")
             }
 
             // Add remaining items except BP readings
-            bullets.filter {
+            bulletsEnglish.filter {
                 !it.contains("sbp_", ignoreCase = true) &&
                         !it.contains("dbp_", ignoreCase = true)
-            }.let { adjusted.addAll(it) }
+            }.let { adjustedEnglish.addAll(it) }
 
-            adjusted
+            bulletsLocal.filter {
+                !it.contains("sbp_", ignoreCase = true) &&
+                        !it.contains("dbp_", ignoreCase = true)
+            }.let { adjustedLocal.addAll(it) }
+
+            // return both
+            Pair (adjustedEnglish,adjustedLocal)
+
+
         } else {
+            //TODO: this else section is completed out of scope now so translation is not managed for this case
+            // so if required then we need to manage that
             // Group SBP and DBP for each measurement number
             val bpGroups = mutableMapOf<String, Pair<String?, String?>>()
 
@@ -359,12 +555,15 @@ object QuestionnaireUtils {
                         !it.contains("dbp_", ignoreCase = true)
             }.let { adjusted.addAll(it) }
 
-            adjusted
+            Pair(adjusted, mutableListOf<String>())
         }
 
-
-        val bulletStr = filteredBullets.joinToString("<br/>")
-        return "►<b>${title}</b>: <br/>$bulletStr.<br/>"
+        val bulletStrEnglish = filteredBulletsEnglish.joinToString("<br/>")
+        val bulletStrLocal = filteredBulletsLocal.joinToString("<br/>")
+        val (titleEn, titleLocal) = getQuestionnaireTitle(questionnaire, localeLang)
+        val finalStrEnglish = "►<b>${titleEn}</b>: <br/>$bulletStrEnglish.<br/>"
+        val finalStrLocal = "►<b>${titleLocal}</b>: <br/>$bulletStrLocal.<br/>"
+        return Pair(finalStrEnglish, finalStrLocal)
     }
 
 
@@ -662,6 +861,22 @@ object QuestionnaireUtils {
         return missing
     }
 
+    /*fun getQuestionText(question: Questionnaire.QuestionnaireItemComponent, locale: Locale): String {
+        question.text?.let { text ->
+            // Check if _text and extensions exist
+            question.extension?.forEach { ext ->
+                if (ext.url == "http://hl7.org/fhir/StructureDefinition/translation") {
+                    val langExt = ext.extension.find { it.url == "lang" }?.valueCode
+                    val contentExt = ext.extension.find { it.url == "content" }?.valueString
+                    if (langExt != null && langExt.equals(locale.language, ignoreCase = true)) {
+                        return contentExt ?: text
+                    }
+                }
+            }
+            return text // default English
+        }
+        return ""
+    }*/
 
 
 }

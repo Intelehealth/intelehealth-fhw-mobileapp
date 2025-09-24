@@ -134,5 +134,25 @@
     <string name="repeated_group_title">%1$s. %2$s</string>
     <string name="add_repeated_group_item">%1$s ઉમેરો</string>
 
+    <string name="abnormal_bp_message">
+    અસામાન્ય BP મળ્યું. કૃપા કરીને 5 મિનિટ પછી BP ફરી તપાસો.
+    &#10;&#10;આ સંવાદ પૃષ્ઠ %1$02d:%2$02dમાં બંધ થઈ જશે
+</string>
+
+    <string name="bp_alert_title">BP ચેતવણી</string>
+    <string name="input_error_title">ઇનપુટ ભૂલ</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+    સિસ્ટોલિક BP (SBP) ડાયાસ્ટોલિક BP (DBP) કરતાં વધુ હોવું જોઈએ. કૃપા કરીને મૂલ્યો સુધારો.
+</string>
+    <string name="ok_btn_lbl">ઠીક છે</string>
+
+    <string name="questionnaire_title_hypertension_screening">હાઈપરટેન્શન સ્ક્રીનિંગ</string>
+    <string name="questionnaire_title_anemia_screening">એનીમિયા સ્ક્રીનિંગ</string>
+    <string name="questionnaire_title_diabetes_screening">ડાયાબિટીસ સ્ક્રીનિંગ</string>
+    <string name="questionnaire_title_hypertension_followup">હાઈપરટેન્શન ફોલોઅપ</string>
+
+    <string name="bp_measurement">BP માપ - %1$s/%2$s</string>
+
+
 
 </resources>

@@ -5885,7 +5885,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
              */
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
-            if (isCCInOldFormat) {
+            if (isCCInOldFormat || mIsNCDVisit) {
                 complaintView.setVisibility(View.VISIBLE);
                 if (!mIsNCDVisit) {
                     findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
@@ -5960,7 +5960,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 isAssociateSymptomFound = valueArray.length >= 2;
                 if (isAssociateSymptomFound)
                     valueArray[1] = valueArray[1].split("::")[1];*/
-                setDataForChiefComplainSummary(value);
+
+                    setDataForChiefComplainSummary(value);
+
             }
             Log.d(TAG, "setQAData: value before : "+value);
             NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();

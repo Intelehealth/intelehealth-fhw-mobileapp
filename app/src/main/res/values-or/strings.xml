@@ -882,7 +882,7 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">ଭେଟିଉଥିବା କାରଣ</string>
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="never_prescribed_medication">ମୋତେ କଦାପି ଔଷଧ ଚିଠା ଦିଆଯାଇନଥିଲା</string>
@@ -916,6 +916,8 @@
     <string name="yes_family_member">ହଁ (ପରିବାର ସଦସ୍ୟ)</string>
     <string name="yes_personal">ହଁ (ନିଜସ୍ଵ)</string>
     <string name="send_summary_on_whatsApp">ସାରାଂଶ ହ୍ୱାଟସ୍ଆପ୍‌ରେ ପଠାନ୍ତୁ</string>
+    <string name="new_ncd_sevika_visit">ନୂତନ NCD/ସେବିକା ଭ୍ରମଣ</string>
+    <string name="screening_lbl">ସ୍କ୍ରିନିଂ</string>
 
 
     <string name="view_ncd_module">ସୂଚନା ମଡ୍ୟୁଲ୍ ଦେଖନ୍ତୁ</string>

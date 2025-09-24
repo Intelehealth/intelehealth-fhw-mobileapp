@@ -443,6 +443,7 @@
     <string name="yes_family_member">అవును (కుటుంబ సభ్యుడు)</string>
     <string name="yes_personal">అవును (వ్యక్తిగతం)</string>
     <string name="send_summary_on_whatsApp">సారాంశాన్ని హ్వాట్సాప్‌లో పంపండి</string>
+
     <string name="family_whatsapp_question">మీరు లేదా మీ కుటుంబ సభ్యులు ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా?</string>
     <string name="generic_yes_personal">అవును (వ్యక్తిగతం)</string>
     <string name="generic_yes_family">అవును (కుటుంబ సభ్యుడు)</string>
@@ -480,4 +481,6 @@
     <string name="share_ncd_info_dialog_title">ఈ NCD ఆరోగ్య సమాచారాన్ని ఈ WhatsApp నంబర్‌కి పంచబడుతుంది</string>
 
 
+
+    <string name="screening_lbl">Screening</string>
 </resources>

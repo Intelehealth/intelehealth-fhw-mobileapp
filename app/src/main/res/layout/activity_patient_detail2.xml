@@ -352,7 +352,7 @@
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:paddingStart="@dimen/margin_30"
                 android:paddingEnd="@dimen/margin_14"
-                android:text="New NCD/Sevika Visit"
+                android:text="@string/new_ncd_sevika_visit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 

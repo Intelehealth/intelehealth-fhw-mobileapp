@@ -135,5 +135,25 @@
     <string name="repeated_group_title">%1$s. %2$s</string>
     <string name="add_repeated_group_item">%1$s ଯୋଗ କରନ୍ତୁ</string>
 
+    <string name="abnormal_bp_message">
+    ଅସାଧାରଣ BP ଚିହ୍ନଟ ହେଲା। ଦୟାକରି 5 ମିନିଟ୍ ପରେ BP ପୁନଃ ପରୀକ୍ଷା କରନ୍ତୁ।
+    &#10;&#10;ଏହି ଡାଇଲଗ୍ ବକ୍ସ %1$02d:%2$02d ମଧ୍ୟରେ ବନ୍ଦ ହେବ
+</string>
+
+    <string name="bp_alert_title">BP ସତର୍କତା</string>
+    <string name="input_error_title">ଇନପୁଟ୍ ତ୍ରୁଟି</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+    ସିଷ୍ଟୋଲିକ୍ BP (SBP) ଡାୟାସ୍ଟୋଲିକ୍ BP (DBP) ଠାରୁ ଅଧିକ ହେବା ଦରକାର। ଦୟାକରି ମୂଲ୍ୟଗୁଡ଼ିକୁ ସଠିକ୍ କରନ୍ତୁ।
+</string>
+    <string name="ok_btn_lbl">ଠିକ୍ ଅଛି</string>
+
+    <string name="questionnaire_title_hypertension_screening">ହାଇପରଟେନସନ୍ ସ୍କ୍ରିନିଂ</string>
+    <string name="questionnaire_title_anemia_screening">ଏନିମିଆ ସ୍କ୍ରିନିଂ</string>
+    <string name="questionnaire_title_diabetes_screening">ଡାୟବେଟିସ୍ ସ୍କ୍ରିନିଂ</string>
+    <string name="questionnaire_title_hypertension_followup">ହାଇପରଟେନସନ୍ ଫଲୋ-ଅପ୍</string>
+
+    <string name="bp_measurement">BP ମାପ - %1$s/%2$s</string>
+
+
 
 </resources>

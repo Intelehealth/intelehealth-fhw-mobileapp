@@ -41,9 +41,7 @@ class CategorySegregationUtils(private val resources: Resources) {
                 Log.d(TAG, "segregateAndFetchData: hyisThereAFollowUpWithHypertensionPHC : "+isThereAFollowUpWithHypertensionPHC(attribute.value))
                 Log.d(TAG, "segregateAndFetchData: hyanemia followup  : "+!isHistoryOfAnemiaPresent(attribute.value))
 
-                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
-                        attribute.value
-                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
+                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(attribute.value) || isThereAFollowUpWithAnemiaPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }

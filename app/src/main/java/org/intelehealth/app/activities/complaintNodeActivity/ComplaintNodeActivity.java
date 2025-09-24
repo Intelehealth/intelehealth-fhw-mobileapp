@@ -444,6 +444,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             in.putExtra("patient_dob", PatientsDAO.fetchDateOfBirth(patientUuid));
                             in.putExtra("patient_age", float_ageYear_Month);
                             in.putExtra("patient_gender", mgender);
+                            in.putExtra("appLang", sessionManager.getAppLanguage());
 
                             questionnaireLauncher.launch(in);
 
@@ -522,6 +523,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
                         String questionnaireResponseJson = data.getStringExtra("questionnaire_response");
+                        String questionnaireResponseJsonLocal = data.getStringExtra("questionnaire_response_local");
                         Log.d("onActivityResult", "Response JSON: " + questionnaireResponseJson);
 
                         // show response rest in a alert dialog
@@ -534,8 +536,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         updateDatabase(questionnaireResponseJson, UuidDictionary.CURRENT_COMPLAINT);
                         JSONObject object = new JSONObject();
                         try {
-                            object.put("text_" + sessionManager.getAppLanguage(), questionnaireResponseJson);
-                            //  object.put("text_en", insertion_REG);
+                            object.put("text_" + sessionManager.getAppLanguage(), questionnaireResponseJsonLocal);
+                              object.put("text_en", questionnaireResponseJson);
                             updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
                         } catch (JSONException e) {
                             throw new RuntimeException(e);

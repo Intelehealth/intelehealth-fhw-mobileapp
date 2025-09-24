@@ -1,6 +1,8 @@
 package org.intelehealth.ncd.fhir
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -11,6 +13,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
@@ -43,11 +46,14 @@ import org.hl7.fhir.r4.model.Enumerations
 import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
+import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.intelehealth.ncd.R
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
+import java.util.Locale
+import androidx.activity.OnBackPressedCallback
 
 class CommonQuestionnaireActivity : AppCompatActivity() {
     companion object {
@@ -59,9 +65,21 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     // create the filename & title list
     // for the questionnaire
     private val questionnaireFiles =
-        listOf("hypertension_screening.json", "anemia_screening.json", "diabetes_screening.json","hypertension_followup.json")
+        listOf(
+            "hypertension_screening.json",
+            "anemia_screening.json",
+            "diabetes_screening.json",
+            "hypertension_followup.json"
+        )
     private val questionnaireTitles =
-        listOf("Hypertension Screening", "Anemia Screening", "Diabetes Screening","Hypertension Followup")
+        listOf(
+            "Hypertension Screening",
+            "Anemia Screening",
+            "Diabetes Screening",
+            "Hypertension Followup"
+        )
+
+
     private var isRecurring = false // set to true if you want to use recurring questionnaire
 
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
@@ -75,19 +93,40 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var bottomActionController: QuestionnaireBottomActionController? = null
     lateinit var rootView: View
     val matchedViews = mutableListOf<View>()
+    var appLang: String? = "en"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
+        // Disable/override back button
+        onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Do nothing → completely blocks back
+                    hideKeyboard()
+                }
+            })
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        val questionnaireTitlesResources = listOf(
+            getString(R.string.questionnaire_title_hypertension_screening),
+            getString(R.string.questionnaire_title_anemia_screening),
+            getString(R.string.questionnaire_title_diabetes_screening),
+            getString(R.string.questionnaire_title_hypertension_followup)
+        )
         questionnaireTitle = intent.getStringExtra("questionnaire_title")
         patientAge = intent.getFloatExtra("patient_age", 0f)
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
-        supportActionBar?.title = questionnaireTitle
-        if (questionnaireTitle.equals("Hypertension Screening", true) || questionnaireTitle.equals("Hypertension Followup", true)) {
+        appLang = intent.getStringExtra("appLang")
+        //supportActionBar?.title = questionnaireTitle
+        supportActionBar?.title =
+            questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
+        if (questionnaireTitle.equals(
+                "Hypertension Screening",
+                true
+            ) || questionnaireTitle.equals("Hypertension Followup", true)
+        ) {
             isRecurring = true // set to true if you want to use recurring questionnaire
         }
         Log.d("FHIR", "Questionnaire Title: $questionnaireTitle")
@@ -124,6 +163,19 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
         if (isRecurring)
             startQuestionnaireMonitoring()
+    }
+    private fun hideKeyboard() {
+        val view: View? = currentFocus
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        view?.let {
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+    @SuppressLint("MissingSuperCall")
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        // Do nothing → disables back button
+        hideKeyboard()
     }
 
     private fun loadQuestionnaireFragment(
@@ -162,7 +214,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
 
         latestQuestionnaire =
-            assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
+            assets.open("tv/" + questionnaireFileName).bufferedReader().use { it.readText() }
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
@@ -174,6 +226,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 .showAsterisk(true)
                 .showRequiredText(false)
                 .setShowSubmitAnywayButton(false)
+
 
             // If you want your questionnaire to start with some answers already filled,
             // include a questionnaire response in your arguments bundle for your
@@ -210,15 +263,18 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 }
             }
 
+
         }
 
     }
-    private fun updateUIComponents(){
+
+    private fun updateUIComponents() {
         Handler(Looper.getMainLooper()).postDelayed({
             updateUIComponentsNow()
         }, 1000) // 1000 ms = 1 second
     }
-    private fun updateUIComponentsNow(){
+
+    private fun updateUIComponentsNow() {
 
         // Recursively find all TextInputEditText inside a view tree
         fun View.findAllTextInputs(result: MutableList<View>) {
@@ -267,32 +323,62 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         fun printInputDetails(view: View) {
             when (view) {
                 is TextInputEditText -> {
-                    val label = (view.parent?.parent as? com.google.android.material.textfield.TextInputLayout)?.hint
-                    Log.d("Matched views", "TextInputEditText -> label=$label, hint=${view.hint}, value=${view.text}")
+                    val label =
+                        (view.parent?.parent as? com.google.android.material.textfield.TextInputLayout)?.hint
+                    Log.d(
+                        "Matched views",
+                        "TextInputEditText -> label=$label, hint=${view.hint}, value=${view.text}"
+                    )
                 }
+
                 is AutoCompleteTextView -> {
-                    Log.d("Matched views", "AutoCompleteTextView -> hint=${view.hint}, value=${view.text}")
+                    Log.d(
+                        "Matched views",
+                        "AutoCompleteTextView -> hint=${view.hint}, value=${view.text}"
+                    )
                 }
+
                 is CheckBox -> {
-                    Log.d("Matched views", "CheckBox -> text=${view.text}, checked=${view.isChecked}")
+                    Log.d(
+                        "Matched views",
+                        "CheckBox -> text=${view.text}, checked=${view.isChecked}"
+                    )
                 }
+
                 is RadioButton -> {
-                    Log.d("Matched views", "RadioButton -> text=${view.text}, checked=${view.isChecked}")
+                    Log.d(
+                        "Matched views",
+                        "RadioButton -> text=${view.text}, checked=${view.isChecked}"
+                    )
                 }
+
                 is Switch -> {
                     Log.d("Matched views", "Switch -> text=${view.text}, checked=${view.isChecked}")
                 }
+
                 is ToggleButton -> {
-                    Log.d("Matched views", "ToggleButton -> text=${view.text}, checked=${view.isChecked}")
+                    Log.d(
+                        "Matched views",
+                        "ToggleButton -> text=${view.text}, checked=${view.isChecked}"
+                    )
                 }
+
                 is Spinner -> {
-                    Log.d("Matched views", "Spinner -> prompt=${view.prompt}, selected=${view.selectedItem}")
+                    Log.d(
+                        "Matched views",
+                        "Spinner -> prompt=${view.prompt}, selected=${view.selectedItem}"
+                    )
                 }
+
                 is Button -> {
                     Log.d("Matched views", "Button -> text=${view.text}")
                 }
+
                 else -> {
-                    Log.d("Matched views", "Other input type: ${view::class.java.simpleName}, id=${view.id}")
+                    Log.d(
+                        "Matched views",
+                        "Other input type: ${view::class.java.simpleName}, id=${view.id}"
+                    )
                 }
             }
         }
@@ -303,7 +389,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             if (view is TextInputEditText) {
                 // print TextInputEditText label
 
-                val editId = view.resources.getResourceEntryName(view.id) // e.g., "text_input_edit_text"
+                val editId =
+                    view.resources.getResourceEntryName(view.id) // e.g., "text_input_edit_text"
                 Log.d("Matched views", "EditText id: $editId")
 
                 // Try to get its parent TextInputLayout for the label/hint
@@ -316,7 +403,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     override fun afterTextChanged(s: Editable?) {
                         Log.d("FHIR", "User typed: ${s.toString()}")
                         isAllowedForBottomActionEnable = false
-                        bottomActionController?.setBottomActionsEnabledSmooth(isAllowedForBottomActionEnable)
+                        bottomActionController?.setBottomActionsEnabledSmooth(
+                            isAllowedForBottomActionEnable
+                        )
                     }
 
                     override fun beforeTextChanged(
@@ -342,6 +431,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun hideNextButtonIn(root: View) {
         // 1) Try to find by resource id name (common patterns)
         val candidatesById = mutableListOf<View>()
@@ -433,11 +523,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
             // show toast
 
-            Toast.makeText(
-                this@CommonQuestionnaireActivity,
-                "Questionnaire submitted successfully",
-                Toast.LENGTH_SHORT
-            ).show()
+            /* Toast.makeText(
+                 this@CommonQuestionnaireActivity,
+                 "Questionnaire submitted successfully",
+                 Toast.LENGTH_SHORT
+             ).show()*/
             // clean finish the activity
             // set the result to the activity
             //
@@ -453,29 +543,43 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             // convert this json string to json object
             val questionnaireJsonObject = JSONObject(json)
             val responseJsonObject = JSONObject(json)
-            val summaryHtml = questionnaireJSONObject?.let { it1 ->
+            /*val (summaryHtmlEnglish,summaryHtmlLocale)  = questionnaireJSONObject?.let { it1 ->
                 questionnaireTitle?.let { it2 ->
-                    /*QuestionnaireUtils.questionnaireResponseToSummary(
-                        it2,
-                        it1, responseJsonObject
-                    )*/
-                    /*QuestionnaireUtils.questionnaireResponseToSummaryV1(
-                        it2,
-                        it1, responseJsonObject
-                    )*/
 
-                    QuestionnaireUtils.questionnaireResponseToSummaryV3(
-                        it2,
-                        it1, responseJsonObject, false
-                    )
+
+                    appLang?.let { it3 ->
+                        QuestionnaireUtils.questionnaireResponseToSummaryV3(this@CommonQuestionnaireActivity,
+                            it2,
+                            it1, responseJsonObject, false, it3
+                        )
+                    }
                 }
-            }
+            }*/
+            val (summaryHtmlEnglish, summaryHtmlLocale) = questionnaireJSONObject?.let { questionnaireJson ->
+                questionnaireTitle?.let { titleEn ->
+                    appLang?.let { lang ->
+                        QuestionnaireUtils.questionnaireResponseToSummaryV3(
+                            context = this@CommonQuestionnaireActivity,
+                            title = titleEn,
+                            questionnaire = questionnaireJson,
+                            response = responseJsonObject,
+                            showAllMeasurements = false,
+                            localeLang = lang
+                        )
+                    }
+                }
+            } ?: Pair("", "")
+
+
+            Log.d("FHIR", "summaryHtmlEnglish = $summaryHtmlEnglish")
+            Log.d("FHIR", "summaryHtmlLocale = $summaryHtmlLocale")
 
 
             // set the result to the activity
             // Convert your result to JSON
             val resultIntent = Intent().apply {
-                putExtra("questionnaire_response", summaryHtml)
+                putExtra("questionnaire_response", summaryHtmlEnglish)
+                putExtra("questionnaire_response_local", summaryHtmlLocale)
             }
             setResult(Activity.RESULT_OK, resultIntent)
             Log.d("FHIR", "sending back...")
@@ -483,6 +587,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun showHospitalPopup() {
         AlertDialog.Builder(this)
@@ -503,14 +608,16 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         lifecycleScope.launch {
             while (isActive) {
                 delay(1000) // Check every 5 second (adjust as needed)
-               // updateUIComponents()
+                // updateUIComponents()
                 Log.d("BP_MONITOR", "bpReadings = $bpReadings")
                 Log.d("BP_MONITOR", "bpReadingsHelper = $bpReadingsHelper")
                 // check if bpReadings all  shownDialogOnceForTimer done then not need to refresh again and again
                 // also check last item have false value for shownDialogOnceForTimer
                 if (isAllowedForBottomActionEnable) {
                     Log.d("FHIR", "All BP readings have shown dialog once. Stopping monitoring.")
-                    bottomActionController?.setBottomActionsEnabledSmooth(isAllowedForBottomActionEnable)
+                    bottomActionController?.setBottomActionsEnabledSmooth(
+                        isAllowedForBottomActionEnable
+                    )
                     continue
                 }
 
@@ -528,7 +635,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     extractTimedBpReadings(it)
 
                     isAllowedForBottomActionEnable = bpReadingsHelper.all { it == null }
-                    bottomActionController?.setBottomActionsEnabledSmooth(isAllowedForBottomActionEnable)
+                    bottomActionController?.setBottomActionsEnabledSmooth(
+                        isAllowedForBottomActionEnable
+                    )
 
 
                     if (shouldShowAlertFromLatest())
@@ -648,10 +757,10 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             bpReadingsHelper[index]?.validationDialogShownOnce = true
                             // show alert dialog new
                             AlertDialog.Builder(this)
-                                .setTitle("Input Error")
+                                .setTitle(getString(R.string.input_error_title))
                                 .setCancelable(false)
-                                .setMessage("Systolic BP (SBP) should be greater than Diastolic BP (DBP). Please correct the values.")
-                                .setPositiveButton("OK") { dialog, _ ->
+                                .setMessage(getString(R.string.systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values))
+                                .setPositiveButton(getString(R.string.ok_btn_lbl)) { dialog, _ ->
                                     dialog.dismiss()
 
                                 }
@@ -760,7 +869,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 lastDialogShownTime = currentTime
 
                 val builder = AlertDialog.Builder(this)
-                builder.setTitle("BP Alert")
+                builder.setTitle(getString(R.string.bp_alert_title))
 
                 val messageView = TextView(this)
                 messageView.setPadding(40, 40, 40, 40)
@@ -786,14 +895,14 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     override fun onTick(millisUntilFinished: Long) {
                         val minutes = (millisUntilFinished / 1000) / 60
                         val seconds = (millisUntilFinished / 1000) % 60
-                        messageView.text =
-                            "Abnormal BP detected. Please recheck BP after 5 minutes.\n\n" +
-                                    "This dialog will close in ${
-                                        "%02d:%02d".format(
-                                            minutes,
-                                            seconds
-                                        )
-                                    }"
+                        messageView.text = getString(R.string.abnormal_bp_message, minutes, seconds)
+                        /*"Abnormal BP detected. Please recheck BP after 5 minutes.\n\n" +
+                                "This dialog will close in ${
+                                    "%02d:%02d".format(
+                                        minutes,
+                                        seconds
+                                    )
+                                }"*/
                     }
 
                     override fun onFinish() {
@@ -801,7 +910,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             dialog.dismiss()
                             hasShownDialog = false
                             isAllowedForBottomActionEnable = false
-                            bottomActionController?.setBottomActionsEnabledSmooth(isAllowedForBottomActionEnable)
+                            bottomActionController?.setBottomActionsEnabledSmooth(
+                                isAllowedForBottomActionEnable
+                            )
                             // reload the fragment to reset the state
                             loadQuestionnaireFragment(
                                 lastQuestionnaireResponseString,

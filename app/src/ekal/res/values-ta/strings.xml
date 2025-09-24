@@ -23,5 +23,5 @@
     <string name="which_server_would_you_like_to_connect_to">எந்த சேவையகத்துடன் இணைக்க விரும்புகிறீர்கள்?</string>
     <string name="choose_a_location_to_login">உள்நுழைய ஒரு இடத்தைத் தேர்வுசெய்யவும்</string>
     <string name="sample_text">மாதிரி உரை</string>
-
+    <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
 </resources>

@@ -466,6 +466,7 @@
     <string name="yes_family_member">ஆம் (குடும்ப உறுப்பினர்)</string>
     <string name="yes_personal">ஆம் (தனிப்பட்ட)</string>
     <string name="send_summary_on_whatsApp">சுருக்கத்தை வாட்ஸ்அப் இல் அனுப்பவும்</string>
+
     <string name="family_whatsapp_question">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களோ வாட்ஸ்அப் பயன்படுத்துகிறீர்களா?</string>
     <string name="generic_yes_personal">ஆம் (தனிப்பட்ட)</string>
     <string name="generic_yes_family">ஆம் (குடும்ப உறுப்பினர்)</string>
@@ -504,5 +505,7 @@
     <string name="share_ncd_info_dialog_title">இந்த NCD சுகாதாரத் தகவல் இந்த WhatsApp எண்ணுக்கு பகிரப்படும்</string>
 
 
+
+    <string name="screening_lbl">Screening</string>
 </resources>
 

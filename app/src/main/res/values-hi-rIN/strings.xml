@@ -1053,7 +1053,8 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">भेंट का कारण</string>
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="never_prescribed_medication">मुझे कभी दवाएँ निर्धारित नहीं की गईं</string>
@@ -1085,6 +1086,7 @@
     <string name="yes_family_member">हां (परिवार के सदस्य)</string>
     <string name="yes_personal">हां (व्यक्तिगत)</string>
     <string name="send_summary_on_whatsApp">सारांश व्हाट्सऐप पर भेजें</string>
+
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?</string>
 
     <string name="view_ncd_module">जानकारी मॉड्यूल देखें</string>
@@ -1093,5 +1095,8 @@
     <string name="ncd_info_whatsapp_msg">नमस्ते, Intelehealth का उपयोग करने के लिए धन्यवाद।\nहाइपरटेंशन के लिए अपना स्वास्थ्य जानकारी मॉड्यूल डाउनलोड करने के लिए, यहाँ क्लिक करें</string>
     <string name="enter_whatsapp_number">कृपया व्हाट्सएप नंबर दर्ज करें</string>
     <string name="share_ncd_info_dialog_title">यह NCD स्वास्थ्य जानकारी इस व्हाट्सएप नंबर पर साझा की जाएगी</string>
+
+    <string name="screening_lbl">स्क्रीनिंग</string>
+
 
 </resources>
