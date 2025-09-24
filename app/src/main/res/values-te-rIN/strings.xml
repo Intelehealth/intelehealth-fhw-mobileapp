@@ -468,5 +468,16 @@
     <string name="side_effect_related_to_medication">మందుల వల్ల దుష్ప్రభావాలు</string>
     <string name="unknown_other">తెలియదు / ఇతర</string>
     <string name="enter_mobile_no">మొబైల్ నంబర్ నమోదు చేయండి</string>
+    <string name="select_your_choice">మీ ఎంపికను ఎంచుకోండి</string>
+    <string name="bp_label">రక్తపోటు</string>
+    <string name="anemia_label">రక్తహీనత</string>
+
+    <string name="view_ncd_module">సమాచార మాడ్యూల్ చూడండి</string>
+    <string name="share_ncd_module">సమాచార మాడ్యూల్ పంచుకోండి</string>
+    <string name="suggested_info_modules">సిఫారసు చేసిన NCD ఆరోగ్య సమాచారం మాడ్యూల్‌లు</string>
+    <string name="ncd_info_whatsapp_msg">హలో, Intelehealth వాడినందుకు ధన్యవాదాలు.\nHypertension కోసం మీ ఆరోగ్య సమాచారం మాడ్యూల్ డౌన్‌లోడ్ చేసుకోవడానికి ఇక్కడ క్లిక్ చేయండి</string>
+    <string name="enter_whatsapp_number">దయచేసి WhatsApp నంబర్ నమోదు చేయండి</string>
+    <string name="share_ncd_info_dialog_title">ఈ NCD ఆరోగ్య సమాచారాన్ని ఈ WhatsApp నంబర్‌కి పంచబడుతుంది</string>
+
 
 </resources>

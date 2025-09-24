@@ -1061,4 +1061,11 @@
     <string name="send_summary_on_whatsApp">सारांश व्हॉट्सॲप वर पाठवा</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा आपल्या कुटुंबातील कोण व्हॉट्सॲप वापरतो का?</string>
 
+    <string name="view_ncd_module">माहिती मॉड्यूल पहा</string>
+    <string name="share_ncd_module">माहिती मॉड्यूल शेअर करा</string>
+    <string name="suggested_info_modules">शिफारस केलेले NCD आरोग्य माहिती मॉड्यूल</string>
+    <string name="ncd_info_whatsapp_msg">नमस्कार, Intelehealth वापरल्याबद्दल धन्यवाद.\nहायपरटेन्शनसाठी तुमचे आरोग्य माहिती मॉड्यूल डाउनलोड करण्यासाठी येथे क्लिक करा</string>
+    <string name="enter_whatsapp_number">कृपया व्हॉट्सअॅप क्रमांक टाका</string>
+    <string name="share_ncd_info_dialog_title">ही NCD आरोग्य माहिती या व्हॉट्सअॅप क्रमांकावर शेअर केली जाईल</string>
+
 </resources>

@@ -1030,4 +1030,12 @@
     <string name="send_summary_on_whatsApp">ಸಾರಾಂಶವನ್ನು ವಾಟ್ಸಾಪ್ ನಲ್ಲಿ ಕಳುಹಿಸಿ</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">ನೀವು ಅಥವಾ ನಿಮ್ಮ ಕುಟುಂಬದ ಯಾರಾದರೂ ವಾಟ್ಸಾಪ್ ಬಳಸುತ್ತೀರಾ?</string>
 
+
+    <string name="view_ncd_module">ಮಾಹಿತಿ ಮೋಡ್ಯೂಲ್ ನೋಡಿ</string>
+    <string name="share_ncd_module">ಮಾಹಿತಿ ಮೋಡ್ಯೂಲ್ ಹಂಚಿಕೊಳ್ಳಿ</string>
+    <string name="suggested_info_modules">ಶಿಫಾರಸು ಮಾಡಿದ NCD ಆರೋಗ್ಯ ಮಾಹಿತಿ ಮೋಡ್ಯೂಲ್‌ಗಳು</string>
+    <string name="ncd_info_whatsapp_msg">ನಮಸ್ಕಾರ, Intelehealth ಬಳಸಿದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.\nHypertension ಗಾಗಿ ನಿಮ್ಮ ಆರೋಗ್ಯ ಮಾಹಿತಿ ಮೋಡ್ಯೂಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+    <string name="enter_whatsapp_number">ದಯವಿಟ್ಟು WhatsApp ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="share_ncd_info_dialog_title">ಈ NCD ಆರೋಗ್ಯ ಮಾಹಿತಿಯನ್ನು ಈ WhatsApp ಸಂಖ್ಯೆಗೆ ಹಂಚಲಾಗುತ್ತದೆ</string>
+
 </resources>

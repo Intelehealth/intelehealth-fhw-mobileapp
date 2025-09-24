@@ -492,6 +492,17 @@
     <string name="side_effect_related_to_medication">மருந்துகளின் பக்கவிளைவுகள்</string>
     <string name="unknown_other">தெரியாது / பிற</string>
     <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>
+    <string name="select_your_choice">உங்கள் தேர்வைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="bp_label">இரத்த அழுத்தம்</string>
+    <string name="anemia_label">இரத்தச்சோகை</string>
+
+    <string name="view_ncd_module">தகவல் தொகுதியைப் பார்க்க</string>
+    <string name="share_ncd_module">தகவல் தொகுதியைப் பகிர்</string>
+    <string name="suggested_info_modules">பரிந்துரைக்கப்பட்ட NCD சுகாதாரத் தகவல் தொகுதிகள்</string>
+    <string name="ncd_info_whatsapp_msg">வணக்கம், Intelehealth பயன்படுத்தியதற்கு நன்றி.\nHypertension க்கான உங்கள் சுகாதாரத் தகவல் தொகுதியைப் பதிவிறக்கம் செய்ய இங்கே சொடுக்கவும்</string>
+    <string name="enter_whatsapp_number">தயவுசெய்து WhatsApp எண்ணை உள்ளிடவும்</string>
+    <string name="share_ncd_info_dialog_title">இந்த NCD சுகாதாரத் தகவல் இந்த WhatsApp எண்ணுக்கு பகிரப்படும்</string>
+
 
 </resources>
 
