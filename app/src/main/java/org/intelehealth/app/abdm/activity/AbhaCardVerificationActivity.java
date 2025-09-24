@@ -164,6 +164,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
         binding.layoutHaveABHANumber.buttonAbhaNumber.setOnClickListener(v -> setAbhaCardVisibility());
 
+        binding.layoutHaveABHANumber.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        ConsentDialog consentDialog = new ConsentDialog();
+                        consentDialog.setListeners(isCheck -> binding.layoutHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
+                        consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
+                    }
+                    binding.sendOtpBtn.setEnabled(isChecked);
+                }
+        );
+
         binding.resendBtn.setOnClickListener(v -> {
             if (resendCounter != 0) {
                 resendCounter--;

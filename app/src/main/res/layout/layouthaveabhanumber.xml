@@ -262,7 +262,17 @@
                     android:id="@+id/abhaDetails"
                     layout="@layout/layout_abha_details" />
             </FrameLayout>
+
         </FrameLayout>
+
+        <CheckBox
+            android:id="@+id/cvTermsAndCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/i_agree_terms_amp_conditions"
+            android:textColor="@color/primary_text" />
 
     </LinearLayout>
 
