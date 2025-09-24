@@ -136,6 +136,8 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.Specializations
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoModuleFilesNameGenerator;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoViewAndShareHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -203,6 +205,8 @@ import org.intelehealth.config.room.entity.Specialization;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.ncd.constants.Constants;
+import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -224,12 +228,15 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -409,6 +416,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
 
     private boolean mIsNCDVisit = false;
+    private List<String> infoModulesList;
+    private List<String> infoModulesFileUrlsList;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -501,7 +510,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
 //            }
+
         }
+        mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -510,7 +523,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
         context = VisitSummaryActivity_New.this;
-
+        infoModulesList = new ArrayList<>();
+        infoModulesFileUrlsList = new ArrayList<>();
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -544,6 +558,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         checkIfVisitIsEnded();
 
         language = sessionManager.getAppLanguage();
+        shareAndViewInfoModel();
     }
 
     private void checkIfVisitIsEnded() {
@@ -774,6 +789,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+
         if (mIsNCDVisit) {
             findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
             findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
@@ -5944,7 +5962,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     valueArray[1] = valueArray[1].split("::")[1];*/
                 setDataForChiefComplainSummary(value);
             }
+            Log.d(TAG, "setQAData: value before : "+value);
+            NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
 
+            infoModulesList= fileGenerator.generateFileNames(value, sessionManager.getAppLanguage());
+            infoModulesFileUrlsList= fileGenerator.generateFileUrls(value, sessionManager.getAppLanguage());
+
+            Log.d(TAG, "setQAData: infoModulesList : "+new Gson().toJson(infoModulesList));
 
         }
         // complaints data - end
@@ -6094,6 +6118,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     List<String> mChiefComplainList = new ArrayList<>();
 
     private void setDataForChiefComplainSummary(String answerInLocale) {
+        Log.d(TAG, "setDataForChiefComplainSummary: answerInLocale : "+answerInLocale);
         mChiefComplainList.clear();
         String lCode = sessionManager.getAppLanguage();
         //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
@@ -6667,5 +6692,27 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        startActivity(intent);
+    }
+    private void shareAndViewInfoModel(){
+        Log.d(TAG, "shareAndViewInfoModel: chiefcomplaintliss : "+new Gson().toJson(mChiefComplainList));
+        boolean hasFollowup = false;
+        for (String item : mChiefComplainList) {
+            if (item.toLowerCase().contains("followup")) {
+                hasFollowup = true;
+
+                break;
+            }
+        }
+        if(hasFollowup){
+            mBinding.layoutInfoModule.layoutInfo.setVisibility(View.VISIBLE);
+            mBinding.layoutInfoModule.btnViewNcdModule.setOnClickListener(v -> {
+                NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context);
+                ncdInfoViewAndShareHelper.viewNcdInfoModules(infoModulesFileUrlsList);
+            });
+            mBinding.layoutInfoModule.btnShareNcdModule.setOnClickListener(v -> {
+                NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context);
+                ncdInfoViewAndShareHelper.showShareDialog(patientUuid, infoModulesFileUrlsList);
+            });
+        }
     }
 }
