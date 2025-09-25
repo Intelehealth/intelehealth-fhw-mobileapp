@@ -124,8 +124,10 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.GONE);
                 binding.layoutHaveABHANumber.buttonAbhaNumber.setVisibility(View.GONE);
                 binding.layoutHaveABHANumber.buttonUsername.setEnabled(false);
-            } else
+
+            } else {
                 binding.layoutHaveABHANumber.buttonMobileNumber.setVisibility(View.VISIBLE);
+            }
 
             clickListenerFor_HasABHA();
         } else {
@@ -213,8 +215,6 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
         binding.layoutHaveABHANumber.buttonUsername.setOnClickListener(v -> {
             optionSelected = "username";
-            /*binding.layoutHaveABHANumber.edittextUsername.setText("");
-            binding.layoutHaveABHANumber.edittextMobileNumber.setText("");*/
             binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
             binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);  // show mobile no as well for aadhar as api requires it.
             binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
@@ -225,21 +225,21 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
             binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
             binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+
         });
 
         binding.layoutHaveABHANumber.buttonMobileNumber.setOnClickListener(v -> {
-            optionSelected = "mobile";
-            //   binding.layoutHaveABHANumber.edittextUsername.setText("");
-            binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
-            binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
-            binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
-            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
-            binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
-            binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-            binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-            binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-            binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-            binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                optionSelected = "mobile";
+                binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
+                binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
+                binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+                binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
+                binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+                binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+                binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+                binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
 
         binding.layoutHaveABHANumber.buttonAbhaNumber.setOnClickListener(v -> {
