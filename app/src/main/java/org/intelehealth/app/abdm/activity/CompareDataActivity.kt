@@ -69,6 +69,7 @@ class CompareDataActivity : AppCompatActivity() {
             gender = patientDto.gender,
             address = addressStringBuilder.toString().ifEmpty { "Not Found" },
             pinCode = (patientDto.postalcode ?: "").ifEmpty { "Not Found" },
+            abhaAddress = (patientDto.abhaAddress ?: "").ifEmpty { "Not Found" }
         )
 
         val abhaUser = UserData(
@@ -78,6 +79,7 @@ class CompareDataActivity : AppCompatActivity() {
             gender = abhaProfileResponse.gender,
             address = (abhaProfileResponse.address ?: "").ifEmpty { "Not Found" },
             pinCode = (abhaProfileResponse.pincode ?: "").ifBlank { "Not Found" },
+            abhaAddress = (abhaProfileResponse.preferredAbhaAddress ?: "").ifBlank { "Not Found" }
         )
 
         binding.localData = localUser
@@ -107,6 +109,13 @@ class CompareDataActivity : AppCompatActivity() {
             abhaUser.pinCode
         )
 
+        autoSelectIfSame(
+            binding.rbAbhaAddressLocal,
+            binding.rbAbhaAddressAbha,
+            localUser.abhaAddress,
+            abhaUser.abhaAddress
+        )
+
         binding.btnConfirm.setOnClickListener {
             val selectedFName = getSelectedRadioText(binding.rgFName)
             val selectedLName = getSelectedRadioText(binding.rgLName)
@@ -114,8 +123,9 @@ class CompareDataActivity : AppCompatActivity() {
             val selectedGender = getSelectedRadioText(binding.rgGender)
             val selectedAddress = getSelectedRadioText(binding.rgAddress)
             val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
+            val selectedAbhaAddress = getSelectedRadioText(binding.rgAbhaAddress)
 
-            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty()) {
+            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty() || selectedAbhaAddress.isEmpty()) {
                 Toast.makeText(
                     this,
                     getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT
@@ -131,7 +141,7 @@ class CompareDataActivity : AppCompatActivity() {
             patientDto.address1 = selectedAddress
             patientDto.postalcode = selectedPinCode
             patientDto.abhaNumber = abhaProfileResponse.abhaNumber
-            patientDto.abhaAddress = abhaProfileResponse.preferredAbhaAddress
+            patientDto.abhaAddress = selectedAbhaAddress
 
             val isUpdated = patientsDAO.updatePatientWithABHA(
                 patientDto

@@ -341,6 +341,47 @@
                             android:buttonTint="@android:color/black" />
                     </RadioGroup>
                 </TableRow>
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/compare_screen_abha_address"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgAbhaAddress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbAbhaAddressLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{localData.abhaAddress}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/rbAbhaAddressAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{abhaData.abhaAddress}"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:buttonTint="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
             </TableLayout>
 
             <!-- Confirm Button -->

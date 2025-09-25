@@ -80,7 +80,6 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardActivity;
-import org.intelehealth.app.abdm.activity.CompareDataActivity;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
 import org.intelehealth.app.activities.achievements.fragments.MyAchievementsFragment;
