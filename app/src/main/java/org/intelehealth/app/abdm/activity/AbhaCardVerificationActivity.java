@@ -207,6 +207,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     }
 
     private void setOtpVisibility() {
+        binding.sendOtpBtn.setText(R.string.send_otp);
         if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
             binding.flOtpBox.setVisibility(View.VISIBLE);
             binding.rlResendOTP.setVisibility(View.VISIBLE);
@@ -227,6 +228,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_ui2);
         binding.layoutHaveABHANumber.buttonUsername.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
         binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
+        binding.sendOtpBtn.setText(R.string.send_otp);
+
     }
 
     /**
@@ -245,6 +248,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
         binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+        binding.sendOtpBtn.setText("Search Profiles");
     }
 
     /**
@@ -263,6 +267,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
         binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+        binding.sendOtpBtn.setText(R.string.send_otp);
+
     }
 
     /**
@@ -273,6 +279,9 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
+
+        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION))
+            binding.sendOtpBtn.setText("Search Profiles");
 
         Single<TokenResponse> tokenResponse = AppConstants.apiInterface.GET_TOKEN(UrlModifiers.getABDM_TokenUrl());
         new Thread(() -> {
@@ -344,7 +353,6 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     private void searchMobile(String accessToken, SearchAbhaProfile requestBody) {  // mobile: Step 2
         cpd.show(getString(R.string.otp_sending));
-
         String url = UrlModifiers.searchMobileVerification();
         // payload - end
 
@@ -995,7 +1003,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
 
             // mobile for aadhaar - end
-        } else if (!optionSelected.isEmpty() && optionSelected.equals(MOBILE_NUMBER_SELECTION)) {  // Phone number field
+        }
+        else if (!optionSelected.isEmpty() && optionSelected.equals(MOBILE_NUMBER_SELECTION)) {  // Phone number field
 
             String mobile = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().replace(" ", "").trim();
             Timber.tag(TAG).v(mobile);

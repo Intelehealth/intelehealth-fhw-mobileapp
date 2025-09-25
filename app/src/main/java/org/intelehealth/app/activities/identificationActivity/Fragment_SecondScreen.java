@@ -224,9 +224,9 @@ public class Fragment_SecondScreen extends Fragment {
         mStateNameSpinner.setEnabled(false);
         mDistrictET.setEnabled(false);
         mDistrictNameSpinner.setEnabled(false);
-        mCityVillageET.setClickable(false);
-        mCityVillageET.setCursorVisible(false);
-        mCityVillageET.setEnabled(false);
+//        mCityVillageET.setClickable(false);
+//        mCityVillageET.setCursorVisible(false);
+//        mCityVillageET.setEnabled(false);
         mAddress1EditText.setEnabled(false);
     }
 
@@ -885,7 +885,7 @@ public class Fragment_SecondScreen extends Fragment {
             mDistrictET.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        if (mCityVillageET.getText().toString().isEmpty()) {
+        /*if (mCityVillageET.getText().toString().isEmpty()) {
             mCityNameErrorTextView.setVisibility(View.VISIBLE);
             mCityNameErrorTextView.setText(getString(R.string.error_field_required));
             mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -900,7 +900,7 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             mCityNameErrorTextView.setVisibility(View.GONE);
             mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
+        }*/
 
         /**
          *  entering value in dataset start

@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private String blockCharacterSet_ABHA_Address = "@";
     private String initialAbhaAddress;
+    EditText abhaAddressET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         WindowsUtils.setStatusBarColor(AbhaAddressSuggestionsActivity.this);  // changing status bar color
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(context);
+        abhaAddressET = binding.etAbhaAddress;
 
         Intent intent = getIntent();
         accessToken = intent.getStringExtra("accessToken");
@@ -98,7 +101,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
             Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getCheckedChipId());
             String selectedChip = chip != null ? chip.getText().toString() : "";
-            EditText abhaAddressET = binding.etAbhaAddress;
             abhaAddressET.setFilters(new InputFilter[]{filter});
             String abhaAddress = Objects.requireNonNull(abhaAddressET.getText()).toString();
 
@@ -133,14 +135,51 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         }
     };
 
-    private boolean isValidAbhaAddress(String text) {
-        if (text.length() < 8) {
-            Toast.makeText(context, context.getString(R.string.abha_address_must_be_at_least_8_characters_long), Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (!isValidAbhaRegex(text)) {
-            Toast.makeText(context, context.getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
-            return false;
+    public boolean isValidAbhaAddress(String text) {
+        // Check for @sbx presence
+        String suffix = "@sbx";
+
+        if (text.contains(suffix)) {
+            if (!text.endsWith(suffix)) {
+                // '@sbx' is somewhere in the middle
+                Toast.makeText(context, "'@sbx' is only allowed at the end", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            // Check it appears only once
+            int count = (text.length() - text.replace(suffix, "").length()) / suffix.length();
+            if (count > 1) {
+                Toast.makeText(context, "'@sbx' can appear only once", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            // Extract the part before '@sbx'
+            String prefix = text.substring(0, text.length() - suffix.length());
+
+            if (prefix.length() < 8) {
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
+                        getString(R.string.abha_address_does_not_meet_criteria), false);
+                return false;
+            } else if (!isValidAbhaRegex(prefix)) {
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
+                        getString(R.string.abha_address_does_not_meet_criteria), false);
+                return false;
+            }
+
+            return true;
+
         } else {
+            // No @sbx at all — still valid if regex and length are fine
+            if (text.length() < 8) {
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
+                        getString(R.string.abha_address_does_not_meet_criteria), false);
+                return false;
+            } else if (!isValidAbhaRegex(text)) {
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
+                        getString(R.string.abha_address_does_not_meet_criteria), false);
+                return false;
+            }
+
             return true;
         }
     }
@@ -237,6 +276,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         chip.isCloseIconVisible();
         chip.setCheckedIconTintResource(R.color.colorPrimary);
         binding.chipGrp.addView(chip);
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abhaAddressET.setText(chip.getText());
+            }
+        });
     }
 
     @SuppressLint("MissingSuperCall")
