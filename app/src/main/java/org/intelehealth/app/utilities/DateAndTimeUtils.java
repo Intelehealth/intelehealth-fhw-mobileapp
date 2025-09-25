@@ -315,18 +315,31 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(date == null) return "";
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+        if (components.length != 3) return "";
+
+        int day, month, year;
+
+        try {
+            day = Integer.parseInt(components[0]);
+            month = Integer.parseInt(components[1]);
+            year = Integer.parseInt(components[2]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "";
+        }
 
         //call to function to pass this year and month for age mindmaps questions...
         //getAge_Year_Month(year, month, day);
