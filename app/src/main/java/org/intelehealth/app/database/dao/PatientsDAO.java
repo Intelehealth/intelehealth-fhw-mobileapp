@@ -1066,4 +1066,25 @@ public class PatientsDAO {
         }
         return patientUuid;
     }
+
+    public static String getPatientUuidByAbhaNumber(String abhaNumberLastDigits, String firstName, String lastName) {
+        String patientUuid = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String query = "SELECT uuid FROM tbl_patient WHERE abha_number LIKE ? AND first_name = ? AND last_name = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{abhaNumberLastDigits, firstName, lastName})) {
+            if (cursor.moveToFirst()) {
+                patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return patientUuid;
+    }
+
+    public static boolean isPatientPresentInLocal(String abhaNumber, String firstName, String lastName) {
+        String queryAbhaNumberFormat = "%" + abhaNumber + "%";
+        String patientUuid = getPatientUuidByAbhaNumber(queryAbhaNumberFormat, firstName, lastName);
+        return patientUuid != null;
+    }
+
 }

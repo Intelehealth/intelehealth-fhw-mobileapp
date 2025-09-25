@@ -1960,4 +1960,13 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="compare_data">Compare Data</string>
     <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
     <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
+    
+    // Multiple ABHA accounts strings
+    <string name="multiple_accounts_abha_index">Index: %1$s</string>
+    <string name="multiple_accounts_abha_full_name">Name: %1$s</string>
+    <string name="multiple_accounts_abha_number">ABHA Number: %1$s</string>
+    <string name="multiple_accounts_abha_gender">Gender: %1$s</string>
+    <string name="multiple_accounts_abha_positive_status">Registered with Intelehealth</string>
+    <string name="multiple_accounts_abha_negative_status">Not registered with Intelehealth</string>
+
 </resources>

@@ -3463,8 +3463,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-        else if (locale.equalsIgnoreCase("bn")) {
+        } else if (locale.equalsIgnoreCase("bn")) {
             switch (val) {
                 case "Sunday":
                     val = "রবিবার";
@@ -3491,8 +3490,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-        else if (locale.equalsIgnoreCase("gu")) {
+        } else if (locale.equalsIgnoreCase("gu")) {
             switch (val) {
                 case "Sunday":
                     val = "રવિવાર";
@@ -3520,8 +3518,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-        else if (locale.equalsIgnoreCase("hi")) {
+        } else if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "Sunday":
                     val = "रविवार";
@@ -4018,6 +4015,7 @@ public final class StringUtils {
 
     /**
      * Setting local language for Gender data.
+     *
      * @param context
      * @param genderView
      * @param patient
@@ -4042,7 +4040,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4052,7 +4050,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4062,7 +4060,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4072,7 +4070,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4082,7 +4080,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4092,7 +4090,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4102,7 +4100,7 @@ public final class StringUtils {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
             } else if (gender.equalsIgnoreCase("F")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
-            }  else if (gender.equalsIgnoreCase("O")) {
+            } else if (gender.equalsIgnoreCase("O")) {
                 genderView.setText(context.getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
                 genderView.setText(gender + " " + age);
@@ -4130,6 +4128,10 @@ public final class StringUtils {
         } else {
             genderView.setText(gender + " " + age);
         }
+    }
+
+    public static String extractLastFour(String abhaNumber) {
+        return abhaNumber.substring(abhaNumber.length() - 4);
     }
 
 }
