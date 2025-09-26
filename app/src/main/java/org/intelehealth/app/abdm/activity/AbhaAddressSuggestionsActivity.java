@@ -8,9 +8,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
@@ -96,6 +98,23 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             }
         }
 
+        abhaAddressET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                abhaAddressET.setTextColor(getResources().getColor(R.color.font_black_0));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
             resetPhrAddresses();
 
@@ -108,10 +127,14 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 Toast.makeText(context, getString(R.string.please_select_abha_address), Toast.LENGTH_SHORT).show();
             } else if (!TextUtils.isEmpty(selectedChip)) {
                 callSetPreferredABHAAddressAPI(selectedChip);
-            } else if (isValidAbhaAddress(abhaAddress)) {
-                callSetPreferredABHAAddressAPI(abhaAddress);
+            } else {
+                if (isValidAbhaAddress(abhaAddress)) {
+                    callSetPreferredABHAAddressAPI(abhaAddress);
+                    abhaAddressET.setTextColor(getResources().getColor(R.color.green3));
+                } else {
+                    abhaAddressET.setTextColor(getResources().getColor(R.color.red));
+                }
             }
-
         });
         binding.ivAbhaSuggestion.setOnClickListener(v -> {
             AbhaAddressSuggestionDialogFragment abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
