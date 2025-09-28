@@ -908,6 +908,7 @@ public class PatientsDAO {
                     model.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
                     model.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
                     model.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
+                    model.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
                     modelList.add(model);
                 } while (cursor.moveToNext());
             }

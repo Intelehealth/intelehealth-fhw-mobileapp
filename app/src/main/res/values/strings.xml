@@ -1909,6 +1909,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="abhanumber">ABHA number</string>
     <string name="abha_address">ABHA address</string>
     <string name="compare_screen_abha_address">ABHA Address</string>
+    <string name="compare_screen_abha_number">ABHA Number</string>
     <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
     <string name="please_enter_abha_number_or_abha_address">Please enter ABHA number or ABHA address</string>
     <string name="or">Or</string>
@@ -1967,7 +1968,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="multiple_accounts_abha_full_name">Name: %1$s</string>
     <string name="multiple_accounts_abha_number">ABHA Number: %1$s</string>
     <string name="multiple_accounts_abha_gender">Gender: %1$s</string>
-    <string name="multiple_accounts_abha_positive_status">Registered with Intelehealth</string>
-    <string name="multiple_accounts_abha_negative_status">Not registered with Intelehealth</string>
+    <string name="multiple_accounts_abha_positive_status">Status: Registered with Intelehealth</string>
+    <string name="multiple_accounts_abha_negative_status">Status: Not registered with Intelehealth</string>
 
 </resources>
