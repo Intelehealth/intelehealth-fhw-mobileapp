@@ -259,6 +259,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private void handleSuccess(Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
         if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
             try {
+                abhaAddressET.setTextColor(getResources().getColor(R.color.green3));
                 Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
 
                 String newAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
@@ -280,8 +281,10 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else if (setAbhaAddressResponseResponse.code() == 409) {
+            abhaAddressET.setTextColor(getResources().getColor(R.color.red));
             Toast.makeText(context, "This ABHA address already exists, please use a different one", Toast.LENGTH_SHORT).show();
         } else {
+            abhaAddressET.setTextColor(getResources().getColor(R.color.red));
             Toast.makeText(context, setAbhaAddressResponseResponse.raw().message(), Toast.LENGTH_SHORT).show();
         }
     }
