@@ -78,7 +78,7 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
         return select("COUNT(*)")
             .from("tbl_patient p")
             .join("tbl_appointments a ON p.uuid = a.patient_id")
-            .where("a.status = 'booked' AND datetime(a.slot_js_date) >= datetime('now')")
+            .where("a.status = 'booked' AND datetime(a.slot_js_date) >= datetime('now', 'localtime')")
             .build()
     }
 

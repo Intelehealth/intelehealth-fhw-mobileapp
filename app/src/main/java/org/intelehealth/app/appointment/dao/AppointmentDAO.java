@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.gson.Gson;
@@ -185,13 +186,13 @@ public class AppointmentDAO {
     public void deleteAllAppointments() {
         CustomLog.v(TAG, "deleteAllAppointments ");
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        try{
+        try {
             if (db.inTransaction())
                 db.endTransaction();
-        db.beginTransaction();
-        db.delete("tbl_appointments", null, null);
-        db.setTransactionSuccessful();
-        }finally {
+            db.beginTransaction();
+            db.delete("tbl_appointments", null, null);
+            db.setTransactionSuccessful();
+        } finally {
             if (db.inTransaction()) {
                 db.endTransaction();
             }
@@ -446,17 +447,17 @@ public class AppointmentDAO {
                     andOr = " or ";
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.completed))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'completed'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'completed'))");
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.cancelled))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'cancelled'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'cancelled'))");
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.missed))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'booked'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'booked'))");
                 }
             }
         } else {
-            filterQuery.append("(").append("datetime(a.slot_js_date) < datetime('now'))");
+            filterQuery.append("(").append("datetime(a.slot_js_date) < datetime('now', 'localtime'))");
         }
 
         idCursor = db.rawQuery("select p.patient_photo, p.first_name || " + middleName + " || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
@@ -597,13 +598,13 @@ public class AppointmentDAO {
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
                         + "AND a.status = 'booked' "
-                        + "AND  (datetime(a.slot_js_date) >= datetime('now'))";
+                        + "AND  (datetime(a.slot_js_date) >= datetime('now', 'localtime'))";
                 cursor = db.rawQuery(query, new String[]{});
             } else if (appointmentTabType == AppointmentTabType.PAST) {
                 query = "select count(*) "
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
-                        + "and (datetime(a.slot_js_date) < datetime('now'))";
+                        + "and (datetime(a.slot_js_date) < datetime('now', 'localtime'))";
                 cursor = db.rawQuery(query, new String[]{});
             }
             db.setTransactionSuccessful();
@@ -1514,7 +1515,7 @@ public class AppointmentDAO {
                         + "FROM tbl_patient p, tbl_appointments a "
                         + "WHERE p.uuid = a.patient_id "
                         + "AND a.status = 'booked'"
-                        + "AND datetime(a.slot_js_date) >= datetime('now')"
+                        + "AND datetime(a.slot_js_date) >= datetime('now', 'localtime')"
                         + searchQuery
                         + "ORDER BY  datetime(a.slot_js_date) " + orderType
                         + " LIMIT ? OFFSET ?"
