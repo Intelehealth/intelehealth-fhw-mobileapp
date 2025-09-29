@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -176,6 +177,69 @@ public class DialogUtils {
 
         alertDialog.show();
     }
+
+    /**
+     * added this non cancelable dialog as showCommonDialog is not cancelable
+     * also didn't update the showCommonDialog as its being used in multiple places
+     * @param context
+     * @param iconResource
+     * @param title
+     * @param message
+     * @param isSingleButton
+     * @param positiveBtnText
+     * @param negativeBtnText
+     * @param customDialogListener
+     */
+    public void showCommonDialogNonCancelable(Context context, int iconResource, String title, String message,
+                                              boolean isSingleButton, String positiveBtnText, String negativeBtnText,
+                                              CustomDialogListener customDialogListener) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_common_message, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        if (iconResource == 0) icon.setVisibility(View.GONE);
+        if (message == null || message.equalsIgnoreCase(""))
+            dialog_subtitle.setVisibility(View.GONE);
+        icon.setImageResource(iconResource);
+        dialog_title.setText(title);
+        dialog_subtitle.setText(message);
+        positive_btn.setText(positiveBtnText);
+        negative_btn.setText(negativeBtnText);
+
+        if (isSingleButton) {
+            negative_btn.setVisibility(View.GONE);
+        }
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        negative_btn.setOnClickListener(v -> {
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                alertDialog.dismiss();
+            }
+            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+        });
+
+        positive_btn.setOnClickListener(v -> {
+            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                //alertDialog.dismiss();
+            }
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+        });
+
+        alertDialog.show();
+    }
+
 
     public void showCommonDialogWithChipsGrid(Context context, ArrayList<ReasonData> selectedData, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
