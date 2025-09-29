@@ -3226,7 +3226,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
                     String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-                    CustomLog.d("PPPPP", prescription_link);
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumber, getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + getString(R.string.and_enter_your_patient_id) + idView.getText().toString()))));
 

@@ -67,15 +67,17 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (sessionManager.isFirstTimeLaunch) {
-            checkPerm()
+            checkPerm(true)
             animateViews()
-        }else{
+        } else {
             // delay for 3 seconds
-            Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
-        }
-        initLanguageList()
+            //Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
 
-        handleFcmCall()
+            //handling force update here
+            handleFcmCall()
+        }
+
+        initLanguageList()
         handleButtonClickListener()
         binding.tvTitle.isVisible = BuildConfig.FLAVOR_client != "bmgf"
     }
@@ -152,11 +154,11 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun checkForceUpdate(config: FirebaseRemoteConfig) {
         val forceUpdateVersionCode = config.getLong("force_update_version_code")
-        if (forceUpdateVersionCode > BuildConfig.VERSION_CODE) {
+        if (forceUpdateVersionCode > BuildConfig.VERSION_CODE && !isFinishing && !isDestroyed) {
             val message = getString(R.string.warning_app_update)
             val title = getString(R.string.new_update_available)
             val action = getString(R.string.update)
-            DialogUtils().showCommonDialog(
+            DialogUtils().showCommonDialogNonCancelable(
                 this, R.drawable.close_patient_svg, title,
                 message, true, action, ""
             ) {
@@ -167,7 +169,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
         } else {
-            checkPerm()
+            checkPerm(true)
         }
     }
 
@@ -191,27 +193,27 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
             if (allGranted) {
-               // nextActivity()
+                // nextActivity()
             } else {
                 Timber.e("%s%s", "onRequestPermissionsResult: ", Gson().toJson(permissions))
             }
         }
     }
 
-    private fun checkPerm() {
+    private fun checkPerm(requireToGoNext: Boolean = false) {
         if (checkAndRequestPermissions()) {
             val handler = Handler(Looper.getMainLooper())
             if (sessionManager.isMigration) {
                 handler.postDelayed({
-                   // nextActivity()
+                    if (requireToGoNext) nextActivity()
                 }, 1000)
             } else {
                 handler.postDelayed({
                     val smoothUpgrade = SmoothUpgrade(this)
                     if (smoothUpgrade.checkingDatabase()) {
-                      //  nextActivity()
+                        if (requireToGoNext) nextActivity()
                     } else {
-                      //  nextActivity()
+                        if (requireToGoNext) nextActivity()
                     }
                 }, 1000)
             }
