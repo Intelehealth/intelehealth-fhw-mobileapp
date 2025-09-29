@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
 import org.checkerframework.checker.units.qual.A;
@@ -70,6 +71,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private String initialAbhaAddress;
     EditText abhaAddressET;
 
+    private boolean isProgrammaticTextChange = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +102,21 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             }
         }
 
+        binding.chipGrp.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                if (checkedId != View.NO_ID) {
+                    Chip chip = group.findViewById(checkedId);
+                    if (chip != null) {
+                        isProgrammaticTextChange = true; // Set the flag
+                        abhaAddressET.setText(chip.getText().toString());
+                    }
+                }
+            }
+        });
+
         abhaAddressET.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -106,13 +124,21 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                abhaAddressET.setTextColor(getResources().getColor(R.color.font_black_0));
+                    abhaAddressET.setTextColor(getResources().getColor(R.color.font_black_0));
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (isProgrammaticTextChange) {
+                    // This change came from code (chip selected), don't clear chip
+                    isProgrammaticTextChange = false;
+                    return;
+                }
 
-            }
+                // User is editing manually — clear chip selection
+                if (binding.chipGrp.getCheckedChipId() != View.NO_ID) {
+                    binding.chipGrp.clearCheck();
+                }            }
         });
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
@@ -302,12 +328,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         chip.isCloseIconVisible();
         chip.setCheckedIconTintResource(R.color.colorPrimary);
         binding.chipGrp.addView(chip);
-        chip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                abhaAddressET.setText(chip.getText());
-            }
-        });
     }
 
     @SuppressLint("MissingSuperCall")
