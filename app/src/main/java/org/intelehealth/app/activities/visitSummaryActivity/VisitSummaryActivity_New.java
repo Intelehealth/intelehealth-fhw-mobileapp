@@ -6679,6 +6679,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void endSevikaVisitOnUpload() {
+        Log.d(TAG, "endSevikaVisitOnUpload: mIsNCDVisit : "+mIsNCDVisit);
         if (!mIsNCDVisit) return;
 
         String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();

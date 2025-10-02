@@ -69,5 +69,31 @@ fun setPatientDisplayText(textView: TextView, visitDetail: PatientVisitDetails?)
         textView.text = displayText
     }
 }
+@BindingAdapter("showReceived")
+fun showReceived(view: View, visitDetail: PatientVisitDetails?) {
+    val isNcdVisit = visitDetail?.isNcdVisit.equals("true", ignoreCase = true)
+    val isPrescriptionExist = visitDetail?.isPrescriptionExist == true
+    val isStartDateNull = visitDetail?.startDate.isNullOrEmpty()
+
+    view.visibility = when {
+        isNcdVisit || isStartDateNull -> View.GONE // Hide if NCD or visit not started
+        isPrescriptionExist -> View.VISIBLE       // Show if prescription exists
+        else -> View.GONE
+    }
+}
+
+@BindingAdapter("showPending")
+fun showPending(view: View, visitDetail: PatientVisitDetails?) {
+    val isNcdVisit = visitDetail?.isNcdVisit.equals("true", ignoreCase = true)
+    val isPrescriptionExist = visitDetail?.isPrescriptionExist == true
+    val isStartDateNull = visitDetail?.startDate.isNullOrEmpty()
+
+    view.visibility = when {
+        isNcdVisit || isStartDateNull -> View.GONE // Hide if NCD or visit not started
+        !isPrescriptionExist -> View.VISIBLE      // Show if prescription does NOT exist
+        else -> View.GONE
+    }
+}
+
 
 

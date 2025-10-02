@@ -1232,9 +1232,6 @@ public class PatientsDAO {
         return houseHoldID;
     }
     public String getPatientAttributeByPatientUuid(String patientUuid, String attributeName) throws DAOException {
-        Log.d(TAG, "getPatientAttributeByPatientUuid: patientUuid : " + patientUuid);
-        Log.d(TAG, "getPatientAttributeByPatientUuid: attributeName : " + attributeName);
-
             String value = "";
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
             db.beginTransaction();
@@ -1249,7 +1246,6 @@ public class PatientsDAO {
                         "  AND pam.name = ?\n" +
                         "  AND pa.voided = '0' COLLATE NOCASE\n"+  " ORDER BY pa.rowid DESC " +
                         "LIMIT 1";
-                Log.d(TAG, "getPatientAttributeByPatientUuid:sql :  "+sql);
                 cursor = db.rawQuery(sql, new String[]{patientUuid, attributeName});
 
                 if (cursor.moveToLast()) {

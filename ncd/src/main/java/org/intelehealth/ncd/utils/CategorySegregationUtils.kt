@@ -10,6 +10,7 @@ import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
+import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.model.PatientWithAttribute
 
 class CategorySegregationUtils(private val resources: Resources) {
@@ -82,7 +83,7 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
 
-            Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
+           /* Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
                         attribute.value
                     ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
@@ -90,14 +91,38 @@ class CategorySegregationUtils(private val resources: Resources) {
                     removePatientsFromList(patientList, attribute)
 
                 }
-            }
+            }*/
+            Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
+                //1.  History of hypertension - no  ||  2. History of hypertension - yes and currently taking medication  - no -but logic is of remove the entry from list
+                val hasHypertensionHistory = isHistoryOfHypertensionPresent(attribute.value)
+                val currentlyOnMedication = isCurrentlyTakingHypertensionMedication(attribute.value)
 
-            Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value)){
+                val includePatient = when {
+                    !hasHypertensionHistory -> true                 // No history → include
+                    hasHypertensionHistory && !currentlyOnMedication -> true // History but not on medication → include
+                    else -> false                                   // History and on medication → exclude
+                }
+                // Remove if inclusion criteria NOT met
+                if (!includePatient) {
                     removePatientsFromList(patientList, attribute)
                 }
             }
-           /* Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+
+            Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                val hasHypertensionHistory = isHistoryOfHypertensionPresent(attribute.value)
+                val currentlyOnMedication = isCurrentlyTakingHypertensionMedication(attribute.value)
+
+                // Inclusion criteria flags
+                val includePatient =  hasHypertensionHistory && currentlyOnMedication
+
+
+                // Remove if patient does not meet inclusion
+                if (!includePatient) {
+                    removePatientsFromList(patientList, attribute)
+                }
+            }
+
+         /*   Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
                 if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
                         attribute.value
                     ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
@@ -342,4 +367,64 @@ class CategorySegregationUtils(private val resources: Resources) {
             emptyList()
         }
     }
+
+
+    fun segregateAndFetchPatientVisitDetails(
+        patientVisitDetailsList: List<PatientVisitDetails>,
+        category: String
+    ): List<PatientVisitDetails> {
+        Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
+        Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
+
+        // Make a mutable copy to safely remove items
+        val filteredList = patientVisitDetailsList.toMutableList()
+
+        when (category) {
+
+            Constants.HYPERTENSION_SCREENING -> {
+                // Remove patients who do NOT meet screening inclusion criteria
+                filteredList.removeAll { detail ->
+                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
+                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " "+detail.lastName)
+                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
+                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
+                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: ********************************"+"\n\n")
+
+                    // Include if: No history OR has history but not on medication
+                    val includePatient = !hasHistory || (hasHistory && !onMedication)
+
+                    // Remove if inclusion criteria NOT met
+                    !includePatient
+                }
+            }
+
+            Constants.HYPERTENSION_FOLLOW_UP -> {
+                // Remove patients who do NOT meet follow-up inclusion criteria
+                filteredList.removeAll { detail ->
+                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
+                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    val followUpFlag = detail.followUpFromProtocol == true
+                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " "+detail.lastName)
+                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
+                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
+                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: followupfromproto : "+followUpFlag)
+                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: ********************************"+"\n\n")
+                    // Include if: has history AND on medication AND follow-up flag true
+                    val includePatient = hasHistory && onMedication && followUpFlag
+
+                    // Remove if inclusion criteria NOT met
+                    !includePatient
+                }
+            }
+
+            // You can add other categories as needed
+            else -> {
+                // Do nothing, return full list
+            }
+        }
+
+        return filteredList
+    }
+
 }

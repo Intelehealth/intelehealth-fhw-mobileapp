@@ -48,7 +48,20 @@ data class PatientVisitDetails(
     var isPrescriptionExist: Boolean? = null,
 
     @ColumnInfo(name = "modified_date")
-    var modifiedDate: String? = null
+    var modifiedDate: String? = null,
+
+    @ColumnInfo(name = "is_ncd_visit")
+    var isNcdVisit: String? = null,
+
+    @ColumnInfo(name = "chief_complaint_data")
+    var chiefComplaintData: String? = null,
+
+    @ColumnInfo(name = "follow_up_from_protocol")
+    var followUpFromProtocol: Boolean? = null,
+
+    @ColumnInfo(name = "visit_speciality")
+    var visitSpeciality: String? = null
+
 ) {
     @Ignore
     var attributeList: MutableList<String>? = mutableListOf()

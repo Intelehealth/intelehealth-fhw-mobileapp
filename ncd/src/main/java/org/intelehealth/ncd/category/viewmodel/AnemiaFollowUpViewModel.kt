@@ -50,7 +50,7 @@ class AnemiaFollowUpViewModel(
            val result = repository.getPatientVisitDetails(
                age = Constants.ANEMIA_EXCLUSION_AGE,
                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-               visitNoteEncounterUuid = Constants.VISIT_NOTE,
+               visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
            )
            result.forEach {
                Log.d("PatientVisitDetails", "Name: ${it.firstName} ${it.lastName}, OpenMRS ID: ${it.openmrsId}")

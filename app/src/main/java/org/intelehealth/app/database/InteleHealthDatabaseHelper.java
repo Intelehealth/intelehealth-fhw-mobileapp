@@ -92,7 +92,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     //visit attributes tables
     public static final String CREATE_VISIT_ATTRIBUTES =
             "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
-                    "uuid TEXT PRIMARY KEY," +
+                    "uuid TEXT NOT NULL PRIMARY KEY," +
                     "visit_uuid TEXT," +
                     "value TEXT," +
                     "visit_attribute_type_uuid TEXT," +
