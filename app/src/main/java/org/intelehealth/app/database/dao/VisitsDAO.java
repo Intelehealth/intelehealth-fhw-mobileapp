@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VisitsDAO extends BaseDao{
+public class VisitsDAO extends BaseDao {
 
 
     private long createdRecordsCount = 0;
@@ -80,7 +80,7 @@ public class VisitsDAO extends BaseDao{
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
         }
@@ -117,7 +117,7 @@ public class VisitsDAO extends BaseDao{
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -146,7 +146,7 @@ public class VisitsDAO extends BaseDao{
             Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -310,7 +310,7 @@ public class VisitsDAO extends BaseDao{
         /*Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
                 new String[]{*//*"0", *//*visit_uuid});*/
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
-                new String[]{visit_uuid ,"0", "false"});
+                new String[]{visit_uuid, "0", "false"});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
@@ -467,7 +467,7 @@ public class VisitsDAO extends BaseDao{
 
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
             //db.setTransactionSuccessful();
@@ -515,9 +515,14 @@ public class VisitsDAO extends BaseDao{
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," + " v.startdate " + "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " + "v.voided = 0 AND " +
-//                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                " v.startdate > DATETIME('now', '-4 day') " + " AND (v.enddate IS NULL OR v.enddate == '') ORDER BY v.startdate DESC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
+        String finalQuery = "SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid " +
+                "AND (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                "AND v.voided = 0 AND v.startdate > DATETIME('now', '-4 day') " +
+                "AND (v.enddate IS NULL OR v.enddate == '') ORDER BY v.startdate DESC limit ? offset ?";
+
+
+        Cursor cursor = db.rawQuery(finalQuery, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -589,7 +594,7 @@ public class VisitsDAO extends BaseDao{
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -638,7 +643,7 @@ public class VisitsDAO extends BaseDao{
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 //
@@ -691,7 +696,7 @@ public class VisitsDAO extends BaseDao{
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -711,14 +716,12 @@ public class VisitsDAO extends BaseDao{
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
-                        " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
-//                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
-//                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                        " v.startdate < DATETIME('now', '-4 day') AND " +
-                        "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
+                        "AND v.startdate < DATETIME('now', '-4 day') " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -824,7 +827,7 @@ public class VisitsDAO extends BaseDao{
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     e.printStackTrace();
                 }
                 if (!isCompletedExitedSurvey && isPrescriptionReceived) {
@@ -834,7 +837,7 @@ public class VisitsDAO extends BaseDao{
                         emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                         emergencyUuid = "";
                     }
 
@@ -894,7 +897,7 @@ public class VisitsDAO extends BaseDao{
                         CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 } while (cursor.moveToNext());
             }
@@ -1071,7 +1074,7 @@ public class VisitsDAO extends BaseDao{
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  //
@@ -1107,12 +1110,13 @@ public class VisitsDAO extends BaseDao{
     //sometimes app crash cause of db lock
     //that's why added the retry mechanism whenever db will be lock
     int getVisitCount = 0;
+
     public int getVisitCountsByStatusOld(boolean isForReceivedPrescription) {
         int count = 0;
         //we are retrying db operation for 5 times
-        if(getVisitCount > 5) return 0;
+        if (getVisitCount > 5) return 0;
 
-        try{
+        try {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
             Cursor cursor = null;
@@ -1146,7 +1150,7 @@ public class VisitsDAO extends BaseDao{
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
@@ -1172,18 +1176,17 @@ public class VisitsDAO extends BaseDao{
 
             //resetting count after successful db operation
             getVisitCount = 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //if db is locked then retrying to execute db operation
-            try{
+            try {
                 Thread.sleep(2000);
                 getVisitCount++;
                 getVisitCountsByStatus(isForReceivedPrescription);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 FirebaseCrashlytics.getInstance().recordException(ex);
-                CustomLog.e(TAG,ex.getMessage());
+                CustomLog.e(TAG, ex.getMessage());
             }
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         return count;
@@ -1192,8 +1195,9 @@ public class VisitsDAO extends BaseDao{
 
     @Override
     String tableName() {
-       return "tbl_visit";
+        return "tbl_visit";
     }
+
     public HashMap<String, Object> createVisitMap(VisitDTO visitDTO) {
         HashMap<String, Object> values = new HashMap<>();
         values.put("uuid", visitDTO.getUuid());
@@ -1207,6 +1211,7 @@ public class VisitsDAO extends BaseDao{
         values.put("sync", visitDTO.getSyncd().toString());
         return values;
     }
+
     public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
         int count = 0;
 
@@ -1261,11 +1266,12 @@ public class VisitsDAO extends BaseDao{
 
         return count;
     }
+
     private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
-                new String[]{visit_uuid ,"0", "false"});
+                new String[]{visit_uuid, "0", "false"});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();

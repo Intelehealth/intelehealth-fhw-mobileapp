@@ -266,7 +266,6 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
 
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
-        CustomLog.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList, mFeatureActiveStatus);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
