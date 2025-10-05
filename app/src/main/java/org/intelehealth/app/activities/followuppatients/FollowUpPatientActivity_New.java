@@ -73,7 +73,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -112,6 +114,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
     private FollowupFilterTypeEnum filterType = FollowupFilterTypeEnum.NONE;
     private boolean sortStatus = true;//true= ascending, false = descending
     private RelativeLayout parentLay;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,11 +242,20 @@ public class FollowUpPatientActivity_New extends BaseActivity {
             scrollChips.setVisibility(View.GONE);
         }
 
-        toolbar_title.setText(new StringBuilder()
-                .append(getString(R.string.label))
-                .append(" (")
-                .append(PatientsDAO.getAllFollowupPatientCount())
-                .append(")"));
+        compositeDisposable.add(PatientsDAO.getAllFollowupPatientCount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(count -> {
+                            toolbar_title.setText(new StringBuilder()
+                                    .append(getString(R.string.label))
+                                    .append(" (")
+                                    .append(count)
+                                    .append(")"));
+                        },
+                        err -> {
+
+                        }));
+
 
         ImageButton ibButtonBack = findViewById(R.id.vector);
 
@@ -917,4 +929,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
+    }
 }
