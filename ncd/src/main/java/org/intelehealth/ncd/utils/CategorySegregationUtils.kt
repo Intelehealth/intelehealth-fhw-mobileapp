@@ -411,7 +411,7 @@ class CategorySegregationUtils(private val resources: Resources) {
                     Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: followupfromproto : "+followUpFlag)
                     Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: ********************************"+"\n\n")
                     // Include if: has history AND on medication AND follow-up flag true
-                    val includePatient = hasHistory && onMedication && followUpFlag
+                    val includePatient = (hasHistory && onMedication) || followUpFlag
 
                     // Remove if inclusion criteria NOT met
                     !includePatient

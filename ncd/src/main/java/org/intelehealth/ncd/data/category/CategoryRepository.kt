@@ -55,6 +55,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                     "dd MMM 'at' hh:mm a"
                 )
             }
+            Log.d("TAG", "buildPatientVisitDetailsForGeneral: rawDataList : "+Gson().toJson(rawDataList))
 
             val isFollowupFromObs = data.chiefComplaintData?.let {
                 checkFollowUpFlag(it)}
@@ -133,6 +134,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     }
 
     fun checkFollowUpFlag(chiefComplaintData: String?): Boolean {
+        Log.d("TAG", "checkFollowUpFlag: chiefComplaintData : "+chiefComplaintData)
+
         if (chiefComplaintData.isNullOrBlank()) return false
 
         return try {
@@ -140,12 +143,16 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             val regex = "Next Follow Up Date - ([0-9]{1,2}/[A-Za-z]{3}/[0-9]{4})".toRegex()
             val match = regex.find(chiefComplaintData) ?: return false
             val dateStr = match.groupValues[1] // e.g., "30/Oct/2025"
+            Log.d("TAG", "checkFollowUpFlag: dateStr : "+dateStr)
+
             // 2. Parse the date in the format dd/MMM/yyyy
             val inputFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH)
             val followUpDate = inputFormat.parse(dateStr) ?: return false
 
             // 3. Check if today's date is equal to or after follow-up date
             val today = Calendar.getInstance().time
+            Log.d("TAG", "checkFollowUpFlag: today : "+today)
+
             !today.before(followUpDate) // true if today >= follow-up date, false otherwise
         } catch (e: Exception) {
             e.printStackTrace()
