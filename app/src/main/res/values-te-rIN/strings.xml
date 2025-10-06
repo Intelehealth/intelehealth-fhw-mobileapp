@@ -483,4 +483,9 @@
 
 
     <string name="screening_lbl">Screening</string>
+    <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine ఉపయోగించినందుకు ధన్యవాదాలు. దయచేసి సమాచారం డౌన్‌లోడ్ చేసి అధిక రక్తపోటు నియంత్రించడానికి లేదా తగ్గించడానికి చదవండి</string>
+    <string name="health_information">ఆరోగ్య సమాచారం</string>
+    <string name="saved_to_downloads">ఫైల్ Downloads లో సేవ్ చేయబడింది</string>
+    <string name="failed_to_save_downloads">PDF సేవ్ చేయడంలో విఫలమైంది</string>
+
 </resources>

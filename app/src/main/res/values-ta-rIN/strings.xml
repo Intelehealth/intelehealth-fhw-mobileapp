@@ -507,5 +507,10 @@
 
 
     <string name="screening_lbl">Screening</string>
+    <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine பயன்படுத்தியதற்கு நன்றி. தயவுசெய்து தகவலை பதிவிறக்கம் செய்து உயர் இரத்த அழுத்தத்தை நிர்வகிக்க அல்லது குறைக்க படியுங்கள்</string>
+    <string name="health_information">சுகாதார தகவல்</string>
+    <string name="saved_to_downloads">கோப்பு Downloads இல் சேமிக்கப்பட்டது</string>
+    <string name="failed_to_save_downloads">PDF சேமிக்க முடியவில்லை</string>
+
 </resources>
 

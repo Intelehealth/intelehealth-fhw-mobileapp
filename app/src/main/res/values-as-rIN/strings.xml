@@ -1120,6 +1120,9 @@
     <string name="share_ncd_info_dialog_title">এই NCD স্বাস্থ্য তথ্যটো এই WhatsApp নম্বৰলৈ শ্বেয়াৰ কৰা হ’ব</string>
 
     <string name="screening_lbl">Screening</string>
-
+    <string name="ncd_info_whatsapp_msg_new">একল টেলিমেডিসিন ব্যৱহাৰৰ বাবে ধন্যবাদ। অনুগ্ৰহ কৰি তথ্য ডাউনলোড কৰক আৰু ৰক্তচাপ নিয়ন্ত্ৰণ বা হ্ৰাস কৰিবলৈ পঢ়ক</string>
+    <string name="health_information">স্বাস্থ্য তথ্য</string>
+    <string name="saved_to_downloads">ফাইলটো Downloadsত সংৰক্ষণ কৰা হৈছে</string>
+    <string name="failed_to_save_downloads">PDF সংৰক্ষণ কৰাত ব্যৰ্থ</string>
 
 </resources>

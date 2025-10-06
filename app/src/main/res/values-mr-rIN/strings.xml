@@ -1070,5 +1070,10 @@
     <string name="share_ncd_info_dialog_title">ही NCD आरोग्य माहिती या व्हॉट्सअॅप क्रमांकावर शेअर केली जाईल</string>
 
     <string name="screening_lbl">Screening</string>
+    <string name="ncd_info_whatsapp_msg_new">एकल टेलीमेडिसिन वापरल्याबद्दल धन्यवाद. कृपया माहिती डाउनलोड करा आणि उच्च रक्तदाब व्यवस्थापित करण्यासाठी किंवा कमी करण्यासाठी वाचा</string>
+    <string name="health_information">आरोग्य माहिती</string>
+
+    <string name="saved_to_downloads">फाईल Downloads मध्ये जतन केली गेली</string>
+    <string name="failed_to_save_downloads">PDF जतन करण्यात अयशस्वी</string>
 
 </resources>

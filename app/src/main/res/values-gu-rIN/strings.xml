@@ -1086,4 +1086,12 @@
 
     <string name="screening_lbl">સ્ક્રીનિંગ</string>
 
+    <string name="decrease_salt_intake">મીઠું સેવન ઘટાડો</string>
+    <string name="exercise">વ્યાયામ</string>
+    <string name="alcohol_and_tobacco_cessation">શરાબ અને તંબાકુ છોડી દેવું</string>
+    <string name="ncd_info_whatsapp_msg_new">એકલ ટેલિમેડિસિન ઉપયોગ કરવા માટે આભાર. કૃપા કરીને માહિતી ડાઉનલોડ કરો અને ઉચ્ચ રક્તચાપ વ્યવસ્થાપિત કરવા અથવા ઘટાડવા માટે વાંચો</string>
+    <string name="health_information">આરોગ્ય માહિતી</string>
+    <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
+    <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
+
 </resources>
