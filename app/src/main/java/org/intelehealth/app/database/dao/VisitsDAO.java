@@ -1,5 +1,6 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.CURRENT_COMPLAINT;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -1287,5 +1289,22 @@ public class VisitsDAO {
         String whereClause = "uuid=?";
         String[] whereArgs = new String[]{String.valueOf(visitUuid)};
         return db.delete(table, whereClause, whereArgs);
+    }
+
+    public static String getComplaintValueInEnglish(String visitUuid) {
+        String value = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT o.uuid, o.value, o.conceptuuid, e.uuid AS encounter_uuid,e.encounter_type_uuid,v.uuid AS visit_uuid FROM tbl_obs o JOIN tbl_encounter e ON o.encounteruuid = e.uuid JOIN tbl_visit v ON e.visituuid = v.uuid WHERE v.uuid = ? AND e.encounter_type_uuid = ? AND o.conceptuuid = ? ORDER BY o.rowid DESC LIMIT 1";
+        Log.d(TAG, "getComplaintValueInEnglish: query : "+query);
+        Cursor cursor = db.rawQuery(query, new String[]{visitUuid, ENCOUNTER_ADULTINITIAL, CURRENT_COMPLAINT});
+        Log.d(TAG, "getComplaintValueInEnglish: cursor : "+cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+        return value;
     }
 }

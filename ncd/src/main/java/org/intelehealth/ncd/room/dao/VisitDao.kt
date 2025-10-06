@@ -371,7 +371,7 @@ interface VisitDao {
             FROM tbl_visit v2
             WHERE v2.patientuuid = P.uuid
               AND v2.startdate IS NOT NULL
-            ORDER BY datetime(v2.startdate) DESC
+                ORDER BY substr(startdate, 1, 19) DESC
             LIMIT 1
         )
 
@@ -472,7 +472,7 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
             FROM tbl_visit v2
             WHERE v2.patientuuid = P.uuid
               AND v2.startdate IS NOT NULL
-            ORDER BY datetime(v2.startdate) DESC
+                ORDER BY substr(startdate, 1, 19) DESC
             LIMIT 1
         )
 
