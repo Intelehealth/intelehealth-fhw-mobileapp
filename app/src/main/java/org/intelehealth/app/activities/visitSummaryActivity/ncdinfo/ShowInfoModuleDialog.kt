@@ -5,21 +5,20 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
-import android.net.Uri
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
-import android.util.Log
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.net.toUri
 import org.intelehealth.app.R
+import org.intelehealth.app.utilities.NetworkConnection
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URL
 import kotlin.math.min
-import androidx.core.net.toUri
-import java.io.FileOutputStream
 
 
 class ShowInfoModuleDialog(
@@ -83,56 +82,64 @@ class ShowInfoModuleDialog(
         // Close button
         btnClose?.setOnClickListener { dismiss() }
 
-        btnDownload?.setOnClickListener {
-            Thread {
-                try {
-                    val uri = url.toUri()
-                    val fileName2 = uri.lastPathSegment
+        if ((NetworkConnection.isOnline(context))) {
+            btnDownload?.setOnClickListener {
+                Thread {
+                    try {
+                        val uri = url.toUri()
+                        val fileName2 = uri.lastPathSegment
 
-                    val fileName = uri.lastPathSegment ?: fileName2
-                    val downloads =
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    val outFile = fileName?.let { it1 -> File(downloads, it1) }
+                        val fileName = uri.lastPathSegment ?: fileName2
+                        val downloads =
+                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        val outFile = fileName?.let { it1 -> File(downloads, it1) }
 
-                    // Open connection to the URL
-                    val connection = URL(url).openConnection()
-                    connection.connect()
+                        // Open connection to the URL
+                        val connection = URL(url).openConnection()
+                        connection.connect()
 
-                    val input = connection.getInputStream()
-                    val output = FileOutputStream(outFile)
+                        val input = connection.getInputStream()
+                        val output = FileOutputStream(outFile)
 
-                    val buffer = ByteArray(4096)
-                    var bytesRead: Int
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        output.write(buffer, 0, bytesRead)
-                    }
+                        val buffer = ByteArray(4096)
+                        var bytesRead: Int
+                        while (input.read(buffer).also { bytesRead = it } != -1) {
+                            output.write(buffer, 0, bytesRead)
+                        }
 
-                    output.flush()
-                    output.close()
-                    input.close()
+                        output.flush()
+                        output.close()
+                        input.close()
 
-                    // File fully downloaded — show toast with delay
-                    (context as Activity).runOnUiThread {
-                        Handler(Looper.getMainLooper()).postDelayed({
+                        // File fully downloaded — show toast with delay
+                        (context as Activity).runOnUiThread {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.saved_to_downloads),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }, 1000) // 1000ms = 1 second delay
+                        }
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        (context as Activity).runOnUiThread {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.saved_to_downloads),
+                                context.getString(R.string.failed_to_save_downloads),
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }, 1000) // 1000ms = 1 second delay
+                        }
                     }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    (context as Activity).runOnUiThread {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.failed_to_save_downloads),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }.start()
+                }.start()
+            }
+        }else{
+            Toast.makeText(
+                context,
+                context.getString(R.string.could_not_connect_with_server),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
 

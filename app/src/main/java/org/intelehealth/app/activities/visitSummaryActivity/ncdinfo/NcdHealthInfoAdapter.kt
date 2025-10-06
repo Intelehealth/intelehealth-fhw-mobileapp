@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
+import org.intelehealth.app.utilities.NetworkConnection
 
 class NcdHealthInfoAdapter(
     private val moduleItems: List<HealthModuleItem>, // your model list
@@ -37,8 +39,17 @@ class NcdHealthInfoAdapter(
 
             holder.textView.text = getLocalizedModuleName(context, item.moduleName)
             holder.imageView.setOnClickListener {
-                val pdfDialog = ShowInfoModuleDialog(context, item.url, item.moduleName)
-                pdfDialog.show()
+                if ((NetworkConnection.isOnline(context))) {
+                    val pdfDialog = ShowInfoModuleDialog(context, item.url, item.moduleName)
+                    pdfDialog.show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.could_not_connect_with_server),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
         }
     }

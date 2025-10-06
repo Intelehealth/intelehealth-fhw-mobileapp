@@ -106,7 +106,7 @@ class NcdInfoViewAndShareHelper(
         // Concatenate only the URLs from the model
         val concatenatedUrls = fileUrls.joinToString(separator = ",\n\n") { it.url }
 
-        val messageText = context.getString(R.string.ncd_info_whatsapp_msg_new) + "\n" + concatenatedUrls
+        val messageText = context.getString(R.string.ncd_info_whatsapp_msg_new) + "\n\n" + concatenatedUrls
 
         val encodedMessage = try {
             URLEncoder.encode(messageText, "UTF-8")
