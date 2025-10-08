@@ -124,7 +124,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    abhaAddressET.setTextColor(getResources().getColor(R.color.font_black_0));
+                abhaAddressET.setTextColor(getResources().getColor(R.color.font_black_0));
             }
 
             @Override
@@ -138,7 +138,8 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 // User is editing manually — clear chip selection
                 if (binding.chipGrp.getCheckedChipId() != View.NO_ID) {
                     binding.chipGrp.clearCheck();
-                }            }
+                }
+            }
         });
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
@@ -187,57 +188,60 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     public boolean isValidAbhaAddress(String text) {
         // Check for @sbx presence
         String suffix = "@sbx";
+        String prefix = text;
 
         if (text.contains(suffix)) {
             if (!text.endsWith(suffix)) {
                 // '@sbx' is somewhere in the middle
-                Toast.makeText(context, "'@sbx' is only allowed at the end", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.sbx_suffix_is_only_allowed_at_the_end), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
-            // Check it appears only once
             int count = (text.length() - text.replace(suffix, "").length()) / suffix.length();
             if (count > 1) {
-                Toast.makeText(context, "'@sbx' can appear only once", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.sbx_suffix_can_only_appear_once), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
-            // Extract the part before '@sbx'
-            String prefix = text.substring(0, text.length() - suffix.length());
-
-            if (prefix.length() < 8) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
-                        getString(R.string.abha_address_does_not_meet_criteria), false);
-                return false;
-            } else if (!isValidAbhaRegex(prefix)) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
-                        getString(R.string.abha_address_does_not_meet_criteria), false);
-                return false;
-            }
-
-            return true;
-
-        } else {
-            // No @sbx at all — still valid if regex and length are fine
-            if (text.length() < 8) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
-                        getString(R.string.abha_address_does_not_meet_criteria), false);
-                return false;
-            } else if (!isValidAbhaRegex(text)) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar,
-                        getString(R.string.abha_address_does_not_meet_criteria), false);
-                return false;
-            }
-
-            return true;
+            prefix = text.substring(0, text.length() - suffix.length());
         }
+
+
+        // Validate length of the prefix
+        if (prefix.length() < 8 || prefix.length() > 18) {
+            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.length_validation), false);
+            return false;
+        }
+
+        if (!prefix.matches("^[A-Za-z0-9._]+$")) {
+            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.characters_validation), false);
+            return false;
+        }
+
+        if (prefix.startsWith(".") || prefix.startsWith("_") || prefix.endsWith(".") || prefix.endsWith("_")) {
+            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.special_characters_position_validation), false);
+            return false;
+        }
+
+        if (!doSpecialCharactersExistOnce(prefix)) {
+            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.special_characters_count_validation), false);
+            return false;
+        }
+
+        return true;
     }
 
-    public boolean isValidAbhaRegex(String input) {
-        String regex = "^(?!.*[._]{2})(?![._])(?=^[^._]*[._]?[^._]*$)[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-        return matcher.matches();
+    private boolean doSpecialCharactersExistOnce(String abhaAddress) {
+        int countDot = 0;
+        int countUnderscore = 0;
+        char[] characterArray = abhaAddress.toCharArray();
+
+        for (char current : characterArray) {
+            if (current == '.') countDot++;
+            if (current == '_') countUnderscore++;
+        }
+
+        return (countDot <= 1 && countUnderscore <= 1);
     }
 
     private void callSetPreferredABHAAddressAPI(String selectedChip) {
