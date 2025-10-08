@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -1705,11 +1706,80 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             });
-    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+
+   ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                   /* if (result.getResultCode() == Activity.RESULT_OK) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String currentPhotoPath = "";
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            String[] filePath = {MediaStore.Images.Media.DATA};
+                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                            c.moveToFirst();
+                            int columnIndex = c.getColumnIndex(filePath[0]);
+                            String picturePath = c.getString(columnIndex);
+                            c.close();
+                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                            CustomLog.v("path", picturePath + "");
+
+                            // copy & rename the file
+                            mLastSelectedImageName = UUID.randomUUID().toString();
+                            currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
+
+
+                            //compress image if more than 2MB
+                            File file = new File(currentPhotoPath);
+                            long fileSizeInBytes = file.length();              // size in bytes
+                            long fileSizeInKB = fileSizeInBytes / 1024;        // size in KB
+                            long fileSizeInMB = fileSizeInKB / 1024;
+                            Log.d("TAG", "onActivityResult: "+fileSizeInMB+" "+fileSizeInKB);
+                            if (fileSizeInMB > 2) {
+                                String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg";
+                                compressImage(currentPhotoPath, compressedPath);
+                                currentPhotoPath = compressedPath; // replace with compressed one
+                            }
+                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+
+                            // Handle the Intent
+                            Bundle bundle = new Bundle();
+                            bundle.putString("image", currentPhotoPath);
+                            imageUtilsListener.onImageReady(bundle);
+
+                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
+                            CustomLog.i(TAG, currentPhotoPath);
+
+                            //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+                            //updateImageDatabase(mLastSelectedImageName);
+                        } else {
+                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
+    private void compressImage(String inputPath, String outputPath) {
+        // Load the bitmap
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(inputPath, options);
+
+        try {
+            FileOutputStream out = new FileOutputStream(outputPath);
+            // 80 means 80% quality (adjust as needed)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /*ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    *//*if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
                         if (data != null) {
@@ -1743,7 +1813,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
-                    }*/
+                    }*//*
 
 
                     Intent data = result.getData();
@@ -1782,7 +1852,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
 
-            });
+            });*/
 
     private String mLastSelectedImageName = "";
 
