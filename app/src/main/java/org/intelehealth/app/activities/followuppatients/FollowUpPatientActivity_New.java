@@ -813,7 +813,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
                 + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
                 + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
+                "(select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
+                "AND a.patientuuid = b.uuid AND "
                 + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
                 + " AND o.voided='0' and "
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
