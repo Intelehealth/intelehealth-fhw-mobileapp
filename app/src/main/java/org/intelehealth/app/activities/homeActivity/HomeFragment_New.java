@@ -264,8 +264,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         }*/
         mUpcomingAppointmentCountTextView = view.findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
-        mUpcomingAppointmentCountTextView.setText("0 " + getString(R.string.upcoming));
-        mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
+        mUpcomingAppointmentCountTextView.setText("0 " + requireActivity().getString(R.string.upcoming));
+        mCountPendingFollowupVisitsTextView.setText("0 " + requireActivity().getString(R.string.pending));
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getCurrentLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ui2_ic_location_home, 0, 0, 0);
@@ -575,7 +575,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
             if (isAdded()) {
                 requireActivity().runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + getString(R.string.out_of) + " " + total + " " + getString(R.string.received).toLowerCase();
+                    String prescCountText = countReceivedPrescription + " " + requireActivity().getString(R.string.out_of) + " " + total + " " + requireActivity().getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }
