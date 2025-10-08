@@ -129,6 +129,7 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
@@ -1231,7 +1232,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         positive_btn.setOnClickListener(v -> {
             /*Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
-            if(!isFinishing() && !isDestroyed()){
+            if (!isFinishing() && !isDestroyed()) {
                 alertDialog.dismiss();
             }
         });
@@ -1404,9 +1405,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + ",\n" + value;
+                    diagnosisReturned = diagnosisReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
-                    diagnosisReturned = value;
+                    diagnosisReturned =  Node.bullet + " " + value;
                 }
                 diagnosis_txt.setText(diagnosisReturned);
                 break;
@@ -1428,10 +1429,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
-                    adviceReturned = adviceReturned + "\n" + value;
+                    adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
-                    adviceReturned = value;
+                    adviceReturned = Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
@@ -1612,10 +1613,19 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         hideAdditionalInstruction();
 
         String[] medicationDataArray = rxReturned.split("\n");
+        StringBuilder additionalInstruction = new StringBuilder();
 
         for (String medicine : medicationDataArray) {
-            if (medicine.contains(":")) {
-                String[] medicineDetailArray = medicine.split(":");
+            if (ParserUtils.Companion.parse(medicine) instanceof String) {
+                additionalInstruction.append(Node.bullet)
+                        .append(" ")
+                        .append(medicine)
+                        .append("\n");
+            } else {
+                medicineModelList.add(((PrescribedMedicineModel) ParserUtils.Companion.parse(medicine)));
+            }
+            /* if (medicine.contains(":")) {
+             *//*String[] medicineDetailArray = medicine.split(":");
                 PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
                 for (int i = 0; i < medicineDetailArray.length; i++) {
                     switch (i) {
@@ -1625,15 +1635,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         case 3 -> medicineModel.setTiming(medicineDetailArray[i]);
                         default -> medicineModel.setRemark(medicineDetailArray[i]);
                     }
-                }
-                medicineModelList.add(medicineModel);
+                }*//*
+                medicineModelList.add(ParserUtils.Companion.parse(medicine));
             } else {
                 if (!medicine.isEmpty()) {
                     setAdditionalInstruction(medicine);
                 }
 
-            }
+            }*/
         }
+
+        setAdditionalInstruction(additionalInstruction.toString());
         return medicineModelList;
     }
 
@@ -2180,7 +2192,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String colon = ":";
         String result = "";
 
-        for (String mc: mComplaints) {
+        for (String mc : mComplaints) {
             String[] complaints = {mc};
             if (complaints != null) {
                 for (String value : complaints) {
