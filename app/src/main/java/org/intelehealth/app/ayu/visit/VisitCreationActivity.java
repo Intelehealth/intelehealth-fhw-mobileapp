@@ -1738,6 +1738,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             long fileSizeInBytes = file.length();              // size in bytes
                             long fileSizeInKB = fileSizeInBytes / 1024;        // size in KB
                             long fileSizeInMB = fileSizeInKB / 1024;
+                            Log.d("TAG", "onActivityResult: "+fileSizeInMB+" "+fileSizeInKB);
                             if (fileSizeInMB > 2) {
                                 String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg";
                                 compressImage(currentPhotoPath, compressedPath);

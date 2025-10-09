@@ -74,6 +74,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private static int currentCmdType = BaseEnum.CMD_PIN;
     private static RTPrinter rtPrinter;
 
+    private String notificationCallTypeValue = "";
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -219,6 +221,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     public void setRtPrinter(RTPrinter rtPrinter) {
         this.rtPrinter = rtPrinter;
+    }
+
+    public String getnotificationValue() {
+        return notificationCallTypeValue;
+    }
+
+    public void setnotificationValue(String value) {
+        this.notificationCallTypeValue = value;
     }
 
 }

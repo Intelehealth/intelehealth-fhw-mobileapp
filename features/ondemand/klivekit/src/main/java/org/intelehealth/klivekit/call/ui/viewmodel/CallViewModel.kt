@@ -3,6 +3,7 @@ package org.intelehealth.klivekit.call.ui.viewmodel
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,6 @@ import io.livekit.android.events.RoomEvent
 import io.livekit.android.events.collect
 import io.livekit.android.room.Room
 import io.livekit.android.room.participant.ConnectionQuality
-import io.livekit.android.room.participant.LocalParticipant
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
 import io.livekit.android.room.track.CameraPosition
@@ -556,6 +556,13 @@ open class CallViewModel(
         }
     }
 
+    fun audioCallView(){
+        viewModelScope.launch {
+            val enabled = false
+            room.localParticipant.setCameraEnabled(enabled)
+            mutableCameraEnabled.postValue(getParticipantStatusMap(room.localParticipant, enabled))
+        }
+    }
     fun flipCamera() {
         val videoTrack = room.localParticipant.getTrackPublication(Track.Source.CAMERA)
             ?.track as? LocalVideoTrack

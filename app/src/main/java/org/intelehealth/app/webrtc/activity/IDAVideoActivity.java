@@ -7,7 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -59,9 +63,13 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
         }
     }
 
+
+
     public static final String TAG = "EkalVideoCallActivity";
 
     private ActivityVideoCallBinding binding;
+
+    private boolean onVideoClick = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,14 +84,29 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
             initView();
             initClickListener();
         }
-
+        setCallView();
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+    }
+
+    private void setCallView(){
+        String callTyype = IntelehealthApplication.getInstance().getnotificationValue();
+        if(callTyype.equalsIgnoreCase("audio")){
+            binding.videoCallView.callActionView.btnVideoOnOff.setActivated(true);
+            binding.videoCallView.selfSurfaceView.setVisibility(View.GONE);
+            binding.videoCallView.incomingSurfaceView.setVisibility(View.GONE);
+            binding.videoCallView.frameLocalVideoOverlay.setVisibility(View.VISIBLE);
+            binding.videoCallView.frameRemoteVideoOverlay.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initClickListener() {
         binding.videoCallView.callActionView.btnCallEnd.setOnClickListener(view -> endCall());
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleMicrophone());
-        binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleCamera());
+        binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> {
+            getVideoCallViewModel().toggleCamera();
+            onVideoClick = true;
+        });
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
 //        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
 //        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
@@ -126,7 +149,11 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     @Override
     public void attachLocalVideo(@NonNull VideoTrack videoTrack) {
         Timber.tag(TAG).e("attachLocalVideo: " + videoTrack.getName());
-        binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
+        if(!onVideoClick && IntelehealthApplication.getInstance().getnotificationValue().equalsIgnoreCase("audio")){
+            binding.videoCallView.selfSurfaceView.setVisibility(View.GONE);
+        }else{
+            binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
+        }
         videoTrack.addRenderer(binding.videoCallView.selfSurfaceView);
     }
 
@@ -158,7 +185,11 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     @NonNull
     @Override
     public TextureViewRenderer getRemoteVideoRender() {
-        binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
+        if(!onVideoClick && IntelehealthApplication.getInstance().getnotificationValue().equalsIgnoreCase("audio")){
+            binding.videoCallView.selfSurfaceView.setVisibility(View.GONE);
+        }else{
+            binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
+        }
         return binding.videoCallView.incomingSurfaceView;
     }
 
@@ -206,9 +237,18 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     @Override
     public void onCameraStatusChanged(boolean enabled) {
         super.onCameraStatusChanged(enabled);
-        binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
-        binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        binding.videoCallView.frameLocalVideoOverlay.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        if(!onVideoClick && IntelehealthApplication.getInstance().getnotificationValue().equalsIgnoreCase("audio")){
+            binding.videoCallView.selfSurfaceView.setVisibility(View.GONE);
+            binding.videoCallView.frameLocalVideoOverlay.setVisibility(View.VISIBLE);
+            binding.videoCallView.callActionView.btnVideoOnOff.setActivated(true);
+            getVideoCallViewModel().audioCallView();
+
+        }else{
+            binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
+            binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
+            binding.videoCallView.frameLocalVideoOverlay.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        }
+
     }
 
     @Override
