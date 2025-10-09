@@ -1061,7 +1061,26 @@
     <string name="yes_family_member">হ্যাঁ (পরিবারের সদস্য)</string>
     <string name="yes_personal">হ্যাঁ (ব্যক্তিগত)</string>
     <string name="send_summary_on_whatsApp">সারাংশ হোয়াটসঅ্যাপে পাঠান</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি অথবা আপনার পরিবারের কেউ কি হোয়াটসঅ্যাপ ব্যবহার করেন?</string>
+
+    <string name="view_ncd_module">তথ্য মডিউল দেখুন</string>
+    <string name="share_ncd_module">তথ্য মডিউল শেয়ার করুন</string>
+    <string name="suggested_info_modules">প্রস্তাবিত NCD স্বাস্থ্য তথ্য মডিউল</string>
+    <string name="ncd_info_whatsapp_msg">হ্যালো, Intelehealth ব্যবহার করার জন্য ধন্যবাদ।\nHypertension এর জন্য আপনার স্বাস্থ্য তথ্য মডিউল ডাউনলোড করতে এখানে ক্লিক করুন</string>
+    <string name="enter_whatsapp_number">অনুগ্রহ করে WhatsApp নম্বর লিখুন</string>
+    <string name="share_ncd_info_dialog_title">এই NCD স্বাস্থ্য তথ্যটি এই WhatsApp নম্বরে শেয়ার করা হবে</string>
+
     <string name="new_ncd_sevika_visit">নতুন NCD/সেবিকা ভিজিট</string>
     <string name="screening_lbl">স্ক্রিনিং</string>
+
+    <string name="decrease_salt_intake">লবণের ব্যবহার কমান</string>
+    <string name="exercise">ব্যায়াম</string>
+    <string name="alcohol_and_tobacco_cessation">মদ্যপান এবং তামাক ত্যাগ</string>
+    <string name="ncd_info_whatsapp_msg_new">একল টেলিমেডিসিন ব্যবহার করার জন্য ধন্যবাদ। অনুগ্রহ করে তথ্য ডাউনলোড করুন এবং উচ্চ রক্তচাপ নিয়ন্ত্রণ বা কমানোর জন্য পড়ুন</string>
+    <string name="health_information">স্বাস্থ্য তথ্য</string>
+    <string name="saved_to_downloads">ফাইলটি Downloads-এ সংরক্ষিত হয়েছে</string>
+    <string name="failed_to_save_downloads">PDF সংরক্ষণ করতে ব্যর্থ হয়েছে</string>
+
 
 </resources>

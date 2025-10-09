@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/info_moduleCard"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginTop="@dimen/fu_card_margin_sides"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:elevation="16dp"
+            app:cardCornerRadius="@dimen/margin_5"
+            app:cardElevation="@dimen/margin_5">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/info_module_header_relative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fu_card_margin_sides"
+                    android:layout_marginTop="@dimen/fu_card_margin_sides"
+                    android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                    <ImageView
+                        android:id="@+id/ivVitalIcon"
+                        android:layout_width="@dimen/edittext_height_44dp"
+                        android:layout_height="@dimen/edittext_height_44dp"
+                        android:src="@drawable/ui2_icon_info" />
+
+                    <TextView
+                        style="@style/text_title_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:layout_toEndOf="@+id/ivVitalIcon"
+                        android:text="@string/health_information" />
+
+                    <ImageButton
+                        android:id="@+id/btn_up_info_module_header"
+                        android:layout_width="@dimen/fu_icon_width"
+                        android:layout_height="@dimen/fu_icon_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:src="@drawable/ui2_ic_chevron_down" />
+                </RelativeLayout>
+
+                <!--Expanded info_module-->
+                <RelativeLayout
+                    android:id="@+id/vs_info_module_header_expandview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/info_module_header_relative">
+
+                    <View
+                        android:id="@+id/divider1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                        android:background="@color/notifi_divider_color" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_info_modules"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/divider1"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/followup_list_item" />
+
+<!--
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/info_module_details_relative"
+                        android:layout_marginStart="@dimen/fu_margin_start"
+                        android:layout_marginTop="@dimen/hamburger_margin_start"
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:layout_marginBottom="@dimen/fu_margin_start"
+                        android:orientation="vertical"
+                        android:shrinkColumns="1">
+
+                        <RelativeLayout
+                            android:id="@+id/layout_item_exercise"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/tv_exercise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:drawablePadding="5dp"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <ImageView
+                                android:id="@+id/iv_exercise"
+                                android:layout_width="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_launcher" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layout_item_decrease_in_salt_intake"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/tv_decrease_in_salt_intake"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:drawablePadding="5dp"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <ImageView
+                                android:id="@+id/iv_decrease_in_salt_intake"
+                                android:layout_width="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_launcher" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layout_item_alcohol_and_tobacco_cessation"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/tv_alcohol_and_tobacco_cessation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="@dimen/margin_5"
+                                android:drawablePadding="5dp"
+                                android:textAppearance="@style/caption"
+                                android:textColor="@color/hint_text_color"
+                                android:textSize="@dimen/find_patient_hint_size" />
+
+                            <ImageView
+                                android:id="@+id/iv_alcohol_and_tobacco_cessation"
+                                android:layout_width="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_gravity="end"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_launcher" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+-->
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+</layout>
+

@@ -443,5 +443,49 @@
     <string name="yes_family_member">అవును (కుటుంబ సభ్యుడు)</string>
     <string name="yes_personal">అవును (వ్యక్తిగతం)</string>
     <string name="send_summary_on_whatsApp">సారాంశాన్ని హ్వాట్సాప్‌లో పంపండి</string>
+
+    <string name="family_whatsapp_question">మీరు లేదా మీ కుటుంబ సభ్యులు ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా?</string>
+    <string name="generic_yes_personal">అవును (వ్యక్తిగతం)</string>
+    <string name="generic_yes_family">అవును (కుటుంబ సభ్యుడు)</string>
+
+    <string name="are_you_taking_any_medication_for_bp">మీరు ప్రస్తుతం రక్తపోటు మందులు తీసుకుంటున్నారా?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">మీరు ప్రస్తుతం మధుమేహం మందులు తీసుకుంటున్నారా?</string>
+    <string name="are_you_taking_any_medication_for_anemia">మీరు ప్రస్తుతం రక్తహీనత మందులు తీసుకుంటున్నారా?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">మీరు గత 1 సంవత్సరంలో రక్తపోటు కోసం ఏదైనా ఆరోగ్య కార్యకర్తను కలిశారా?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">మీరు గత 1 సంవత్సరంలో మధుమేహం కోసం ఏదైనా ఆరోగ్య కార్యకర్తను కలిశారా?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">మీరు గత 1 సంవత్సరంలో రక్తహీనత కోసం ఏదైనా ఆరోగ్య కార్యకర్తను కలిశారా?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">మీరు ఎందుకు రక్తపోటు మందులు తీసుకోవడం లేదు?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">మీరు ఎందుకు మధుమేహం మందులు తీసుకోవడం లేదు?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">మీరు ఎందుకు రక్తహీనత మందులు తీసుకోవడం లేదు?</string>
+
+    <string name="never_prescribed_medication">నాకు ఎప్పుడూ మందులు సూచించలేదు</string>
+    <string name="forgot_to_take_it">నేను తీసుకోవడం మర్చిపోయాను</string>
+    <string name="cannot_afford_medications">నేను మందులు కొనలేను</string>
+    <string name="ran_out_of_medication">నా మందులు అయిపోయాయి / పోయాయి</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">నాకు నా PHC లో ఫాలోఅప్ అవసరం ఉంది</string>
+    <string name="i_dont_think_i_need_it">నాకు అది అవసరం లేదని అనుకుంటున్నాను</string>
+    <string name="side_effect_related_to_medication">మందుల వల్ల దుష్ప్రభావాలు</string>
+    <string name="unknown_other">తెలియదు / ఇతర</string>
+    <string name="enter_mobile_no">మొబైల్ నంబర్ నమోదు చేయండి</string>
+    <string name="select_your_choice">మీ ఎంపికను ఎంచుకోండి</string>
+    <string name="bp_label">రక్తపోటు</string>
+    <string name="anemia_label">రక్తహీనత</string>
+
+    <string name="view_ncd_module">సమాచార మాడ్యూల్ చూడండి</string>
+    <string name="share_ncd_module">సమాచార మాడ్యూల్ పంచుకోండి</string>
+    <string name="suggested_info_modules">సిఫారసు చేసిన NCD ఆరోగ్య సమాచారం మాడ్యూల్‌లు</string>
+    <string name="ncd_info_whatsapp_msg">హలో, Intelehealth వాడినందుకు ధన్యవాదాలు.\nHypertension కోసం మీ ఆరోగ్య సమాచారం మాడ్యూల్ డౌన్‌లోడ్ చేసుకోవడానికి ఇక్కడ క్లిక్ చేయండి</string>
+    <string name="enter_whatsapp_number">దయచేసి WhatsApp నంబర్ నమోదు చేయండి</string>
+    <string name="share_ncd_info_dialog_title">ఈ NCD ఆరోగ్య సమాచారాన్ని ఈ WhatsApp నంబర్‌కి పంచబడుతుంది</string>
+
+
+
     <string name="screening_lbl">Screening</string>
+    <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine ఉపయోగించినందుకు ధన్యవాదాలు. దయచేసి సమాచారం డౌన్‌లోడ్ చేసి అధిక రక్తపోటు నియంత్రించడానికి లేదా తగ్గించడానికి చదవండి</string>
+    <string name="health_information">ఆరోగ్య సమాచారం</string>
+    <string name="saved_to_downloads">ఫైల్ Downloads లో సేవ్ చేయబడింది</string>
+    <string name="failed_to_save_downloads">PDF సేవ్ చేయడంలో విఫలమైంది</string>
+
 </resources>

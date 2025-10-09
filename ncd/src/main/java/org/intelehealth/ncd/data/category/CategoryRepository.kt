@@ -9,6 +9,10 @@ import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.model.Visit
 import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class CategoryRepository(private val dataSource: CategoryDataSource) {
 
@@ -32,6 +36,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
         rawDataList.forEach {
         }
+        Log.d("TAG", "getPatientVisitDetails: attributeTypeUuid : $attributeTypeUuid")
+        Log.d("TAG", "getPatientVisitDetails: visitNoteEncounterUuid : $visitNoteEncounterUuid")
 
         val result = buildPatientVisitDetails(rawDataList)
         result.forEachIndexed { index, item ->
@@ -49,6 +55,14 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                     "dd MMM 'at' hh:mm a"
                 )
             }
+            Log.d("TAG", "buildPatientVisitDetailsForGeneral: rawDataList : "+Gson().toJson(rawDataList))
+
+            val isFollowupFromObs = data.chiefComplaintData?.let {
+                checkFollowUpFlag(it)}
+            Log.d("TAG", "buildPatientVisitDetailsForGeneral: isFollowupFromObs : "+isFollowupFromObs)
+
+            Log.d("TAG", "buildPatientVisitDetailsForGeneral: data.chiefComplaintData : "+data.chiefComplaintData)
+
 
             PatientVisitDetails(
                 patientId = data.patientId,
@@ -63,7 +77,11 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 personAttributeTypeUuid = data.personAttributeTypeUuid,
                 startDate = formattedStartDate,
                 patientPhoto = data.patientPhoto,
-                isPrescriptionExist = data.isPrescriptionExist == true
+                isPrescriptionExist = data.isPrescriptionExist,
+                isNcdVisit = data.isNcdVisit,
+                chiefComplaintData = data.chiefComplaintData,
+                followUpFromProtocol = isFollowupFromObs,
+                visitSpeciality = data.visitSpeciality
             )
         }
     }
@@ -98,8 +116,47 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 personAttributeTypeUuid = data.personAttributeTypeUuid,
                 startDate = formattedStartDate,
                 patientPhoto = data.patientPhoto,
-                isPrescriptionExist = data.isPrescriptionExist == true
+                isPrescriptionExist = data.isPrescriptionExist,
             )
+        }
+    }
+    suspend fun getPatientVisitDetailsForFollowup(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
+        val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid)
+        rawDataList.forEach {
+        }
+        Log.d("TAG", "getPatientVisitDetailsForFollowup: attributeTypeUuid : $attributeTypeUuid")
+        Log.d("TAG", "getPatientVisitDetailsForFollowup: visitNoteEncounterUuid : $visitNoteEncounterUuid")
+
+        val result = buildPatientVisitDetails(rawDataList)
+        result.forEachIndexed { index, item ->
+        }
+        return result
+    }
+
+    fun checkFollowUpFlag(chiefComplaintData: String?): Boolean {
+        Log.d("TAG", "checkFollowUpFlag: chiefComplaintData : "+chiefComplaintData)
+
+        if (chiefComplaintData.isNullOrBlank()) return false
+
+        return try {
+            // 1. Extract the date after "Next Follow Up Date - "
+            val regex = "Next Follow Up Date - ([0-9]{1,2}/[A-Za-z]{3}/[0-9]{4})".toRegex()
+            val match = regex.find(chiefComplaintData) ?: return false
+            val dateStr = match.groupValues[1] // e.g., "30/Oct/2025"
+            Log.d("TAG", "checkFollowUpFlag: dateStr : "+dateStr)
+
+            // 2. Parse the date in the format dd/MMM/yyyy
+            val inputFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH)
+            val followUpDate = inputFormat.parse(dateStr) ?: return false
+
+            // 3. Check if today's date is equal to or after follow-up date
+            val today = Calendar.getInstance().time
+            Log.d("TAG", "checkFollowUpFlag: today : "+today)
+
+            !today.before(followUpDate) // true if today >= follow-up date, false otherwise
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 

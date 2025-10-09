@@ -30,5 +30,6 @@ class CategoryDataSource(
     suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String): String = visitDao.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitRawData(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawData(age, attributeTypeUuid,visitNoteEncounterUuid)
     suspend fun getPatientVisitRawDataBelowAgeForGeneral(age: Int, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataBelowAgeForGeneral(age,visitNoteEncounterUuid)
+    suspend fun getPatientVisitRawDataForFollowup(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataForFollowup(age, attributeTypeUuid,visitNoteEncounterUuid)
 
 }

@@ -50,7 +50,7 @@ class DiabetesScreeningViewModel(
            val result = repository.getPatientVisitDetails(
                age = Constants.DIABETES_EXCLUSION_AGE,
                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-               visitNoteEncounterUuid = Constants.VISIT_NOTE,
+               visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
            )
 
            // Extract patient and attribute info

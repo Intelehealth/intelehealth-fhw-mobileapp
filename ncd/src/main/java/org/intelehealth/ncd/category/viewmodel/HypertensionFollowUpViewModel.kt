@@ -1,9 +1,11 @@
 package org.intelehealth.ncd.category.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
@@ -45,12 +47,12 @@ class HypertensionFollowUpViewModel(
         }
     }*/
 
-    fun getPatientsForHypertensionFollowUp() {
+    /*fun getPatientsForHypertensionFollowUp() {
         viewModelScope.launch {
-            val result = repository.getPatientVisitDetails(
+            val result = repository.getPatientVisitDetailsForFollowup(
                 age = Constants.HYPERTENSION_EXCLUSION_AGE,
                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-                visitNoteEncounterUuid = Constants.VISIT_NOTE,
+                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             )
 
             // Extract patient and attribute info
@@ -90,9 +92,10 @@ class HypertensionFollowUpViewModel(
             allPatients.addAll(filteredResult)
 
             // Post initial full list to LiveData
+            Log.d("TAG", "getPatientsForHypertensionFollowUp: filteredResult : "+filteredResult)
             _hypertensionFollowUpMutableLiveData.postValue(filteredResult)
         }
-    }
+    }*/
     fun searchPatient(query: String) {
         val filtered = if (query.isBlank()) {
             allPatients
@@ -105,4 +108,27 @@ class HypertensionFollowUpViewModel(
         }
         _hypertensionFollowUpMutableLiveData.postValue(filtered)
     }
+    fun getPatientsForHypertensionFollowUp() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetailsForFollowup(
+                age = Constants.HYPERTENSION_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+            )
+            Log.d("TAG", "getPatientsForHypertensionFollowUp: result size : "+result)
+            Log.d("TAG", "getPatientsForHypertensionFollowUp: result data : "+ Gson().toJson(result))
+
+            // Filter directly on PatientVisitDetails without mapping
+            val filteredResult = utils.segregateAndFetchPatientVisitDetails(
+                patientVisitDetailsList = result,
+                category = Constants.HYPERTENSION_FOLLOW_UP
+            )
+
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
+
+            _hypertensionFollowUpMutableLiveData.postValue(filteredResult)
+        }
+    }
+
 }

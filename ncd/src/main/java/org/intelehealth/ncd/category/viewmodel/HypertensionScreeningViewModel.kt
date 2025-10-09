@@ -27,13 +27,13 @@ class HypertensionScreeningViewModel(
     val hypertensionScreeningLiveData: LiveData<List<PatientVisitDetails>> = _hypertensionScreeningMutableLiveData
 
     private val allPatients = mutableListOf<PatientVisitDetails>()
-
+/*
     fun getPatientsForHypertensionScreening() {
         viewModelScope.launch {
             val result = repository.getPatientVisitDetails(
                 age = Constants.HYPERTENSION_EXCLUSION_AGE,
                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-                visitNoteEncounterUuid = Constants.VISIT_NOTE,
+                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             )
 
             val patientList = result.map {
@@ -69,11 +69,11 @@ class HypertensionScreeningViewModel(
             // Save the full filtered result
             allPatients.clear()
             allPatients.addAll(filteredResult)
-
+            Log.d("TAG", "getPatientsForHypertensionScreening: filteredResult : "+filteredResult)
             // Post initial full list to LiveData
             _hypertensionScreeningMutableLiveData.postValue(filteredResult)
         }
-    }
+    }*/
 
     fun searchPatient(query: String) {
         val filtered = if (query.isBlank()) {
@@ -86,6 +86,26 @@ class HypertensionScreeningViewModel(
             }
         }
         _hypertensionScreeningMutableLiveData.postValue(filtered)
+    }
+    fun getPatientsForHypertensionScreening() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetailsForFollowup(
+                age = Constants.HYPERTENSION_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+            )
+
+            // Filter directly on PatientVisitDetails without mapping
+            val filteredResult = utils.segregateAndFetchPatientVisitDetails(
+                patientVisitDetailsList = result,
+                category = Constants.HYPERTENSION_SCREENING
+            )
+
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
+
+            _hypertensionScreeningMutableLiveData.postValue(filteredResult)
+        }
     }
 
     /*fun getPatientsForHypertensionScreening(age: Int) {

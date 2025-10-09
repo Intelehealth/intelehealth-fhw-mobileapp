@@ -27,7 +27,7 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
         viewModelScope.launch(Dispatchers.IO) {
             val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(
                 Constants.GENERAL_EXCLUSION_AGE,
-                Constants.VISIT_NOTE
+                Constants.ENCOUNTER_VISIT_COMPLETE
             )
 
           /*  // Extract patient and attribute info

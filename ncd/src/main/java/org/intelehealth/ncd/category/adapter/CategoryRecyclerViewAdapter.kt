@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.databinding.ListItemSearchProtocolwiseBinding
@@ -30,6 +31,7 @@ class CategoryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.bind(patientList[position])
+        Log.d("TAG", "onBindViewHolder: patientList : "+Gson().toJson(patientList))
     }
 
     class CategoryViewHolder(

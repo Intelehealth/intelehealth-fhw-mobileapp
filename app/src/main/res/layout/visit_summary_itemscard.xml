@@ -882,6 +882,18 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <!--Health info module-->
+
+        <include
+            android:id="@+id/layout_health_info_module"
+            layout="@layout/layout_health_info_module"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/toolbar_margin_left"
+            android:layout_marginEnd="@dimen/toolbar_margin_left"
+            android:layout_below="@+id/visitReasonCard"
+            android:layout_height="wrap_content"/>
 
         <!--    Phys exam card-->
         <androidx.cardview.widget.CardView

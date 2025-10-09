@@ -136,6 +136,9 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.Specializations
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.HealthModuleItem;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoModuleFilesNameGenerator;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoViewAndShareHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -409,6 +412,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
 
     private boolean mIsNCDVisit = false;
+    private List<String> infoModulesList;
+    private List<HealthModuleItem> infoModulesFileUrlsList;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -501,7 +506,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
 //            }
+
         }
+        mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -510,7 +519,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
         context = VisitSummaryActivity_New.this;
-
+        infoModulesList = new ArrayList<>();
+        infoModulesFileUrlsList = new ArrayList<>();
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -544,6 +554,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         checkIfVisitIsEnded();
 
         language = sessionManager.getAppLanguage();
+        //shareAndViewInfoModel();
+        viewAndShareHealthInfoModule();
     }
 
     private void checkIfVisitIsEnded() {
@@ -774,6 +786,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+
         if (mIsNCDVisit) {
             findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
             findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
@@ -5953,7 +5968,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 setDataForChiefComplainSummary(value);
 
             }
+            Log.d(TAG, "setQAData: value before : "+value);
+           /* NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
 
+            infoModulesList= fileGenerator.generateFileNames(value, sessionManager.getAppLanguage());
+            infoModulesFileUrlsList= fileGenerator.generateFileUrls(value, sessionManager.getAppLanguage());
+
+            Log.d(TAG, "setQAData: infoModulesList : "+new Gson().toJson(infoModulesList));*/
 
         }
         // complaints data - end
@@ -6103,6 +6124,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     List<String> mChiefComplainList = new ArrayList<>();
 
     private void setDataForChiefComplainSummary(String answerInLocale) {
+        Log.d(TAG, "setDataForChiefComplainSummary: answerInLocale : "+answerInLocale);
         mChiefComplainList.clear();
         String lCode = sessionManager.getAppLanguage();
         //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
@@ -6653,14 +6675,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
-    private void hideSectionsForSevikaVisit() {
-//        vitalsCardView.setVisibility(View.GONE);
-//        physicalExamCardView.setVisibility(View.GONE);
-//        patientHistoryCardView.setVisibility(View.GONE);
-//        familyHistoryCardView.setVisibility(View.GONE);
-    }
-
     private void endSevikaVisitOnUpload() {
+        Log.d(TAG, "endSevikaVisitOnUpload: mIsNCDVisit : "+mIsNCDVisit);
         if (!mIsNCDVisit) return;
 
         String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
@@ -6677,4 +6693,39 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        startActivity(intent);
     }
+    private void viewAndShareHealthInfoModule() {
+        NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
+        String value  = VisitsDAO.getComplaintValueInEnglish(visitUUID);
+        infoModulesFileUrlsList= fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage());
+        boolean hasFollowup = value.toLowerCase().contains("followup");
+        if(hasFollowup){
+            if(infoModulesFileUrlsList==null && infoModulesFileUrlsList.isEmpty())
+                return;
+            mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
+            mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
+            mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleHeaderRelative.setOnClickListener(v -> {
+                if (mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.getVisibility() == View.VISIBLE) {
+                    mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.setVisibility(View.GONE);
+                    mOpenCount--;
+                    if (mOpenCount == 0) {
+                        openall_btn.setText(getResources().getString(R.string.open_all));
+                        openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                    }
+                } else {
+                    mOpenCount++;
+                    mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.setVisibility(View.VISIBLE);
+                    openall_btn.setText(getResources().getString(R.string.close_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+                }
+            });
+
+            NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context, mBinding);
+            ncdInfoViewAndShareHelper.viewNcdInfoModuleInfoNew(infoModulesFileUrlsList, mBinding);
+
+            mBinding.layoutShareInfoModule.setOnClickListener(v -> ncdInfoViewAndShareHelper.showShareDialog(patientUuid, infoModulesFileUrlsList));
+
+        }
+
+    }
+
 }
