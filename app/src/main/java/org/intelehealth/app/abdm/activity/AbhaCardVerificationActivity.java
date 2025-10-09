@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.github.ajalt.timberkt.Timber;
@@ -41,15 +42,19 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
+import org.intelehealth.app.abdm.model.ABHAProfile;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.Data;
+import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
+import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
+import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SearchAbhaProfile;
 import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
@@ -70,6 +75,7 @@ import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -737,6 +743,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
+                        } else if (response.code() == 404) {
+                            startCreateAbhaFlow();
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
                             disableUI(true);
@@ -753,6 +761,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     }
                 })).start();
 
+    }
+
+    private void startCreateAbhaFlow() {
+        DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), getString(R.string.abha_user_does_not_exist), getString(R.string.ok), action -> {
+            Intent intent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
+            sessionManager.setCreateAbha(true);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void callFetchAuthModesAPI(String abhaAddress, String xToken, String accessToken) {
@@ -1013,8 +1030,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
 
             // mobile for aadhaar - end
-        }
-        else if (!optionSelected.isEmpty() && optionSelected.equals(MOBILE_NUMBER_SELECTION)) {  // Phone number field
+        } else if (!optionSelected.isEmpty() && optionSelected.equals(MOBILE_NUMBER_SELECTION)) {  // Phone number field
 
             String mobile = Objects.requireNonNull(binding.layoutHaveABHANumber.edittextMobileNumber.getText()).toString().replace(" ", "").trim();
             Timber.tag(TAG).v(mobile);

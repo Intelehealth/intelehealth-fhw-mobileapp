@@ -1979,4 +1979,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="special_characters_position_validation">Dot (.) or underscore (_) must be in the middle, not at the beginning or end.</string>
     <string name="special_characters_count_validation">Only one dot (.) and/or one underscore (_) is allowed in the ABHA address.</string>
 
+    // Abha Account Doesn't Exist String
+    <string name="abha_user_not_found">ABHA User Not Found</string>
+    <string name="abha_user_does_not_exist">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
+
 </resources>
