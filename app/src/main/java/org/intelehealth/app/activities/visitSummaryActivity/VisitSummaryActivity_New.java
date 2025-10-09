@@ -3347,22 +3347,29 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 boolean isUpdateVisitDone = false;
                 try {
-                    if (!isVisitSpecialityExists) {
-                        // check ncd
+                    if (!mIsNCDVisit) {
+                        if (!isVisitSpecialityExists) {
+                            // check ncd
 
-                        isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
-                    }
-                    if (selectedFacilityToVisit != null) {
-                        visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
-                    }
-                    if (selectedSeverity != null) {
-                        visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
-                    }
+                            isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
+                        }
+                        if (selectedFacilityToVisit != null) {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+                        }
+                        if (selectedSeverity != null) {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
+                        }
 
-                    if (!isVisitSpecialityExists) {
-                        visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                        if (!isVisitSpecialityExists) {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                        } else {
+                            visitAttributeListDAO.updateVisitAttribute(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                        }
                     } else {
-                        visitAttributeListDAO.updateVisitAttribute(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                        if (visitAttributeListDAO.isVisitAttributeExists(visitUuid, VISIT_UPLOAD_TIME))
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                        else
+                            visitAttributeListDAO.updateVisitAttribute(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
                     }
 
 
@@ -5943,7 +5950,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (isAssociateSymptomFound)
                     valueArray[1] = valueArray[1].split("::")[1];*/
 
-                    setDataForChiefComplainSummary(value);
+                setDataForChiefComplainSummary(value);
 
             }
 

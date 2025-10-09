@@ -214,7 +214,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
 
         latestQuestionnaire =
-            assets.open("tv/" + questionnaireFileName).bufferedReader().use { it.readText() }
+            assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }

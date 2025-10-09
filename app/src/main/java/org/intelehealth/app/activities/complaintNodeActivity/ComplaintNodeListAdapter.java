@@ -47,6 +47,7 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
     public void onBindViewHolder(@NonNull ComplaintNodeListAdapter.ItemViewHolder itemViewHolder, int position) {
         final Node thisNode = mNodesFilter.get(position);
         itemViewHolder.mChipText.setText(thisNode.findDisplay());
+        itemViewHolder.mChip.setTag(position);
 
 
        /* .setOnClickListener(new View.OnClickListener() {
@@ -78,7 +79,12 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
                 //   CustomLog.e("Pos",position+"");
 
                 // itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.amber));
-                if (!thisNode.isSelected()) {
+                // ata time select one item
+                int i = (int) v.getTag();
+                for (int j = 0; j < mNodesFilter.size(); j++) {
+                    mNodesFilter.get(j).setSelected(j == i);
+                }
+                /*if (!thisNode.isSelected()) {
                     thisNode.setSelected(true);
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
@@ -87,7 +93,7 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                     thisNode.setSelected(false);
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                }
+                }*/
 
                 // notifyItemChanged(position);
                 //thisNode.toggleSelected();

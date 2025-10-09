@@ -36,12 +36,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.dto.VisitAttributeDTO;
-import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.exception.DAOException;
-
 /**
  * Created by Prajwal Waingankar
  * on 20-Jul-20.
@@ -372,5 +366,16 @@ public class VisitAttributeListDAO {
         cursor.close();
         return isNcdVisit;
     }
-
+// check is visit arrtibue is alreday exists or not for  visitid
+    public static boolean isVisitAttributeExists(String visitUuid, String attributeTypeUUID) {
+        boolean exists = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=? and voided=0 LIMIT 1",
+                new String[]{visitUuid, attributeTypeUUID});
+        if (cursor.getCount() > 0) {
+            exists = true;
+        }
+        cursor.close();
+        return exists;
+    }
 }
