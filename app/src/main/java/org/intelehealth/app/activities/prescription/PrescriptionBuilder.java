@@ -327,6 +327,7 @@ public class PrescriptionBuilder {
         String vitalsDataString = "";
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ft), vitalsData.getHeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_bmi), vitalsData.getBmi());
 
         String systolicColor = "";
         if (vitalsData.getBpsys() == null || vitalsData.getBpsys().isEmpty()) {
@@ -375,6 +376,9 @@ public class PrescriptionBuilder {
         //vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.haemoglobin), vitalsData.getHaemoglobin());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.sugar_random), vitalsData.getSugarRandom());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.blood_group_txt), vitalsData.getBloodGroup());
 
         if (vitalsDataString.isEmpty()) return "";
 
@@ -463,7 +467,7 @@ public class PrescriptionBuilder {
             newValue = activityContext.getString(R.string.not_provided);
             //we are not gonna show empty vitals on ui
             //we removing whole ui for corresponding vitals
-            return "";
+            //return "";
         }
 
         return listOpeningTag
