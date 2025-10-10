@@ -105,7 +105,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private SnackbarUtils snackbarUtils;
     private SessionManager sessionManager = null;
     private CountDownTimer countDownTimer;
-    private static int resendCounter = 2;
+    private int resendCounter = 2;
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
