@@ -52,7 +52,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -155,6 +154,7 @@ import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientRegistrationFields;
+import org.intelehealth.ncd.constants.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -243,6 +243,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     String houseHoldValue = "";
     private boolean areAllVisitsEnded = true;
 
+    private String mIntentFromNCDCategoryName = Constants.GENERAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -299,6 +301,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
 
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+
+            // to know from which category NCD screening is being started
+            mIntentFromNCDCategoryName = intent.getStringExtra(Constants.INTENT_NCD_CATEGORY);
         }
 
         initUI();
@@ -500,7 +505,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             startActivity(intent2);
                             finish();
                         }*/
-                        if(action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                             // before starting, we determine if it is new visit for a returning patient
                             // extract both FH and PMH
                             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -605,6 +610,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             intent2.putExtra("tag", "new");
                             intent2.putExtra("advicefrom", "Sevika");
                             intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+                            intent2.putExtra(Constants.INTENT_NCD_CATEGORY, mIntentFromNCDCategoryName);
                             startActivity(intent2);
 
 

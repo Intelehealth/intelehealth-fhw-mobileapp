@@ -123,6 +123,6 @@ class DiabetesFollowUpFragment : SearchableFragment<DiabetesFollowUpViewModel>()
         binding = null
     }
     override fun onPatientClicked(patient: PatientVisitDetails) {
-        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.DIABETES_FOLLOW_UP)
     }
 }

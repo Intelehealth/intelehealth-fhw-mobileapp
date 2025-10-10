@@ -110,6 +110,6 @@ class HypertensionFollowUpFragment : SearchableFragment<HypertensionFollowUpView
         binding = null
     }
     override fun onPatientClicked(patient: PatientVisitDetails) {
-        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.HYPERTENSION_FOLLOW_UP)
     }
 }

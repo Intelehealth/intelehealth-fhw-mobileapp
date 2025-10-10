@@ -113,6 +113,6 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         binding = null
     }
     override fun onPatientClicked(patient: PatientVisitDetails) {
-        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.GENERAL)
     }
 }

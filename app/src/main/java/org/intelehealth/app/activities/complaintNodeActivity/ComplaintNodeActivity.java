@@ -84,6 +84,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private int mAgeInMonth = 0;
     private String mAgeAndMonth = "";
     private List<ReasonData> mSelectedComplains = new ArrayList<>();
+    private String mIntentFromNCDCategoryName = Constants.GENERAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             intentAdviceFrom = intent.getStringExtra("advicefrom");
+            // to know from which category NCD screening is being started
+            mIntentFromNCDCategoryName = intent.getStringExtra(Constants.INTENT_NCD_CATEGORY);
         }
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
@@ -360,11 +363,19 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     }
 
     private void autoSelectComplaints(List<String> diseaseList) {
-        for (String disease : diseaseList) {
+        /*for (String disease : diseaseList) {
             for (Node complaint : complaints) {
                 if (disease.equalsIgnoreCase(complaint.getText())) {
                     complaint.toggleSelected();
                 }
+            }
+        }*/
+        String selectedLineListCategoryName = mIntentFromNCDCategoryName.toLowerCase().replaceAll("_", "").replaceAll(" ", "").replaceAll("-", "");
+        for (Node complaint : complaints) {
+            String complainName = complaint.getText().toLowerCase().replaceAll("_", "").replaceAll(" ", "").replaceAll("-", "");
+            if (selectedLineListCategoryName.equalsIgnoreCase(complainName)) {
+                complaint.toggleSelected();
+                break;
             }
         }
     }
@@ -537,7 +548,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         JSONObject object = new JSONObject();
                         try {
                             object.put("text_" + sessionManager.getAppLanguage(), questionnaireResponseJsonLocal);
-                              object.put("text_en", questionnaireResponseJson);
+                            object.put("text_en", questionnaireResponseJson);
                             updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
                         } catch (JSONException e) {
                             throw new RuntimeException(e);

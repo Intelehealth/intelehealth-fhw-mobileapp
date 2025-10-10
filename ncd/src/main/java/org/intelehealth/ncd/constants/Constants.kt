@@ -13,6 +13,7 @@ object Constants {
     const val INTENT_PATIENT_STATUS = "status"
     const val INTENT_PATIENT_TAG = "tag"
     const val INTENT_HAS_PRESCRIPTION = "hasPrescription"
+    const val INTENT_NCD_CATEGORY = "tabName"
 
     // category
     const val ANEMIA_SCREENING = "anemia_screening"

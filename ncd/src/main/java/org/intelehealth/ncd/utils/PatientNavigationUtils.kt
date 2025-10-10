@@ -6,7 +6,7 @@ import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.model.PatientVisitDetails
 
 object PatientNavigationUtils {
-    fun openPatientDetail(context: Context, patient: PatientVisitDetails) {
+    fun openPatientDetail(context: Context, patient: PatientVisitDetails, category: String) {
         try {
             val intent = Intent(
                 context,
@@ -17,6 +17,7 @@ object PatientNavigationUtils {
                 putExtra(Constants.INTENT_PATIENT_STATUS, "returning")
                 putExtra(Constants.INTENT_PATIENT_TAG, "search")
                 putExtra(Constants.INTENT_HAS_PRESCRIPTION, "false")
+                putExtra(Constants.INTENT_NCD_CATEGORY, category)
             }
             context.startActivity(intent)
         } catch (e: ClassNotFoundException) {

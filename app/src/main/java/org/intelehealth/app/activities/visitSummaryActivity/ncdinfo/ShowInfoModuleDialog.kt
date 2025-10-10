@@ -35,7 +35,7 @@ class ShowInfoModuleDialog(
     fun show() {
         dialog = Dialog(context)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setContentView(R.layout.dialog_pdf_viewer)
+        //dialog?.setContentView(R.layout.dialog_pdf_viewer)
 
         // Resize dialog to 85% width & 65% height
         dialog?.window?.setLayout(

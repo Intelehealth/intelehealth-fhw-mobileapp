@@ -107,6 +107,6 @@ class AnemiaScreeningFragment : SearchableFragment<AnemiaScreeningViewModel>(), 
         binding = null
     }
     override fun onPatientClicked(patient: PatientVisitDetails) {
-        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.ANEMIA_SCREENING)
     }
 }

@@ -112,7 +112,7 @@ class AnemiaFollowUpFragment : SearchableFragment<AnemiaFollowUpViewModel>(), Pa
     }
 */
     override fun onPatientClicked(patient: PatientVisitDetails) {
-        PatientNavigationUtils.openPatientDetail(requireContext(), patient)
+        PatientNavigationUtils.openPatientDetail(requireContext(), patient,Constants.ANEMIA_FOLLOW_UP)
     }
 
 }
