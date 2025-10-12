@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.databinding.LayoutPrescriptionBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -39,6 +40,7 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
@@ -662,11 +664,53 @@ public class PrescriptionBuilder {
         }
 
         String finalMedicationDataString = "";
+        //String[] medicationDataArray = medicationData.split("\n");
+
+        String tableRowOpeningTag = "<tr>";
+        String tableRowClosingTag = " </tr>";
+        String tableDataOpeningTag = "<td>";
+        String tableDataClosingTag = "</td>";
+
+        StringBuilder builder = new StringBuilder();
+
         String[] medicationDataArray = medicationData.split("\n");
 
-        if (!checkIfArrayContainsMedicationData(medicationDataArray)) {
+        for (String medicine : medicationDataArray) {
+            if (ParserUtils.Companion.parse(medicine) instanceof PrescribedMedicineModel) {
+                PrescribedMedicineModel model = ((PrescribedMedicineModel) ParserUtils.Companion.parse(medicine));
+
+                builder.append(tableRowOpeningTag);
+
+                builder.append(tableDataOpeningTag);
+                assert model != null;
+                builder.append(model.getMedicineName());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getStrength());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getNoOfDays());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getTiming());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getRemark());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableRowClosingTag);
+
+                finalMedicationDataString = builder.toString();
+            }
+
+    /*    if (!checkIfArrayContainsMedicationData(medicationDataArray)) {
             finalMedicationDataString = handleEmptyMedicationData();
-        } else {
+        }
+        else {
             String[][] splitMedicationDataArray = new String[medicationDataArray.length][5];
             for (int i = 0; i < splitMedicationDataArray.length; i++) {
                 if (medicationDataArray[i].contains(":")) {
@@ -695,10 +739,11 @@ public class PrescriptionBuilder {
             }
 
             finalMedicationDataString = builder.toString();
+        }*/
         }
-
         return finalMedicationDataString;
     }
+
 
     private String handleEmptyMedicationData() {
         String finalEmptyMedicationString = "";
@@ -747,7 +792,7 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         StringBuilder additionalInstructionsData = new StringBuilder();
-        String[] medicationDataArray = medicationData.split("\n");
+       /* String[] medicationDataArray = medicationData.split("\n");
         for (String s : medicationDataArray) {
             if (!s.contains(":")) {
                 additionalInstructionsData.append(listOpeningTag);
@@ -758,6 +803,23 @@ public class PrescriptionBuilder {
                 additionalInstructionsData.append(divClosingTag);
                 additionalInstructionsData.append(listClosingTag);
             }
+        }*/
+
+        StringBuilder builder = new StringBuilder();
+
+        String[] medicationDataArray = medicationData.split("\n");
+
+        for (String medicine : medicationDataArray) {
+            if (ParserUtils.Companion.parse(medicine) instanceof String) {
+                additionalInstructionsData.append(listOpeningTag);
+                additionalInstructionsData.append(divOpeningTag);
+                additionalInstructionsData.append(spanOpeningTag);
+                additionalInstructionsData.append(ParserUtils.Companion.parse(medicine));
+                additionalInstructionsData.append(spanClosingTag);
+                additionalInstructionsData.append(divClosingTag);
+                additionalInstructionsData.append(listClosingTag);
+            }
+
         }
         if (additionalInstructionsData.length() == 0) return "";
 

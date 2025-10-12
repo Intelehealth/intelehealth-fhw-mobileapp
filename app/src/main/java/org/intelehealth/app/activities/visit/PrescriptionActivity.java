@@ -1464,7 +1464,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
-                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+               // adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -2738,14 +2738,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         // Generate an HTML document on the fly:
-        String fontFamilyFile = "";
+        String fontFamilyFile = "src: url('file:///android_asset/font/youthness.ttf);";
         if (details != null && details.getFontOfSign() != null) {
             if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/youthness.ttf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/asem.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/arty.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
