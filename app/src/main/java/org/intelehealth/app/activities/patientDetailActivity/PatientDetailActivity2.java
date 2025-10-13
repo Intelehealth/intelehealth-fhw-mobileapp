@@ -1588,6 +1588,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         // setting abha number value
         if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().equals("") && !patientDTO.getAbhaNumber().equals("NA")) {
             patientAbhaNumber.setText(patientDTO.getAbhaNumber());
+            personal_edit.setVisibility(View.GONE);
         } else {
             patientAbhaNumber.setText(getResources().getString(R.string.not_provided));
             btnViewAbhaCard.setVisibility(View.GONE);

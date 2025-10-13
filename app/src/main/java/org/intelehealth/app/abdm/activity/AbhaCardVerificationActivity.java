@@ -233,12 +233,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void setAbhaCardVisibility() {
         optionSelected = ABHA_SELECTION;
         sessionManager.setAbhaLoginType(SessionManager.ABHA_LOGIN);
+        binding.layoutHaveABHANumber.cvTermsAndCondition.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_ui2);
         binding.layoutHaveABHANumber.buttonUsername.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
         binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundResource(R.drawable.button_bg_forgot_pass_disabled_ui2);
         binding.sendOtpBtn.setText(R.string.send_otp);
+        binding.sendOtpBtn.setEnabled(true);
+
 
     }
 
@@ -248,6 +251,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void setMobileVisibility() {
         optionSelected = MOBILE_NUMBER_SELECTION;
         sessionManager.setAbhaLoginType(SessionManager.MOBILE_LOGIN);
+        binding.layoutHaveABHANumber.cvTermsAndCondition.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
@@ -259,6 +263,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         binding.sendOtpBtn.setText("Search Profiles");
+        binding.sendOtpBtn.setEnabled(true);
     }
 
     /**
@@ -267,6 +272,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void setAadhaarCardVisibility() {
         optionSelected = AADHAAR_CARD_SELECTION;
         sessionManager.setAbhaLoginType(SessionManager.AADHAAR_LOGIN);
+        binding.layoutHaveABHANumber.cvTermsAndCondition.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
         binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.GONE);
         binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.VISIBLE);
