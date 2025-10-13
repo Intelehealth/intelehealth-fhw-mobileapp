@@ -3845,10 +3845,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty()) {
-                    adviceReturned = adviceReturned + "\n" + value;
+                    adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
-                    adviceReturned = value;
+                    adviceReturned = Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
@@ -3878,7 +3878,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
-                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                //adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());

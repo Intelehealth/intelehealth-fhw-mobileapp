@@ -6,8 +6,11 @@ import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
@@ -17,19 +20,26 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.chatHelp.ChatHelpActivity_New;
 import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.databinding.LayoutPrescriptionBinding;
@@ -873,7 +883,10 @@ public class PrescriptionBuilder {
         String spanOpeningTag = "<span>";
         String spanClosingTag = "</span>";
 
-        if (!adviceData.contains("<br><br>")) {
+        //removing all bullets as we are adding through html
+        adviceData = adviceData.replaceAll(Node.bullet, "");
+
+        if (!adviceData.contains("\n\n")) {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
@@ -886,7 +899,7 @@ public class PrescriptionBuilder {
             finalAdviceStringBuilder.append(closingDivTag);
             finalAdviceStringBuilder.append(listClosingTag);
         } else {
-            String[] adviceArray = adviceData.split("<br><br>");
+            String[] adviceArray = adviceData.split("\n\n");
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
@@ -901,6 +914,36 @@ public class PrescriptionBuilder {
                 finalAdviceStringBuilder.append(listClosingTag);
             }
         }
+
+        /*if (!adviceData.contains("<br><br>")) {
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if (adviceData.isEmpty()) return "";
+            finalAdviceStringBuilder.append(listOpeningTag);
+            finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+            finalAdviceStringBuilder.append(spanOpeningTag);
+            finalAdviceStringBuilder.append(adviceData);
+            finalAdviceStringBuilder.append(spanClosingTag);
+            finalAdviceStringBuilder.append(closingDivTag);
+            finalAdviceStringBuilder.append(listClosingTag);
+        }
+        else {
+            String[] adviceArray = adviceData.split("<br><br>");
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if (adviceArray.length == 0) return "";
+            for (String advice : adviceArray) {
+                finalAdviceStringBuilder.append(listOpeningTag);
+                finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+                finalAdviceStringBuilder.append(spanOpeningTag);
+                finalAdviceStringBuilder.append(advice);
+                finalAdviceStringBuilder.append(spanClosingTag);
+                finalAdviceStringBuilder.append(closingDivTag);
+                finalAdviceStringBuilder.append(listClosingTag);
+            }
+        }*/
 
         return finalAdviceStringBuilder.toString();
     }
@@ -1356,8 +1399,8 @@ public class PrescriptionBuilder {
     }
 
     public void setAdvice(String advice) {
-        advice = removeNodeBulletsAndLineBreaks(advice);
-        advice = getOrganizedDataWithBullets(advice);
+       /* advice = removeNodeBulletsAndLineBreaks(advice);
+        advice = getOrganizedDataWithBullets(advice);*/
         checkDataValidOrHideViews(binding.tvGeneralAdvice, binding.tvGeneralAdviceData, advice);
     }
 
@@ -1368,9 +1411,21 @@ public class PrescriptionBuilder {
     public void setDoctorData(ClsDoctorDetails clsDoctorDetails) {
         if (clsDoctorDetails == null) return;
 
-        binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
-        binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
+        //checking text signature exist or not if exit then setting the text
+        //otherwise setting image signature
+        if (clsDoctorDetails.getTextOfSign() != null) {
+            binding.imDrSignature.setVisibility(View.GONE);
+            binding.tvDrSignature.setVisibility(View.VISIBLE);
+            binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
+            binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
+        } else if(clsDoctorDetails.getSignature() != null) {
+
+            binding.tvDrSignature.setVisibility(View.GONE);
+            binding.imDrSignature.setVisibility(View.VISIBLE);
+            setBase64ToImageView(clsDoctorDetails.getSignature(), binding.imDrSignature);
+        }
         binding.tvDrName.setText(checkValueAndReturnNA(clsDoctorDetails.getName()));
+
 
         String degreeSpecialization = "";
         if (clsDoctorDetails.getQualification() != null) {
@@ -1390,6 +1445,28 @@ public class PrescriptionBuilder {
         binding.tvDrEmail.setText(activityContext.getString(R.string.prescription_dr_email, checkValueAndReturnNA(clsDoctorDetails.getEmailId())));
         binding.tvDrRegistration.setText(activityContext.getString(R.string.prescription_dr_registration, checkValueAndReturnNA(clsDoctorDetails.getRegistrationNumber())));
     }
+
+
+    public void setBase64ToImageView(String base64String, ImageView imageView) {
+        try {
+            // Remove data:image/...;base64, if exists
+            if (base64String.contains(",")) {
+                base64String = base64String.split(",")[1];
+            }
+
+            // Decode Base64 string
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+
+            // Convert to Bitmap
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+            // Set to ImageView
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private String checkValueAndReturnNA(String value) {
         if (value == null || value.isEmpty() || value.isBlank()) {
@@ -1459,15 +1536,16 @@ public class PrescriptionBuilder {
 
     private Typeface getSignatureTypeface(String font) {
         String directory = "font/youthness.ttf";
-
-        if (font.equalsIgnoreCase("Youthness")) {
-            directory = "font/youthness.ttf";
-        } else if (font.equalsIgnoreCase("Asem")) {
-            directory = "font/asem.otf";
-        } else if (font.equalsIgnoreCase("Arty")) {
-            directory = "font/arty.otf";
-        } else if (font.equalsIgnoreCase("Almondita")) {
-            directory = "font/almondita.ttf";
+        if (font != null) {
+            if (font.equalsIgnoreCase("Youthness")) {
+                directory = "font/youthness.ttf";
+            } else if (font.equalsIgnoreCase("Asem")) {
+                directory = "font/asem.otf";
+            } else if (font.equalsIgnoreCase("Arty")) {
+                directory = "font/arty.otf";
+            } else if (font.equalsIgnoreCase("Almondita")) {
+                directory = "font/almondita.ttf";
+            }
         }
 
         return Typeface.createFromAsset(activityContext.getAssets(), directory);

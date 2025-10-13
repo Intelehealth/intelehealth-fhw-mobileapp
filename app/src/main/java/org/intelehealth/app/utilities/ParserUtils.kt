@@ -5,8 +5,12 @@ import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel
 class ParserUtils {
     companion object {
         fun parse(data: String): Any? {
+            //possible format
+            //1. Acetazolamide: 250mg, Tablet 30 minutes before food (Subcutaneous) 0 - 0 - 1 for 12 days
+            //2. Artesunate + Sulphadoxine Pyrimethamine: 250, Tablet 1 - 0 - 0 for 2 days
+            //3. Artesunate + Sulphadoxine Pyrimethamine: 250, Tablet 1 - 0 - 0
             val regex = Regex(
-                """^([^:]+):\s*([^,]+),\s*(.+?)\s*\(([^)]+)\)\s*([\d\s-]+)\s*for\s*(.+)$""",
+                """^([^:]+):\s*([^,]+),\s*(.*?)(?:\s*\(([^)]+)\))?\s*([\d\s-]+)(?:\s*for\s*(.+))?$""",
                 RegexOption.IGNORE_CASE
             )
             val match = regex.find(data.trim())

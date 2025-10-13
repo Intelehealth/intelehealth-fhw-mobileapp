@@ -2043,7 +2043,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if (hasPrescription) {
+       /* if (hasPrescription) {
             getVisitStartDate();
 
             String[] eColumns = {"visituuid", "encounter_type_uuid"};
@@ -2076,6 +2076,45 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             } catch (ActivityNotFoundException exception) {
                 Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
             }
+        }*/
+        if (hasPrescription) {
+            getVisitStartDate();
+
+            String[] patientNameArray = patientName.split(" ");
+            String fileNamePatientName = patientNameArray[0] + "-" + patientNameArray[1].charAt(0);
+            String prescriptionString = "Prescription";
+
+            String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+            buildAndSavePrescription(fileName);
+            try {
+                File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+                Uri uri = FileProvider.getUriForFile(PrescriptionActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("application/pdf");
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setPackage("com.whatsapp");
+                Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+                Log.d("DEBUG", "File exists: " + pdfFile.exists());
+                Log.d("DEBUG", "File size: " + pdfFile.length());
+                Log.d("DEBUG", "URI: " + uri.toString());
+                startActivity(intent);
+                updateLocalPrescriptionInformations(visitID);
+            } catch (ActivityNotFoundException exception) {
+                Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+            }
+        } else
+            showOkDismissDialog(null, getString(R.string.download_prescription_first_before_sharing), getString(R.string.ok));
+
+    }
+
+    private void showOkDismissDialog(String title, String message, String okBtn) {
+        try {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+        } catch (Exception e) {
+
         }
     }
 
@@ -2668,7 +2707,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         String referredSpeciality_web = stringToWeb(referredSpeciality);
 
-        String advice_web = stringToWeb(adviceReturned);
+        String advice_web = stringToWebAdvice(adviceReturned);
         //  String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
@@ -2906,6 +2945,21 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet + input.replaceAll("\n", para_close + para_open + Node.big_bullet) + para_close;
+        }
+
+        return formatted;
+    }
+
+    // string to web
+    //specially for advice to fit same strings on the view and prescription
+    private String stringToWebAdvice(String input) {
+        String formatted = "";
+        Log.d("IIIII", input);
+        if (input != null && !input.isEmpty()) {
+
+            String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "</p>";
+            formatted = para_open + input.replaceAll("\n", para_close + para_open) + para_close;
         }
 
         return formatted;
