@@ -1962,7 +1962,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="compare_data">Compare Data</string>
     <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
     <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
-    
+
     // Multiple ABHA accounts strings
     <string name="multiple_accounts_abha_index">Index: %1$s</string>
     <string name="multiple_accounts_abha_full_name">Name: %1$s</string>
@@ -1970,5 +1970,17 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="multiple_accounts_abha_gender">Gender: %1$s</string>
     <string name="multiple_accounts_abha_positive_status">Status: Registered with Intelehealth</string>
     <string name="multiple_accounts_abha_negative_status">Status: Not registered with Intelehealth</string>
+
+    // ABHA Suggestions Validation Strings
+    <string name="sbx_suffix_is_only_allowed_at_the_end">\'@sbx\' is only allowed at the end</string>
+    <string name="sbx_suffix_can_only_appear_once">\'@sbx\' can appear only once</string>
+    <string name="length_validation">ABHA address must be at least 8 characters long and cannot be longer than 18 characters.</string>
+    <string name="characters_validation">ABHA address can only contain letters, numbers, one dot (.) and/or one underscore (_).</string>
+    <string name="special_characters_position_validation">Dot (.) or underscore (_) must be in the middle, not at the beginning or end.</string>
+    <string name="special_characters_count_validation">Only one dot (.) and/or one underscore (_) is allowed in the ABHA address.</string>
+
+    // Abha Account Doesn't Exist String
+    <string name="abha_user_not_found">ABHA User Not Found</string>
+    <string name="abha_user_does_not_exist">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
 
 </resources>

@@ -75,7 +75,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     SnackbarUtils snackbarUtils;
     SessionManager sessionManager = null;
     private CountDownTimer countDownTimer;
-    private static int resendCounter = 2;
+    private int resendCounter = 2;
     private PatientDTO patientDTO = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -91,6 +91,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         patientDTO = (PatientDTO) getIntent().getSerializableExtra("patientDTO");
 
         binding.ivBackArrow.setOnClickListener(v -> finish());
+        resendCounter = 2;
 
         // check internet - start
         checkInternetConnection();
@@ -268,13 +269,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
                                 disableUI(false);
                             } else if (response.code() == 429) {
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                        StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
-
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
                                 disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                                 binding.otpBox.setText("");
+
+                                resendCounter = 0;
+                                resendCounterAttemptsTextDisplay();
                             } else {
                                 disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
