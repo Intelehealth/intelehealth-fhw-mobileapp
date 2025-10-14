@@ -255,7 +255,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         bottomActionController = QuestionnaireBottomActionController(rootView)
 
                         //bottomActionController.setBottomActionsEnabled(false)
-                        bottomActionController!!.setBottomActionsEnabledSmooth(false)
+                        bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
                         //bottomActionController.attachAutoToggleForRequiredInputs()
                         // hideNextButtonIn(root)
                         updateUIComponents();
