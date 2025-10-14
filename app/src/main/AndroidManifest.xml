@@ -66,46 +66,56 @@
         <activity
             android:name=".ui.initialsync.InitialSyncActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.draftsurvey.DraftSurveyActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
             android:name=".activities.draftSurvey.DraftSurveyOldActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.householdSurvey.HouseholdSurveyActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.prescription.thermalprinter.TextPrintESCActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.bill.BillGenerationActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.CommonWebviewActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.onboarding.PersonalConsentActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".profile.MyProfileActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -115,10 +125,12 @@
         <activity
             android:name=".ayu.visit.VisitCreationActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew" />
         <activity
             android:name=".activities.chatHelp.ChatHelpActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -128,6 +140,7 @@
         <activity
             android:name=".ui2.calendarviewcustom.CalendarViewDemoActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
@@ -137,6 +150,7 @@
         <activity
             android:name=".activities.aboutus.AboutUsActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -145,6 +159,7 @@
         <activity
             android:name=".activities.settingsActivity.Language_ProtocolsActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -153,6 +168,7 @@
         <activity
             android:name=".activities.patientSurveyActivity.PatientSurveyActivity_New"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -160,7 +176,8 @@
         </activity>
         <activity
             android:name=".horizontalcalendar.HorizontalCalendarActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -168,6 +185,7 @@
         <activity
             android:name=".activities.visit.PrescriptionActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
@@ -177,6 +195,7 @@
         <activity
             android:name=".activities.visit.EndVisitActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
@@ -186,6 +205,7 @@
         <activity
             android:name=".activities.visit.VisitActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
@@ -195,6 +215,7 @@
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity_New"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -204,6 +225,7 @@
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity2"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
@@ -213,6 +235,7 @@
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -222,41 +245,49 @@
         <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".appointmentNew.MyAppointmentActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".appointmentNew.MyAppointmentNew.MyAppointmentActivityNew"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.help.activities.ChatSupportHelpActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.help.activities.FAQActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.help.activities.MostSearchedVideosActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.forgotPasswordNew.ChangePasswordActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.splash.activity.SplashActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -268,6 +299,7 @@
         <activity
             android:name=".ui.patient.activity.PatientRegistrationActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
 
@@ -281,6 +313,7 @@
         <activity
             android:name=".activities.notification.view.NotificationActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
@@ -288,6 +321,7 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
@@ -295,26 +329,31 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/title_follow_up"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.onboarding.PrivacyPolicyActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.TermsAndConditionsActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.CommonWebViewActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.homeActivity.HomeScreenActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -326,21 +365,25 @@
         <activity
             android:name=".activities.loginActivity.LoginActivityNew"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.forgotPasswordNew.ResetPasswordActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.forgotPasswordNew.ForgotPasswordActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" /> <!-- <receiver -->
         <!-- android:name=".services.firebase_services.RTCMessageReceiver" -->
@@ -396,16 +439,19 @@
         <activity
             android:name=".activities.IntroActivity.IntroScreensActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.setupActivity.SetupActivityNew"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.onboarding.SetupPrivacyNoteActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
@@ -413,11 +459,13 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity_New"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".appointmentNew.ScheduleAppointmentActivity_New"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -427,6 +475,7 @@
         <activity
             android:name=".webrtc.activity.IDAChatActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -442,11 +491,13 @@
         <activity
             android:name=".ui.billgeneration.activity.BillCreationActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".webrtc.activity.IDACallLogActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
 
@@ -519,6 +570,7 @@
         <activity
             android:name=".activities.patientDetailActivity.TeleconsultationConsentActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
