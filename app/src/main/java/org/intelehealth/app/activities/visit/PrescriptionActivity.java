@@ -1616,13 +1616,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         StringBuilder additionalInstruction = new StringBuilder();
 
         for (String medicine : medicationDataArray) {
-            if (ParserUtils.Companion.parse(medicine) instanceof String) {
-                additionalInstruction.append(Node.bullet)
-                        .append(" ")
-                        .append(medicine)
-                        .append("\n");
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
+                if(!medicine.contains(",")){
+                    additionalInstruction.append(Node.bullet)
+                            .append(" ")
+                            .append(medicine)
+                            .append("\n");
+                }
+
             } else {
-                medicineModelList.add(((PrescribedMedicineModel) ParserUtils.Companion.parse(medicine)));
+                medicineModelList.add(((PrescribedMedicineModel) ParserUtils.Companion.parseMedication(medicine)));
             }
             /* if (medicine.contains(":")) {
              *//*String[] medicineDetailArray = medicine.split(":");
@@ -1717,8 +1720,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             additionalReturned = "";
             followUpDate = "";
             String[] columns = {"value", " conceptuuid"};
-            String visitSelection = "encounteruuid = ? ";
-            String[] visitArgs = {encounterUuid};
+            String visitSelection = "encounteruuid = ? and voided = ?";
+            String[] visitArgs = {encounterUuid, "0"};
 
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
@@ -2812,7 +2815,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
-        VitalsObject vitalsData = getAllVitalsData();
+        //VitalsObject vitalsData = getAllVitalsData();
+        VitalsObject vitalsData = getVitals();
+        vitalsData.setHeight(org.intelehealth.app.ayu.visit.common.VisitUtils.convertHeightIntoFeets(height.getValue(), this));
+
         String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
 
         if (isRespiratory) {

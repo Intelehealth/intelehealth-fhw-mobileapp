@@ -131,7 +131,7 @@ public class PrescriptionBuilder {
         String openingDivTag = "<div>";
 
         String divClassDisclaimerTag =
-                "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
+                "<div style=\" margin-top: 30px; position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
 
         finalDisclaimerString = openingDivTag
                 + openingDivTag
@@ -686,8 +686,8 @@ public class PrescriptionBuilder {
         String[] medicationDataArray = medicationData.split("\n");
 
         for (String medicine : medicationDataArray) {
-            if (ParserUtils.Companion.parse(medicine) instanceof PrescribedMedicineModel) {
-                PrescribedMedicineModel model = ((PrescribedMedicineModel) ParserUtils.Companion.parse(medicine));
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof PrescribedMedicineModel) {
+                PrescribedMedicineModel model = ((PrescribedMedicineModel) ParserUtils.Companion.parseMedication(medicine));
 
                 builder.append(tableRowOpeningTag);
 
@@ -820,14 +820,16 @@ public class PrescriptionBuilder {
         String[] medicationDataArray = medicationData.split("\n");
 
         for (String medicine : medicationDataArray) {
-            if (ParserUtils.Companion.parse(medicine) instanceof String) {
-                additionalInstructionsData.append(listOpeningTag);
-                additionalInstructionsData.append(divOpeningTag);
-                additionalInstructionsData.append(spanOpeningTag);
-                additionalInstructionsData.append(ParserUtils.Companion.parse(medicine));
-                additionalInstructionsData.append(spanClosingTag);
-                additionalInstructionsData.append(divClosingTag);
-                additionalInstructionsData.append(listClosingTag);
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
+                if(!medicine.contains(",")){
+                    additionalInstructionsData.append(listOpeningTag);
+                    additionalInstructionsData.append(divOpeningTag);
+                    additionalInstructionsData.append(spanOpeningTag);
+                    additionalInstructionsData.append(ParserUtils.Companion.parseMedication(medicine));
+                    additionalInstructionsData.append(spanClosingTag);
+                    additionalInstructionsData.append(divClosingTag);
+                    additionalInstructionsData.append(listClosingTag);
+                }
             }
 
         }
@@ -1266,7 +1268,8 @@ public class PrescriptionBuilder {
         String addressLine2 = checkValueAndReturnNA(patient.getAddress2());
         String postalCode = checkValueAndReturnNA(patient.getPostal_code());
 
-        String address = activityContext.getString(R.string.prescription_address, addressLine1.concat(",").concat(addressLine2).concat(", ").concat(postalCode));
+        //String address = activityContext.getString(R.string.prescription_address, addressLine1.concat(",").concat(addressLine2).concat(", ").concat(postalCode));
+        String address = activityContext.getString(R.string.prescription_address, patient.getCity_village());
         String openMrsId = activityContext.getString(R.string.prescription_patient_id, patient.getOpenmrs_id());
         String dateOfVisit = activityContext.getString(R.string.prescription_date_of_visit, visitDate);
 
@@ -1382,13 +1385,13 @@ public class PrescriptionBuilder {
 
     public void setDiagnosis(String diagnosis) {
         diagnosis = removeNodeBulletsAndLineBreaks(diagnosis);
-        diagnosis = getOrganizedDataWithBullets(diagnosis);
+        diagnosis = getOrganizedDiagnosisDataWithBullets(diagnosis);
         checkDataValidOrHideViews(binding.tvDiagnosis, binding.tvDiagnosisData, diagnosis);
     }
 
     public void setMedication(String medication) {
         medication = removeNodeBulletsAndLineBreaks(medication);
-        medication = getOrganizedDataWithBullets(medication);
+        medication = getOrganizeMedicineDataWithBullets(medication);
         checkDataValidOrHideViews(binding.tvMedication, binding.tvMedicationData, medication);
     }
 
@@ -1418,7 +1421,7 @@ public class PrescriptionBuilder {
             binding.tvDrSignature.setVisibility(View.VISIBLE);
             binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
             binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
-        } else if(clsDoctorDetails.getSignature() != null) {
+        } else if (clsDoctorDetails.getSignature() != null) {
 
             binding.tvDrSignature.setVisibility(View.GONE);
             binding.imDrSignature.setVisibility(View.VISIBLE);
@@ -1476,6 +1479,7 @@ public class PrescriptionBuilder {
         }
     }
 
+
     public String getOrganizedDataWithBullets(String data) {
         if (data == null || data.isBlank() || data.isEmpty()) return data;
 
@@ -1493,6 +1497,76 @@ public class PrescriptionBuilder {
             data = data.concat("\n");
             data = data.concat(Node.big_bullet).concat(" ").concat(string);
             data = data.concat("\n");
+        }
+        return data;
+    }
+
+    public String getOrganizedDiagnosisDataWithBullets(String data) {
+        if (data == null || data.isBlank() || data.isEmpty()) return data;
+
+        data = data.trim();
+        data = Node.big_bullet.concat(" ").concat(data);
+        String[] splitData;
+        if (data.contains("\n\n")) {
+            splitData = data.split("\n\n");
+        } else {
+            splitData = data.split("\n");
+        }
+        data = "";
+
+        for (String string : splitData) {
+            if (string.contains(Node.big_bullet)) {
+                data = string.concat("\n");
+                continue;
+            }
+
+            data = data.concat("\n");
+            data = data.concat(Node.big_bullet).concat(" ").concat(string);
+            data = data.concat("\n");
+        }
+        return data;
+    }
+
+    /**
+     * medication data is different from others
+     * so using separate function fot this
+     * @param data
+     * @return
+     */
+    public String getOrganizeMedicineDataWithBullets(String data) {
+        if (data == null || data.isBlank() || data.isEmpty()) return data;
+
+        data = data.trim();
+        data = Node.big_bullet.concat(" ").concat(data);
+        String[] splitData = data.split("\n");
+        data = "";
+
+        String additionalInstruction = "";
+
+        for (String string : splitData) {
+            if (string.contains(Node.big_bullet)) {
+                data = string;
+                continue;
+            }
+
+            //checking the data is matching with the parser regex or not
+            //if yes its a medicine, otherwise its a additional instructions
+            if (ParserUtils.Companion.parseMedication(string) instanceof PrescribedMedicineModel) {
+                data = data.concat("\n");
+                data = data.concat(Node.big_bullet).concat(" ").concat(string);
+                data = data.concat("\n");
+            } else {
+                if(!string.contains(",")){
+                    additionalInstruction = additionalInstruction.concat("\n");
+                    additionalInstruction = additionalInstruction.concat(Node.big_bullet).concat(" ").concat(string);
+                    //additionalInstruction = additionalInstruction.concat("\n");
+                }
+            }
+        }
+        if(!additionalInstruction.isEmpty()){
+            data = data + "\n\n"
+                    + activityContext.getString(R.string.prescription_additional_ins) + ":\n"
+                    + additionalInstruction;
         }
         return data;
     }
