@@ -4,7 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryRepository
@@ -25,42 +30,7 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
 
     fun getPatientsForGeneral() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(
-                Constants.GENERAL_EXCLUSION_AGE,
-                Constants.ENCOUNTER_VISIT_COMPLETE
-            )
-
-          /*  // Extract patient and attribute info
-            val patientList = result.map {
-                Patient(
-                    uuid = it.patientId ?: "",
-                    firstName = it.firstName,
-                    middleName = it.middleName,
-                    lastname = it.lastName,
-                    gender = it.gender,
-                    dateOfBirth = it.dateOfBirth,
-                    openmrs_id = it.openmrsId
-                )
-            }.toMutableList()
-
-            val attributeList = result.map {
-                PatientAttributes(
-                    uuid = UUID.randomUUID().toString(),
-                    patientUuid = it.patientId ?: "",
-                    value = it.value
-                )
-            }.toMutableList()
-
-            // Filter using segregation utility
-            val filteredPatients = utils.segregateAndFetchData(
-                patientList = patientList,
-                patientAttributeList = attributeList,
-                category = Constants.HYPERTENSION_FOLLOW_UP
-            )
-
-            val filteredResult = result.filter { detail ->
-                filteredPatients.any { it.uuid == detail.patientId }
-            }*/
+            val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(Constants.ENCOUNTER_VISIT_COMPLETE)
 
             // Save the full filtered result
             allPatients.clear()
@@ -82,4 +52,26 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
         }
         _generalMutableLiveData.postValue(filtered)
     }
+
+/*    fun getPatientFlow(encounterUuid: String) =
+        repository.getPagedPatients(encounterUuid)
+            .flow
+            .cachedIn(viewModelScope)*/
+
+    /*fun getPatientFlow(): Flow<PagingData<PatientVisitDetails>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
+                initialLoadSize = 40
+            ),
+            pagingSourceFactory = { repository.getPagedPatients() }
+        ).flow.cachedIn(viewModelScope)
+    }*/
+    fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+        return repository
+            .getPagedPatients(encounterUuid)
+            .cachedIn(viewModelScope)
+    }
+
 }

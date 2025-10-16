@@ -2,7 +2,11 @@ package org.intelehealth.ncd.data.category
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
@@ -60,8 +64,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             val isFollowupFromObs = data.chiefComplaintData?.let {
                 checkFollowUpFlag(it)}
             Log.d("TAG", "buildPatientVisitDetailsForGeneral: isFollowupFromObs : "+isFollowupFromObs)
-
             Log.d("TAG", "buildPatientVisitDetailsForGeneral: data.chiefComplaintData : "+data.chiefComplaintData)
+            val isFollowUpGivenToPatient = data.chiefComplaintData?.let { checkIfFollowupDateGivenToPatient(it)}
 
 
             PatientVisitDetails(
@@ -81,16 +85,14 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 isNcdVisit = data.isNcdVisit,
                 chiefComplaintData = data.chiefComplaintData,
                 followUpFromProtocol = isFollowupFromObs,
-                visitSpeciality = data.visitSpeciality
+                visitEndDate = data.visitEndDate,
+                isFollowUpDateGivenToPatient = isFollowUpGivenToPatient
             )
         }
     }
 
-    suspend fun getPatientVisitDetailsBelowAgeForGeneral(
-        age: Int,
-        visitNoteEncounterUuid: String
-    ): List<PatientVisitDetails> {
-        val rawDataList = dataSource.getPatientVisitRawDataBelowAgeForGeneral(age, visitNoteEncounterUuid)
+    suspend fun getPatientVisitDetailsBelowAgeForGeneral(visitNoteEncounterUuid: String): List<PatientVisitDetails> {
+        val rawDataList = dataSource.getPatientVisitRawDataBelowAgeForGeneral(visitNoteEncounterUuid)
 
         val result = buildPatientVisitDetailsForGeneral(rawDataList)
 
@@ -124,8 +126,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid)
         rawDataList.forEach {
         }
-        Log.d("TAG", "getPatientVisitDetailsForFollowup: attributeTypeUuid : $attributeTypeUuid")
-        Log.d("TAG", "getPatientVisitDetailsForFollowup: visitNoteEncounterUuid : $visitNoteEncounterUuid")
+        Log.d("TAG", "getPatientVisitDetailsForFollowup: rawDataList size : ${rawDataList.size}")
+        Log.d("TAG", "getPatientVisitDetailsForFollowup: rawDataList data  : \n" + "${rawDataList.joinToString("\n")}")
 
         val result = buildPatientVisitDetails(rawDataList)
         result.forEachIndexed { index, item ->
@@ -159,6 +161,39 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             false
         }
     }
+    fun checkIfFollowupDateGivenToPatient(chiefComplaintData: String?): Boolean {
+        if (chiefComplaintData.isNullOrBlank()) return false
+
+        // Flexible regex: anything after "Next Follow Up Date - "
+        val regex = "Next Follow Up Date -\\s*(.+)".toRegex()
+
+        val match = regex.find(chiefComplaintData)
+        val dateStr = match?.groupValues?.getOrNull(1)
+
+        // Return true if there’s any non-empty string after the marker
+        return !dateStr.isNullOrBlank()
+    }
+
+   /* fun getPagedPatients(encounterUuid: String): Pager<Int, PatientVisitDetails> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { dao.getPatientVisitPagingSource(encounterUuid) }
+        )
+    }*/
+   fun getPagedPatients(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+       return Pager(
+           config = PagingConfig(
+               pageSize = 20,
+               enablePlaceholders = false
+           ),
+           pagingSourceFactory = { dataSource.getPatientVisitRawDataBelowAgeForGeneralNew(encounterUuid) }
+       ).flow
+   }
+
+
 
 
 }
