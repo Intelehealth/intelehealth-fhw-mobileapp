@@ -7,11 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.callbacks.PatientClickedListener
@@ -24,10 +29,10 @@ import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
-import org.intelehealth.ncd.category.adapter.PatientLoadStateAdapter
-import org.intelehealth.ncd.category.adapter.PatientPagingAdapter
 import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
+import org.intelehealth.ncd.linelisting.paging.PatientLoadStateAdapter
+import org.intelehealth.ncd.linelisting.paging.PatientPagingAdapter
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.search.SearchableFragment
@@ -52,7 +57,7 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         super.onViewCreated(view, savedInstanceState)
         initializeData()
         setObservers()
-        fetchAndSetPatients()
+        //fetchAndSetPatients()
     }
 
     private fun initializeData() {
@@ -61,8 +66,9 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         val patientDao = database.patientDao()
         val patientAttributeDao = database.patientAttributeDao()
         val visitsDao = database.visitDao()
+        val generalTabDao = database.generalTabDao()
 
-        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao, generalTabDao)
         val repository = CategoryRepository(dataSource)
         val utils = CategorySegregationUtils(resources)
 
@@ -72,45 +78,23 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         )[GeneralViewModel::class.java]
     }
 
+/*
     private fun setObservers() {
-        /*viewModel.generalLiveData.observe(viewLifecycleOwner) {
+        */
+/*viewModel.generalLiveData.observe(viewLifecycleOwner) {
             val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
             binding?.recyclerView?.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 this.adapter = adapter
             }
-        }*/
+        }*//*
+
         // Set LayoutManager first
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         binding?.recyclerView?.setHasFixedSize(true)
+   }
+    */
 
-// Then set adapter with footer
-        val adapter = PatientPagingAdapter(
-            resources = resources,
-            context = requireContext(),
-            listener = this
-        )
-
-        binding?.recyclerView?.adapter = adapter.withLoadStateFooter(
-            footer = PatientLoadStateAdapter { adapter.retry() }
-        )
-
-// Collect PagingData
-       /* lifecycleScope.launch {
-            viewModel.getPatientFlow(Constants.ENCOUNTER_VISIT_COMPLETE).collectLatest { pagingData ->
-                adapter.submitData(pagingData)
-            }
-        }*/
-        lifecycleScope.launch {
-            viewModel.getPatientFlow(Constants.ENCOUNTER_VISIT_COMPLETE)
-                .collectLatest { pagingData ->
-                    adapter.submitData(pagingData)
-                }
-        }
-
-
-
-    }
 
     private fun fetchAndSetPatients() {
         viewModel.getPatientsForGeneral()
@@ -154,5 +138,36 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.GENERAL)
     }
 
+    private fun setObservers() {
+        val recyclerView = binding?.recyclerView ?: return
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            itemAnimator = null // disable default change animation
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+            isNestedScrollingEnabled = false // avoid nested scroll conflicts
+            overScrollMode = View.OVER_SCROLL_NEVER
+        }
+
+        val adapter = PatientPagingAdapter(
+            resources = resources,
+            context = requireContext(),
+            listener = this
+        )
+
+        recyclerView.adapter = adapter.withLoadStateFooter(
+            footer = PatientLoadStateAdapter { adapter.retry() }
+        )
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getPatientFlow(Constants.ENCOUNTER_VISIT_COMPLETE)
+                    .collectLatest { pagingData ->
+                        adapter.submitData(pagingData)
+                    }
+            }
+        }
+    }
 
 }

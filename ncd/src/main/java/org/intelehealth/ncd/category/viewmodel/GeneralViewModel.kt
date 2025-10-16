@@ -32,11 +32,9 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
         viewModelScope.launch(Dispatchers.IO) {
             val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(Constants.ENCOUNTER_VISIT_COMPLETE)
 
-            // Save the full filtered result
             allPatients.clear()
             allPatients.addAll(result)
 
-            // Post initial full list to LiveData
             _generalMutableLiveData.postValue(result)
         }
     }
@@ -52,26 +50,9 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
         }
         _generalMutableLiveData.postValue(filtered)
     }
-
-/*    fun getPatientFlow(encounterUuid: String) =
-        repository.getPagedPatients(encounterUuid)
-            .flow
-            .cachedIn(viewModelScope)*/
-
-    /*fun getPatientFlow(): Flow<PagingData<PatientVisitDetails>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true,
-                initialLoadSize = 40
-            ),
-            pagingSourceFactory = { repository.getPagedPatients() }
-        ).flow.cachedIn(viewModelScope)
-    }*/
     fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
         return repository
             .getPagedPatients(encounterUuid)
             .cachedIn(viewModelScope)
     }
-
 }

@@ -72,7 +72,14 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
         )
 
         adapter = CategoryPagerAdapter(this, fragmentList)
-        binding?.vpCategory?.adapter = adapter
+       binding?.vpCategory?.adapter = adapter
+        binding?.vpCategory?.apply {
+            overScrollMode = View.OVER_SCROLL_NEVER
+            isUserInputEnabled = true
+        }
+
+
+
 
         /*val tabTitles = listOf(
             getString(R.string.tab_anemia_screening),

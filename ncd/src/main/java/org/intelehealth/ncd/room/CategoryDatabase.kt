@@ -11,6 +11,7 @@ import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.Visit
 import org.intelehealth.ncd.model.VisitAttributes
+import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.room.dao.PatientAttributeDao
 import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.room.dao.VisitDao
@@ -24,6 +25,7 @@ abstract class CategoryDatabase : RoomDatabase() {
     abstract fun patientDao(): PatientDao
     abstract fun patientAttributeDao(): PatientAttributeDao
     abstract fun visitDao(): VisitDao
+    abstract fun generalTabDao(): GeneralTabDao
 
     companion object {
 

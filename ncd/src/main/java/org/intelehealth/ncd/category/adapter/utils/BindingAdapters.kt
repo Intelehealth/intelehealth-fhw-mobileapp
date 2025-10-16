@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import org.intelehealth.ncd.R
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 import java.io.File
@@ -21,7 +22,7 @@ fun TextView.setGenderWithAge(patient: PatientVisitDetails?) {
     }
 
 }
-@BindingAdapter("profileUrl")
+/*@BindingAdapter("profileUrl")
 fun bindProfileImage(imageView: ImageView?, url: String?) {
     if (imageView != null && !url.isNullOrEmpty()) {
         val requestBuilder = Glide.with(imageView.context).asDrawable().sizeMultiplier(0.25f)
@@ -32,7 +33,7 @@ fun bindProfileImage(imageView: ImageView?, url: String?) {
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(imageView)
     }
-}
+}*/
 @BindingAdapter("visibleIfNotNullOrEmpty")
 fun View.setVisibleIfNotNullOrEmpty(value: String?) {
     visibility = if (value.isNullOrEmpty()) View.GONE else View.VISIBLE
@@ -92,6 +93,30 @@ fun showPending(view: View, visitDetail: PatientVisitDetails?) {
         isNcdVisit || isStartDateNull -> View.GONE // Hide if NCD or visit not started
         !isPrescriptionExist -> View.VISIBLE      // Show if prescription does NOT exist
         else -> View.GONE
+    }
+}
+@BindingAdapter("profileUrl")
+fun bindProfileImage(imageView: ImageView?, url: String?) {
+    if (imageView == null) return
+
+    val context = imageView.context
+    val requestBuilder = Glide.with(context)
+        .asDrawable()
+        .sizeMultiplier(0.25f)
+
+    if (!url.isNullOrEmpty()) {
+        Glide.with(context)
+            .load(File(url))
+            .thumbnail(requestBuilder)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .placeholder(R.drawable.avatar1)
+            .error(R.drawable.avatar1)
+            .into(imageView)
+    } else {
+        // clear any old image tied to this recycled view
+        Glide.with(context).clear(imageView)
+        imageView.setImageResource(R.drawable.avatar1)
     }
 }
 

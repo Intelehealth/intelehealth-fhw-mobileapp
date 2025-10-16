@@ -376,13 +376,31 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+    <FrameLayout
+        android:id="@+id/viewPagerContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tl_category"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:overScrollMode="never"
+        android:visibility="visible" />
+    </FrameLayout>
+
+   <!-- <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_category"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_category" />
+        app:layout_constraintTop_toBottomOf="@id/tl_category" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
