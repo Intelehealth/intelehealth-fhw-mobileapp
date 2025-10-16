@@ -115,10 +115,6 @@ class HypertensionFollowUpViewModel(
                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
                 visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             )
-            Log.d("TAG", "getPatientsForHypertensionFollowUp: result size : "+result)
-            Log.d("TAG", "getPatientsForHypertensionFollowUp: result data : "+ Gson().toJson(result))
-
-            // Filter directly on PatientVisitDetails without mapping
             val filteredResult = utils.segregateAndFetchPatientVisitDetails(
                 patientVisitDetailsList = result,
                 category = Constants.HYPERTENSION_FOLLOW_UP

@@ -38,11 +38,6 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String):String = dataSource.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
-        rawDataList.forEach {
-        }
-        Log.d("TAG", "getPatientVisitDetails: attributeTypeUuid : $attributeTypeUuid")
-        Log.d("TAG", "getPatientVisitDetails: visitNoteEncounterUuid : $visitNoteEncounterUuid")
-
         val result = buildPatientVisitDetails(rawDataList)
         result.forEachIndexed { index, item ->
         }
@@ -59,12 +54,9 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                     "dd MMM 'at' hh:mm a"
                 )
             }
-            Log.d("TAG", "buildPatientVisitDetailsForGeneral: rawDataList : "+Gson().toJson(rawDataList))
 
             val isFollowupFromObs = data.chiefComplaintData?.let {
                 checkFollowUpFlag(it)}
-            Log.d("TAG", "buildPatientVisitDetailsForGeneral: isFollowupFromObs : "+isFollowupFromObs)
-            Log.d("TAG", "buildPatientVisitDetailsForGeneral: data.chiefComplaintData : "+data.chiefComplaintData)
             val isFollowUpGivenToPatient = data.chiefComplaintData?.let { checkIfFollowupDateGivenToPatient(it)}
 
 
@@ -126,18 +118,13 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid)
         rawDataList.forEach {
         }
-        Log.d("TAG", "getPatientVisitDetailsForFollowup: rawDataList size : ${rawDataList.size}")
-        Log.d("TAG", "getPatientVisitDetailsForFollowup: rawDataList data  : \n" + "${rawDataList.joinToString("\n")}")
-
         val result = buildPatientVisitDetails(rawDataList)
         result.forEachIndexed { index, item ->
         }
         return result
     }
 
-    fun checkFollowUpFlag(chiefComplaintData: String?): Boolean {
-        Log.d("TAG", "checkFollowUpFlag: chiefComplaintData : "+chiefComplaintData)
-
+    private fun checkFollowUpFlag(chiefComplaintData: String?): Boolean {
         if (chiefComplaintData.isNullOrBlank()) return false
 
         return try {
@@ -145,32 +132,22 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             val regex = "Next Follow Up Date - ([0-9]{1,2}/[A-Za-z]{3}/[0-9]{4})".toRegex()
             val match = regex.find(chiefComplaintData) ?: return false
             val dateStr = match.groupValues[1] // e.g., "30/Oct/2025"
-            Log.d("TAG", "checkFollowUpFlag: dateStr : "+dateStr)
-
-            // 2. Parse the date in the format dd/MMM/yyyy
             val inputFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH)
             val followUpDate = inputFormat.parse(dateStr) ?: return false
 
             // 3. Check if today's date is equal to or after follow-up date
             val today = Calendar.getInstance().time
-            Log.d("TAG", "checkFollowUpFlag: today : "+today)
-
             !today.before(followUpDate) // true if today >= follow-up date, false otherwise
         } catch (e: Exception) {
             e.printStackTrace()
             false
         }
     }
-    fun checkIfFollowupDateGivenToPatient(chiefComplaintData: String?): Boolean {
+    private fun checkIfFollowupDateGivenToPatient(chiefComplaintData: String?): Boolean {
         if (chiefComplaintData.isNullOrBlank()) return false
-
-        // Flexible regex: anything after "Next Follow Up Date - "
         val regex = "Next Follow Up Date -\\s*(.+)".toRegex()
-
         val match = regex.find(chiefComplaintData)
         val dateStr = match?.groupValues?.getOrNull(1)
-
-        // Return true if there’s any non-empty string after the marker
         return !dateStr.isNullOrBlank()
     }
 
@@ -192,8 +169,4 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
            pagingSourceFactory = { dataSource.getPatientVisitRawDataBelowAgeForGeneralNew(encounterUuid) }
        ).flow
    }
-
-
-
-
 }
