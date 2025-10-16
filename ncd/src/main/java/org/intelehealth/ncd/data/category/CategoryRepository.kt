@@ -7,11 +7,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
-import org.intelehealth.ncd.linelisting.paging.PatientVisitPagingSource
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.model.Visit
+import org.intelehealth.ncd.pagination.PatientVisitPagingSource
 import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 import java.text.SimpleDateFormat
@@ -153,13 +153,13 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     }
 
 
-   fun getPagedPatients(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+   fun getPagedPatients(visitEncounterNoteAttr: String, query: String): Flow<PagingData<PatientVisitDetails>> {
        return Pager(
            config = PagingConfig(
                pageSize = 5,
                enablePlaceholders = false
            ),
-           pagingSourceFactory = { PatientVisitPagingSource(dataSource, encounterUuid) }
+           pagingSourceFactory = { PatientVisitPagingSource(dataSource, visitEncounterNoteAttr,query) }
        ).flow
    }
 }

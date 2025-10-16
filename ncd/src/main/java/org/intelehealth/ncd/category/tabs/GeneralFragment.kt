@@ -31,8 +31,8 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.category.adapter.CategoryRecyclerViewAdapter
 import org.intelehealth.ncd.category.viewmodel.GeneralViewModel
 import org.intelehealth.ncd.category.viewmodel.factory.CategoryViewModelFactory
-import org.intelehealth.ncd.linelisting.paging.PatientLoadStateAdapter
-import org.intelehealth.ncd.linelisting.paging.PatientPagingAdapter
+import org.intelehealth.ncd.pagination.PatientLoadStateAdapter
+import org.intelehealth.ncd.pagination.PatientPagingAdapter
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.search.SearchableFragment
@@ -101,34 +101,35 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
     }
 
     override fun onSearchQueryChanged(query: String) {
-        viewModel.searchPatient(query)
+        viewModel.onSearchQueryChanged(query) // just call the setter
     }
 
-   /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
-        try {
-            val intent = Intent(
-                requireActivity(),
-                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
-            )
 
-            val status = "returning"
-            val tag = "search"
-            val hasPrescription = "false"
+    /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
+         try {
+             val intent = Intent(
+                 requireActivity(),
+                 Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
+             )
 
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
-            intent.putExtra(
-                Constants.INTENT_PATIENT_NAME,
-                "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
-            )
-            intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
-            intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
-            intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
+             val status = "returning"
+             val tag = "search"
+             val hasPrescription = "false"
 
-            startActivity(intent)
-        } catch (exception: ClassNotFoundException) {
-            exception.printStackTrace()
-        }
-    }*/
+             intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
+             intent.putExtra(
+                 Constants.INTENT_PATIENT_NAME,
+                 "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
+             )
+             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
+             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
+             intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
+
+             startActivity(intent)
+         } catch (exception: ClassNotFoundException) {
+             exception.printStackTrace()
+         }
+     }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -168,6 +169,7 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
                     }
             }
         }
+
     }
 
 }
