@@ -60,7 +60,13 @@ data class PatientVisitDetails(
     var followUpFromProtocol: Boolean? = null,
 
     @ColumnInfo(name = "visit_speciality")
-    var visitSpeciality: String? = null
+    var visitSpeciality: String? = null,
+
+    @ColumnInfo(name = "visitEndDate")
+    var visitEndDate: String? = null,
+
+    @ColumnInfo(name = "isFollowUpDateGivenToPatient")
+    var isFollowUpDateGivenToPatient: Boolean? = null
 
 ) {
     @Ignore

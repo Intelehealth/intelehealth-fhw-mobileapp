@@ -33,15 +33,6 @@ class CategorySegregationUtils(private val resources: Resources) {
                 if (attribute.value == null) {
                     return@forEach
                 }
-                Log.d(TAG, "segregateAndFetchData: attribute.value : "+attribute.value)
-                Log.d(TAG, "segregateAndFetchData: isHistoryOfAnemiaPresent : "+isHistoryOfAnemiaPresent(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: isCurrentlyTakingAnemiaMedication : "+isCurrentlyTakingAnemiaMedication(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: isThereAFollowUpWithAnemiaPHC : "+isThereAFollowUpWithAnemiaPHC(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: isHistoryOfHypertensionPresent : "+isHistoryOfHypertensionPresent(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: hyisCurrentlyTakingHypertensionMedication : "+isCurrentlyTakingHypertensionMedication(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: hyisThereAFollowUpWithHypertensionPHC : "+isThereAFollowUpWithHypertensionPHC(attribute.value))
-                Log.d(TAG, "segregateAndFetchData: hyanemia followup  : "+!isHistoryOfAnemiaPresent(attribute.value))
-
                 if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(attribute.value) || isThereAFollowUpWithAnemiaPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
@@ -131,10 +122,6 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }*/
         }
-        Log.d("HypertensionDebug", "patientListkkkk:\n${patientList.joinToString("\n")}")
-        Log.d("HypertensionDebug", "patientListkkkk size:\n${patientList.size}")
-        Log.d("HypertensionDebug", "patientListkkkk category :\n${category}")
-
         return patientList
     }
 
@@ -248,7 +235,6 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isHistoryOfHypertensionPresent(medicalHistoryJson: String?): Boolean {
-        Log.d("testingkk", "isHistoryOfHypertensionPresent: medicalHistoryJson : "+medicalHistoryJson)
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -261,7 +247,6 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isCurrentlyTakingHypertensionMedication(medicalHistoryJson: String?): Boolean {
-        Log.d("testingkk", "isCurrentlyTakingHypertensionMedication: medicalHistoryJson : "+medicalHistoryJson)
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -274,8 +259,6 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     private fun isThereAFollowUpWithHypertensionPHC(medicalHistoryJson: String?): Boolean {
-        Log.d("testingkk", "isThereAFollowUpWithHypertensionPHC: medicalHistoryJson : "+medicalHistoryJson)
-
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
         }
@@ -368,59 +351,57 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-
     fun segregateAndFetchPatientVisitDetails(
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
+        // As per this ticket AEAT-1951 :
         Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
         Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
 
-        // Make a mutable copy to safely remove items
         val filteredList = patientVisitDetailsList.toMutableList()
 
         when (category) {
 
             Constants.HYPERTENSION_SCREENING -> {
-                // Remove patients who do NOT meet screening inclusion criteria
                 filteredList.removeAll { detail ->
                     val hasHistory = isHistoryOfHypertensionPresent(detail.value)
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
-                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " "+detail.lastName)
-                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
-                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
-                    Log.d(TAG, "screen segregateAndFetchPatientVisitDetails: ********************************"+"\n\n")
 
-                    // Include if: No history OR has history but not on medication
-                    val includePatient = !hasHistory || (hasHistory && !onMedication)
-
+                    // Include if: No history OR has history but not on medication also followup date not given to patient
+                    val includePatient = when {
+                        !(detail.isFollowUpDateGivenToPatient ?: false) -> {
+                            !hasHistory || (hasHistory && !onMedication)
+                        }
+                        else -> false
+                    }
                     // Remove if inclusion criteria NOT met
                     !includePatient
                 }
             }
 
             Constants.HYPERTENSION_FOLLOW_UP -> {
-                // Remove patients who do NOT meet follow-up inclusion criteria
                 filteredList.removeAll { detail ->
                     val hasHistory = isHistoryOfHypertensionPresent(detail.value)
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
                     val followUpFlag = detail.followUpFromProtocol == true
-                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " "+detail.lastName)
-                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
-                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
-                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: followupfromproto : "+followUpFlag)
-                    Log.d(TAG, "follow segregateAndFetchPatientVisitDetails: ********************************"+"\n\n")
                     // Include if: has history AND on medication AND follow-up flag true
-                    val includePatient = (hasHistory && onMedication) || followUpFlag
 
+                    val includePatient = when {
+                        // Case 1:no follow-up date given but has baseline survey true
+                        detail.isFollowUpDateGivenToPatient != true -> hasHistory && onMedication
+
+                        // Case 2: followup given and follupdate on and after that date
+                        detail.isFollowUpDateGivenToPatient == true -> followUpFlag
+
+                        else -> false
+                    }
                     // Remove if inclusion criteria NOT met
                     !includePatient
                 }
             }
-
-            // You can add other categories as needed
             else -> {
-                // Do nothing, return full list
+                // return full list
             }
         }
 

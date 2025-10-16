@@ -1,6 +1,7 @@
 package org.intelehealth.ncd.data.category
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
@@ -29,7 +30,8 @@ class CategoryDataSource(
 
     suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String): String = visitDao.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitRawData(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawData(age, attributeTypeUuid,visitNoteEncounterUuid)
-    suspend fun getPatientVisitRawDataBelowAgeForGeneral(age: Int, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataBelowAgeForGeneral(age,visitNoteEncounterUuid)
+    suspend fun getPatientVisitRawDataBelowAgeForGeneral(visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataGeneral(visitNoteEncounterUuid)
     suspend fun getPatientVisitRawDataForFollowup(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataForFollowup(age, attributeTypeUuid,visitNoteEncounterUuid)
+    fun getPatientVisitRawDataBelowAgeForGeneralNew(visitNoteEncounterUuid: String): PagingSource<Int, PatientVisitDetails> = visitDao.getPatientVisitPagingSource(visitNoteEncounterUuid)
 
 }

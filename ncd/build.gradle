@@ -114,6 +114,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'com.parse:parse-android:1.15.7'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.4'
+    // Jetpack Paging 3 for Kotlin + Room
+    implementation "androidx.paging:paging-runtime:3.3.6"
+    // Paging integration for Room
+    implementation "androidx.room:room-paging:2.6.1"
+
 }
 
 // Local AAR directory

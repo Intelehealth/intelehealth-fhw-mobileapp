@@ -95,7 +95,6 @@ class HypertensionScreeningViewModel(
                 visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             )
 
-            // Filter directly on PatientVisitDetails without mapping
             val filteredResult = utils.segregateAndFetchPatientVisitDetails(
                 patientVisitDetailsList = result,
                 category = Constants.HYPERTENSION_SCREENING
