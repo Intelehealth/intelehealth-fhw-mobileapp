@@ -16,7 +16,25 @@
             app:destination="@id/fragmentBaselineOther" />
         <action
             android:id="@+id/navigationGeneralToDetails"
-            app:destination="@id/activityPatientDetails" />
+            app:destination="@id/activityPatientDetails">
+            <argument
+                android:name="patientUuid"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="tag"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="privacy"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="tabName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/fragmentBaselineMedical"
@@ -30,7 +48,25 @@
             app:destination="@id/fragmentBaselineOther" />
         <action
             android:id="@+id/navigationMedicalToDetails"
-            app:destination="@id/activityPatientDetails" />
+            app:destination="@id/activityPatientDetails">
+            <argument
+                android:name="patientUuid"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="tag"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="privacy"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="tabName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/fragmentBaselineOther"
@@ -41,14 +77,32 @@
             app:destination="@id/fragmentBaselineMedical" />
         <action
             android:id="@+id/navigationOtherToPatientDetails"
-            app:destination="@id/activityPatientDetails" />
+            app:destination="@id/activityPatientDetails">
+            <argument
+                android:name="patientUuid"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="tag"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="privacy"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="tabName"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <activity
         android:id="@+id/activityPatientDetails"
         android:name="org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2"
         tools:layout="@layout/activity_patient_detail2">
-        <argument
+      <!--  <argument
             android:name="patientUuid"
             app:argType="string"
             app:nullable="true" />
@@ -64,8 +118,11 @@
             app:nullable="true" />
         <argument
             android:name="tabName"
+            app:argType="string" />-->
+       <!-- <argument
+            android:name="tabName"
             android:defaultValue="general"
-            app:argType="string" />
+            app:argType="string" />-->
 
     </activity>
 </navigation>
