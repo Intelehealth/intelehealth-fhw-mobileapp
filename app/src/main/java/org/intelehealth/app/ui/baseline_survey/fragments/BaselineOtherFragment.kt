@@ -639,8 +639,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     }
 
     private fun navigateToPatientDetailsScreen() {
-        BaselineOtherFragmentDirections.navigationOtherToPatientDetails(
-            baselineSurveyViewModel.patientId, "searchPatient", "false"
+        val tabName =
+            requireActivity().intent.getStringExtra(org.intelehealth.ncd.constants.Constants.INTENT_NCD_CATEGORY)
+        val also = BaselineOtherFragmentDirections.navigationOtherToPatientDetails(
+            baselineSurveyViewModel.patientId, "searchPatient", "false", tabName
         ).also {
             findNavController().navigate(it)
             requireActivity().finish()

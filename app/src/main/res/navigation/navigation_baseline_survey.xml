@@ -62,6 +62,10 @@
             android:name="privacy"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="tabName"
+            android:defaultValue="general"
+            app:argType="string" />
 
     </activity>
 </navigation>

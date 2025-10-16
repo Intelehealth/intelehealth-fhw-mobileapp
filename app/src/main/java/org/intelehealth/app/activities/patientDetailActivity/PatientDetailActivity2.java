@@ -438,12 +438,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         ivAddBaselineSurvey.setOnClickListener(view -> {
-            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL, getIntent());
             finish();
         });
 
         llChangeBaselineSurvey.setOnClickListener(view -> {
-            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL, getIntent());
             finish();
         });
 
