@@ -166,7 +166,8 @@
         android:id="@+id/fl_steps_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ll_progress_steps" />
+        android:layout_below="@+id/ll_progress_steps"
+        android:layout_marginTop="1dp" />
 
     <FrameLayout
         android:id="@+id/fl_steps_summary"

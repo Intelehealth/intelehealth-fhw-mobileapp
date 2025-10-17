@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -1961,8 +1962,18 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             case STEP_3_VISIT_REASON_QUESTION:
                 currentScreenIndex = visitReasonScreenIndex;
+                StringBuilder builder = new StringBuilder();
+                var reasonName = "";
+                for(int i=0;i<mSelectedComplainList.size();i++){
+                    builder.append(mSelectedComplainList.get(i).getReasonNameLocalized());
+                    if (i < mSelectedComplainList.size() - 1) {
+                        builder.append(", "); // separator
+                    }
+                }
+                reasonName = builder.toString();
+                Log.d(TAG, "setTitle: "+reasonName);
                 title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen)
-                        + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                        + " : " + reasonName;
                 break;
             case STEP_3_VISIT_REASON_QUESTION_SUMMARY:
                 currentScreenIndex = visitReasonScreenIndex;

@@ -309,7 +309,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
         } else {
-            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getComplainNameByLocale(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
         }
         genericViewHolder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, genericViewHolder.node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
