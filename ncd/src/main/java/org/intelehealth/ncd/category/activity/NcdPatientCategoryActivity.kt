@@ -95,7 +95,7 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
             getString(R.string.tab_anemia_follow_up),
             getString(R.string.tab_hypertension_screening),
             getString(R.string.tab_hypertension_follow_up),
-            getString(R.string.tab_general)
+            getString(R.string.tab_all)
         )
 
         TabLayoutMediator(binding?.tlCategory!!, binding?.vpCategory!!) { tab, position ->

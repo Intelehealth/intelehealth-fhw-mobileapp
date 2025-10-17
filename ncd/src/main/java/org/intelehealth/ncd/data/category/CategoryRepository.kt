@@ -1,22 +1,18 @@
 package org.intelehealth.ncd.data.category
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
-import org.intelehealth.ncd.model.Visit
 import org.intelehealth.ncd.pagination.PatientVisitPagingSource
-import org.intelehealth.ncd.room.dao.VisitDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class CategoryRepository(private val dataSource: CategoryDataSource) {
@@ -59,7 +55,18 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             val isFollowupFromObs = data.chiefComplaintData?.let {
                 checkFollowUpFlag(it)}
             val isFollowUpGivenToPatient = data.chiefComplaintData?.let { checkIfFollowupDateGivenToPatient(it)}
+            // Check follow-up flags
+            var isHypertensionFollowupGiven: Boolean? = null
+            var isAnemiaFollowupGiven: Boolean? = null
+            var isDiabetesFollowupGiven: Boolean? = null
 
+            data.chiefComplaintData?.let { complaintData ->
+                val tempModel = PatientVisitDetails()
+                setFollowUpFlags(complaintData, tempModel, data)
+                isHypertensionFollowupGiven = tempModel.isHypertensionFollowupGiven
+                isAnemiaFollowupGiven = tempModel.isAnemiaFollowupGiven
+                isDiabetesFollowupGiven = tempModel.isDiabetesFollowupGiven
+            }
 
             PatientVisitDetails(
                 patientId = data.patientId,
@@ -79,7 +86,10 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 chiefComplaintData = data.chiefComplaintData,
                 followUpFromProtocol = isFollowupFromObs,
                 visitEndDate = data.visitEndDate,
-                isFollowUpDateGivenToPatient = isFollowUpGivenToPatient
+                isFollowUpDateGivenToPatient = isFollowUpGivenToPatient,
+                isHypertensionFollowupGiven = isHypertensionFollowupGiven,
+                isAnemiaFollowupGiven = isAnemiaFollowupGiven,
+                isDiabetesFollowupGiven = isDiabetesFollowupGiven
             )
         }
     }
@@ -162,4 +172,35 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
            pagingSourceFactory = { PatientVisitPagingSource(dataSource, visitEncounterNoteAttr,query) }
        ).flow
    }
+
+    private fun setFollowUpFlags(
+        chiefComplaintData: String?,
+        model: PatientVisitDetails,
+        data: PatientVisitDetails
+    ) {
+        if (chiefComplaintData.isNullOrBlank()) return
+
+        // 1. Extract the complaint name from <b>...</b>
+        val complaintRegex = "<b>(.*?)</b>".toRegex()
+        val complaintMatch = complaintRegex.find(chiefComplaintData)
+        val complaintNameRaw = complaintMatch?.groupValues?.getOrNull(1)?.trim() ?: return
+        val complaintName = complaintNameRaw
+            .lowercase()
+            .replace("followup", "follow_up")
+            .replace("[^a-z0-9]+".toRegex(), "_")
+            .trim('_')
+
+        // 2. Check if a "Next Follow Up Date" exists
+        val followUpRegex = "Next Follow Up Date -\\s*(.+)".toRegex()
+        val match = followUpRegex.find(chiefComplaintData)
+        val isFollowUpGiven = !match?.groupValues?.getOrNull(1).isNullOrBlank()
+
+        // 3. Set the appropriate flag using constants
+        when (complaintName) {
+            Constants.HYPERTENSION_SCREENING, Constants.HYPERTENSION_FOLLOW_UP -> model.isHypertensionFollowupGiven = isFollowUpGiven
+            Constants.ANEMIA_SCREENING, Constants.ANEMIA_FOLLOW_UP -> model.isAnemiaFollowupGiven = isFollowUpGiven
+            Constants.DIABETES_SCREENING, Constants.DIABETES_FOLLOW_UP -> model.isDiabetesFollowupGiven = isFollowUpGiven
+        }
+    }
+
 }
