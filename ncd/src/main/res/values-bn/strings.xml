@@ -152,5 +152,6 @@
     <string name="questionnaire_title_hypertension_followup">হাইপারটেনশন ফলো-আপ</string>
 
     <string name="bp_measurement">BP মাপ - %1$s/%2$s</string>
+    <string name="tab_all">সব</string>
 
 </resources>

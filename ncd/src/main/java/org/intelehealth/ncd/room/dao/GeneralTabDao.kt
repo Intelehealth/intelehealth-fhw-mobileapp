@@ -18,7 +18,7 @@ interface GeneralTabDao {
             P.date_of_birth AS dateOfBirth,
             P.gender AS gender,
             P.patient_photo AS patientPhoto,
-            P.openmrs_id AS openmrsId,
+            P.openmrs_id AS openmrs_id,
             V.uuid AS visitId,
             V.startdate AS visitStartDate,
             V.enddate AS visitEndDate

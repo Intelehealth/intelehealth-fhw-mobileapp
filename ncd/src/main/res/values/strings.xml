@@ -153,6 +153,7 @@
     <string name="questionnaire_title_hypertension_followup">Hypertension Followup</string>
 
     <string name="bp_measurement">BP Measurement - %1$s/%2$s</string>
+    <string name="tab_all">All</string>
 
 
 

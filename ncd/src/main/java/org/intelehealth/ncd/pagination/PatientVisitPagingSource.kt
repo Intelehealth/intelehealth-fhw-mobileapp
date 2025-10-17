@@ -1,11 +1,14 @@
 package org.intelehealth.ncd.pagination
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
 import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
     private val dataSource: CategoryDataSource,
@@ -42,9 +45,13 @@ class PatientVisitPagingSource(
                     attrList.find { it.typeUuid == Constants.IS_NCD_VISIT_ATTRIBUTE }?.value ?: ""
                 patient.visitSpeciality =
                     attrList.find { it.typeUuid == Constants.SPECIALITY }?.value ?: ""
+
+                patient.startDate = patient.startDate?.let { rawDate ->
+                    formatVisitDateSafely(rawDate)
+                }
             }
 
-            // ✅ 5. Apply search query filter (keep logic unchanged otherwise)
+            // 5. Apply search query filter (keep logic unchanged otherwise)
             val filteredPatients = if (query.isBlank()) {
                 patients
             } else {
@@ -76,4 +83,26 @@ class PatientVisitPagingSource(
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(state.config.pageSize)
         }
     }
+
+    // 🟩 NEW
+    private fun formatVisitDateSafely(rawDate: String): String {
+        val formatsToTry = listOf(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+            "yyyy-MM-dd'T'HH:mm:ssZ",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy-MM-dd"
+        )
+
+        for (format in formatsToTry) {
+            try {
+                return DateAndTimeUtils.formatStartVisitDate(rawDate, format, "dd MMM 'at' hh:mm a")
+                    .toString()
+            } catch (_: Exception) {
+                // try next format
+            }
+        }
+
+        return rawDate // fallback if no format matched
+    }
+
 }
