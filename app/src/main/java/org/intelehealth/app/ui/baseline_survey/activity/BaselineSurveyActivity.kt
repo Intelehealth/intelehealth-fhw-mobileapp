@@ -13,6 +13,7 @@ import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import org.intelehealth.app.R
@@ -58,6 +59,12 @@ class BaselineSurveyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBaselineSurveyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
+
         loadFeatureActiveStatus()
         extractAndBindUI()
         handleOnBackPressListener()

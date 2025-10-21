@@ -1,7 +1,16 @@
 package org.intelehealth.app.webrtc.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
+import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +34,48 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
     private lateinit var adapter: CallLogAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCallLogBinding.inflate(layoutInflater, null, false)
+        enableEdgeToEdge()
+
         setContentView(binding.root)
         super.onCreate(savedInstanceState)
+
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // Setting dark icons for light background
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false
+        controller.isAppearanceLightNavigationBars = true
+
+        // Applying safe padding to toolbar (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.callLogAppBar.toolbar
+        ) { view: View?, insets: WindowInsetsCompat? ->
+            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            view!!.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                0
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
+        // Applying safe padding to content (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.callLogContent.rootLay
+        ) { view: View?, insets: WindowInsetsCompat? ->
+            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            view!!.setPadding(
+                systemBars.left,
+                0,
+                systemBars.right,
+                systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
         adapter = CallLogAdapter(this, arrayListOf())
         adapter.clickListener = this
     }

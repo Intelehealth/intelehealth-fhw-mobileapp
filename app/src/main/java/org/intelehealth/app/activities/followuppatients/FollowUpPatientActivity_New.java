@@ -598,19 +598,19 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     private void fetchAndSegregateData(DataLoadingType dataLoadingType) {
         AlertDialog commonLoadingDialog;
-        if(dataLoadingType == DataLoadingType.INITIAL){
+        if (dataLoadingType == DataLoadingType.INITIAL) {
             commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
             commonLoadingDialog.show();
-        }else {
+        } else {
             commonLoadingDialog = null;
-            ToastUtil.showShortToast(this,getString(R.string.loading));
+            ToastUtil.showShortToast(this, getString(R.string.loading));
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB();
                 if (initialFollowUpPatients.isEmpty()) {
-                    if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
+                    if (dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()) {
                         commonLoadingDialog.dismiss();
                     }
                     runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
@@ -623,7 +623,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             mWeekRelativeLayout.setVisibility(View.GONE);
                             othersTitle.setVisibility(View.GONE);
                             setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                            if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
+                            if (dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()) {
                                 commonLoadingDialog.dismiss();
                             }
                         });
@@ -645,7 +645,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                             setTodaysDatesInRecyclerView(todaysFollowUpDates);
                             setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
                             setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                            if(dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()){
+                            if (dataLoadingType == DataLoadingType.INITIAL && !isFinishing() && !isDestroyed()) {
                                 commonLoadingDialog.dismiss();
                             }
                         });
@@ -819,8 +819,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 + " AND o.voided='0' and "
                 + "o.value is NOT NULL GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
-                +filterQuery
-                +searchQuery
+                + filterQuery
+                + searchQuery
                 + sortQuery;
 
         Timber.tag("FOLLOWUP_QUERY").d(query);
@@ -832,53 +832,53 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                        //if (isCompletedExitedSurvey) {
-                        String emergencyUuid = "";
-                        encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
+                    //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                    //if (isCompletedExitedSurvey) {
+                    String emergencyUuid = "";
+                    encounterDAO = new EncounterDAO();
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
 
-                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                            modelList.add(new FollowUpModel(visitUuid,
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                    true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                                    ))); // ie. visit is emergency visit.
-                        } else {
-                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                    false,
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
-                        }
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                        modelList.add(new FollowUpModel(visitUuid,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                                ))); // ie. visit is emergency visit.
+                    } else {
+                        modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
+                                cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                false,
+                                cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

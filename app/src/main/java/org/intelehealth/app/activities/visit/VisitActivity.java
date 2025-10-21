@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;

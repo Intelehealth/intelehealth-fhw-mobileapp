@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_lay"
     tools:context=".activities.searchPatientActivity.SearchPatientActivity_New">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
-        android:layout_height="@dimen/search_toolbar_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -18,6 +19,7 @@
         android:backgroundTint="?colorPrimary">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/search_field_relative"
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_margin_top"
             android:layout_alignParentLeft="true"
