@@ -102,7 +102,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         if (mIsForPhysicalExam) {
-            final String parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);
+            final String parent_name = mPhysicalExam.getExamParentNodeNameForImage(mLastImageCaptureSelectedNodeIndex);
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
             CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
 
