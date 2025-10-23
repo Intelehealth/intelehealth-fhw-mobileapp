@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
-import static org.webrtc.ContextUtils.getApplicationContext;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;

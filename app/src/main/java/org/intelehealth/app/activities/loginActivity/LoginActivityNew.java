@@ -24,11 +24,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -92,6 +97,7 @@ public class LoginActivityNew extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login_new_ui2);
 
         handleBackPress();
@@ -113,6 +119,21 @@ public class LoginActivityNew extends AppCompatActivity {
 
         etUsername = findViewById(R.id.et_username_login);
         etPassword = findViewById(R.id.et_password_login);
+
+
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(false);
+        controller.setAppearanceLightNavigationBars(true);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent_login), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            findViewById(R.id.appBarLayout).setPadding(0,systemBars.top,0,systemBars.top);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
 
         textviewPassword.setOnClickListener(new View.OnClickListener() {
             @Override

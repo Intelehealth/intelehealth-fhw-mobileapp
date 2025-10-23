@@ -91,11 +91,14 @@ object LiveKitProvider {
             audioOptions = AudioOptions(
                 audioHandler = audioSwitchHandler,
             ),
-            videoEncoderFactory = HardwareVideoEncoderFactory(
+            //video call wasn't working properly for lower end device for the HardwareVideoEncoderFactory
+            //that's why commented
+
+            /*videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
                 true,
                 true
-            )
+            )*/
             /*videoEncoderFactory = DefaultVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
                   true,
