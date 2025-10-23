@@ -1,10 +1,10 @@
 buildscript {
     repositories {
+        maven { url uri("ayudevicesdk") }
         google()
         gradlePluginPortal()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.4.1'
@@ -30,15 +30,16 @@ plugins {
 //    id 'com.google.devtools.ksp' version '1.8.10-1.0.9' apply false
 }
 
-allprojects {
+/*allprojects {
     repositories {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com' }
+        maven { url uri("ayudevicesdk") }
 
     }
-}
+}*/
 
 tasks.register('clean', Delete) {
     delete rootProject.buildDir

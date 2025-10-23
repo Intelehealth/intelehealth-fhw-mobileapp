@@ -1,0 +1,118 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.ayudevices",
+    "module": "ayudevicesdk",
+    "version": "4.5.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.ayudevices",
+          "module": "AJVoIP",
+          "version": {
+            "requires": "1.0.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.24"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ayudevicesdk-4.5.2.aar",
+          "url": "ayudevicesdk-4.5.2.aar",
+          "size": 233783,
+          "sha512": "335cbd50d5ed03b4b61c6b24d7bee88c5e316d6efee05602224b1336557ea79a0cc297be7d0f4c070d8b3d17b9b4787b0473c1c057461c97f1e84e16d761ab50",
+          "sha256": "91df99cd3ba787ade1cfe6dd0766b24145336dfed4b5e9e10eb618b042655fc7",
+          "sha1": "ec62e3b13e5254bbeff1ee19362c39f7ceb09372",
+          "md5": "a00d372172d2c66176dd76391888608a"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.core",
+          "module": "core",
+          "version": {
+            "requires": "1.8.0"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "androidx.activity",
+          "module": "activity",
+          "version": {
+            "requires": "1.6.1"
+          }
+        },
+        {
+          "group": "com.github.weliem",
+          "module": "blessed-android",
+          "version": {
+            "requires": "2.5.0"
+          }
+        },
+        {
+          "group": "com.ayudevices",
+          "module": "AJVoIP",
+          "version": {
+            "requires": "1.0.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.24"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ayudevicesdk-4.5.2.aar",
+          "url": "ayudevicesdk-4.5.2.aar",
+          "size": 233783,
+          "sha512": "335cbd50d5ed03b4b61c6b24d7bee88c5e316d6efee05602224b1336557ea79a0cc297be7d0f4c070d8b3d17b9b4787b0473c1c057461c97f1e84e16d761ab50",
+          "sha256": "91df99cd3ba787ade1cfe6dd0766b24145336dfed4b5e9e10eb618b042655fc7",
+          "sha1": "ec62e3b13e5254bbeff1ee19362c39f7ceb09372",
+          "md5": "a00d372172d2c66176dd76391888608a"
+        }
+      ]
+    }
+  ]
+}

@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdk 23
+        minSdk 24
         targetSdk 34
         versionCode 67
         versionName '5.0'
@@ -190,5 +190,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.49" // Replace 2.x with the latest version
     kapt "com.google.dagger:hilt-compiler:2.47"
 
+    implementation "com.ayudevices:ayudevicesdk:4.5.2"// for POC SDK
+//    implementation(name: "ayudevicesdk-4.5.2", ext: "aar")
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
