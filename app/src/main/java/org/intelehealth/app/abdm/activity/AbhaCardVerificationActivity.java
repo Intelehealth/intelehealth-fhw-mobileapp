@@ -108,6 +108,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private int resendCounter = 2;
 
     private CompositeDisposable disposables = new CompositeDisposable();
+    private boolean isAbhaAuthTypeSelected = false;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -323,12 +324,15 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
 
                                 if (TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText())) {
-                                    AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
-                                    dialog.openAuthSelectionDialogDialog(BOTH, authType -> {
-                                        abhaAuthType = authType;
-                                        sentOtpApi(accessToken, getSendOtpApiRequest());
-                                    });
-                                    dialog.show(getSupportFragmentManager(), "");
+                                    if (!isAbhaAuthTypeSelected) {
+                                        AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                                        dialog.openAuthSelectionDialogDialog(BOTH, authType -> {
+                                            abhaAuthType = authType;
+                                            isAbhaAuthTypeSelected = true;
+                                        });
+                                        dialog.show(getSupportFragmentManager(), "");
+                                    }
+                                    sentOtpApi(accessToken, getSendOtpApiRequest());
                                 } else {
                                     callFetchAuthModesAPI(Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString(), "", accessToken);
                                 }
@@ -800,12 +804,17 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                             } else {
                                 abhaAuthType = BOTH;
                             }
-                            AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
-                            dialog.openAuthSelectionDialogDialog(abhaAuthType, authType -> {
-                                abhaAuthType = authType;
-                                sentOtpApi(accessToken, getSendOtpApiRequest());
-                            });
-                            dialog.show(getSupportFragmentManager(), "");
+
+                            if (!isAbhaAuthTypeSelected) {
+                                AbhaOtpTypeDialogFragment dialog = new AbhaOtpTypeDialogFragment();
+                                dialog.openAuthSelectionDialogDialog(abhaAuthType, authType -> {
+                                    abhaAuthType = authType;
+                                    isAbhaAuthTypeSelected = true;
+                                });
+                                dialog.show(getSupportFragmentManager(), "");
+                            }
+
+                            sentOtpApi(accessToken, getSendOtpApiRequest());
                         } else {
                             disableUI(true);
                             binding.sendOtpBtn.setEnabled(true);

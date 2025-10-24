@@ -76,7 +76,8 @@ class AbhaOtpTypeDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    fun openAuthSelectionDialogDialog(authMethods:String,
+    fun openAuthSelectionDialogDialog(
+        authMethods:String,
         onAuthTypeSelection: OnAuthTypeSelection,
     ) {
         this.onAuthTypeSelection = onAuthTypeSelection
