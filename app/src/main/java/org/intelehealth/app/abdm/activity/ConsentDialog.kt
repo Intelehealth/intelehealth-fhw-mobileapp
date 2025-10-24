@@ -60,31 +60,36 @@ class ConsentDialog : DialogFragment() {
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line1) + NEW_LINE,
-                false
+                false,
+                true
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line2) + NEW_LINE,
+                false,
                 false
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line3) + NEW_LINE,
-                false
+                false,
+                true
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line4) + NEW_LINE,
-                false
+                false,
+                true
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line5) + NEW_LINE,
-                false
+                false,
+                true
             )
         )
         modelList.add(
@@ -92,13 +97,15 @@ class ConsentDialog : DialogFragment() {
                 String.format(
                     getString(R.string.abha_consent_line6),
                     fetchHwFullName()
-                ) + NEW_LINE, false
+                ) + NEW_LINE, false,
+                true
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
                 getString(R.string.abha_consent_line7) + NEW_LINE,
-                false
+                false,
+                true
             )
         )
         checkboxAdapter = CheckboxAdapter(context, modelList) {

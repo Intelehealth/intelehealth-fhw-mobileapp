@@ -48,19 +48,23 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
         CheckBoxRecyclerModel model = modelList.get(position);
         holder.chkBox.setText(Html.fromHtml(model.getCheckboxText()));
         holder.chkBox.setChecked(model.isChecked());
-        if (position == (modelList.size()-1) || position == (modelList.size()-2)) {
+        holder.chkBox.setEnabled(model.isCheckboxEnabled());
+
+        if (position == (modelList.size() - 1) || position == (modelList.size() - 2)) {
             ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(LEFT_MARGIN, 0, 0, 0);
             holder.chkBox.setLayoutParams(layoutParams);
         }
 
-        holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                model.setChecked(isChecked);
-                onCheckboxChecked.onOptionChecked(model);
-            }
-        });
+        if (model.isCheckboxEnabled()) {
+            holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    model.setChecked(isChecked);
+                    onCheckboxChecked.onOptionChecked(model);
+                }
+            });
+        }
     }
 
     @Override
@@ -70,7 +74,7 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
 
     public boolean areAllItemsChecked() {
         for (CheckBoxRecyclerModel model : modelList) {
-            if (!model.isChecked()) {
+            if (model.isCheckboxEnabled() && !model.isChecked()) {
                 return false;
             }
         }

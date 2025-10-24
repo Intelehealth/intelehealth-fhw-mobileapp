@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CheckBoxRecyclerModel {
     private String checkboxText;
     private boolean isChecked;
+    private boolean isCheckboxEnabled;
 
     public CheckBoxRecyclerModel() {
     }
 
-    public CheckBoxRecyclerModel(String checkboxText, boolean isChecked) {
+    public CheckBoxRecyclerModel(String checkboxText, boolean isChecked, boolean isEnabled) {
         this.checkboxText = checkboxText;
         this.isChecked = isChecked;
+        this.isCheckboxEnabled = isEnabled;
     }
 
     public String getCheckboxText() {
@@ -37,5 +39,13 @@ public class CheckBoxRecyclerModel {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public boolean isCheckboxEnabled() {
+        return isCheckboxEnabled;
+    }
+
+    public void setCheckboxEnabled(boolean enabled) {
+        isCheckboxEnabled = enabled;
     }
 }
