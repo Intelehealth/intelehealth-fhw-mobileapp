@@ -378,7 +378,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     }
 
     private void searchMobile(String accessToken, SearchAbhaProfile requestBody) {  // mobile: Step 2
-        cpd.show(getString(R.string.otp_sending));
+        cpd.updateTitle(getString(R.string.fetching_profiles));
         String url = UrlModifiers.searchMobileVerification();
         // payload - end
 
@@ -391,9 +391,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
                         public void onSuccess(Response<HashMap<String, SearchAbhaProfileResponse>> searchProfileResponse) {
-                            cpd.dismiss();
                             if (searchProfileResponse.code() == 200) {
-//                                setOtpVisibility();
+                                cpd.dismiss();
+                                cpd.updateTitle(getString(R.string.otp_sending));
+
                                 SearchAbhaProfileResponse response = searchProfileResponse.body().get("0");
 
                                 AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();

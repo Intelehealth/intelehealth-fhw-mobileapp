@@ -1983,4 +1983,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="abha_user_not_found">ABHA User Not Found</string>
     <string name="abha_user_does_not_exist">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
 
+    <string name="fetching_profiles">Fetching Profiles</string>
+
 </resources>

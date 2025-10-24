@@ -62,6 +62,10 @@ public class CustomProgressDialog extends Dialog {
         CustomProgressDialog.this.show();
     }
 
+    public void updateTitle(final String title) {
+        mTvProgressTitle.setText(title);
+    }
+
     @Override
     public void show() {
 
