@@ -60,6 +60,7 @@ import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityAbhaCardVerificationBinding;
@@ -110,6 +111,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private CompositeDisposable disposables = new CompositeDisposable();
     private boolean isAbhaAuthTypeSelected = false;
 
+    private String patientName;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -135,6 +137,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(context);
+
+        patientName = getIntent().getStringExtra(PrivacyPolicyActivity_New.intentPatientNameTag);
     }
 
     private void checkInternetConnection() {
@@ -173,7 +177,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
         binding.layoutHaveABHANumber.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        ConsentDialog consentDialog = new ConsentDialog();
+                        ConsentDialog consentDialog = new ConsentDialog(patientName);
                         consentDialog.setListeners(isCheck -> binding.layoutHaveABHANumber.cvTermsAndCondition.setChecked(isCheck));
                         consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
                     }

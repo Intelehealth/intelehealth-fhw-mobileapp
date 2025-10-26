@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,7 @@ import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsPreviewGridAdapter;
+import org.intelehealth.app.widget.TextViewDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,10 @@ public class DialogUtils {
         public void onActionDone(int action);
     }
 
+    public interface TextViewDialogListener extends CustomDialogListener {
+        void onDialogActionDone(int action, String text);
+    }
+
     public void showOkDialog(Context context, String title, String message, String ok) {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
 
@@ -65,6 +71,7 @@ public class DialogUtils {
         //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
+
 
     public void showerrorDialog(Context context, String title, String message, String ok) {
         //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
@@ -126,8 +133,8 @@ public class DialogUtils {
     }
 
     public static void showOKDialog(Context context, Drawable drawable, String title,
-                                                 String subTitle, String okBtnTxt,
-                                                 CustomDialogListener customDialogListener) {
+                                    String subTitle, String okBtnTxt,
+                                    CustomDialogListener customDialogListener) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);

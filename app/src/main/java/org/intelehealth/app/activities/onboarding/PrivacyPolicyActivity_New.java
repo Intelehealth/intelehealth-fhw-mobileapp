@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.onboarding;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +31,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.widget.TextViewDialogFragment;
 
 import java.util.Locale;
 
@@ -42,6 +44,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
     private Context context = PrivacyPolicyActivity_New.this;
     public static final String hasABHA = "hasABHA";
     public static final String ABHA_CONSENT = "ABHA_CONSENT";
+    public static final String intentPatientNameTag = "patientName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +105,8 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         create_abha_btn.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CreateAbhaAccountActivity.class);
-            sessionManager.setCreateAbha(true);
-            startActivity(intent);
-            finish();
+            alertDialog.dismiss();
+            triggerTextViewDialogFragment(CreateAbhaAccountActivity.class);
         });
 
         continue_without_abha_btn.setOnClickListener(v -> {
@@ -116,11 +117,8 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         });
 
         positive_btn.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AbhaCardVerificationActivity.class);
-            sessionManager.setCreateAbha(true);
-            intent.putExtra(hasABHA, true);   // ie. Aadhar OR Mobile api to call. // here either Aadhar or Mobile apis be used.
-            startActivity(intent);
-            finish();
+            alertDialog.dismiss();
+            triggerTextViewDialogFragment(AbhaCardVerificationActivity.class);
         });
 
         alertDialog.show();
@@ -160,5 +158,28 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         }
         res.updateConfiguration(conf, dm);
         return context;
+    }
+
+    private void triggerTextViewDialogFragment(Class<?> activityToLaunch) {
+        TextViewDialogFragment dialogFragment = new TextViewDialogFragment(
+                getString(R.string.please_enter_the_patient_name),
+                getString(R.string.patient_name_cannot_be_empty),
+                new DialogUtils.TextViewDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                    }
+
+                    @Override
+                    public void onDialogActionDone(int action, String text) {
+                        Intent intent = new Intent(context, activityToLaunch);
+                        intent.putExtra(intentPatientNameTag, text);
+                        sessionManager.setCreateAbha(true);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+        );
+
+        dialogFragment.show(getSupportFragmentManager(), TextViewDialogFragment.TAG);
     }
 }

@@ -38,6 +38,7 @@ import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
 import org.intelehealth.app.models.Patient;
@@ -78,6 +79,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private int resendCounter = 2;
     private PatientDTO patientDTO = null;
 
+    private String patientName;
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         // check internet - start
         checkInternetConnection();
         setClickListener();
+        patientName = getIntent().getStringExtra(PrivacyPolicyActivity_New.intentPatientNameTag);
     }
 
     private void setClickListener() {
@@ -148,7 +152,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
         binding.layoutOnlyaadhar.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
-                        ConsentDialog consentDialog = new ConsentDialog();
+                        ConsentDialog consentDialog = new ConsentDialog(patientName);
                         consentDialog.setListeners(isCheck -> binding.layoutOnlyaadhar.cvTermsAndCondition.setChecked(isCheck));
                         consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
                     }

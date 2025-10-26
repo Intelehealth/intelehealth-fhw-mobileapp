@@ -22,7 +22,7 @@ import org.intelehealth.app.utilities.exception.DAOException
 import java.util.Locale
 
 @Suppress("DEPRECATION")
-class ConsentDialog : DialogFragment() {
+class ConsentDialog(private val patientName: String) : DialogFragment() {
 
     private var IS_ACCEPTED: Boolean = false
     private var clickable: Clickable? = null
@@ -96,7 +96,7 @@ class ConsentDialog : DialogFragment() {
             CheckBoxRecyclerModel(
                 String.format(
                     getString(R.string.abha_consent_line6),
-                    fetchHwFullName()
+                    patientName
                 ) + NEW_LINE, false,
                 true
             )

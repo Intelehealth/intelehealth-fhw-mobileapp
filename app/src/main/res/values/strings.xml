@@ -1985,4 +1985,9 @@ The disclosure of personal information to third parties shall be only for identi
 
     <string name="fetching_profiles">Fetching Profiles</string>
 
+    <string name="alert_icon">Alert Icon.</string>
+    <string name="subheading_title">Subheading Title</string>
+    <string name="please_enter_the_patient_name">Please enter the patient\'s name</string>
+    <string name="patient_name_cannot_be_empty">Patient name cannot be empty.</string>
+
 </resources>
