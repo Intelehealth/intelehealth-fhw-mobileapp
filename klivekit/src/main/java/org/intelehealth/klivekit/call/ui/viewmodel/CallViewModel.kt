@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -489,7 +490,9 @@ open class CallViewModel(
             mutableCameraEnabled.postValue(
                 getParticipantStatusMap(
                     localParticipant,
-                    localParticipant.isCameraEnabled
+                    //commented this because sometimes it was returning false after updating livekit library
+                    //updated to new version to support 16 kb page size
+                    /*localParticipant.isCameraEnabled*/true
                 )
             )
 
