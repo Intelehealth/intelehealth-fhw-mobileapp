@@ -302,13 +302,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
      * This method is being used to generate token API , and this API will call before any type of verification.
      */
     private void callGenerateTokenApi() {   // Step 1.
-        cpd.show(getString(R.string.otp_sending));
         disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
         binding.sendOtpBtn.setTag(null);    // resetting...
 
-        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION))
+        if (optionSelected.equalsIgnoreCase(MOBILE_NUMBER_SELECTION)) {
             binding.sendOtpBtn.setText("Search Profiles");
+            cpd.show(getString(R.string.fetching_profiles));
+        } else {
+            cpd.show(getString(R.string.otp_sending));
+        }
 
         Single<TokenResponse> tokenResponse = AppConstants.apiInterface.GET_TOKEN(UrlModifiers.getABDM_TokenUrl());
         new Thread(() -> {
