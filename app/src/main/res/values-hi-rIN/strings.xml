@@ -6,7 +6,7 @@
     <string name="hint_required" translatable="false">अपेक्षित</string>
     <string name="hint_optional" translatable="false">ऐच्छिक</string>
     <string name="tag_optional" translatable="false">ऐच्छिक</string>
-    <string name="generic_ok" >ठीक</string>
+    <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
@@ -561,7 +561,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >आपकी विज़िट का कारण क्या है?</string>
+    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>
@@ -680,12 +680,12 @@
     <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
     <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
 
-<!--    Strings for special Check-->
+    <!--    Strings for special Check-->
     <string name="str_check_Odisha">Odisha</string>
     <string name="str_check_Bukidnon">Bukidnon</string>
-   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_India">इंडिया</string>
     <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
-     <string name="str_check_Philippines">फिलीपींस</string>
+    <string name="str_check_Philippines">फिलीपींस</string>
 
     //Follow-up Visits
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
@@ -694,37 +694,33 @@
 
     <string name="loading_more">और लोड हो रहा है...</string>
 
-    <string name = "book_appointment">बुक अपॉइंटमेंट</string>
-    <string name = "reschedule_appointment"> पुनर्निर्धारित अपॉइंटमेंट</string>
+    <string name="book_appointment">बुक अपॉइंटमेंट</string>
+    <string name="reschedule_appointment"> पुनर्निर्धारित अपॉइंटमेंट</string>
     <string name="appointment_booking_confirmation_txt">क्या आप इस स्लॉट को बुक करने के लिए सुनिश्चित हैं?</string>
-    <string name = "appointment_booking_cancel_confirmation_txt">क्या आप निश्चित रूप से अपॉइंटमेंट रद्द करना चाहते हैं?</string>
-    <string name = "cancel_appointment">नियुक्ति रद्द करें</string>
+    <string name="appointment_booking_cancel_confirmation_txt">क्या आप निश्चित रूप से अपॉइंटमेंट रद्द करना चाहते हैं?</string>
+    <string name="cancel_appointment">नियुक्ति रद्द करें</string>
     <string name="slot_empty_message">चयनित तिथि और विशेषता के लिए अपॉइंटमेंट स्लॉट उपलब्ध नहीं है!</string>
-    <string name = "appointment_empty_message">आपके पास कोई अपॉइंटमेंट नहीं है!</string>
-    <string name = "appointment_listing_title">अपॉइंटमेंट लिस्टिंग</string>
-    <string name = "appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
-    <string name = "appointment_for">नियुक्ति</string>
-    <string name = "please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट चुनें</string>
-    <string name = "please_select_speciality">कृपया विशेषता चुनें!</string>
+    <string name="appointment_empty_message">आपके पास कोई अपॉइंटमेंट नहीं है!</string>
+    <string name="appointment_listing_title">अपॉइंटमेंट लिस्टिंग</string>
+    <string name="appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
+    <string name="appointment_for">नियुक्ति</string>
+    <string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट चुनें</string>
+    <string name="please_select_speciality">कृपया विशेषता चुनें!</string>
 
 
-
-
-
-
-    <string name = "doctor_appointments">डॉक्टर अपॉइंटमेंट</string>
-    <string name = "slot_info">स्लॉट जानकारी</string>
-    <string name = "appointment_booked">अपॉइंटमेंट बुक किया गया</string>
-    <string name = "minutes_txt">मिनट</string>
-    <string name = "booked_txt">बुक किया गया</string>
-    <string name = "cancelled_txt">रद्द किया गया</string>
-    <string name = "please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट अपलोड करें।</string>
+    <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट</string>
+    <string name="slot_info">स्लॉट जानकारी</string>
+    <string name="appointment_booked">अपॉइंटमेंट बुक किया गया</string>
+    <string name="minutes_txt">मिनट</string>
+    <string name="booked_txt">बुक किया गया</string>
+    <string name="cancelled_txt">रद्द किया गया</string>
+    <string name="please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट अपलोड करें।</string>
     <string name="no_appointment_for_priority">प्राथमिकता विज़िट के लिए अपॉइंटमेंट बुकिंग उपलब्ध नहीं है।</string>
-    <string name = "appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक हो गया!</string>
+    <string name="appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक हो गया!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक करना विफल रहा!</string>
-    <string name = "postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>
+    <string name="postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
-    <string name = "appointment_cancelled_success_txt">नियुक्ति सफलतापूर्वक रद्द कर दी गई थी!</string>
+    <string name="appointment_cancelled_success_txt">नियुक्ति सफलतापूर्वक रद्द कर दी गई थी!</string>
     <string name="please_select_your_reschedule_reason">कृपया अपना पुनर्निर्धारण कारण चुनें</string>
     <string name="please_select_your_cancel_reason">कृपया अपना रद्द करने का कारण चुनें</string>
     <string name="doctor_is_not_available">डॉक्टर उपलब्ध नहीं है</string>
@@ -744,79 +740,79 @@
     <string name="medication">दवा</string>
     <string name="strength">ताकत</string>
     <string name="units">इकाइयाँ (जैसे: मिलीग्राम)</string>
-<!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
-<!--    <string name="for_duration">For Duration</string>-->
-<!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
-<!--    <string name="additional_instruction">Additional Instruction</string>-->
-<!--    <string name="recommended_tests">Recommended Tests</string>-->
+    <!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
+    <!--    <string name="for_duration">For Duration</string>-->
+    <!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
+    <!--    <string name="additional_instruction">Additional Instruction</string>-->
+    <!--    <string name="recommended_tests">Recommended Tests</string>-->
     <string name="test">परीक्षा</string>
-<!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
+    <!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
     <string name="notes">नोट्स</string>
-<!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
-<!--    <string name="follow_up">Follow Up</string>-->
-<!--    <string name="sign_and_submit">Sign and Submit</string>-->
-<!--    <string name="add_test">Add Test</string>-->
-<!--    <string name="add_advice">Add Advice</string>-->
-<!--    <string name="add_note">Add Note</string>-->
-<!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
-<!--    <string name="submit">Submit</string>-->
-<!--    <string name="add_meds">Add Meds</string>-->
-<!--    <string name="add_diagnosis">Add Diagnosis</string>-->
-<!--    <string name="startVisitNote">Start Visit Note</string>-->
-<!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
-<!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
+    <!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
+    <!--    <string name="follow_up">Follow Up</string>-->
+    <!--    <string name="sign_and_submit">Sign and Submit</string>-->
+    <!--    <string name="add_test">Add Test</string>-->
+    <!--    <string name="add_advice">Add Advice</string>-->
+    <!--    <string name="add_note">Add Note</string>-->
+    <!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
+    <!--    <string name="submit">Submit</string>-->
+    <!--    <string name="add_meds">Add Meds</string>-->
+    <!--    <string name="add_diagnosis">Add Diagnosis</string>-->
+    <!--    <string name="startVisitNote">Start Visit Note</string>-->
+    <!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
+    <!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
     <string name="amount">राशि</string>
     <string name="frequency">फ़्रीक्वेंसी</string>
 
 
-<string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
-<string name = "for_duration">अवधि के लिए</string>
-<string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
-<string name = "additional_instruction">अतिरिक्त निर्देश</string>
-<string name="recommended_tests">अनुशंसित परीक्षण</string>
-<string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
+    <string name="units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
+    <string name="for_duration">अवधि के लिए</string>
+    <string name="units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
+    <string name="additional_instruction">अतिरिक्त निर्देश</string>
+    <string name="recommended_tests">अनुशंसित परीक्षण</string>
+    <string name="advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
 
-<string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
-<string name = "follow_up">फ़ॉलो अप करें</string>
-<string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
-<string name = "add_test">परीक्षा जोड़ें</string>
-<string name = "add_advice">सलाह जोड़ें</string>
-<string name = "add_note">नोट जोड़ें</string>
-<string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
-<string name = "submit">सबमिट करें</string>
-<string name = "add_meds">मेड्स जोड़ें</string>
-<string name="add_diagnosis">निदान जोड़ें</string>
-<string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
-<string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
-<string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
+    <string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
+    <string name="follow_up">फ़ॉलो अप करें</string>
+    <string name="sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
+    <string name="add_test">परीक्षा जोड़ें</string>
+    <string name="add_advice">सलाह जोड़ें</string>
+    <string name="add_note">नोट जोड़ें</string>
+    <string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
+    <string name="submit">सबमिट करें</string>
+    <string name="add_meds">मेड्स जोड़ें</string>
+    <string name="add_diagnosis">निदान जोड़ें</string>
+    <string name="startVisitNote"> विज़िट नोट प्रारंभ करें</string>
+    <string name="prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
+    <string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
 
 
-    <string name = "prescription_age">आयु</string>
-    <string name = "prescription_gender">लिंग</string>
-    <string name = "prescription_address_contact">पता और संपर्क</string>
-    <string name = "prescription_patient_id">रोगी आईडी</string>
-    <string name = "prescription_date_of_visit">विज़िट की तिथि</string>
-    <string name = "prescription_vitals">महत्वपूर्ण</string>
-    <string name = "prescription_rr">श्वसन दर</string>
-    <string name = "prescription_pulse">पल्स (बीपीएम)</string>
-    <string name = "prescription_bp">रक्तचाप</string>
-    <string name = "prescription_bmi">बीएमआई</string>
-    <string name = "prescription_wt">वजन (किलो)</string>
-    <string name = "prescription_ht">ऊंचाई(सेमी)</string>
-    <string name = "prescription_pre_comp">शिकायत प्रस्तुत करना</string>
-    <string name = "prescription_diagnosis">निदान</string>
-    <string name = "prescription_med_plan">दवा (योजनाएं) योजना</string>
-    <string name = "prescription_rec_investigation">अनुशंसित जांच(s)</string>
-    <string name = "prescription_general_advice">सामान्य सलाह</string>
-    <string name = "prescription_follow_up_date">फॉलो अप डेट</string>
-    <string name = "prescription_temp_c">तापमान (C): </string>
-    <string name = "prescription_temp_f">तापमान (F): </string>
+    <string name="prescription_age">आयु</string>
+    <string name="prescription_gender">लिंग</string>
+    <string name="prescription_address_contact">पता और संपर्क</string>
+    <string name="prescription_patient_id">रोगी आईडी</string>
+    <string name="prescription_date_of_visit">विज़िट की तिथि</string>
+    <string name="prescription_vitals">महत्वपूर्ण</string>
+    <string name="prescription_rr">श्वसन दर</string>
+    <string name="prescription_pulse">पल्स (बीपीएम)</string>
+    <string name="prescription_bp">रक्तचाप</string>
+    <string name="prescription_bmi">बीएमआई</string>
+    <string name="prescription_wt">वजन (किलो)</string>
+    <string name="prescription_ht">ऊंचाई(सेमी)</string>
+    <string name="prescription_pre_comp">शिकायत प्रस्तुत करना</string>
+    <string name="prescription_diagnosis">निदान</string>
+    <string name="prescription_med_plan">दवा (योजनाएं) योजना</string>
+    <string name="prescription_rec_investigation">अनुशंसित जांच(s)</string>
+    <string name="prescription_general_advice">सामान्य सलाह</string>
+    <string name="prescription_follow_up_date">फॉलो अप डेट</string>
+    <string name="prescription_temp_c">तापमान (C): </string>
+    <string name="prescription_temp_f">तापमान (F): </string>
 
-<!--    <string name = "route_Optional">रूट (वैकल्पिक)</string>-->
-    <string name = "choose_a_date">एक तारीख चुनें</string>
+    <!--    <string name = "route_Optional">रूट (वैकल्पिक)</string>-->
+    <string name="choose_a_date">एक तारीख चुनें</string>
     <string name="follow_up_remark">अनुवर्ती टिप्पणी</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया नुस्खे देने का प्रयास करने से पहले पहले अपलोड करें।</string>
-    <string name = "visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
+    <string name="visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
 
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें -"</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, इंटेलहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
@@ -1465,7 +1461,7 @@
     <string name="image_upload_pending_alert">Please upload the captured image before submit!</string>
     <string name="token_expired">Token Expired</string>
     <string name='your_session_has_expired_please_log_in_again'>आपका सत्र समाप्त हो गया है। कृपया दोबारा लॉग इन करें।</string>
-    <string name ="abdm_consent">मैं, एतद्द्वारा घोषणा करता हूं कि मैं स्वेच्छा से आभा नंबर के निर्माण के एकमात्र उद्देश्य के लिए अपना आधार नंबर और UIDAI द्वारा जारी जनसांख्यिकीय जानकारी राष्ट्रीय स्वास्थ्य प्राधिकरण (NHA) के साथ साझा कर रहा हूं। \n\n मैं समझता हूं कि मेरे एबीएचए नंबर का उपयोग स्वास्थ्य सेवाओं के प्रावधान सहित एबीडीएम द्वारा समय-समय पर अधिसूचित उद्देश्यों के लिए किया और साझा किया जा सकता है। इसके अलावा, मुझे पता है कि मेरी व्यक्तिगत पहचान योग्य जानकारी (नाम, पता, उम्र, जन्म तिथि, लिंग और फोटो) राष्ट्रीय डिजिटल स्वास्थ्य पारिस्थितिकी तंत्र (एनडीएचई) में काम करने वाली संस्थाओं को उपलब्ध कराई जा सकती है, जिसमें अन्य बातों के अलावा हितधारक और संस्थाएं शामिल हैं। स्वास्थ्य देखभाल पेशेवरों (जैसे डॉक्टर), सुविधाओं (जैसे अस्पताल, प्रयोगशालाएं) और डेटा फ़िड्यूशरीज़ (जैसे स्वास्थ्य कार्यक्रम) के रूप में, जो आयुष्मान भारत डिजिटल मिशन (एबीडीएम) और उसके तहत विभिन्न प्रक्रियाओं के साथ पंजीकृत या जुड़े हुए हैं। \n\n मैं उपरोक्त उद्देश्य के लिए आधार (वित्तीय और अन्य सब्सिडी, लाभ और सेवाओं का लक्षित वितरण) अधिनियम, 2016 के प्रावधानों के अनुसार यूआईडीएआई के साथ आधार आधारित प्रमाणीकरण करने के लिए अपने आधार नंबर का उपयोग करने के लिए एनएचए को अधिकृत करता हूं। \n\n मैं समझता हूं कि सफल प्रमाणीकरण पर यूआईडीएआई मेरे ई-केवाईसी विवरण, या "हां" की प्रतिक्रिया एनएचए के साथ साझा करेगा। मुझे आधार के अलावा अन्य आईडी का उपयोग करने के विकल्प के बारे में विधिवत सूचित किया गया है; हालाँकि, मैं जानबूझकर एनडीएचई में लाभ प्राप्त करने के उद्देश्य से आधार संख्या का उपयोग करना चुनता हूँ। मुझे पता है कि आधार नंबर/वीआईडी नंबर को छोड़कर मेरी व्यक्तिगत पहचान योग्य जानकारी का उपयोग ऊपर बताए गए उद्देश्यों के लिए किया और साझा किया जा सकता है। \n\n मैं आधार अधिनियम और विनियमों के प्रावधानों के अनुसार किसी भी समय दी गई सहमति को रद्द करने का अधिकार सुरक्षित रखता हूं।</string>
+    <string name="abdm_consent">मैं, एतद्द्वारा घोषणा करता हूं कि मैं स्वेच्छा से आभा नंबर के निर्माण के एकमात्र उद्देश्य के लिए अपना आधार नंबर और UIDAI द्वारा जारी जनसांख्यिकीय जानकारी राष्ट्रीय स्वास्थ्य प्राधिकरण (NHA) के साथ साझा कर रहा हूं। \n\n मैं समझता हूं कि मेरे एबीएचए नंबर का उपयोग स्वास्थ्य सेवाओं के प्रावधान सहित एबीडीएम द्वारा समय-समय पर अधिसूचित उद्देश्यों के लिए किया और साझा किया जा सकता है। इसके अलावा, मुझे पता है कि मेरी व्यक्तिगत पहचान योग्य जानकारी (नाम, पता, उम्र, जन्म तिथि, लिंग और फोटो) राष्ट्रीय डिजिटल स्वास्थ्य पारिस्थितिकी तंत्र (एनडीएचई) में काम करने वाली संस्थाओं को उपलब्ध कराई जा सकती है, जिसमें अन्य बातों के अलावा हितधारक और संस्थाएं शामिल हैं। स्वास्थ्य देखभाल पेशेवरों (जैसे डॉक्टर), सुविधाओं (जैसे अस्पताल, प्रयोगशालाएं) और डेटा फ़िड्यूशरीज़ (जैसे स्वास्थ्य कार्यक्रम) के रूप में, जो आयुष्मान भारत डिजिटल मिशन (एबीडीएम) और उसके तहत विभिन्न प्रक्रियाओं के साथ पंजीकृत या जुड़े हुए हैं। \n\n मैं उपरोक्त उद्देश्य के लिए आधार (वित्तीय और अन्य सब्सिडी, लाभ और सेवाओं का लक्षित वितरण) अधिनियम, 2016 के प्रावधानों के अनुसार यूआईडीएआई के साथ आधार आधारित प्रमाणीकरण करने के लिए अपने आधार नंबर का उपयोग करने के लिए एनएचए को अधिकृत करता हूं। \n\n मैं समझता हूं कि सफल प्रमाणीकरण पर यूआईडीएआई मेरे ई-केवाईसी विवरण, या "हां" की प्रतिक्रिया एनएचए के साथ साझा करेगा। मुझे आधार के अलावा अन्य आईडी का उपयोग करने के विकल्प के बारे में विधिवत सूचित किया गया है; हालाँकि, मैं जानबूझकर एनडीएचई में लाभ प्राप्त करने के उद्देश्य से आधार संख्या का उपयोग करना चुनता हूँ। मुझे पता है कि आधार नंबर/वीआईडी नंबर को छोड़कर मेरी व्यक्तिगत पहचान योग्य जानकारी का उपयोग ऊपर बताए गए उद्देश्यों के लिए किया और साझा किया जा सकता है। \n\n मैं आधार अधिनियम और विनियमों के प्रावधानों के अनुसार किसी भी समय दी गई सहमति को रद्द करने का अधिकार सुरक्षित रखता हूं।</string>
     <string name="abha_consent">आभा सहमति</string>
     <string name="abha_number">आभा नंबर?</string>
     <string name="do_you_have_your_abha_number">क्या आपके पास अपना आभा है?</string>
@@ -1517,7 +1513,7 @@
     <string name="abha_consent_line4">I authorize the sharing of all my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter</string>
     <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
     <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
-     <string name="abha_consent_line7">I have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="abha_consent_line7">I, %1$s, have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
     <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
     <string name="abha_address_must_be_at_least_8_characters_long">ABHA address must be at least 8 characters long.</string>
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>

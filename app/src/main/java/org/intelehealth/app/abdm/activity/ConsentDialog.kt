@@ -96,14 +96,14 @@ class ConsentDialog(private val patientName: String) : DialogFragment() {
             CheckBoxRecyclerModel(
                 String.format(
                     getString(R.string.abha_consent_line6),
-                    patientName
+                    fetchHwFullName()
                 ) + NEW_LINE, false,
                 true
             )
         )
         modelList.add(
             CheckBoxRecyclerModel(
-                getString(R.string.abha_consent_line7) + NEW_LINE,
+                getString(R.string.abha_consent_line7, patientName) + NEW_LINE,
                 false,
                 true
             )
@@ -162,26 +162,12 @@ class ConsentDialog(private val patientName: String) : DialogFragment() {
     }
 
     private fun fetchHwFullName(): String {
-        try {
-            val providerDAO = ProviderDAO()
-            val providerDTO = providerDAO.getLoginUserDetails(sessionManager!!.providerID)
-            if (providerDTO != null) {
-                val firstname = isValidField(providerDTO.familyName)
-                val lastname = isValidField(providerDTO.givenName)
-                var userFullName = ""
-                if (firstname && lastname) {
-                    userFullName = providerDTO.givenName + " " + providerDTO.familyName
-                } else if (firstname) {
-                    userFullName = providerDTO.givenName
-                } else if (lastname) {
-                    userFullName = providerDTO.familyName
-                }
-                return userFullName
-            }
-        } catch (e: DAOException) {
-            e.printStackTrace()
+        val hwName: String = sessionManager?.hwFullName ?: ""
+        return if (hwName.isBlank()) {
+            "(Health Worker)"
+        } else {
+            hwName
         }
-        return "(health worker)"
     }
 
 

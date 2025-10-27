@@ -159,7 +159,7 @@
     <string name="table_bpsys">बीपी सिस</string>
     <string name="table_bpdia">बीपी डाय</string>
     <string name="table_temp">तापमान (सी)</string>
-<!--    <string name="table_spo">एसपीओ 2 (%)</string>-->
+    <!--    <string name="table_spo">एसपीओ 2 (%)</string>-->
 
     //Patient Search Screen
     <string name="search_hint">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
@@ -367,7 +367,7 @@
 
     <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
     <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
-<!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
+    <!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
     <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -637,33 +637,33 @@
     <string name="no_family_member_registered">कुटुंबातील कोणत्याही सदस्याने नोंदणी केली नाही</string>
     <string name="document_">"दस्तऐवज -"</string>
     <string name="gender">लिंग</string>
-<!--    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>-->
-<!--    <string name="what_is_your_occupation">काय काम करतात?*</string>-->
-<!--    <string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>-->
-<!--    <string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>-->
-<!--    <string name="enter_number">क्रमांक प्रविष्ट करा</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याचे मुख्य स्रोत काय आहे? *</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>-->
-<!--    <string name="declined">उत्तर देण्यास नकार दिला</string>-->
-<!--    <string name="enter_time">वेळ प्रविष्ट करा</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>-->
-<!--    <string name="select_the_structure_of_house">घराची रचना निवडा *</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>-->
-<!--    <string name="enter_answer">उत्तर प्रविष्ट करा</string>-->
-<!--    <string name="enter_occupation">व्यवसाय प्रविष्ट करा</string>-->
-<!--    <string name="select">निवडा</string>-->
-<!--    <string name="Hours">तास</string>-->
-<!--    <string name="Days">दिवस</string>-->
-<!--    <string name="Weeks">आठवडे</string>-->
-<!--    <string name="Months">महिने</string>-->
-<!--    <string name="Years">वर्षे</string>-->
-<!--    <string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>-->
-<!--    <string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>-->
+    <!--    <string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>-->
+    <!--    <string name="what_is_your_occupation">काय काम करतात?*</string>-->
+    <!--    <string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>-->
+    <!--    <string name="enter_number">क्रमांक प्रविष्ट करा</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याचे मुख्य स्रोत काय आहे? *</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>-->
+    <!--    <string name="declined">उत्तर देण्यास नकार दिला</string>-->
+    <!--    <string name="enter_time">वेळ प्रविष्ट करा</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>-->
+    <!--    <string name="select_the_structure_of_house">घराची रचना निवडा *</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>-->
+    <!--    <string name="enter_answer">उत्तर प्रविष्ट करा</string>-->
+    <!--    <string name="enter_occupation">व्यवसाय प्रविष्ट करा</string>-->
+    <!--    <string name="select">निवडा</string>-->
+    <!--    <string name="Hours">तास</string>-->
+    <!--    <string name="Days">दिवस</string>-->
+    <!--    <string name="Weeks">आठवडे</string>-->
+    <!--    <string name="Months">महिने</string>-->
+    <!--    <string name="Years">वर्षे</string>-->
+    <!--    <string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>-->
+    <!--    <string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>-->
     <string name="per_Hour">प्रती तास</string>
     <string name="per_Day">प्रती दिन</string>
     <string name="per_Week">प्रति आठवडा</string>
@@ -675,15 +675,15 @@
     <string name="something_went_wrong">काहीतरी चूक झाली. कृपया समर्थनाशी संपर्क साधा</string>
 
     //Speciality Spinner
-<!--    <string name="speciality">वैशिष्ट्य</string>-->
-<!--    <string name="select_speciality">विशेषज्ञता निवडा</string>-->
-<!--    <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>-->
+    <!--    <string name="speciality">वैशिष्ट्य</string>-->
+    <!--    <string name="select_speciality">विशेषज्ञता निवडा</string>-->
+    <!--    <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>-->
 
     <string name="take_photo">फोटो काधा</string>
     <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
 
-    <string name = "change_languages">भाषा बदला</string>
+    <string name="change_languages">भाषा बदला</string>
 
     <string name="loading_more">अधिक लोड करत आहे...</string>
     <string name="warning_app_update">कृपया अॅप नवीनतम आवृत्तीवर अपडेट करा.</string>
@@ -692,7 +692,7 @@
     <string name="location">स्थान</string>
 
     //----------reset app strings-------------
-    <string name = "reset_app"> अॅप रीसेट करा</string>
+    <string name="reset_app"> अॅप रीसेट करा</string>
     <string name="app_reset_toast">अॅप रीसेट पूर्ण झाले!</string>
     <string name="resetting_app_dialog">अॅप रीसेट करत आहे</string>
     <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही अॅप रीसेट करू इच्छिता?</string>
@@ -700,7 +700,7 @@
     // अॅप कार्यक्षमता रीसेट करा
     <string name="sync_failed">सिंक अयशस्वी! कृपया नंतर पुन्हा प्रयत्न करा.</string>
     <string name="no_network_sync">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही. कृपया नंतर पुन्हा प्रयत्न करा.</string>
-    <string name = "app_sync"> अॅप सिंक करत आहे..</string>
+    <string name="app_sync"> अॅप सिंक करत आहे..</string>
 
 
     <string name="location_setup">सेटअप स्थान - </string>
@@ -710,11 +710,11 @@
     <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट्स</string>
     <string name="slot_info">स्लॉट माहिती</string>
     <string name="appointment_booked">अपॉइंटमेंट बुक केली आहे</string>
-    <string name = "minutes_txt">मिनिटे</string>
+    <string name="minutes_txt">मिनिटे</string>
     <string name="booked_txt">बुक केले</string>
     <string name="cancelled_txt">रद्द केले</string>
     <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
-    <string name = "appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+    <string name="appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक करण्यात अयशस्वी!</string>
     <string name="postal_code_invalid_txt">कृपया वैध पोस्टल कोड प्रविष्ट करा</string>
     <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
@@ -729,7 +729,7 @@
     <string name="appointment_empty_message">तुमच्याकडे कोणतीही भेट नाही!</string>
     <string name="appointment_listing_title">अपॉइंटमेंट सूची</string>
     <string name="appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
-    <string name = "appointment_for"> साठी भेट</string>
+    <string name="appointment_for"> साठी भेट</string>
     <string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट निवडा</string>
     <string name="please_select_speciality">कृपया स्पेशॅलिटी निवडा!</string>
     <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
@@ -741,7 +741,7 @@
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
 
-    <string name = "diagnosis">निदान</string>
+    <string name="diagnosis">निदान</string>
     <string name="primary">प्राथमिक</string>
     <string name="secondary">दुय्यम</string>
     <string name="provisiona">तात्पुरती</string>
@@ -751,54 +751,54 @@
     <string name="strength">शक्ती</string>
     <string name="units">युनिट्स (उदा: mg)</string>
     <string name="units_tab">युनिट्स (उदा: टॅब/सिरप)</string>
-    <string name = "for_duration"> कालावधीसाठी</string>
+    <string name="for_duration"> कालावधीसाठी</string>
     <string name="units_eg_days_weeks_etc">युनिट्स (उदा. दिवस/आठवडे/इ.)</string>
-    <string name = "additional_instruction">अतिरिक्त सूचना</string>
+    <string name="additional_instruction">अतिरिक्त सूचना</string>
     <string name="recommended_tests">शिफारस केलेल्या चाचण्या</string>
     <string name="test">चाचणी</string>
     <string name="advice_or_refer_patient">पेशंटला सल्ला किंवा संदर्भ द्या</string>
     <string name="notes">नोट्स</string>
     <string name="notes_not_shared_with_the_patient">टिपा (रुग्णासोबत शेअर केलेल्या नाहीत)</string>
-    <string name = "follow_up"> फॉलो अप</string>
+    <string name="follow_up"> फॉलो अप</string>
     <string name="sign_and_submit">स्वाक्षरी करा आणि सबमिट करा</string>
     <string name="add_test">चाचणी जोडा</string>
     <string name="add_advice">सल्ला जोडा</string>
     <string name="add_note">टीप जोडा</string>
     <string name="schedule_a_follow_up">एक फॉलो अप शेड्यूल करा</string>
     <string name="submit">सबमिट करा</string>
-    <string name = "add_meds"> औषध जोडा</string>
-    <string name = "add_diagnosis">निदान जोडा</string>
+    <string name="add_meds"> औषध जोडा</string>
+    <string name="add_diagnosis">निदान जोडा</string>
     <string name="startVisitNote">प्रारंभ भेट टीप</string>
     <string name="prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन यशस्वीरित्या दिले आहे</string>
     <string name="morethanonefollowupnotallowed">कृपया एका वेळी फक्त एक फॉलोअप प्रदान करा.</string>
-    <string name = "amount"> रक्कम</string>
+    <string name="amount"> रक्कम</string>
     <string name="frequency">वारंवारता</string>
-    <string name = "route_optional">मार्ग (पर्यायी)</string>
-    <string name = "reason_optional">कारण (पर्यायी)</string>
+    <string name="route_optional">मार्ग (पर्यायी)</string>
+    <string name="reason_optional">कारण (पर्यायी)</string>
     <string name="choose_a_date">तारीख निवडा</string>
-    <string name = "follow_up_remark"> फॉलो अप टिप्पणी</string>
+    <string name="follow_up_remark"> फॉलो अप टिप्पणी</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया प्रिस्क्रिप्शन देण्याचा प्रयत्न करण्यापूर्वी प्रथम अपलोड करा.</string>
     <string name="visit_summary_prescription_already_given">प्रिस्क्रिप्शन आधीच दिलेले आहे. कृपया प्रिस्क्रिप्शन डाउनलोड करा.</string>
 
-    <string name = "prescription_age">वय</string>
+    <string name="prescription_age">वय</string>
     <string name="prescription_gender">लिंग</string>
     <string name="prescription_address_contact">पत्ता आणि संपर्क</string>
-    <string name = "prescription_patient_id">रुग्ण आयडी</string>
-    <string name = "prescription_date_of_visit">भेटीची तारीख</string>
-    <string name = "prescription_vitals"> जीवनावश्यक गोष्टी</string>
-    <string name = "prescription_rr">श्वसन दर</string>
-    <string name = "prescription_pulse">पल्स(bpm)</string>
+    <string name="prescription_patient_id">रुग्ण आयडी</string>
+    <string name="prescription_date_of_visit">भेटीची तारीख</string>
+    <string name="prescription_vitals"> जीवनावश्यक गोष्टी</string>
+    <string name="prescription_rr">श्वसन दर</string>
+    <string name="prescription_pulse">पल्स(bpm)</string>
     <string name="prescription_bp">रक्तदाब</string>
-    <string name = "prescription_bmi">BMI</string>
-    <string name = "prescription_wt">वजन(किलो)</string>
-    <string name = "prescription_ht">उंची(सेमी)</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">वजन(किलो)</string>
+    <string name="prescription_ht">उंची(सेमी)</string>
     <string name="prescription_pre_comp">तक्रार(त्या) सादर करणे</string>
-    <string name = "prescription_diagnosis">निदान</string>
-    <string name = "prescription_med_plan">औषध योजना</string>
+    <string name="prescription_diagnosis">निदान</string>
+    <string name="prescription_med_plan">औषध योजना</string>
     <string name="prescription_rec_investigation">शिफारस केलेले तपास</string>
-    <string name = "prescription_general_advice">सामान्य सल्ला</string>
-    <string name = "prescription_follow_up_date"> फॉलो अप डेट</string>
-    <string name = "prescription_temp_c">तापमान (C): </string>
+    <string name="prescription_general_advice">सामान्य सल्ला</string>
+    <string name="prescription_follow_up_date"> फॉलो अप डेट</string>
+    <string name="prescription_temp_c">तापमान (C): </string>
     <string name="prescription_temp_f">तापमान (F): </string>
     <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
 
@@ -941,7 +941,7 @@
     <string name="abha_consent_line4">I authorize the sharing of all my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter</string>
     <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
     <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
-     <string name="abha_consent_line7">I have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="abha_consent_line7">I, %1$s, have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
     <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
     <string name="abha_address_must_be_at_least_8_characters_long">ABHA address must be at least 8 characters long.</string>
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>

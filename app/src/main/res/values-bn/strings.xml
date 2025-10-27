@@ -462,30 +462,30 @@
     <string name="family_member">পরিবারের সদস্য</string>
     <string name="no_family_member_registered">কোনও পরিবারের সদস্য নিবন্ধন নেই</string>
     <string name="document_">ডকুমেন্ট -</string>
-<!--    <string name="are_you_head_of_the_family">আপনি কি পরিবারের প্রধান?</string>-->
-<!--    <string name="what_is_your_occupation">আপনার পেশা কি?*</string>-->
-<!--    <string name="do_you_have_a_bank_account">আপনার কি একটি ব্যাংক একাউন্ট আছে?*</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">আপনি কি ধরনের মোবাইল ফোন ব্যবহার করেন?*</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি বা আপনার কোনো সদস্য হোয়াটস আপ ব্যবহার করেন?*</string>-->
-<!--    <string name="total_number_of_members_in_the_household">পরিবারের মোট সদস্য সংখ্যা  কত?*</string>-->
-<!--    <string name="enter_number">সংখ্যা প্রবেশ করান</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">আপনার পরিবারে কতজন সদস্য থাকেন বা আপনার কাছে এখন রয়েছে?*</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের উৎস কোনটি?*</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">পানীয় জল নিরাপদ করতে আপনি কি করেন?*</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">সেখানে যেতে জল আনতে এবং এক ট্রিপে ফিরে আসতে কতক্ষন সময় লাগে?*</string>-->
-<!--    <string name="declined">উত্তর দিতে অস্বীকার করেছেন</string>-->
-<!--    <string name="enter_time">সময় প্রবেশ করুন</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">গত দুই সপ্তাহে ,এই উৎস থেকে জল কি কমপক্ষে একটি পুরো দিনের জন্য পাওয়া যায়নি?*</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">আপনার পরিবারের সদস্যরা সাধারণত কোন ধরনের টয়লেট ব্যবহার করেন?*</string>-->
-<!--    <string name="select_the_structure_of_house">বাড়ির কাঠামো নির্বাচন করুন*</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">আপনার পরিবার কতটা হেক্টরে আবাদযোগ্য জমির মালিক?*</string>-->
-<!--    <string name="enter_answer">উত্তর দিন</string>-->
-<!--    <string name="enter_occupation">পেশা প্রবেশ করুন</string>-->
-<!--    <string name="select">নির্বাচন করুন</string>-->
-<!--    <string name="image_saved">চিত্রটি সাফল্যের সাথে সংরক্ষিত হয়েছে!</string>-->
-<!--    <string name="emergency_confirmation">আপনি কি এই দর্শনটিকে জরুরী হিসেবে সেট করতে চান ?</string>-->
-<!--    <string name="something_went_wrong">কিছু ভুল হয়েছে সত্তর যোগাযোগ করুন</string>-->
-<!--    <string name="gender">লিঙ্গ</string>-->
+    <!--    <string name="are_you_head_of_the_family">আপনি কি পরিবারের প্রধান?</string>-->
+    <!--    <string name="what_is_your_occupation">আপনার পেশা কি?*</string>-->
+    <!--    <string name="do_you_have_a_bank_account">আপনার কি একটি ব্যাংক একাউন্ট আছে?*</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">আপনি কি ধরনের মোবাইল ফোন ব্যবহার করেন?*</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি বা আপনার কোনো সদস্য হোয়াটস আপ ব্যবহার করেন?*</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">পরিবারের মোট সদস্য সংখ্যা  কত?*</string>-->
+    <!--    <string name="enter_number">সংখ্যা প্রবেশ করান</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">আপনার পরিবারে কতজন সদস্য থাকেন বা আপনার কাছে এখন রয়েছে?*</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">আপনার পরিবারের সদস্যদের জন্য পানীয় জলের উৎস কোনটি?*</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">পানীয় জল নিরাপদ করতে আপনি কি করেন?*</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">সেখানে যেতে জল আনতে এবং এক ট্রিপে ফিরে আসতে কতক্ষন সময় লাগে?*</string>-->
+    <!--    <string name="declined">উত্তর দিতে অস্বীকার করেছেন</string>-->
+    <!--    <string name="enter_time">সময় প্রবেশ করুন</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">গত দুই সপ্তাহে ,এই উৎস থেকে জল কি কমপক্ষে একটি পুরো দিনের জন্য পাওয়া যায়নি?*</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">আপনার পরিবারের সদস্যরা সাধারণত কোন ধরনের টয়লেট ব্যবহার করেন?*</string>-->
+    <!--    <string name="select_the_structure_of_house">বাড়ির কাঠামো নির্বাচন করুন*</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">আপনার পরিবার কতটা হেক্টরে আবাদযোগ্য জমির মালিক?*</string>-->
+    <!--    <string name="enter_answer">উত্তর দিন</string>-->
+    <!--    <string name="enter_occupation">পেশা প্রবেশ করুন</string>-->
+    <!--    <string name="select">নির্বাচন করুন</string>-->
+    <!--    <string name="image_saved">চিত্রটি সাফল্যের সাথে সংরক্ষিত হয়েছে!</string>-->
+    <!--    <string name="emergency_confirmation">আপনি কি এই দর্শনটিকে জরুরী হিসেবে সেট করতে চান ?</string>-->
+    <!--    <string name="something_went_wrong">কিছু ভুল হয়েছে সত্তর যোগাযোগ করুন</string>-->
+    <!--    <string name="gender">লিঙ্গ</string>-->
     <string name="Hours">ঘন্টার</string>
     <string name="Days">দিনগুলি</string>
     <string name="Weeks">সপ্তাহ</string>
@@ -498,12 +498,12 @@
     <string name="per_Year">প্রতি বছর</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কার্যকর্তা) নিশ্চিত করেছি যে রোগীর কাছে গোপনীয়তা বিজ্ঞপ্তি এবং সম্মতিটি পড়েছি।</string>
     <string name="intelehealth_name">একাল আরোগ্য হেল্পলাইন</string>
-<!--    <string name="identification_screen_picker_hours" translatable="false">ঘন্টা</string>-->
-<!--    <string name="identification_screen_picker_minute" translatable="false">মিনিট</string>-->
-<!--    <string name="please_select_specialization">বিশেষীকরণ নির্বাচন করুন</string>-->
+    <!--    <string name="identification_screen_picker_hours" translatable="false">ঘন্টা</string>-->
+    <!--    <string name="identification_screen_picker_minute" translatable="false">মিনিট</string>-->
+    <!--    <string name="please_select_specialization">বিশেষীকরণ নির্বাচন করুন</string>-->
     <string name="failed_initial_synced">রিফ্রেশ ব্যর্থ, আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন। অ্যাপ্লিকেশন পুনরায় চালু করুন।</string>
-<!--    <string name="speciality">বিশেষত্ব</string>-->
-<!--    <string name="select_speciality">বিশেষত্ব নির্বাচন করুন</string>-->
+    <!--    <string name="speciality">বিশেষত্ব</string>-->
+    <!--    <string name="select_speciality">বিশেষত্ব নির্বাচন করুন</string>-->
     <string name="setup_internet_available">"সেটআপের জন্য একটি শক্তিশালী ইন্টারনেট সংযোগ প্রয়োজন। "</string>
     <string name="setup_internet_not_available">আপনি ইন্টারনেটের সাথে সংযুক্ত নন।</string>
     <string name="enter_license_key">লাইসেন্স কী প্রবেশ করান</string>
@@ -561,10 +561,10 @@
     <string name="resetting_app_dialog">অ্যাপ রিসেট করা হচ্ছে</string>
     <string name="sure_to_reset_app">আপনি কি অ্যাপ রিসেট করার বিষয়ে নিশ্চিত?</string>
 
-    <string name = "loading_more" >আরো লোড হচ্ছে... </string>
+    <string name="loading_more">আরো লোড হচ্ছে... </string>
 
     <string name="warning_app_update">অনুগ্রহ করে অ্যাপটিকে সর্বশেষ সংস্করণে আপডেট করুন।</string>
-    <string name = "due_on">শেষ তারিখ:</string>
+    <string name="due_on">শেষ তারিখ:</string>
     <string name="title_follow_up">ফলো আপ ভিজিট</string>
     <string name="location">অবস্থান</string>
 
@@ -572,8 +572,7 @@
     <!--    <string name="location_setup">Setup Location - </string>-->
 
 
-
-    <string name = "take_photo">ফটো তুলুন</string>
+    <string name="take_photo">ফটো তুলুন</string>
     <string name="choose_from_gallery">গ্যালারি থেকে চয়ন করুন</string>৷
     <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যোগ করুন!</string>
     <string name="something_went_wrong">কিছু ​​ভুল হয়েছে৷ অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন</string>
@@ -611,40 +610,40 @@
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
 
-    <string name = "prescription_age">বয়স</string>
-    <string name = "prescription_gender">লিঙ্গ</string>
+    <string name="prescription_age">বয়স</string>
+    <string name="prescription_gender">লিঙ্গ</string>
     <string name="prescription_address_contact">ঠিকানা এবং যোগাযোগ</string>
     <string name="prescription_patient_id">রোগীর আইডি</string>
-    <string name = "prescription_date_of_visit"> দেখার তারিখ</string>
+    <string name="prescription_date_of_visit"> দেখার তারিখ</string>
     <string name="prescription_vitals">ভিটালস</string>
-    <string name = "prescription_rr"> শ্বাস প্রশ্বাসের হার</string>
-    <string name = "prescription_pulse">পালস(bpm)</string>
+    <string name="prescription_rr"> শ্বাস প্রশ্বাসের হার</string>
+    <string name="prescription_pulse">পালস(bpm)</string>
     <string name="prescription_bp">রক্তচাপ</string>
-    <string name = "prescription_bmi">BMI</string>
+    <string name="prescription_bmi">BMI</string>
     <string name="prescription_wt">ওজন (কেজি)</string>
-    <string name = "prescription_ht">উচ্চতা(সেমি)</string>
-    <string name = "prescription_pre_comp">অভিযোগ(গুলি) উপস্থাপন করা</string>
+    <string name="prescription_ht">উচ্চতা(সেমি)</string>
+    <string name="prescription_pre_comp">অভিযোগ(গুলি) উপস্থাপন করা</string>
     <string name="prescription_diagnosis">নির্ণয়</string>
     <string name="prescription_med_plan">ঔষধ(গুলি) পরিকল্পনা</string>
     <string name="prescription_rec_investigation">প্রস্তাবিত তদন্ত(গুলি)</string>
-    <string name = "prescription_general_advice">সাধারণ পরামর্শ</string>
+    <string name="prescription_general_advice">সাধারণ পরামর্শ</string>
     <string name="prescription_follow_up_date">অনুসরণ করার তারিখ</string>
-    <string name = "prescription_temp_c">তাপমাত্রা (C): </string>
-    <string name = "prescription_temp_f">তাপমাত্রা (F): </string>
+    <string name="prescription_temp_c">তাপমাত্রা (C): </string>
+    <string name="prescription_temp_f">তাপমাত্রা (F): </string>
 
-    <string name = "diagnosis"> নির্ণয়</string>
+    <string name="diagnosis"> নির্ণয়</string>
     <string name="primary">প্রাথমিক</string>
-    <string name = "secondary"> মাধ্যমিক</string>
+    <string name="secondary"> মাধ্যমিক</string>
     <string name="provisiona">অস্থায়ী</string>
-    <string name = "confirmed">নিশ্চিত</string>
+    <string name="confirmed">নিশ্চিত</string>
     <string name="recommended_medication">প্রস্তাবিত ওষুধ</string>
     <string name="medication">ঔষধ</string>
-    <string name = "strength">শক্তি</string>
+    <string name="strength">শক্তি</string>
     <string name="units">ইউনিট (যেমন: mg)</string>
     <string name="units_tab">ইউনিট (যেমন: ট্যাব/সিরাপ)</string>
     <string name="for_duration">সময়কালের জন্য</string>
     <string name="units_eg_days_weeks_etc">ইউনিট (যেমন: দিন/সপ্তাহ/ইত্যাদি)</string>
-    <string name = "additional_instruction">অতিরিক্ত নির্দেশ</string>
+    <string name="additional_instruction">অতিরিক্ত নির্দেশ</string>
     <string name="recommended_tests">প্রস্তাবিত পরীক্ষা</string>
     <string name="test">পরীক্ষা</string>
     <string name="advice_or_refer_patient">পরামর্শ বা রোগীকে রেফার করুন</string>
@@ -653,19 +652,19 @@
     <string name="follow_up">অনুসরণ করুন</string>
     <string name="sign_and_submit">সাইন করুন এবং জমা দিন</string>
     <string name="add_test">পরীক্ষা যোগ করুন</string>
-    <string name = "add_advice">পরামর্শ যোগ করুন</string>
+    <string name="add_advice">পরামর্শ যোগ করুন</string>
     <string name="add_note">টীকা যোগ করুন</string>
     <string name="schedule_a_follow_up">একটি ফলো আপের সময় নির্ধারণ করুন</string>৷
     <string name="submit">জমা দিন</string>
-    <string name = "add_meds"> ওষুধ যোগ করুন</string>
+    <string name="add_meds"> ওষুধ যোগ করুন</string>
     <string name="add_diagnosis">নিদান যোগ করুন</string>
     <string name="startVisitNote">শুরু ভিজিট নোট</string>
     <string name="prescGivenSuccessfully">আপনাকে ধন্যবাদ! প্রেসক্রিপশন সফলভাবে দেওয়া হয়েছে</string>
     <string name="morethanonefollowupnotallowed">অনুগ্রহ করে একবারে শুধুমাত্র একটি ফলোআপ প্রদান করুন৷</string>
-    <string name = "amount"> পরিমাণ</string>
+    <string name="amount"> পরিমাণ</string>
     <string name="frequency">ফ্রিকোয়েন্সি</string>
-    <string name = "route_optional"> রুট (ঐচ্ছিক)</string>
-    <string name = "reason_optional"> কারণ (ঐচ্ছিক)</string>
+    <string name="route_optional"> রুট (ঐচ্ছিক)</string>
+    <string name="reason_optional"> কারণ (ঐচ্ছিক)</string>
     <string name="choose_a_date">একটি তারিখ চয়ন করুন</string>৷
     <string name="follow_up_remark">ফলো আপ মন্তব্য</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">প্রেসক্রিপশন দেওয়ার চেষ্টা করার আগে অনুগ্রহ করে প্রথমে আপলোড করুন৷</string>
@@ -811,7 +810,7 @@
     <string name="abha_consent_line4">I authorize the sharing of all my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter</string>
     <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
     <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
-     <string name="abha_consent_line7">I have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="abha_consent_line7">I, %1$s, have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
     <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
     <string name="abha_address_must_be_at_least_8_characters_long">ABHA address must be at least 8 characters long.</string>
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>

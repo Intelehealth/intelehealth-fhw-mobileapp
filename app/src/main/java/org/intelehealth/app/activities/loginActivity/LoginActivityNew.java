@@ -358,6 +358,7 @@ public class LoginActivityNew extends AppCompatActivity {
                 Boolean authencated = loginModel.getAuthenticated();
                 Gson gson = new Gson();
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                sessionManager.setHwFullName(loginModel.getUser().getPerson().getDisplay());
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());

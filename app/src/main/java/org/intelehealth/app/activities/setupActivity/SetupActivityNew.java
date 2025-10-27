@@ -476,6 +476,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             Boolean authencated = loginModel.getAuthenticated();
                             if (authencated) {
                                 Gson gson = new Gson();
+                                sessionManager.setHwFullName(loginModel.getUser().getPerson().getDisplay());
                                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                                 sessionManager.setSessionID(loginModel.getSessionId());

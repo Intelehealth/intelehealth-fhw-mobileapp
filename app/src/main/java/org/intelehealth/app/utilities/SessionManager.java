@@ -21,6 +21,7 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
+    private static final String HW_FULL_NAME = "hw_full_name";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
@@ -201,6 +202,15 @@ public class SessionManager {
 
     public void setChwname(String chwname) {
         editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
+
+    public String getHwFullName() {
+        return pref.getString(HW_FULL_NAME, "");
+    }
+
+    public void setHwFullName(String hwFullName) {
+        editor.putString(HW_FULL_NAME, hwFullName);
         editor.commit();
     }
 
@@ -522,6 +532,7 @@ public class SessionManager {
     public String getFirstProviderLoginTime() {
         return pref.getString(FIRST_PROVIDER_LOGIN_TIME, "");
     }
+
     public void setAbhaLoginType(String time) {
         editor.putString(FIRST_PROVIDER_LOGIN_TIME, time);
         editor.commit();
@@ -545,11 +556,13 @@ public class SessionManager {
     public String getJwtAuthToken() {
         return pref.getString(JWT_AUTH_TOKEN, "");
     }
+
     // set the visit edit cache data as json string
     public void setVisitEditCache(String key, String valueJson) {
         editor.putString(key, valueJson);
         editor.commit();
     }
+
     // get the visit edit cache data as json string
     public String getVisitEditCache(String key) {
         return pref.getString(key, "");
