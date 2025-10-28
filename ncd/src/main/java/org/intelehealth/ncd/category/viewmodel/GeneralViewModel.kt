@@ -10,6 +10,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryRepository
@@ -27,20 +32,20 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
     val generalLiveData: LiveData<List<PatientVisitDetails>> = _generalMutableLiveData
     private val allPatients = mutableListOf<PatientVisitDetails>()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
     fun getPatientsForGeneral() {
         viewModelScope.launch(Dispatchers.IO) {
             val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(Constants.ENCOUNTER_VISIT_COMPLETE)
 
-            // Save the full filtered result
             allPatients.clear()
             allPatients.addAll(result)
 
-            // Post initial full list to LiveData
             _generalMutableLiveData.postValue(result)
         }
     }
-    fun searchPatient(query: String) {
+    /*fun searchPatient(query: String) {
         val filtered = if (query.isBlank()) {
             allPatients
         } else {
@@ -51,27 +56,23 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
             }
         }
         _generalMutableLiveData.postValue(filtered)
-    }
-
-/*    fun getPatientFlow(encounterUuid: String) =
-        repository.getPagedPatients(encounterUuid)
-            .flow
-            .cachedIn(viewModelScope)*/
-
-    /*fun getPatientFlow(): Flow<PagingData<PatientVisitDetails>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true,
-                initialLoadSize = 40
-            ),
-            pagingSourceFactory = { repository.getPagedPatients() }
-        ).flow.cachedIn(viewModelScope)
     }*/
-    fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+   /* fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
         return repository
             .getPagedPatients(encounterUuid)
             .cachedIn(viewModelScope)
+    }*/
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
     }
 
+    fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+        return searchQuery
+            .debounce(300) // wait for user to finish typing
+            .distinctUntilChanged()
+            .flatMapLatest { query ->
+                repository.getPagedPatients(encounterUuid, query)
+            }
+            .cachedIn(viewModelScope)
+    }
 }

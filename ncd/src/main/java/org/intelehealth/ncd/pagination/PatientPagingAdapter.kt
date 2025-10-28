@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.category.adapter
+package org.intelehealth.ncd.pagination
 
 import android.content.Context
 import android.content.res.Resources

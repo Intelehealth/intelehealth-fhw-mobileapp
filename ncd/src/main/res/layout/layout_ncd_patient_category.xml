@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="10dp"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="false"
+    android:overScrollMode="never"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView

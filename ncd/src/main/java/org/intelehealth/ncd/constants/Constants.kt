@@ -29,6 +29,7 @@ object Constants {
 
     //const val VISIT_NOTE = "d7151f82-c1f3-4152-a605-2f9ea7414a79" //ENCOUNTER_VISIT_NOTE
     const val ENCOUNTER_VISIT_COMPLETE: String = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"  //Prescription
-
+    const val IS_NCD_VISIT_ATTRIBUTE: String = "bc79d2ab-3c83-48f2-820d-08a02b32faab"  // is ncd visit attribute
+    const val SPECIALITY: String = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"  //visit speciality
 
 }

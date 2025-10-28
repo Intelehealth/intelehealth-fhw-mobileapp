@@ -1,4 +1,4 @@
-package org.intelehealth.ncd.category.adapter
+package org.intelehealth.ncd.pagination
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

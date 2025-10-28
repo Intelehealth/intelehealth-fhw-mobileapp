@@ -370,7 +370,7 @@ class CategorySegregationUtils(private val resources: Resources) {
 
                     // Include if: No history OR has history but not on medication also followup date not given to patient
                     val includePatient = when {
-                        !(detail.isFollowUpDateGivenToPatient ?: false) -> {
+                        !(detail.isHypertensionFollowupGiven ?: false) -> {
                             !hasHistory || (hasHistory && !onMedication)
                         }
                         else -> false
@@ -389,10 +389,10 @@ class CategorySegregationUtils(private val resources: Resources) {
 
                     val includePatient = when {
                         // Case 1:no follow-up date given but has baseline survey true
-                        detail.isFollowUpDateGivenToPatient != true -> hasHistory && onMedication
+                        detail.isHypertensionFollowupGiven != true -> hasHistory && onMedication
 
                         // Case 2: followup given and follupdate on and after that date
-                        detail.isFollowUpDateGivenToPatient == true -> followUpFlag
+                        detail.isHypertensionFollowupGiven == true -> followUpFlag
 
                         else -> false
                     }

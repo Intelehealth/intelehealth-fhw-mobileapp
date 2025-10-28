@@ -11,10 +11,11 @@
     <!-- Progress bar for loading -->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:indeterminateTint="@color/colorPrimary"
         android:visibility="gone"
-        style="?android:attr/progressBarStyleLarge" />
+        style="?android:attr/progressBarStyle" />
 
     <!-- Error message -->
     <TextView
