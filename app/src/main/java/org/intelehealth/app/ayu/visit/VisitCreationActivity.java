@@ -50,6 +50,8 @@ import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragm
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.ConnectPocDeviceFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.PocDeviceListFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonSummaryFragment;
@@ -109,6 +111,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";
+    private static final String POC_DEVICE_FRAGMENT = "POC_DEVICE_FRAGMENT";
     private static final String VITAL_SUMMARY_FRAGMENT = "VITAL_SUMMARY";
     private static final String VISIT_REASON_FRAGMENT = "VISIT_REASON";
     private static final String VISIT_REASON_QUESTION_FRAGMENT = "VISIT_REASON_QUESTION";
@@ -132,6 +135,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public static final int STEP_6_FAMILY_HISTORY = 8;
     public static final int STEP_6_HISTORY_SUMMARY = 9;
     public static final int STEP_7_VISIT_SUMMARY = 10;
+    public static final int STEP_11_DEVICE_CONNECT = 11;
+    public static final int STEP_12_DEVICE_LIST = 12;
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;
     private static final String DIAGNOSTICS_FRAGMENT = "DIAGNOSTICS";
     private static final String DIAGNOSTICS_SUMMARY_FRAGMENT = "DIAGNOSTICS_SUMMARY";
@@ -578,8 +583,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mStep5ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
-                getSupportFragmentManager().beginTransaction().
+                /*getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
+                        commit();*/
+
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, ConnectPocDeviceFragment.newInstance(mCommonVisitData, isEditMode,mVitalsObject), POC_DEVICE_FRAGMENT).
                         commit();
                 break;
             case STEP_2_DIAGNOSTICS:
@@ -729,6 +738,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 startActivity(intent1);
                 finish();
                 break;
+            case STEP_12_DEVICE_LIST:
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance( isEditMode, mVitalsObject), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                        commit();
         }
     }
 

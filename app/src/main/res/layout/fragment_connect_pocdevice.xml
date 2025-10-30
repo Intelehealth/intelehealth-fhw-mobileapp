@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+   <RelativeLayout
+
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@color/white"
+       tools:context=".ayu.visit.pocdevice.ConnectPocDeviceFragment">
+       <LinearLayout
+           android:id="@+id/llSkip"
+           android:layout_margin="@dimen/margin_5"
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:id="@+id/tv_connect_device"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:gravity="center|start"
+               android:lineSpacingExtra="1sp"
+               android:padding="@dimen/margin_10"
+               android:text="@string/connect_your_device"
+               android:textSize="@dimen/toolbar_text_size" />
+
+           <TextView
+               android:id="@+id/btn_skip"
+               android:layout_width="0dip"
+               android:layout_height="match_parent"
+               android:layout_marginStart="@dimen/margin_16"
+               android:layout_weight="1"
+               android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+               android:drawableTint="@color/colorPrimary"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingEnd="@dimen/margin_5"
+               android:gravity="center|end"
+               android:text="@string/skip"
+               android:textAllCaps="false"
+               android:textColor="@color/colorPrimary"
+               android:textSize="@dimen/common_button_text_size" />
+       </LinearLayout>
+
+       <androidx.cardview.widget.CardView
+           android:id="@+id/cv_select"
+           android:visibility="visible"
+           android:layout_marginHorizontal="@dimen/margin_20"
+           app:cardElevation="@dimen/margin_5"
+           app:cardCornerRadius="@dimen/margin_5"
+           android:layout_marginTop="@dimen/margin_20"
+           app:cardBackgroundColor="@color/pocselectCard"
+           android:layout_below="@+id/llSkip"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_margin="@dimen/margin_5"
+               android:orientation="horizontal"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <LinearLayout
+                   android:layout_weight="1"
+                   android:orientation="vertical"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <TextView
+                       android:id="@+id/tv_details_label"
+                       android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center|start"
+                       android:lineSpacingExtra="1sp"
+                       android:textColor="@null"
+                       android:textAppearance="@style/caption"
+                       android:paddingHorizontal="@dimen/margin_10"
+                       android:textSize="14sp"
+                       android:text="@string/wireless" />
+                   <TextView
+                       android:id="@+id/tv_deviceName"
+                       android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center|start"
+                       android:lineSpacingExtra="1sp"
+                       android:padding="@dimen/margin_10"
+                       android:textSize="14sp"
+                       android:text="AYUSYNK" />
+                   <TextView
+                       android:id="@+id/tv_connect_ble"
+                       android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center|start"
+                       android:lineSpacingExtra="1sp"
+                       android:textColor="@null"
+                       android:textAppearance="@style/caption"
+                       android:paddingHorizontal="@dimen/margin_10"
+                       android:textSize="14sp"
+                       android:text="@string/connected_via_bluetooth" />
+               </LinearLayout>
+               <LinearLayout
+
+                   android:layout_weight="1.5"
+                   android:orientation="vertical"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   <ImageView
+                       android:id="@+id/img_select"
+                       android:layout_gravity="end"
+                       android:visibility="invisible"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/baseline_check_circle_24"/>
+                   <ImageView
+                       android:layout_gravity="center"
+                       android:layout_width="@dimen/margin_30"
+                       android:layout_height="@dimen/margin_30"
+                       android:src="@drawable/bluetooth_phn"/>
+
+               </LinearLayout>
+           </LinearLayout>
+       </androidx.cardview.widget.CardView>
+
+
+       <LinearLayout
+           android:id="@+id/lldevice_connected"
+           android:layout_margin="@dimen/margin_10"
+           android:layout_below="@id/cv_select"
+           android:orientation="horizontal"
+           android:visibility="gone"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:id="@+id/tv_condevicename"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:layout_weight="1"
+               android:gravity="center|start"
+               android:lineSpacingExtra="1sp"
+               android:padding="@dimen/margin_10"
+               android:textColor="@color/green"
+               android:text="AYUSYNK Connected"
+               android:textSize="@dimen/toolbar_text_size" />
+
+           <com.ayudevice.ayusynksdk.battery.AyuBatteryMeterView
+               android:id="@+id/customBatteryMeter"
+               android:layout_width="50dp"
+               android:layout_height="30dp"
+               android:layout_gravity="center"
+               android:layout_marginHorizontal="@dimen/margin_5"
+               android:visibility="visible"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintTop_toTopOf="parent" />
+           <Button
+               android:id="@+id/btn_disconnect"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="1.5"
+               android:backgroundTint="@color/red"
+               android:background="@drawable/ui2_common_primary_bg"
+                android:layout_gravity="center"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="@string/disconnect"
+               android:textAllCaps="false"
+               android:textColor="@color/white"
+               android:textSize="@dimen/txtsize_patdetail_14sp" />
+       </LinearLayout>
+
+
+       <LinearLayout
+           android:id="@+id/lltryagain"
+           android:layout_centerInParent="true"
+           android:layout_below="@+id/cv_select"
+           android:layout_above="@+id/ll_footer"
+           android:orientation="vertical"
+           android:gravity="center"
+           android:visibility="gone"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:lineSpacingExtra="1sp"
+               android:padding="@dimen/margin_10"
+               android:textColor="@color/gray"
+               android:text="@string/check_if_ayusynk_and_your_phone_s_n_bluetooth_is_turned_on"
+               android:textSize="14sp" />
+           <Button
+               android:id="@+id/btn_tryagain"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="@dimen/margin_16"
+               android:background="@drawable/ui2_common_primary_bg"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="@string/try_again"
+               android:textAllCaps="false"
+               android:textColor="@color/white"
+               android:textSize="@dimen/common_button_text_size" />
+       </LinearLayout>
+
+       <!--<ListView
+           android:id="@+id/device_list"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@+id/cv_select"
+           android:layout_above="@+id/ll_footer"
+           android:visibility="gone"
+           android:scrollbars="none"
+           tools:listitem="@layout/item_poc_device_list" />-->
+
+
+       <LinearLayout
+           android:id="@+id/llrecord_type"
+           android:visibility="gone"
+           android:layout_below="@+id/lldevice_connected"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cv_heart"
+               android:layout_marginHorizontal="@dimen/margin_20"
+               app:cardElevation="@dimen/margin_5"
+               app:cardCornerRadius="@dimen/margin_5"
+               android:layout_marginTop="@dimen/margin_20"
+               app:cardBackgroundColor="@color/pocheartCard"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <LinearLayout
+                   android:padding="@dimen/margin_10"
+                   android:layout_margin="@dimen/margin_5"
+                   android:orientation="horizontal"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <ImageView
+                       android:layout_gravity="center"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:tint="@color/white"
+                       android:src="@drawable/heart_icon"/>
+                   <View
+                       android:layout_gravity="center"
+                       android:layout_marginLeft="@dimen/margin_5"
+                       android:background="@color/white"
+                       android:layout_width="0.5dp"
+                       android:layout_height="50dp"/>
+                   <LinearLayout
+                       android:layout_weight="1"
+                       android:orientation="vertical"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+                       <TextView
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="Record" />
+                       <TextView
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="Heart Sounds" />
+                       <TextView
+
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="For 4 Locations" />
+                   </LinearLayout>
+
+               </LinearLayout>
+           </androidx.cardview.widget.CardView>
+           <androidx.cardview.widget.CardView
+               android:id="@+id/cv_lung"
+               android:layout_marginHorizontal="@dimen/margin_20"
+               app:cardElevation="@dimen/margin_5"
+               app:cardCornerRadius="@dimen/margin_5"
+               android:layout_marginTop="@dimen/margin_20"
+               app:cardBackgroundColor="@color/poclungCard"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <LinearLayout
+                   android:padding="@dimen/margin_10"
+                   android:layout_margin="@dimen/margin_5"
+                   android:orientation="horizontal"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <ImageView
+                       android:layout_gravity="center"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       app:tint="@color/white"
+                       android:src="@drawable/lung_icon"/>
+                   <View
+                       android:layout_gravity="center"
+                       android:layout_marginLeft="@dimen/margin_5"
+                       android:background="@color/white"
+                       android:layout_width="0.5dp"
+                       android:layout_height="50dp"/>
+                   <LinearLayout
+                       android:layout_weight="1"
+                       android:orientation="vertical"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+                       <TextView
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="Record" />
+                       <TextView
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="Heart Sounds" />
+                       <TextView
+
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center|start"
+                           android:lineSpacingExtra="1sp"
+                           android:textColor="@color/white"
+
+                           android:paddingHorizontal="@dimen/margin_10"
+                           android:textSize="@dimen/margin_14"
+                           android:text="For 4 Locations" />
+                   </LinearLayout>
+
+               </LinearLayout>
+           </androidx.cardview.widget.CardView>
+       </LinearLayout>
+       <LinearLayout
+           android:id="@+id/ll_footer"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:layout_marginHorizontal="@dimen/button_skip_margin_start"
+           android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+           android:orientation="horizontal"
+           android:weightSum="2">
+
+           <Button
+               android:id="@+id/btn_cancel"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:background="@drawable/ui2_common_input_bg"
+               android:drawableTint="@color/iconTintWhite"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="@string/generic_back"
+               android:textAllCaps="false"
+               android:textColor="@color/colorPrimary"
+               android:textSize="@dimen/common_button_text_size"
+               android:textStyle="bold"
+               app:backgroundTint="@null" />
+
+           <Button
+               android:id="@+id/btn_submit"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="@dimen/margin_16"
+               android:layout_weight="1"
+               android:background="@drawable/ui2_common_primary_bg"
+               android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+               android:drawableTint="@color/iconTintWhite"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="@string/confirm"
+               android:textAllCaps="false"
+               android:textColor="@color/white"
+               android:textSize="@dimen/common_button_text_size" />
+       </LinearLayout>
+
+   </RelativeLayout>
+</layout>

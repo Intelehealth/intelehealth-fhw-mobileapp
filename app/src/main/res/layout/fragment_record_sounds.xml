@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@color/white"
+       tools:context=".ayu.visit.pocdevice.RecordSoundsFragment">
+
+       <TextView
+           android:id="@+id/tv_sound_position"
+           android:layout_weight="1"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:lineSpacingExtra="1sp"
+           android:padding="@dimen/margin_10"
+           android:textSize="@dimen/toolbar_text_size"
+           android:text="Recording Heart Sound" />
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_above="@+id/progressBar"
+           android:layout_below="@+id/tv_sound_position">
+           <ImageView
+               android:src="@drawable/heart_directions"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+           <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+               android:id="@+id/ayuVisualizerView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:gridColor="@color/graph_grid"
+               app:recordColor="@color/record_color"
+               app:streamColor="@color/graph_stream"
+               app:strokeWidth="1dp"
+               app:xAxisColor="@color/graph_centerline"
+               app:yAxisColor="@color/graph_centerline" />
+       </FrameLayout>
+
+       <ProgressBar
+           android:id="@+id/progressBar"
+           style="?android:attr/progressBarStyleHorizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_above="@+id/ll_footer"
+           android:max="10" />
+
+       <LinearLayout
+           android:id="@+id/ll_footer"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:layout_marginHorizontal="@dimen/button_skip_margin_start"
+           android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+           android:orientation="horizontal"
+           android:weightSum="2">
+
+           <Button
+               android:id="@+id/btn_cancel"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_weight="1"
+               android:background="@drawable/ui2_common_input_bg"
+               android:drawableTint="@color/iconTintWhite"
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="@string/generic_back"
+               android:textAllCaps="false"
+               android:textColor="@color/colorPrimary"
+               android:textSize="@dimen/common_button_text_size"
+               android:textStyle="bold"
+               app:backgroundTint="@null" />
+
+           <Button
+               android:id="@+id/btn_submit"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_marginStart="@dimen/margin_16"
+               android:layout_weight="1"
+               android:background="@drawable/ui2_common_primary_bg"
+
+               android:lineHeight="@dimen/button_skip_line_height"
+               android:paddingStart="@dimen/common_button_padding_left"
+               android:paddingTop="@dimen/common_button_padding_top"
+               android:paddingEnd="@dimen/common_button_padding_right"
+               android:paddingBottom="@dimen/common_button_padding_bottom"
+               android:text="Start Recording"
+               android:textAllCaps="false"
+               android:textColor="@color/white"
+               android:textSize="@dimen/common_button_text_size" />
+       </LinearLayout>
+
+   </RelativeLayout>
+</layout>

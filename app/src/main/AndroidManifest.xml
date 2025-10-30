@@ -516,6 +516,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
 
+        <meta-data android:name="com.ayudevice.ayusynksdk.clientId" android:value="BVKSCsqPfEqNQttE" />
         <activity
             android:name=".activities.patientDetailActivity.TeleconsultationConsentActivity"
             android:exported="true"

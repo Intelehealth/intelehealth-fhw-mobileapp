@@ -16,6 +16,9 @@
     <color name="colorPrimaryLightCard">#1a00CA04</color>
     <color name="colorAccent">#0FD197</color>
     <color name="colorAccentLightCard">#1a0FD197</color>
+    <color name="pocselectCard">#DAEEF8</color>
+    <color name="pocheartCard">#E06697</color>
+    <color name="poclungCard">#2196F3</color>
     <!--<color name="colorAccent">#3F9600</color>
         <color name="colorAccentLightCard">#1aF57F17</color>
     -->

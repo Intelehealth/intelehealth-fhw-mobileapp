@@ -164,5 +164,8 @@
     <color name="grayIcon">#7F7B92</color>
     <color name="colorTextPrimary">#1B163A</color>
     <color name="colorTextSecondary">#7F7B92</color>
-
+    <color name="graph_stream">#FF4040</color>
+    <color name="graph_grid">#FBEBEB</color>
+    <color name="graph_centerline">#F9E2E2</color>
+    <color name="record_color">#FF9A01</color>
 </resources>

@@ -1764,6 +1764,11 @@
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
     <string name="pdf_share_flow_title">Share Prescription</string>
     <string name="feature_not_found">Feature not found</string>
+    <string name="connect_your_device">Connect your device</string>
+    <string name="wireless">Wireless</string>
+    <string name="connected_via_bluetooth">Connected Via Bluetooth</string>
+    <string name="waiting_for_device_to_connect">Searching for device to Connect</string>
+    <string name="check_if_ayusynk_and_your_phone_s_n_bluetooth_is_turned_on">Check if Ayusynk and your phone\'s\n bluetooth is turned on.</string>
 
 
 </resources>
