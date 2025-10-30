@@ -9,6 +9,7 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.Toast
@@ -33,9 +34,10 @@ class ShowInfoModuleDialog(
     private var file: File? = null
 
     fun show() {
+        Log.d("TAGkz", "show: url : "+url)
         dialog = Dialog(context)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        //dialog?.setContentView(R.layout.dialog_pdf_viewer)
+        dialog?.setContentView(R.layout.dialog_pdf_viewer)
 
         // Resize dialog to 85% width & 65% height
         dialog?.window?.setLayout(
