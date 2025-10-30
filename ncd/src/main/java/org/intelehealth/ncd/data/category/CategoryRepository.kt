@@ -125,8 +125,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             )
         }
     }
-    suspend fun getPatientVisitDetailsForFollowup(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
-        val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid)
+    suspend fun getPatientVisitDetailsForFollowup(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String, patientUuid: String): List<PatientVisitDetails> {
+        val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid, patientUuid)
         rawDataList.forEach {
         }
         val result = buildPatientVisitDetails(rawDataList)

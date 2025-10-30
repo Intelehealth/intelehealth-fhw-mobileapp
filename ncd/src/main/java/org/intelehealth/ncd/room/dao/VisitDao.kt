@@ -476,6 +476,11 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
         )
 
 WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
+ AND (
+    :patientUuid IS NULL 
+    OR :patientUuid = '' 
+    OR P.uuid = :patientUuid
+)
 
     ORDER BY datetime(V.startdate) DESC;
     """
@@ -483,7 +488,8 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
     suspend fun getPatientVisitRawDataForFollowup(
         age: Int,
         attributeTypeUuid: String,
-        visitNoteEncounterUuid: String
+        visitNoteEncounterUuid: String,
+        patientUuid: String
     ): List<PatientVisitDetails>
 
 

@@ -93,6 +93,7 @@ class HypertensionScreeningViewModel(
                 age = Constants.HYPERTENSION_EXCLUSION_AGE,
                 attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
                 visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+                ""
             )
 
             val filteredResult = utils.segregateAndFetchPatientVisitDetails(
