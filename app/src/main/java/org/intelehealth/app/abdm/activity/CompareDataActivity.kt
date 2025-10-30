@@ -18,9 +18,11 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.ActivityCompareDataBinding
+import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.UserData
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.IntentKeys
 import java.io.Serializable
 
@@ -126,83 +128,113 @@ class CompareDataActivity : AppCompatActivity() {
         )
 
         binding.btnConfirm.setOnClickListener {
-            val selectedFName = getSelectedRadioText(binding.rgFName)
-            val selectedLName = getSelectedRadioText(binding.rgLName)
-            val selectedDob = getSelectedRadioText(binding.rgDob)
-            val selectedGender = getSelectedRadioText(binding.rgGender)
-            val selectedAddress = getSelectedRadioText(binding.rgAddress)
-            val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
-            val selectedAbhaAddress = getSelectedRadioText(binding.rgAbhaAddress)
-            val selectedAbhaNumber = getSelectedRadioText(binding.rgAbhaNumber)
-
-            if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty() || selectedAbhaAddress.isEmpty() || selectedAbhaNumber.isEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT
-                )
-                    .show()
-                return@setOnClickListener
-            }
-
-            patientDto.firstname = selectedFName
-            patientDto.lastname = selectedLName
-            patientDto.dateofbirth = selectedDob
-            patientDto.gender = selectedGender
-            patientDto.address1 = selectedAddress
-            patientDto.postalcode = selectedPinCode
-            patientDto.abhaNumber = abhaProfileResponse.abhaNumber
-            patientDto.abhaAddress = selectedAbhaAddress
-            patientDto.abhaNumber = selectedAbhaNumber
-
-            val isUpdated = patientsDAO.updatePatientWithABHA(
-                patientDto
-            )
-            SyncUtils().syncBackground()
-
-            if (isUpdated) {
-                Intent(this, PatientDetailActivity2::class.java).apply {
-                    /*putExtra("patientUuid", patientDto.uuid)
-                    putExtra("patientName", patientDto.firstname + " " + patientDto.lastname)
-                    putExtra("tag", "searchPatient")
-                    putExtra("hasPrescription", "false")
-                    val args = Bundle()
-                    args.putSerializable("patientDTO", patientDto as Serializable?)
-                    putExtra("BUNDLE", args)
-                    putExtra("patientUuid", patientDto.uuid)
-                    startActivity(this)
-                    finish()*/
-
-                    putExtra("patientUuid", patientDto.uuid)
-                    putExtra(
-                        "patientName",
-                        patientDto.firstname + " " + patientDto.lastname
-                    )
-                    putExtra("tag", "newPatient")
-                    putExtra("hasPrescription", "false")
-
-                    val args = Bundle()
-                    args.putSerializable("patientDTO", patientDto as Serializable?)
-
-                    args.putString("accessToken", accessToken)
-                    args.putString("xToken", xToken)
-                    args.putString("txnId", txnId)
-                    putExtra("BUNDLE", args)
-                    startActivity(this)
-                    finish()
-                }
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.unable_to_update_the_patient_try_again_later),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            displayConfirmationDialog(patientDto, abhaProfileResponse)
         }
 
         binding.btnEdit.setOnClickListener {
             // Toast.makeText(this, "Edit Manually clicked", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun displayConfirmationDialog(
+        patientDto: PatientDTO,
+        abhaProfileResponse: AbhaProfileResponse
+    ) {
+        val dialogUtils = DialogUtils()
+
+        dialogUtils.showCommonDialog(
+            this,
+            R.drawable.close_patient_svg,
+            getString(R.string.save_data),
+            getString(R.string.do_you_want_to_ahead_and_save_the_patient_s_data),
+            false,
+            getString(R.string.save),
+            getString(R.string.cancel),
+            object : DialogUtils.CustomDialogListener {
+                override fun onDialogActionDone(action: Int) {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        savePatientData(patientDto, abhaProfileResponse)
+                    }
+                }
+            }
+        )
+    }
+
+    private fun savePatientData(
+        patientDto: PatientDTO,
+        abhaProfileResponse: AbhaProfileResponse
+    ) {
+        val updatedPatientDto = validatePatientData(patientDto, abhaProfileResponse) ?: return
+
+        val isUpdated = patientsDAO.updatePatientWithABHA(
+            updatedPatientDto
+        )
+        SyncUtils().syncBackground()
+
+        if (isUpdated) {
+            Intent(this, PatientDetailActivity2::class.java).apply {
+                putExtra("patientUuid", updatedPatientDto.uuid)
+                putExtra(
+                    "patientName",
+                    updatedPatientDto.firstname + " " + updatedPatientDto.lastname
+                )
+                putExtra("tag", "newPatient")
+                putExtra("hasPrescription", "false")
+
+                val args = Bundle()
+                args.putSerializable("patientDTO", updatedPatientDto as Serializable?)
+
+                args.putString("accessToken", accessToken)
+                args.putString("xToken", xToken)
+                args.putString("txnId", txnId)
+                putExtra("BUNDLE", args)
+                startActivity(this)
+                finish()
+            }
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.unable_to_update_the_patient_try_again_later),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun validatePatientData(
+        patientDto: PatientDTO,
+        abhaProfileResponse: AbhaProfileResponse
+    ): PatientDTO? {
+        val selectedFName = getSelectedRadioText(binding.rgFName)
+        val selectedLName = getSelectedRadioText(binding.rgLName)
+        val selectedDob = getSelectedRadioText(binding.rgDob)
+        val selectedGender = getSelectedRadioText(binding.rgGender)
+        val selectedAddress = getSelectedRadioText(binding.rgAddress)
+        val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
+        val selectedAbhaAddress = getSelectedRadioText(binding.rgAbhaAddress)
+        val selectedAbhaNumber = getSelectedRadioText(binding.rgAbhaNumber)
+
+        if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty() || selectedAbhaAddress.isEmpty() || selectedAbhaNumber.isEmpty()) {
+            Toast.makeText(
+                this,
+                getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT
+            ).show()
+
+            return null
+        }
+
+        patientDto.firstname = selectedFName
+        patientDto.lastname = selectedLName
+        patientDto.dateofbirth = selectedDob
+        patientDto.gender = selectedGender
+        patientDto.address1 = selectedAddress
+        patientDto.postalcode = selectedPinCode
+        patientDto.abhaNumber = abhaProfileResponse.abhaNumber
+        patientDto.abhaAddress = selectedAbhaAddress
+        patientDto.abhaNumber = selectedAbhaNumber
+
+        return patientDto
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
