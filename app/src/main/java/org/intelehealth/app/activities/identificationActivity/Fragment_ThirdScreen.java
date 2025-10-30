@@ -87,6 +87,8 @@ import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.utils.ABDMConstant;
+import org.intelehealth.app.activities.patientDetailActivity.AbhaCardDownloadUtil;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -108,6 +110,7 @@ import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -262,8 +265,8 @@ public class Fragment_ThirdScreen extends Fragment {
                 xToken = getArguments().getString("xToken");
             if (getArguments().containsKey("txnId"))
                 txnId = getArguments().getString("txnId");
-            if (getArguments().containsKey("firstRequestFulfilled")){
-                if(getArguments().getBoolean("firstRequestFulfilled"))
+            if (getArguments().containsKey("firstRequestFulfilled")) {
+                if (getArguments().getBoolean("firstRequestFulfilled"))
                     tvCreateNewAbhaAddress.setVisibility(View.GONE);
             }
 
@@ -493,6 +496,7 @@ public class Fragment_ThirdScreen extends Fragment {
             } else {
                 mAbhaAddressErrorTextView.setVisibility(View.GONE);
                 onPatientCreateClicked();
+                downloadAbhaCard();
             }
         });
 
@@ -714,6 +718,39 @@ public class Fragment_ThirdScreen extends Fragment {
         }
 
     }
+
+    private void downloadAbhaCard() {
+        AbhaCardDownloadUtil util = new AbhaCardDownloadUtil(patientDTO);
+        HashMap<String, String> tokenHashMap = getTokenHashmap();
+        String token = tokenHashMap.get("token");
+        String scope = tokenHashMap.get("scope");
+
+        if (!util.isAbhaCardPresent()) {
+            util.downloadAbhaCard(scope, token, accessToken, requireActivity());
+        }
+    }
+
+    private HashMap<String, String> getTokenHashmap() {
+        HashMap<String, String> responseHashMap = new HashMap<>();
+        String token;
+        String scope;
+
+        if (otpVerificationResponse != null && otpVerificationResponse.getTokens() != null && otpVerificationResponse.getTokens().getToken() != null) {
+            token = otpVerificationResponse.getTokens().getToken();
+            scope = null;
+        } else if (abhaProfileResponse != null && abhaProfileResponse.getToken() != null) {
+            token = abhaProfileResponse.getToken();
+            scope = ABDMConstant.SCOPE_MOBILE;
+        } else {
+            token = xToken;
+            scope = ABDMConstant.SCOPE_MOBILE;
+        }
+
+        responseHashMap.put("token", token);
+        responseHashMap.put("scope", scope);
+        return responseHashMap;
+    }
+
 
     private void onBackInsertIntoPatientDTO() {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());

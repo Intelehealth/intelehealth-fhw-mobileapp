@@ -206,5 +206,7 @@ public class AppConstants {
     public static final String DOCTOR_DOCUMENT_BASE_URL = "https://abdm.intelehealth.org/openmrs/ws/rest/v1/obs/<uuid-of-the-obs>/value";
     public static final String DOCTORS_URL_STRING_TO_REPLACE = "<uuid-of-the-obs>";
 
+    // directory for pictures
+    public static final String PICTURES_DIRECTORY_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 }
 
