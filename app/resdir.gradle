@@ -7,11 +7,11 @@ android{
             }
         }
 
-        biocon {
+        /*biocon {
             res {
                 srcDirs 'src\\biocon\\res'
             }
-        }
+        }*/
 
         namma {
             res {

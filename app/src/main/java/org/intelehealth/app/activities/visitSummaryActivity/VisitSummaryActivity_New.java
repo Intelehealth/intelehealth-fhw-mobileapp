@@ -559,7 +559,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void checkIfVisitIsEnded() {
-        boolean isVisitEnded = VisitsDAO.isVisitEnded(visitUUID);
+        boolean isVisitEnded = VisitsDAO.isVisitEnded(visitUuid);
         if (isVisitEnded) {
             incomplete_act.setVisibility(View.GONE);
         }
@@ -784,7 +784,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             queryData(String.valueOf(patientUuid));
         }
-
+        mIsVisitEnded =VisitsDAO.isVisitEnded(visitUuid);
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
         Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
@@ -2115,8 +2115,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
-    }
 
+        // check visit not closed & NCD type visit
+
+        if(mIsNCDVisit) uploadButton.setVisibility(View.GONE);
+        if(mIsNCDVisit && !mIsVisitEnded) {
+
+            visitUploadBlock();
+        }
+    }
+    private boolean mIsVisitEnded = false;
     private void setupSpecializationDataSpinner(List<Specialization> specializations) {
         //spinner is being populated with the speciality values...
 //        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -6692,6 +6700,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        startActivity(intent);
+
+        // hide the endVisit menu option
+        incomplete_act.setVisibility(View.GONE);
+
     }
     private void viewAndShareHealthInfoModule() {
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
