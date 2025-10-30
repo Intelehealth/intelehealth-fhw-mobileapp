@@ -417,9 +417,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 dialog.show(getSupportFragmentManager(), "");
 
                             } else if (searchProfileResponse.code() == 404) {
+                                cpd.dismiss();
                                 switch (optionSelected) {
                                     case MOBILE_NUMBER_SELECTION ->
-                                            Toast.makeText(context, R.string.the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number, Toast.LENGTH_SHORT).show();
+                                            startCreateAbhaFlow(getString(R.string.no_abha_user_records_associated_with_this_mobile_no));
                                     case ABHA_SELECTION ->
                                             Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
                                     default ->
@@ -762,7 +763,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
                         } else if (response.code() == 404) {
-                            startCreateAbhaFlow();
+                            startCreateAbhaFlow(getString(R.string.no_abha_user_records_associated_with_this_aadhaar));
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
                             disableUI(true);
@@ -781,8 +782,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void startCreateAbhaFlow() {
-        DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), getString(R.string.abha_user_does_not_exist), getString(R.string.ok), action -> {
+    private void startCreateAbhaFlow(String message) {
+        DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), message, getString(R.string.ok), action -> {
             Intent intent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
             sessionManager.setCreateAbha(true);
             startActivity(intent);

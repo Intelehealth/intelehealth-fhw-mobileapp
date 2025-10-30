@@ -1981,7 +1981,8 @@ The disclosure of personal information to third parties shall be only for identi
 
     // Abha Account Doesn't Exist String
     <string name="abha_user_not_found">ABHA User Not Found</string>
-    <string name="abha_user_does_not_exist">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="no_abha_user_records_associated_with_this_aadhaar">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="no_abha_user_records_associated_with_this_mobile_no">No ABHA user records associated with this Mobile No. You will be guided to the Create ABHA screen to create a new record.</string>
 
     <string name="fetching_profiles">Fetching Profiles</string>
 
