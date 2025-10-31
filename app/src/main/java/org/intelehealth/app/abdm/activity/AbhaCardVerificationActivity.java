@@ -785,6 +785,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private void startCreateAbhaFlow(String message) {
         DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), message, getString(R.string.ok), action -> {
             Intent intent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
+            intent.putExtra(PrivacyPolicyActivity_New.intentPatientNameTag, patientName);
             sessionManager.setCreateAbha(true);
             startActivity(intent);
             finish();
