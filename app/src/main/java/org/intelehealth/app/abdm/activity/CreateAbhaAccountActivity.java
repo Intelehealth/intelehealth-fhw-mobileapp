@@ -417,7 +417,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void navigateToPatientCreation(OTPVerificationResponse otpVerificationResponse, String accessToken) {
-        Intent intent = new Intent(CreateAbhaAccountActivity.this, IdentificationActivity_New.class);
+        Intent intent = new Intent(CreateAbhaAccountActivity.this, CompareAadhaarDataActivity.class);
         intent.putExtra("payload", otpVerificationResponse);
         intent.putExtra("accessToken", accessToken);
         startActivity(intent);

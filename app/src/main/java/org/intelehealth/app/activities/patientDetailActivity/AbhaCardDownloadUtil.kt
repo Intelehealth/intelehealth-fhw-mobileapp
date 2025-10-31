@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.patientDetailActivity
 import android.app.Activity
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
@@ -53,6 +54,7 @@ class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
             accessToken
         )
 
+        val body = Gson().toJson(responseBody)
         responseBody
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

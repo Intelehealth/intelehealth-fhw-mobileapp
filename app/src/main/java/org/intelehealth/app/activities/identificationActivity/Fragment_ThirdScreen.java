@@ -743,7 +743,7 @@ public class Fragment_ThirdScreen extends Fragment {
             scope = ABDMConstant.SCOPE_MOBILE;
         } else {
             token = xToken;
-            scope = ABDMConstant.SCOPE_MOBILE;
+            scope = sessionManager.getTempScope();
         }
 
         responseHashMap.put("token", token);

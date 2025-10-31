@@ -68,6 +68,7 @@ public class SessionManager {
     public static final String AADHAAR_LOGIN = "aadhaar_login";
     public static final String MOBILE_LOGIN = "mobile_login";
     public static final String CREATE_ABHA = "create_abha";
+    public static final String TEMP_SCOPE = "temp_scope";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -570,6 +571,15 @@ public class SessionManager {
 
     public void removeVisitEditCache(String key) {
         editor.remove(key);
+        editor.commit();
+    }
+
+    public String getTempScope() {
+        return pref.getString(TEMP_SCOPE, "");
+    }
+
+    public void setTempScope(String tempScope) {
+        editor.putString(TEMP_SCOPE, tempScope);
         editor.commit();
     }
 }

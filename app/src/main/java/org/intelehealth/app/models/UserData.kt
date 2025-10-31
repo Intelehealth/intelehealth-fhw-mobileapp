@@ -10,4 +10,19 @@ data class UserData(
     val pinCode: String,
     val abhaAddress: String,
     val abhaNumber: String
-)
+) {
+    companion object {
+        fun getEmptyDataAsDashes(): UserData {
+            return UserData(
+                fName = "-",
+                lName = "-",
+                dob = "-",
+                gender = "-",
+                address = "-",
+                pinCode = "-",
+                abhaAddress = "-",
+                abhaNumber = "-"
+            )
+        }
+    }
+}

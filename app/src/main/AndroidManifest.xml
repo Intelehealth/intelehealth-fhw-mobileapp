@@ -49,6 +49,11 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".abdm.activity.CompareAadhaarDataActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".abdm.activity.CompareDataActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"
@@ -77,7 +82,7 @@
             android:name=".abdm.activity.AbhaAddressSuggestionsActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
@@ -243,17 +248,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <!-- <activity
-            android:name=".abdm.activity.CompareDataActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!-- <activity
+             android:name=".abdm.activity.CompareDataActivity"
+             android:exported="true"
+             android:theme="@style/AppTheme.NoActionBar"
+             android:windowSoftInputMode="adjustPan">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>-->
         <activity
             android:name=".activities.notification.NotificationActivity"
             android:exported="false"
@@ -465,8 +470,8 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:exported="false"
-            android:name=".activities.patientDetailActivity.PatientDetailActivity2$SyncBroadcastReceiver" >
+            android:name=".activities.patientDetailActivity.PatientDetailActivity2$SyncBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.intelehealth.app.SYNC_NOTIFY_INTENT_ACTION" />
             </intent-filter>

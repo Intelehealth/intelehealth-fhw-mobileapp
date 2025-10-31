@@ -460,6 +460,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         String url = UrlModifiers.getMobileLoginVerificationUrl();
         // payload - end
 
+        sessionManager.setTempScope(requestBody.getScope());
         Single<Response<OTPResponse>> mobileResponseSingle = AppConstants.apiInterface.GET_OTP_FOR_MOBILE(url, accessToken, requestBody);
         new Thread(() -> {
             // api - start
