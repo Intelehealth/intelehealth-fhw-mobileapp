@@ -736,8 +736,9 @@ public class Fragment_ThirdScreen extends Fragment {
         String scope;
 
         if (otpVerificationResponse != null && otpVerificationResponse.getTokens() != null && otpVerificationResponse.getTokens().getToken() != null) {
-            token = otpVerificationResponse.getTokens().getToken();
-            scope = null;
+            String responseToken = otpVerificationResponse.getTokens().getToken();
+            token = responseToken.startsWith("Bearer") ? responseToken : "Bearer " + responseToken;
+            scope = ABDMConstant.SCOPE_AADHAAR;
         } else if (abhaProfileResponse != null && abhaProfileResponse.getToken() != null) {
             token = abhaProfileResponse.getToken();
             scope = ABDMConstant.SCOPE_MOBILE;
