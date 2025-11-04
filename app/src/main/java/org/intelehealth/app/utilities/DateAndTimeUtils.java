@@ -511,7 +511,8 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            FirebaseCrashlytics.getInstance().recordException(ex);
+            //the exception is storing on the firebase so commenting this (AEAT-1979)
+            //FirebaseCrashlytics.getInstance().recordException(ex);
             CustomLog.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;
