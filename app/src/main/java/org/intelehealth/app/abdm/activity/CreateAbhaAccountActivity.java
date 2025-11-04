@@ -409,62 +409,54 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         if (isNewUser) {
             // New user -> fetch address suggestions and navigate to ABHA address screen.
             // Existing user -> update your abha address
-            navigateToPatientCreation(otpVerificationResponse, accessToken);
+            callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
             // Existing user -> check user existence.
             checkIsUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
         }
     }
 
-    private void navigateToPatientCreation(OTPVerificationResponse otpVerificationResponse, String accessToken) {
-        Intent intent = new Intent(CreateAbhaAccountActivity.this, CompareAadhaarDataActivity.class);
-        intent.putExtra("payload", otpVerificationResponse);
-        intent.putExtra("accessToken", accessToken);
-        startActivity(intent);
-        finish();
-    }
+    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
+        ArrayList<String> addressList = new ArrayList<>();
+        // api - start
+        String url = UrlModifiers.getEnrollABHASuggestionUrl();
+        EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
+        body.setTxnId(otpVerificationResponse.getTxnId());
 
-//    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
-//        ArrayList<String> addressList = new ArrayList<>();
-//        // api - start
-//        String url = UrlModifiers.getEnrollABHASuggestionUrl();
-//        EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
-//        body.setTxnId(otpVerificationResponse.getTxnId());
-//
-//        Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle =
-//                AppConstants.apiInterface.PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(url, accessToken, body);
-//        new Thread(() -> enrollSuggestionResponseSingle
-//                .observeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new DisposableSingleObserver<>() {
-//                    @Override
-//                    public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
-//                        Timber.tag(TAG).d("onSuccess: suggestion: %s", enrollSuggestionResponse);
-//                        if (enrollSuggestionResponse.getAbhaAddressList() != null) {
-//
-//                            // auto-generated abha preferred address from abdm end.
-//                            addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
-//                            addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
-//
-//                            if (addressList.size() > 0) {
-//                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
-//                                intent.putStringArrayListExtra("addressList", addressList);
-//                                intent.putExtra("payload", otpVerificationResponse);
-//                                intent.putExtra("accessToken", accessToken);
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Timber.tag(TAG).e("onError: suggestion%s", e.toString());
-//                    }
-//                })).start();
-//        // api - end
-//
-//    }
+        Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle =
+                AppConstants.apiInterface.PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(url, accessToken, body);
+        new Thread(() -> enrollSuggestionResponseSingle
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
+                        Timber.tag(TAG).d("onSuccess: suggestion: %s", enrollSuggestionResponse);
+                        if (enrollSuggestionResponse.getAbhaAddressList() != null) {
+
+                            // auto-generated abha preferred address from abdm end.
+                            addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
+                            addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
+
+                            if (addressList.size() > 0) {
+                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+                                intent.putStringArrayListExtra("addressList", addressList);
+                                intent.putExtra("payload", otpVerificationResponse);
+                                intent.putExtra("accessToken", accessToken);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.tag(TAG).e("onError: suggestion%s", e.toString());
+                    }
+                })).start();
+        // api - end
+
+    }
 
     public static boolean validateAadhaarNumber(String aadhaarNumber) {
         Pattern aadharPattern = Pattern.compile("\\d{12}");
