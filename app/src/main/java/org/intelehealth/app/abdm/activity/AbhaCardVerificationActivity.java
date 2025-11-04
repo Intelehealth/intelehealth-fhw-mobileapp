@@ -470,7 +470,9 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
                         public void onSuccess(Response<OTPResponse> otpResponse) {
+                            initializeCountdownTimer();
                             cpd.dismiss();
+
                             if (otpResponse.code() == 200) {
                                 OTPResponse otpResponse1 = otpResponse.body();
                                 setOtpVisibility();
@@ -821,11 +823,10 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 dialog.openAuthSelectionDialogDialog(abhaAuthType, authType -> {
                                     abhaAuthType = authType;
                                     isAbhaAuthTypeSelected = true;
+                                    sentOtpApi(accessToken, getSendOtpApiRequest());
                                 });
                                 dialog.show(getSupportFragmentManager(), "");
                             }
-
-                            sentOtpApi(accessToken, getSendOtpApiRequest());
                         } else {
                             disableUI(true);
                             binding.sendOtpBtn.setEnabled(true);
@@ -1144,22 +1145,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         }
     }
 
-    private void resendOtp() {
-        disableUI(false);
-
-        binding.resendBtn.setEnabled(false);
-        binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
-        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-
-        String resendTime = getResources().getString(R.string.resend_otp_in);
-
+    public void initializeCountdownTimer() {
         if (countDownTimer != null)
             countDownTimer.cancel();    // reset any existing countdown.
-        countDownTimer = new CountDownTimer(60000, 1000) {
 
+        countDownTimer = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
                 if (resendCounter != 0) {
-                    String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
+                    String time = getString(R.string.resend_otp_in) + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
                     binding.resendBtn.setText(time);
                     Timber.tag(TAG).d("onTick: %s", time);
                 }
@@ -1176,8 +1169,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 if (cpd != null && cpd.isShowing())
                     cpd.dismiss();
             }
-
         }.start();
+    }
+
+
+    private void resendOtp() {
+        disableUI(false);
+
+        binding.resendBtn.setEnabled(false);
+        binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
+        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
     }
 
     private void disableUI(boolean shouldEnable) {
