@@ -55,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingStart="@dimen/common_edittext_padding_left"
