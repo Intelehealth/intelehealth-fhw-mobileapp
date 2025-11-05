@@ -97,7 +97,7 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
 
 
     private void onDeviceConnected() {
-        /*setDeviceStrength(AyuSynk.getBleInstance().getDeviceStrength());*/
+        setDeviceStrength(AyuSynk.getBleInstance().getDeviceStrength());
         deviceBatteryUpdate(AyuSynk.getBleInstance().getCurrentBatteryLevel());
         binding.cvSelect.setTag(2);
         binding.cvSelect.setVisibility(View.GONE);
@@ -112,6 +112,14 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
         binding.lldeviceConnected.setVisibility(View.GONE);
         binding.llrecordType.setVisibility(View.GONE);
         binding.imgSelect.setVisibility(View.INVISIBLE);
+    }
+    private void setDeviceStrength(DeviceStrength strength) {
+        if (binding != null) {
+            if (strength == DeviceStrength.DEVICE_SIGNAL_WEAK)
+                binding.tvdeviceStrength.setText(getResources().getString(R.string.weak));
+            else
+                binding.tvdeviceStrength.setText(getResources().getString(R.string.strong));
+        }
     }
     void setBluetoothOn(){
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -196,7 +204,7 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
 
     @Override
     public void deviceConnectionStrength(DeviceStrength deviceStrength) {
-
+        setDeviceStrength(deviceStrength);
     }
 
     @Override

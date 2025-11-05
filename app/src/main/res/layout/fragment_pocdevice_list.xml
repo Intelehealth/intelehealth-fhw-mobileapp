@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
 
     </data>
     <RelativeLayout
-        android:background="@color/white"
+        android:background="@color/backgroundWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_marginHorizontal="@dimen/back_arrow_margin_start"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_back_arrow_terms"
+                android:layout_width="@dimen/back_arrow_width"
+                android:layout_height="@dimen/back_arrow_height"
+                android:src="@drawable/ui2_ic_arrow_back_new" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/title_margin_start"
+                android:text="@string/list_of_device_found"
+                android:textColor="@color/textColorBlack"
+                android:textSize="@dimen/setup_privacy_screen_info"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
         <ListView
             android:id="@+id/device_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             android:scrollbars="none"
+            android:layout_below="@id/ll_action_bar"
             tools:listitem="@layout/item_poc_device_list" />
 
         <LinearLayout
             android:id="@+id/llprogressbar"
+            android:layout_below="@id/ll_action_bar"
             android:layout_centerInParent="true"
             android:orientation="vertical"
             android:gravity="center"

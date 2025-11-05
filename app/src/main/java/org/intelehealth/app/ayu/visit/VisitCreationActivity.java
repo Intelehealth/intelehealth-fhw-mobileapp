@@ -112,6 +112,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";
     private static final String POC_DEVICE_FRAGMENT = "POC_DEVICE_FRAGMENT";
+    private static final String POC_DEVICELIST_FRAGMENT = "POC_DEVICELIST_FRAGMENT";
     private static final String VITAL_SUMMARY_FRAGMENT = "VITAL_SUMMARY";
     private static final String VISIT_REASON_FRAGMENT = "VISIT_REASON";
     private static final String VISIT_REASON_QUESTION_FRAGMENT = "VISIT_REASON_QUESTION";
@@ -739,8 +740,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 finish();
                 break;
             case STEP_12_DEVICE_LIST:
+                mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                mStep1ProgressBar.setProgress(100);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance( isEditMode, mVitalsObject), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                        replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
                         commit();
         }
     }

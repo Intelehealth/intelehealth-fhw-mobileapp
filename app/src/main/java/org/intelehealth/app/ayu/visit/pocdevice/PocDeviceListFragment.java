@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.pocdevice;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,10 @@ public class PocDeviceListFragment extends Fragment implements DeviceScanListene
 
             }
         });
+
+        binding.ivBackArrowTerms.setOnClickListener(view1 -> {
+            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
+        });
     }
     @Override
     public void onScanStart() {
@@ -86,13 +91,12 @@ public class PocDeviceListFragment extends Fragment implements DeviceScanListene
 
     @Override
     public void onDeviceFound(Device device) {
-        if (getActivity() != null && !getActivity().isFinishing()) {
-            getActivity().runOnUiThread(() -> {
-                binding.llprogressbar.setVisibility(View.GONE);
-                binding.deviceList.setVisibility(View.VISIBLE);
-                deviceListAdapter.addDevice(new DeviceListObject(device.getName(), device.getAddress()));
-            });
-        }
+        Log.d("TAG", "onDeviceFound: "+device);
+        requireActivity().runOnUiThread(() -> {
+            binding.llprogressbar.setVisibility(View.GONE);
+            binding.deviceList.setVisibility(View.VISIBLE);
+            deviceListAdapter.addDevice(new DeviceListObject(device.getName(), device.getAddress()));
+        });
     }
 
     @Override

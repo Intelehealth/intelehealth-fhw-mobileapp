@@ -1769,6 +1769,10 @@
     <string name="connected_via_bluetooth">Connected Via Bluetooth</string>
     <string name="waiting_for_device_to_connect">Searching for device to Connect</string>
     <string name="check_if_ayusynk_and_your_phone_s_n_bluetooth_is_turned_on">Check if Ayusynk and your phone\'s\n bluetooth is turned on.</string>
+    <string name="device_strength">Device Strength : </string>
+    <string name="weak">Weak</string>
+    <string name="strong">Strong</string>
+    <string name="list_of_device_found">List of device found</string>
 
 
 </resources>
