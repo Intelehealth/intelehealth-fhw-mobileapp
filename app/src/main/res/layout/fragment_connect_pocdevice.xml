@@ -133,7 +133,7 @@
            android:layout_margin="@dimen/margin_10"
            android:layout_below="@id/cv_select"
            android:orientation="vertical"
-           android:visibility=""
+           android:visibility="gone"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <LinearLayout
