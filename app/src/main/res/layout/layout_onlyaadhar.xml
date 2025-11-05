@@ -30,8 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
+            app:endIconMode="@null"
             app:hintEnabled="false"
-            app:passwordToggleEnabled="true"
+            app:passwordToggleEnabled="false"
             app:passwordToggleTint="@android:color/transparent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -72,8 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_10"
-            android:textColor="@color/primary_text"
-            android:text="@string/i_agree_terms_amp_conditions" />
+            android:text="@string/i_agree_terms_amp_conditions"
+            android:textColor="@color/primary_text" />
 
     </LinearLayout>
 
