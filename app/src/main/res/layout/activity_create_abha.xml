@@ -53,7 +53,7 @@
                 android:layout_marginEnd="26dp"
                 android:layout_marginBottom="26dp"
                 android:gravity="center"
-                android:text="@string/verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy"
+                android:text="@string/verify_your_aadhar_card_for_data_security_and_privacy"
                 android:textAppearance="@style/sub_title"
                 android:textColor="@null"
                 android:textSize="@null" />
@@ -182,8 +182,8 @@
                 android:layout_marginHorizontal="@dimen/margin_20"
                 android:layout_marginTop="@dimen/margin_20"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:hintEnabled="false">
+                app:hintEnabled="false"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobileNoBox"
