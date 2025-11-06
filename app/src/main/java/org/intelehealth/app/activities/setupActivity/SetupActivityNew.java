@@ -25,6 +25,7 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
 import org.intelehealth.app.models.locationAttributes.push.LocationAttributeRequest;
 import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
 import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
@@ -81,6 +82,7 @@ import org.intelehealth.app.utilities.LocationValidationUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -603,7 +605,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     public void onNext(AuthJWTResponse authJWTResponse) {
                         // in case of error password
                         if (!authJWTResponse.getStatus()) {
-                            cpd.dismiss();
+                            SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
                             showErrorDialog();
                             return;
                         }
@@ -615,7 +617,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                     @Override
                     public void onError(Throwable e) {
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
                         if (Objects.requireNonNull(e.getMessage()).contains("Unable to resolve host")) {
                             showServerErrorDialog();
                         } else {
@@ -779,7 +781,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                             public void onError(Throwable e) {
                                                 Logger.logD(TAG, "handle provider error" + e.getMessage());
                                                 e.printStackTrace();
-                                                cpd.dismiss();
+                                                SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
+
                                                 ////   progress.dismiss();
                                                 // dismissLoggingInDialog();
                                             }
@@ -957,7 +960,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
-                        alertDialog.show();
+                        SafeDialogUtil.showDialog(this, alertDialog);
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
                         // Get the alert dialog buttons reference

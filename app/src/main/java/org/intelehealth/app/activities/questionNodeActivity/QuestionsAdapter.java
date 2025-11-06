@@ -34,6 +34,7 @@ import org.intelehealth.app.activities.questionNodeActivity.adapters.AssociatedS
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 
 /**
  * Created by Sagar Shimpi
@@ -340,7 +341,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                             confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                                    SafeDialogUtil.dismissDialog(context, dialog);
+
                                 }
                             });
                             AlertDialog alertDialog = confirmDialog.create();
@@ -393,7 +395,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                                     break;
                             }
 
-                            alertDialog.show();
+                            SafeDialogUtil.showDialog(context, alertDialog);
+
                             IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
 
                         } else {

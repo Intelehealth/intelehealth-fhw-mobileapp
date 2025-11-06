@@ -176,7 +176,9 @@ public class ChatActivity extends AppCompatActivity {
             int id = new JSONArray(args)
                     .getJSONArray(0).getJSONObject(0).getInt("id");
             Log.e(TAG, "onMessageDelivered: " + id);
-            runOnUiThread(() -> mChatListingAdapter.markMessageAsDelivered(id));
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> mChatListingAdapter.markMessageAsDelivered(id));
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -186,7 +188,9 @@ public class ChatActivity extends AppCompatActivity {
         try {
             int id = new JSONArray(obj)
                     .getJSONArray(0).getJSONObject(0).getInt("id");
-            runOnUiThread(() -> mChatListingAdapter.markMessageAsRead(id));
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> mChatListingAdapter.markMessageAsRead(id));
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -203,23 +207,22 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONArray(new Gson().toJson(args[0]))
                     .getJSONObject(0)
                     .getJSONObject("nameValuePairs");
-
-
-            runOnUiThread(() -> {
-                ChatMessage message = new Gson().fromJson(jsonObject.toString(), ChatMessage.class);
-                Log.e(TAG, "onUpdateMessageEvent: socket => " + message.getPatientId());
-                Log.e(TAG, "onUpdateMessageEvent: screen => " + mPatientUUid);
-                if (message.getPatientId().equalsIgnoreCase(mPatientUUid)) {
-                    if (mToUUId.isEmpty()) {
-                        mToUUId = message.getFromUser();
-                        SocketManager.getInstance().setActiveRoomId(getRoomId());
-                        getAllMessages(false);
-                    } else {
-                        message.setMessageStatus(MessageStatus.RECEIVED.getValue());
-                        addNewMessage(message);
-                        setReadStatus(message.getId());
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> {
+                    ChatMessage message = new Gson().fromJson(jsonObject.toString(), ChatMessage.class);
+                    Log.e(TAG, "onUpdateMessageEvent: socket => " + message.getPatientId());
+                    Log.e(TAG, "onUpdateMessageEvent: screen => " + mPatientUUid);
+                    if (message.getPatientId().equalsIgnoreCase(mPatientUUid)) {
+                        if (mToUUId.isEmpty()) {
+                            mToUUId = message.getFromUser();
+                            SocketManager.getInstance().setActiveRoomId(getRoomId());
+                            getAllMessages(false);
+                        } else {
+                            message.setMessageStatus(MessageStatus.RECEIVED.getValue());
+                            addNewMessage(message);
+                            setReadStatus(message.getId());
+                        }
                     }
-                }
 //                if (mToUUId.isEmpty()) {
 //                    try {
 //                        mToUUId = jsonObject.getString("fromUser");
@@ -245,7 +248,9 @@ public class ChatActivity extends AppCompatActivity {
 //                }
 
 
-            });
+                });
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -237,15 +237,18 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
             @Override
             public void run() {
                 boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath);
-                        } else
-                            Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (flag) {
+                                saveImage(filePath);
+                            } else
+                                Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
 
             }
         });

@@ -55,6 +55,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
@@ -699,7 +700,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             alertDialog.dismiss();
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     private void bookAppointment() {

@@ -54,6 +54,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringEncryption;
@@ -478,7 +479,8 @@ public class LoginActivityNew extends AppCompatActivity {
                                                 sqLiteDatabase.endTransaction();
                                             }
 
-                                            cpd.dismiss();
+                                            SafeDialogUtil.dismissDialog(LoginActivityNew.this, cpd);
+
                                             Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity_New.class);
                                             intent.putExtra("login", true);
                                             startActivity(intent);
@@ -491,7 +493,7 @@ public class LoginActivityNew extends AppCompatActivity {
                                         @Override
                                         public void onError(Throwable e) {
                                             Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                            cpd.dismiss();
+                                            SafeDialogUtil.dismissDialog(LoginActivityNew.this, cpd);
                                             showErrorDialog();
                                         }
 

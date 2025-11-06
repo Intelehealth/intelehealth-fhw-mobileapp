@@ -43,6 +43,7 @@ import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -315,7 +316,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                     public void onError(Throwable e) {
                         Logger.logD(TAG, "Login Failure" + e.getMessage());
                         e.printStackTrace();
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ForgotPasswordActivity_New.this, cpd);
                         snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                         mButtonContinue.setEnabled(true);
 
@@ -323,7 +324,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ForgotPasswordActivity_New.this, cpd);
                         Logger.logD(TAG, "completed");
                     }
                 });

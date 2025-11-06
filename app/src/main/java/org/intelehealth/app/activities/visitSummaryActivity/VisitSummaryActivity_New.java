@@ -185,6 +185,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -631,7 +632,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     selectedFollowupTime = hourOfDay + ":" + minute1;
                     mBinding.tvtFollowUpTime.setText(selectedFollowupTime);
                 }, hour, minute, true);
-        timePickerDialog.show();
+        SafeDialogUtil.showDialog(this, timePickerDialog);
         timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
         timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
     }
@@ -657,13 +658,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
-                if(!isFinishing() && !isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(VisitSummaryActivity_New.this, dialog);
+
             }
         });
 
-        datePickerDialog.show();
+        SafeDialogUtil.showDialog(this, datePickerDialog);
         // Change button colors dynamically after the dialog is shown
         datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.colorPrimary));
@@ -1588,7 +1588,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
+                SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
+
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, R.color.colorPrimary));
@@ -1734,7 +1735,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
+                SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
@@ -1870,7 +1871,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
+                SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
@@ -2011,7 +2012,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
                 int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
                 alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-                alertDialog.show();
+                SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
+
 
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(ContextCompat.getColor(VisitSummaryActivity_New.this, (R.color.colorPrimary)));
@@ -2399,7 +2401,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
+
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -3089,7 +3092,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             askReasonForRescheduleAppointment(VisitSummaryActivity_New.this);
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
+
     }
 
     private void askReasonForRescheduleAppointment(Context context) {
@@ -3174,7 +3178,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
         });
-        alertDialog.show();
+        SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
+
 
     }
 
@@ -3242,7 +3247,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
             int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
+            SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
 
         } else {
 
@@ -3290,7 +3295,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         if (!isFinishing() && !isDestroyed()) {
-            alertDialog.show();
+            SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
         }
     }
 
@@ -3400,16 +3405,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 // Additional Notes - End
 
                 if (isVisitSpecialityExists) {
-                    runOnUiThread(() -> {
-                        speciality_spinner.setEnabled(false);
-                        flag.setEnabled(false);
-                        flag.setClickable(false);
-                    });
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            speciality_spinner.setEnabled(false);
+                            flag.setEnabled(false);
+                            flag.setClickable(false);
+                        });
+                    }
                 } else {
-                    runOnUiThread(() -> {
-                        flag.setEnabled(true);
-                        flag.setClickable(true);
-                    });
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            flag.setEnabled(true);
+                            flag.setClickable(true);
+                        });
+                    }
                 }
 
                 if (isPriorityFlagChecked) {
@@ -3455,7 +3464,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    runOnUiThread(() -> Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show());
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show());
+                    }
 
                     final Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -3472,52 +3483,68 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
 
-                            runOnUiThread(() -> {
-                                if (!isFinishing() && !isDestroyed()) {
-                                    Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
-                                    setAppointmentButtonStatus();
-                                    visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
-                                }
-                            });
+                            if (!isFinishing() && !isDestroyed()) {
+                                runOnUiThread(() -> {
+                                    if (!isFinishing() && !isDestroyed()) {
+                                        Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                                        setAppointmentButtonStatus();
+                                        visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                                    }
+                                });
+                            }
 
                         /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                 getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
                             //
-                            runOnUiThread(this::showVisitID);
+
+                            if (!isFinishing() && !isDestroyed()) {
+                                runOnUiThread(this::showVisitID);
+                            }
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
                             if (isVisitSpecialityExists) {
-                                runOnUiThread(() -> {
-                                    speciality_spinner.setEnabled(false);
-                                    flag.setEnabled(false);
-                                    flag.setClickable(false);
-                                });
+                                if (!isFinishing() && !isDestroyed()) {
+                                    runOnUiThread(() -> {
+                                        speciality_spinner.setEnabled(false);
+                                        flag.setEnabled(false);
+                                        flag.setClickable(false);
+                                    });
+                                }
                             } else {
+                                if (!isFinishing() && !isDestroyed()) {
+                                    runOnUiThread(() -> {
+                                        flag.setEnabled(true);
+                                        flag.setClickable(true);
+                                    });
+                                }
+                            }
+                            if (!isFinishing() && !isDestroyed()) {
+                                runOnUiThread(this::fetchingIntent);
+                            }
+                        } else {
+                            if (!isFinishing() && !isDestroyed()) {
                                 runOnUiThread(() -> {
-                                    flag.setEnabled(true);
-                                    flag.setClickable(true);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                                 });
                             }
-
-                            runOnUiThread(this::fetchingIntent);
-                        } else {
-                            runOnUiThread(() -> {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-                            });
                         }
                         uploaded = true;
                         uploadButton.setEnabled(true);
                     }, 4000);
                 } else {
-                    runOnUiThread(() -> {
-                        add_additional_doc.setVisibility(View.GONE);
-                        fetchingIntent();
-                        AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-                    });
+                    if (!isFinishing() && !isDestroyed()) {
+                        runOnUiThread(() -> {
+                            add_additional_doc.setVisibility(View.GONE);
+                            fetchingIntent();
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                        });
+                    }
                 }
             } else {
-                runOnUiThread(this::showSelectSpeciliatyErrorDialog);
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(this::showSelectSpeciliatyErrorDialog);
+                }
             }
         });
     }
@@ -3570,7 +3597,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             alertDialog.dismiss();
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(VisitSummaryActivity_New.this, alertDialog);
     }
 
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
@@ -4577,15 +4604,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void run() {
                 boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath);
-                        } else
-                            Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (flag) {
+                                saveImage(filePath);
+                            } else
+                                Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
             }
         });
@@ -6002,7 +6031,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
-            Log.d(TAG, "isPatientHistoryInOldFormat: "+value);
+            Log.d(TAG, "isPatientHistoryInOldFormat: " + value);
             if (!isPatientHistoryInOldFormat)
                 patientHistoryLocaleString = StringUtils.getRegionalLanguageDataFromJson(value, sessionManager.getAppLanguage());
 

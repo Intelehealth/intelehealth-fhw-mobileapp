@@ -46,6 +46,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
 import org.intelehealth.app.activities.user.api.DailyApiWorker;
@@ -140,6 +141,7 @@ import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -624,7 +626,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
                 if(!isFinishing() && !isDestroyed()){
-                    networkFailureDialog.dismiss();
+                    SafeDialogUtil.dismissDialog(this, networkFailureDialog);
+
                 }
                 checkNetworkConnectionAndPerformSync();
             });
@@ -632,9 +635,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void showResetProgressbar() {
-        if(!isFinishing() && !isDestroyed()){
-            resetDialog.dismiss();
-        }
+        SafeDialogUtil.dismissDialog(this, resetDialog);
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
         showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
     }
@@ -669,9 +670,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void clearAppData() {
-        if(!isFinishing() && !isDestroyed()){
-            resetDialog.dismiss();
-        }
+        SafeDialogUtil.dismissDialog(this, resetDialog);
+
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
@@ -709,7 +709,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         resetDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         resetDialog.setCancelable(false);
-        resetDialog.show();
+        SafeDialogUtil.showDialog(context, resetDialog);
     }
 
     private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
@@ -822,7 +822,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
         syncProgressbar.setMax(100);
         syncProgressbar.setIndeterminate(false);
-        mSyncAlertDialog.show();
+        SafeDialogUtil.showDialog(this, mSyncAlertDialog);
     }
 
     private void showSnackBarAndRemoveLater(String text) {
@@ -944,21 +944,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            if(!isFinishing() && !isDestroyed()){
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
         });
 
         yesButton.setOnClickListener(v -> {
-            if(!isFinishing() && !isDestroyed()){
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
             moveTaskToBack(true);
 
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     public void wantToLogoutFromApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
@@ -987,15 +985,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            if(!isFinishing() && !isDestroyed()){
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
         });
 
         yesButton.setOnClickListener(v -> {
-            if(!isFinishing() && !isDestroyed()){
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
             logout();
 
 //            if (CallListenerBackgroundService.isInstanceCreated()) {
@@ -1005,7 +1001,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     public void showRefreshInProgressDialog() {
@@ -1023,9 +1019,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!isFinishing() && !isDestroyed()){
-                    dialogRefreshInProgress.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 3000);
     }
@@ -1045,9 +1040,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!isFinishing() && !isDestroyed()){
-                    dialogRefreshInProgress.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 3000);
     }
@@ -1119,9 +1113,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!isFinishing() && !isDestroyed()){
-                    dialogLoginSuccess.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 2000);
     }
@@ -1223,18 +1216,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
         boolean isSynced = syncUtils.pushDataOnly();/*syncUtils.syncForeground("home");*/
         if (!isSynced) {
-            if(!isFinishing() && !isDestroyed()){
-                syncDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, syncDialog);
+
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             return;
         }
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            if(!isFinishing() && !isDestroyed()){
-                syncDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, syncDialog);
+
             showSwitchLocationConfirmationDialog();
         }, 3000);
     }
@@ -1248,7 +1239,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         builder.setNegativeButton(getString(R.string.no), null);
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+
+        SafeDialogUtil.showDialog(this, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -1287,9 +1279,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         clearDatabase();
         WorkManager.getInstance(this).cancelAllWork();
-        if(!isFinishing() && !isDestroyed()){
-            progress.dismiss();
-        }
+        SafeDialogUtil.dismissDialog(this, progress);
+
         Intent intent = new Intent(HomeScreenActivity_New.this, HomeScreenActivity_New.class);
         intent.putExtra("intentType", "switchLocation");
 
@@ -1336,9 +1327,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            if(!isFinishing() && !isDestroyed()){
-                dialogRefreshInProgress.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
+
         }
         CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
@@ -1484,9 +1474,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
 
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            if(!isFinishing() && !isDestroyed()){
-                dialogRefreshInProgress.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
+
         }
 
         if (isSuccess) {
@@ -1868,7 +1857,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mSyncAlertDialog.dismiss();
+                            SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, mSyncAlertDialog);
+
                             callback.fetchCount();
                         }
                     }, 2000);
@@ -1920,30 +1910,33 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
 
             // Step 3: Back to main thread to start WorkManager and observe it
-            runOnUiThread(() -> {
-                if (NetworkConnection.isOnline(this)) {
-                    OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
-                            .setConstraints(
-                                    new Constraints.Builder()
-                                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                                            .build()
-                            )
-                            .build();
 
-                    WorkManager.getInstance(context).enqueue(workRequest);
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> {
+                    if (NetworkConnection.isOnline(this)) {
+                        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
+                                .setConstraints(
+                                        new Constraints.Builder()
+                                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                                .build()
+                                )
+                                .build();
 
-                    // Observe worker completion
-                    WorkManager.getInstance(context)
-                            .getWorkInfoByIdLiveData(workRequest.getId())
-                            .observe(this, workInfo -> {
-                                if (workInfo != null && workInfo.getState().isFinished()) {
-                                    proceedWithLogout();
-                                }
-                            });
-                } else {
-                    proceedWithLogout();
-                }
-            });
+                        WorkManager.getInstance(context).enqueue(workRequest);
+
+                        // Observe worker completion
+                        WorkManager.getInstance(context)
+                                .getWorkInfoByIdLiveData(workRequest.getId())
+                                .observe(this, workInfo -> {
+                                    if (workInfo != null && workInfo.getState().isFinished()) {
+                                        proceedWithLogout();
+                                    }
+                                });
+                    } else {
+                        proceedWithLogout();
+                    }
+                });
+            }
         }).start();
     }
 
@@ -1956,9 +1949,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             sessionManager.setLogout(true);
             unregisterReceiver(syncBroadcastReceiver);
 
-            if (resetDialog != null && resetDialog.isShowing()) {
-                resetDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(this, resetDialog);
+
 
             Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);

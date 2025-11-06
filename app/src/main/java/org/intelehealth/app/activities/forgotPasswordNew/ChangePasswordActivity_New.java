@@ -39,6 +39,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -178,7 +179,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                         showSnackBarAndRemoveLater(getString(R.string.the_password_has_been_successfully_changed), R.drawable.survey_snackbar_icon);
                         final Handler handler = new Handler();
                         handler.postDelayed(() -> performLogout(), 2000);
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ChangePasswordActivity_New.this, cpd);
+
                     }
 
                     @Override
@@ -192,7 +194,8 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 //                        } else {
 //                            showSnackBarAndRemoveLater(getString(R.string.error_password_not_exist), R.drawable.fingerprint_dialog_error);
 //                        }
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ChangePasswordActivity_New.this, cpd);
+
                     }
 
                     @Override

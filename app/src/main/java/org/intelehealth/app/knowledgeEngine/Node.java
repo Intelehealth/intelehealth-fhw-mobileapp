@@ -46,6 +46,7 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.InputFilterMinMax;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONArray;
@@ -571,9 +572,8 @@ public class Node implements Serializable {
 
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
                 if (node.anySubSelected() && node.anySubPopUp()) {
                     node.generatePopUp(context);
                 }
@@ -619,9 +619,8 @@ public class Node implements Serializable {
             }
             node.setSelected(true);
             adapter.notifyDataSetChanged();
-            if(!context.isFinishing() && !context.isDestroyed()){
-                dialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, dialog);
+
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -692,7 +691,8 @@ public class Node implements Serializable {
         datePickerDialog.setTitle(R.string.question_date_picker);
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
+        SafeDialogUtil.showDialog(context, datePickerDialog);
+
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final QuestionsAdapter adapter, final String imagePath, final String imageName) {
@@ -785,22 +785,23 @@ public class Node implements Serializable {
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
 
             }
         });
-        AlertDialog dialog = numberDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, numberDialog);
+
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
 
     }
 
@@ -841,21 +842,23 @@ public class Node implements Serializable {
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
 
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = areaDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, areaDialog);
+
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
+
 
     }
 
@@ -894,21 +897,21 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = rangeDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, rangeDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public static void askLocation(final Node node, Activity context, final QuestionsAdapter adapter) {
@@ -967,21 +970,21 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = frequencyDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, frequencyDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
 
     }
 
@@ -1047,21 +1050,23 @@ public class Node implements Serializable {
 
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = durationDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, durationDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
+
+
     }
 
     private static String hi_en(String unit) {
@@ -1296,9 +1301,8 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -1336,7 +1340,7 @@ public class Node implements Serializable {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-        datePickerDialog.show();
+        SafeDialogUtil.showDialog(context, datePickerDialog);
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -1366,22 +1370,22 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
 
             }
         });
-        AlertDialog dialog = numberDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, numberDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
 
     }
 
@@ -1454,22 +1458,22 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = areaDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, areaDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public static void subAskRange(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -1507,21 +1511,22 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = rangeDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, rangeDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public static void subAskLocation(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -1570,19 +1575,20 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                if(!context.isFinishing() && !context.isDestroyed()){
-                    dialog.dismiss();
-                }
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                SafeDialogUtil.dismissDialog(context, dialog);
             }
         });
-        AlertDialog dialog = frequencyDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, frequencyDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
 
     }
 
@@ -1633,17 +1639,21 @@ public class Node implements Serializable {
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                SafeDialogUtil.dismissDialog(context, dialog);
+
             }
         });
-        AlertDialog dialog = durationDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog =SafeDialogUtil.showDialog(context, durationDialog);
+        if(dialog != null){
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public boolean isNeedToHide() {
@@ -2261,7 +2271,7 @@ public class Node implements Serializable {
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            SafeDialogUtil.showDialog(context, alertDialog);
             IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
         }
     }
@@ -2429,7 +2439,7 @@ public class Node implements Serializable {
             }
         });
 
-        dialog.show();
+        SafeDialogUtil.showDialog(context, dialog);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
         return dialog;
 

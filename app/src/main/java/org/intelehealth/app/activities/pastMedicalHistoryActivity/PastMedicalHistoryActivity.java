@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -221,7 +222,8 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
                 }
             });
             AlertDialog alertDialog = alertdialog.create();
-            alertDialog.show();
+            SafeDialogUtil.showDialog(this, alertDialog);
+
 
             Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));

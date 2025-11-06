@@ -282,19 +282,23 @@ public class SearchPatientActivity_New extends BaseActivity {
 
             if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
                 fetchDataforTags(patientDTOList);
-                runOnUiThread(this::searchData_Available);
-                try {
-                    runOnUiThread(() -> {
-                        adapter = new SearchPatientAdapter_New(this, patientDTOList);
-                        search_recycelview.setAdapter(adapter);
-                        start = end;
-                        end += limit;
-                    });
-                } catch (Exception e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(this::searchData_Available);
+                    try {
+                        runOnUiThread(() -> {
+                            adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                            search_recycelview.setAdapter(adapter);
+                            start = end;
+                            end += limit;
+                        });
+                    } catch (Exception e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
             } else {
-                runOnUiThread(this::searchData_Unavailable);
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(this::searchData_Unavailable);
+                }
             }
         });
     }
@@ -512,15 +516,17 @@ public class SearchPatientActivity_New extends BaseActivity {
                 }
 
                 List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-                runOnUiThread(() -> {
-                    if (!tempList.isEmpty()) {
-                        patientDTOList.addAll(tempList);
-                        adapter.patientDTOS.addAll(tempList);
-                        adapter.notifyDataSetChanged();
-                        start = end;
-                        end += limit;
-                    }
-                });
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(() -> {
+                        if (!tempList.isEmpty()) {
+                            patientDTOList.addAll(tempList);
+                            adapter.patientDTOS.addAll(tempList);
+                            adapter.notifyDataSetChanged();
+                            start = end;
+                            end += limit;
+                        }
+                    });
+                }
             }
         });
     }

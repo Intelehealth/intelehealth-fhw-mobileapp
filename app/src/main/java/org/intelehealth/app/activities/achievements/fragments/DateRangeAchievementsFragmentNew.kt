@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.achievements.fragments
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -22,6 +23,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutDateRangeAchievementsFragmentBinding
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.SafeDialogUtil
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
 import java.text.SimpleDateFormat
@@ -267,8 +269,8 @@ class DateRangeAchievementsFragmentNew : Fragment() {
                 datePicker.minDate = it.timeInMillis
             }
         }
+        SafeDialogUtil.showDialog(activity, datePickerDialog);
 
-        datePickerDialog.show()
     }
     private fun setDefaultDates() {
         val calendar = Calendar.getInstance()
