@@ -35,6 +35,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -271,11 +272,11 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                    SafeDialogUtil.dismissDialog(QuestionNodeActivity.this, dialog);
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            SafeDialogUtil.showDialog(this, alertDialog);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         } else {
 

@@ -52,6 +52,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
@@ -132,6 +133,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -651,7 +653,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -1232,12 +1234,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         positive_btn.setOnClickListener(v -> {
             /*Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
-            if (!isFinishing() && !isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(PrescriptionActivity.this, alertDialog);
+
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     private void expandableCardVisibilityHandling() {

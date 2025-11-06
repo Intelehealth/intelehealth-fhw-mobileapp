@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -30,6 +31,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 
@@ -138,7 +140,8 @@ public class DateRangeAchievementsFragment extends Fragment {
             datePicker.setMaxDate(System.currentTimeMillis());
             datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
         }
-        datePickerDialog.show();
+
+        SafeDialogUtil.showDialog(getActivity(), datePickerDialog);
     }
 
     private void fetchAndSetUIData() {
@@ -177,7 +180,11 @@ public class DateRangeAchievementsFragment extends Fragment {
         }
 
         int finalCount = numberOfPatients;
-        requireActivity().runOnUiThread(() -> tvRangePatientsCreated.setText(String.valueOf(finalCount)));
+
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> tvRangePatientsCreated.setText(String.valueOf(finalCount)));
+        }
         rangePatientsCreatedCursor.close();
     }
 
@@ -205,7 +212,11 @@ public class DateRangeAchievementsFragment extends Fragment {
         }
 
         int finalCount = numberOfVisitsEnded;
-        requireActivity().runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> tvRangeVisitsEnded.setText(String.valueOf(finalCount)));
+        }
         rangePatientsCreatedCursor.close();
     }
 
@@ -232,7 +243,11 @@ public class DateRangeAchievementsFragment extends Fragment {
         }
 
         double finalAverageScore = averageScore;
-        requireActivity().runOnUiThread(() -> tvAveragePatientSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> tvAveragePatientSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+        }
         rangeAverageSatisfactionCursor.close();
     }
 
@@ -247,15 +262,18 @@ public class DateRangeAchievementsFragment extends Fragment {
         Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(finalStartTimeInMs, finalEndTimeInMs);
         overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
 
-        requireActivity().runOnUiThread(() -> {
-            String totalTimeSpent = "";
-            if (overallUsageStats != null) {
-                totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
-            } else {
-                totalTimeSpent = "0h 0m";
-            }
-            tvTotalTimeSpentInRange.setText(totalTimeSpent);
-        });
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> {
+                String totalTimeSpent = "";
+                if (overallUsageStats != null) {
+                    totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
+                } else {
+                    totalTimeSpent = "0h 0m";
+                }
+                tvTotalTimeSpentInRange.setText(totalTimeSpent);
+            });
+        }
     }
 
     private int countPatientsCreatedBetweenRange(List<PatientAttributesDTO> patientAttributesDTOList) {

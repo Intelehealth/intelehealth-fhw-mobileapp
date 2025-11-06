@@ -28,6 +28,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 import org.json.JSONException;
@@ -70,14 +71,17 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity implements
 
             new Thread(() -> {
                 // bg task
-                runOnUiThread(() -> {
-                    // ui task
-                    String text;
-                    text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
-                    text += new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
-                    text += "</body></html>";
-                    webView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
-                });
+
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(() -> {
+                        // ui task
+                        String text;
+                        text = "<html><body style='color:black;font-size: 0.8em;' >"; //style='text-align:justify;text-justify: inter-word;'
+                        text += new ConfigUtils(this).getTermsAndConditionsText(sessionManager.getAppLanguage());
+                        text += "</body></html>";
+                        webView.loadDataWithBaseURL(null,text, "text/html", "utf-8",null);
+                    });
+                }
             }).start();
 
     }
@@ -119,12 +123,13 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity implements
 
     @Override
     public void onPageStarted() {
-        loadingDialog.show();
+        SafeDialogUtil.showDialog(this, loadingDialog);
+
     }
 
     @Override
     public void onPageFinish() {
-        loadingDialog.dismiss();
+        SafeDialogUtil.dismissDialog(this, loadingDialog);
     }
 
     @Override

@@ -65,11 +65,14 @@ public class DialogUtils {
                         }
                     }
                 });
-        AlertDialog dialog = alertDialog.show();
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-        //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, alertDialog);
+
+        if(dialog != null){
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public void showerrorDialog(Context context, String title, String message, String ok) {
@@ -85,11 +88,13 @@ public class DialogUtils {
                         }
                     }
                 });
-        AlertDialog dialog = alertDialog.show();
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-        //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        AlertDialog dialog = SafeDialogUtil.showDialog(context, alertDialog);
+        if(dialog != null){
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
     }
 
     public static void patientRegistrationDialog(Context context, Drawable drawable, String title,
@@ -125,20 +130,18 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
     }
 
     public void showCommonDialog(Context context, int iconResource, String title, String message,
@@ -174,20 +177,18 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
     }
 
     /**
@@ -236,9 +237,8 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
@@ -249,7 +249,7 @@ public class DialogUtils {
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
     }
 
 
@@ -282,16 +282,14 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
@@ -303,7 +301,7 @@ public class DialogUtils {
         SelectedChipsPreviewGridAdapter selectedChipsPreviewGridAdapter = new SelectedChipsPreviewGridAdapter(recyclerView, context, selectedData, null);
         recyclerView.setAdapter(selectedChipsPreviewGridAdapter);
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
     }
 
     public MaterialAlertDialogBuilder showErrorDialogWithTryAgainButton(Context context, Drawable drawable, String title, String message, String buttonText) {
@@ -341,7 +339,7 @@ public class DialogUtils {
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
         return alertDialog;
     }
 
@@ -418,6 +416,6 @@ public class DialogUtils {
         }
 
         Button okButton = dialog.findViewById(R.id.positive_btn);
-        if (okButton != null) okButton.setOnClickListener(v -> dialog.dismiss());
+        if (okButton != null) okButton.setOnClickListener(v ->  SafeDialogUtil.dismissDialog(activityContext, dialog));
     }
 }

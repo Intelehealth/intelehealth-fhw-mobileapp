@@ -118,7 +118,9 @@ public class PrescriptionBuilder {
             //uncomment the below line if any hindi disclaimer is available
             //disclaimerStr = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("prescriptionDisclaimer_Hindi") : obj.getString("prescriptionDisclaimer_English");
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            return "";
+            //commented to avoid run time crash
+            //throw new RuntimeException(e);
         }
 
 

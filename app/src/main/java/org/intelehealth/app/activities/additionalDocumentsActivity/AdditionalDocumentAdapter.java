@@ -39,6 +39,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.models.DocumentObject;
 
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -203,7 +204,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
-        dialog.show();
+        SafeDialogUtil.showDialog(context, dialog);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }

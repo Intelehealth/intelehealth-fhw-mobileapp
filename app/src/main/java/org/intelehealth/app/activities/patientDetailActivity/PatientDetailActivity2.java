@@ -141,6 +141,7 @@ import org.intelehealth.app.utilities.PatientRegConfigKeys;
 import org.intelehealth.app.utilities.PatientRegFieldsUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -2394,7 +2395,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
+
     }
 
 /*

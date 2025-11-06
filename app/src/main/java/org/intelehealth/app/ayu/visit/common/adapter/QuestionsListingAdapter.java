@@ -55,6 +55,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -2529,7 +2530,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
-        dialog.show();
+        SafeDialogUtil.showDialog(mContext, dialog);
+
     }
 
     private void showDurationTypes(final TextView textView) {
@@ -2553,7 +2555,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
-        dialog.show();
+        SafeDialogUtil.showDialog(mContext, dialog);
+
     }
 
 

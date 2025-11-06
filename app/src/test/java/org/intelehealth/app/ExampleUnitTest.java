@@ -25,7 +25,7 @@ public class ExampleUnitTest {
     @Test
     public void  datetime_format_test(){
         //to test firebase crash (AEAT-1979)
-        String formattedDate = DateAndTimeUtils.date_formatter("No", "yyyy-dd-mm", "yyyy-dd-mm");
+        String formattedDate = DateAndTimeUtils.date_formatter("", "yyyy-dd-mm", "yyyy-dd-mm");
         assertNull(formattedDate);
     }
 }

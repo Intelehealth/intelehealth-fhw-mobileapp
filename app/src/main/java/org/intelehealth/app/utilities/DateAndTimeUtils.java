@@ -504,6 +504,7 @@ public class DateAndTimeUtils {
     }
 
     public static String date_formatter(String dateString, String format, String result_format) {
+        if(dateString == null && dateString.trim().isEmpty()) return null;
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);

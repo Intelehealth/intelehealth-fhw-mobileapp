@@ -321,17 +321,19 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
             countStrPendingFollowupVisits();
-
             if (isAdded()) {
+                //added null checking to avoid crash (AEAT-1981)
+                Activity act = getActivity();
+                if (act == null || !isAdded()) return;
                 activity.runOnUiThread(() -> {
                     StringBuilder followupCount = new StringBuilder()
                             .append(todaysCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.today))
+                            .append(act.getString(R.string.today))
                             .append("\n")
                             .append(tomorrowsCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
+                            .append(act.getString(R.string.tomorrow));
 
                     mCountPendingFollowupVisitsTextView.setText(
                             followupCount
@@ -456,7 +458,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 }*/
 
                 int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
-                ;
                 if (mUpcomingAppointmentCountTextView != null) {
                     Activity activity = getActivity();
                     if (isAdded() && activity != null) {
@@ -577,9 +578,13 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
-            if (isAdded()) {
+            Activity activity = getActivity();
+            if (isAdded() && activity != null) {
                 requireActivity().runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + requireActivity().getString(R.string.out_of) + " " + total + " " + requireActivity().getString(R.string.received).toLowerCase();
+                    Activity act = getActivity();
+                    if (act == null || !isAdded()) return;
+
+                    String prescCountText = countReceivedPrescription + " " + act.getString(R.string.out_of) + " " + total + " " + act.getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }

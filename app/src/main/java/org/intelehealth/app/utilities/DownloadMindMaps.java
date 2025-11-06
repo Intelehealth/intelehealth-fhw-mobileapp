@@ -116,9 +116,8 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         super.onPostExecute(s);
 
         if (alertDialog != null) {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
         }
         CustomLog.e("MindMapDownloadTask", "Successfully get MindMap URL"+s);
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {

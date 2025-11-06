@@ -23,6 +23,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 
@@ -115,7 +116,7 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
     @Override
     public void onPageStarted() {
-        loadingDialog.show();
+        SafeDialogUtil.showDialog(this, loadingDialog);
     }
 
     @Override

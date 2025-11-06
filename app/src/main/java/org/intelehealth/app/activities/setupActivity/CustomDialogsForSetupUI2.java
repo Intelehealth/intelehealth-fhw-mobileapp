@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 
 public class CustomDialogsForSetupUI2 extends DialogFragment {
     Context context;
@@ -27,7 +28,8 @@ public class CustomDialogsForSetupUI2 extends DialogFragment {
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialog.show();
+        SafeDialogUtil.showDialog(context, dialog);
+
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
 
         dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);

@@ -8,6 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
+import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -45,6 +48,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.splash.adapter.LanguageAdapter;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.ActiveLanguage;
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder;
@@ -340,7 +344,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
                     if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
                         String url_field = "https://" + url.getText().toString() + ":3004/";
                         if (URLUtil.isValidUrl(url_field)) {
-                            alertDialog.dismiss();
+                            SafeDialogUtil.dismissDialog(Language_ProtocolsActivity.this, alertDialog);
                             key = text.getText().toString().trim();
                             licenseUrl = url.getText().toString().trim();
 
@@ -350,7 +354,8 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 
                             if (keyVerified(key)) {
                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
-                                alertDialog.dismiss();
+                                SafeDialogUtil.dismissDialog(Language_ProtocolsActivity.this, alertDialog);
+
                             }
                         } else {
                             Toast.makeText(Language_ProtocolsActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
@@ -367,11 +372,12 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
             });
 
             negative_btn.setOnClickListener(v -> {
-                alertDialog.dismiss();
+                SafeDialogUtil.dismissDialog(Language_ProtocolsActivity.this, alertDialog);
 
             });
 
-            alertDialog.show();
+            SafeDialogUtil.showDialog(this, alertDialog);
+
 
 
         } else {
@@ -414,7 +420,7 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
 
         negative_btn.setOnClickListener(v -> {
 //            lang_spinner.setSelection(langAdapter.getPosition("English"));
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(Language_ProtocolsActivity.this, alertDialog);
         });
 
         positive_btn.setOnClickListener(v -> {
@@ -435,7 +441,8 @@ public class Language_ProtocolsActivity extends BaseActivity implements BaseView
             alertDialog.dismiss();
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(Language_ProtocolsActivity.this, alertDialog);
+
     }
 
     // Dialog - end

@@ -31,6 +31,7 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.FileUtils
 import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.SafeDialogUtil
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import org.json.JSONException
@@ -180,9 +181,12 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
             } catch (e: JSONException) {
                 throw RuntimeException(e)
             }
-            runOnUiThread {
-                webView?.loadData( assetHtml , "text/html", "utf-8")
-                //webView?.loadDataWithBaseURL(null, assetHtml , "text/html", "utf-8", null);
+
+            if (!isFinishing && !isDestroyed) {
+                runOnUiThread {
+                    webView?.loadData( assetHtml , "text/html", "utf-8")
+                    //webView?.loadDataWithBaseURL(null, assetHtml , "text/html", "utf-8", null);
+                }
             }
         }.start()
     }
@@ -222,9 +226,7 @@ class CommonWebViewActivity : AppCompatActivity(), WebViewStatus{
     }
 
     override fun onPageFinish() {
-        if(!isFinishing && !isDestroyed){
-            loadingDialog?.dismiss()
-        }
+        SafeDialogUtil.dismissDialog(this, loadingDialog)
     }
 
     override fun onPageError(error: String) {
