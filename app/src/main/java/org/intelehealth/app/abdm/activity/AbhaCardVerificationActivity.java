@@ -336,10 +336,12 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                         dialog.openAuthSelectionDialogDialog(BOTH, authType -> {
                                             abhaAuthType = authType;
                                             isAbhaAuthTypeSelected = true;
+                                            sentOtpApi(accessToken, getSendOtpApiRequest());
                                         });
                                         dialog.show(getSupportFragmentManager(), "");
+                                    } else {
+                                        sentOtpApi(accessToken, getSendOtpApiRequest());
                                     }
-                                    sentOtpApi(accessToken, getSendOtpApiRequest());
                                 } else {
                                     callFetchAuthModesAPI(Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString(), "", accessToken);
                                 }
@@ -826,6 +828,8 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                     sentOtpApi(accessToken, getSendOtpApiRequest());
                                 });
                                 dialog.show(getSupportFragmentManager(), "");
+                            } else {
+                                sentOtpApi(accessToken, getSendOtpApiRequest());
                             }
                         } else {
                             disableUI(true);
