@@ -192,11 +192,15 @@
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_alignParentEnd="true"
-                        android:onClick="showLangSelectionDialog"
+
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
                         android:paddingBottom="@dimen/margin_10" />
+
+                    <!--                    android:onClick="showLangSelectionDialog"-->
+                    <!--                    Add this line back in lang_spinner_text when required-->
+
                 </RelativeLayout>
 
                 <RelativeLayout

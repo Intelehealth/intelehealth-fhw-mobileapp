@@ -324,7 +324,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                         SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashScreenActivity.this);
                         boolean smoothupgrade = smoothUpgrade.checkingDatabase();
                         if (smoothupgrade) {
-//                            nextActivity();
+                            setEnglishLanguageByDefault();
+                            nextActivity();
                         }
                     }
                 }, 2000);
