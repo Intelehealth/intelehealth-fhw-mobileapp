@@ -250,11 +250,12 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
                         public void onSuccess(Response<OTPResponse> response) {
+                            initializeCountdownTimer();
                             cpd.dismiss();
+
                             if (response.code() == 200) {
                                 OTPResponse otpResponse = response.body();
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                        StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
 
                                 Timber.tag(TAG).d("onSuccess: AadhaarResponse: %s", otpResponse.toString());
                                 // here, we will receive: txtID, otp
@@ -610,16 +611,20 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private void resendOtp() {
         disableUI(false);
+
         binding.resendBtn.setEnabled(false);
         binding.resendBtn.setTextColor(getColor(R.color.medium_gray));
         binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+    }
 
+    private void initializeCountdownTimer() {
         String resendTime = getResources().getString(R.string.resend_otp_in);
 
-        if (countDownTimer != null)
+        if (countDownTimer != null) {
             countDownTimer.cancel();    // reset any existing countdown.
-        countDownTimer = new CountDownTimer(60000, 1000) {
+        }
 
+        countDownTimer = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
                 if (resendCounter != 0) {
                     String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
@@ -639,7 +644,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                 if (cpd != null && cpd.isShowing())
                     cpd.dismiss();
             }
-
         }.start();
     }
 
