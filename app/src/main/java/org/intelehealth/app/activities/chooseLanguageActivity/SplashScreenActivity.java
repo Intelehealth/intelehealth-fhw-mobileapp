@@ -146,17 +146,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         if (sessionManager.isFirstTimeLaunch()) {
             checkPerm();
-            animateViews();
-            populatingLanguages();
+//            animateViews(); uncomment this when you remove the temporary english default function
+//            populatingLanguages(); uncomment this when you remove the temporary english default function
         } else {
 
             //as we are implementing force update now thus commenting this.
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    nextActivity();
-                }
-            }, 3000);
+            new Handler().postDelayed(this::nextActivity, 3000);
         }
 
         saveLanguage();
@@ -317,7 +312,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() { //Do something after 100ms
-//                        nextActivity();
+                        setEnglishLanguageByDefault();
+                        nextActivity();
                     }
                 }, 2000);
             } else {
@@ -510,6 +506,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setEnglishLanguageByDefault() {
+        sessionManager.setAppLanguage("en");
+        appLanguage = sessionManager.getAppLanguage();
+        setLocale(appLanguage);
     }
 
     public interface ItemSelectionListener {
