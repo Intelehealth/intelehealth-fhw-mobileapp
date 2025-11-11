@@ -367,15 +367,28 @@ class CategorySegregationUtils(private val resources: Resources) {
                 filteredList.removeAll { detail ->
                     val hasHistory = isHistoryOfHypertensionPresent(detail.value)
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    val followupGiven = detail.isHypertensionFollowupGiven ?: false
 
                     // Include if: No history OR has history but not on medication also followup date not given to patient
-                    val includePatient = when {
-                        !(detail.isHypertensionFollowupGiven ?: false) -> {
-                            !hasHistory || (hasHistory && !onMedication)
-                        }
-                        else -> false
-                    }
+                    val age = detail.age ?: 0
+                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: patientId : "+detail.patientId)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " " + detail.lastName)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: followupGiven : "+followupGiven)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: meetsAgeCriteria : "+meetsAgeCriteria)
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: age : "+age)
+
+                    // Include if:
+                    //  - Follow-up not given
+                    //  - Meets age criteria
+                    //  - No history OR (has history but not on medication)
+                    val includePatient = !followupGiven && meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
                     // Remove if inclusion criteria NOT met
+                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: includePatient : "+includePatient)
+                    Log.d(TAG, "screen18************************************************************")
+
                     !includePatient
                 }
             }
@@ -401,11 +414,35 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
             else -> {
-                // return full list
-            }
+                filteredList.clear()            }
         }
 
         return filteredList
+    }
+
+    fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+        // Define your MM categories
+        val mmCategories = listOf(
+            Constants.HYPERTENSION_SCREENING,
+            Constants.HYPERTENSION_FOLLOW_UP,
+            Constants.ANEMIA_SCREENING,
+            Constants.ANEMIA_FOLLOW_UP,
+            Constants.DIABETES_SCREENING
+        )
+        val eligibleMms = mutableListOf<String>()
+        val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
+
+        // Loop through categories and collect those that match
+        for (category in mmCategories) {
+            val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
+            if (eligiblePatients.isNotEmpty()) {
+                eligibleMms.add(category)
+            }
+        }
+        return mapOf(
+            "patient_id" to patientId,
+            "eligible_mms" to eligibleMms
+        )
     }
 
 }

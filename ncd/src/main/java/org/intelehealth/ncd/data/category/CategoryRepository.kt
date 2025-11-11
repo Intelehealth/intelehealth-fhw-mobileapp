@@ -89,7 +89,9 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 isFollowUpDateGivenToPatient = isFollowUpGivenToPatient,
                 isHypertensionFollowupGiven = isHypertensionFollowupGiven,
                 isAnemiaFollowupGiven = isAnemiaFollowupGiven,
-                isDiabetesFollowupGiven = isDiabetesFollowupGiven
+                isDiabetesFollowupGiven = isDiabetesFollowupGiven,
+                age = data.age
+
             )
         }
     }
