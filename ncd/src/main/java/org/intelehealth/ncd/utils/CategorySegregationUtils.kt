@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.utils
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
@@ -7,11 +8,17 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.constants.Constants
+import org.intelehealth.ncd.data.category.CategoryDataSource
+import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.model.PatientWithAttribute
+import org.intelehealth.ncd.room.CategoryDatabase
+import org.intelehealth.ncd.room.dao.PatientAttributeDao
+import org.intelehealth.ncd.room.dao.PatientDao
+import org.intelehealth.ncd.room.dao.VisitDao
 
 class CategorySegregationUtils(private val resources: Resources) {
     private  val TAG = "CategorySegregationUtil"
@@ -372,23 +379,9 @@ class CategorySegregationUtils(private val resources: Resources) {
                     // Include if: No history OR has history but not on medication also followup date not given to patient
                     val age = detail.age ?: 0
                     val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: patientId : "+detail.patientId)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: name : "+detail.firstName + " " + detail.lastName)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: followupGiven : "+followupGiven)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: hasHistory : "+hasHistory)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: onMedication : "+onMedication)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: meetsAgeCriteria : "+meetsAgeCriteria)
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: age : "+age)
 
-                    // Include if:
-                    //  - Follow-up not given
-                    //  - Meets age criteria
-                    //  - No history OR (has history but not on medication)
                     val includePatient = !followupGiven && meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
                     // Remove if inclusion criteria NOT met
-                    Log.d(TAG, "screen18 segregateAndFetchPatientVisitDetails: includePatient : "+includePatient)
-                    Log.d(TAG, "screen18************************************************************")
-
                     !includePatient
                 }
             }
@@ -399,10 +392,12 @@ class CategorySegregationUtils(private val resources: Resources) {
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
                     val followUpFlag = detail.followUpFromProtocol == true
                     // Include if: has history AND on medication AND follow-up flag true
+                    val age = detail.age ?: 0
+                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
 
                     val includePatient = when {
                         // Case 1:no follow-up date given but has baseline survey true
-                        detail.isHypertensionFollowupGiven != true -> hasHistory && onMedication
+                        detail.isHypertensionFollowupGiven != true -> meetsAgeCriteria && hasHistory && onMedication
 
                         // Case 2: followup given and follupdate on and after that date
                         detail.isHypertensionFollowupGiven == true -> followUpFlag
@@ -421,7 +416,6 @@ class CategorySegregationUtils(private val resources: Resources) {
     }
 
     fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
-        // Define your MM categories
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
             Constants.HYPERTENSION_FOLLOW_UP,
@@ -432,7 +426,6 @@ class CategorySegregationUtils(private val resources: Resources) {
         val eligibleMms = mutableListOf<String>()
         val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
 
-        // Loop through categories and collect those that match
         for (category in mmCategories) {
             val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
             if (eligiblePatients.isNotEmpty()) {
@@ -445,4 +438,23 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
     }
 
+     suspend fun fetchAndSetPatientsTestMulti(patientUuid: String, context: Context): Map<String, Any> {
+        val database = CategoryDatabase.getInstance(context)
+
+        val patientDao: PatientDao = database.patientDao()
+        val patientAttributeDao: PatientAttributeDao = database.patientAttributeDao()
+        val visitsDao: VisitDao = database.visitDao()
+
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
+        val repository = CategoryRepository(dataSource)
+        val utils = CategorySegregationUtils(resources)
+
+        val result = repository.getPatientVisitDetailsForFollowup(
+            age = Constants.HYPERTENSION_EXCLUSION_AGE,
+            attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+            visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+            patientUuid
+        )
+        return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
+    }
 }
