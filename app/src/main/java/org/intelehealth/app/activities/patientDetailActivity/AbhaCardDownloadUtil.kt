@@ -13,6 +13,7 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.AppConstants.PICTURES_DIRECTORY_PATH
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.CameraUtils
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UrlModifiers
 import timber.log.Timber
 import java.io.File
@@ -61,6 +62,7 @@ class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
             .subscribe(object : DisposableSingleObserver<AbhaCardResponseBody>() {
                 override fun onSuccess(t: AbhaCardResponseBody) {
                     storeAbhaCard(t.image, patientDto.abhaNumber, activityContext)
+                    SessionManager(activityContext).isCommunicationNumberUsed = false;
                 }
 
                 override fun onError(e: Throwable) {

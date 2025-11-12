@@ -725,7 +725,7 @@ public class Fragment_ThirdScreen extends Fragment {
         String token = tokenHashMap.get("token");
         String scope = tokenHashMap.get("scope");
 
-        if (!util.isAbhaCardPresent()) {
+        if (!util.isAbhaCardPresent() || sessionManager.getIsCommunicationNumberUsed()) {
             util.downloadAbhaCard(scope, token, accessToken, requireActivity());
         }
     }

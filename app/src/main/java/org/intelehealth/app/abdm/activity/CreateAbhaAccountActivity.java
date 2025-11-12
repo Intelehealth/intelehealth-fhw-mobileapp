@@ -384,6 +384,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             mobileNumberOtpVerificationDialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
                                 mobileNumberOtpVerificationDialog.dismiss();
                                 otpResponse.getABHAProfile().setMobile(mobileNo);
+                                sessionManager.setIsCommunicationNumberUsed(true);
                                 handleUserFlow(otpResponse, accessToken, isNewUser);
                             });
                             return mobileNumberOtpVerificationDialog;

@@ -69,6 +69,7 @@ public class SessionManager {
     public static final String MOBILE_LOGIN = "mobile_login";
     public static final String CREATE_ABHA = "create_abha";
     public static final String TEMP_SCOPE = "temp_scope";
+    public static final String IS_COMMUNICATION_NUMBER_USED = "is_communication_number_used";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -580,6 +581,15 @@ public class SessionManager {
 
     public void setTempScope(String tempScope) {
         editor.putString(TEMP_SCOPE, tempScope);
+        editor.commit();
+    }
+
+    public boolean getIsCommunicationNumberUsed() {
+        return pref.getBoolean(IS_COMMUNICATION_NUMBER_USED, false);
+    }
+
+    public void setIsCommunicationNumberUsed(boolean isCommunicationNumberUsed) {
+        editor.putBoolean(IS_COMMUNICATION_NUMBER_USED, isCommunicationNumberUsed);
         editor.commit();
     }
 }
