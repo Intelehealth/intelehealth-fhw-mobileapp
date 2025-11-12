@@ -16,4 +16,6 @@ object ABDMConstant{
     const val ABHA_OTP_MOBILE = "MOBILE_OTP"
     const val BOTH = "Both"
     const val BEARER = "Bearer "
+
+    const val KYC_STATUS_PENDING = "PENDING"
 }

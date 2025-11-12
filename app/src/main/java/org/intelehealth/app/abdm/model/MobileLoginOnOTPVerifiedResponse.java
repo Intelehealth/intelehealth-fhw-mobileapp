@@ -5,8 +5,10 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
+
 import java.io.Serializable;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -34,6 +36,10 @@ public class MobileLoginOnOTPVerifiedResponse implements Serializable {
     @SerializedName("accounts")
     @Expose
     private List<Account> accounts;
+    @SerializedName("users")
+    @Expose
+    private List<LoginOtpVerifyUser> users;
+
 
     public String getTxnId() {
         return txnId;
@@ -83,6 +89,14 @@ public class MobileLoginOnOTPVerifiedResponse implements Serializable {
         this.accounts = accounts;
     }
 
+    public List<LoginOtpVerifyUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<LoginOtpVerifyUser> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return "MobileLoginOnOTPVerifiedResponse{" +
@@ -92,6 +106,7 @@ public class MobileLoginOnOTPVerifiedResponse implements Serializable {
                 ", token='" + token + '\'' +
                 ", expiresIn=" + expiresIn +
                 ", accounts=" + accounts +
+                ", users=" + users +
                 '}';
     }
 }
