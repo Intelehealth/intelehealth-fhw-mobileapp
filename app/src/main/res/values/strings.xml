@@ -1496,6 +1496,7 @@
     <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
     <string name="haemoglobin">Hemoglobin (mg/dL)</string>
     <string name="visit_summary_button_download">Download</string>
+    <string name="diabetes_hba1c">Diabetes HBA1C(%)</string>
 
     <!-- Thermal Printer -->
     <string name="please_connect">Select Available Device</string>
