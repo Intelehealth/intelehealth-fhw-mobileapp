@@ -414,6 +414,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private boolean mIsNCDVisit = false;
     private List<String> infoModulesList;
     private List<HealthModuleItem> infoModulesFileUrlsList;
+    private boolean mIsVisitEnded = false;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -509,7 +510,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         }
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
-        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
     }
 
@@ -784,9 +785,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             queryData(String.valueOf(patientUuid));
         }
-        mIsVisitEnded =VisitsDAO.isVisitEnded(visitUuid);
+        mIsVisitEnded = VisitsDAO.isVisitEnded(visitUuid);
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
-        Log.d(TAG, "fetchingIntent: mIsNCDVisit : "+mIsNCDVisit);
+        Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
         if (mIsNCDVisit) {
@@ -2118,13 +2119,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         // check visit not closed & NCD type visit
 
-        if(mIsNCDVisit) uploadButton.setVisibility(View.GONE);
-        if(mIsNCDVisit && !mIsVisitEnded) {
+        if (mIsNCDVisit) uploadButton.setVisibility(View.GONE);
+        // run after 1 seconds
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mIsNCDVisit && !mIsVisitEnded) {
+                    visitUploadBlock();
+                }
+            }
+        }, 1000);
 
-            visitUploadBlock();
-        }
     }
-    private boolean mIsVisitEnded = false;
+
+
     private void setupSpecializationDataSpinner(List<Specialization> specializations) {
         //spinner is being populated with the speciality values...
 //        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -3343,7 +3351,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void visitUploadBlock() {
-
+        //Toast.makeText(context, "Entered to visitUploadBlock!", Toast.LENGTH_SHORT).show();
         // Upload button disabled to prevent multiple insertion of data
         uploadButton.setEnabled(false);
 
@@ -3533,7 +3541,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 if (!isFinishing() && !isDestroyed()) {
                                     Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                                     setAppointmentButtonStatus();
-                                    visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                                    visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), !mIsNCDVisit ? getResources().getString(R.string.patient_visit_sent) : getResources().getString(R.string.patient_visit_sent_ended), getResources().getString(R.string.okay));
                                 }
                             });
 
@@ -5976,7 +5984,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 setDataForChiefComplainSummary(value);
 
             }
-            Log.d(TAG, "setQAData: value before : "+value);
+            Log.d(TAG, "setQAData: value before : " + value);
            /* NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
 
             infoModulesList= fileGenerator.generateFileNames(value, sessionManager.getAppLanguage());
@@ -6132,7 +6140,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     List<String> mChiefComplainList = new ArrayList<>();
 
     private void setDataForChiefComplainSummary(String answerInLocale) {
-        Log.d(TAG, "setDataForChiefComplainSummary: answerInLocale : "+answerInLocale);
+        Log.d(TAG, "setDataForChiefComplainSummary: answerInLocale : " + answerInLocale);
         mChiefComplainList.clear();
         String lCode = sessionManager.getAppLanguage();
         //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
@@ -6684,7 +6692,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void endSevikaVisitOnUpload() {
-        Log.d(TAG, "endSevikaVisitOnUpload: mIsNCDVisit : "+mIsNCDVisit);
+        Log.d(TAG, "endSevikaVisitOnUpload: mIsNCDVisit : " + mIsNCDVisit);
         if (!mIsNCDVisit) return;
 
         String endDateTime = DateAndTimeUtils.getCurrentTimeAsVisitEndedTime();
@@ -6705,13 +6713,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         incomplete_act.setVisibility(View.GONE);
 
     }
+
     private void viewAndShareHealthInfoModule() {
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
-        String value  = VisitsDAO.getComplaintValueInEnglish(visitUUID);
-        infoModulesFileUrlsList= fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage());
+        String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
+        infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage());
         boolean hasFollowup = value.toLowerCase().contains("followup");
-        if(hasFollowup){
-            if(infoModulesFileUrlsList==null && infoModulesFileUrlsList.isEmpty())
+        if (hasFollowup) {
+            if (infoModulesFileUrlsList == null && infoModulesFileUrlsList.isEmpty())
                 return;
             mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
             mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);

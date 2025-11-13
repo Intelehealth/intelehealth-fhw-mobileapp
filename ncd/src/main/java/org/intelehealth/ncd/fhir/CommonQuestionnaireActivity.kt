@@ -66,6 +66,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     // for the questionnaire
     private val questionnaireFiles =
         listOf(
+            "Abdominal distention_fhir.json",
             "hypertension_screening.json",
             "anemia_screening.json",
             "diabetes_screening.json",
@@ -73,6 +74,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         )
     private val questionnaireTitles =
         listOf(
+            "Abdominal distention",
             "Hypertension Screening",
             "Anemia Screening",
             "Diabetes Screening",
@@ -109,6 +111,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val questionnaireTitlesResources = listOf(
+            "Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
             getString(R.string.questionnaire_title_diabetes_screening),

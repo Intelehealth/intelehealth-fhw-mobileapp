@@ -1164,6 +1164,7 @@
     <string name="health_information">Health information</string>
     <string name="saved_to_downloads">File saved to Downloads</string>
     <string name="failed_to_save_downloads">Failed to save PDF</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
 
 
 </resources>

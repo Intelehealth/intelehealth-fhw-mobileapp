@@ -511,6 +511,7 @@
     <string name="health_information">சுகாதார தகவல்</string>
     <string name="saved_to_downloads">கோப்பு Downloads இல் சேமிக்கப்பட்டது</string>
     <string name="failed_to_save_downloads">PDF சேமிக்க முடியவில்லை</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
 
 </resources>
 
