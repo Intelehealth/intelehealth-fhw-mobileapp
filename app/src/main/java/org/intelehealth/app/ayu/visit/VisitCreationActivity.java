@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -52,6 +51,8 @@ import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExaminationFragment;
 import org.intelehealth.app.ayu.visit.pocdevice.ConnectPocDeviceFragment;
 import org.intelehealth.app.ayu.visit.pocdevice.PocDeviceListFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.RecordHeartSoundsFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.RecordLungSoundsFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonCaptureFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonQuestionsFragment;
 import org.intelehealth.app.ayu.visit.reason.VisitReasonSummaryFragment;
@@ -138,6 +139,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public static final int STEP_7_VISIT_SUMMARY = 10;
     public static final int STEP_11_DEVICE_CONNECT = 11;
     public static final int STEP_12_DEVICE_LIST = 12;
+    public static final int SELECT_HEART = 13;
+    public static final int SELECT_LUNG = 14;
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;
     private static final String DIAGNOSTICS_FRAGMENT = "DIAGNOSTICS";
     private static final String DIAGNOSTICS_SUMMARY_FRAGMENT = "DIAGNOSTICS_SUMMARY";
@@ -584,13 +587,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mStep5ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
-                /*getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
-                        commit();*/
-
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, ConnectPocDeviceFragment.newInstance(mCommonVisitData, isEditMode,mVitalsObject), POC_DEVICE_FRAGMENT).
+                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
                         commit();
+
+                /*getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, ConnectPocDeviceFragment.newInstance(mCommonVisitData, isEditMode,mVitalsObject), POC_DEVICE_FRAGMENT).
+                        commit();*/
                 break;
             case STEP_2_DIAGNOSTICS:
                 mStep2ProgressBar.setProgress(100);
@@ -745,6 +748,21 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
                         commit();
+                break;
+            case SELECT_HEART:
+                mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                mStep1ProgressBar.setProgress(100);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_summary, RecordHeartSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
+                        commit();
+                break;
+            case SELECT_LUNG:
+                mSummaryFrameLayout.setVisibility(View.VISIBLE);
+                mStep1ProgressBar.setProgress(100);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_summary, RecordLungSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
+                        commit();
+                break;
         }
     }
 

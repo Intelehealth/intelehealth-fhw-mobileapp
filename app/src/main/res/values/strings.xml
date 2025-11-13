@@ -1773,6 +1773,7 @@
     <string name="weak">Weak</string>
     <string name="strong">Strong</string>
     <string name="list_of_device_found">List of device found</string>
+    <string name="record_heart_sounds">Record Heart Sounds</string>
 
 
 </resources>

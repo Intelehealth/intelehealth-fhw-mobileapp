@@ -76,6 +76,13 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
         binding.btnTryagain.setOnClickListener(view1 -> {
             navigate_pocListfragment();
         });
+        binding.cvHeart.setOnClickListener(view1 -> {
+            mActionListener.onFormSubmitted(VisitCreationActivity.SELECT_HEART, mIsEditMode, mVitalsObject);
+        });
+
+        binding.cvLung.setOnClickListener(view1 -> {
+            mActionListener.onFormSubmitted(VisitCreationActivity.SELECT_LUNG, mIsEditMode, mVitalsObject);
+        });
     }
     @Override
     public void onResume() {
