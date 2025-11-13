@@ -468,6 +468,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         val result = when (category) {
             Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
+            Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
             else -> emptyList()
         }
 
@@ -525,6 +526,26 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
         }
     }
+    private fun filterAnemiaScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val followupGiven = detail.isAnemiaFollowupGiven ?: false
 
+            // Exclude if follow-up is already given
+            if (followupGiven) return@filter false
+
+            // Exclude if no attribute value (medical history JSON)
+            val medicalHistoryJson = detail.value
+            if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+
+            val hasHistory = isHistoryOfAnemiaPresent(medicalHistoryJson)
+            val onMedication = isCurrentlyTakingAnemiaMedication(medicalHistoryJson)
+
+            val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
+            meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
+        }
+    }
 
 }
