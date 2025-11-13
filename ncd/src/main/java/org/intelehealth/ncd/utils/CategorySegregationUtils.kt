@@ -358,7 +358,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    fun segregateAndFetchPatientVisitDetails(
+  /*  fun segregateAndFetchPatientVisitDetails(
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
@@ -413,9 +413,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
 
         return filteredList
-    }
+    }*/
 
-    fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+    private fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
             Constants.HYPERTENSION_FOLLOW_UP,
@@ -438,7 +438,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
     }
 
-     suspend fun fetchAndSetPatientsTestMulti(patientUuid: String, context: Context): Map<String, Any> {
+     suspend fun checkForAllEligibleProtocols(patientUuid: String, context: Context): Map<String, Any> {
         val database = CategoryDatabase.getInstance(context)
 
         val patientDao: PatientDao = database.patientDao()
@@ -457,4 +457,74 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
         return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
     }
+
+    fun segregateAndFetchPatientVisitDetails(
+        patientVisitDetailsList: List<PatientVisitDetails>,
+        category: String
+    ): List<PatientVisitDetails> {
+        Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
+        Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
+
+        val result = when (category) {
+            Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
+            Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
+            else -> emptyList()
+        }
+
+        Log.d("newkz", "Filtered $category size: ${result.size}")
+        return result
+    }
+
+    private fun filterHypertensionScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val followupGiven = detail.isHypertensionFollowupGiven ?: false
+
+            // Exclude if follow-up is already given
+            if (followupGiven) return@filter false
+
+            // Exclude if no attribute value (medical history JSON)
+            val medicalHistoryJson = detail.value
+            if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+
+            val hasHistory = isHistoryOfHypertensionPresent(medicalHistoryJson)
+            val onMedication = isCurrentlyTakingHypertensionMedication(medicalHistoryJson)
+
+            val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+            meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
+        }
+    }
+
+
+    private fun filterHypertensionFollowUpPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+
+            val followupGiven = detail.isHypertensionFollowupGiven
+
+            return@filter when {
+                // Case 1: Follow-up not given or null →  check baseline criteria
+                followupGiven != true -> {
+                    val medicalHistoryJson = detail.value
+                    if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
+                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    meetsAgeCriteria && hasHistory && onMedication
+                }
+
+                // Case 2: Follow-up given → check only the protocol flag
+                else -> {
+                    val followUpFlag = detail.followUpFromProtocol ?: false
+                    followUpFlag
+                }
+            }
+        }
+    }
+
+
 }
