@@ -1995,7 +1995,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="save_data">Save Data?</string>
     <string name="do_you_want_to_ahead_and_save_the_patient_s_data">Do you want to go ahead and save the patient\'s data?</string>
 
-    <string name="kyc_verification_not_done_abha_address">This ABHA address isn\'t KYC-verified. Please try with a different Abha address</string>
+    <string name="kyc_verification_not_done_abha_address">This is a non-KYC ABHA address. Please link your ABHA address to your ABHA number to enable download.</string>
     <string name="kyc_verification_not_done_abha_number">This ABHA number isn\'t KYC-verified. Please try with a different Abha number</string>
 
 </resources>
