@@ -160,7 +160,7 @@ public class DialogUtils {
 
         neutral_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
-            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+            if (customDialogListener != null) customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         alertDialog.show();

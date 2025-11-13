@@ -422,7 +422,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 cpd.dismiss();
                                 switch (optionSelected) {
                                     case MOBILE_NUMBER_SELECTION ->
-                                            startCreateAbhaFlow(getString(R.string.no_abha_user_records_associated_with_this_mobile_no));
+                                            showOkDialog(getString(R.string.no_abha_user_records_associated_with_this_mobile_no), (action) -> startCreateAbhaFlow());
                                     case ABHA_SELECTION ->
                                             Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
                                     default ->
@@ -576,12 +576,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 String kycStatus = responseBody.getUsers().get(0).getKycStatus();
 
                 if (kycStatus.equalsIgnoreCase(ABDMConstant.KYC_STATUS_PENDING)) {
-                    if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
-                        Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.kyc_verification_not_done_abha_address), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(AbhaCardVerificationActivity.this, getString(R.string.kyc_verification_not_done_abha_number), Toast.LENGTH_LONG).show();
-                    }
-
+                    showOkDialog(getString(R.string.kyc_verification_not_done_abha_address), null);
                     resetOTPField();
                     disableUI(true);
                     binding.sendOtpBtn.setTag(null);
@@ -781,7 +776,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                 Timber.tag("callOTPForMobileLoginVerificationApi").d("onSuccess: %s", response.toString());
                             }
                         } else if (response.code() == 404) {
-                            startCreateAbhaFlow(getString(R.string.no_abha_user_records_associated_with_this_aadhaar));
+                            showOkDialog(getString(R.string.no_abha_user_records_associated_with_this_aadhaar), (action -> startCreateAbhaFlow()));
                         } else {
                             Toast.makeText(context, ABDMUtils.getErrorMessage1(response.errorBody()), Toast.LENGTH_SHORT).show();
                             disableUI(true);
@@ -800,14 +795,16 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void startCreateAbhaFlow(String message) {
-        DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), message, getString(R.string.ok), action -> {
-            Intent intent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
-            intent.putExtra(PrivacyPolicyActivity_New.intentPatientNameTag, patientName);
-            sessionManager.setCreateAbha(true);
-            startActivity(intent);
-            finish();
-        });
+    private void showOkDialog(String message, DialogUtils.CustomDialogListener customDialogListener) {
+        DialogUtils.showOKDialog(AbhaCardVerificationActivity.this, AppCompatResources.getDrawable(AbhaCardVerificationActivity.this, R.drawable.close_patient_svg), getString(R.string.abha_user_not_found), message, getString(R.string.ok), customDialogListener);
+    }
+
+    private void startCreateAbhaFlow() {
+        Intent intent = new Intent(AbhaCardVerificationActivity.this, CreateAbhaAccountActivity.class);
+        intent.putExtra(PrivacyPolicyActivity_New.intentPatientNameTag, patientName);
+        sessionManager.setCreateAbha(true);
+        startActivity(intent);
+        finish();
     }
 
     private void callFetchAuthModesAPI(String abhaAddress, String xToken, String accessToken) {
