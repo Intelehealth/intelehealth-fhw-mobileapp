@@ -160,6 +160,65 @@ public class SyncUtils {
         return isSynced;
     }
 
+
+    /**
+     * moved physical image upload code to push data api
+     * because physical image push are dependant on the push data api
+     * @param fromActivity
+     * @return
+     */
+    public boolean syncForegroundForVisitUpload(String fromActivity) {
+        boolean isSynced = false;
+        SyncDAO syncDAO = new SyncDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        Logger.logD(TAG, "Push Started");
+        isSynced = syncDAO.pushDataApiForVisitUpload();
+        Logger.logD(TAG, "Push ended");
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Pull Started");
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, 0);
+                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
+                Logger.logD(TAG, "Pull ended");
+            }
+        }, 4000);
+
+        imagesPushDAO.patientProfileImagesPush();
+        //ui2.0
+        imagesPushDAO.loggedInUserProfileImagesPush();
+//        imagesPushDAO.obsImagesPush();
+
+        /*
+         * Handler is added for pushing image in sync foreground
+         * to fix the issue of Phy exam and additional images not showing up sometimes
+         * on the webapp (doctor portal).
+         * */
+     /*   final Handler handler_foreground = new Handler();
+        handler_foreground.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Image Push Started");
+                imagesPushDAO.obsImagesPush();
+                Logger.logD(TAG, "Image Pull ended");
+            }
+        }, 3000);
+
+        imagesPushDAO.deleteObsImage();*/
+
+
+        WorkManager.getInstance(IntelehealthApplication.getAppContext())
+                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
+                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
+                .enqueue();
+
+        /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
+        IntelehealthApplication.getAppContext().startService(intent);*/
+
+        return isSynced;
+    }
+
     /**
      * Clicking on this btn will start Sync.
      *

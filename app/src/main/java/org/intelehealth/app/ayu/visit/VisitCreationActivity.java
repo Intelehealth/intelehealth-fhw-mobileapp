@@ -370,7 +370,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         }
 
-        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
+        if (encounterAdultIntials == null || encounterAdultIntials.equalsIgnoreCase("")) {
             encounterAdultIntials = UUID.randomUUID().toString();
             mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         }

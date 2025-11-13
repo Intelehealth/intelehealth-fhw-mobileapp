@@ -3462,7 +3462,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                         //Do something after 100ms
                         SyncUtils syncUtils = new SyncUtils();
-                        boolean isSynced = syncUtils.syncForeground("visitSummary");
+                        boolean isSynced = syncUtils.syncForegroundForVisitUpload("visitSummary");
                         if (isSynced) {
                             // remove the local cache
                             sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);

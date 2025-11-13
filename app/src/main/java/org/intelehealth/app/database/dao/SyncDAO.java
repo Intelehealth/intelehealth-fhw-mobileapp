@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.work.Data;
@@ -697,6 +698,149 @@ public class SyncDAO {
         return isSucess[0];
     }
 
+    public boolean pushDataApiForVisitUpload() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        PatientsDAO patientsDAO = new PatientsDAO();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        ProviderDAO providerDAO = new ProviderDAO();
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
+
+        PushRequestApiCall pushRequestApiCall;
+        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
+        pushRequestApiCall = patientsFrameJson.frameJson();
+        final boolean[] isSucess = {true};
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
+        String pushRequestCall = gson.toJson(pushRequestApiCall);
+        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
+        Logger.logD(TAG, "push request url - " + url);
+        Logger.logD(TAG, "push request encoded - " + encoded);
+        if (!pushRequestApiCall.getVisits().isEmpty()
+                || !pushRequestApiCall.getPersons().isEmpty()
+                || !pushRequestApiCall.getPatients().isEmpty()
+                || !pushRequestApiCall.getEncounters().isEmpty()
+                || !pushRequestApiCall.getProviders().isEmpty()
+                || !pushRequestApiCall.getAppointments().isEmpty()) {
+            Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
+            pushResponseApiCallObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
+                        @Override
+                        public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                            CustomLog.d(TAG, "onSuccess: in push api response");
+                            Logger.logD(TAG, "success" + pushResponseApiCall);
+                            try {
+                                for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                                    try {
+                                        patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                                    try {
+                                        visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
+                                    try {
+                                        encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getAppointmentList().size(); i++) {
+                                    try {
+                                        String sync = pushResponseApiCall.getData().getAppointmentList().get(i).getSync();
+                                        String visitUuid = pushResponseApiCall.getData().getAppointmentList().get(i).getVisitUuid();
+                                        appointmentDAO.updateAppointmentSync(visitUuid, sync);
+                                    } catch (DAOException exception) {
+                                        FirebaseCrashlytics.getInstance().recordException(exception);
+                                        CustomLog.e(TAG, exception.getMessage());
+                                    }
+                                }
+
+                                //ui2.0 for provider profile details
+                                if (pushResponseApiCall.getData().getProviderlist() != null) {
+                                    CustomLog.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
+                                    for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
+                                        try {
+                                            providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");
+                                            CustomLog.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG, e.getMessage());
+                                        }
+                                    }
+                                }
+
+                                isSucess[0] = true;
+                                sessionManager.setSyncFinished(true);
+
+
+                                 // image push is dependant with push data api
+                                 // that's why added image upload logic here
+                                final Handler handler_foreground = new Handler();
+                                handler_foreground.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.logD(TAG, "Image Push Started");
+                                        imagesPushDAO.obsImagesPush();
+                                        Logger.logD(TAG, "Image Pull ended");
+                                    }
+                                }, 3000);
+
+                                imagesPushDAO.deleteObsImage();
+
+                                Intent broadcast = new Intent();
+                                broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
+                                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                                IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
+
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                                CustomLog.e(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            e.printStackTrace();
+                            isSucess[0] = false;
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        }
+                    });
+            sessionManager.setPullSyncFinished(true);
+            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+        }
+
+        return isSucess[0];
+    }
     private void CalculateAgoTime(Context context) {
         String finalTime = "";
 

@@ -8,7 +8,7 @@ public class CommonVisitData implements Parcelable {
     private String patientUuid;
     private String visitUuid;
     private String encounterUuidVitals;
-    private String encounterUuidAdultIntial;
+    private String encounterUuidAdultIntial = "";
     private String EncounterAdultInitialLatestVisit;
     private String state;
     private String patientName;
