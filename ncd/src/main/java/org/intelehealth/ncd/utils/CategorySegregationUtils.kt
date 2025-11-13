@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.utils
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
@@ -7,11 +8,17 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.constants.Constants
+import org.intelehealth.ncd.data.category.CategoryDataSource
+import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.MedicalHistory
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.model.PatientWithAttribute
+import org.intelehealth.ncd.room.CategoryDatabase
+import org.intelehealth.ncd.room.dao.PatientAttributeDao
+import org.intelehealth.ncd.room.dao.PatientDao
+import org.intelehealth.ncd.room.dao.VisitDao
 
 class CategorySegregationUtils(private val resources: Resources) {
     private  val TAG = "CategorySegregationUtil"
@@ -351,7 +358,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    fun segregateAndFetchPatientVisitDetails(
+  /*  fun segregateAndFetchPatientVisitDetails(
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
@@ -367,14 +374,13 @@ class CategorySegregationUtils(private val resources: Resources) {
                 filteredList.removeAll { detail ->
                     val hasHistory = isHistoryOfHypertensionPresent(detail.value)
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    val followupGiven = detail.isHypertensionFollowupGiven ?: false
 
                     // Include if: No history OR has history but not on medication also followup date not given to patient
-                    val includePatient = when {
-                        !(detail.isHypertensionFollowupGiven ?: false) -> {
-                            !hasHistory || (hasHistory && !onMedication)
-                        }
-                        else -> false
-                    }
+                    val age = detail.age ?: 0
+                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+
+                    val includePatient = !followupGiven && meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
                     // Remove if inclusion criteria NOT met
                     !includePatient
                 }
@@ -386,10 +392,12 @@ class CategorySegregationUtils(private val resources: Resources) {
                     val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
                     val followUpFlag = detail.followUpFromProtocol == true
                     // Include if: has history AND on medication AND follow-up flag true
+                    val age = detail.age ?: 0
+                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
 
                     val includePatient = when {
                         // Case 1:no follow-up date given but has baseline survey true
-                        detail.isHypertensionFollowupGiven != true -> hasHistory && onMedication
+                        detail.isHypertensionFollowupGiven != true -> meetsAgeCriteria && hasHistory && onMedication
 
                         // Case 2: followup given and follupdate on and after that date
                         detail.isHypertensionFollowupGiven == true -> followUpFlag
@@ -401,11 +409,143 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
             else -> {
-                // return full list
-            }
+                filteredList.clear()            }
         }
 
         return filteredList
+    }*/
+
+    private fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+        val mmCategories = listOf(
+            Constants.HYPERTENSION_SCREENING,
+            Constants.HYPERTENSION_FOLLOW_UP,
+            Constants.ANEMIA_SCREENING,
+            Constants.ANEMIA_FOLLOW_UP,
+            Constants.DIABETES_SCREENING
+        )
+        val eligibleMms = mutableListOf<String>()
+        val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
+
+        for (category in mmCategories) {
+            val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
+            if (eligiblePatients.isNotEmpty()) {
+                eligibleMms.add(category)
+            }
+        }
+        return mapOf(
+            "patient_id" to patientId,
+            "eligible_mms" to eligibleMms
+        )
+    }
+
+     suspend fun checkForAllEligibleProtocols(patientUuid: String, context: Context): Map<String, Any> {
+        val database = CategoryDatabase.getInstance(context)
+
+        val patientDao: PatientDao = database.patientDao()
+        val patientAttributeDao: PatientAttributeDao = database.patientAttributeDao()
+        val visitsDao: VisitDao = database.visitDao()
+
+        val dataSource = CategoryDataSource(patientDao, patientAttributeDao, visitsDao)
+        val repository = CategoryRepository(dataSource)
+        val utils = CategorySegregationUtils(resources)
+
+        val result = repository.getPatientVisitDetailsForFollowup(
+            age = Constants.HYPERTENSION_EXCLUSION_AGE,
+            attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+            visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+            patientUuid
+        )
+        return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
+    }
+
+    fun segregateAndFetchPatientVisitDetails(
+        patientVisitDetailsList: List<PatientVisitDetails>,
+        category: String
+    ): List<PatientVisitDetails> {
+        Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
+        Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
+
+        val result = when (category) {
+            Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
+            Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
+            Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
+            else -> emptyList()
+        }
+
+        Log.d("newkz", "Filtered $category size: ${result.size}")
+        return result
+    }
+
+    private fun filterHypertensionScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val followupGiven = detail.isHypertensionFollowupGiven ?: false
+
+            // Exclude if follow-up is already given
+            if (followupGiven) return@filter false
+
+            // Exclude if no attribute value (medical history JSON)
+            val medicalHistoryJson = detail.value
+            if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+
+            val hasHistory = isHistoryOfHypertensionPresent(medicalHistoryJson)
+            val onMedication = isCurrentlyTakingHypertensionMedication(medicalHistoryJson)
+
+            val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+            meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
+        }
+    }
+
+
+    private fun filterHypertensionFollowUpPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+
+            val followupGiven = detail.isHypertensionFollowupGiven
+
+            return@filter when {
+                // Case 1: Follow-up not given or null →  check baseline criteria
+                followupGiven != true -> {
+                    val medicalHistoryJson = detail.value
+                    if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
+                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
+                    meetsAgeCriteria && hasHistory && onMedication
+                }
+
+                // Case 2: Follow-up given → check only the protocol flag
+                else -> {
+                    val followUpFlag = detail.followUpFromProtocol ?: false
+                    followUpFlag
+                }
+            }
+        }
+    }
+    private fun filterAnemiaScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val followupGiven = detail.isAnemiaFollowupGiven ?: false
+
+            // Exclude if follow-up is already given
+            if (followupGiven) return@filter false
+
+            // Exclude if no attribute value (medical history JSON)
+            val medicalHistoryJson = detail.value
+            if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+
+            val hasHistory = isHistoryOfAnemiaPresent(medicalHistoryJson)
+            val onMedication = isCurrentlyTakingAnemiaMedication(medicalHistoryJson)
+
+            val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
+            meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
+        }
     }
 
 }

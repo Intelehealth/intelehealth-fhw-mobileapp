@@ -75,8 +75,10 @@ data class PatientVisitDetails(
     var isAnemiaFollowupGiven: Boolean? = null,
 
     @ColumnInfo(name = "isDiabetesFollowupGiven")
-    var isDiabetesFollowupGiven: Boolean? = null
+    var isDiabetesFollowupGiven: Boolean? = null,
 
+    @ColumnInfo(name = "age")
+    var age: Int? = null
 
 ) {
     @Ignore

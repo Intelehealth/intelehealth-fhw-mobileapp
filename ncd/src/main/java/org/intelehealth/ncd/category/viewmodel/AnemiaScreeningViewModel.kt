@@ -44,6 +44,7 @@ class AnemiaScreeningViewModel(
         }
     }*/
 
+/*
     fun getPatientsForAnemiaScreening() {
         viewModelScope.launch {
             val result = repository.getPatientVisitDetails(
@@ -92,6 +93,7 @@ class AnemiaScreeningViewModel(
             _anemiaScreeningMutableLiveData.postValue(filteredResult)
         }
     }
+*/
     fun searchPatient(query: String) {
         val filtered = if (query.isBlank()) {
             allPatients
@@ -103,6 +105,26 @@ class AnemiaScreeningViewModel(
             }
         }
         _anemiaScreeningMutableLiveData.postValue(filtered)
+    }
+    fun getPatientsForAnemiaScreening() {
+        viewModelScope.launch {
+            val result = repository.getPatientVisitDetailsForFollowup(
+                age = Constants.ANEMIA_EXCLUSION_AGE,
+                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
+                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
+                ""
+            )
+
+            val filteredResult = utils.segregateAndFetchPatientVisitDetails(
+                patientVisitDetailsList = result,
+                category = Constants.ANEMIA_SCREENING
+            )
+
+            allPatients.clear()
+            allPatients.addAll(filteredResult)
+
+            _anemiaScreeningMutableLiveData.postValue(filteredResult)
+        }
     }
 
 }
