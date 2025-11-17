@@ -101,7 +101,8 @@ class AnemiaScreeningViewModel(
             allPatients.filter {
                 val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
                 val openmrsId = it.openmrsId ?: ""
-                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
+                val phone = it.patientPhoneNumber ?: ""
+                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true) || phone.contains(query, ignoreCase = true)
             }
         }
         _anemiaScreeningMutableLiveData.postValue(filtered)

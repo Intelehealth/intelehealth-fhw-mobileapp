@@ -78,9 +78,13 @@ data class PatientVisitDetails(
     var isDiabetesFollowupGiven: Boolean? = null,
 
     @ColumnInfo(name = "age")
-    var age: Int? = null
+    var age: Int? = null,
 
-) {
+    @ColumnInfo(name = "patientPhoneNumber")
+    var patientPhoneNumber: String? = null
+
+
+    ) {
     @Ignore
     var attributeList: MutableList<String>? = mutableListOf()
 }

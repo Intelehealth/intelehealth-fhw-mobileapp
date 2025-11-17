@@ -642,6 +642,17 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
             ORDER BY pa.rowid DESC
             LIMIT 1
         )
+        
+         -- join for phone attribute
+    LEFT JOIN tbl_patient_attribute PhoneAttr
+        ON PhoneAttr.uuid = (
+            SELECT pa2.uuid
+            FROM tbl_patient_attribute pa2
+            WHERE pa2.patientuuid = P.uuid
+              AND pa2.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7'
+            ORDER BY pa2.rowid DESC
+            LIMIT 1
+        )
 
     LEFT JOIN tbl_visit V
         ON V.uuid = (
