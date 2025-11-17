@@ -579,6 +579,7 @@ public class SyncDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
         ProviderDAO providerDAO = new ProviderDAO();
         AppointmentDAO appointmentDAO = new AppointmentDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
@@ -663,6 +664,21 @@ public class SyncDAO {
                                     }
                                 }
 
+                                // image push is dependant with push data api
+                                // that's why added image upload logic here
+                              /*  final Handler handler_foreground = new Handler();
+                                handler_foreground.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.logD(TAG, "Image Push Started");
+                                        imagesPushDAO.obsImagesPush();
+                                        Logger.logD(TAG, "Image Pull ended");
+                                    }
+                                }, 3000);*/
+
+                                imagesPushDAO.obsImagesPush();
+                                imagesPushDAO.deleteObsImage();
+
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
 
@@ -693,6 +709,10 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+        }else{
+            //this is fallback to handle push images if anyone is missing to push
+            imagesPushDAO.obsImagesPush();
+            imagesPushDAO.deleteObsImage();
         }
 
         return isSucess[0];
@@ -797,7 +817,7 @@ public class SyncDAO {
 
                                  // image push is dependant with push data api
                                  // that's why added image upload logic here
-                                final Handler handler_foreground = new Handler();
+                              /*  final Handler handler_foreground = new Handler();
                                 handler_foreground.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -805,8 +825,9 @@ public class SyncDAO {
                                         imagesPushDAO.obsImagesPush();
                                         Logger.logD(TAG, "Image Pull ended");
                                     }
-                                }, 3000);
+                                }, 3000);*/
 
+                                imagesPushDAO.obsImagesPush();
                                 imagesPushDAO.deleteObsImage();
 
                                 Intent broadcast = new Intent();
@@ -837,6 +858,10 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+        }else{
+            //this is fallback to handle push images if anyone is missing to push
+            imagesPushDAO.obsImagesPush();
+            imagesPushDAO.deleteObsImage();
         }
 
         return isSucess[0];

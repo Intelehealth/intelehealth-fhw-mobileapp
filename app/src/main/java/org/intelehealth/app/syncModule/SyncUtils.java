@@ -76,12 +76,12 @@ public class SyncUtils {
                     AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 }
                 Logger.logD(TAG, "Background Image Push Started");
-                imagesPushDAO.obsImagesPush();
+                //imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Background Image Pull ended");
             }
         }, 4000);
 
-        imagesPushDAO.deleteObsImage();
+        //imagesPushDAO.deleteObsImage();
 
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.ALL_SYNC_DONE));
@@ -136,7 +136,10 @@ public class SyncUtils {
          * to fix the issue of Phy exam and additional images not showing up sometimes
          * on the webapp (doctor portal).
          * */
-        final Handler handler_foreground = new Handler();
+
+        //moved this to push data apis success bock
+
+        /*final Handler handler_foreground = new Handler();
         handler_foreground.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -144,9 +147,9 @@ public class SyncUtils {
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Image Pull ended");
             }
-        }, 3000);
+        }, 3000);*/
 
-        imagesPushDAO.deleteObsImage();
+       // imagesPushDAO.deleteObsImage();
 
 
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
