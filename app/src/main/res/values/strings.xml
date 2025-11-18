@@ -1079,6 +1079,7 @@
     <string name="glucose_non_fasting_error">Blood glucose(Non-Fasting) should be in between %1$s and %2$s</string>
     <string name="post_prandial_error">Post Prandial Blood Sugar should be in between %1$s and %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="diabeteshba1c_error">Diabetes HBA1C should be in between %1$s and %2$s</string>
     <!--
     <string name="_diagnostics_summary">2/5. Diagnostics summary</string>
 -->
@@ -1496,7 +1497,7 @@
     <string name="blood_glucose_fasting">Fasting Blood Sugar (FBS) (mg/dl)</string>
     <string name="haemoglobin">Hemoglobin (mg/dL)</string>
     <string name="visit_summary_button_download">Download</string>
-    <string name="diabetes_hba1c">Diabetes HBA1C(%)</string>
+    <string name="diabetes_hba1c">Diabetes HBA1C (%)</string>
 
     <!-- Thermal Printer -->
     <string name="please_connect">Select Available Device</string>

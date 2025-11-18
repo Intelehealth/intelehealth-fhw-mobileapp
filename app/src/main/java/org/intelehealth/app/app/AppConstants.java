@@ -243,5 +243,8 @@ public class AppConstants {
     public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
     public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
 
+    public static final String MINIMUM_TOTAL_DIABETES_HBA1C = "3";
+    public static final String MAXIMUM_TOTAL_DIABETES_HBA1C = "16";
+
 }
 

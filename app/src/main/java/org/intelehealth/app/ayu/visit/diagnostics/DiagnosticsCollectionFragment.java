@@ -122,6 +122,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.etvUricAcidError.setVisibility(View.GONE);
         mBinding.etvCholestrolError.setVisibility(View.GONE);
         mBinding.tvHemoglobinError.setVisibility(View.GONE);
+        mBinding.tvDiabetesHba1cError.setVisibility(View.GONE);
 
         //mBinding.etvNonFastingGlucose.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvNonFastingGlucose));
         mBinding.etvGlucoseRandom.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseRandom));
@@ -130,6 +131,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.etvHemoglobin.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvHemoglobin));
         mBinding.etvUricAcid.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvUricAcid));
         mBinding.etvCholesterol.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvCholesterol));
+        mBinding.etvDiabetesHba1c.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvDiabetesHba1c));
 
         mBinding.btnSubmit.setOnClickListener(this);
         mBinding.btnSubmit.setClickable(true);
@@ -179,6 +181,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.llUricAcidContainer.setVisibility(View.GONE);
         mBinding.llCholestrolContainer.setVisibility(View.GONE);
+        mBinding.llDiabetesHba1cContainer.setVisibility(View.GONE);
 
         for (Diagnostics diagnostics : mPatientDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
@@ -211,6 +214,10 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 mBinding.llCholestrolContainer.setVisibility(View.VISIBLE);
                 mBinding.llCholestrolContainer.setTag(diagnostics);
                 appendMandatorySing(diagnostics.isMandatory(), mBinding.tvCholestrolLbl);
+            }else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                mBinding.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
+                mBinding.llDiabetesHba1cContainer.setTag(diagnostics);
+                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvDiabetesHba1cLabel);
             }
         }
     }
@@ -320,6 +327,16 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 AppConstants.MINIMUM_TOTAL_CHOLSTEROL,
                 AppConstants.MAXIMUM_TOTAL_CHOLSTEROL
         );
+        isValid &= validateField(
+                mBinding.etvDiabetesHba1c.getText().toString().trim(),
+                (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag(),
+                mBinding.tvDiabetesHba1cError,
+                mBinding.etvDiabetesHba1c,
+                R.string.error_field_required,
+                R.string.diabeteshba1c_error,
+                AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C,
+                AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C
+        );
 
         return isValid;
     }
@@ -413,6 +430,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             if (results.getCholesterol() != null && !results.getCholesterol().isEmpty())
                 mBinding.etvCholesterol.setText(results.getCholesterol());
 
+            if (results.getDiabetesbba1c() != null && !results.getDiabetesbba1c().isEmpty())
+                mBinding.etvDiabetesHba1c.setText(results.getDiabetesbba1c());
+
 
         }
     }
@@ -464,6 +484,10 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 if (value != null && !value.isEmpty())
                     mBinding.etvCholesterol.setText(value);
                 break;
+            case UuidDictionary.DIABETES_HBA1C: //Respiratory
+                if (value != null && !value.isEmpty())
+                    mBinding.etvDiabetesHba1c.setText(value);
+                break;
             default:
                 break;
 
@@ -483,6 +507,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             results.setHemoglobin((mBinding.etvHemoglobin.getText().toString()));
             results.setUricAcid((mBinding.etvUricAcid.getText().toString()));
             results.setCholesterol((mBinding.etvCholesterol.getText().toString()));
+            results.setDiabetesbba1c((mBinding.etvDiabetesHba1c.getText().toString()));
 
         } catch (NumberFormatException e) {
             //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -587,6 +612,20 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setEncounteruuid(encounterVitals);
                     obsDTO.setCreator(sessionManager.getCreatorID());
                     obsDTO.setValue(results.getHemoglobin());
+                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
+                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
+                    obsDAO.updateObs(obsDTO);
+                }
+
+                diagnostics = (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag();
+                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getDiabetesbba1c().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    obsDTO.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getDiabetesbba1c());
                     //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
@@ -731,6 +770,23 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
+
+                diagnostics = (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag();
+                if (diagnostics != null && !results.getDiabetesbba1c().isEmpty()) {
+                    obsDTO = new ObsDTO();
+                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
+                    obsDTO.setConceptuuid(diagnostics.getUuid());
+                    obsDTO.setEncounteruuid(encounterVitals);
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+                    obsDTO.setValue(results.getDiabetesbba1c());
+                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+
+                    try {
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -764,6 +820,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.tvHemoglobinLbl.setText(getString(R.string.haemoglobin));
         mBinding.tvUricAcidLbl.setText(getString(R.string.uric_acid));
         mBinding.tvCholestrolLbl.setText(getString(R.string.total_cholestrol));
+        mBinding.tvDiabetesHba1cLabel.setText(getString(R.string.diabetes_hba1c));
 
         mBinding.etvGlucoseRandom.setBackgroundResource(R.drawable.bg_input_fieldnew);
         mBinding.etvGlucoseFasting.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -771,6 +828,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.etvHemoglobin.setBackgroundResource(R.drawable.bg_input_fieldnew);
         mBinding.etvUricAcid.setBackgroundResource(R.drawable.bg_input_fieldnew);
         mBinding.etvCholesterol.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
         mBinding.tvGlucoseRandomError.setVisibility(View.GONE);
         mBinding.tvGlucoseFastingError.setVisibility(View.GONE);
@@ -778,6 +836,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.tvHemoglobinError.setVisibility(View.GONE);
         mBinding.etvCholestrolError.setVisibility(View.GONE);
         mBinding.etvUricAcidError.setVisibility(View.GONE);
+        mBinding.tvDiabetesHba1cError.setVisibility(View.GONE);
 
     }
 }
