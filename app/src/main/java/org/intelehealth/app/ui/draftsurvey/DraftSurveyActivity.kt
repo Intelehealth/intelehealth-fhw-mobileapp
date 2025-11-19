@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
@@ -27,6 +30,26 @@ class DraftSurveyActivity : AppCompatActivity(), BaseViewHolder.ViewHolderClickL
         super.onCreate(savedInstanceState)
         binding = ActivityDraftSurveyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent)) { view: View, insets: WindowInsetsCompat ->
+
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            // Bottom padding should consider keyboard too
+            val bottomPadding = maxOf(systemBars.bottom, imeInsets.bottom)
+            // Parent layout padding
+            view.setPadding(systemBars.left, 0, systemBars.right, bottomPadding)
+            // AppBar padding for status bar
+            findViewById<View>(R.id.appBarLayoutPatient).setPadding(
+                0, systemBars.top, 0, 0
+            )
+            insets
+        }
 
         val database = getDatabaseInstance()
         val patientsDAO = PatientsDAO()

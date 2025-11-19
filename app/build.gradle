@@ -19,12 +19,12 @@ static def getDateTime() {
 
 android {
     namespace 'org.intelehealth.app'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "org.intelehealth.app"
-        minSdk 23
-        targetSdk 34
+        minSdk 26
+        targetSdk 36
         versionCode 67
         versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

@@ -20,6 +20,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -34,6 +35,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -43,6 +45,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -51,7 +54,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -343,12 +350,53 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    void enableProperPadding(){
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
+        // Applying safe merging and padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Getting current layout params and cast to MarginLayoutParams
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            // Apply insets as margins
+            lp.leftMargin = systemBars.left;
+            lp.rightMargin = systemBars.right;
+            lp.bottomMargin = systemBars.bottom;
+            lp.topMargin = systemBars.top;
+
+            // Reapplying the updated layout params
+            view.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
-        Log.d(TAG, "onCreate: homekk");
+
+        enableProperPadding();
+
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
         networkUtils = new NetworkUtils(context, this);

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,7 +64,10 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             it.setDisplayHomeAsUpEnabled(true)
             mBinding.simpleAppBar.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
-
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
     }
 
     private fun initialization() {
