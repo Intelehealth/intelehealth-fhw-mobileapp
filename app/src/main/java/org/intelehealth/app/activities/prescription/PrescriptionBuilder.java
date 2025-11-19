@@ -51,6 +51,7 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.ParserUtils;
+import org.intelehealth.app.utilities.RegexUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
@@ -823,7 +824,7 @@ public class PrescriptionBuilder {
 
         for (String medicine : medicationDataArray) {
             if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
-                if(!medicine.contains(",")){
+                if(!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")){
                     additionalInstructionsData.append(listOpeningTag);
                     additionalInstructionsData.append(divOpeningTag);
                     additionalInstructionsData.append(spanOpeningTag);
@@ -1558,7 +1559,7 @@ public class PrescriptionBuilder {
                 data = data.concat(Node.big_bullet).concat(" ").concat(string);
                 data = data.concat("\n");
             } else {
-                if(!string.contains(",")){
+                if(!string.matches(RegexUtils.getAdditionalInstructionRegex()) && string.contains("::")){
                     additionalInstruction = additionalInstruction.concat("\n");
                     additionalInstruction = additionalInstruction.concat(Node.big_bullet).concat(" ").concat(string);
                     //additionalInstruction = additionalInstruction.concat("\n");

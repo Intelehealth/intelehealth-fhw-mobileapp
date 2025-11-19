@@ -133,6 +133,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.RegexUtils;
 import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -1618,7 +1619,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         for (String medicine : medicationDataArray) {
             if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
-                if(!medicine.contains(",")){
+                if(!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")){
                     additionalInstruction.append(Node.bullet)
                             .append(" ")
                             .append(medicine)
