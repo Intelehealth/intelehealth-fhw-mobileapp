@@ -20,18 +20,6 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
         dataSource.getPatientsBasedOnAge(age)
 
-    suspend fun getPatientsBelowAge(age: Int): List<Patient> = dataSource.getPatientsBelowAge(age)
-
-    suspend fun getPatientsBasedOnUuids(
-        patientsList: List<Patient>,
-        attributeUuid: String
-    ): List<PatientAttributes> {
-        val resultList: MutableList<PatientAttributes> = mutableListOf()
-        patientsList.forEach {
-            resultList.add(dataSource.getPatientsBasedOnAttributesUuids(it.uuid.toString(), attributeUuid))
-        }
-        return resultList
-    }
     suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String):String = dataSource.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)

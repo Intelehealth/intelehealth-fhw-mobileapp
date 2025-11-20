@@ -45,23 +45,6 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
             _generalMutableLiveData.postValue(result)
         }
     }
-    /*fun searchPatient(query: String) {
-        val filtered = if (query.isBlank()) {
-            allPatients
-        } else {
-            allPatients.filter {
-                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
-                val openmrsId = it.openmrsId ?: ""
-                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
-            }
-        }
-        _generalMutableLiveData.postValue(filtered)
-    }*/
-   /* fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
-        return repository
-            .getPagedPatients(encounterUuid)
-            .cachedIn(viewModelScope)
-    }*/
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }

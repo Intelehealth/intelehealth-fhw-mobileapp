@@ -78,24 +78,6 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         )[GeneralViewModel::class.java]
     }
 
-/*
-    private fun setObservers() {
-        */
-/*viewModel.generalLiveData.observe(viewLifecycleOwner) {
-            val adapter = CategoryRecyclerViewAdapter(it, resources, requireContext(), this)
-            binding?.recyclerView?.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                this.adapter = adapter
-            }
-        }*//*
-
-        // Set LayoutManager first
-        binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        binding?.recyclerView?.setHasFixedSize(true)
-   }
-    */
-
-
     private fun fetchAndSetPatients() {
         viewModel.getPatientsForGeneral()
     }
@@ -104,32 +86,6 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         viewModel.onSearchQueryChanged(query) // just call the setter
     }
 
-
-    /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
-         try {
-             val intent = Intent(
-                 requireActivity(),
-                 Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
-             )
-
-             val status = "returning"
-             val tag = "search"
-             val hasPrescription = "false"
-
-             intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
-             intent.putExtra(
-                 Constants.INTENT_PATIENT_NAME,
-                 "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}"
-             )
-             intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
-             intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
-             intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
-
-             startActivity(intent)
-         } catch (exception: ClassNotFoundException) {
-             exception.printStackTrace()
-         }
-     }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
