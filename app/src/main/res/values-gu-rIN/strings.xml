@@ -1060,5 +1060,9 @@
     <string name="todays_tab_achievement">દૈનિક</string>
     <string name="date_range">તારીખ શ્રેણી</string>
     <string name="my_achievements">મારી સિદ્ધિઓ</string>
+    <string name="this_visit_is_incomplete">આ મુલાકાત અધૂરી છે!</string>
+    <string name="discard">રદ કરો</string>
+    <string name="confirm_discard_changes_content">શું તમે ખાતરી કરો કે તમે આ મુલાકાતની બધી વિગતો રદ કરવા માંગો છો?</string>
+    <string name="confirm_discard_changes_content_on_sync">તમારી મુલાકાત બનાવવાની પ્રક્રિયા અધૂરી છે. તમે તેને પૂર્ણ કરી શકો અથવા રદ કરી શકો.</string>
 
 </resources>

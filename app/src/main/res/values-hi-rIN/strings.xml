@@ -1068,4 +1068,10 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+
+    <string name="this_visit_is_incomplete">यह विज़िट अधूरी है!</string>
+    <string name="discard">त्यागें</string>
+    <string name="confirm_discard_changes_content">क्या आप वाकई इस विज़िट का सारा विवरण त्यागना चाहते हैं?</string>
+    <string name="confirm_discard_changes_content_on_sync">आपकी विज़िट बनाने की प्रक्रिया अधूरी है। आप इसे पूरा कर सकते हैं या त्याग सकते हैं।</string>
+
 </resources>

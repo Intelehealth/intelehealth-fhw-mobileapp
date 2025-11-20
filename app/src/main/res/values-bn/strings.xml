@@ -1049,7 +1049,10 @@
     <string name="todays_tab_achievement">দৈনিক</string>
     <string name="date_range">তারিখ সীমা</string>
     <string name="my_achievements">আমার সাফল্য</string>
-
+    <string name="this_visit_is_incomplete">এই ভিজিটটি অসম্পূর্ণ!</string>
+    <string name="discard">বাতিল</string>
+    <string name="confirm_discard_changes_content">আপনি কি নিশ্চিত যে এই ভিজিটের সব বিস্তারিত বাতিল করতে চান?</string>
+    <string name="confirm_discard_changes_content_on_sync">আপনার ভিজিট তৈরির প্রক্রিয়া অসম্পূর্ণ। আপনি প্রক্রিয়া সম্পূর্ণ করতে পারেন অথবা বাতিল করতে পারেন।</string>
 
 
 </resources>

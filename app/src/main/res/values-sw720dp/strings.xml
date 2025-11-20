@@ -125,4 +125,8 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+    <string name="this_visit_is_incomplete">This visit is incomplete!</string>
+    <string name="discard">Discard</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_content_on_sync">Your visit creation process remains incomplete. You can either proceed to finalize the process or choose to discard it.</string>
 </resources>

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -1242,6 +1243,40 @@ public class VisitsDAO {
 
         cursor.close();
         return visitUuidList;
+    }
+
+    public void deleteAllDataForOngoingIncompleteVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Delete observations related to the visit's encounters
+            db.execSQL(
+                    "DELETE FROM tbl_obs " +
+                            "WHERE encounteruuid IN (" +
+                            " SELECT uuid FROM tbl_encounter WHERE visituuid = ?" +
+                            ")",
+                    new Object[]{visitId}
+            );
+
+            //  Delete encounters for the visit
+            db.execSQL(
+                    "DELETE FROM tbl_encounter WHERE visituuid = ?",
+                    new Object[]{visitId}
+            );
+
+            //  Delete the visit itself
+            db.execSQL(
+                    "DELETE FROM tbl_visit WHERE uuid = ?",
+                    new Object[]{visitId}
+            );
+
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            Log.d(TAG, "deleteAllDataForOngoingIncompleteVisit: e : "+e.getLocalizedMessage());
+            e.printStackTrace();
+        }  finally{
+            db.endTransaction();
+        }
     }
 
     public boolean isDoctorVisit(String visitId) {

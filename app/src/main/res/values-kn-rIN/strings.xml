@@ -1014,7 +1014,10 @@
     <string name="todays_tab_achievement">ದೈನಂದಿನ</string>
     <string name="date_range">ದಿನಾಂಕ ವ್ಯಾಪ್ತಿ</string>
     <string name="my_achievements">ನನ್ನ ಸಾಧನೆಗಳು</string>
-
+    <string name="this_visit_is_incomplete">ಈ ಭೇಟಿ ಅಪೂರ್ಣವಾಗಿದೆ!</string>
+    <string name="discard">ತಿರಸ್ಕರಿಸಿ</string>
+    <string name="confirm_discard_changes_content">ಈ ಭೇಟಿಯ ಎಲ್ಲಾ ವಿವರಗಳನ್ನು ತಿರಸ್ಕರಿಸಲು ನೀವು ಖಚಿತವೇ?</string>
+    <string name="confirm_discard_changes_content_on_sync">ನಿಮ್ಮ ಭೇಟಿ ರಚಿಸುವ ಪ್ರಕ್ರಿಯೆ ಅಪೂರ್ಣವಾಗಿದೆ. ಅದನ್ನು ಪೂರ್ಣಗೊಳಿಸಬಹುದು ಅಥವಾ ತಿರಸ್ಕರಿಸಬಹುದು.</string>
 
 
     <plurals name="open_no_of_visit">
