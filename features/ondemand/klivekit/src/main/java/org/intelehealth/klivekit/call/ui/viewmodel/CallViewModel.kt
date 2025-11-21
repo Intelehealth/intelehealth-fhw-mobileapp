@@ -58,6 +58,9 @@ open class CallViewModel(
     private val mutableRemoteConnectionQuality = MutableLiveData<ConnectionQuality>()
     val remoteConnectionQuality = mutableRemoteConnectionQuality.hide()
 
+    private val mutableLocalConnectionQuality = MutableLiveData<ConnectionQuality>()
+    val localConnectionQuality = mutableLocalConnectionQuality.hide()
+
     private val mutableScreencastEnabled = MutableLiveData(false)
     val screenshareEnabled = mutableScreencastEnabled.hide()
 
@@ -117,6 +120,11 @@ open class CallViewModel(
 //            application.startService(foregroundServiceIntent)
 //        }
     }
+
+    private val goodConnectionList = listOf<ConnectionQuality>(
+        ConnectionQuality.GOOD,
+        ConnectionQuality.EXCELLENT
+    )
 
     private suspend fun collectError() {
         // Collect any errors.
@@ -237,8 +245,10 @@ open class CallViewModel(
     }
 
     private fun onConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
-        if (it.participant is RemoteParticipant)
-            mutableRemoteConnectionQuality.postValue(it.quality)
+        when (it.participant) {
+            is LocalParticipant -> mutableLocalConnectionQuality.postValue(it.quality)
+            is RemoteParticipant -> mutableRemoteConnectionQuality.postValue(it.quality)
+        }
     }
 
 //    private fun manageTrackPublicationOnConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
@@ -553,6 +563,24 @@ open class CallViewModel(
             val enabled = room.localParticipant.isCameraEnabled().not()
             room.localParticipant.setCameraEnabled(enabled)
             mutableCameraEnabled.postValue(getParticipantStatusMap(room.localParticipant, enabled))
+        }
+    }
+
+    fun toggleCameraOnPoorConnection(quality: ConnectionQuality?) {
+        viewModelScope.launch {
+            val isCameraEnabled = room.localParticipant.isCameraEnabled()
+            val isConnectionGood = quality in goodConnectionList
+            val targetCameraEnabled = isConnectionGood
+
+            if (targetCameraEnabled != isCameraEnabled) {
+                room.localParticipant.setCameraEnabled(targetCameraEnabled)
+                mutableCameraEnabled.postValue(
+                    getParticipantStatusMap(
+                        room.localParticipant,
+                        targetCameraEnabled
+                    )
+                )
+            }
         }
     }
 
