@@ -238,7 +238,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO hemoglobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO cholesterol = new ObsDTO();
-    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
+    ObsDTO diabeteshba1c = new ObsDTO();
+    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol, mdiabeteshba1c;
     String hwMobileNumber = "";
     private SharePrescriptionViewModel viewModel;
     Set<String> processedConcepts = new HashSet<>();
@@ -580,6 +581,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 prescriptionDataModel.setHemoglobin(hemoglobin);
                 prescriptionDataModel.setUricAcid(uricAcid);
                 prescriptionDataModel.setCholesterol(cholesterol);
+                prescriptionDataModel.setDiabeteshba1c(diabeteshba1c);
                 prescriptionDataModel.setReferredSpecialist(referredSpeciality);
                 Log.d(TAG, "setDataToView: referredSpeciality : "+referredSpeciality);
 
@@ -1080,6 +1082,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
@@ -1736,6 +1739,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             case UuidDictionary.TOTAL_CHOLESTEROL: // Cholestrol
             {
                 cholesterol.setValue(value);
+                break;
+            }
+            case UuidDictionary.DIABETES_HBA1C: // diabeteshba1c
+            {
+                diabeteshba1c.setValue(value);
                 break;
             }
 
@@ -2459,6 +2467,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;

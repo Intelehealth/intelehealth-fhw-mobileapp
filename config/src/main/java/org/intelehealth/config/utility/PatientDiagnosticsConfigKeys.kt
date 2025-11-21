@@ -8,6 +8,6 @@ class PatientDiagnosticsConfigKeys {
         const val HEAMOGLOBIN = "hemoglobin"
         const val URIC_ACID  = "uric_acid"
         const val TOTAL_CHOLESTEROL  = "total_cholesterol"
-        const val DIABETES_HBA1C  = "diabetes_hba1c"
+        const val DIABETES_HBA1C  = "hba1c"
     }
 }
