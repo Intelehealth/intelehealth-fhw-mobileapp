@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:paddingStart="@dimen/apps_details_parent_padding"
     android:paddingEnd="@dimen/apps_details_parent_padding"
+    android:fitsSystemWindows="true"
     tools:context=".appointmentNew.AppointmentDetailsActivity">
 
     <include

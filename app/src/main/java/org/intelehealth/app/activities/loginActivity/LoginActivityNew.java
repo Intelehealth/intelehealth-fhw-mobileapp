@@ -18,15 +18,23 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -88,12 +96,54 @@ public class LoginActivityNew extends AppCompatActivity {
     SnackbarUtils snackbarUtils;
     private static final int ID_DOWN = 2;
     TooltipWindow tipWindow;
+    public void applySafeInsetsHandling(Activity activity) {
+
+        /*Window window = activity.getWindow();
+
+        // Enable edge-to-edge
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+
+        // Get root content view
+        ViewGroup contentView = window.getDecorView().findViewById(android.R.id.content);
+
+        // (Your existing code had this line again; removed because it cancels edge-to-edge)
+        // WindowCompat.setDecorFitsSystemWindows(window, true);
+
+        View rootView = contentView.getChildAt(0);
+        if (rootView == null) return;
+
+        // Set background color
+        int bgColor = ContextCompat.getColor(activity, R.color.white);
+        window.setStatusBarColor(bgColor);
+        window.setNavigationBarColor(bgColor);
+
+        // Detect dark theme
+        int nightModeFlags = activity.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+
+        boolean isDarkTheme = (nightModeFlags == Configuration.UI_MODE_NIGHT_YES);
+*/
+        // Set status/navigation bar icon colors
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(false);
+        controller.setAppearanceLightNavigationBars(true);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent_login), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            findViewById(R.id.appBarLayout).setPadding(0,systemBars.top,0,systemBars.top);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login_new_ui2);
-
+        applySafeInsetsHandling(this);
         handleBackPress();
 
         context = LoginActivityNew.this;

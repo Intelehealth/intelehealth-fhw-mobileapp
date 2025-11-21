@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activities.setupActivity.SetupActivityNew">
 
     <ImageView

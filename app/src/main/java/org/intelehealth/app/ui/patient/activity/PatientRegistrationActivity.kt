@@ -13,6 +13,9 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
@@ -61,6 +64,26 @@ class PatientRegistrationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent)) { view: View, insets: WindowInsetsCompat ->
+
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            // Bottom padding should consider keyboard too
+            val bottomPadding = maxOf(systemBars.bottom, imeInsets.bottom)
+            // Parent layout padding
+            view.setPadding(systemBars.left, 0, systemBars.right, bottomPadding)
+            // AppBar padding for status bar
+            findViewById<View>(R.id.appBarLayoutPatient).setPadding(
+                0, systemBars.top, 0, 0
+            )
+            insets
+        }
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()

@@ -1257,6 +1257,9 @@ public class VisitsDAO extends BaseDao{
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
                 new String[]{visit_uuid ,"0", "false"});
+        //for checking the close visit issue
+        /*Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?  COLLATE NOCASE",
+                new String[]{visit_uuid});*/
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
