@@ -245,7 +245,7 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
         V.uuid AS visitId,
         V.startdate AS visitStartDate,
         V.enddate AS visitEndDate,
-
+        phoneAttr.value AS patientPhoneNumber,
         -- prescription check
         CASE 
             WHEN EXISTS (
@@ -306,8 +306,8 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
         )
         
          -- join for phone attribute
-    LEFT JOIN tbl_patient_attribute PhoneAttr
-        ON PhoneAttr.uuid = (
+    LEFT JOIN tbl_patient_attribute phoneAttr
+        ON phoneAttr.uuid = (
             SELECT pa2.uuid
             FROM tbl_patient_attribute pa2
             WHERE pa2.patientuuid = P.uuid
