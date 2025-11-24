@@ -11,12 +11,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.StaticPatientRegistrationEnabledFieldsHelper
 import org.intelehealth.app.databinding.FragmentBaselineSurveyMedicalBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig
 import org.intelehealth.app.ui.baseline_survey.model.Baseline
 import org.intelehealth.app.ui.filter.AllowAllLettersInputFilter
 import org.intelehealth.app.ui.filter.LettersNumbersSelectedSymbolsInputFilter
@@ -50,6 +52,7 @@ class BaselineMedicalFragment :
     var selectedBPNoMedicationReason: String = ""
     var selectedAnemiaNoMedicationReason: String = ""
     private var isAgeGreaterThan11: Boolean = false
+    var selectedDiabetesNoMedicationReason: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyMedicalBinding.bind(view)
@@ -59,6 +62,7 @@ class BaselineMedicalFragment :
 
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
+
         fetchMedicalBaselineConfig()
         binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
@@ -86,6 +90,17 @@ class BaselineMedicalFragment :
             selectedAnemiaNoMedicationReason = englishValue
             baselineData.reasonForNotTakingAnemiaMedication = englishValue
         }
+        setupAutoCompleteWithOther(
+            autoCompleteTextView = binding.layoutDiabetesMedication.autotvReasonForNotTakingDiabetesMedication,
+            layoutOtherReason = binding.layoutDiabetesMedication.layoutDiabetesOtherReasonNotTaking,
+            savedValue = baselineData.reasonForNotTakingDiabetesMedication,
+            stringArrayResId = reasons,
+            editText = binding.layoutDiabetesMedication.etDiabetesMedicationNotTakingOtherReason
+        ) { englishValue ->
+            selectedDiabetesNoMedicationReason = englishValue
+            baselineData.reasonForNotTakingDiabetesMedication = englishValue
+        }
+
     }
 
     private fun checkPatientAge() {
@@ -127,8 +142,8 @@ class BaselineMedicalFragment :
         //binding.radioBpYes.tag = R.string.yes
         ///binding.radioBpNo.tag = R.string.no
 
-        binding.radioDiabetesYes.tag = R.string.yes
-        binding.radioDiabetesNo.tag = R.string.no
+        //binding.radioDiabetesYes.tag = R.string.yes
+        //binding.radioDiabetesNo.tag = R.string.no
 
         binding.radioArthritisYes.tag = R.string.yes
         binding.radioArthritisNo.tag = R.string.no
@@ -200,6 +215,16 @@ class BaselineMedicalFragment :
         binding.layoutBpMedication.radioBpSeenByHwYes.tag = R.string.yes
         binding.layoutBpMedication.radioBpSeenByHwNo.tag = R.string.no
 
+        binding.layoutDiabetesMedication.radioDiabetesYes.tag = R.string.yes
+        binding.layoutDiabetesMedication.radioDiabetesNo.tag = R.string.no
+
+        binding.layoutDiabetesMedication.radioTakingMedicationDiabetesYes.tag = R.string.yes
+        binding.layoutDiabetesMedication.radioTakingMedicationDiabetesNo.tag = R.string.no
+
+        binding.layoutDiabetesMedication.radioDiabetesSeenByHwYes.tag = R.string.yes
+        binding.layoutDiabetesMedication.radioDiabetesSeenByHwNo.tag = R.string.no
+
+
     }
 
     private fun setupFilter() {
@@ -215,6 +240,12 @@ class BaselineMedicalFragment :
             addFilter(FirstLetterUpperCaseInputFilter())
             addFilter(LettersNumbersSelectedSymbolsInputFilter())
         }
+
+        binding.layoutDiabetesMedication.etDiabetesMedicationNotTakingOtherReason.apply {
+            addFilter(FirstLetterUpperCaseInputFilter())
+            addFilter(LettersNumbersSelectedSymbolsInputFilter())
+        }
+
     }
 
     private fun getStaticPatientRegistrationFields() =
@@ -230,6 +261,7 @@ class BaselineMedicalFragment :
         setupAlcoholConsumption()
         anemiaHistory()
         bpHistory()
+        diabetesHistory()
     }
 
     private fun setupAlcoholConsumption() {
@@ -337,8 +369,10 @@ class BaselineMedicalFragment :
                 .getTextInEnglish(requireContext(), R.array.sugar_check)
 
            // bpValue = binding.rgBpOptions.getSelectedDataInEnglishLocale(requireContext())
-            diabetesValue =
-                binding.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())
+           /* diabetesValue =
+                binding.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())*/
+            diabetesValue = binding.layoutDiabetesMedication.rgDiabetesOptions.getSelectedDataInEnglishLocale(requireContext())
+
             arthritisValue =
                 binding.rgArthritisOptions.getSelectedDataInEnglishLocale(requireContext())
             anemiaValue = binding.layoutAnemiaMedication.rgAnemiaOptions.getSelectedDataInEnglishLocale(requireContext())
@@ -376,6 +410,10 @@ class BaselineMedicalFragment :
             haveYouSeenToHWinPastOneYearForBP = binding.layoutBpMedication.rgBpSeenByHwMedicationYes.getSelectedDataInEnglishLocale(requireContext())
             reasonForNotTakingBPMedication = getNotTakingBpMedicationReasonForDb()
 
+            takingAnyMedicationForDiabetes = binding.layoutDiabetesMedication.rgDiabetesTakingMedicationOptions.getSelectedDataInEnglishLocale(requireContext())
+            haveYouSeenToHWinPastOneYearForDiabetes = binding.layoutDiabetesMedication.rgDiabetesSeenByHwMedicationYes.getSelectedDataInEnglishLocale(requireContext())
+            reasonForNotTakingDiabetesMedication = getNotTakingDiabetesMedicationReasonForDb()
+
             Log.d("kktest", "saveSurveyData: baseline data : "+Gson().toJson(this))
 
             baselineSurveyViewModel.updateBaselineData(this)
@@ -408,10 +446,10 @@ class BaselineMedicalFragment :
                 binding.rgBpOptions.validate()
             } else true*/
 
-            val diabetesValue =
+           /* val diabetesValue =
                 if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory) {
                     binding.rgDiabetesOptions.validate()
-                } else true
+                } else true*/
 
             val arthritisValue =
                 if (it.arthritisValue!!.isEnabled && it.arthritisValue!!.isMandatory) {
@@ -654,7 +692,9 @@ class BaselineMedicalFragment :
                     } else false
                 } else true
 
-            if (hbCheck.and(bpCheck).and(sugarCheck).and(diabetesValue)
+            val isDiabetesValid = validateDiabetesSection(it)
+
+            if (hbCheck.and(bpCheck).and(sugarCheck).and(isDiabetesValid)
                     .and(arthritisValue).and(anemiaValue).and(surgeryValue).and(surgeryReason)
                     .and(smokingHistory).and(smokingRate).and(smokingDuration).and(smokingFrequency)
                     .and(chewTobacco).and(alcoholHistory).and(alcoholRate).and(alcoholDuration)
@@ -914,6 +954,141 @@ class BaselineMedicalFragment :
         }
         binding.layoutAnemiaMedication.llAnemiaLabel.visibility =View.GONE
 
+    }
+    private fun diabetesHistory() {
+        with(binding.layoutDiabetesMedication) {
+
+            // Q1: Do you have diabetes?
+            rgDiabetesOptions.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == radioDiabetesYes.id) {
+                    layoutDiabetesMedication.visibility = View.VISIBLE
+                } else {
+                    // Clear values
+                    rgDiabetesTakingMedicationOptions.clearCheck()
+                    rgDiabetesSeenByHwMedicationYes.clearCheck()
+                    autotvReasonForNotTakingDiabetesMedication.text = null
+                    etDiabetesMedicationNotTakingOtherReason.setText("")
+
+                    layoutDiabetesMedication.visibility = View.GONE
+                    layoutDiabetesSeenByHw.visibility = View.GONE
+                    layoutDiabetesReasonNotTaking.visibility = View.GONE
+                    layoutDiabetesOtherReasonNotTaking.visibility = View.GONE
+                }
+            }
+
+            // Q2: Taking any medication?
+            rgDiabetesTakingMedicationOptions.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == radioTakingMedicationDiabetesYes.id) {
+                    layoutDiabetesSeenByHw.visibility = View.VISIBLE
+                    layoutDiabetesReasonNotTaking.visibility = View.GONE
+                    layoutDiabetesOtherReasonNotTaking.visibility = View.GONE
+                    autotvReasonForNotTakingDiabetesMedication.text = null
+                    etDiabetesMedicationNotTakingOtherReason.setText("")
+                } else if (checkedId == radioTakingMedicationDiabetesNo.id) {
+                    layoutDiabetesReasonNotTaking.visibility = View.VISIBLE
+                    layoutDiabetesSeenByHw.visibility = View.GONE
+                    rgDiabetesSeenByHwMedicationYes.clearCheck()
+                }
+            }
+
+            // Dropdown adapter
+            val adapter = ArrayAdapterUtils.getArrayAdapter(
+                requireContext(),
+                R.array.reason_for_not_taking_bp_medication
+            )
+            autotvReasonForNotTakingDiabetesMedication.setAdapter(adapter)
+
+            // Handle dropdown selection
+            autotvReasonForNotTakingDiabetesMedication.setOnItemClickListener { _, _, i, _ ->
+                autotvlayoutReasonForNotTakingDiabetesMedication.hideError()
+
+                val selectedText = resources.getStringArray(R.array.reason_for_not_taking_bp_medication)[i]
+                autotvReasonForNotTakingDiabetesMedication.setText(selectedText, false)
+
+                if (selectedText.equals("Unknown / Other", ignoreCase = true)) {
+                    //  Show "Other reason" input
+                    layoutDiabetesOtherReasonNotTaking.visibility = View.VISIBLE
+                } else {
+                    //  Hide & clear "Other reason" input
+                    layoutDiabetesOtherReasonNotTaking.visibility = View.GONE
+                    etDiabetesMedicationNotTakingOtherReason.setText("")
+                }
+            }
+        }
+    }
+    fun getNotTakingDiabetesMedicationReasonForDb(): String {
+        return if (selectedDiabetesNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
+            "Unknown / Other:reason ${binding.layoutDiabetesMedication.etDiabetesMedicationNotTakingOtherReason.text}"
+        } else {
+            selectedDiabetesNoMedicationReason
+        }
+    }
+
+    private fun validateDiabetesSection(it: MedicalBaselineConfig): Boolean {
+
+        val error = R.string.this_field_is_mandatory
+
+        // Diabetes - Q1: Do you have diabetes?
+        val diabetesValue =
+            if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory && isAgeGreaterThan18) {
+                binding.layoutDiabetesMedication.rgDiabetesOptions.validate()
+            } else true
+
+        // Diabetes - Q2: Taking any medication?
+        val takingAnyMedicationForDiabetes =
+            if (it.takingAnyMedicationForDiabetes!!.isEnabled &&
+                it.takingAnyMedicationForDiabetes!!.isMandatory &&
+                binding.layoutDiabetesMedication.layoutDiabetesMedication.isVisible
+            ) {
+                binding.layoutDiabetesMedication.rgDiabetesTakingMedicationOptions.validate()
+            } else true
+
+        // Diabetes - Q3: Seen by health worker in past year?
+        val haveYouSeenToHWinPastOneYearForDiabetes =
+            if (it.haveYouSeenToHWinPastOneYearForDiabetes!!.isEnabled &&
+                it.haveYouSeenToHWinPastOneYearForDiabetes!!.isMandatory &&
+                binding.layoutDiabetesMedication.layoutDiabetesSeenByHw.isVisible
+            ) {
+                binding.layoutDiabetesMedication.rgDiabetesSeenByHwMedicationYes.validate()
+            } else true
+
+        // Diabetes - Q4: Reason for not taking medication
+        val reasonForNotTakingDiabetesMedication =
+            if (it.reasonForNotTakingDiabetesMedication!!.isEnabled &&
+                it.reasonForNotTakingDiabetesMedication!!.isMandatory &&
+                binding.layoutDiabetesMedication.layoutDiabetesReasonNotTaking.isVisible
+            ) {
+                val isValidDropdown = binding.layoutDiabetesMedication
+                    .autotvlayoutReasonForNotTakingDiabetesMedication
+                    .validateDropDowb(
+                        binding.layoutDiabetesMedication.autotvReasonForNotTakingDiabetesMedication,
+                        error
+                    )
+
+                if (isValidDropdown) {
+                    val selectedValue = binding.layoutDiabetesMedication
+                        .autotvReasonForNotTakingDiabetesMedication.text?.toString()?.trim()
+
+                    if (selectedDiabetesNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
+                        val otherReason = binding.layoutDiabetesMedication
+                            .etDiabetesMedicationNotTakingOtherReason.text?.toString()?.trim()
+
+                        if (otherReason.isNullOrEmpty()) {
+                            binding.layoutDiabetesMedication
+                                .tilDiabetesMedicationNotTakingOtherReason.error =
+                                getString(R.string.please_enter_reason_txt)
+                            false
+                        } else true
+                    } else {
+                        true
+                    }
+                } else false
+            } else true
+
+        return diabetesValue &&
+                takingAnyMedicationForDiabetes &&
+                haveYouSeenToHWinPastOneYearForDiabetes &&
+                reasonForNotTakingDiabetesMedication
     }
 
 }

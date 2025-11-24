@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="medicalConfig"
+            type="org.intelehealth.app.ui.baseline_survey.config.MedicalBaselineConfig" />
+
+        <variable
+            name="baselineEditMode"
+            type="Boolean" />
+
+        <variable
+            name="baseline"
+            type="org.intelehealth.app.ui.baseline_survey.model.Baseline" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/llDiabetesLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/std_12dp"
+        android:orientation="vertical">
+
+        <!-- Q1: Do you have diabetes? -->
+        <LinearLayout
+            android:id="@+id/layout_diabetes_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_diabetes_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ medicalConfig.diabetesValue.mandatory ? @string/diabetes_label + ` *` : @string/diabetes_label}"
+                android:textAppearance="@style/blur_txtview"
+                tools:text="@string/diabetes_label" />
+
+            <RadioGroup
+                android:id="@+id/rg_diabetes_options"
+                style="@style/RadioButtonStyleSelection"
+                config="@{medicalConfig.diabetesValue}"
+                editMode="@{baselineEditMode}"
+                radioButtonValue="@{baseline.diabetesValue}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_5">
+
+                <RadioButton
+                    android:id="@+id/radioDiabetesYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:id="@+id/radioDiabetesNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Q2: Are you taking any medication for diabetes? -->
+        <LinearLayout
+            android:id="@+id/layout_diabetes_medication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_diabetes_medication_ques"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="@{ medicalConfig.takingAnyMedicationForDiabetes.mandatory ? @string/are_you_taking_any_medication_for_diabetes + ` *` : @string/are_you_taking_any_medication_for_diabetes}"
+                android:textAppearance="@style/blur_txtview"
+                tools:text="@string/are_you_taking_any_medication_for_diabetes" />
+
+            <RadioGroup
+                android:id="@+id/rg_diabetes_taking_medication_options"
+                style="@style/RadioButtonStyleSelection"
+                config="@{medicalConfig.takingAnyMedicationForDiabetes}"
+                editMode="@{baselineEditMode}"
+                bindRadioButtonValueNew="@{baseline.takingAnyMedicationForDiabetes}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_5">
+
+                <RadioButton
+                    android:id="@+id/radio_taking_medication_diabetes_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:id="@+id/radio_taking_medication_diabetes_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Q3: Seen by healthcare worker? -->
+        <LinearLayout
+            android:id="@+id/layout_diabetes_seen_by_hw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_diabetes_yes_option_seen_by_hw_medication_yes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes"
+                android:textAppearance="@style/blur_txtview"
+                tools:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes" />
+
+            <RadioGroup
+                android:id="@+id/rg_diabetes_seen_by_hw_medication_yes"
+                style="@style/RadioButtonStyleSelection"
+                config="@{medicalConfig.haveYouSeenToHWinPastOneYearForDiabetes}"
+                editMode="@{baselineEditMode}"
+                bindRadioButtonValueNew="@{baseline.haveYouSeenToHWinPastOneYearForDiabetes}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/margin_5">
+
+                <RadioButton
+                    android:id="@+id/radio_diabetes_seen_by_hw_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:id="@+id/radio_diabetes_seen_by_hw_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Q4: Reason for not taking medication -->
+        <LinearLayout
+            android:id="@+id/layout_diabetes_reason_not_taking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_diabetes_not_taking_medication_no_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/why_are_you_not_taking_your_diabetes_medication"
+                android:textAppearance="@style/blur_txtview"
+                tools:text="@string/why_are_you_not_taking_your_diabetes_medication" />
+
+            <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/autotvlayout_reason_for_not_taking_diabetes_medication"
+                style="@style/AppTheme.OutlineInputBox.DropDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autotv_reason_for_not_taking_diabetes_medication"
+                    style="@style/AppTheme.InputBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_your_choice"
+                    android:inputType="none" />
+            </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+            <LinearLayout
+                android:id="@+id/layout_diabetes_other_reason_not_taking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+                <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/til_diabetes_medication_not_taking_other_reason"
+                    style="@style/AppTheme.OutlineInputBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_diabetes_medication_not_taking_other_reason"
+                        style="@style/AppTheme.InputBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/specify_the_reason"
+                        android:inputType="none"
+                        />
+                </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>

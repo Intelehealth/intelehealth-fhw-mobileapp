@@ -13,7 +13,10 @@ data class MedicalHistory(
     var medicationForBP: String = "-",
     var healthWorkerForBP: String = "-",
     var reasonForNoHypertensionMedication: String = "-",
-    var hypertension: String = "-"
+    var hypertension: String = "-",
+    var medicationForDiabetes: String = "-",
+    var healthWorkerForDiabetes: String = "-",
+    var reasonForNoDiabetesMedication: String = "-",
 
     /* val hypertension: String = "-",
      val diabetes: String = "-",
