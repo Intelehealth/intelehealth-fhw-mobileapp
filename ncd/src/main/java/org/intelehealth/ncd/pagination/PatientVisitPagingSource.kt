@@ -8,6 +8,7 @@ import kotlinx.coroutines.delay
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
 import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
@@ -15,6 +16,23 @@ class PatientVisitPagingSource(
     private val visitEncounterNoteAttr: String,
     private val query: String
 ) : PagingSource<Int, PatientVisitDetails>() {
+
+   /* override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
+        return try {
+            val offset = params.key ?: 0
+            val limit = params.loadSize
+
+            val data = generalTabDao.getPagedPatientsSql(query, Constants.ENCOUNTER_VISIT_COMPLETE, Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.OTHER_MEDICAL_HISTORY, Constants.PATIENT_PHONE, limit, offset)
+
+            LoadResult.Page(
+                data = data,
+                prevKey = if (offset == 0) null else offset - limit,
+                nextKey = if (data.size < limit) null else offset + limit
+            )
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
+    }*/
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
         return try {
@@ -24,7 +42,7 @@ class PatientVisitPagingSource(
             // 1. Load main patient + latest visit
             val patients = dataSource.getPatientsAndVisitsPage(limit, offset)
             if (offset != 0) {
-                delay(500)
+                delay(0)
             }
 
             val visitIds = patients.mapNotNull { it.visitId }
@@ -77,6 +95,7 @@ class PatientVisitPagingSource(
             LoadResult.Error(e)
         }
     }
+
 
     override fun getRefreshKey(state: PagingState<Int, PatientVisitDetails>): Int? {
         return state.anchorPosition?.let { anchor ->

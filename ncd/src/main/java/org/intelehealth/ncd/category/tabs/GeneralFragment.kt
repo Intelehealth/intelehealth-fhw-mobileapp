@@ -78,10 +78,6 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         )[GeneralViewModel::class.java]
     }
 
-    private fun fetchAndSetPatients() {
-        viewModel.getPatientsForGeneral()
-    }
-
     override fun onSearchQueryChanged(query: String) {
         viewModel.onSearchQueryChanged(query) // just call the setter
     }

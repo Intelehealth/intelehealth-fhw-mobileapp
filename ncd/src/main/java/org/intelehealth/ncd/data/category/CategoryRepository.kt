@@ -17,10 +17,6 @@ import java.util.Locale
 
 class CategoryRepository(private val dataSource: CategoryDataSource) {
 
-    suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
-        dataSource.getPatientsBasedOnAge(age)
-
-    suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String):String = dataSource.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
         val result = buildPatientVisitDetails(rawDataList)
@@ -28,6 +24,8 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         }
         return result
     }
+
+
     private fun buildPatientVisitDetails(
         rawDataList: List<PatientVisitDetails>
     ): List<PatientVisitDetails> {
@@ -84,37 +82,6 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         }
     }
 
-    suspend fun getPatientVisitDetailsBelowAgeForGeneral(visitNoteEncounterUuid: String): List<PatientVisitDetails> {
-        val rawDataList = dataSource.getPatientVisitRawDataBelowAgeForGeneral(visitNoteEncounterUuid)
-
-        val result = buildPatientVisitDetailsForGeneral(rawDataList)
-
-        return result
-    }
-    private fun buildPatientVisitDetailsForGeneral(
-        rawDataList: List<PatientVisitDetails>
-    ): List<PatientVisitDetails> {
-        return rawDataList.map { data ->
-            val formattedStartDate = data.startDate?.let {
-                DateAndTimeUtils.formatStartVisitDate(it, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' hh:mm a") }
-
-            PatientVisitDetails(
-                patientId = data.patientId,
-                visitId = data.visitId,
-                firstName = data.firstName,
-                middleName = data.middleName,
-                lastName = data.lastName,
-                dateOfBirth = data.dateOfBirth,
-                gender = data.gender,
-                openmrsId = data.openmrsId,
-                value = data.value,
-                personAttributeTypeUuid = data.personAttributeTypeUuid,
-                startDate = formattedStartDate,
-                patientPhoto = data.patientPhoto,
-                isPrescriptionExist = data.isPrescriptionExist,
-            )
-        }
-    }
     suspend fun getPatientVisitDetailsForFollowup(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String, patientUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawDataForFollowup(age, attributeTypeUuid, visitNoteEncounterUuid, patientUuid)
         rawDataList.forEach {

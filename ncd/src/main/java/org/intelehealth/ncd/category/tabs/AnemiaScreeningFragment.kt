@@ -84,24 +84,6 @@ class AnemiaScreeningFragment : SearchableFragment<AnemiaScreeningViewModel>(), 
         viewModel.searchPatient(query)
     }
 
-   /* override fun onPatientClicked(patient: PatientVisitDetails) {
-        try {
-            val intent = Intent(
-                requireActivity(),
-                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
-            ).apply {
-                putExtra(Constants.INTENT_PATIENT_UUID, patient.patientId)
-                putExtra(Constants.INTENT_PATIENT_NAME, "${patient.firstName} ${patient.lastName}")
-                putExtra(Constants.INTENT_PATIENT_STATUS, "returning")
-                putExtra(Constants.INTENT_PATIENT_TAG, "search")
-                putExtra(Constants.INTENT_HAS_PRESCRIPTION, "false")
-            }
-            startActivity(intent)
-        } catch (exception: ClassNotFoundException) {
-            exception.printStackTrace()
-        }
-    }*/
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

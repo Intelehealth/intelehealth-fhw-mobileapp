@@ -26,25 +26,12 @@ import java.util.UUID
 
 class GeneralViewModel(private val repository: CategoryRepository, private val utils: CategorySegregationUtils) : ViewModel() {
 
-  /*  private val _generalMutableLiveData = MutableLiveData<List<Patient>>()
-    val generalLiveData: LiveData<List<Patient>> = _generalMutableLiveData*/
     private val _generalMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
     val generalLiveData: LiveData<List<PatientVisitDetails>> = _generalMutableLiveData
-    private val allPatients = mutableListOf<PatientVisitDetails>()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
-    fun getPatientsForGeneral() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(Constants.ENCOUNTER_VISIT_COMPLETE)
-
-            allPatients.clear()
-            allPatients.addAll(result)
-
-            _generalMutableLiveData.postValue(result)
-        }
-    }
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
