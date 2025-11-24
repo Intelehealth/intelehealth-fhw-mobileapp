@@ -25,16 +25,19 @@ public class AppointmentSync {
     private static final String TAG = "AppointmentSync";
 
     public static void getAppointments(Context context) {
-        Log.v(TAG, "getAppointments");
+        SessionManager sessionManager = new SessionManager(context);
+        String url = sessionManager.getServerUrl();
+        if (url.isBlank()) {
+            return;
+        }
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-//        String selectedStartDate = simpleDateFormat.format(new Date());
         String selectedStartDate = "01/01/1970"; // start date set as unix epoch date for fetching appointment data
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
-        String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";
+        String baseurl = "https://" + url + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getSlotsAll(selectedStartDate, selectedEndDate, new SessionManager(context).getLocationUuid())
-
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
@@ -43,12 +46,9 @@ public class AppointmentSync {
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
                             try {
-                                Log.v(TAG, "insert = "+new Gson().toJson(slotInfoResponse.getData().get(i)));
                                 appointmentDAO.insert(slotInfoResponse.getData().get(i));
                             } catch (DAOException e) {
-                                e.printStackTrace();
                             }
                         }
 
@@ -65,14 +65,13 @@ public class AppointmentSync {
                             }
                         } else {
                         }*/
-                        Log.v(TAG, "getAppointments done!");
+
                         Intent broadcast = new Intent();
                         broadcast.putExtra("JOB", AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
 
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE));
+                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION).putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE));
                     }
 
 
