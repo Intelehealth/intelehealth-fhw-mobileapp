@@ -18,5 +18,11 @@ android{
                 srcDirs 'src\\namma\\res'
             }
         }
+
+        ekal {
+            res {
+                srcDirs 'src\\ekal\\res'
+            }
+        }
     }
 }

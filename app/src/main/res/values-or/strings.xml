@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ଆନ୍ତରିକତା</string>
+    <string name="app_name" translatable="false">ଆନ୍ତରିକତା</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
     <string name="action_home">ଘର</string>

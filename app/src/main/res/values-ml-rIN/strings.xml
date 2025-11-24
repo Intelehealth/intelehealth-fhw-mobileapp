@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ഇന്റലിഹെൽത്ത്</string>
+    <string name="app_name" translatable="false">ഇന്റലിഹെൽത്ത്</string>
     <string name="tag_optional" translatable="false">" ഓപ്ഷണൽ"</string>
     <string name="generic_ok">ഓക്കെ</string>
     <string name="generic_cancel">ക്യാൻസൽ</string>

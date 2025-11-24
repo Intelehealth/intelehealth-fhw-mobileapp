@@ -41,6 +41,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
 
@@ -160,13 +161,28 @@ public class VisitReasonCaptureFragment extends Fragment {
             //boolean isPreviousVisitValid = VisitUtils.isPreviousVisitValid(mainNode, visitUuid);
             boolean isPatientHasOldVisit = mainNode.isPreviousVisitRequired() && VisitsDAO.isPatientHasOldVisit(patientUuid);
             boolean isValidNodeForAgeGender = VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age());
-            if (mainNode.isPreviousVisitRequired() && !isPatientHasOldVisit) {
-                mFinalEnabledMMList.remove(mindMapName);
-            } else {
-                if (isValidNodeForAgeGender) {
-                    mFinalEnabledMMList.add(mindMapName);
+            //checking is there any doctor visit or not
+            //if not, disabling the follow-up visit option (AEAT-1812)
+            if (mindMapName.equals("Follow up visit")) {
+                boolean isThereAnyDoctorVisit = VisitsDAO.getDoctorVisitCount(patientUuid,UuidDictionary.IS_NCD_VISIT_ATTRIBUTE) > 0;
+                if(!isThereAnyDoctorVisit){
+                    mFinalEnabledMMList.remove(mindMapName);
+                }else{
+                    if (isValidNodeForAgeGender) {
+                        mFinalEnabledMMList.add(mindMapName);
+                    }
+                }
+            }else{
+                if (mainNode.isPreviousVisitRequired() && !isPatientHasOldVisit) {
+                    mFinalEnabledMMList.remove(mindMapName);
+                } else {
+                    if (isValidNodeForAgeGender) {
+                        mFinalEnabledMMList.add(mindMapName);
+                    }
                 }
             }
+
+
 
         }
         String[] mindmapsNamesFinalArray = new String[mFinalEnabledMMList.size()];

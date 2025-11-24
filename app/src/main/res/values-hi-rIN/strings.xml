@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">इंटेलेहेल्थ</string>
+    <string name="app_name" translatable="false">इंटेलेहेल्थ</string>
     //Generic
     <string name="tag_optional" translatable="false">ऐच्छिक</string>
     <string name="generic_ok">ठीक</string>

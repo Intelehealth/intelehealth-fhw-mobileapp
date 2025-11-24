@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ઇન્ટેલહેલ્થ</string>
+    <string name="app_name" translatable="false">ઇન્ટેલહેલ્થ</string>
 
     //Generic
 

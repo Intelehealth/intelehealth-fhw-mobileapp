@@ -243,9 +243,7 @@ public class DialogUtils {
         });
 
         positive_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                //alertDialog.dismiss();
-            }
+            SafeDialogUtil.dismissDialog(context, alertDialog);
             customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
