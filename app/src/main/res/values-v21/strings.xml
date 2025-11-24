@@ -127,4 +127,7 @@
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
     <string name="screening_lbl">Screening</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">Please complete the Baseline Survey.</string>
+    <string name="dialog_baseline_ok">Ok</string>
+    <string name="baseline_warning_alert">Alert!</string>
 </resources>

@@ -1041,6 +1041,9 @@
 
     <string name="screening_lbl">Screening</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">ದಯವಿಟ್ಟು ಬೇಸ್‌ಲೈನ್ ಸಮೀಕ್ಷೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.</string>
+    <string name="dialog_baseline_ok">ಸರಿ</string>
+    <string name="baseline_warning_alert">ಎಚ್ಚರಿಕೆ!</string>
 
 
 </resources>

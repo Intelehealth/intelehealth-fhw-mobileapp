@@ -488,5 +488,8 @@
     <string name="saved_to_downloads">ఫైల్ Downloads లో సేవ్ చేయబడింది</string>
     <string name="failed_to_save_downloads">PDF సేవ్ చేయడంలో విఫలమైంది</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">దయచేసి బేస్‌లైన్ సర్వేను పూర్తి చేయండి.</string>
+    <string name="dialog_baseline_ok">సరే</string>
+    <string name="baseline_warning_alert">హెచ్చరిక!</string>
 
 </resources>

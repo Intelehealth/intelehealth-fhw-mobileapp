@@ -935,5 +935,9 @@
     <string name="saved_to_downloads">ଫାଇଲ୍ ଡାଉନଲୋଡ୍ସରେ ସଞ୍ଚିତ ହେଲା</string>
     <string name="failed_to_save_downloads">PDF ସଞ୍ଚୟ କରିବାରେ ବିଫଳ</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">ଦୟାକରି ବେସଲାଇନ୍ ସର୍ଭେ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ।</string>
+    <string name="dialog_baseline_ok">ଠିକ ଅଛି</string>
+    <string name="baseline_warning_alert">ସତର୍କ!</string>
+
 
 </resources>

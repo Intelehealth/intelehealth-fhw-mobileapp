@@ -1082,6 +1082,9 @@
     <string name="saved_to_downloads">ফাইলটি Downloads-এ সংরক্ষিত হয়েছে</string>
     <string name="failed_to_save_downloads">PDF সংরক্ষণ করতে ব্যর্থ হয়েছে</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">অনুগ্রহ করে বেসলাইন সার্ভে সম্পূর্ণ করুন।</string>
+    <string name="dialog_baseline_ok">ঠিক আছে</string>
+    <string name="baseline_warning_alert">সতর্কতা!</string>
 
 
 </resources>

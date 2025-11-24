@@ -513,4 +513,8 @@
     <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
     <string name="screening_lbl">Screening</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">Пожалуйста, завершите базовый опрос.</string>
+    <string name="dialog_baseline_ok">Ок</string>
+    <string name="baseline_warning_alert">Тревога!</string>
+
 </resources>
