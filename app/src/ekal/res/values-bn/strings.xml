@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">একল আরোগ্য</string>
+    <string name="app_name">একল আরোগ্য</string>
     <string name="intro_title_1">আমরা কারা?</string>
     <string name="intro_tagline_1">একল আরোগ্য একটি উদ্ভাবনী টেলিমেডিসিন প্ল্যাটফর্ম যা দূরবর্তী অঞ্চলে স্বাস্থ্যসেবার অ্যাক্সেসের ফাঁক পূরণের জন্য ডিজাইন করা হয়েছে, ফ্রন্টলাইন স্বাস্থ্যকর্মী এবং রোগীকে ভার্চুয়াল ডাক্তারের সাথে সংযোগ স্থাপনের মাধ্যমে উচ্চ-মানের স্বাস্থ্যসেবা প্রদানের জন্য।</string>
     <string name="intro_title_2">রোগীর সাক্ষাৎ নিন</string>

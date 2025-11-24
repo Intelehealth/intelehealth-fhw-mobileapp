@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">इंटेलहेल्थ</string>
+    <string name="app_name" translatable="false">इंटेलहेल्थ</string>
 
     //Generic
     <string name="tag_optional">पर्यायी</string>

@@ -1811,7 +1811,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private void showConfirmationDialog(String content) {
         Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(this, R.drawable.fingerprint_dialog_error, getString(R.string.this_visit_is_incomplete),
+        dialogUtils.showCommonDialogNonCancelable(this, R.drawable.fingerprint_dialog_error, getString(R.string.this_visit_is_incomplete),
                 content, false,
                 getResources().getString(R.string.button_continue), getString(R.string.discard), action -> {
 

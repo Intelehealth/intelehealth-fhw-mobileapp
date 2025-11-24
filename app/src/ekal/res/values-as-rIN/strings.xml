@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">একল আৰোগ্য</string>
+    <string name="app_name">একল আৰোগ্য</string>
     <string name="intro_title_1">আমি কোন?</string>
     <string name="intro_tagline_1">একল আৰোগ্য হৈছে উচ্চমানৰ স্বাস্থ্য সেৱা প্ৰদানৰ বাবে ফ্ৰণ্টলাইন স্বাস্থ্য কৰ্মী আৰু ৰোগীক ভাৰ্চুৱেল চিকিৎসকৰ সৈতে সংযোগ কৰি দূৰৱৰ্তী অঞ্চলত স্বাস্থ্যসেৱাৰ প্ৰৱেশৰ ব্যৱধান দূৰ কৰিবলৈ ডিজাইন কৰা এক অভিনৱ টেলিমেডিচিন প্লেটফৰ্ম</string>
     <string name="intro_title_2">ৰোগীৰ ওচৰলৈ যাওক</string>

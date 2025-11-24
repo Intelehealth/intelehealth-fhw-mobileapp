@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">ஏகல் ஆரோக்கியம்</string>
+    <string name="app_name">ஏகல் ஆரோக்கியம்</string>
     <string name="intro_title_1">நாங்கள் யார்?</string>
     <string name="intro_tagline_1">ஏகல் ஆரோக்கியம் என்பது தொலை மருத்துவ மேடையாகும், இது தொலைதூர பகுதிகளில் உள்ள மக்களுக்கு உயர்தர மருத்துவ சேவைகளை வழங்க முன்னணி மருத்துவ பணியாளர் மற்றும் நோயாளியை மருத்துவருடன் இணைக்கிறது</string>
     <string name="intro_title_2">நோயாளி பார்வைகளை எடுக்கவும்</string>

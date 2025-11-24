@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ఇంటెలిహెల్త్</string>
+    <string name="app_name" translatable="false">ఇంటెలిహెల్త్</string>
     <string name="generic_coming_soon" translatable="false">"త్వరలో....."</string>
     <string name="title_activity_login" translatable="false">"ఇంటెలిహెల్త్"</string>
     <string name="prompt_admin_password" translatable="false">"అడ్మిన్ పాస్వర్డ్"</string>
@@ -968,10 +968,10 @@
     <string name="blackout">బ్లాక్‌అవుట్</string>
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">కింద తెలిపిన సమయావధిలో నోటిఫికేషన్‌లు అడ్డుకోవడానికి బ్లాక్‌అవుట్ పీరియడ్‌ను ఆన్ చేయండి</string>
     <string name="from_9_00_pm_to_6_00_am">రాత్రి 9:00 నుండి ఉదయం 6:00 వరకు</string>
-    <string name="this_visit_is_incomplete">இந்த வருகை முழுமையாக இல்லை!</string>
-    <string name="discard">நீக்கவும்</string>
-    <string name="confirm_discard_changes_content">இந்த வருகையின் அனைத்து விவரங்களையும் நீக்க விரும்புகிறீர்களா?</string>
-    <string name="confirm_discard_changes_content_on_sync">உங்கள் வருகை உருவாக்கும் செயல் முழுமையடையவில்லை. நீங்கள் அதை முடிக்கலாம் அல்லது நீக்கலாம்.</string>
+    <string name="this_visit_is_incomplete">ఈ సందర్శనం అసంపూర్ణంగా ఉంది!</string>
+    <string name="discard">విస్మరించు</string>
+    <string name="confirm_discard_changes_content">ఈ సందర్శనలోని అన్ని వివరాలను విస్మరించాలనుకుంటున్నారా?</string>
+    <string name="confirm_discard_changes_content_on_sync">మీ సందర్శనం సృష్టించే ప్రక్రియ అసంపూర్ణంగా ఉంది. మీరు దాన్ని పూర్తి చేయవచ్చు లేదా విస్మరించవచ్చు.</string>
 
 
     <!-- Content Descriptions -->

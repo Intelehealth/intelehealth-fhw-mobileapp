@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ইনটেলহেলথ</string>
+    <string name="app_name" translatable="false">ইনটেলহেলথ</string>
 
     //Generic
     <string name="tag_optional">ঐচ্ছিক</string>
@@ -1053,6 +1053,7 @@
     <string name="discard">বাতিল</string>
     <string name="confirm_discard_changes_content">আপনি কি নিশ্চিত যে এই ভিজিটের সব বিস্তারিত বাতিল করতে চান?</string>
     <string name="confirm_discard_changes_content_on_sync">আপনার ভিজিট তৈরির প্রক্রিয়া অসম্পূর্ণ। আপনি প্রক্রিয়া সম্পূর্ণ করতে পারেন অথবা বাতিল করতে পারেন।</string>
+    <string name="button_continue">চালিয়ে যান</string>
 
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
