@@ -419,6 +419,12 @@
     <string name="visit_reason_txt">സന്ദർശന കാരണം</string>
 
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+    <string name="screening_lbl">Screening</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">ദയവായി ബേസ്ലൈൻ സർവേ പൂർത്തിയാക്കുക.</string>
+    <string name="dialog_baseline_ok">ശരി</string>
+    <string name="baseline_warning_alert">മുന്നറിയിപ്പ്!</string>
+
     <string name="screening_lbl">സ്ക്രീനിംഗ്</string>
 
     <string name="patient_visit_sent_ended">രോഗിയുടെ സന്ദർശനം വിജയകരമായി സേവ് ചെയ്ത് സ്വയം അവസാനിപ്പിച്ചു.</string>

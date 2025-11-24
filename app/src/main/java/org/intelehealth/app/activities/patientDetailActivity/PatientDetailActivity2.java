@@ -78,6 +78,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -124,6 +125,7 @@ import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
@@ -350,8 +352,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
-            startActivity(i);
-            finish();
+            /*startActivity(i);
+            finish();*/
+            onBack(intent);
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -652,6 +655,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         populateBaselineSurveys();
+
+        handleDeviceBackPress();
     }
 
     private void startNewVisit() {
@@ -2398,10 +2403,52 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 });
     }
 
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(PatientDetailActivity2.this, SearchPatientActivity_New.class);
+                onBack(intent);
+            }
+        });
+    }
+
     public void backPress(View view) {
         Intent intent = new Intent(this, SearchPatientActivity_New.class);
-        startActivity(intent);
-        finish();
+        onBack(intent);
+    }
+
+    public void onBack(Intent intent) {
+        if (!isBaselineSurveyCompleted && !sessionManager.getBaseLineWarningInfo(patientDTO.getUuid())) {
+            showBaselineWarningDialog(intent);
+        } else {
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void showBaselineWarningDialog(Intent intent) {
+        DialogUtils dialogUtils = new DialogUtils();
+        MaterialAlertDialogBuilder builder = dialogUtils.showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this, R.drawable.close_patient_svg), getString(R.string.baseline_warning_alert),
+                getString(R.string.please_complete_the_baseline_survey), getString(R.string.dialog_baseline_ok));
+        AlertDialog baselineWarningDialog = builder.show();
+        baselineWarningDialog.setCancelable(false);
+
+        baselineWarningDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        baselineWarningDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        baselineWarningDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        Button okButton = baselineWarningDialog.findViewById(R.id.positive_btn);
+        if (okButton != null) okButton.setOnClickListener(v -> {
+            sessionManager.setBaseLineWarningInfo(patientDTO.getUuid());
+            baselineWarningDialog.dismiss();
+            startActivity(intent);
+            finish();
+        });
+
     }
 
     public void syncNow(View view) {

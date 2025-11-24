@@ -1104,6 +1104,10 @@
 
     <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
     <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">कृपया बेसलाइन सर्वे पूरा करें।</string>
+    <string name="dialog_baseline_ok">ठीक है</string>
+    <string name="baseline_warning_alert">चेतावनी!</string>
     <string name="patient_visit_sent_ended">मरीज़ की विज़िट सफलतापूर्वक सेव होकर स्वचालित रूप से समाप्त हो गई है।</string>
 
     <string name="category_already_selected">%1$s से एक आइटम आप पहले ही चुन चुके हैं</string>
