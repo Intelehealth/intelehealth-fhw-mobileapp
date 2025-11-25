@@ -53,12 +53,14 @@ class BaselineMedicalFragment :
     var selectedAnemiaNoMedicationReason: String = ""
     private var isAgeGreaterThan11: Boolean = false
     var selectedDiabetesNoMedicationReason: String = ""
+    private var isAgeGreaterThan20: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentBaselineSurveyMedicalBinding.bind(view)
         baselineSurveyViewModel.updateBaselineStage(BaselineSurveyStage.MEDICAL)
         super.onViewCreated(view, savedInstanceState)
     }
+
 
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
@@ -111,6 +113,7 @@ class BaselineMedicalFragment :
                 baselineSurveyViewModel.handleResponse(it) { age ->
                     setUp18Fields(age)
                     setUp11Fields(age)
+                    setUp20Fields(age)
                 }
             }
     }
@@ -1090,5 +1093,12 @@ class BaselineMedicalFragment :
                 haveYouSeenToHWinPastOneYearForDiabetes &&
                 reasonForNotTakingDiabetesMedication
     }
-
+    private fun setUp20Fields(age: Int) {
+        if (age >= 20) {
+            isAgeGreaterThan20 = true
+            return
+        }
+        binding.llSugarCheck.visibility = View.GONE
+        binding.layoutDiabetesMedication.llDiabetesLabel.visibility = View.GONE
+    }
 }
