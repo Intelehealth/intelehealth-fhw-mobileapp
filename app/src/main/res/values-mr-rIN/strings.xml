@@ -1075,6 +1075,9 @@
 
     <string name="saved_to_downloads">फाईल Downloads मध्ये जतन केली गेली</string>
     <string name="failed_to_save_downloads">PDF जतन करण्यात अयशस्वी</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="patient_visit_sent_ended">रुग्णाची भेट यशस्वीरित्या सेव्ह होऊन स्वयंचलितपणे संपली आहे.</string>
+
+    <string name="category_already_selected">आपण आधीच %1$s मधून एक आयटम निवडले आहे</string>
+
 
 </resources>

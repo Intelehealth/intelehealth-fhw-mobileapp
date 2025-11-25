@@ -1040,7 +1040,10 @@
     <string name="share_ncd_info_dialog_title">ಈ NCD ಆರೋಗ್ಯ ಮಾಹಿತಿಯನ್ನು ಈ WhatsApp ಸಂಖ್ಯೆಗೆ ಹಂಚಲಾಗುತ್ತದೆ</string>
 
     <string name="screening_lbl">Screening</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="patient_visit_sent_ended">ರೋಗಿಯ ಭೇಟಿ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದ್ದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಂತ್ಯಗೊಂಡಿದೆ.</string>
+
+    <string name="category_already_selected">ನೀವು ಈಗಾಗಲೇ %1$s ನಿಂದ ಒಂದು ಆಯ್ಕೆಯನ್ನು ಮಾಡಿದ್ದಾರೆ</string>
+
 
 
 </resources>

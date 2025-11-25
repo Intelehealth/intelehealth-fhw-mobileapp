@@ -24,6 +24,17 @@ object Constants {
     const val HYPERTENSION_FOLLOW_UP = "hypertension_follow_up"
     const val GENERAL = "general"
 
+    // we need the mapping the category name with category
+    val CATEGORY_MAP = mapOf(
+        ANEMIA_SCREENING to "Anemia Screening",
+        ANEMIA_FOLLOW_UP to "Anemia Followup",
+        DIABETES_SCREENING to "Diabetes Screening",
+        DIABETES_FOLLOW_UP to "Diabetes Followup",
+        HYPERTENSION_SCREENING to "Hypertension Screening",
+        HYPERTENSION_FOLLOW_UP to "Hypertension Followup",
+
+    )
+
     // intents
     const val IS_PRIVACY_NOTICE = "isPrivacyNotice"
 

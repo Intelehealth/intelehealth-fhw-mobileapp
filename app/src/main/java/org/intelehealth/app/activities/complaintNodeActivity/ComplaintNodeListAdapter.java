@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -81,24 +82,33 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
                 // itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.amber));
                 // ata time select one item
                 int i = (int) v.getTag();
-                for (int j = 0; j < mNodesFilter.size(); j++) {
+                /*for (int j = 0; j < mNodesFilter.size(); j++) {
                     mNodesFilter.get(j).setSelected(j == i);
+                }*/
+                String category = thisNode.getCategory();
+
+                // If NOT selected & category already has a selected MM → BLOCK
+                if (!thisNode.isSelected() && isCategoryAlreadySelected(category)) {
+                    Toast.makeText(mContext,
+                            mContext.getString(R.string.category_already_selected, category),
+                            //"You already selected an item from " + category,
+                            Toast.LENGTH_SHORT).show();
+                    return; // 🚫 Stop here
                 }
-                /*if (!thisNode.isSelected()) {
-                    thisNode.setSelected(true);
+
+                // ✔ Toggle normally
+                thisNode.setSelected(!thisNode.isSelected());
+                if (!thisNode.isSelected()) {
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
 
                 } else {
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                    thisNode.setSelected(false);
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                }*/
+                }
 
-                // notifyItemChanged(position);
-                //thisNode.toggleSelected();
-                //  notify();
-                notifyDataSetChanged();
+                notifyItemChanged(i);
+                //notifyDataSetChanged();
 
 
                 //
@@ -130,6 +140,15 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
         }
 
 
+    }
+    private boolean isCategoryAlreadySelected(String category) {
+        for (Node node : mNodesFilter) {
+            if (node.isSelected() &&
+                    node.getCategory().equalsIgnoreCase(category)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.runBlocking
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
@@ -547,5 +548,11 @@ class CategorySegregationUtils(private val resources: Resources) {
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
-
+    // 🔥 Add this: Wrapper that Java can call
+    fun checkForAllEligibleProtocolsBlocking(
+        patientUuid: String,
+        context: Context
+    ): Map<String, Any> = runBlocking {
+        checkForAllEligibleProtocols(patientUuid, context)
+    }
 }

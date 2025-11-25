@@ -487,6 +487,9 @@
     <string name="health_information">ఆరోగ్య సమాచారం</string>
     <string name="saved_to_downloads">ఫైల్ Downloads లో సేవ్ చేయబడింది</string>
     <string name="failed_to_save_downloads">PDF సేవ్ చేయడంలో విఫలమైంది</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="patient_visit_sent_ended">రోగి సందర్శనం విజయవంతంగా సేవ్ అయ్యి స్వయంచాలకంగా ముగిసింది.</string>
+
+    <string name="category_already_selected">మీరు ఇప్పటికే %1$s నుండి ఒక అంశాన్ని ఎంచుకున్నారు</string>
+
 
 </resources>

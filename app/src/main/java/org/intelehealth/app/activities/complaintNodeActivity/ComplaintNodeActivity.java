@@ -1,9 +1,8 @@
 package org.intelehealth.app.activities.complaintNodeActivity;
 
+
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,8 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,7 +51,6 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ncd.constants.Constants;
 import org.intelehealth.ncd.fhir.CommonQuestionnaireActivity;
-import org.intelehealth.ncd.room.dao.PatientDao;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
 import org.json.JSONException;
@@ -63,8 +59,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
@@ -378,6 +377,35 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 break;
             }
         }
+
+        // validate the eligible auto select mm for the patient
+        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+
+        Map<String, Object> result =
+                utils.checkForAllEligibleProtocolsBlocking(patientUuid, this);
+
+        List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
+
+        // Track selected categories to avoid duplicates
+        Set<String> selectedCategories = new HashSet<>();
+
+        for (Node complaint : complaints) {
+            String complaintCategory = complaint.getCategory(); // e.g. "Hypertension"
+            String complaintText = complaint.getText();         // e.g. "Hypertension Screening"
+
+            for (String protocol : eligibleMMs) {
+                String protocolFormatted = Constants.INSTANCE.getCATEGORY_MAP().get(protocol);
+
+                // Check if this protocol matches this complaint AND category not already selected
+                if (protocolFormatted.equalsIgnoreCase(complaintText)
+                        && !selectedCategories.contains(complaintCategory)) {
+
+                    complaint.setSelected(true);
+                    selectedCategories.add(complaintCategory); // avoid selecting follow-up/screening both
+                }
+            }
+        }
+
     }
 
     /**
@@ -447,7 +475,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             intent.putStringArrayListExtra("complaints", selection);
                             String fileLocation = AppConstants.NCD_PROTOCOL_DIRECTORY + "/" + selection.get(0) + ".json";
                             //JSONObject currentFile = FileUtils.encodeJSON(ComplaintNodeActivity.this, fileLocation);
-                            String questionnaireTitle = selection.get(0);
+
+                            questionnaireList.addAll(selection);
+                            launchNextQuestionnaire();
+                            /*String questionnaireTitle = selection.get(0);
                             Intent in = new Intent(ComplaintNodeActivity.this, CommonQuestionnaireActivity.class);
                             //in.setComponent(new ComponentName("com.example.fhir_sdk_poc", "com.example.fhir_sdk_poc.MainActivity"));
                             //in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -457,13 +488,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             in.putExtra("patient_gender", mgender);
                             in.putExtra("appLang", sessionManager.getAppLanguage());
 
-                            questionnaireLauncher.launch(in);
-
-
-
-
-
-
+                            questionnaireLauncher.launch(in);*/
                             /*Intent in = new Intent();
                             in.setComponent(new ComponentName("com.example.fhir_sdk_poc", "com.example.fhir_sdk_poc.MainActivity"));
                             in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -525,51 +550,92 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
     }
 
-    private ActivityResultLauncher<Intent> questionnaireLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Log.d("onActivityResult", "received!");
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Intent data = result.getData();
-                        String questionnaireResponseJson = data.getStringExtra("questionnaire_response");
-                        String questionnaireResponseJsonLocal = data.getStringExtra("questionnaire_response_local");
-                        Log.d("onActivityResult", "Response JSON: " + questionnaireResponseJson);
+    private List<String> questionnaireList = new ArrayList<>();
+    private int currentIndex = 0;
+    private StringBuilder allEnglishResponses = new StringBuilder();
+    private StringBuilder allLocalResponses = new StringBuilder();
 
-                        // show response rest in a alert dialog
-                       /* AlertDialog alertDialog = new AlertDialog.Builder(ComplaintNodeActivity.this)
-                                .setTitle("Questionnaire Response")
-                                .setMessage(questionnaireResponseJson)
-                                .setPositiveButton("OK", null)
-                                .create();
-                        alertDialog.show();*/
-                        updateDatabase(questionnaireResponseJson, UuidDictionary.CURRENT_COMPLAINT);
-                        JSONObject object = new JSONObject();
-                        try {
-                            object.put("text_" + sessionManager.getAppLanguage(), questionnaireResponseJsonLocal);
-                            object.put("text_en", questionnaireResponseJson);
-                            updateDatabase(object.toString(), UuidDictionary.CC_REG_LANG_VALUE);    // updating regional data.
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
+    private void launchNextQuestionnaire() {
+        if (currentIndex >= questionnaireList.size()) {
+            saveFinalResponses();
+            goToVisitSummary();   // All done
+            return;
+        }
+
+        String questionnaireTitle = questionnaireList.get(currentIndex);
+
+        Intent in = new Intent(ComplaintNodeActivity.this, CommonQuestionnaireActivity.class);
+        in.putExtra("questionnaire_title", questionnaireTitle);
+        in.putExtra("patient_dob", PatientsDAO.fetchDateOfBirth(patientUuid));
+        in.putExtra("patient_age", float_ageYear_Month);
+        in.putExtra("patient_gender", mgender);
+        in.putExtra("appLang", sessionManager.getAppLanguage());
+
+        questionnaireLauncher.launch(in);
+    }
+
+    private void goToVisitSummary() {
+        Intent intent = new Intent(ComplaintNodeActivity.this, VisitSummaryActivity_New.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("encounterUuidVitals", encounterVitals);
+        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+        intent.putExtra("state", state);
+        intent.putExtra("name", patientName);
+        intent.putExtra("tag", intentTag);
+        intent.putExtra("advicefrom", intentAdviceFrom);
+        startActivity(intent);
+        finish();
+    }
+
+    private void saveFinalResponses() {
+        try {
+            updateDatabase(allEnglishResponses.toString(), UuidDictionary.CURRENT_COMPLAINT);
+            // local data in json format
+            JSONObject finalObj = new JSONObject();
+            finalObj.put("text_en", allEnglishResponses.toString());
+            finalObj.put("text_" + sessionManager.getAppLanguage(), allLocalResponses.toString());
+
+            updateDatabase(finalObj.toString(), UuidDictionary.CC_REG_LANG_VALUE);
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private final ActivityResultLauncher<Intent> questionnaireLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        Log.d("onActivityResult", "received!");
+
+                        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+
+                            Intent data = result.getData();
+
+                            String questionnaireResponseJson =
+                                    data.getStringExtra("questionnaire_response");
+                            String questionnaireResponseJsonLocal =
+                                    data.getStringExtra("questionnaire_response_local");
+
+                            // Append English response
+                            if (questionnaireResponseJson != null) {
+                                allEnglishResponses.append(questionnaireResponseJson);
+                            }
+
+                            // Append Local response
+                            if (questionnaireResponseJsonLocal != null) {
+                                allLocalResponses.append(questionnaireResponseJsonLocal);
+                            }
+
+                            // Go to next item
+                            currentIndex++;
+                            launchNextQuestionnaire();
                         }
-                        // You can parse or handle the response here
-                        Intent intent = new Intent(ComplaintNodeActivity.this, VisitSummaryActivity_New.class);
-                        intent.putExtra("patientUuid", patientUuid);
-                        intent.putExtra("visitUuid", visitUuid);
-                        intent.putExtra("encounterUuidVitals", encounterVitals);
-                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                        intent.putExtra("state", state);
-                        intent.putExtra("name", patientName);
-                        intent.putExtra("tag", intentTag);
-                        intent.putExtra("advicefrom", intentAdviceFrom);
-                        startActivity(intent);
-                        finish();
                     }
-                }
-            }
-    );
+            );
+
 
     private void updateDatabase(String string, String conceptID) {
         Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + conceptID);

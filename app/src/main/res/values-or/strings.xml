@@ -934,6 +934,9 @@
     <string name="health_information">ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା</string>
     <string name="saved_to_downloads">ଫାଇଲ୍ ଡାଉନଲୋଡ୍ସରେ ସଞ୍ଚିତ ହେଲା</string>
     <string name="failed_to_save_downloads">PDF ସଞ୍ଚୟ କରିବାରେ ବିଫଳ</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="patient_visit_sent_ended">ରୋଗୀଙ୍କର ସକ୍ଷୟତା ସଫଳତାର ସହ ସେଭ୍ ହୋଇ ଆପେଇଁ ସମାପ୍ତ ହୋଇଛି।</string>
+
+    <string name="category_already_selected">ଆପଣ %1$s ରୁ ଏକ ଆଇଟମ୍ ପୂର୍ବରୁ ଚୟନ କରିଛନ୍ତି</string>
+
 
 </resources>

@@ -1081,7 +1081,10 @@
     <string name="health_information">স্বাস্থ্য তথ্য</string>
     <string name="saved_to_downloads">ফাইলটি Downloads-এ সংরক্ষিত হয়েছে</string>
     <string name="failed_to_save_downloads">PDF সংরক্ষণ করতে ব্যর্থ হয়েছে</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="patient_visit_sent_ended">রোগীর ভিজিট সফলভাবে সংরক্ষিত হয়েছে এবং স্বয়ংক্রিয়ভাবে শেষ হয়েছে।</string>
+
+    <string name="category_already_selected">আপনি %1$s থেকে একটি আইটেম ইতিমধ্যেই নির্বাচন করেছেন</string>
+
 
 
 </resources>

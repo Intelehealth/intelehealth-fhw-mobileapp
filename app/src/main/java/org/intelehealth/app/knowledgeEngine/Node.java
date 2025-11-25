@@ -99,6 +99,7 @@ public class Node implements Serializable {
     public static String next_line = "<br/>";
     String space = "\t";
     private String engineVersion;
+    private String category;
     private boolean needToHide;
     private String compareDuplicateNode;
     private boolean enableExclusiveOption;
@@ -245,6 +246,7 @@ public class Node implements Serializable {
             }
 
             this.engineVersion = jsonNode.optString("engineVersion");
+            this.category = jsonNode.optString("category");
             this.id = jsonNode.getString("id");
 
             this.isMultiChoice = jsonNode.optBoolean("multi-choice");
@@ -465,6 +467,7 @@ public class Node implements Serializable {
         this.nodeValidationList = source.nodeValidationList;
         this.placeholder = source.placeholder;
         this.engineVersion = source.engineVersion;
+        this.category = source.category;
         this.id = source.id;
         this.isMultiChoice = source.isMultiChoice;
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
@@ -5167,6 +5170,14 @@ public class Node implements Serializable {
 
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
+    }
+
+
+    public String getCategory(){
+        return category;
+    }
+    public void setCategory(String category){
+        this.category = category;
     }
 
     private int nestedLeve = 0;
