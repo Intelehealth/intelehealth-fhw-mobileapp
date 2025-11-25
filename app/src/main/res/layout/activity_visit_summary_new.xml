@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/parentLayout"
@@ -704,8 +705,7 @@
                                         android:layout_below="@+id/divider_diagnosis"
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/margin_16dp"
-                                        />
+                                        android:layout_marginBottom="@dimen/margin_16dp" />
 
                                 </RelativeLayout>
 
@@ -746,17 +746,15 @@
                                     android:layout_below="@id/diagnosis_title"
                                     android:layout_marginTop="@dimen/fu_margin_start"
                                     android:layout_marginBottom="@dimen/margin_16dp"
-                                    app:hintEnabled="false"
-                                  >
+                                    app:hintEnabled="false">
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/diagnosis_text_input"
-                                        android:background="@drawable/input_edittext_border"
                                         android:layout_width="match_parent"
-                                        android:padding="@dimen/fu_margin_start"
                                         android:layout_height="wrap_content"
+                                        android:background="@drawable/input_edittext_border"
                                         android:hint="@string/enter_diagnosis"
-                                        />
+                                        android:padding="@dimen/fu_margin_start" />
 
                                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                             </RelativeLayout>
@@ -847,8 +845,7 @@
                                         android:layout_below="@+id/divider_consultation_type"
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/margin_16dp"
-                                        />
+                                        android:layout_marginBottom="@dimen/margin_16dp" />
 
                                 </RelativeLayout>
 
@@ -893,8 +890,7 @@
                                     android:gravity="center_vertical"
                                     android:hint="@string/select_consultation_type"
                                     android:paddingTop="@dimen/margin_10"
-                                    android:paddingBottom="@dimen/margin_10"
-                                    />
+                                    android:paddingBottom="@dimen/margin_10" />
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
@@ -1463,8 +1459,8 @@
             android:id="@+id/bottom_btn_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentBottom="true"
+            android:orientation="vertical"
             android:paddingTop="@dimen/fu_margin_start"
             android:paddingBottom="@dimen/fu_card_margin_sides">
 
@@ -1577,16 +1573,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Button
                 android:id="@+id/btnGenerateBill"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:padding="@dimen/margin_12"
                 android:text="@string/generate_bill"
-                android:layout_marginTop="@dimen/margin_5"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold"

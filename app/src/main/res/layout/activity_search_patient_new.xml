@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.searchPatientActivity.SearchPatientActivity_New">
@@ -9,7 +10,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar_relative"
         android:layout_width="0dp"
-        android:layout_height="@dimen/search_toolbar_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -18,6 +19,7 @@
         android:backgroundTint="?colorPrimary">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/search_field_relative"
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_margin_top"
             android:layout_alignParentLeft="true"
@@ -55,24 +57,24 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/search_txt_enter"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
                     android:lineSpacingExtra="3sp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:textSize="@dimen/fu_name_txt_size"
-                    android:inputType="text"
-                    android:imeOptions="actionSearch" />
+                    android:textSize="@dimen/fu_name_txt_size" />
 
                 <ImageView
                     android:id="@+id/icon_clear"
                     android:layout_width="@dimen/search_icon_toolbar"
                     android:layout_height="@dimen/search_icon_toolbar"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_12"
                     android:layout_marginEnd="@dimen/margin_12"
                     android:layout_marginBottom="@dimen/margin_12"
-                    android:layout_alignParentEnd="true"
                     android:background="@drawable/ic_baseline_clear_20"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/icon_search"

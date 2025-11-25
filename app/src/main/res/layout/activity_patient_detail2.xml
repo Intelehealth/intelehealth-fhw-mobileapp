@@ -31,6 +31,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:fillViewport="true"
+        android:fitsSystemWindows="true"
         tools:context=".activities.patientDetailActivity.PatientDetailActivity2">
 
 
@@ -118,8 +119,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
                 <!--Header Content-->
@@ -204,7 +205,7 @@
                 <include
                     android:id="@+id/roster_details"
                     layout="@layout/layout_roster_details"
-                    app:activeStatus="@{rosterQuestionnaireActiveStatus}"/>
+                    app:activeStatus="@{rosterQuestionnaireActiveStatus}" />
 
                 <!--Header 4-->
                 <include
@@ -215,9 +216,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_below="@+id/family_member_card"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:orientation="vertical">
 
@@ -307,6 +308,7 @@
                                     android:layout_height="@dimen/edittext_height_44dp"
                                     android:layout_centerVertical="true"
                                     android:src="@drawable/ui2_ic_patient_history" />
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -373,15 +375,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:visibility="visible">
+
             <include
                 android:id="@+id/household_survey"
                 layout="@layout/layout_household_survey"
                 app:activeStatus="@{householdSurveyActiveStatus}" />
+
             <Button
                 android:id="@+id/startVisitBtn"
-                android:layout_below="@+id/household_survey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/household_survey"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"

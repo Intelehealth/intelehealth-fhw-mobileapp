@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
@@ -61,6 +62,11 @@ class PatientRegistrationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
+
 //        manageTitleVisibilityOnScrolling()
         extractAndBindUI()
         setupActionBar()
@@ -137,24 +143,29 @@ class PatientRegistrationActivity : BaseActivity() {
 
             householdLinkingUUIDlinking = UUID.randomUUID().toString()
 
-            val parentPatientId = if (intent.hasExtra(PARENT_PATIENT_UUID)) intent.getStringExtra(PARENT_PATIENT_UUID)
-            else null
+            val parentPatientId =
+                if (intent.hasExtra(PARENT_PATIENT_UUID)) intent.getStringExtra(PARENT_PATIENT_UUID)
+                else null
 
             parentPatientId?.let {
-                patientViewModel.loadPatientDetails(parentPatientId).observe(this@PatientRegistrationActivity) {
-                    it ?: return@observe
-                    patientViewModel.handleResponse(it) { patient ->
-                        address1 = patient.address1 // household value
-                        householdLinkingUUIDlinking = patient.householdLinkingUUIDlinking
-                        cityvillage = patient.cityvillage
-                        postalcode = patient.postalcode
-                        address3 = patient.address3//after migration discussion block will be saved in address3
+                patientViewModel.loadPatientDetails(parentPatientId)
+                    .observe(this@PatientRegistrationActivity) {
+                        it ?: return@observe
+                        patientViewModel.handleResponse(it) { patient ->
+                            address1 = patient.address1 // household value
+                            householdLinkingUUIDlinking = patient.householdLinkingUUIDlinking
+                            cityvillage = patient.cityvillage
+                            postalcode = patient.postalcode
+                            address3 =
+                                patient.address3//after migration discussion block will be saved in address3
 
-                        // TODO: add postalcode, village, state, block, district, country.
-                        Log.v("Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
-                                + postalcode + " : " + householdLinkingUUIDlinking)
+                            // TODO: add postalcode, village, state, block, district, country.
+                            Log.v(
+                                "Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
+                                        + postalcode + " : " + householdLinkingUUIDlinking
+                            )
+                        }
                     }
-                }
             }
 
         }.also { patientViewModel.updatedPatient(it) }
@@ -237,7 +248,10 @@ class PatientRegistrationActivity : BaseActivity() {
                 binding.otherActiveStatus = it.activeStatusPatientOther
             }
             patientViewModel.activeStatusRosterSection = it.activeStatusRosterQuestionnaireSection
-            Log.d("TAG", "onFeatureActiveStatusLoaded: FeatureActiveStatus : "+Gson().toJson(activeStatus))
+            Log.d(
+                "TAG",
+                "onFeatureActiveStatusLoaded: FeatureActiveStatus : " + Gson().toJson(activeStatus)
+            )
         }
     }
 

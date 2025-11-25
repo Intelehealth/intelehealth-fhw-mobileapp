@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:paddingStart="@dimen/schedule_app_padding_start_end"
     android:paddingEnd="@dimen/schedule_app_padding_start_end"
     tools:context=".appointmentNew.ScheduleAppointmentActivity_New">

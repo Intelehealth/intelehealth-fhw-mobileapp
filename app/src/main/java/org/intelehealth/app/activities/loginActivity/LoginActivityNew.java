@@ -16,17 +16,24 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -92,6 +99,7 @@ public class LoginActivityNew extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login_new_ui2);
 
         handleBackPress();
@@ -115,11 +123,24 @@ public class LoginActivityNew extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username_login);
         etPassword = findViewById(R.id.et_password_login);
 
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(false);
+        controller.setAppearanceLightNavigationBars(true);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent_login), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            findViewById(R.id.appBarLayout).setPadding(0, systemBars.top, 0, systemBars.top);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
         textviewPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivityNew.this, ForgotPasswordActivity_New.class);
-                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                intent.putExtra("action", AppConstants.FORGOT_USER_PASSWORD_ACTION);
                 startActivity(intent);
             }
         });
@@ -304,7 +325,7 @@ public class LoginActivityNew extends AppCompatActivity {
                 // perform the user login attempt.
                 //UserLoginTask(email, password);
                 //getting jwt token here
-                getJWTToken(email,password);
+                getJWTToken(email, password);
             } else {
                 //offlineLogin.login(email, password);
                 offlineLogin.offline_login(email, password);
@@ -364,147 +385,147 @@ public class LoginActivityNew extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<LoginModel>() {
-            @Override
-            public void onSubscribe(Disposable d) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(LoginModel loginModel) {
-                int responsCode = loginModel.hashCode();
-                Boolean authencated = loginModel.getAuthenticated();
-                Gson gson = new Gson();
-                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                    @Override
+                    public void onNext(LoginModel loginModel) {
+                        int responsCode = loginModel.hashCode();
+                        Boolean authencated = loginModel.getAuthenticated();
+                        Gson gson = new Gson();
+                        Logger.logD(TAG, "success" + gson.toJson(loginModel));
 
-                if (authencated) {
+                        if (authencated) {
 
-                    sessionManager.setChwname(loginModel.getUser().getDisplay());
-                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                    CustomLog.d(TAG, "SESSOO_creator: " + loginModel.getUser().getUuid());
-                    sessionManager.setSessionID(loginModel.getSessionId());
-                    CustomLog.d(TAG, "SESSOO: " + sessionManager.getSessionID());
-                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                    CustomLog.d(TAG, "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
-                    CustomLog.d(TAG, "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
+                            sessionManager.setChwname(loginModel.getUser().getDisplay());
+                            sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                            CustomLog.d(TAG, "SESSOO_creator: " + loginModel.getUser().getUuid());
+                            sessionManager.setSessionID(loginModel.getSessionId());
+                            CustomLog.d(TAG, "SESSOO: " + sessionManager.getSessionID());
+                            sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                            CustomLog.d(TAG, "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                            CustomLog.d(TAG, "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
 
-                    UrlModifiers urlModifiers = new UrlModifiers();
-                    // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                    String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
-                    CustomLog.d(TAG, "onNext: url : " + url);
-                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                    loginProviderModelObservable
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                @Override
-                                public void onNext(LoginProviderModel loginProviderModel) {
-                                    if (loginProviderModel.getResults().size() != 0) {
-                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                            CustomLog.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                            UrlModifiers urlModifiers = new UrlModifiers();
+                            // String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                            String url = urlModifiers.loginUrlProvider(BuildConfig.SERVER_URL, loginModel.getUser().getUuid());
+                            CustomLog.d(TAG, "onNext: url : " + url);
+                            Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                            loginProviderModelObservable
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                        @Override
+                                        public void onNext(LoginProviderModel loginProviderModel) {
+                                            if (loginProviderModel.getResults().size() != 0) {
+                                                for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                    CustomLog.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                                    sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 
-                                            provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
-                                            IntelehealthApplication.getInstance().initSocketConnection();
+                                                    provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
+                                                    IntelehealthApplication.getInstance().initSocketConnection();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
                                             CustomLog.d("MANAGER", "MANAGER " + account);*/
-                                            //offlineLogin.invalidateLoginCredentials();
+                                                    //offlineLogin.invalidateLoginCredentials();
 
+
+                                                }
+                                            }
+                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                            //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+                                            sqLiteDatabase.beginTransaction();
+                                            //read_db.beginTransaction();
+                                            ContentValues values = new ContentValues();
+
+                                            //StringEncryption stringEncryption = new StringEncryption();
+                                            String random_salt = getSalt_DATA();
+
+                                            //String random_salt = stringEncryption.getRandomSaltString();
+                                            CustomLog.d("salt", "salt: " + random_salt);
+                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                            //salt_getter_setter.setSalt(random`_salt);
+
+
+                                            String hash_password = null;
+                                            try {
+                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                                hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
+                                                FirebaseCrashlytics.getInstance().recordException(e);
+                                            }
+
+                                            try {
+                                                values.put("username", mEmail);
+                                                values.put("password", hash_password);
+                                                values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                                values.put("chwname", loginModel.getUser().getDisplay());
+                                                values.put("provider_uuid_cred", sessionManager.getProviderID());
+                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                                sqLiteDatabase.setTransactionSuccessful();
+
+                                                Logger.logD("values", "values" + values);
+                                                Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                            } catch (SQLException e) {
+                                                CustomLog.d("SQL", "SQL user credentials: " + e);
+                                            } finally {
+                                                sqLiteDatabase.endTransaction();
+                                            }
+
+                                            cpd.dismiss();
+                                            Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity_New.class);
+                                            intent.putExtra("login", true);
+                                            startActivity(intent);
+                                            finish();
+
+                                            sessionManager.setReturningUser(true);
+                                            sessionManager.setLogout(false);
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                            cpd.dismiss();
+                                            showErrorDialog();
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
 
                                         }
-                                    }
-                                    SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-                                    //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-
-                                    sqLiteDatabase.beginTransaction();
-                                    //read_db.beginTransaction();
-                                    ContentValues values = new ContentValues();
-
-                                    //StringEncryption stringEncryption = new StringEncryption();
-                                    String random_salt = getSalt_DATA();
-
-                                    //String random_salt = stringEncryption.getRandomSaltString();
-                                    CustomLog.d("salt", "salt: " + random_salt);
-                                    //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-                                    //salt_getter_setter.setSalt(random`_salt);
-
-
-                                    String hash_password = null;
-                                    try {
-                                        //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
-                                        hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException |
-                                             UnsupportedEncodingException e) {
-                                        FirebaseCrashlytics.getInstance().recordException(e);
-                                    }
-
-                                    try {
-                                        values.put("username", mEmail);
-                                        values.put("password", hash_password);
-                                        values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname", loginModel.getUser().getDisplay());
-                                        values.put("provider_uuid_cred", sessionManager.getProviderID());
-                                        createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                        sqLiteDatabase.setTransactionSuccessful();
-
-                                        Logger.logD("values", "values" + values);
-                                        Logger.logD("created user credentials", "create user records" + createdRecordsCount);
-                                    } catch (SQLException e) {
-                                        CustomLog.d("SQL", "SQL user credentials: " + e);
-                                    } finally {
-                                        sqLiteDatabase.endTransaction();
-                                    }
-
-                                    cpd.dismiss();
-                                    Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity_New.class);
-                                    intent.putExtra("login", true);
-                                    startActivity(intent);
-                                    finish();
-
-                                    sessionManager.setReturningUser(true);
-                                    sessionManager.setLogout(false);
-                                }
-
+                                    });
+                        } else {
+                            Logger.logD(TAG, "Login Failure");
+                            cpd.dismiss();
+                            DialogUtils dialogUtils = new DialogUtils();
+                            dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
                                 @Override
-                                public void onError(Throwable e) {
-                                    Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                    cpd.dismiss();
-                                    showErrorDialog();
-                                }
-
-                                @Override
-                                public void onComplete() {
+                                public void onDialogActionDone(int action) {
 
                                 }
                             });
-                }else{
-                    Logger.logD(TAG, "Login Failure");
-                    cpd.dismiss();
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showCommonDialog(LoginActivityNew.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-                        @Override
-                        public void onDialogActionDone(int action) {
-
                         }
-                    });
-                }
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Logger.logD(TAG, "Login Failure" + e.getMessage());
-                e.printStackTrace();
-                cpd.dismiss();
-                showErrorDialog();
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Login Failure" + e.getMessage());
+                        e.printStackTrace();
+                        cpd.dismiss();
+                        showErrorDialog();
+                    }
 
-            @Override
-            public void onComplete() {
-                Logger.logD(TAG, "completed");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "completed");
+                    }
+                });
 
     }
 
@@ -599,7 +620,7 @@ public class LoginActivityNew extends AppCompatActivity {
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                        preferenceHelper.save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
+                        preferenceHelper.save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
 
                         UserLoginTask(username, password);
                     }

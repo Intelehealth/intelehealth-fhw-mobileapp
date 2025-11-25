@@ -6,6 +6,7 @@
     android:id="@+id/cl_table"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".activities.vitalActivity.VitalsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -230,8 +231,8 @@
                         </TableLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_spo"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -251,8 +252,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_bpm"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -272,8 +273,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_rr"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -293,8 +294,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_c"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -315,8 +316,8 @@
 
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_f"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText

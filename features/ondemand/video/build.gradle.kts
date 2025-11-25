@@ -10,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -78,7 +78,7 @@ dependencies {
     api("com.github.bumptech.glide:glide:4.14.2")
     api("com.google.code.gson:gson:2.10.1")
 
-    val room_version = "2.6.1"
+    val room_version = "2.8.4"
     api("androidx.room:room-ktx:$room_version")
     api("androidx.room:room-runtime:$room_version")
 //    annotationProcessor "androidx.room:room-compiler:$room_version"
@@ -90,7 +90,7 @@ dependencies {
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    val hiltVersion = "2.47"
+    val hiltVersion = "2.57.2"
     api("com.google.dagger:hilt-android:$hiltVersion")
     annotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")

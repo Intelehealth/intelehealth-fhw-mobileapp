@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".activities.setupActivity.SetupActivityNew">
 
@@ -96,8 +97,8 @@
                         android:layout_centerInParent="true"
                         android:layout_marginHorizontal="10dp"
                         android:layout_toEndOf="@id/enterDetailsTV"
-                        app:tint="?attr/colorPrimary"
-                        android:src="@drawable/ui2_ic_info_question_mark" />
+                        android:src="@drawable/ui2_ic_info_question_mark"
+                        app:tint="?attr/colorPrimary" />
 
                 </RelativeLayout>
 
@@ -174,10 +175,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_username"
+                        style="@style/AppTheme.InputBox.Address1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
-                        style="@style/AppTheme.InputBox.Address1"
                         android:hint="@string/enter_username1"
                         android:imeOptions="actionNext"
                         android:maxLength="16"
@@ -241,11 +242,11 @@
                         android:hint="@string/enter_password1"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
+                        android:maxLength="15"
                         android:paddingStart="@dimen/common_edittext_padding_left"
                         android:paddingTop="@dimen/common_edittext_padding_top"
                         android:paddingEnd="@dimen/common_edittext_padding_right"
                         android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                        android:maxLength="15"
                         android:singleLine="true"
                         android:textSize="@dimen/common_hint_text_size" />
                 </com.google.android.material.textfield.TextInputLayout>

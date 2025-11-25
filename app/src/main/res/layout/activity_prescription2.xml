@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/frame_10021"
+        android:fitsSystemWindows="true"
         tools:context=".activities.visit.PrescriptionActivity">
 
         <!--Toolbar - start -->
@@ -1262,10 +1263,10 @@
                 android:layout_marginBottom="@dimen/margin_5"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_common_primary_bg"
-                android:lineHeight="@dimen/button_line_height"
-                android:padding="@dimen/fu_margin_start"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:lineHeight="@dimen/button_line_height"
+                android:maxLines="2"
+                android:padding="@dimen/fu_margin_start"
                 android:text="@string/share"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"

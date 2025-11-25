@@ -8,10 +8,10 @@ plugins {
 
 android {
     namespace = "org.intelehealth.common"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -42,7 +42,7 @@ dependencies {
 
     api("com.google.code.gson:gson:2.10.1")
     api(project(":core"))
-    val hiltVersion = "2.47"
+    val hiltVersion = "2.57.2"
     api("com.google.dagger:hilt-android:$hiltVersion")
     annotationProcessor("com.google.dagger:hilt-compiler:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")

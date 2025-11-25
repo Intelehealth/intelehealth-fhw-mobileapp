@@ -7,7 +7,6 @@ import static org.intelehealth.app.utilities.StringUtils.inputFilter_SearchBar;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,12 +20,9 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
-import android.view.ContextThemeWrapper;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -39,9 +35,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,6 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -61,7 +61,6 @@ import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -97,7 +96,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     LinearLayout addPatientTV;
     String query;
     boolean fullyLoaded = false;
-    RelativeLayout view_nopatientfound;
+    RelativeLayout view_nopatientfound, toolbarRelative;
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
@@ -121,6 +120,8 @@ public class SearchPatientActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
+        EdgeToEdge.enable(this);
+
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
@@ -138,12 +139,25 @@ public class SearchPatientActivity_New extends BaseActivity {
         addPatientTV = findViewById(R.id.add_new_patientTV);
         iconSearch = findViewById(R.id.icon_search);
         iconClear = findViewById(R.id.icon_clear);
-
+        toolbarRelative = findViewById(R.id.toolbar_relative);
 
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
