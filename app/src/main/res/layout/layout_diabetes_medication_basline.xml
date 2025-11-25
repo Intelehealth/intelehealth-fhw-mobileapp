@@ -127,8 +127,8 @@
                 android:id="@+id/tv_diabetes_yes_option_seen_by_hw_medication_yes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes"
                 android:textAppearance="@style/blur_txtview"
+                android:text="@{ medicalConfig.haveYouSeenToHWinPastOneYearForDiabetes.mandatory ? @string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes + ` *` : @string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes}"
                 tools:text="@string/have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes" />
 
             <RadioGroup
@@ -170,8 +170,8 @@
                 android:id="@+id/tv_diabetes_not_taking_medication_no_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/why_are_you_not_taking_your_diabetes_medication"
                 android:textAppearance="@style/blur_txtview"
+                android:text="@{ medicalConfig.reasonForNotTakingDiabetesMedication.mandatory ? @string/why_are_you_not_taking_your_diabetes_medication + ` *` : @string/why_are_you_not_taking_your_diabetes_medication}"
                 tools:text="@string/why_are_you_not_taking_your_diabetes_medication" />
 
             <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
