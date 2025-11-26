@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.complaintNodeActivity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -314,8 +315,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tv_title)).setText(patientName);
         ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", mgender, mAgeAndMonth));
 
-        fetchEligibleProtocols();
-
+        //fetchEligibleProtocols();
+        autoSelectComplaints();
 
     }
 
@@ -337,7 +338,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         } else if (diseaseList.size() == 1 && diseaseList.get(0).equalsIgnoreCase(getString(R.string.tab_general))) {
             displayIneligibleConfirmationDialog();
         } else {
-            autoSelectComplaints(diseaseList);
+            //autoSelectComplaints(diseaseList);
         }
     }
 
@@ -361,7 +362,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         finish();
     }
 
-    private void autoSelectComplaints(List<String> diseaseList) {
+    private void autoSelectComplaints() {
         /*for (String disease : diseaseList) {
             for (Node complaint : complaints) {
                 if (disease.equalsIgnoreCase(complaint.getText())) {
@@ -386,6 +387,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
 
+        // if no eligible mms, then show message
+        if (eligibleMMs != null && eligibleMMs.isEmpty()) {
+            displayIneligibleConfirmationDialog();
+            return;
+        }
         // Track selected categories to avoid duplicates
         Set<String> selectedCategories = new HashSet<>();
 
@@ -428,28 +434,27 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
 
-            if (selection.isEmpty()) {
-               /* MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-                alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
-                alertDialogBuilder.setMessage(getString(R.string.complaint_required));
-                alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+            // Here, the order of the protocols questionnaire to be displayed should be:
+            //Anemia
+            //Diabetes
+            //Hypertension
+            List<ReasonData> orderedSelection = new ArrayList<ReasonData>();
+            for (String protocolCat : Constants.INSTANCE.getNCD_PROTOCOL_ORDER()) {
+                for (ReasonData selectedProtocol : mSelectedComplains) {
+                    if (selectedProtocol.getReasonName().startsWith(protocolCat)) {
+                        orderedSelection.add(selectedProtocol);
                     }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.show();
-                // alertDialog.show();
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
+                }
+            }
+            // can we keep mSelectedComplains as orderedSelection now?
+            mSelectedComplains.clear();
+            mSelectedComplains.addAll(orderedSelection);
+
+            if (selection.isEmpty()) {
                 // show custom dialog
                 DialogUtils d1 = new DialogUtils();
                 d1.showCommonDialog(this, 0, getString(R.string.complaint_dialog_title), getString(R.string.complaint_required), true,
                         getString(R.string.generic_ok), "", null);
-
 
             } else {
 
@@ -662,6 +667,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
 
