@@ -125,9 +125,9 @@ class BaselineMedicalFragment :
             return
         }
 
-        binding.llHbCheck.visibility = View.GONE
+        //binding.llHbCheck.visibility = View.GONE
         binding.llBpCheck.visibility = View.GONE
-        binding.llSugarCheck.visibility = View.GONE
+        //binding.llSugarCheck.visibility = View.GONE
         binding.layoutBpMedication.llBPLabel.visibility = View.GONE
     }
 
@@ -431,17 +431,17 @@ class BaselineMedicalFragment :
 
         binding.medicalConfig?.let {
             val hbCheck =
-                if (it.hbCheck!!.isEnabled && it.hbCheck!!.isMandatory && isAgeGreaterThan18) {
+                if (it.hbCheck!!.isEnabled && it.hbCheck!!.isMandatory && isAgeGreaterThan11) {
                     binding.tilHbCheckOption.validateDropDowb(binding.acHbCheck, error)
                 } else true
 
             val bpCheck =
                 if (it.bpCheck!!.isEnabled && it.bpCheck!!.isMandatory && isAgeGreaterThan18) {
-                    binding.tilBpCheckOption.validateDropDowb(binding.acHbCheck, error)
+                    binding.tilBpCheckOption.validateDropDowb(binding.acBpCheck, error)
                 } else true
 
             val sugarCheck =
-                if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory && isAgeGreaterThan18) {
+                if (it.sugarCheck!!.isEnabled && it.sugarCheck!!.isMandatory && isAgeGreaterThan20) {
                     binding.tilSugarCheckOption.validateDropDowb(binding.acSugarCheck, error)
                 } else true
 
@@ -695,9 +695,66 @@ class BaselineMedicalFragment :
                     } else false
                 } else true
 
-            val isDiabetesValid = validateDiabetesSection(it)
+            //val isDiabetesValid = validateDiabetesSection(it)
+            // Diabetes - Q1: Do you have diabetes?
+            val diabetesValue =
+                if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory && isAgeGreaterThan20) {
+                    binding.layoutDiabetesMedication.rgDiabetesOptions.validate()
+                } else true
 
-            if (hbCheck.and(bpCheck).and(sugarCheck).and(isDiabetesValid)
+            // Diabetes - Q2: Taking any medication?
+            val takingAnyMedicationForDiabetes =
+                if (it.takingAnyMedicationForDiabetes!!.isEnabled &&
+                    it.takingAnyMedicationForDiabetes!!.isMandatory &&
+                    binding.layoutDiabetesMedication.layoutDiabetesMedication.isVisible
+                ) {
+                    binding.layoutDiabetesMedication.rgDiabetesTakingMedicationOptions.validate()
+                } else true
+
+            // Diabetes - Q3: Seen by health worker in past year?
+            val haveYouSeenToHWinPastOneYearForDiabetes =
+                if (it.haveYouSeenToHWinPastOneYearForDiabetes!!.isEnabled &&
+                    it.haveYouSeenToHWinPastOneYearForDiabetes!!.isMandatory &&
+                    binding.layoutDiabetesMedication.layoutDiabetesSeenByHw.isVisible
+                ) {
+                    binding.layoutDiabetesMedication.rgDiabetesSeenByHwMedicationYes.validate()
+                } else true
+
+            // Diabetes - Q4: Reason for not taking medication
+            val reasonForNotTakingDiabetesMedication =
+                if (it.reasonForNotTakingDiabetesMedication!!.isEnabled &&
+                    it.reasonForNotTakingDiabetesMedication!!.isMandatory &&
+                    binding.layoutDiabetesMedication.layoutDiabetesReasonNotTaking.isVisible
+                ) {
+                    val isValidDropdown = binding.layoutDiabetesMedication
+                        .autotvlayoutReasonForNotTakingDiabetesMedication
+                        .validateDropDowb(
+                            binding.layoutDiabetesMedication.autotvReasonForNotTakingDiabetesMedication,
+                            error
+                        )
+
+                    if (isValidDropdown) {
+                        val selectedValue = binding.layoutDiabetesMedication
+                            .autotvReasonForNotTakingDiabetesMedication.text?.toString()?.trim()
+
+                        if (selectedDiabetesNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
+                            val otherReason = binding.layoutDiabetesMedication
+                                .etDiabetesMedicationNotTakingOtherReason.text?.toString()?.trim()
+
+                            if (otherReason.isNullOrEmpty()) {
+                                binding.layoutDiabetesMedication
+                                    .tilDiabetesMedicationNotTakingOtherReason.error =
+                                    getString(R.string.please_enter_reason_txt)
+                                false
+                            } else true
+                        } else {
+                            true
+                        }
+                    } else false
+                } else true
+
+
+            if (hbCheck.and(bpCheck).and(sugarCheck)
                     .and(arthritisValue).and(anemiaValue).and(surgeryValue).and(surgeryReason)
                     .and(smokingHistory).and(smokingRate).and(smokingDuration).and(smokingFrequency)
                     .and(chewTobacco).and(alcoholHistory).and(alcoholRate).and(alcoholDuration)
@@ -705,7 +762,8 @@ class BaselineMedicalFragment :
                     .and(takingAnyMedicationForBP)
                     .and(haveYouSeenToHWinPastOneYearForBP)
                     .and(reasonForNotTakingBPMedication)
-                    .and(takingAnyMedicationForAnemia).and(haveYouSeenToHWinPastOneYearForAnemia).and(reasonForNotTakingAnemiaMedication)
+                    .and(takingAnyMedicationForAnemia).and(haveYouSeenToHWinPastOneYearForAnemia).and(reasonForNotTakingAnemiaMedication).and(diabetesValue)
+                    .and(takingAnyMedicationForDiabetes).and(haveYouSeenToHWinPastOneYearForDiabetes).and(reasonForNotTakingDiabetesMedication)
             ) {
                 block.invoke()
             } else {
@@ -955,6 +1013,7 @@ class BaselineMedicalFragment :
             isAgeGreaterThan11 = true
             return
         }
+        binding.llHbCheck.visibility = View.GONE
         binding.layoutAnemiaMedication.llAnemiaLabel.visibility =View.GONE
 
     }
@@ -1033,7 +1092,7 @@ class BaselineMedicalFragment :
 
         // Diabetes - Q1: Do you have diabetes?
         val diabetesValue =
-            if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory && isAgeGreaterThan18) {
+            if (it.diabetesValue!!.isEnabled && it.diabetesValue!!.isMandatory && isAgeGreaterThan20) {
                 binding.layoutDiabetesMedication.rgDiabetesOptions.validate()
             } else true
 
