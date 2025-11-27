@@ -182,7 +182,8 @@ class PrintViewPrescription(
                 " ${dataModel.bloodGlucoseRandom.value ?: ""} <br> -Glucose (Fasting): ${dataModel.bloodGlucoseFasting.value ?: ""} " +
                 "<br> -Glucose (Post-Prandial): " +
                 "${dataModel.bloodGlucosePostPrandial.value ?: ""} <br> -HGB: ${dataModel.hemoglobin.value ?: ""} <br> -Uric Acid:" +
-                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br><br>"
+                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br>"+
+                "-Diabetes HBA1C: ${dataModel.diabeteshba1c.value ?: ""} <br><br>"
     }
 
     private fun formatDiagnosis(): String {

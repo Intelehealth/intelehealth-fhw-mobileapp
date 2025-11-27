@@ -82,9 +82,9 @@ public class BillGenerationActivity extends BaseActivity {
     private String patientDetails;
     private String receiptNum = "XXXXX";
     private String billDateString = "DD MM YYYY";
-    private LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, totalAmountCV, padd;
+    private LinearLayout consultCV, followUPCV, glucoseFCV, glucoseRCV, glucoseNFCV, glucosePPNCV, haemoglobinCV, cholesterolCV, bpCV, uricAcidCV, diabeteshba1cCV, totalAmountCV, padd;
     private CardView finalBillCV;
-    private TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV, uricAcidChargeTV, totalAmountTV, payingBillTV;
+    private TextView consultChargeTV, followUpChargeTV, glucoseFChargeTV, glucoseRChargeTV, glucoseNFChargeTV, glucosePPNChargeTV, haemoglobinChargeTV, cholesterolChargeTV, bpChargeTV, uricAcidChargeTV,diabeteshba1cChargeTV, totalAmountTV, payingBillTV;
     private Button btn_disConnect, btn_connect;
     private ProgressBar pb_connect;
     private String paymentStatus = "";
@@ -120,6 +120,11 @@ public class BillGenerationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // changing status bar color
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.WHITE);
+
         setContentView(R.layout.activity_bill_generation);
         initViews();
         //setToolbar();
@@ -198,6 +203,7 @@ public class BillGenerationActivity extends BaseActivity {
         cholesterolChargeTV = findViewById(R.id.cholestrol_chargesTV);
         bpChargeTV = findViewById(R.id.bp_chargesTV);
         uricAcidChargeTV = findViewById(R.id.uric_acid_chargesTV);
+        diabeteshba1cChargeTV = findViewById(R.id.diabetes_hba1c_chargesTV);
         totalAmountTV = findViewById(R.id.total_chargesTV);
         payingBillTV = findViewById(R.id.paying_billTV);
         paymentStatusTV = findViewById(R.id.paymentStatus);
@@ -219,6 +225,7 @@ public class BillGenerationActivity extends BaseActivity {
         cholesterolCV = findViewById(R.id.cholestrol_chargesCV);
         bpCV = findViewById(R.id.bp_chargesCV);
         uricAcidCV = findViewById(R.id.uric_acid_chargesCV);
+        diabeteshba1cCV = findViewById(R.id.diabetes_hba1c_chargesCV);
         totalAmountCV = findViewById(R.id.total_chargesCV);
         confirmBillCV = findViewById(R.id.button_confirm_bill);
         printCV = findViewById(R.id.button_print);
@@ -685,6 +692,12 @@ public class BillGenerationActivity extends BaseActivity {
             String price = "30";
             uricAcidChargeTV.setText("₹" + price + "/-");
             total_amount += Integer.parseInt(price);
+        }if (diabeteshba1cCV.getVisibility() == View.VISIBLE) {
+            //String price = conceptAttributeListDAO.getConceptPrice("SERUM URIC ACID");
+            //price = getPrice(price, price.indexOf('.'));
+            String price = "0";
+            diabeteshba1cChargeTV.setText("₹" + price + "/-");
+            total_amount += Integer.parseInt(price);
         }
         if (haemoglobinCV.getVisibility() == View.VISIBLE) {
             //String price = conceptAttributeListDAO.getConceptPrice("Haemoglobin Test");
@@ -734,6 +747,8 @@ public class BillGenerationActivity extends BaseActivity {
             glucoseRCV.setVisibility(View.VISIBLE);
         if (selectedTests.contains(getString(R.string.uric_acid)))
             uricAcidCV.setVisibility(View.VISIBLE);
+        if (selectedTests.contains(getString(R.string.diabetes_hba1c)))
+            diabeteshba1cCV.setVisibility(View.VISIBLE);
         if (selectedTests.contains(getString(R.string.total_cholestrol)))
             cholesterolCV.setVisibility(View.VISIBLE);
         if (selectedTests.contains(getString(R.string.haemoglobin)))

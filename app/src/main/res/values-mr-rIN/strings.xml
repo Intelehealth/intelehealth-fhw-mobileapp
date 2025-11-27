@@ -833,7 +833,7 @@
     <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
     <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
-    <string name="diabetes_hba1c">मधुमेह HBA1C (%)</string>
+    <string name="diabetes_hba1c">मधुमेह HbA1c (%)</string>
     <string name="household_no_survey">घर क्रमांक*</string>
     <string name="result_of_visit">भेटीचा परिणाम*</string>
 

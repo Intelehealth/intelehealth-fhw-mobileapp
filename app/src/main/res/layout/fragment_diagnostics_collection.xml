@@ -179,6 +179,7 @@
                                 android:lineSpacingExtra="1sp"
                                 android:text="@string/blood_glucose_random"
                                 android:textColor="@color/gray_3"
+                                android:layout_marginTop="@dimen/margin_16"
                                 android:textSize="@dimen/common_label_text_size"
                                 android:textStyle="normal" />
 

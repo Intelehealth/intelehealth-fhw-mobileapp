@@ -554,7 +554,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     private List<PatientVital> mPatientVitalList;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
-    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout;
+    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout, mDiabetesHBA1CLinearLayout;
     private List<Diagnostics> mPatientDiagnosticsList;
 
     private void setupVitalConfig() {
@@ -6412,7 +6412,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 if (!billEncounterUuid.equals("")) {
                     billUtils.fetchBillDetails(billEncounterUuid);
                 } else {
-                    boolean[] selectedTests = new boolean[8];
+                    boolean[] selectedTests = new boolean[9];
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString()))
                         selectedTests[1] = false;//no use seen
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString()))
@@ -6427,6 +6427,9 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                         selectedTests[6] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
                         selectedTests[7] = true;
+                    if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
+                        selectedTests[8] = true;
+
                     Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
@@ -6453,6 +6456,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         mPostPrandialLinearLayout = findViewById(R.id.ll_post_prandial_container);
         mHemoglobinLinearLayout = findViewById(R.id.ll_hemoglobin_container);
         mUricAcidLinearLayout = findViewById(R.id.ll_uric_acid_container);
+        mDiabetesHBA1CLinearLayout = findViewById(R.id.ll_diabetes_hba1c_container);
         mCholestrolLinearLayout = findViewById(R.id.ll_total_cholestrol_container);
 
 
@@ -6476,6 +6480,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         mHemoglobinLinearLayout.setVisibility(View.GONE);
         mUricAcidLinearLayout.setVisibility(View.GONE);
         mCholestrolLinearLayout.setVisibility(View.GONE);
+        mDiabetesHBA1CLinearLayout.setVisibility(View.GONE);
 
         for (Diagnostics diagnostics : mPatientDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
@@ -6498,6 +6503,8 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mCholestrolLinearLayout.setVisibility(View.VISIBLE);
 
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                mDiabetesHBA1CLinearLayout.setVisibility(View.VISIBLE);
             }
         }
     }

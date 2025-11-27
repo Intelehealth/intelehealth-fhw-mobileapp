@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.billgeneration.utils
 
 enum class BillRate(val value: Int) {
     URIC_ACID(30),
+    DIABETESHBA1C(0),
     CHOLESTEROL(80),
     GLUCOSE_FASTING(15),
     GLUCOSE_POST_PRANDIAL(15),

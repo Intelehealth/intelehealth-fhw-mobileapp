@@ -280,6 +280,41 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/diabetes_hba1c_chargesCV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:animateLayoutChanges="true"
+                        android:orientation="horizontal"
+                        android:visibility="@{testsChargesModel.diabeteshba1cChargesVisible ? View.VISIBLE : View.GONE}"
+                        android:weightSum="1"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/diabetes_hba1c_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingStart="5dp"
+                            android:text="@string/diabetes_hba1c"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/diabetes_hba1c_chargesTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingEnd="5dp"
+                            android:hint="15.00"
+                            android:text="@{testsChargesModel.diabeteshba1cChargeAmount}"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/glucose_nf_chargesCV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

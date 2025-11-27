@@ -13,6 +13,8 @@ data class BillTestsChargeModel (
     var hemoglobinChargeAmount: String = "",
     var uricAcidChargesVisible: Boolean = false,
     var uricAcidChargeAmount: String = "",
+    var diabeteshba1cChargesVisible: Boolean = false,
+    var diabeteshba1cChargeAmount: String = "",
     var cholestrolChargesVisible: Boolean = false,
     var cholestrolChargeAmount: String = "",
     var bpChargesVisible: Boolean = false,
