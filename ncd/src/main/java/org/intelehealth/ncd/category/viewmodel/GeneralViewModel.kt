@@ -21,6 +21,8 @@ import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.CategoryDatabase
+import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 import java.util.UUID
 
@@ -36,12 +38,12 @@ class GeneralViewModel(private val repository: CategoryRepository, private val u
         _searchQuery.value = query
     }
 
-    fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+    fun getPatientFlow(generalTabDao: GeneralTabDao): Flow<PagingData<PatientVisitDetails>> {
         return searchQuery
             .debounce(300) // wait for user to finish typing
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                repository.getPagedPatients(encounterUuid, query)
+                repository.getPagedPatients(query,generalTabDao)
             }
             .cachedIn(viewModelScope)
     }

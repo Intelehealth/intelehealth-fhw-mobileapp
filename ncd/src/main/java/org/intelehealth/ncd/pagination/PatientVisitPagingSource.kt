@@ -13,7 +13,6 @@ import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
     private val dataSource: CategoryDataSource,
-    private val visitEncounterNoteAttr: String,
     private val query: String
 ) : PagingSource<Int, PatientVisitDetails>() {
 
@@ -48,7 +47,7 @@ class PatientVisitPagingSource(
             val visitIds = patients.mapNotNull { it.visitId }
 
             // 2. Load prescriptionExists in batch
-            val prescriptions = dataSource.getPrescriptionExistsBatch(visitEncounterNoteAttr, visitIds)
+            val prescriptions = dataSource.getPrescriptionExistsBatch(Constants.ENCOUNTER_VISIT_COMPLETE, visitIds)
                 .associateBy { it.visitId }
 
             // 3. Visit attributes in batch

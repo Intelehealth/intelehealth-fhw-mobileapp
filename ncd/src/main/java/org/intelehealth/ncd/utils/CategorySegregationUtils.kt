@@ -405,7 +405,12 @@ class CategorySegregationUtils(private val resources: Resources) {
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
-
+        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : "+Gson().toJson(patientVisitDetailsList))
+        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : "+category)
+        patientVisitDetailsList.forEachIndexed { index, item ->
+            val json = Gson().toJson(item)
+           // logLong(TAG, "testmulti Patient #$index : $json")
+        }
         val result = when (category) {
             Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
@@ -460,8 +465,9 @@ class CategorySegregationUtils(private val resources: Resources) {
 
                 // Case 2: Follow-up given → check only the protocol flag
                 else -> {
-                    val followUpFlag = detail.followUpFromProtocol ?: false
-                    followUpFlag
+                    detail.isHypertensionFollowupTodayOrLater == true
+                    /*    val followUpFlag = detail.followUpFromProtocol ?: false
+                        followUpFlag*/
                 }
             }
         }

@@ -81,9 +81,16 @@ data class PatientVisitDetails(
     var age: Int? = null,
 
     @ColumnInfo(name = "patientPhoneNumber")
-    var patientPhoneNumber: String? = null
+    var patientPhoneNumber: String? = null,
 
+    @ColumnInfo(name = "isHypertensionFollowupTodayOrLater")
+    var isHypertensionFollowupTodayOrLater: Boolean? = null,
 
+    @ColumnInfo(name = "isAnemiaFollowupTodayOrLater")
+    var isAnemiaFollowupTodayOrLater: Boolean? = null,
+
+    @ColumnInfo(name = "isDiabetesFollowupTodayOrLater")
+    var isDiabetesFollowupTodayOrLater: Boolean? = null
     ) {
     @Ignore
     var attributeList: MutableList<String>? = mutableListOf()

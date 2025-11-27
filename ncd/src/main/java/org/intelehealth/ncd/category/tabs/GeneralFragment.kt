@@ -57,7 +57,6 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         super.onViewCreated(view, savedInstanceState)
         initializeData()
         setObservers()
-        //fetchAndSetPatients()
     }
 
     private fun initializeData() {
@@ -112,10 +111,13 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         recyclerView.adapter = adapter.withLoadStateFooter(
             footer = PatientLoadStateAdapter { adapter.retry() }
         )
+        val context = requireContext()
+        val database = CategoryDatabase.getInstance(context)
+        val generalTabDao = database.generalTabDao()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.getPatientFlow(Constants.ENCOUNTER_VISIT_COMPLETE)
+                viewModel.getPatientFlow(generalTabDao)
                     .collectLatest { pagingData ->
                         adapter.submitData(pagingData)
                     }
