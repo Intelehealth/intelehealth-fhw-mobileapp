@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
+    implementation 'com.google.firebase:firebase-crashlytics:20.0.3'
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
     //implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
