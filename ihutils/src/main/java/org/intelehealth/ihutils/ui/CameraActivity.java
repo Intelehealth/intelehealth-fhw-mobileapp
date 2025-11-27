@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ihutils.R;
 import org.intelehealth.ihutils.utils.BitmapUtils;
@@ -118,7 +119,9 @@ public class CameraActivity extends AppCompatActivity {
             // check and correct the image rotation
             try {
                 Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
-                compressImageAndSave(bitmap);
+                if (bitmap != null) {
+                    compressImageAndSave(bitmap);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -210,11 +213,11 @@ public class CameraActivity extends AppCompatActivity {
                     Matrix scaleMatrix = new Matrix();
                     scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
 
-                    Canvas canvas = new Canvas(scaledBitmap);
-                    canvas.setMatrix(scaleMatrix);
-                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 3, middleY - bmp.getHeight() / 3, new Paint(
-                            Paint.FILTER_BITMAP_FLAG));
-
+                    if (scaledBitmap != null) {
+                        Canvas canvas = new Canvas(scaledBitmap);
+                        canvas.setMatrix(scaleMatrix);
+                        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 3, middleY - bmp.getHeight() / 3, new Paint(Paint.FILTER_BITMAP_FLAG));
+                    }
                     ExifInterface exif;
                     try {
                         exif = new ExifInterface(filePath);
@@ -232,16 +235,19 @@ public class CameraActivity extends AppCompatActivity {
                             matrix.postRotate(270);
                             Log.e("EXIF", "Exif: " + orientation);
                         }
-                        scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
-                                matrix, true);
+
+                        if (scaledBitmap != null) {
+                            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     FileOutputStream out = null;
-                    String filename = filePath;
                     try {
-                        out = new FileOutputStream(file);
-                        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 95, out);
+                        if (scaledBitmap != null) {
+                            out = new FileOutputStream(file);
+                            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 95, out);
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } finally {
@@ -255,10 +261,12 @@ public class CameraActivity extends AppCompatActivity {
                     }
                     Intent intent = new Intent();
                     intent.putExtra("RESULT", file.getAbsolutePath());
-                    setResult(RESULT_OK, intent);
-                    Log.i(TAG, file.getAbsolutePath());
-                    finish();
+                    runOnUiThread(() -> {
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    });
                 } catch (IOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     Log.w(TAG, "Cannot write to " + file, e);
                     setResult(RESULT_CANCELED, new Intent());
                     finish();
