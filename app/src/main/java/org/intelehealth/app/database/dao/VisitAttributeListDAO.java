@@ -29,6 +29,7 @@ import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.ayu.visit.notification.ReminderWorker;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.lang.reflect.Type;
@@ -373,6 +374,18 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=? and voided=0 LIMIT 1",
                 new String[]{visitUuid, attributeTypeUUID});
+        if (cursor.getCount() > 0) {
+            exists = true;
+        }
+        cursor.close();
+        return exists;
+    }
+
+    public Boolean checkInfoShareInsertedOrNot(String visitUuid) {
+        boolean exists = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=? and voided=0 LIMIT 1",
+                new String[]{visitUuid, UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE});
         if (cursor.getCount() > 0) {
             exists = true;
         }

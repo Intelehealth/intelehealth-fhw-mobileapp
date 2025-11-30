@@ -24,8 +24,10 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class VisitsDAO {
 
@@ -234,11 +236,23 @@ public class VisitsDAO {
         return  isupdatedone;
 }
 */
-
+    private boolean isDateFormat(String date, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+            sdf.setLenient(false);
+            sdf.parse(date);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     //update - end....
 
     public List<VisitDTO> unsyncedVisits() {
+        String patternToCheck = "MMM dd, yyyy hh:mm:ss a";
+        String patternTarget = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -254,6 +268,21 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+
+                //sending share visit attribute after visit sync (After visit sync the stop date format get changed)
+                //that's why added the logic to check format
+                //if local date format is not like web then converting it to web format
+                String endDate = idCursor.getString(idCursor.getColumnIndexOrThrow("enddate"));
+                if (isDateFormat(endDate, patternToCheck)) {
+                    String convertedDate = DateAndTimeUtils.formatDateFromOnetoAnother(
+                            endDate,
+                            patternToCheck,
+                            patternTarget
+                    );
+                    visitDTO.setEnddate(convertedDate);
+                } else {
+                    visitDTO.setEnddate(endDate);
+                }
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttrs(visitDTO.getUuid());
