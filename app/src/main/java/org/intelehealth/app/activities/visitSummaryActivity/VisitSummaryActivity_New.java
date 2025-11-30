@@ -387,6 +387,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     public static String prescription2;
     private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+    private VisitsDAO visitsDAO = new VisitsDAO();
     private ImageButton backArrow, priority_hint, refresh, filter;
     private NetworkUtils networkUtils;
     private static final int SCHEDULE_LISTING_INTENT = 2001;
@@ -6741,10 +6742,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             });
 
-            NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context, mBinding);
+            NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(
+                    context,
+                    mBinding,
+                    visitUuid,
+                    visitsDAO,
+                    visitAttributeListDAO
+            );
             ncdInfoViewAndShareHelper.viewNcdInfoModuleInfoNew(infoModulesFileUrlsList, mBinding);
 
-            mBinding.layoutShareInfoModule.setOnClickListener(v -> ncdInfoViewAndShareHelper.showShareDialog(patientUuid, infoModulesFileUrlsList));
+
+            mBinding.layoutShareInfoModule.setOnClickListener(v -> {
+                ncdInfoViewAndShareHelper.showShareDialog(
+                        patientUuid,
+                        infoModulesFileUrlsList
+
+                );
+            });
 
         }
 

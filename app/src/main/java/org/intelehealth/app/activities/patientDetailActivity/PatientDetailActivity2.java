@@ -246,6 +246,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private boolean areAllVisitsEnded = true;
 
     private String mIntentFromNCDCategoryName = Constants.GENERAL;
+    private boolean isBaselineWarningOkClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -2408,19 +2409,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(PatientDetailActivity2.this, SearchPatientActivity_New.class);
+                Intent intent = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
                 onBack(intent);
             }
         });
     }
 
     public void backPress(View view) {
-        Intent intent = new Intent(this, SearchPatientActivity_New.class);
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
         onBack(intent);
     }
 
     public void onBack(Intent intent) {
-        if (!isBaselineSurveyCompleted && !sessionManager.getBaseLineWarningInfo(patientDTO.getUuid())) {
+        if (!isBaselineSurveyCompleted && !isBaselineWarningOkClicked) {
             showBaselineWarningDialog(intent);
         } else {
             startActivity(intent);
@@ -2443,10 +2444,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Button okButton = baselineWarningDialog.findViewById(R.id.positive_btn);
         if (okButton != null) okButton.setOnClickListener(v -> {
-            sessionManager.setBaseLineWarningInfo(patientDTO.getUuid());
             baselineWarningDialog.dismiss();
-            startActivity(intent);
-            finish();
+            isBaselineWarningOkClicked = true;
+           /* startActivity(intent);
+            finish();*/
         });
 
     }
