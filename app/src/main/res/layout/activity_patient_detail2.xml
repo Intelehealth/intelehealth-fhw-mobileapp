@@ -246,11 +246,34 @@
                                     android:textAppearance="@style/patdetail_header1" />
                             </LinearLayout>
 
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dip"
                                 android:layout_marginVertical="@dimen/padding_12"
                                 android:background="@color/gray_1" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="@dimen/std_24dp"
+                                android:paddingEnd="@dimen/std_24dp"
+                                android:paddingTop="@dimen/padding_10"
+                                android:paddingBottom="@dimen/padding_10"
+                                android:onClick="onClickNcdVisit"
+                                android:textSize="16sp"
+                                android:text="Click to view the past 5 NCD visits"
+                                android:textColor="@color/colorAccent"
+                                app:drawableEndCompat="@drawable/arrow_right_icon8"
+                                app:drawableTint="@color/colorAccent"
+                                />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dip"
+                                android:layout_marginVertical="@dimen/padding_12"
+                                android:background="@color/gray_1" />
+
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rcv_past_visits"

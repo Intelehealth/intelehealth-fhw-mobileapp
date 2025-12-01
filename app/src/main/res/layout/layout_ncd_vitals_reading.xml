@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginStart="@dimen/toolbar_margin_left"
+    android:layout_marginTop="@dimen/fu_card_margin_sides"
+    android:layout_marginEnd="@dimen/toolbar_margin_left"
+    android:elevation="16dp"
+    app:cardCornerRadius="@dimen/margin_5"
+    app:cardElevation="@dimen/margin_5">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Thermometer Icon -->
+        <ImageView
+            android:id="@+id/iv_thermometer"
+            android:layout_width="@dimen/edittext_height_44dp"
+            android:layout_height="@dimen/edittext_height_44dp"
+            android:src="@drawable/vitals_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="@string/recent_ncd_readings"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_8"
+            app:layout_constraintBottom_toBottomOf="@id/iv_thermometer"
+            app:layout_constraintEnd_toStartOf="@id/iv_chevron"
+            app:layout_constraintStart_toEndOf="@id/iv_thermometer"
+            app:layout_constraintTop_toTopOf="@id/iv_thermometer" />
+
+        <!-- Chevron Icon -->
+        <ImageView
+            android:id="@+id/iv_chevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ui2_ic_chevron_down"
+            android:contentDescription="@string/collapse_expand"
+            app:layout_constraintBottom_toBottomOf="@id/iv_thermometer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_thermometer" />
+
+        <!-- Table Header Container -->
+        <View
+            android:id="@+id/header_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:background="#F5F3FF"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rbs_unit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_thermometer" />
+
+        <!-- Date Header -->
+        <TextView
+            android:id="@+id/tv_date_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/date"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guideline_col1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/header_background" />
+
+        <!-- BP Header with Icon -->
+        <LinearLayout
+            android:id="@+id/lay_bp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_col2"
+            app:layout_constraintStart_toStartOf="@id/guideline_col1"
+            app:layout_constraintTop_toTopOf="@id/header_background">
+
+            <ImageView
+                android:id="@+id/iv_bp_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:contentDescription="@string/bp_icon"
+                android:src="@drawable/ic_heart" />
+
+            <TextView
+                android:id="@+id/tv_bp_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bp"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_bp_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="8dp"
+            android:text="@string/mm_hg"
+            android:textColor="@color/textColorGray"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_col2"
+            app:layout_constraintStart_toStartOf="@id/guideline_col1"
+            app:layout_constraintTop_toBottomOf="@+id/lay_bp" />
+
+        <!-- HB Header with Icon -->
+        <LinearLayout
+            android:id="@+id/lay_hb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_col3"
+            app:layout_constraintStart_toStartOf="@id/guideline_col2"
+            app:layout_constraintTop_toTopOf="@id/header_background">
+
+            <ImageView
+                android:id="@+id/iv_hb_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:contentDescription="@string/hb_icon"
+                android:src="@drawable/ic_blood_drop" />
+
+            <TextView
+                android:id="@+id/tv_hb_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hb"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_hb_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="8dp"
+            android:text="@string/gm_dl"
+            android:textColor="@color/textColorGray"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_col3"
+            app:layout_constraintStart_toStartOf="@id/guideline_col2"
+            app:layout_constraintTop_toBottomOf="@+id/lay_hb" />
+
+        <!-- RBS Header with Icon -->
+        <LinearLayout
+            android:id="@+id/lay_rbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_col3"
+            app:layout_constraintTop_toTopOf="@id/header_background">
+
+            <ImageView
+                android:id="@+id/iv_rbs_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:contentDescription="@string/rbs_icon"
+                android:src="@drawable/ic_blood_drop" />
+
+            <TextView
+                android:id="@+id/tv_rbs_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rbs"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_rbs_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="8dp"
+            android:text="@string/mg_dl"
+            android:textColor="@color/textColorGray"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_col3"
+            app:layout_constraintTop_toBottomOf="@+id/lay_rbs" />
+
+        <!-- RecyclerView for data rows -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ncd_readings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_background"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_ncd_vital_reading" />
+
+        <!-- Guidelines for column alignment -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.57" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.78" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
