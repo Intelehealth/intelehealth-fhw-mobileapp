@@ -136,6 +136,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -1530,6 +1531,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     /**
+     * using this intent to handle ncd item click
+     */
+    private void intentForNcdVisitDetails() {
+        Intent in = new Intent(PatientDetailActivity2.this, VisitSummaryActivity_New.class);
+        in.putExtra("patientUuid", patientDTO.getUuid());
+        in.putExtra("gender", mGender);
+        in.putExtra("name", patientName);
+        in.putExtra("float_ageYear_Month", float_ageYear_Month);
+        in.putExtra("tag", "VisitDetailsActivity");
+        in.putExtra(IntentKeys.IS_NCD_VITALS_EVENT, true);
+        startActivity(in);
+    }
+
+    /**
      * set patient full name here
      */
     private void setFullName() {
@@ -2411,6 +2426,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onClickNcdVisit(View view) {
+        intentForNcdVisitDetails();
     }
 
     // Receiver class for Openmrs ID

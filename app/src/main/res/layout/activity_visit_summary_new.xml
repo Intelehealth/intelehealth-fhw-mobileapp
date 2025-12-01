@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -376,7 +377,8 @@
                     <!--                android:src="@drawable/close_all_btn"-->
                     <include
                         android:id="@+id/layout_visit_summary_items"
-                        layout="@layout/visit_summary_itemscard" />
+                        layout="@layout/visit_summary_itemscard"
+                        />
 
                 </RelativeLayout>
                 <!--Vitals and Other cards - end-->

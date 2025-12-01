@@ -137,6 +137,7 @@ import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFi
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitArrayAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.facilitytovisit.FacilityToVisitModel;
 import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.HealthModuleItem;
+import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NCDReadingAdapter;
 import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoModuleFilesNameGenerator;
 import org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.NcdInfoViewAndShareHelper;
 import org.intelehealth.app.activities.visitSummaryActivity.saverity.SeverityArrayAdapter;
@@ -160,9 +161,11 @@ import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
+import org.intelehealth.app.databinding.LayoutNcdVitalsReadingBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.DocumentObject;
+import org.intelehealth.app.models.NCDReading;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
@@ -183,6 +186,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -412,9 +416,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
 
     private boolean mIsNCDVisit = false;
+    private boolean mIsNCDVitals = false;
     private List<String> infoModulesList;
     private List<HealthModuleItem> infoModulesFileUrlsList;
     private boolean mIsVisitEnded = false;
+    private NCDReadingAdapter adapter;
+
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -530,6 +537,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         initUI();
+
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
 
@@ -557,6 +565,42 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         language = sessionManager.getAppLanguage();
         //shareAndViewInfoModel();
         viewAndShareHealthInfoModule();
+
+        setupRecyclerView();
+        loadData();
+        setupClickListeners();
+    }
+
+    private void setupRecyclerView() {
+        // Initialize adapter with click listener
+        adapter = new NCDReadingAdapter(reading -> {
+            Toast.makeText(this, "Clicked: " + reading.getDate(),
+                    Toast.LENGTH_SHORT).show();
+            return null;
+        });
+
+        // Setup RecyclerView
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.rvNcdReadings.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.rvNcdReadings.setAdapter(adapter);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.rvNcdReadings.setNestedScrollingEnabled(false);
+    }
+
+    private void loadData() {
+        // Get sample data
+        List<NCDReading> readings = NCDReading.Companion.getSampleData();
+
+        // Submit to adapter
+        adapter.submitList(readings);
+    }
+
+    private void setupClickListeners() {
+        // Chevron click to expand/collapse
+       // cardBinding.ivChevron.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
+
+        // Optional: Make entire header clickable
+      //  cardBinding.tvTitle.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
     }
 
     private void checkIfVisitIsEnded() {
@@ -787,10 +831,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         mIsVisitEnded = VisitsDAO.isVisitEnded(visitUuid);
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+        mIsNCDVitals = intent.getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
+
         Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-        if (mIsNCDVisit) {
+        if (mIsNCDVisit || mIsNCDVitals) {
             findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
             findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
             findViewById(R.id.ll_associated_sympt).setVisibility(View.GONE);
