@@ -109,7 +109,7 @@
     <!--Text Size-->
     <dimen name="toolbar_text_size">34sp</dimen>
     <dimen name="common_title_margin_top">24dp</dimen>
-    <dimen name="fu_card_margin_sides">24dp</dimen>
+    <dimen name="fu_card_margin_sides">12dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>
     <dimen name="fu_name_txt_size">34sp</dimen>

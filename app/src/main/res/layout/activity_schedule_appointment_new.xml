@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/schedule_app_padding_start_end"
+    android:layout_marginEnd="@dimen/schedule_app_padding_start_end"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    android:paddingStart="@dimen/schedule_app_padding_start_end"
-    android:paddingEnd="@dimen/schedule_app_padding_start_end"
     tools:context=".appointmentNew.ScheduleAppointmentActivity_New">
 
     <include
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_schedule_appointments"
-        android:layout_marginTop="@dimen/schedule_app_margin_top"
+        android:layout_marginTop="@dimen/margin_10"
         android:orientation="horizontal">
 
         <ImageView
@@ -80,8 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/rv_horizontal_cal"
-
-        android:layout_marginBottom="@dimen/schedule_app_margin_bottom"
+        android:layout_marginBottom="@dimen/margin_20"
         android:fillViewport="true">
 
         <LinearLayout

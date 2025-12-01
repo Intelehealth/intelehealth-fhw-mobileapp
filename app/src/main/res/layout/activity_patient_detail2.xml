@@ -114,8 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/relative_firstscreen_nxt_btn"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginBottom="@dimen/margin_16">
+            android:layout_below="@+id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -228,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
-                        android:layout_marginBottom="@dimen/margin_24"
+                        android:layout_marginBottom="@dimen/margin_20"
                         app:cardCornerRadius="@dimen/margin_8"
                         app:cardElevation="@dimen/margin_5">
 
@@ -285,7 +284,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="24dp"
-                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_15"
                         app:cardCornerRadius="@dimen/margin_8"
                         app:cardElevation="@dimen/margin_5">
 
@@ -389,7 +388,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:paddingStart="@dimen/margin_30"

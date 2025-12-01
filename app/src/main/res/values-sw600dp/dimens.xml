@@ -286,7 +286,7 @@
 
     <!--Text Size-->
     <dimen name="toolbar_text_size">34sp</dimen>
-    <dimen name="fu_card_margin_sides">24dp</dimen>
+    <dimen name="fu_card_margin_sides">12dp</dimen>
     <dimen name="fu_card_margin_updown">32dp</dimen>
     <dimen name="toolbar_top_minus_24dp">-4dp</dimen>
     <dimen name="fu_margin_start">24dp</dimen>

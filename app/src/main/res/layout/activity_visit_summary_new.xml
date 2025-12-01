@@ -358,8 +358,7 @@
                     android:id="@+id/vitalsRelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cardview_head"
-                    android:layout_marginTop="@dimen/margin_20dp">
+                    android:layout_below="@+id/cardview_head">
 
                     <Button
                         android:id="@+id/openall_btn"
@@ -391,7 +390,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/vitalsRelativeLayout"
-                    android:layout_marginTop="@dimen/fu_card_margin_sides">
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <!--Visit Summary-->
 
@@ -558,8 +557,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add_notes_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides"
                     android:visibility="visible">
 
                     <TextView
@@ -620,7 +619,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add_doc_relative"
-                    android:layout_marginTop="@dimen/margin_16">
+                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                     <!--Diagnosis -->
                     <FrameLayout
@@ -633,7 +632,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
-                            android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
@@ -773,7 +771,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
-                            android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
@@ -1405,9 +1402,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/relative_speciality_block"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
-                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="65dp"
+                    android:layout_marginBottom="60dp"
                     android:elevation="16dp"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
