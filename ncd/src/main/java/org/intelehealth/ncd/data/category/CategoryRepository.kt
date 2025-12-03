@@ -32,10 +32,6 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
         rawDataList: List<PatientVisitDetails>
     ): List<PatientVisitDetails> {
         return rawDataList.map { data ->
-            val hardcodedChiefComplaintData = """
-►<b>Anemia Screening</b>: <br/>• Have you felt/experienced any of the following over a long period of time? - Headache, Dizziness, Weakness, Fatigue<br/>• hb_measurement - Hemoglobin(Hb) Measurement - 14.0<br/>• Outcome of Anemia screening - Follow-up after six months<br/>• Next Follow Up Date - 25/May/2026.<br/>
-►<b>Hypertension Screening</b>: <br/>• BP Measurement - 186/110<br/>• Are you feeling any of the following health conditions? - Dizziness, Weakness, Chest pain<br/>• Outcome of hypertension screening - Refer to PHC/CHC/nearby medical facility immediately<br/>• Next Follow Up Date - 25/Dec/2025.<br/>
-""".trimIndent()
             val formattedStartDate = data.startDate?.let {
                 DateAndTimeUtils.formatStartVisitDate(
                     it,
@@ -65,7 +61,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
 
 
             val tempModel = PatientVisitDetails()
-            setFollowUpFlags(hardcodedChiefComplaintData, tempModel)
+            setFollowUpFlags(data.chiefComplaintData, tempModel)
             isHypertensionFollowupGiven = tempModel.isHypertensionFollowupGiven
             isAnemiaFollowupGiven = tempModel.isAnemiaFollowupGiven
             isDiabetesFollowupGiven = tempModel.isDiabetesFollowupGiven
@@ -190,17 +186,17 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
 
             when (complaint) {
 
-                "hypertension screening", "hypertension follow up" -> {
+                "hypertension screening", "hypertension followup" -> {
                     model.isHypertensionFollowupGiven = followUpGiven
                     model.isHypertensionFollowupTodayOrLater = followUpTodayOrLater
                 }
 
-                "anemia screening", "anemia follow up" -> {
+                "anemia screening", "anemia followup" -> {
                     model.isAnemiaFollowupGiven = followUpGiven
                     model.isAnemiaFollowupTodayOrLater = followUpTodayOrLater
                 }
 
-                "diabetes screening", "diabetes follow up" -> {
+                "diabetes screening", "diabetes followup" -> {
                     model.isDiabetesFollowupGiven = followUpGiven
                     model.isDiabetesFollowupTodayOrLater = followUpTodayOrLater
                 }
