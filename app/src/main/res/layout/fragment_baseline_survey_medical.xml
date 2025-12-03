@@ -191,6 +191,15 @@
                     app:medicalConfig="@{medicalConfig}"
                     app:baselineEditMode="@{baselineEditMode}"
                     android:visibility="@{medicalConfig.bpValue.enabled ? View.VISIBLE : View.GONE}"/>
+
+                <include
+                    android:id="@+id/layout_diabetes_medication"
+                    layout="@layout/layout_diabetes_medication_basline"
+                    tools:visibility="visible"
+                    app:baseline="@{baseline}"
+                    app:medicalConfig="@{medicalConfig}"
+                    app:baselineEditMode="@{baselineEditMode}"
+                    android:visibility="@{medicalConfig.diabetesValue.enabled ? View.VISIBLE : View.GONE}"/>
               <!--  <LinearLayout
                     android:id="@+id/llBpLabel"
                     android:layout_width="match_parent"
@@ -243,6 +252,7 @@
 
                 </LinearLayout>-->
 
+<!--
                 <LinearLayout
                     android:id="@+id/llDiabetesLabel"
                     android:layout_width="match_parent"
@@ -294,6 +304,7 @@
                     </RadioGroup>
 
                 </LinearLayout>
+-->
 
                 <LinearLayout
                     android:id="@+id/llArthritisLabel"

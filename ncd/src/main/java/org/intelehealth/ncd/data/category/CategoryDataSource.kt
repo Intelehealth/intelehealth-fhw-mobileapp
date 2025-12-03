@@ -20,21 +20,7 @@ class CategoryDataSource(
     private val visitDao: VisitDao,
     private val generalDao: GeneralTabDao? = null
 ) {
-
-    suspend fun getPatientsBasedOnAge(age: Int): List<Patient> =
-        patientDao.getPatientsBasedOnAge(age)
-
-    suspend fun getPatientsBelowAge(age: Int): List<Patient> = patientDao.getPatientsBelowAge(age)
-
-    suspend fun getPatientsBasedOnAttributesUuids(
-        patientUuid: String,
-        attributeUuid: String
-    ): PatientAttributes =
-        patientAttributeDao.getPatientsBasedOnAttributeUuids(patientUuid, attributeUuid)
-
-    suspend fun getStartVisitNoteEncounterByVisitUUID(visitUuid: String, encounterTypeUuid: String): String = visitDao.getStartVisitNoteEncounterByVisitUUID(visitUuid, encounterTypeUuid)
     suspend fun getPatientVisitRawData(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawData(age, attributeTypeUuid,visitNoteEncounterUuid)
-    suspend fun getPatientVisitRawDataBelowAgeForGeneral(visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataGeneral(visitNoteEncounterUuid)
     suspend fun getPatientVisitRawDataForFollowup(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String,patientUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataForFollowup(age, attributeTypeUuid,visitNoteEncounterUuid, patientUuid)
 
     suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int): List<PatientVisitDetails> = generalDao?.getPatientsAndVisitsPage(limit, offset) ?: emptyList()

@@ -21,57 +21,29 @@ import org.intelehealth.ncd.data.category.CategoryRepository
 import org.intelehealth.ncd.model.Patient
 import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.CategoryDatabase
+import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 import java.util.UUID
 
 class GeneralViewModel(private val repository: CategoryRepository, private val utils: CategorySegregationUtils) : ViewModel() {
 
-  /*  private val _generalMutableLiveData = MutableLiveData<List<Patient>>()
-    val generalLiveData: LiveData<List<Patient>> = _generalMutableLiveData*/
     private val _generalMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
     val generalLiveData: LiveData<List<PatientVisitDetails>> = _generalMutableLiveData
-    private val allPatients = mutableListOf<PatientVisitDetails>()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
-    fun getPatientsForGeneral() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result: List<PatientVisitDetails> = repository.getPatientVisitDetailsBelowAgeForGeneral(Constants.ENCOUNTER_VISIT_COMPLETE)
-
-            allPatients.clear()
-            allPatients.addAll(result)
-
-            _generalMutableLiveData.postValue(result)
-        }
-    }
-    /*fun searchPatient(query: String) {
-        val filtered = if (query.isBlank()) {
-            allPatients
-        } else {
-            allPatients.filter {
-                val name = "${it.firstName} ${it.middleName.orEmpty()} ${it.lastName.orEmpty()}".trim()
-                val openmrsId = it.openmrsId ?: ""
-                name.contains(query, ignoreCase = true) || openmrsId.contains(query, ignoreCase = true)
-            }
-        }
-        _generalMutableLiveData.postValue(filtered)
-    }*/
-   /* fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
-        return repository
-            .getPagedPatients(encounterUuid)
-            .cachedIn(viewModelScope)
-    }*/
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
 
-    fun getPatientFlow(encounterUuid: String): Flow<PagingData<PatientVisitDetails>> {
+    fun getPatientFlow(generalTabDao: GeneralTabDao): Flow<PagingData<PatientVisitDetails>> {
         return searchQuery
             .debounce(300) // wait for user to finish typing
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                repository.getPagedPatients(encounterUuid, query)
+                repository.getPagedPatients(query,generalTabDao)
             }
             .cachedIn(viewModelScope)
     }

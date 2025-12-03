@@ -82,29 +82,6 @@ class HypertensionFollowUpFragment : SearchableFragment<HypertensionFollowUpView
         viewModel.searchPatient(query)
     }
 
-   /* override fun onPatientClicked(patientVisitDetails: PatientVisitDetails) {
-        try {
-            val intent = Intent(
-                requireActivity(),
-                Class.forName("org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2")
-            )
-
-            val status = "returning"
-            val tag = "search"
-            val hasPrescription = "false"
-
-            intent.putExtra(Constants.INTENT_PATIENT_UUID, patientVisitDetails.patientId)
-            intent.putExtra(Constants.INTENT_PATIENT_NAME, "${patientVisitDetails.firstName} ${patientVisitDetails.lastName}")
-            intent.putExtra(Constants.INTENT_PATIENT_STATUS, status)
-            intent.putExtra(Constants.INTENT_PATIENT_TAG, tag)
-            intent.putExtra(Constants.INTENT_HAS_PRESCRIPTION, hasPrescription)
-
-            startActivity(intent)
-        } catch (exception: ClassNotFoundException) {
-            exception.printStackTrace()
-        }
-    }*/
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

@@ -213,10 +213,12 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_ANEMIA -> takingAnyMedicationForAnemia = it
                     PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA -> haveYouSeenToHWinPastOneYearForAnemia = it
                     PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> reasonForNotTakingAnemiaMedication = it
-                    PatientRegConfigKeys.OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> otherRreasonForNotTakingAnemiaMedication = it
                     PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_BP -> takingAnyMedicationForBP = it
                     PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_BP -> haveYouSeenToHWinPastOneYearForBP = it
                     PatientRegConfigKeys.REASON_FOR_NOT_TAKING_BP_MEDICATION -> reasonForNotTakingBPMedication = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_DIABETES -> takingAnyMedicationForDiabetes = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_DIABETES -> haveYouSeenToHWinPastOneYearForDiabetes = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_DIABETES_MEDICATION -> reasonForNotTakingDiabetesMedication = it
                 }
             }
         }

@@ -359,63 +359,6 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-  /*  fun segregateAndFetchPatientVisitDetails(
-        patientVisitDetailsList: List<PatientVisitDetails>,
-        category: String
-    ): List<PatientVisitDetails> {
-        // As per this ticket AEAT-1951 :
-        Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
-        Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
-
-        val filteredList = patientVisitDetailsList.toMutableList()
-
-        when (category) {
-
-            Constants.HYPERTENSION_SCREENING -> {
-                filteredList.removeAll { detail ->
-                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
-                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
-                    val followupGiven = detail.isHypertensionFollowupGiven ?: false
-
-                    // Include if: No history OR has history but not on medication also followup date not given to patient
-                    val age = detail.age ?: 0
-                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
-
-                    val includePatient = !followupGiven && meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
-                    // Remove if inclusion criteria NOT met
-                    !includePatient
-                }
-            }
-
-            Constants.HYPERTENSION_FOLLOW_UP -> {
-                filteredList.removeAll { detail ->
-                    val hasHistory = isHistoryOfHypertensionPresent(detail.value)
-                    val onMedication = isCurrentlyTakingHypertensionMedication(detail.value)
-                    val followUpFlag = detail.followUpFromProtocol == true
-                    // Include if: has history AND on medication AND follow-up flag true
-                    val age = detail.age ?: 0
-                    val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
-
-                    val includePatient = when {
-                        // Case 1:no follow-up date given but has baseline survey true
-                        detail.isHypertensionFollowupGiven != true -> meetsAgeCriteria && hasHistory && onMedication
-
-                        // Case 2: followup given and follupdate on and after that date
-                        detail.isHypertensionFollowupGiven == true -> followUpFlag
-
-                        else -> false
-                    }
-                    // Remove if inclusion criteria NOT met
-                    !includePatient
-                }
-            }
-            else -> {
-                filteredList.clear()            }
-        }
-
-        return filteredList
-    }*/
-
     private fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
@@ -463,9 +406,12 @@ class CategorySegregationUtils(private val resources: Resources) {
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
-        Log.d("newkz", "Full Patient Attribute List:\n${patientVisitDetailsList.joinToString("\n")}")
-        Log.d("newkz", "Full Patient Attribute List size:\n${patientVisitDetailsList.size}")
-
+        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : "+Gson().toJson(patientVisitDetailsList))
+        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : "+category)
+        patientVisitDetailsList.forEachIndexed { index, item ->
+            val json = Gson().toJson(item)
+           // logLong(TAG, "testmulti Patient #$index : $json")
+        }
         val result = when (category) {
             Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
@@ -473,7 +419,6 @@ class CategorySegregationUtils(private val resources: Resources) {
             else -> emptyList()
         }
 
-        Log.d("newkz", "Filtered $category size: ${result.size}")
         return result
     }
 
@@ -521,8 +466,9 @@ class CategorySegregationUtils(private val resources: Resources) {
 
                 // Case 2: Follow-up given → check only the protocol flag
                 else -> {
-                    val followUpFlag = detail.followUpFromProtocol ?: false
-                    followUpFlag
+                    detail.isHypertensionFollowupTodayOrLater == true
+                    /*    val followUpFlag = detail.followUpFromProtocol ?: false
+                        followUpFlag*/
                 }
             }
         }
