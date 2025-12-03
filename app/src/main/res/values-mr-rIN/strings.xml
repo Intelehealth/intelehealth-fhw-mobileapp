@@ -1535,4 +1535,5 @@
     <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
 
+    <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क ऑडिओ कॉलवर स्विच करा</string>
 </resources>
