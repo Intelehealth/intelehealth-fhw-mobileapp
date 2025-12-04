@@ -254,15 +254,16 @@
                                 android:background="@color/gray_1" />
 
                             <TextView
+                                android:id="@+id/ncd_visit_count_tv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:paddingStart="@dimen/std_24dp"
                                 android:paddingEnd="@dimen/std_24dp"
                                 android:paddingTop="@dimen/padding_10"
                                 android:paddingBottom="@dimen/padding_10"
-                                android:onClick="onClickNcdVisit"
                                 android:textSize="16sp"
-                                android:text="Click to view the past 5 NCD visits"
+                                android:text=""
                                 android:textColor="@color/colorAccent"
                                 app:drawableEndCompat="@drawable/arrow_right_icon8"
                                 app:drawableTint="@color/colorAccent"

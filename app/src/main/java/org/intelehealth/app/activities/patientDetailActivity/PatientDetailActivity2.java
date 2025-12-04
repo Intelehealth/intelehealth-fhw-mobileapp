@@ -174,7 +174,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -247,6 +249,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private boolean areAllVisitsEnded = true;
 
     private String mIntentFromNCDCategoryName = Constants.GENERAL;
+    private CompositeDisposable disposables = new CompositeDisposable();
+
     private boolean isBaselineWarningOkClicked = false;
 
     @Override
@@ -311,6 +315,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         initUI();
+
+        fetchNcdVisitCount();
+
+        binding.ncdVisitCountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentForNcdVisitDetails();
+            }
+        });
 
 
         personal_edit.setOnClickListener(v -> {
@@ -659,6 +672,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         populateBaselineSurveys();
 
         handleDeviceBackPress();
+    }
+
+    private void fetchNcdVisitCount() {
+        disposables.add(
+                Single.fromCallable(() -> VisitsDAO.fetchObservationValuesCount(patientDTO.getUuid()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                count -> {
+                                    if(count>0){
+                                        binding.ncdVisitCountTv.setVisibility(View.VISIBLE);
+                                        binding.ncdVisitCountTv.setText("Click to view the past "+count+"NCD visits");
+                                    }else{
+                                        binding.ncdVisitCountTv.setVisibility(View.GONE);
+                                    }
+                                },
+                                error -> Log.e("TAG", "Error: " + error.getMessage())
+                        )
+        );
     }
 
     private void startNewVisit() {
@@ -2419,52 +2451,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 });
     }
 
-
-    private void handleDeviceBackPress() {
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Intent intent = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
-                onBack(intent);
-            }
-        });
-    }
-
     public void backPress(View view) {
-        Intent intent = new Intent(this, HomeScreenActivity_New.class);
-        onBack(intent);
-    }
-
-    public void onBack(Intent intent) {
-        if (!isBaselineSurveyCompleted && !isBaselineWarningOkClicked) {
-            showBaselineWarningDialog(intent);
-        } else {
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    private void showBaselineWarningDialog(Intent intent) {
-        DialogUtils dialogUtils = new DialogUtils();
-        MaterialAlertDialogBuilder builder = dialogUtils.showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this, R.drawable.close_patient_svg), getString(R.string.baseline_warning_alert),
-                getString(R.string.please_complete_the_baseline_survey), getString(R.string.dialog_baseline_ok));
-        AlertDialog baselineWarningDialog = builder.show();
-        baselineWarningDialog.setCancelable(false);
-
-        baselineWarningDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
-        baselineWarningDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        baselineWarningDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-
-        Button okButton = baselineWarningDialog.findViewById(R.id.positive_btn);
-        if (okButton != null) okButton.setOnClickListener(v -> {
-            baselineWarningDialog.dismiss();
-            isBaselineWarningOkClicked = true;
-           /* startActivity(intent);
-            finish();*/
-        });
-
+        Intent intent = new Intent(this, SearchPatientActivity_New.class);
+        startActivity(intent);
+        finish();
     }
 
     public void syncNow(View view) {
