@@ -172,7 +172,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -245,6 +247,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private boolean areAllVisitsEnded = true;
 
     private String mIntentFromNCDCategoryName = Constants.GENERAL;
+    private CompositeDisposable disposables = new CompositeDisposable();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,6 +312,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         initUI();
+
+        fetchNcdVisitCount();
+
+        binding.ncdVisitCountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentForNcdVisitDetails();
+            }
+        });
 
 
         personal_edit.setOnClickListener(v -> {
@@ -653,6 +666,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         populateBaselineSurveys();
+    }
+
+    private void fetchNcdVisitCount() {
+        disposables.add(
+                Single.fromCallable(() -> VisitsDAO.fetchObservationValuesCount(patientDTO.getUuid()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                count -> {
+                                    if(count>0){
+                                        binding.ncdVisitCountTv.setVisibility(View.VISIBLE);
+                                        binding.ncdVisitCountTv.setText("Click to view the past "+count+"NCD visits");
+                                    }else{
+                                        binding.ncdVisitCountTv.setVisibility(View.GONE);
+                                    }
+                                },
+                                error -> Log.e("TAG", "Error: " + error.getMessage())
+                        )
+        );
     }
 
     private void startNewVisit() {
@@ -2426,10 +2458,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void onClickNcdVisit(View view) {
-        intentForNcdVisitDetails();
     }
 
     // Receiver class for Openmrs ID

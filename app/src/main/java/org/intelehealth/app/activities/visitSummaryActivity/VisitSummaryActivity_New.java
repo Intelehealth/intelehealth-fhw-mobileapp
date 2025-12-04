@@ -108,6 +108,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -421,6 +422,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private List<HealthModuleItem> infoModulesFileUrlsList;
     private boolean mIsVisitEnded = false;
     private NCDReadingAdapter adapter;
+    private boolean isNcdVitalsExpanded = true;
+    private  VisitsSummaryViewModel visitsSummaryViewModel;
 
 
     public void startTextChat(View view) {
@@ -480,45 +483,47 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
-        if (activeStatus != null) {
-            mFeatureActiveStatus = activeStatus;
-            findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.vitalsCard).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_notes_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.add_doc_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.relative_speciality_block).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+        if (!mIsNCDVitals) {
+            if (activeStatus != null) {
+                mFeatureActiveStatus = activeStatus;
+                findViewById(R.id.flFacilityToVisit).setVisibility(activeStatus.getVisitSummeryFacilityToVisit() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.flSeverity).setVisibility(activeStatus.getVisitSummerySeverityOfCase() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.fabStartChat).setVisibility(activeStatus.getChatSection() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.vitalsCard).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVitalSection() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.add_notes_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryNote() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.add_doc_relative).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryAttachment() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.relative_speciality_block).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-            // visit reason header
-            //findViewById(R.id.vs_visitreason_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            //findViewById(R.id.btn_up_visitreason_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.openall_btn).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.vs_header_expandview).setVisibility(mIsNCDVisit ? View.VISIBLE : View.GONE);
-            // physical examination header
-            findViewById(R.id.vs_phyexam_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.btn_up_phyexam_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            // medical history header
-            findViewById(R.id.vs_medhist_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
-            findViewById(R.id.btn_up_medhist_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                // visit reason header
+                //findViewById(R.id.vs_visitreason_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                //findViewById(R.id.btn_up_visitreason_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                findViewById(R.id.openall_btn).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                findViewById(R.id.vs_header_expandview).setVisibility(mIsNCDVisit ? View.VISIBLE : View.GONE);
+                // physical examination header
+                findViewById(R.id.vs_phyexam_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                findViewById(R.id.btn_up_phyexam_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                // medical history header
+                findViewById(R.id.vs_medhist_header_expandview).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
+                findViewById(R.id.btn_up_medhist_header).setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-            findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cardPriorityVisit).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
-            findViewById(R.id.cvFollowup).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.flVdCard).setVisibility(activeStatus.getVisitSummeryDoctorSpeciality() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.cardPriorityVisit).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryPriorityVisit() ? View.VISIBLE : View.GONE);
+                findViewById(R.id.cvFollowup).setVisibility(mIsNCDVisit ? View.GONE : activeStatus.getVisitSummeryHwFollowUp() ? View.VISIBLE : View.GONE);
 //            if (!activeStatus.getVisitSummeryAppointment()) {
-            Button btn = findViewById(R.id.btn_vs_appointment);
-            boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
-            if (isAppointment) {
-                boolean activeAppointment = activeStatus.getVisitSummeryAppointment();
-                btn.setVisibility(activeAppointment ? View.VISIBLE : View.GONE);
-            }
+                Button btn = findViewById(R.id.btn_vs_appointment);
+                boolean isAppointment = btn.getText().toString().equals(getString(R.string.appointment));
+                if (isAppointment) {
+                    boolean activeAppointment = activeStatus.getVisitSummeryAppointment();
+                    btn.setVisibility(activeAppointment ? View.VISIBLE : View.GONE);
+                }
 
 //            }
 
+            }
+            mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
+            Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
+            mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
         }
-        mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
-        Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
-        mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -529,6 +534,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         context = VisitSummaryActivity_New.this;
         infoModulesList = new ArrayList<>();
         infoModulesFileUrlsList = new ArrayList<>();
+        visitsSummaryViewModel = new ViewModelProvider(this).get(VisitsSummaryViewModel.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -539,36 +545,46 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         initUI();
 
         networkUtils = new NetworkUtils(this, this);
-        fetchingIntent();
+        mIsNCDVitals = getIntent().getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
+        if (mIsNCDVitals) {
+            handleNcdVisitsViewVisibility();
+            handleNcdVitalsViewVisibility();
+            expandableCardVisibilityHandling();
+            fetchingIntentNcdVitals();
+            setupRecyclerView();
+            loadData();
+            setupClickListeners();
+        } else {
+            fetchingIntent();
+            expandableCardVisibilityHandling();
+            tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
+            mBinding.tvtFollowUpDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+            mBinding.tvtFollowUpTime.setOnClickListener(v -> {
+                // Get current time
+                showTimePickerDialog();
 
-        expandableCardVisibilityHandling();
-        tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
-        mBinding.tvtFollowUpDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
-        mBinding.tvtFollowUpTime.setOnClickListener(v -> {
-            // Get current time
-            showTimePickerDialog();
-
-        });
+            });
 
 
-        loadFeatureActiveStatus();
-        setupVitalConfig();
-        setViewsData();
-        setupSpecialization();
-        checkIfVisitIsEnded();
+            loadFeatureActiveStatus();
+            setupVitalConfig();
+            setViewsData();
+            setupSpecialization();
+            checkIfVisitIsEnded();
 
-        language = sessionManager.getAppLanguage();
-        //shareAndViewInfoModel();
-        viewAndShareHealthInfoModule();
+            language = sessionManager.getAppLanguage();
+            //shareAndViewInfoModel();
+            viewAndShareHealthInfoModule();
+        }
+    }
 
-        setupRecyclerView();
-        loadData();
-        setupClickListeners();
+    private void fetchingIntentNcdVitals() {
+        patientUuid = getIntent().getExtras().getString("patientUuid");
     }
 
     private void setupRecyclerView() {
@@ -588,19 +604,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void loadData() {
-        // Get sample data
-        List<NCDReading> readings = NCDReading.Companion.getSampleData();
-
-        // Submit to adapter
-        adapter.submitList(readings);
+        visitsSummaryViewModel.loadNcdVitals(patientUuid);
+        visitsSummaryViewModel.getNcdReadings().observe(VisitSummaryActivity_New.this, new Observer<List<NCDReading>>() {
+            @Override
+            public void onChanged(List<NCDReading> ncdReadings) {
+                adapter.submitList(ncdReadings);
+            }
+        });
     }
 
     private void setupClickListeners() {
         // Chevron click to expand/collapse
-       // cardBinding.ivChevron.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
+        // cardBinding.ivChevron.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
 
         // Optional: Make entire header clickable
-      //  cardBinding.tvTitle.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
+        //  cardBinding.tvTitle.setOnClickListener(v -> toggleNcdVitalsCardExpansion());
     }
 
     private void checkIfVisitIsEnded() {
@@ -831,22 +849,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         mIsVisitEnded = VisitsDAO.isVisitEnded(visitUuid);
         mIsNCDVisit = VisitAttributeListDAO.isVisitNCD(visitUuid);
-        mIsNCDVitals = intent.getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
+
 
         Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-        if (mIsNCDVisit || mIsNCDVitals) {
-            findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
-            findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
-            findViewById(R.id.ll_associated_sympt).setVisibility(View.GONE);
-            findViewById(R.id.reports_relative).setVisibility(View.GONE);
-            findViewById(R.id.denies_relative).setVisibility(View.GONE);
-            findViewById(R.id.vitalsCard).setVisibility(View.GONE);
-            findViewById(R.id.physExamCard).setVisibility(View.GONE);
-            findViewById(R.id.cardMedicalHistory).setVisibility(View.GONE);
-
-
+        if (mIsNCDVisit) {
+            handleNcdVisitsViewVisibility();
+            findViewById(R.id.ncd_vitals_lay).setVisibility(View.GONE);
         }
         // receiver
         registerBroadcastReceiverDynamically();
@@ -1009,6 +1019,34 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             doesAppointmentExist = true;
         }
     }
+
+    private void handleNcdVisitsViewVisibility() {
+        findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
+        findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
+        findViewById(R.id.ll_associated_sympt).setVisibility(View.GONE);
+        findViewById(R.id.reports_relative).setVisibility(View.GONE);
+        findViewById(R.id.denies_relative).setVisibility(View.GONE);
+        findViewById(R.id.vitalsCard).setVisibility(View.GONE);
+        findViewById(R.id.physExamCard).setVisibility(View.GONE);
+        findViewById(R.id.cardMedicalHistory).setVisibility(View.GONE);
+    }
+
+    private void handleNcdVitalsViewVisibility() {
+        findViewById(R.id.vitalsCard).setVisibility(View.GONE);
+        findViewById(R.id.physExamCard).setVisibility(View.GONE);
+        findViewById(R.id.cardMedicalHistory).setVisibility(View.GONE);
+        findViewById(R.id.add_notes_relative).setVisibility(View.GONE);
+        findViewById(R.id.add_doc_relative).setVisibility(View.GONE);
+        findViewById(R.id.relative_speciality_block).setVisibility(View.GONE);
+        findViewById(R.id.visitReasonCard).setVisibility(View.GONE);
+        findViewById(R.id.cardPriorityVisit).setVisibility(View.GONE);
+        findViewById(R.id.fabStartChat).setVisibility(View.GONE);
+        findViewById(R.id.btn_bottom_vs).setVisibility(View.GONE);
+        findViewById(R.id.btn_bottom_printshare).setVisibility(View.GONE);
+        findViewById(R.id.openall_btn).setVisibility(View.GONE);
+        findViewById(R.id.layout_share_info_module).setVisibility(View.VISIBLE);
+    }
+
 
     private void updateUIState() {
         if (hasPrescription) {
@@ -1217,6 +1255,52 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
+
+        expandNcdVitalsCard();
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isNcdVitalsExpanded = !isNcdVitalsExpanded;
+                if (isNcdVitalsExpanded) {
+                    expandNcdVitalsCard();
+                } else {
+                    collapseNcdVitalsCard();
+                }
+            }
+        });
+    }
+
+    void collapseNcdVitalsCard() {
+        //ncd vitals card
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.rvNcdReadings.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.headerBackground.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvDateHeader.setVisibility(View.GONE);
+
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layBp.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layHb.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layRbs.setVisibility(View.GONE);
+
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvBpUnit.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvHbUnit.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvRbsUnit.setVisibility(View.GONE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.ivExpandCollapse.setImageDrawable(getDrawable(R.drawable.ic_baseline_keyboard_arrow_down_24));
+    }
+
+    void expandNcdVitalsCard() {
+        //ncd vitals card
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.rvNcdReadings.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.headerBackground.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvDateHeader.setVisibility(View.VISIBLE);
+
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layBp.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layHb.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.layRbs.setVisibility(View.VISIBLE);
+
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvBpUnit.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvHbUnit.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvRbsUnit.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.tvRbsUnit.setVisibility(View.VISIBLE);
+        mBinding.layoutVisitSummaryItems.ncdVitalsLay.ivExpandCollapse.setImageDrawable(getDrawable(R.drawable.ic_baseline_keyboard_arrow_up_24));
     }
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
