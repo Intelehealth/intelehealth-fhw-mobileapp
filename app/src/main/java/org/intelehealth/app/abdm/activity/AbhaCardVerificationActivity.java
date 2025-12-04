@@ -573,17 +573,18 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             String scope = TextUtils.isEmpty(binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText()) ? SCOPE_ABHA_ADDRESS : SCOPE_ABHA_NUMBER;
             if (response.body() != null) {
                 MobileLoginOnOTPVerifiedResponse responseBody = response.body();
-                String kycStatus = responseBody.getUsers().get(0).getKycStatus();
-
-                if (kycStatus.equalsIgnoreCase(ABDMConstant.KYC_STATUS_PENDING)) {
-                    showOkDialog(getString(R.string.kyc_verification_not_done_abha_address), null);
-                    resetOTPField();
-                    disableUI(true);
-                    binding.sendOtpBtn.setTag(null);
-                    return;
-                }
 
                 if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
+                    String kycStatus = responseBody.getUsers().get(0).getKycStatus();
+
+                    if (kycStatus.equalsIgnoreCase(ABDMConstant.KYC_STATUS_PENDING)) {
+                        showOkDialog(getString(R.string.kyc_verification_not_done_abha_address), null);
+                        resetOTPField();
+                        disableUI(true);
+                        binding.sendOtpBtn.setTag(null);
+                        return;
+                    }
+
                     if (!TextUtils.isEmpty(responseBody.getToken())) {
                         String X_TOKEN = BEARER_AUTH + responseBody.getToken();
                         callFetchUserProfileAPI(null, responseBody.getTxnId(), X_TOKEN);
