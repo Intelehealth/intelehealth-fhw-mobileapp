@@ -946,7 +946,19 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
         } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-            title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+            String reasonName = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+            //added null checking to prevent crash (AEAT-2072)
+            if (mSelectedComplainList != null &&
+                    !mSelectedComplainList.isEmpty() &&
+                    mSelectedComplainList.get(0) != null) {
+
+                String name = mSelectedComplainList.get(0).getReasonNameLocalized();
+                if (name != null) {
+                    reasonName += " : "+name;
+                }
+            }
+
+            title = reasonName;
         } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
             title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
