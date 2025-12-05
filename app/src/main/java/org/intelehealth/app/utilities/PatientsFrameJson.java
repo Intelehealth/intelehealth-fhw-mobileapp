@@ -138,8 +138,10 @@ public class PatientsFrameJson {
             Visit visit = new Visit();
            /* Multiple visit attributes getting sync - when we restrict to sync multiple visit
             attributes for same visit then this condition not allowing to sync visit with 0 attributes.*/
+           /* if (visitDTO.getAttributes().size() > 0) {*/
 
-            if (visitDTO.getAttributes().size() > 0) {
+            //this condition is changed for visit is not closing even we close the visit
+            if (!visitDTO.getAttributes().isEmpty() || visitDTO.getEnddate() != null) {
                 visit.setLocation(visitDTO.getLocationuuid());
                 visit.setPatient(visitDTO.getPatientuuid());
                 visit.setStartDatetime(visitDTO.getStartdate());
@@ -251,7 +253,7 @@ public class PatientsFrameJson {
 
         Gson gson = new Gson();
         String value = gson.toJson(pushRequestApiCall);
-        CustomLog.d("OBS: ", "OBS: " + value);
+        CustomLog.d("OBS: ", "OBSpushRequestApiCall: " + value);
 
 
         return pushRequestApiCall;

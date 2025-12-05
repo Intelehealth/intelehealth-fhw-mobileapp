@@ -443,6 +443,7 @@ public class SyncDAO {
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
 //                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in
 //                progress..", 1, IntelehealthApplication.getAppContext());
+                Log.d(TAG, "pulldataonResponse: "+new Gson().toJson(response.body()));
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -607,6 +608,7 @@ public class SyncDAO {
      * @param fromActivity
      * @return
      */
+    // for initial sync
     public boolean pullDataBackgroundService(final Context context, String fromActivity,
                                              int pageNo) {
 
@@ -817,6 +819,8 @@ public class SyncDAO {
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             CustomLog.d(TAG, "onSuccess: in push api response");
                             Logger.logD(TAG, "success" + pushResponseApiCall);
+                            Log.d("TAG", "push response model onSuccess: "+gson.toJson(pushRequestApiCall));
+
                             try {
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist()
                                         .size(); i++) {
