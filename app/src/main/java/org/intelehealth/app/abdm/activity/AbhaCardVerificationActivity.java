@@ -581,6 +581,13 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             if (response.body() != null) {
                 MobileLoginOnOTPVerifiedResponse responseBody = response.body();
 
+                if (responseBody.getAuthResult().equalsIgnoreCase("failed")) {
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, responseBody.getMessage(), false);
+                    disableUI(true);
+                    binding.sendOtpBtn.setEnabled(true);
+                    return;
+                }
+
                 if (scope.equalsIgnoreCase(SCOPE_ABHA_ADDRESS)) {
                     String kycStatus = responseBody.getUsers().get(0).getKycStatus();
 
