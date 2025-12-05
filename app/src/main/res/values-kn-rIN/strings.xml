@@ -1043,7 +1043,13 @@
     <string name="patient_visit_sent_ended">ರೋಗಿಯ ಭೇಟಿ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದ್ದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಂತ್ಯಗೊಂಡಿದೆ.</string>
 
     <string name="category_already_selected">ನೀವು ಈಗಾಗಲೇ %1$s ನಿಂದ ಒಂದು ಆಯ್ಕೆಯನ್ನು ಮಾಡಿದ್ದಾರೆ</string>
-
-
+    <string name="share_health_info_whatsapp">ಏಕಲ್ ಟೆಲಿಮೆಡಿಸಿನ್ ಸೇವೆಯನ್ನು ಬಳಸಿದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು! ಪ್ರತಿದಿನ ಆರೋಗ್ಯವಾಗಿರಲು ಸರಳ ಮಾರ್ಗಗಳನ್ನು ತಿಳಿಯಲು ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">ರಕ್ತಹೀನತೆ: ಕಬ್ಬಿಣ, ಫೋಲಿಕ್ ಆಮ್ಲ ಮತ್ತು ಪ್ರೋಟೀನ್ ಸಮೃದ್ಧ ಆಹಾರ ಸೇವಿಸಿ</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">ರಕ್ತಹೀನತೆ: ನಿಯಮಿತವಾಗಿ ಹುಳುಹಾಕುವ (ಕೀಟನಾಶಕ) ಔಷಧಿ ಸೇವಿಸಿ ಮತ್ತು ಸ್ವಚ್ಛತೆ ಕಾಪಾಡಿ</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">ಶುಗರ್: ಸಕ್ಕರೆಯ ಸೇವನೆ ಕಡಿಮೆ ಮಾಡಿ</string>
+    <string name="health_info_whatsapp_exercise_common">ನಿಯಮಿತವಾಗಿ ವ್ಯಾಯಾಮ ಮಾಡಿ</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">ಶುಗರ್: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಟ್ಟುಬಿಡಿ</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">ಬಿ.ಪಿ.: ಉಪ್ಪಿನ ಸೇವನೆ ಕಡಿಮೆ ಮಾಡಿ</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">ಬಿ.ಪಿ.: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಟ್ಟುಬಿಡಿ</string>
 
 </resources>

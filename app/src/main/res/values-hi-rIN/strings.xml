@@ -1109,6 +1109,12 @@
     <string name="patient_visit_sent_ended">मरीज़ की विज़िट सफलतापूर्वक सेव होकर स्वचालित रूप से समाप्त हो गई है।</string>
 
     <string name="category_already_selected">%1$s से एक आइटम आप पहले ही चुन चुके हैं</string>
-
-
+    <string name="share_health_info_whatsapp">एकल टेलीमेडिसिन सेवा का उपयोग करने के लिए धन्यवाद! हर दिन स्वस्थ रहने के आसान तरीके जानने के लिए लिंक पर क्लिक करें।</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">खून की कमी: आयरन, फोलिक एसिड और प्रोटीन से भरपूर भोजन खाएं</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">खून की कमी: नियमित रूप से कृमिनाशक दवा लें और स्वच्छता बनाए रखें</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">शुगर: चीनी का सेवन कम करें</string>
+    <string name="health_info_whatsapp_exercise_common">नियमित रूप से व्यायाम करें</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">शुगर: शराब और तंबाकू छोड़ें</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">बीपी: नमक का सेवन कम करें</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">बीपी: शराब और तंबाकू छोड़ें</string>
 </resources>

@@ -490,6 +490,13 @@
     <string name="patient_visit_sent_ended">రోగి సందర్శనం విజయవంతంగా సేవ్ అయ్యి స్వయంచాలకంగా ముగిసింది.</string>
 
     <string name="category_already_selected">మీరు ఇప్పటికే %1$s నుండి ఒక అంశాన్ని ఎంచుకున్నారు</string>
-
+    <string name="share_health_info_whatsapp">ఏకల్ టెలిమెడిసిన్ సేవను ఉపయోగించినందుకు ధన్యవాదాలు! ప్రతి రోజు ఆరోగ్యంగా ఉండటానికి సులభమైన మార్గాలను తెలుసుకోవడానికి లింక్‌పై క్లిక్ చేయండి.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">రక్తహీనత: ఐరన్, ఫోలిక్ యాసిడ్ మరియు ప్రోటీన్ అధికంగా ఉన్న ఆహారం తినండి</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">రక్తహీనత: క్రమం తప్పకుండా కీటకనాశక మందులు వాడండి మరియు శుభ్రత పాటించండి</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">షుగర్: చక్కెర తీసుకునే పరిమాణం తగ్గించండి</string>
+    <string name="health_info_whatsapp_exercise_common">క్రమం తప్పకుండా వ్యాయామం చేయండి</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">షుగర్: మద్యం మరియు పొగాకు మానండి</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">బి.పీ.: ఉప్పు తీసుకునే పరిమాణం తగ్గించండి</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">బి.పీ.: మద్యం మరియు పొగాకు మానండి</string>
 
 </resources>

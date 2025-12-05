@@ -1078,6 +1078,12 @@
     <string name="patient_visit_sent_ended">रुग्णाची भेट यशस्वीरित्या सेव्ह होऊन स्वयंचलितपणे संपली आहे.</string>
 
     <string name="category_already_selected">आपण आधीच %1$s मधून एक आयटम निवडले आहे</string>
-
-
+    <string name="share_health_info_whatsapp">एकल टेलिमेडिसिन सेवा वापरल्याबद्दल धन्यवाद! दररोज निरोगी राहण्यासाठी सोपे उपाय जाणून घेण्यासाठी लिंकवर क्लिक करा.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">रक्ताची कमतरता: लोह, फॉलिक आम्ल आणि प्रथिनेयुक्त अन्न खा</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">रक्ताची कमतरता: नियमितपणे जंतनाशक औषध घ्या आणि स्वच्छता पाळा</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">शुगर: साखरेचे सेवन कमी करा</string>
+    <string name="health_info_whatsapp_exercise_common">नियमित व्यायाम करा</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">शुगर: मद्यपान आणि तंबाखू सोडा</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">बीपी: मीठाचे सेवन कमी करा</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">बीपी: मद्यपान आणि तंबाखू सोडा</string>
 </resources>

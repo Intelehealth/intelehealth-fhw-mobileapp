@@ -1084,7 +1084,12 @@
     <string name="patient_visit_sent_ended">রোগীর ভিজিট সফলভাবে সংরক্ষিত হয়েছে এবং স্বয়ংক্রিয়ভাবে শেষ হয়েছে।</string>
 
     <string name="category_already_selected">আপনি %1$s থেকে একটি আইটেম ইতিমধ্যেই নির্বাচন করেছেন</string>
-
-
-
+    <string name="share_health_info_whatsapp">একল টেলিমেডিসিন পরিষেবা ব্যবহার করার জন্য ধন্যবাদ! প্রতিদিন সুস্থ থাকার সহজ উপায় জানার জন্য লিঙ্কে ক্লিক করুন।</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">রক্তশূন্যতা: আয়রন, ফলিক অ্যাসিড ও প্রোটিনসমৃদ্ধ খাবার খান</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">রক্তশূন্যতা: নিয়মিত কৃমিনাশক ওষুধ খান এবং পরিষ্কার-পরিচ্ছন্ন থাকুন</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">চিনি রোগ: চিনির পরিমাণ কমান</string>
+    <string name="health_info_whatsapp_exercise_common">নিয়মিত ব্যায়াম করুন</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">চিনি রোগ: মদ ও তামাক ছেড়ে দিন</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">বিপি: লবণের পরিমাণ কমান</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">বিপি: মদ ও তামাক ছেড়ে দিন</string>
 </resources>

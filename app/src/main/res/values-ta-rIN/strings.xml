@@ -514,7 +514,14 @@
     <string name="patient_visit_sent_ended">நோயாளியின் வருகை வெற்றிகரமாக சேமிக்கப்பட்டு தானாக முடிக்கப்பட்டுள்ளது.</string>
 
     <string name="category_already_selected">நீங்கள் %1$s இல் இருந்து ஏற்கனவே ஒரு உருப்படியைத் தேர்ந்தெடுத்துள்ளீர்கள்</string>
-
+    <string name="share_health_info_whatsapp">ஏகல் டெலிமெடிசின் சேவையை பயன்படுத்தியதற்கு நன்றி! தினமும் ஆரோக்கியமாக இருக்க எளிய வழிகளை அறிய லிங்கை கிளிக் செய்யுங்கள்.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">இரத்தச்சோகை: இரும்பு, ஃபோலிக் அமிலம் மற்றும் புரதம் நிறைந்த உணவுகளை உட்கொள்ளுங்கள்</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">இரத்தச்சோகை: அடிக்கடி புழுக்களை நீக்கும் மருந்து எடுத்துக்கொள்ளுங்கள் மற்றும் சுத்தமாக இருங்கள்</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">ஷுகர்: சர்க்கரை அளவை குறையுங்கள்</string>
+    <string name="health_info_whatsapp_exercise_common">தவறாமல் உடற்பயிற்சி செய்யுங்கள்</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">ஷுகர்: மது மற்றும் புகையை நிறுத்துங்கள்</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">பி.பி.: உப்பின் அளவை குறையுங்கள்</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">பி.பி.: மது மற்றும் புகையை நிறுத்துங்கள்</string>
 
 </resources>
 

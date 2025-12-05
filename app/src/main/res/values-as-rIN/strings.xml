@@ -1126,5 +1126,12 @@
     <string name="failed_to_save_downloads">PDF সংৰক্ষণ কৰাত ব্যৰ্থ</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="category_already_selected">You already selected an item from %1$s</string>
-
+    <string name="share_health_info_whatsapp">একল টেলিমেডিচিন সেৱা ব্যৱহাৰ কৰাৰ বাবে ধন্যবাদ! প্ৰতিদিন সুস্থ থাকিবৰ সহজ উপায় শিকিবলৈ লিংকটোত ক্লিক কৰক।</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">ৰক্তাল্পতা: আয়ৰণ, ফলিক এসিড আৰু প্ৰটিনে সমৃদ্ধ খাদ্য খাব</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">ৰক্তাল্পতা: নিয়মিতভাৱে কেঁচুৱা মাৰো ঔষধ খাব আৰু পৰিচ্ছন্নতা বজাই ৰাখিব</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">চুগাৰ: চিনিৰ পৰিমাণ কমাওক</string>
+    <string name="health_info_whatsapp_exercise_common">নিয়মিতভাৱে ব্যায়াম কৰক</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">চুগাৰ: মদ আৰু তামাক ত্যাগ কৰক</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">বি.পি.: নুনৰ পৰিমাণ কমাওক</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">বি.পি.: মদ আৰু তামাক ত্যাগ কৰক</string>
 </resources>

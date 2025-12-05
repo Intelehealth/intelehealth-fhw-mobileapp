@@ -1166,6 +1166,13 @@
     <string name="failed_to_save_downloads">Failed to save PDF</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="category_already_selected">You already selected an item from %1$s</string>
-
-
+    <string name="share_health_info_whatsapp">Thank you for using Ekal Telemedicine! Click the link to learn simple ways to stay healthy every day.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">Anemia: Eat iron-, folic acid– and protein-rich foods</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">Anemia: Deworm regularly and maintain good hygiene</string>
+    <string name="health_info_whatsapp_anemia_quit_alcohol">Anemia: Quit alcohol and tobacco</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">Diabetes: Reduce sugar intake</string>
+    <string name="health_info_whatsapp_exercise_common">Exercise regularly</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">Diabetes: Quit alcohol and tobacco</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">Hypertension: Reduce salt intake</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">Hypertension: Quit alcohol and tobacco</string>
 </resources>

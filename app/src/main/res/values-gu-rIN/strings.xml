@@ -1096,6 +1096,13 @@
     <string name="patient_visit_sent_ended">દર્દીની મુલાકાત સફળતાપૂર્વક સેવ થઈ ગઈ છે અને સ્વચાલિત રીતે પૂર્ણ થઈ છે.</string>
 
     <string name="category_already_selected">તમે પહેલેથી જ %1$s માંથી એક આઇટમ પસંદ કરી છે</string>
-
+    <string name="share_health_info_whatsapp">એકલ ટેલીમેડિસિન સેવા ઉપયોગ કરવા બદલ આભાર! દરરોજ સ્વસ્થ રહેવાના સરળ માર્ગો જાણવા માટે લિંક પર ક્લિક કરો.</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">રક્તની ઉણપ: આયર્ન, ફોલિક એસિડ અને પ્રોટીનથી સમૃદ્ધ ખોરાક લો</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">રક્તની ઉણપ: નિયમિત રીતે કીડા ઉતારવાની દવા લો અને સ્વચ્છતા રાખો</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">શુગર: ખાંડનું સેવન ઓછું કરો</string>
+    <string name="health_info_whatsapp_exercise_common">નિયમિત કસરત કરો</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">શુગર: દારૂ અને તમાકુ છોડી દો</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">બીપી: મીઠું ઓછું ખાવો</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">બીપી: દારૂ અને તમાકુ છોડી દો</string>
 
 </resources>

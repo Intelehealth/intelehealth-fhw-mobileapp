@@ -937,6 +937,13 @@
     <string name="patient_visit_sent_ended">ରୋଗୀଙ୍କର ସକ୍ଷୟତା ସଫଳତାର ସହ ସେଭ୍ ହୋଇ ଆପେଇଁ ସମାପ୍ତ ହୋଇଛି।</string>
 
     <string name="category_already_selected">ଆପଣ %1$s ରୁ ଏକ ଆଇଟମ୍ ପୂର୍ବରୁ ଚୟନ କରିଛନ୍ତି</string>
-
+    <string name="share_health_info_whatsapp">ଏକଲ ଟେଲିମେଡିସିନ ସେବା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ! ପ୍ରତିଦିନ ସ୍ୱାସ୍ଥ୍ୟବାନ ରହିବାର ସହଜ ଉପାୟ ଜାଣିବା ପାଇଁ ଲିଙ୍କରେ କ୍ଲିକ୍ କରନ୍ତୁ।</string>
+    <string name="health_info_whatsapp_anemia_iron_rich_food">ରକ୍ତହୀନତା: ଲୋହ, ଫୋଲିକ ଆମ୍ଲ ଏବଂ ପ୍ରୋଟିନ ସମୃଦ୍ଧ ଖାଦ୍ୟ ଖାଆନ୍ତୁ</string>
+    <string name="health_info_whatsapp_anemia_maintain_good_hygiene">ରକ୍ତହୀନତା: ନିୟମିତ ଭାବେ କୀଡ଼ା ହଟାଇବା ଔଷଧ ନିଅନ୍ତୁ ଏବଂ ପରିସ୍କାର-ପରିଚ୍ଛନ୍ନ ରୁହନ୍ତୁ</string>
+    <string name="health_info_whatsapp_diabetes_sugar_intake">ଶୁଗର: ଚିନିର ପରିମାଣ କମାନ୍ତୁ</string>
+    <string name="health_info_whatsapp_exercise_common">ନିୟମିତ ଭାବେ ବ୍ୟାୟାମ କରନ୍ତୁ</string>
+    <string name="health_info_whatsapp_diabetes_quit_alcohol">ଶୁଗର: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
+    <string name="health_info_whatsapp_hypertension_reduce_salt">ବି.ପି.: ଲୁଣର ପରିମାଣ କମାନ୍ତୁ</string>
+    <string name="health_info_whatsapp_hypertension_quit_alcohol">ବି.ପି.: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
 
 </resources>
