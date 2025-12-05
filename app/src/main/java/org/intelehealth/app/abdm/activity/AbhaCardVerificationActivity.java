@@ -110,9 +110,11 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
     private int resendCounter = 2;
 
     private CompositeDisposable disposables = new CompositeDisposable();
-    private boolean isAbhaAuthTypeSelected = false;
-
     private String patientName;
+
+    private boolean isAbhaAuthTypeSelected = false;
+    private boolean isAbhaProfileSelected = false;
+    private MobileLoginApiBody apiBody = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -388,72 +390,77 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     private void searchMobile(String accessToken, SearchAbhaProfile requestBody) {  // mobile: Step 2
         cpd.updateTitle(getString(R.string.fetching_profiles));
-        String url = UrlModifiers.searchMobileVerification();
-        // payload - end
 
-        Single<Response<HashMap<String, SearchAbhaProfileResponse>>> mobileResponseSingle = AppConstants.apiInterface.searchAbhaProfile(url, accessToken, requestBody);
-        new Thread(() -> {
-            // api - start
-            mobileResponseSingle
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<>() {
-                        @Override
-                        public void onSuccess(Response<HashMap<String, SearchAbhaProfileResponse>> searchProfileResponse) {
-                            if (searchProfileResponse.code() == 200) {
-                                cpd.dismiss();
-                                cpd.updateTitle(getString(R.string.otp_sending));
+        if (isAbhaProfileSelected && apiBody != null) {
+            sentOtpApi(accessToken, apiBody);
+        } else {
+            String url = UrlModifiers.searchMobileVerification();
+            Single<Response<HashMap<String, SearchAbhaProfileResponse>>> mobileResponseSingle = AppConstants.apiInterface.searchAbhaProfile(url, accessToken, requestBody);
+            new Thread(() -> {
+                // api - start
+                mobileResponseSingle
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableSingleObserver<>() {
+                            @Override
+                            public void onSuccess(Response<HashMap<String, SearchAbhaProfileResponse>> searchProfileResponse) {
+                                if (searchProfileResponse.code() == 200) {
+                                    cpd.dismiss();
+                                    cpd.updateTitle(getString(R.string.otp_sending));
 
-                                SearchAbhaProfileResponse response = searchProfileResponse.body().get("0");
+                                    SearchAbhaProfileResponse response = searchProfileResponse.body().get("0");
 
-                                AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
-                                dialog.openAccountSelectionDialog(response.getABHA(), account -> {
-                                    MobileLoginApiBody mobileLoginApiBody = getSendOtpApiRequest();
-                                    mobileLoginApiBody.setTxnId(response.getTxnId());
-                                    mobileLoginApiBody.setValue(String.valueOf(account.getIndex()));
-                                    mobileLoginApiBody.setAuthMethod(ABHA_OTP_MOBILE);
-                                    mobileLoginApiBody.setScope(SCOPE_INDEX);
-                                    sentOtpApi(accessToken, mobileLoginApiBody);
-                                    dialog.dismiss();
-                                });
-                                dialog.show(getSupportFragmentManager(), "");
+                                    AccountSelectDialogFragment dialog = new AccountSelectDialogFragment();
+                                    dialog.openAccountSelectionDialog(response.getABHA(), account -> {
+                                        MobileLoginApiBody mobileLoginApiBody = getSendOtpApiRequest();
+                                        mobileLoginApiBody.setTxnId(response.getTxnId());
+                                        mobileLoginApiBody.setValue(String.valueOf(account.getIndex()));
+                                        mobileLoginApiBody.setAuthMethod(ABHA_OTP_MOBILE);
+                                        mobileLoginApiBody.setScope(SCOPE_INDEX);
+                                        sentOtpApi(accessToken, mobileLoginApiBody);
+                                        isAbhaProfileSelected = true;
+                                        apiBody = mobileLoginApiBody;
+                                        dialog.dismiss();
+                                    });
+                                    dialog.show(getSupportFragmentManager(), "");
 
-                            } else if (searchProfileResponse.code() == 404) {
-                                cpd.dismiss();
-                                switch (optionSelected) {
-                                    case MOBILE_NUMBER_SELECTION ->
-                                            showOkDialog(getString(R.string.no_abha_user_records_associated_with_this_mobile_no), (action) -> startCreateAbhaFlow());
-                                    case ABHA_SELECTION ->
-                                            Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
-                                    default ->
-                                            Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
-                                }
-                                binding.sendOtpBtn.setEnabled(true);
-                                disableUI(true);
-                            } else {
-                                if (searchProfileResponse.errorBody() != null) {
-                                    Toast.makeText(context, ABDMUtils.getErrorMessage1(searchProfileResponse.errorBody()), Toast.LENGTH_SHORT).show();
+                                } else if (searchProfileResponse.code() == 404) {
+                                    cpd.dismiss();
+                                    switch (optionSelected) {
+                                        case MOBILE_NUMBER_SELECTION ->
+                                                showOkDialog(getString(R.string.no_abha_user_records_associated_with_this_mobile_no), (action) -> startCreateAbhaFlow());
+                                        case ABHA_SELECTION ->
+                                                Toast.makeText(context, R.string.please_enter_valid_abha, Toast.LENGTH_SHORT).show();
+                                        default ->
+                                                Toast.makeText(context, R.string.please_enter_valid_aadhaar, Toast.LENGTH_SHORT).show();
+                                    }
+                                    binding.sendOtpBtn.setEnabled(true);
+                                    disableUI(true);
                                 } else {
-                                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    if (searchProfileResponse.errorBody() != null) {
+                                        Toast.makeText(context, ABDMUtils.getErrorMessage1(searchProfileResponse.errorBody()), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                    }
+                                    disableUI(false);
+                                    binding.sendOtpBtn.setEnabled(true);
                                 }
-                                disableUI(false);
-                                binding.sendOtpBtn.setEnabled(true);
                             }
-                        }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            binding.sendOtpBtn.setEnabled(true);
-                            binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                            binding.otpBox.setText("");
-                            Timber.tag(TAG).e("onError: callMobileNumberVerificationApi: %s", e.getMessage());
-                            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            cancelResendAndHideView();
-                            cpd.dismiss();
-                        }
-                    });
-            // api - end
-        }).start();
+                            @Override
+                            public void onError(Throwable e) {
+                                binding.sendOtpBtn.setEnabled(true);
+                                binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                                binding.otpBox.setText("");
+                                Timber.tag(TAG).e("onError: callMobileNumberVerificationApi: %s", e.getMessage());
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                cancelResendAndHideView();
+                                cpd.dismiss();
+                            }
+                        });
+                // api - end
+            }).start();
+        }
     }
 
     private void sentOtpApi(String accessToken, MobileLoginApiBody requestBody) {  // mobile: Step 2
