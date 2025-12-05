@@ -69,6 +69,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             isAnemiaFollowupTodayOrLater = tempModel.isAnemiaFollowupTodayOrLater
             isDiabetesFollowupTodayOrLater = tempModel.isDiabetesFollowupTodayOrLater
 
+
             PatientVisitDetails(
                 patientId = data.patientId,
                 visitId = data.visitId,

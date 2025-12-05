@@ -177,15 +177,17 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
             LIMIT 1
         )
 
-    LEFT JOIN tbl_visit V
-        ON V.uuid = (
-            SELECT v2.uuid
-            FROM tbl_visit v2
-            WHERE v2.patientuuid = P.uuid
-              AND v2.startdate IS NOT NULL
-            ORDER BY substr(startdate, 1, 19) DESC
-            LIMIT 1
-        )
+LEFT JOIN tbl_visit V
+    ON V.uuid = (
+        SELECT v2.uuid
+        FROM tbl_visit v2
+        WHERE v2.patientuuid = P.uuid
+          AND v2.startdate IS NOT NULL
+          AND v2.enddate IS NOT NULL   -- fetch only completed visits
+        ORDER BY substr(v2.enddate, 1, 19) DESC
+        LIMIT 1
+    )
+
 
     WHERE 
         (

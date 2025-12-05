@@ -382,7 +382,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
     }
 
-     suspend fun checkForAllEligibleProtocols(patientUuid: String, context: Context): Map<String, Any> {
+     private suspend fun checkForAllEligibleProtocols(patientUuid: String, context: Context): Map<String, Any> {
         val database = CategoryDatabase.getInstance(context)
 
         val patientDao: PatientDao = database.patientDao()
@@ -399,7 +399,7 @@ class CategorySegregationUtils(private val resources: Resources) {
             visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             patientUuid
         )
-        return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
+         return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
     }
 
     fun segregateAndFetchPatientVisitDetails(
