@@ -582,7 +582,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                 MobileLoginOnOTPVerifiedResponse responseBody = response.body();
 
                 if (responseBody.getAuthResult().equalsIgnoreCase("failed")) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, responseBody.getMessage(), false);
+                    Toast.makeText(AbhaCardVerificationActivity.this, responseBody.getMessage(), Toast.LENGTH_LONG).show();
                     disableUI(true);
                     binding.sendOtpBtn.setEnabled(true);
                     return;
