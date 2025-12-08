@@ -303,7 +303,8 @@
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="select_any_one">Select any one</string>
-    <string name="select_one_or_more">Select one or more</string>
+    <string name="select_one_or_more">ഒന്ന് അല്ലെങ്കിൽ അതിലധികം തിരഞ്ഞെടുക്കുക</string>
+
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -415,12 +416,20 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">സന്ദർശന കാരണം</string>
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
-    <string name="screening_lbl">Screening</string>
+    <string name="screening_lbl">സ്ക്രീനിംഗ്</string>
+
     <string name="patient_visit_sent_ended">രോഗിയുടെ സന്ദർശനം വിജയകരമായി സേവ് ചെയ്ത് സ്വയം അവസാനിപ്പിച്ചു.</string>
 
     <string name="category_already_selected">നിങ്ങൾ ഇതിനകം %1$s ൽ നിന്ന് ഒരു ഇനം തിരഞ്ഞെടുത്തിരിക്കുന്നു</string>
+    <string name="visit_successfully_sent">भेट यशस्वीरीत्या जतन करण्यात आली!</string>
+    <string name="what_is_reason_for_this_visit">ഈ സന്ദർശനത്തിന്റെ കാരണം എന്താണ്?</string>
+
+    <string name="not_eligible_for_protocols_message">നിങ്ങൾ ഇപ്പോൾ ഏതെങ്കിലും NCD പ്രോട്ടോക്കോളിന് അർഹരല്ല. എന്നിരുന്നാലും മുന്നോട്ട് പോകാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, നിങ്ങളുടെ ഇഷ്ടമുള്ള പ്രോട്ടോക്കോൾ തിരഞ്ഞെടുക്കുക.</string>
+    <string name="yes_move_ahead">അതെ,മുന്നോട്ട് പോകുക</string>
+    <string name="no_go_back">ഇല്ല,തിരികെ പോകുക</string>
 
 </resources>
 

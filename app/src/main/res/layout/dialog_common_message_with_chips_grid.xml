@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rcv_selected_container"
                 android:layout_centerInParent="true"
+                android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
@@ -74,27 +75,29 @@
                     android:id="@+id/negative_btn"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/fu_margin_start"
                     android:background="@drawable/ui2_common_input_bg"
                     android:gravity="center"
-                    android:text="@string/no"
-                    app:backgroundTint="@null"
+                    android:maxWidth="130dip"
+                    android:paddingHorizontal="@dimen/padding_15"
+                    android:paddingVertical="@dimen/padding_12"
+                    android:text="@string/yes"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/txtsize_patdetail_16sp" />
+                    android:textSize="@dimen/txtsize_patdetail_16sp"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/positive_btn"
-                    style="@style/negative_btn"
+                    style="@style/positive_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/fu_margin_start"
+                    android:layout_height="match_parent"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:gravity="center"
-                    android:text="@string/yes"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/txtsize_patdetail_16sp" />
-
-
+                    android:maxWidth="130dip"
+                    android:paddingHorizontal="@dimen/padding_15"
+                    android:paddingVertical="@dimen/padding_12"
+                    android:text="@string/no" />
             </LinearLayout>
 
 

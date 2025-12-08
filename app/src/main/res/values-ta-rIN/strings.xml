@@ -191,34 +191,34 @@
     <string name="download_prescription_first_before_sharing">பகிர்வதற்கு முன் முதலில் மருந்து பதிவிறக்கவும்</string>
     <string name="enter_10_digits">10 இலக்கங்களை உள்ளிடவும்</string>
     <string name="document_">ஆவணம்-</string>
-<!--    <string name="gender">பாலினம்</string>-->
-<!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->
-<!--    <string name="what_is_your_occupation">உங்களுடைய தொழில் என்ன?*</string>-->
-<!--    <string name="do_you_have_a_bank_account">உங்களிடம் வங்கி கணக்கு இருக்கிறதா?*</string>-->
-<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">நீங்கள் தனிப்பட்ட முறையில் எந்த வகையான மொபைல் போனை வைத்திருக்கிறீர்கள்? *</string>-->
-<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களில் யாரோ வாட்ஸ்அப்பைப் பயன்படுத்துகிறீர்களா? *</string>-->
-<!--    <string name="total_number_of_members_in_the_household">வீட்டிலுள்ள மொத்த உறுப்பினர்களின் எண்ணிக்கை *</string>-->
-<!--    <string name="enter_number">எண்ணை உள்ளிடவும்</string>-->
-<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">எத்தனை உறுப்பினர்கள் பொதுவாக உங்கள் வீட்டில் வசிக்கிறார்கள் அல்லது இப்போது உங்களுடன் தங்கியிருக்கிறார்கள் *</string>-->
-<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">உங்கள் வீட்டு உறுப்பினர்களுக்குக் குடிநீரின் முக்கிய ஆதாரம் எது? *</string>-->
-<!--    <string name="what_do_you_do_to_make_drinking_water_safer">குடிநீரைப் பாதுகாப்பானதாக்க நீங்கள் என்ன செய்கிறீர்கள்? *</string>-->
-<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">அங்குச் செல்லவும், தண்ணீர் எடுக்கவும், ஒரே பயணத்தில் திரும்பி வரவும் எவ்வளவு நேரம் ஆகும்? *</string>-->
-<!--    <string name="declined">பதிலளிக்க மறுத்துவிட்டார்</string>-->
-<!--    <string name="enter_time">நேரத்தை உள்ளிடவும்</string>-->
-<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">கடந்த இரண்டு வாரங்களில், இந்த மூலத்திலிருந்து வரும் நீர் குறைந்தது ஒரு முழு நாளுக்குக் கிடைக்கவில்லையா? *</string>-->
-<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">உங்கள் வீட்டு உறுப்பினர்கள் பொதுவாக என்ன வகையான கழிப்பறை வசதியைப் பயன்படுத்துகிறார்கள்? *</string>-->
-<!--    <string name="select_the_structure_of_house">வீட்டின் கட்டமைப்பைத் தேர்ந்தெடுக்கவும் *</string>-->
-<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">உங்கள் குடும்பத்திற்கு எவ்வளவு ஹெக்டேர் சாகுபடி நிலம் உள்ளது? *</string>-->
-<!--    <string name="enter_answer">பதிலை உள்ளிடவும்</string>-->
-<!--    <string name="enter_occupation">தொழில் உள்ளிடவும்</string>-->
-<!--    <string name="select">தேர்ந்தெடு</string>-->
+    <!--    <string name="gender">பாலினம்</string>-->
+    <!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->
+    <!--    <string name="what_is_your_occupation">உங்களுடைய தொழில் என்ன?*</string>-->
+    <!--    <string name="do_you_have_a_bank_account">உங்களிடம் வங்கி கணக்கு இருக்கிறதா?*</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">நீங்கள் தனிப்பட்ட முறையில் எந்த வகையான மொபைல் போனை வைத்திருக்கிறீர்கள்? *</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களில் யாரோ வாட்ஸ்அப்பைப் பயன்படுத்துகிறீர்களா? *</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">வீட்டிலுள்ள மொத்த உறுப்பினர்களின் எண்ணிக்கை *</string>-->
+    <!--    <string name="enter_number">எண்ணை உள்ளிடவும்</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">எத்தனை உறுப்பினர்கள் பொதுவாக உங்கள் வீட்டில் வசிக்கிறார்கள் அல்லது இப்போது உங்களுடன் தங்கியிருக்கிறார்கள் *</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">உங்கள் வீட்டு உறுப்பினர்களுக்குக் குடிநீரின் முக்கிய ஆதாரம் எது? *</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">குடிநீரைப் பாதுகாப்பானதாக்க நீங்கள் என்ன செய்கிறீர்கள்? *</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">அங்குச் செல்லவும், தண்ணீர் எடுக்கவும், ஒரே பயணத்தில் திரும்பி வரவும் எவ்வளவு நேரம் ஆகும்? *</string>-->
+    <!--    <string name="declined">பதிலளிக்க மறுத்துவிட்டார்</string>-->
+    <!--    <string name="enter_time">நேரத்தை உள்ளிடவும்</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">கடந்த இரண்டு வாரங்களில், இந்த மூலத்திலிருந்து வரும் நீர் குறைந்தது ஒரு முழு நாளுக்குக் கிடைக்கவில்லையா? *</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">உங்கள் வீட்டு உறுப்பினர்கள் பொதுவாக என்ன வகையான கழிப்பறை வசதியைப் பயன்படுத்துகிறார்கள்? *</string>-->
+    <!--    <string name="select_the_structure_of_house">வீட்டின் கட்டமைப்பைத் தேர்ந்தெடுக்கவும் *</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">உங்கள் குடும்பத்திற்கு எவ்வளவு ஹெக்டேர் சாகுபடி நிலம் உள்ளது? *</string>-->
+    <!--    <string name="enter_answer">பதிலை உள்ளிடவும்</string>-->
+    <!--    <string name="enter_occupation">தொழில் உள்ளிடவும்</string>-->
+    <!--    <string name="select">தேர்ந்தெடு</string>-->
     <string name="Hours">மணி</string>
     <string name="Days">நாட்கள்</string>
     <string name="Weeks">வாரங்கள்</string>
     <string name="Months">மாதங்கள்</string>
     <string name="Years">ஆண்டுகள்</string>
-<!--    <string name="image_saved">படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!</string>-->
-<!--    <string name="emergency_confirmation">இந்த வருகையை அவசரநிலையாக அமைக்க விரும்புகிறீர்களா?</string>-->
+    <!--    <string name="image_saved">படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!</string>-->
+    <!--    <string name="emergency_confirmation">இந்த வருகையை அவசரநிலையாக அமைக்க விரும்புகிறீர்களா?</string>-->
     <string name="per_Hour">ஒரு மணி நேரத்திற்கு</string>
     <string name="per_Day">ஒரு நாளைக்கு</string>
     <string name="per_Week">வாரத்திற்கு</string>
@@ -228,13 +228,13 @@
     <string name="title_activity_question_node" translatable="false">கேள்விமுனைசெயல்பாடு</string>
     <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
     <!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
-<!--    <string name="speciality">சிறப்பு</string>-->
-<!--    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>-->
+    <!--    <string name="speciality">சிறப்பு</string>-->
+    <!--    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>-->
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
 
     <!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
-<!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
-<!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
+    <!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
+    <!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
     <string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
     <string name="reject_permission_results">நீங்கள் அனுமதியை நிராகரித்தால், இந்த சேவையைப் பயன்படுத்த முடியாது. தயவுசெய்து [அமைத்தல்] > [அனுமதி] அனுமதிகளை இயக்கவும்</string>
     <string name="current_time">\"நடப்பு நேரம் => \"</string>
@@ -314,7 +314,8 @@
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="select_any_one">Select any one</string>
-    <string name="select_one_or_more">Select one or more</string>
+    <string name="select_one_or_more">ஒன்று அல்லது அதற்கு மேல் தேர்வு செய்யவும்</string>
+
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -322,8 +323,10 @@
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
     <string name="ui2_no_information">No information</string>
-    <string name="confirm_visit_reason">Confirm visit reason?</string>
-    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+
+    <string name="confirm_visit_reason">விழிப்பின் காரணத்தை உறுதிப்படுத்தவா?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">நோயாளிக்கு கீழ்க்காணும் காரணங்களுக்காக வருகை உள்ளதா என்று நீங்கள் உறுதியாக உள்ளீர்களா?</string>
+
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
@@ -455,7 +458,8 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">வருகை காரணம்</string>
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களோ வாட்ஸ்அப் பயன்படுத்துகிறீர்களா?*</string>
@@ -505,8 +509,8 @@
     <string name="share_ncd_info_dialog_title">இந்த NCD சுகாதாரத் தகவல் இந்த WhatsApp எண்ணுக்கு பகிரப்படும்</string>
 
 
+    <string name="screening_lbl">திரையாய்வு</string>
 
-    <string name="screening_lbl">Screening</string>
     <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine பயன்படுத்தியதற்கு நன்றி. தயவுசெய்து தகவலை பதிவிறக்கம் செய்து உயர் இரத்த அழுத்தத்தை நிர்வகிக்க அல்லது குறைக்க படியுங்கள்</string>
     <string name="health_information">சுகாதார தகவல்</string>
     <string name="saved_to_downloads">கோப்பு Downloads இல் சேமிக்கப்பட்டது</string>
@@ -514,6 +518,18 @@
     <string name="patient_visit_sent_ended">நோயாளியின் வருகை வெற்றிகரமாக சேமிக்கப்பட்டு தானாக முடிக்கப்பட்டுள்ளது.</string>
 
     <string name="category_already_selected">நீங்கள் %1$s இல் இருந்து ஏற்கனவே ஒரு உருப்படியைத் தேர்ந்தெடுத்துள்ளீர்கள்</string>
+
+    <string name="visit_successfully_sent">வருகை வெற்றிகரமாக சேமிக்கப்பட்டது!</string>
+    <string name="what_is_reason_for_this_visit">இந்த வருகைக்கான காரணம் என்ன?</string>
+
+    <string name="not_eligible_for_protocols_message">நீங்கள் தற்போது எந்த NCD நெறிமுறைக்கும் தகுதியற்றவர். இருப்பினும் நீங்கள் தொடர விரும்பினால், உங்கள் விருப்பமான நெறிமுறையைத் தேர்வு செய்யவும்.</string>
+    <string name="yes_move_ahead">ஆம், தொடரவும்</string>
+    <string name="no_go_back">இல்லை, பின்செல்லவும்</string>
+
+    <string name="start_newadvice_confirmation_msg">நீங்கள் ஒரு சேவிகா ஆலோசனையைத் தொடங்க விரும்புகிறீர்களா?</string>
+    <string name="start_newadvice_confirmation_title">சேவிகா ஆலோசனையை தொடங்கவும்</string>
+
+    <string name="select_one_or_multiple_reasons">ஒரு அல்லது பல காரணங்களைத் தேர்ந்தெடுக்கவும்</string>
 
 
 </resources>

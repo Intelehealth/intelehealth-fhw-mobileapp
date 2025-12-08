@@ -1085,6 +1085,9 @@
 
     <string name="category_already_selected">আপনি %1$s থেকে একটি আইটেম ইতিমধ্যেই নির্বাচন করেছেন</string>
 
+    <string name="not_eligible_for_protocols_message">আপনি এই মুহূর্তে কোনো NCD প্রোটোকলের জন্য যোগ্য নন। তবুও আপনি এগোতে চাইলে আপনার পছন্দের প্রোটোকল নির্বাচন করুন।</string>
+    <string name="yes_move_ahead">হ্যাঁ, এগিয়ে যান</string>
+    <string name="no_go_back">না, ফিরে যান</string>
 
 
 </resources>

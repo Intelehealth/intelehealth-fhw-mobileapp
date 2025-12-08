@@ -1040,9 +1040,7 @@
 
     <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
 
-    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
-    <string name="yes_move_ahead">"Yes, move ahead."</string>
-    <string name="no_go_back">No, go back.</string>
+
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>
@@ -1109,6 +1107,10 @@
     <string name="patient_visit_sent_ended">मरीज़ की विज़िट सफलतापूर्वक सेव होकर स्वचालित रूप से समाप्त हो गई है।</string>
 
     <string name="category_already_selected">%1$s से एक आइटम आप पहले ही चुन चुके हैं</string>
+
+    <string name="not_eligible_for_protocols_message">आप इस समय किसी भी NCD प्रोटोकॉल के लिए पात्र नहीं हैं। यदि आप फिर भी आगे बढ़ना चाहते हैं, तो अपनी पसंद का प्रोटोकॉल चुनें।</string>
+    <string name="yes_move_ahead">हाँ, आगे बढ़ें</string>
+    <string name="no_go_back">नहीं, वापस जाएँ</string>
 
 
 </resources>

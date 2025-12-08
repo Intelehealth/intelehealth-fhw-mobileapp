@@ -137,6 +137,7 @@ public class DialogUtils {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message, null);
         alertdialogBuilder.setView(convertView);
+        alertdialogBuilder.setCancelable(false);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
         TextView dialog_title = convertView.findViewById(R.id.dialog_title);
         TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
@@ -148,6 +149,8 @@ public class DialogUtils {
             dialog_subtitle.setVisibility(View.GONE);
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
+        if(title==null || title.equalsIgnoreCase(""))
+            dialog_title.setVisibility(View.GONE);
         dialog_subtitle.setText(message);
         positive_btn.setText(positiveBtnText);
         negative_btn.setText(negativeBtnText);
@@ -204,7 +207,7 @@ public class DialogUtils {
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
+        alertDialog.setCancelable(false);
         negative_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
             customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);

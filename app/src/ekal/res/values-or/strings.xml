@@ -342,8 +342,9 @@
     <string name="medical_to_other_info">Medical to Other info</string>
     <string name="general_to_medical_info">General to medical info</string>
     <string name="start_newadvice_confirmation_msg">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଏକ ସେଭିକା ପରାମର୍ଶ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି??</string>
-    <string name="start_newadvice_confirmation_title">ಸೇವಿಕಾ ಸಲಹೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>
-    <string name="doctor_advice_alert_title">ಟೆಲಿ ಸಮಾಲೋಚನೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>
+    <string name="start_newadvice_confirmation_title">ସେବିକା ପରାମର୍ଶ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="doctor_advice_alert_title">ଟେଲି-କନସଲଟେସନ୍ ଆରମ୍ଭ କରନ୍ତୁ</string>
+
     <string name="doctor_advice_alert_msg">ଆପଣ ଡାକ୍ତରଙ୍କ ଠାରୁ ଟେଲି ପରାମର୍ଶ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="vital_alert_continue_button">ହଁ, ଜାରି ରଖ</string>
     <string name="vital_alert_save_button">ସଞ୍ଚୟ କରନ୍ତୁ</string>
@@ -436,5 +437,9 @@
 
     <string name="prescription_disclaimer">ବିଜ୍ଞପ୍ତି: ଚିକିତ୍ସା ପରେ ଯଦି ଆପଣଙ୍କର ଅବସ୍ଥାରେ ଉନ୍ନତି ନହୁଏ, ତେବେ ଦୟାକରି ଯଥାଶୀଘ୍ର ନିକଟତମ ହସ୍ପିଟାଲକୁ ଯାଆନ୍ତୁ କିମ୍ବା ଡାକ୍ତରଙ୍କ ସହିତ ପରାମର୍ଶ କରନ୍ତୁ। ଟେଲିମେଡିସିନ୍ ସେବା ଏକ ସୀମିତ ପରାମର୍ଶ ଏବଂ ଏହା ବ୍ୟକ୍ତିଗତ ଯାଞ୍ଚ ପାଇଁ ବଦଳ / ବିକଳ୍ପ ନୁହେଁ।</string>
     <string name="new_ncd_sevika_visit">ନୂତନ NCD/ସେବିକା ଭ୍ରମଣ</string>
+
+    <string name="category_anemia">ଅନିମିଆ</string>
+    <string name="category_hypertension">ହାଇପାରଟେନ୍ସନ୍</string>
+    <string name="category_diabetes">ଡାଏବେଟିସ୍</string>
 
 </resources>

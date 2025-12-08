@@ -1103,8 +1103,8 @@
     <string name="todays_tab_achievement">Daily</string>
 
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
-    <string name="yes_move_ahead">"Yes, move ahead."</string>
-    <string name="no_go_back">No, go back.</string>
+    <string name="yes_move_ahead">"Yes,move ahead"</string>
+    <string name="no_go_back">No,go back</string>
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>

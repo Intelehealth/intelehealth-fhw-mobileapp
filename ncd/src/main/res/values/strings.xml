@@ -154,7 +154,8 @@
 
     <string name="bp_measurement">BP Measurement - %1$s/%2$s</string>
     <string name="tab_all">All</string>
-
+    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="years_abbr">Y</string>
 
 
 </resources>

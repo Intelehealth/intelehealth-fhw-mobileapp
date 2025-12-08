@@ -1,12 +1,12 @@
 package org.intelehealth.app.activities.complaintNodeActivity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList;
 import org.intelehealth.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DialogUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -86,13 +87,26 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
                     mNodesFilter.get(j).setSelected(j == i);
                 }*/
                 String category = thisNode.getCategory();
+                String categoryInLocal = getCategoryLabel(mContext, thisNode.getCategory());
 
                 // If NOT selected & category already has a selected MM → BLOCK
                 if (!thisNode.isSelected() && isCategoryAlreadySelected(category)) {
-                    Toast.makeText(mContext,
-                            mContext.getString(R.string.category_already_selected, category),
-                            //"You already selected an item from " + category,
-                            Toast.LENGTH_SHORT).show();
+                    // show the dialog
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(mContext,  R.drawable.ui2_ic_ayu_image, "", mContext.getString(R.string.category_already_selected, categoryInLocal), true, mContext.getResources().getString(R.string.ok_btn_lbl), null, new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+//                            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+//
+//                            }
+                        }
+                    });
+
+
+//                    Toast.makeText(mContext,
+//                            mContext.getString(R.string.category_already_selected, categoryInLocal),
+//                            //"You already selected an item from " + category,
+//                            Toast.LENGTH_SHORT).show();
                     return; // 🚫 Stop here
                 }
 
@@ -184,4 +198,32 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
     public ImmutableList<Node> getmNodes() {
         return mNodes;
     }
+
+    private String getCategoryLabel(Context context, String category) {
+
+        if (category == null || category.trim().isEmpty()) {
+            return "";
+        }
+
+        String key = "category_" + category.toLowerCase(Locale.ROOT);
+
+        int resId = context.getResources().getIdentifier(
+                key,
+                "string",
+                context.getPackageName()
+        );
+
+        if (resId == 0) {
+            Log.w("CategoryLookup", "Missing translation for: " + key);
+            return category; // fallback
+        }
+
+        try {
+            return context.getString(resId);
+        } catch (Exception e) {
+            Log.e("CategoryLookup", "Error reading string for: " + key, e);
+            return category; // safe fallback
+        }
+    }
+
 }

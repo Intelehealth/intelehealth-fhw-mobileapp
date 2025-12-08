@@ -325,7 +325,8 @@
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="select_any_one">Select any one</string>
-    <string name="select_one_or_more">Select one or more</string>
+    <string name="select_one_or_more">ఒకటి లేదా అంతకంటే ఎక్కువను ఎంచుకోండి</string>
+
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -333,8 +334,10 @@
     <string name="slider_desc">range slider</string>
     <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
     <string name="ui2_no_information">No information</string>
-    <string name="confirm_visit_reason">Confirm visit reason?</string>
-    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">Are you sure the patient has the following reasons for a visit?</string>
+
+    <string name="confirm_visit_reason">విజిట్ కారణాన్ని నిర్ధారించాలా?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">రోగికి క్రింది కారణాల కోసం విజిట్ ఉందని మీకు ఖచ్చితంగా తెలుసా?</string>
+
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
@@ -432,7 +435,9 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">విజిట్ కారణం</string>
+
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">మీరు లేదా మీ కుటుంబ సభ్యులు ఎవరైనా వాట్సాప్ ఉపయోగిస్తున్నారా?*</string>
@@ -481,8 +486,8 @@
     <string name="share_ncd_info_dialog_title">ఈ NCD ఆరోగ్య సమాచారాన్ని ఈ WhatsApp నంబర్‌కి పంచబడుతుంది</string>
 
 
+    <string name="screening_lbl">స్క్రీనింగ్</string>
 
-    <string name="screening_lbl">Screening</string>
     <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine ఉపయోగించినందుకు ధన్యవాదాలు. దయచేసి సమాచారం డౌన్‌లోడ్ చేసి అధిక రక్తపోటు నియంత్రించడానికి లేదా తగ్గించడానికి చదవండి</string>
     <string name="health_information">ఆరోగ్య సమాచారం</string>
     <string name="saved_to_downloads">ఫైల్ Downloads లో సేవ్ చేయబడింది</string>
@@ -490,6 +495,18 @@
     <string name="patient_visit_sent_ended">రోగి సందర్శనం విజయవంతంగా సేవ్ అయ్యి స్వయంచాలకంగా ముగిసింది.</string>
 
     <string name="category_already_selected">మీరు ఇప్పటికే %1$s నుండి ఒక అంశాన్ని ఎంచుకున్నారు</string>
+    <string name="visit_successfully_sent">విజిట్ విజయవంతంగా సేవ్ చేయబడింది!</string>
 
+    <string name="what_is_reason_for_this_visit">ఈ విజిట్‌కు కారణం ఏమిటి?</string>
+
+    <string name="not_eligible_for_protocols_message">ప్రస్తుతం మీరు ఏ NCD ప్రోటోకాల్‌కు అర్హులు కారు. అయినప్పటికీ ముందుకు సాగాలనుకుంటే, మీకు నచ్చిన ప్రోటోకాల్‌ను ఎంచుకోండి.</string>
+    <string name="yes_move_ahead">అవును,ముందుకు సాగండి</string>
+    <string name="no_go_back">కాదు,వెనక్కి వెళ్లండి</string>
+
+    <string name="start_newadvice_confirmation_msg">మీరు సేవికా సలహాను ప్రారంభించాలనుకుంటున్నారని మీరు ఖచ్చితంగా అనుకుంటున్నారా?</string>
+    <string name="start_newadvice_confirmation_title">సేవికా సలహా ప్రారంభించండి</string>
+    <string name="new_ncd_sevika_visit">కొత్త NCD/సేవికా సందర్శన</string>
+
+    <string name="select_one_or_multiple_reasons">ఒకటి లేదా అనేక కారణాలను ఎంచుకోండి</string>
 
 </resources>

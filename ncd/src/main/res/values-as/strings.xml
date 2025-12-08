@@ -1,0 +1,159 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="video_library">ভিডিঅ লাইব্ৰেৰী</string>
+    <string name="no_videos_found_on_server">ছাৰ্ভাৰত কোনো ভিডিঅ পোৱা নগল</string>
+
+    <string name="type_to_search">সন্ধান কৰিবলৈ টাইপ কৰক…</string>
+
+    <!-- Search Patient Screen Tabs -->
+    <string name="tab_anemia_screening">এনিমিয়া স্ক্ৰিনিং</string>
+    <string name="tab_anemia_follow_up">এনিমিয়া ফল-আপ</string>
+    <string name="tab_diabetes_screening">ডায়াবেটিছ স্ক্ৰিনিং</string>
+    <string name="tab_diabetes_follow_up">ডায়াবেটিছ ফল-আপ</string>
+    <string name="tab_hypertension_screening">হাইপাৰটেনচন স্ক্ৰিনিং</string>
+    <string name="tab_hypertension_follow_up">হাইপাৰটেনচন ফল-আপ</string>
+    <string name="tab_general">সাধাৰণ</string>
+    <string name="search_patient">ৰোগী সন্ধান কৰক</string>
+
+    <string name="medical_history_yes">হয়</string>
+    <string name="age">বয়স</string>
+    <string name="years">বছৰ</string>
+    <string name="months">মাহ</string>
+    <string name="days">দিন</string>
+    <string name="sample_name_open_mrs_id_text">ৰবি কুমাৰ, 2AGY-87</string>
+    <string name="sample_age_text">বয়স: ১৬ বছৰ ১০ মাহ ১৬ দিন</string>
+    <string name="sample_disease_category">উদাহৰণ ৰোগ</string>
+
+    <string name="search_text_filed_hint">নাম, আইডি বা মোবাইল নম্বৰৰ সহায়ত সন্ধান কৰক</string>
+    <string name="no_data_found">ডাটা পোৱা নগ’ল</string>
+    <string name="patient_not_found">ৰোগী পোৱা নগ’ল!</string>
+    <string name="correct_search_string_message">সঠিক নাম, আইডি বা মোবাইল নম্বৰ ব্যৱহাৰ কৰক অথবা নতুন রোগী ৰেজিস্টাৰ কৰক।</string>
+    <string name="add_new_patient">নতুন রোগী যোগ কৰক</string>
+    <string name="presc_pending">প্ৰেসক্ৰিপচন অমলিত</string>
+    <string name="priority">প্ৰাধিকাৰ</string>
+    <string name="search_date_txt">২৪ মে, বিয়লি ৩:১৫ বজাত</string>
+    <string name="five_presc_received">%1$sটা প্ৰেসক্ৰিপচন প্ৰাপ্ত</string>
+    <string name="presc_received">প্ৰেসক্ৰিপচন পোৱা গল</string>
+    <string name="visit_not_uploaded">ভিজিট আপলোড হোৱা নাই</string>
+    <string name="search_gender">মʼ ২২</string>
+    <string name="search_txt_enter">ৰোগীৰ নাম বা আইডি টাইপ কৰক</string>
+    <string name="search_hint_text">আগতে সন্ধান কৰা</string>
+    <string name="all_patients_txt">সকলো রোগী</string>
+    <string name="clear">পৰিষ্কাৰ</string>
+    <string name="search_pat_not_found_txt">ৰোগী পোৱা নগ’ল!</string>
+
+    <!-- 1.1 Navigation -->
+    <string name="button_pagination_next">পৰৱৰ্তী</string>
+    <string name="button_pagination_previous">পূৰ্বৱৰ্তী</string>
+    <string name="back_button_text">ফিৰি যাওক</string>
+    <string name="edit_button_text">সম্পাদনা</string>
+    <string name="review_answers_text">উত্তৰসমূহ পৰ্যালোচনা কৰক</string>
+    <string name="button_review">পৰ্যালোচনা</string>
+    <string name="submit_questionnaire">জমা দিন</string>
+    <string name="cancel_questionnaire">@android:string/cancel</string>
+    <string name="questionnaire_review_mode_title">জমা দিয়াৰ আগতে উত্তৰসমূহ পৰ্যালোচনা কৰক</string>
+
+    <!-- 1.2 Submit Pop-up -->
+    <string name="questionnaire_validation_error_headline">ভুল পোৱা গল</string>
+    <string name="questionnaire_validation_error_supporting_text">নিম্নলিখিত প্ৰশ্নসমূহ ঠিক কৰক:</string>
+    <string name="questionnaire_validation_error_item_text_with_bullet">• %s</string>
+    <string name="questionnaire_validation_error_submit_button_text">যাই নহলেও জমা কৰক</string>
+    <string name="questionnaire_validation_error_fix_button_text">প্ৰশ্নসমূহ সংশোধন কৰক</string>
+
+    <!-- 1.3 Cancel Pop-up -->
+    <string name="questionnaire_cancel_text">আপুনি প্ৰশ্নাৱলী ত্যাগ কৰিব বিচাৰে নেকি?</string>
+
+    <!-- 2.1 All Widgets -->
+    <string name="not_answered">উত্তৰ দিয়া হোৱা নাই</string>
+    <string name="help">সহায়</string>
+
+    <!-- 2.2 Boolean -->
+    <string name="no">নাই</string>
+    <string name="yes">হয়</string>
+
+    <!-- 2.3 Drop Down -->
+    <string name="hyphen">-</string>
+
+    <!-- 2.4 Multi Select / Open Choice -->
+    <string name="open_choice_other">অন্য</string>
+    <string name="open_choice_other_hint">নিজস্ব বিকল্প লিখক</string>
+    <string name="open_choice_other_add_another">আন এটা উত্তৰ যোগ কৰক</string>
+    <string name="multi_select_dialog_subtitle">প্ৰযোজ্য সকলো বাছনি কৰক</string>
+    <string name="save">সংৰক্ষণ</string>
+    <string name="cancel">বাতিল</string>
+
+    <!-- 2.5 Date / DateTime -->
+    <string name="date">তাৰিখ</string>
+    <string name="time">সময়</string>
+    <string name="select_date">তাৰিখ বাছনি কৰক</string>
+    <string name="select_time">সময় বাছনি কৰক</string>
+
+    <!-- 2.6 Attachment widget -->
+    <string name="take_photo">ফটো লওক</string>
+    <string name="cd_photo_preview">ফটো পূৰ্বদৰ্শন</string>
+    <string name="cd_file_icon_preview">ফাইল আইকন পূৰ্বদৰ্শন</string>
+    <string name="upload_photo">ফটো আপলোড</string>
+    <string name="upload_audio">অডিও আপলোড</string>
+    <string name="upload_video">ভিডিঅ আপলোড</string>
+    <string name="upload_document">দস্তাবেজ আপলোড</string>
+    <string name="upload_file">ফাইল আপলোড</string>
+    <string name="delete">মচি পেলাওক</string>
+    <string name="max_size_image_above_limit_validation_error_msg">ভুল: ছবিখনৰ আকাৰ %1$s MB-ৰ ওপৰত</string>
+    <string name="max_size_file_above_limit_validation_error_msg">ভুল: ফাইলৰ আকাৰ %1$s MB-ৰ ওপৰত</string>
+    <string name="upload_failed">আপলোড বিফল</string>
+    <string name="mime_type_wrong_media_format_validation_error_msg">ভুল: ভুল মিডিয়া ফৰ্মেট</string>
+    <string name="uploaded">আপলোড হোৱা</string>
+    <string name="image_uploaded">ছবি আপলোড হৈছে</string>
+    <string name="file_uploaded">ফাইল আপলোড হৈছে</string>
+    <string name="video_uploaded">ভিডিঅ আপলোড হৈছে</string>
+    <string name="audio_uploaded">অডিও আপলোড হৈছে</string>
+    <string name="image_deleted">ছবি মচি পেলোৱা হল</string>
+    <string name="file_deleted">ফাইল মচি পেলোৱা হল</string>
+    <string name="video_deleted">ভিডিঅ মচি পেলোৱা হল</string>
+    <string name="audio_deleted">অডিও মচি পেলোৱা হল</string>
+
+    <!-- 2.7 Group -->
+    <string name="group_header_add_item_button">আইটেম যোগ কৰক</string>
+
+    <!-- 3.1 Validation -->
+    <string name="required_constraint_validation_error_msg">এই ক্ষেত্ৰটোৰ উত্তৰ আৱশ্যক।</string>
+    <string name="min_value_validation_error_msg">সর্বনিম্ন মান: <xliff:g id="min_value">%1$s</xliff:g></string>
+    <string name="max_value_validation_error_msg">সৰ্বোচ্চ মান: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="min_length_validation_error_msg">সৰ্বনিম্ন অক্ষৰ সংখ্যা: <xliff:g id="min_length">%1$s</xliff:g></string>
+    <string name="max_decimal_validation_error_msg">সৰ্বাধিক দশমিক স্থান: <xliff:g id="max_value">%1$s</xliff:g></string>
+
+    <string name="regex_validation_error_msg">উত্তৰটো ঠিক ধৰণত নাই: <xliff:g id="answer_value">%1$s</xliff:g></string>
+    <string name="number_format_validation_error_msg">দুটা সংখ্যাৰ মাজত কেৱল (.) ব্যৱহাৰ কৰক।</string>
+    <string name="date_format_validation_error_msg">তাৰিখৰ ফৰ্মেট হওয়া উচিত <xliff:g id="locale_format">%1$s</xliff:g> (উদাহৰণ: %2$s)</string>
+    <string name="integer_format_validation_error_msg">সংখ্যাটো হব লাগে <xliff:g id="min_value">%1$s</xliff:g> আৰু <xliff:g id="max_value">%2$s</xliff:g>ৰ মাজত</string>
+    <string name="decimal_format_validation_error_msg">অবৈধ সংখ্যা</string>
+    <string name="optional_helper_text">ঐচ্ছিক</string>
+    <string name="required">আৱশ্যক</string>
+    <string name="required_text_and_new_line">আৱশ্যক\n</string>
+    <string name="space_asterisk">\u0020\u002a</string>
+    <string name="repeated_group_title">%1$s. %2$s</string>
+    <string name="add_repeated_group_item">%1$s যোগ কৰক</string>
+
+    <string name="abnormal_bp_message">
+    অস্বাভাৱিক BP ধৰা পৰিল। অনুগ্ৰহ কৰি ৫ মিনিট পিছত পুনৰ BP পৰীক্ষণ কৰক।
+    &#10;&#10; %1$02d:%2$02d
+  </string>
+
+    <string name="bp_alert_title">BP সতর্কতা</string>
+    <string name="input_error_title">ইনপুট ভুল</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+        সিস্ট’লিক BP (SBP) ডায়াষ্ট’লিক BP (DBP)-তকৈ বেছি হব লাগিব। অনুগ্ৰহ কৰি মানসমূহ ঠিক কৰক।
+    </string>
+    <string name="ok_btn_lbl">ঠিক আছে</string>
+
+    <string name="questionnaire_title_hypertension_screening">হাইপাৰটেনচন স্ক্ৰিনিং</string>
+    <string name="questionnaire_title_anemia_screening">এনিমিয়া স্ক্ৰিনিং</string>
+    <string name="questionnaire_title_diabetes_screening">ডায়াবেটিছ স্ক্ৰিনিং</string>
+    <string name="questionnaire_title_hypertension_followup">হাইপাৰটেনচন ফল-আপ</string>
+
+    <string name="bp_measurement">BP মাপ - %1$s/%2$s</string>
+    <string name="tab_all">সকলো</string>
+    <string name="questionnaire_title_anemia_followup">এনিমিয়া ফল-আপ</string>
+    <string name="years_abbr">Y</string>
+
+</resources>

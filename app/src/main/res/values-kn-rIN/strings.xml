@@ -996,7 +996,8 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt">ಭೇಟಿ ಕಾರಣ</string>
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="never_prescribed_medication">ನಾನು ಎಂದಿಗೂ ಔಷಧಿಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಿಲ್ಲ</string>
@@ -1039,11 +1040,17 @@
     <string name="enter_whatsapp_number">ದಯವಿಟ್ಟು WhatsApp ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="share_ncd_info_dialog_title">ಈ NCD ಆರೋಗ್ಯ ಮಾಹಿತಿಯನ್ನು ಈ WhatsApp ಸಂಖ್ಯೆಗೆ ಹಂಚಲಾಗುತ್ತದೆ</string>
 
-    <string name="screening_lbl">Screening</string>
+    <string name="screening_lbl">ಸ್ಕ್ರೀನಿಂಗ್</string>
+
     <string name="patient_visit_sent_ended">ರೋಗಿಯ ಭೇಟಿ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದ್ದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಂತ್ಯಗೊಂಡಿದೆ.</string>
 
     <string name="category_already_selected">ನೀವು ಈಗಾಗಲೇ %1$s ನಿಂದ ಒಂದು ಆಯ್ಕೆಯನ್ನು ಮಾಡಿದ್ದಾರೆ</string>
 
+    <string name="not_eligible_for_protocols_message">ಈ ಕ್ಷಣದಲ್ಲಿ ನೀವು ಯಾವುದೇ NCD ಪ್ರೋಟೋಕಾಲ್‌ಗಳಿಗೆ ಅರ್ಹರಾಗಿಲ್ಲ. ಆದರೂ ಮುಂದುವರೆಯಲು ಬಯಸಿದರೆ, ನಿಮ್ಮ ಆಯ್ಕೆಯ ಪ್ರೋಟೋಕಾಲ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ.</string>
+
+    <string name="yes_move_ahead">ಹೌದು,ಮುಂದುವರೆಯಿರಿ</string>
+
+    <string name="no_go_back">ಇಲ್ಲ,ಹಿಂದಿರುಗಿ</string>
 
 
 </resources>

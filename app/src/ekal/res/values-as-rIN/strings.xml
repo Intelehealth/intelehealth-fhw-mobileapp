@@ -434,5 +434,11 @@
     </string-array>
 
     <string name="prescription_disclaimer">ঘোষণা: চিকিৎসাৰ পাছতো যদি আপোনাৰ অৱস্থা উন্নতি নহয়, তেতিয়া অনুগ্ৰহ কৰি  সোনকালেই ওচৰৰ হাস্পতালত  বা এজন চিকিৎসকৰ পৰামৰ্শ লওক। টেলিমেডিচিন সেৱা এটা সীমিত পৰামৰ্শহে আৰু ই প্ৰকৃত চিকিৎসাৰ বিকল্প নহয়।</string>
-    <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+    <string name="new_ncd_sevika_visit">নতুন NCD/সেৱিকা ভ্ৰমণ</string>
+
+
+    <string name="category_anemia">এনিমিয়া</string>
+    <string name="category_hypertension">হাইপাৰটেনচন</string>
+    <string name="category_diabetes">ডায়াবেটিছ</string>
+
 </resources>

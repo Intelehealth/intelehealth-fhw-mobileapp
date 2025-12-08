@@ -70,7 +70,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             "hypertension_screening.json",
             "anemia_screening.json",
             "diabetes_screening.json",
-            "hypertension_followup.json"
+            "hypertension_followup.json",
+            "anemia_followup.json"
         )
     private val questionnaireTitles =
         listOf(
@@ -78,7 +79,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             "Hypertension Screening",
             "Anemia Screening",
             "Diabetes Screening",
-            "Hypertension Followup"
+            "Hypertension Followup",
+            "Anemia Followup",
         )
 
 
@@ -87,6 +89,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
     var questionnaireTitle: String? = null
     var questionnaireJSONObject: JSONObject? = null
+    var patientName: String? = null
     var patientAge: Float? = 0f
     var patientDOB: String? = null
     var patientGender: String? = null
@@ -101,7 +104,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
         // Disable/override back button
-        onBackPressedDispatcher.addCallback(this,
+        onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     // Do nothing → completely blocks back
@@ -115,9 +119,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
             getString(R.string.questionnaire_title_diabetes_screening),
-            getString(R.string.questionnaire_title_hypertension_followup)
+            getString(R.string.questionnaire_title_hypertension_followup),
+            getString(R.string.questionnaire_title_anemia_followup)
         )
         questionnaireTitle = intent.getStringExtra("questionnaire_title")
+        patientName = intent.getStringExtra("patient_name")
         patientAge = intent.getFloatExtra("patient_age", 0f)
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
@@ -125,6 +131,26 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         //supportActionBar?.title = questionnaireTitle
         supportActionBar?.title =
             questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
+        val temp = patientAge.toString().split(".")
+        val years = temp[0].toInt()
+        val months = temp.getOrNull(1)?.toIntOrNull() ?: 0
+
+        val ageAndMonth = when {
+            years == 0 -> {
+                "$months ${getString(R.string.months)}"
+            }
+            months == 0 -> {
+                "$years ${getString(R.string.years)}"
+            }
+            else -> {
+                "$years ${getString(R.string.years)} $months ${getString(R.string.months)}"
+            }
+        }
+
+        // patient_name, Gender & Age only year
+        supportActionBar?.subtitle = "$patientName | $patientGender | $ageAndMonth"
+        // set text color of subtitle
+
         if (questionnaireTitle.equals(
                 "Hypertension Screening",
                 true
@@ -167,6 +193,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         if (isRecurring)
             startQuestionnaireMonitoring()
     }
+
     private fun hideKeyboard() {
         val view: View? = currentFocus
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -174,6 +201,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
+
     @SuppressLint("MissingSuperCall")
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -631,7 +659,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 lastQuestionnaireResponse?.let {
                     val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
                     lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
-                    Log.d("FHIR", "Response: $lastQuestionnaireResponseString")
+                    Log.println(Log.DEBUG,"FHIR", "Response: $lastQuestionnaireResponseString")
+                    // get the selected_symptoms_list link id
 
                 }
                 lastQuestionnaireResponse?.let {

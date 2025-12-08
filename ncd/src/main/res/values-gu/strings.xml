@@ -153,7 +153,8 @@
 
     <string name="bp_measurement">BP માપ - %1$s/%2$s</string>
     <string name="tab_all">બધા</string>
-
+    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="years_abbr">Y</string>
 
 
 </resources>

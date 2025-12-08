@@ -437,4 +437,8 @@
     <string name="prescription_disclaimer">નોટ: જો સારવાર બાદ તમારી સ્થિતિમાં સુધારો ન થાય, તો કૃપા કરીને ઝડપથી તમારા નજીકના હોસ્પિટલમાં જાઓ અથવા ડૉક્ટરની સલાહ લો. ટેલિમેડિસીન સેવા મર્યાદિત સલાહ છે અને વ્યક્તિગત તપાસનો વિકલ્પ નથી.</string>
     <string name="new_ncd_sevika_visit">નવું NCD/સેવિકા મુલાકાત</string>
 
+    <string name="category_anemia">એનીમિયા</string>
+    <string name="category_hypertension">હાઇપરટેન્શન</string>
+    <string name="category_diabetes">ડાયાબિટીસ</string>
+
 </resources>

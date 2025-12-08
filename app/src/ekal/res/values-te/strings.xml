@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_anemia">అనీమియా</string>
+    <string name="category_hypertension">హైపర్‌టెన్షన్</string>
+    <string name="category_diabetes">డయాబెటిస్</string>
+
+</resources>

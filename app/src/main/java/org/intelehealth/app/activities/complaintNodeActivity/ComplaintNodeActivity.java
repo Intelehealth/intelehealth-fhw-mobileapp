@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.complaintNodeActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -34,7 +32,6 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -343,16 +340,28 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     }
 
     private void displayIneligibleConfirmationDialog() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertDialogBuilder.setMessage(getString(R.string.not_eligible_for_protocols_message));
 
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(ComplaintNodeActivity.this,  R.drawable.ui2_ic_ayu_image, "", getResources().getString(R.string.not_eligible_for_protocols_message), false, getResources().getString(R.string.yes_move_ahead), getResources().getString(R.string.no_go_back), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                    deleteVisitAndGoBack();
+                }
+            }
+        });
+
+
+       /* MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(getString(R.string.not_eligible_for_protocols_message));
+        alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton(getString(R.string.yes_move_ahead), (dialog, which) -> dialog.dismiss());
         alertDialogBuilder.setNegativeButton(getString(R.string.no_go_back), (dialog, which) -> {
             deleteVisitAndGoBack();
         });
 
         Dialog alertDialog = alertDialogBuilder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
     private void deleteVisitAndGoBack() {
@@ -370,14 +379,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
         }*/
-        String selectedLineListCategoryName = mIntentFromNCDCategoryName.toLowerCase().replaceAll("_", "").replaceAll(" ", "").replaceAll("-", "");
+        /*String selectedLineListCategoryName = mIntentFromNCDCategoryName.toLowerCase().replaceAll("_", "").replaceAll(" ", "").replaceAll("-", "");
         for (Node complaint : complaints) {
             String complainName = complaint.getText().toLowerCase().replaceAll("_", "").replaceAll(" ", "").replaceAll("-", "");
             if (selectedLineListCategoryName.equalsIgnoreCase(complainName)) {
                 complaint.toggleSelected();
                 break;
             }
-        }
+        }*/
 
         // validate the eligible auto select mm for the patient
         CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
@@ -386,6 +395,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 utils.checkForAllEligibleProtocolsBlocking(patientUuid, this);
 
         List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
+        Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);
 
         // if no eligible mms, then show message
         if (eligibleMMs != null && eligibleMMs.isEmpty()) {
@@ -571,6 +581,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         Intent in = new Intent(ComplaintNodeActivity.this, CommonQuestionnaireActivity.class);
         in.putExtra("questionnaire_title", questionnaireTitle);
+        in.putExtra("patient_name", patientName);
         in.putExtra("patient_dob", PatientsDAO.fetchDateOfBirth(patientUuid));
         in.putExtra("patient_age", float_ageYear_Month);
         in.putExtra("patient_gender", mgender);

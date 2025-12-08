@@ -3611,6 +3611,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertdialogBuilder.setView(convertView);
+        alertdialogBuilder.setCancelable(false);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
         TextView dialog_title = convertView.findViewById(R.id.dialog_title);
         TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);

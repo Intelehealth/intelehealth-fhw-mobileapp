@@ -438,11 +438,15 @@
 
 
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
-    <string name="yes_move_ahead">"Yes, move ahead."</string>
-    <string name="no_go_back">No, go back.</string>
+    <string name="yes_move_ahead">"Yes, move ahead"</string>
+    <string name="no_go_back">No, go back</string>
 
     <string name="hypertension_label">Hypertension</string>
     <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+
+    <string name="category_anemia">Anemia</string>
+    <string name="category_hypertension">Hypertension</string>
+    <string name="category_diabetes">Diabetes</string>
 
 
 </resources>

@@ -1078,7 +1078,10 @@
     <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
     <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
     <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
-    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="visit_reason_txt"><![CDATA[
+ভিজিটৰ কাৰণ
+]]></string>
+
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
 
     <string name="never_prescribed_medication">মোক কেতিয়াও ঔষধ প্ৰেছক্ৰিপচন কৰা হোৱা নাছিল</string>
@@ -1119,12 +1122,33 @@
     <string name="enter_whatsapp_number">অনুগ্ৰহ কৰি WhatsApp নম্বৰ লিখক</string>
     <string name="share_ncd_info_dialog_title">এই NCD স্বাস্থ্য তথ্যটো এই WhatsApp নম্বৰলৈ শ্বেয়াৰ কৰা হ’ব</string>
 
-    <string name="screening_lbl">Screening</string>
+    <string name="screening_lbl"><![CDATA[
+স্ক্ৰিনিং
+]]></string>
+
     <string name="ncd_info_whatsapp_msg_new">একল টেলিমেডিসিন ব্যৱহাৰৰ বাবে ধন্যবাদ। অনুগ্ৰহ কৰি তথ্য ডাউনলোড কৰক আৰু ৰক্তচাপ নিয়ন্ত্ৰণ বা হ্ৰাস কৰিবলৈ পঢ়ক</string>
     <string name="health_information">স্বাস্থ্য তথ্য</string>
     <string name="saved_to_downloads">ফাইলটো Downloadsত সংৰক্ষণ কৰা হৈছে</string>
     <string name="failed_to_save_downloads">PDF সংৰক্ষণ কৰাত ব্যৰ্থ</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
-    <string name="category_already_selected">You already selected an item from %1$s</string>
+    <string name="patient_visit_sent_ended"><![CDATA[
+ৰোগীৰ ভিজিট সফলতাপূৰ্বক সংৰক্ষিত হৈছে আৰু স্বয়ংক্ৰিয়ভাৱে শেষ হৈছে।
+]]></string>
+
+    <string name="category_already_selected"><![CDATA[
+আপুনি ইতিমধ্যে %1$s ৰ পৰা এটা আইটেম বাছনি কৰিছে।
+]]></string>
+
+    <string name="not_eligible_for_protocols_message"><![CDATA[
+এই মুহূৰ্তত আপুনি কোনো NCD প্ৰটোকলৰ বাবে যোগ্য নহয়। তেও আপুনি আগবাঢ়িব বিচাৰিলে, আপোনাৰ পছন্দৰ প্ৰটোকল বাছনি কৰক।
+]]></string>
+
+    <string name="yes_move_ahead"><![CDATA[
+হয়, আগবাঢ়ক
+]]></string>
+
+    <string name="no_go_back"><![CDATA[
+নহয়, পিছলৈ যাওক
+]]></string>
+
 
 </resources>

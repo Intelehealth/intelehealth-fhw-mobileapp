@@ -435,4 +435,8 @@
     <string name="prescription_disclaimer">ঘোষণা: চিকিৎসার পরেও যদি আপনার অবস্থার উন্নতি না হয়, তাহলে অনুগ্রহ করে দ্রুত আপনার নিকটস্থ হাসপাতালে এবং একজন চিকিৎসকের পরামর্শ নিন। টেলিমেডিসিন পরিষেবা একটি সীমিত পরামর্শ, এবং এটি সরাসরি ব্যক্তিগত পরীক্ষার বিকল্প নয়।</string>
     <string name="new_ncd_sevika_visit">নতুন NCD/সেবিকা ভিজিট</string>
 
+    <string name="category_anemia">অ্যানিমিয়া</string>
+    <string name="category_hypertension">হাইপারটেনশন</string>
+    <string name="category_diabetes">ডায়াবেটিস</string>
+
 </resources>

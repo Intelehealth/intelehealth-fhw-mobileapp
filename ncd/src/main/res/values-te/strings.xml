@@ -1,0 +1,159 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="video_library">వీడియో లైబ్రరీ</string>
+    <string name="no_videos_found_on_server">సర్వర్‌లో ఏ వీడియోలు కనబడలేదు</string>
+
+    <string name="type_to_search">శోధించడానికి టైప్ చేయండి…</string>
+
+    <!-- Search Patient Screen Tabs -->
+    <string name="tab_anemia_screening">అనీమియా స్క్రీనింగ్</string>
+    <string name="tab_anemia_follow_up">అనీమియా ఫాలో-అప్</string>
+    <string name="tab_diabetes_screening">డయాబెటిస్ స్క్రీనింగ్</string>
+    <string name="tab_diabetes_follow_up">డయాబెటిస్ ఫాలో-అప్</string>
+    <string name="tab_hypertension_screening">హైపర్‌టెన్షన్ స్క్రీనింగ్</string>
+    <string name="tab_hypertension_follow_up">హైపర్‌టెన్షన్ ఫాలో-అప్</string>
+    <string name="tab_general">సాధారణ</string>
+    <string name="search_patient">రోగిని శోధించండి</string>
+
+    <string name="medical_history_yes">అవును</string>
+    <string name="age">వయస్సు</string>
+    <string name="years">సంవత్సరాలు</string>
+    <string name="months">నెలలు</string>
+    <string name="days">రోజులు</string>
+    <string name="sample_name_open_mrs_id_text">రవి కుమార్, 2AGY-87</string>
+    <string name="sample_age_text">వయస్సు: 16 సంవత్సరాలు 10 నెలలు 16 రోజులు</string>
+    <string name="sample_disease_category">నమూనా వ్యాధి</string>
+
+    <string name="search_text_filed_hint">పేరు, ఐడి లేదా మొబైల్ ద్వారా శోధించండి</string>
+    <string name="no_data_found">డేటా కనబడలేదు</string>
+    <string name="patient_not_found">రోగి కనబడలేదు!</string>
+    <string name="correct_search_string_message">సరైన పేరు, ఐడి లేదా మొబైల్ నంబర్ ను ఉపయోగించి శోధించండి లేదా కొత్త రోగిని నమోదు చేయండి.</string>
+    <string name="add_new_patient">కొత్త రోగిని చేర్చండి</string>
+    <string name="presc_pending">ప్రిస్క్రిప్షన్ పెండింగ్‌లో ఉంది</string>
+    <string name="priority">ప్రాధాన్యత</string>
+    <string name="search_date_txt">మే 24, సా. 3:15</string>
+    <string name="five_presc_received">%1$s ప్రిస్క్రిప్షన్లు అందాయి</string>
+    <string name="presc_received">ప్రిస్క్రిప్షన్ అందింది</string>
+    <string name="visit_not_uploaded">విజిట్ అప్‌లోడ్ కాలేదు</string>
+    <string name="search_gender">పురుషుడు 22</string>
+    <string name="search_txt_enter">రోగి పేరు లేదా ఐడి నమోదు చేయండి</string>
+    <string name="search_hint_text">మునుపు శోధించినవి</string>
+    <string name="all_patients_txt">అన్ని రోగులు</string>
+    <string name="clear">క్లియర్</string>
+    <string name="search_pat_not_found_txt">రోగి కనబడలేదు!</string>
+
+    <!-- 1.1 Navigation -->
+    <string name="button_pagination_next">తర్వాత</string>
+    <string name="button_pagination_previous">మునుపటి</string>
+    <string name="back_button_text">వెనక్కి</string>
+    <string name="edit_button_text">సవరించు</string>
+    <string name="review_answers_text">సమాధానాలను సమీక్షించండి</string>
+    <string name="button_review">సమీక్ష</string>
+    <string name="submit_questionnaire">సమర్పించండి</string>
+    <string name="cancel_questionnaire">@android:string/cancel</string>
+    <string name="questionnaire_review_mode_title">సమర్పించడానికి ముందు సమాధానాలను సమీక్షించండి</string>
+
+    <!-- 1.2 Submit Pop-up -->
+    <string name="questionnaire_validation_error_headline">తప్పులు కనుగొనబడ్డాయి</string>
+    <string name="questionnaire_validation_error_supporting_text">ఈ ప్రశ్నలను సరిచేయండి:</string>
+    <string name="questionnaire_validation_error_item_text_with_bullet">• %s</string>
+    <string name="questionnaire_validation_error_submit_button_text">ఏమైనా సమర్పించండి</string>
+    <string name="questionnaire_validation_error_fix_button_text">తప్పులను సరిచేయండి</string>
+
+    <!-- 1.3 Cancel Pop-up -->
+    <string name="questionnaire_cancel_text">మీరు ప్రశ్నావళి నుండి బయటికి రావాలనుకుంటున్నారా?</string>
+
+    <!-- 2.1 All Widgets -->
+    <string name="not_answered">సమాధానం ఇవ్వలేదు</string>
+    <string name="help">సహాయం</string>
+
+    <!-- 2.2 Boolean -->
+    <string name="no">కాదు</string>
+    <string name="yes">అవును</string>
+
+    <!-- 2.3 Drop Down -->
+    <string name="hyphen">-</string>
+
+    <!-- 2.4 Multi Select / Open Choice -->
+    <string name="open_choice_other">ఇతర</string>
+    <string name="open_choice_other_hint">అనుకూల ఎంపికను నమోదు చేయండి</string>
+    <string name="open_choice_other_add_another">మరొక సమాధానం చేర్చండి</string>
+    <string name="multi_select_dialog_subtitle">అన్వయించే అన్ని ఎంపికలను ఎంచుకోండి</string>
+    <string name="save">సేవ్ చేయండి</string>
+    <string name="cancel">రద్దు</string>
+
+    <!-- 2.5 Date / DateTime -->
+    <string name="date">తేదీ</string>
+    <string name="time">సమయం</string>
+    <string name="select_date">తేదీని ఎంచుకోండి</string>
+    <string name="select_time">సమయాన్ని ఎంచుకోండి</string>
+
+    <!-- 2.6 Attachment widget -->
+    <string name="take_photo">ఫోటో తీయండి</string>
+    <string name="cd_photo_preview">ఫోటో ప్రివ్యూ</string>
+    <string name="cd_file_icon_preview">ఫైల్ ఐకాన్ ప్రివ్యూ</string>
+    <string name="upload_photo">ఫోటో అప్‌లోడ్</string>
+    <string name="upload_audio">ఆడియో అప్‌లోడ్</string>
+    <string name="upload_video">వీడియో అప్‌లోడ్</string>
+    <string name="upload_document">పత్రాన్ని అప్‌లోడ్ చేయండి</string>
+    <string name="upload_file">ఫైల్ అప్‌లోడ్</string>
+    <string name="delete">తొలగించు</string>
+    <string name="max_size_image_above_limit_validation_error_msg">లోపం: చిత్ర పరిమాణం %1$s MB కంటే ఎక్కువ</string>
+    <string name="max_size_file_above_limit_validation_error_msg">లోపం: ఫైల్ పరిమాణం %1$s MB కంటే ఎక్కువ</string>
+    <string name="upload_failed">అప్‌లోడ్ విఫలమైంది</string>
+    <string name="mime_type_wrong_media_format_validation_error_msg">లోపం: తప్పు మీడియా ఫార్మాట్</string>
+    <string name="uploaded">అప్‌లోడ్ అయ్యింది</string>
+    <string name="image_uploaded">చిత్రం అప్‌లోడ్ అయ్యింది</string>
+    <string name="file_uploaded">ఫైల్ అప్‌లోడ్ అయ్యింది</string>
+    <string name="video_uploaded">వీడియో అప్‌లోడ్ అయ్యింది</string>
+    <string name="audio_uploaded">ఆడియో అప్‌లోడ్ అయ్యింది</string>
+    <string name="image_deleted">చిత్రం తొలగించబడింది</string>
+    <string name="file_deleted">ఫైల్ తొలగించబడింది</string>
+    <string name="video_deleted">వీడియో తొలగించబడింది</string>
+    <string name="audio_deleted">ఆడియో తొలగించబడింది</string>
+
+    <!-- 2.7 Group -->
+    <string name="group_header_add_item_button">అంశాన్ని చేర్చండి</string>
+
+    <!-- 3.1 Validation -->
+    <string name="required_constraint_validation_error_msg">ఈ ఫీల్డ్‌కు సమాధానం అవసరం.</string>
+    <string name="min_value_validation_error_msg">కనిష్ఠ విలువ: <xliff:g id="min_value">%1$s</xliff:g></string>
+    <string name="max_value_validation_error_msg">గరిష్ట విలువ: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="min_length_validation_error_msg">అనుమతించబడిన కనిష్ఠ అక్షరాలు: <xliff:g id="min_length">%1$s</xliff:g></string>
+    <string name="max_decimal_validation_error_msg">గరిష్ట దశాంశ స్థానాలు: <xliff:g id="max_value">%1$s</xliff:g></string>
+
+    <string name="regex_validation_error_msg">సమాధానం సరైన ఫార్మాట్‌లో లేదు: <xliff:g id="answer_value">%1$s</xliff:g></string>
+    <string name="number_format_validation_error_msg">రెండు సంఖ్యల మధ్య (.) మాత్రమే ఉపయోగించండి. ఇతర చిహ్నాలు అనుమతించబడవు.</string>
+    <string name="date_format_validation_error_msg">తేదీ ఆకృతి <xliff:g id="locale_format">%1$s</xliff:g> (ఉదా.: %2$s) గా ఉండాలి</string>
+    <string name="integer_format_validation_error_msg">సంఖ్య <xliff:g id="min_value">%1$s</xliff:g> మరియు <xliff:g id="max_value">%2$s</xliff:g> మధ్య ఉండాలి</string>
+    <string name="decimal_format_validation_error_msg">చెల్లని సంఖ్య</string>
+    <string name="optional_helper_text">ఐచ్చికం</string>
+    <string name="required">అవసరం</string>
+    <string name="required_text_and_new_line">అవసరం\n</string>
+    <string name="space_asterisk">\u0020\u002a</string>
+    <string name="repeated_group_title">%1$s. %2$s</string>
+    <string name="add_repeated_group_item">%1$s చేర్చండి</string>
+
+    <string name="abnormal_bp_message">
+        అసాధారణ BP గుర్తించబడింది. దయచేసి 5 నిమిషాల తర్వాత BP మళ్లీ తనిఖీ చేయండి.
+        &#10;&#10;ఈ డైలాగ్ %1$02d:%2$02d సమయంలో మూసివేయబడుతుంది.
+    </string>
+
+    <string name="bp_alert_title">BP అలర్ట్</string>
+    <string name="input_error_title">ఇన్‌పుట్ లోపం</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+        సిస్టోలిక్ BP (SBP) డయాస్టోలిక్ BP (DBP) కంటే ఎక్కువగా ఉండాలి. దయచేసి విలువలను సరిచేయండి.
+    </string>
+    <string name="ok_btn_lbl">సరే</string>
+
+    <string name="questionnaire_title_hypertension_screening">హైపర్‌టెన్షన్ స్క్రీనింగ్</string>
+    <string name="questionnaire_title_anemia_screening">అనీమియా స్క్రీనింగ్</string>
+    <string name="questionnaire_title_diabetes_screening">డయాబెటిస్ స్క్రీనింగ్</string>
+    <string name="questionnaire_title_hypertension_followup">హైపర్‌టెన్షన్ ఫాలోఅప్</string>
+
+    <string name="bp_measurement">BP కొలత - %1$s/%2$s</string>
+    <string name="tab_all">అన్నీ</string>
+    <string name="questionnaire_title_anemia_followup">అనీమియా ఫాలోఅప్</string>
+    <string name="years_abbr">Y</string>
+
+</resources>

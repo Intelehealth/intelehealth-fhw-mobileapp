@@ -938,5 +938,9 @@
 
     <string name="category_already_selected">ଆପଣ %1$s ରୁ ଏକ ଆଇଟମ୍ ପୂର୍ବରୁ ଚୟନ କରିଛନ୍ତି</string>
 
+    <string name="not_eligible_for_protocols_message">ଏହି ସମୟରେ ଆପଣ କୌଣସି NCD ପ୍ରୋଟୋକଲ ପାଇଁ ଯୋଗ୍ୟ ନୁହନ୍ତି। ଯଦି ଆପଣ ତଥାପି ଆଗକୁ ବଢ଼ିବାକୁ ଚାହୁଁଛନ୍ତି, ତେବେ ନିଜ ପସନ୍ଦର ପ୍ରୋଟୋକଲ ବାଛନ୍ତୁ।</string>
+    <string name="yes_move_ahead">ହଁ, ଆଗକୁ ବଢ଼ନ୍ତୁ</string>
+    <string name="no_go_back">ନା, ପଛକୁ ଯାଆନ୍ତୁ</string>
+
 
 </resources>

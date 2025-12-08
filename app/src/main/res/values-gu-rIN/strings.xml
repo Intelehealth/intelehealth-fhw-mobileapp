@@ -1097,5 +1097,9 @@
 
     <string name="category_already_selected">તમે પહેલેથી જ %1$s માંથી એક આઇટમ પસંદ કરી છે</string>
 
+    <string name="not_eligible_for_protocols_message">તમે હાલમાં કોઈપણ NCD પ્રોટોકોલ માટે પાત્ર નથી. તેમ છતાં આગળ વધવા માંગતા હો, તો તમારી પસંદગીનો પ્રોટોકોલ પસંદ કરો.</string>
+    <string name="yes_move_ahead">હા,આગળ વધો</string>
+    <string name="no_go_back">ના,પાછા જાઓ</string>
+
 
 </resources>
