@@ -248,8 +248,10 @@ class CompareDataActivity : AppCompatActivity() {
         secondValue: String
     ) {
         abhaRb.isChecked = true
-        abhaRb.isEnabled = false
-        localRb.isEnabled = false
+        abhaRb.isClickable = false
+        abhaRb.isFocusable = false
+        localRb.isClickable = false
+        localRb.isFocusable = false
     }
 
     private fun getSelectedRadioText(rg: RadioGroup): String {
