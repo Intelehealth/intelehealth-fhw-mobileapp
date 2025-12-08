@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="localData"
             type="org.intelehealth.app.models.UserData" />
+
         <variable
             name="abhaData"
             type="org.intelehealth.app.models.UserData" />
@@ -26,22 +28,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/compare_data"
-                android:textSize="24sp"
-                android:textStyle="bold"
                 android:paddingBottom="20dp"
-                android:textColor="@android:color/black" />
+                android:text="@string/compare_data"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <!-- TableLayout -->
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="1"
+                android:background="@drawable/table_border"
                 android:padding="8dp"
-                android:background="@drawable/table_border">
+                android:stretchColumns="1">
 
                 <!-- Header Row -->
                 <TableRow>
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -54,40 +57,38 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:text="Local"
-                        android:textStyle="bold"
+                        android:text="@string/hmis_data"
+                        android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        android:textColor="@android:color/black" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:text="ABHA"
-                        android:textStyle="bold"
+                        android:text="@string/abha_data"
+                        android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        android:textColor="@android:color/black" />
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <View
                     android:layout_height="1dp"
-                    android:background="@color/medium_gray"
                     android:layout_marginTop="@dimen/margin_8"
                     android:layout_marginBottom="@dimen/margin_8"
-                    />
+                    android:background="@color/medium_gray" />
 
                 <!-- First Name -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/first_name"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/first_name"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -102,37 +103,36 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.fName}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.fName}" />
 
                         <RadioButton
                             android:id="@+id/rbFNameAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.fName}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.fName}" />
                     </RadioGroup>
                 </TableRow>
 
 
                 <!-- Last Name -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/last_name"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/last_name"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -147,36 +147,35 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.lName}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.lName}" />
 
                         <RadioButton
                             android:id="@+id/rbLNameAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.lName}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.lName}" />
                     </RadioGroup>
                 </TableRow>
 
                 <!-- DOB -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/row_dob"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/row_dob"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -191,36 +190,35 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.dob}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.dob}" />
 
                         <RadioButton
                             android:id="@+id/rbDobAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.dob}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.dob}" />
                     </RadioGroup>
                 </TableRow>
 
                 <!-- Gender -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/gender"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/gender"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -235,36 +233,35 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.gender}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.gender}" />
 
                         <RadioButton
                             android:id="@+id/rbGenderAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.gender}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.gender}" />
                     </RadioGroup>
                 </TableRow>
 
                 <!-- Address -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/row_address"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/row_address"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -279,36 +276,35 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.address}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.address}" />
 
                         <RadioButton
                             android:id="@+id/rbAddressAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.address}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.address}" />
                     </RadioGroup>
                 </TableRow>
 
                 <!-- PinCode -->
-                <TableRow
-                    android:layout_marginBottom="@dimen/margin_8"
-                    >
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/pin_code"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/pin_code"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -323,22 +319,22 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.pinCode}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.pinCode}" />
 
                         <RadioButton
                             android:id="@+id/rbPinCodeAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.pinCode}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.pinCode}" />
                     </RadioGroup>
                 </TableRow>
 
@@ -348,9 +344,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/compare_screen_abha_address"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/compare_screen_abha_address"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -365,33 +361,34 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.abhaAddress}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.abhaAddress}" />
 
                         <RadioButton
                             android:id="@+id/rbAbhaAddressAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.abhaAddress}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.abhaAddress}" />
                     </RadioGroup>
                 </TableRow>
+
                 <TableRow android:layout_marginBottom="@dimen/margin_8">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/compare_screen_abha_number"
                         android:gravity="center_vertical"
                         android:padding="8dp"
+                        android:text="@string/compare_screen_abha_number"
                         android:textColor="@android:color/black" />
 
                     <RadioGroup
@@ -406,22 +403,22 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{localData.abhaNumber}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{localData.abhaNumber}" />
 
                         <RadioButton
                             android:id="@+id/rbAbhaNumberAbha"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{abhaData.abhaNumber}"
-                            android:padding="8dp"
+                            android:buttonTint="@android:color/black"
                             android:ellipsize="end"
                             android:gravity="top"
-                            android:buttonTint="@android:color/black" />
+                            android:padding="8dp"
+                            android:text="@{abhaData.abhaNumber}" />
                     </RadioGroup>
                 </TableRow>
 
@@ -432,25 +429,25 @@
                 android:id="@+id/btnConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/confirm_and_save_selected_data"
-                android:textSize="16sp"
-                android:background="@drawable/ui2_common_primary_bg"
-                android:textColor="@android:color/white"
                 android:layout_marginTop="24dp"
-                android:padding="12dp" />
+                android:background="@drawable/ui2_common_primary_bg"
+                android:padding="12dp"
+                android:text="@string/confirm_and_save_selected_data"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <!-- Edit Manually -->
             <Button
                 android:id="@+id/btnEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit Manually"
-                android:visibility="gone"
-                android:textSize="16sp"
-                android:backgroundTint="@android:color/darker_gray"
-                android:textColor="@android:color/white"
                 android:layout_marginTop="8dp"
-                android:padding="12dp" />
+                android:backgroundTint="@android:color/darker_gray"
+                android:padding="12dp"
+                android:text="Edit Manually"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 </layout>

@@ -1998,4 +1998,8 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="kyc_verification_not_done_abha_address">This is a non-KYC ABHA address. Please link your ABHA address to your ABHA number to enable download.</string>
     <string name="kyc_verification_not_done_abha_number">This ABHA number isn\'t KYC-verified. Please try with a different Abha number</string>
 
+    // Compare Data Strings
+    <string name="hmis_data">HMIS Data</string>
+    <string name="abha_data">ABHA Data</string>
+
 </resources>
