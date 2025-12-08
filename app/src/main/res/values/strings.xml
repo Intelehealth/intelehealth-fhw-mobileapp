@@ -1183,4 +1183,7 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
 
+    <string name="click_to_view_past_ncd_visits">Click to view the past %1$s NCD visits</string>
+
+
 </resources>

@@ -1,6 +1,9 @@
 package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -14,7 +17,6 @@ import org.intelehealth.app.models.NCDReading
 /**
  * Adapter for displaying NCD readings using ViewBinding and ListAdapter
  *
- * Features:
  * - ViewBinding for type-safe view access
  * - DiffUtil for efficient updates
  * - Conditional styling based on data
@@ -22,6 +24,7 @@ import org.intelehealth.app.models.NCDReading
  * - Last item divider handling
  */
 class NCDReadingAdapter(
+    private val isMale: Boolean,
     private val onItemClick: ((NCDReading) -> Unit)? = null
 ) : ListAdapter<NCDReading, NCDReadingAdapter.NCDReadingViewHolder>(DiffCallback()) {
 
@@ -31,7 +34,7 @@ class NCDReadingAdapter(
             parent,
             false
         )
-        return NCDReadingViewHolder(binding, onItemClick)
+        return NCDReadingViewHolder(binding,isMale, onItemClick)
     }
 
     override fun onBindViewHolder(holder: NCDReadingViewHolder, position: Int) {
@@ -43,6 +46,7 @@ class NCDReadingAdapter(
      */
     class NCDReadingViewHolder(
         private val binding: ItemNcdVitalReadingBinding,
+        private val isMale: Boolean,
         private val onItemClick: ((NCDReading) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -52,54 +56,143 @@ class NCDReadingAdapter(
                 tvDate.text = reading.date
 
                 // Bind BP
-                bindValue(
-                    text = reading.bp,
-                    textView = tvBp,
-                    normalColor = R.color.colorAccent
+                bindBpValue(
+                   reading.bp
+
                 )
 
                 // Bind HB
-                bindValue(
-                    text = reading.hb,
-                    textView = tvHb,
-                    normalColor = R.color.colorAccent
+                bindHbValue(
+                    reading.hb
                 )
 
                 // Bind RBS with conditional coloring
                 bindRbsValue(reading.rbs)
 
                 // Handle divider visibility
-              /*  bindivider.visibility = if (isLastItem) {
-                    android.view.View.GONE
-                } else {
-                    android.view.View.VISIBLE
-                }*/
+                /*  bindivider.visibility = if (isLastItem) {
+                      android.view.View.GONE
+                  } else {
+                      android.view.View.VISIBLE
+                  }*/
 
                 // Set click listener if provided
                 setupClickListener(reading)
             }
         }
 
-        /**
-         * Bind a text value with color handling
-         */
-        private fun ItemNcdVitalReadingBinding.bindValue(
-            text: String?,
-            textView: android.widget.TextView,
-            normalColor: Int
-        ) {
-            if (text.isNullOrBlank()) {
-                textView.text = NCDReading.NA
-                textView.setTextColor(
+        private fun ItemNcdVitalReadingBinding.bindHbValue(value: String?) {
+            if (value?.trim().isNullOrBlank()) {
+                tvHb.text = NCDReading.NA
+                tvHb.setTextColor(
                     ContextCompat.getColor(root.context, R.color.gray)
                 )
             } else {
-                textView.text = text
-                textView.setTextColor(
-                    ContextCompat.getColor(root.context, normalColor)
+                tvHb.text = value
+
+                val hbValue = value.toFloatOrNull() ?: 0f
+
+                // Hb category color logic
+                val colorRes = when {
+                    // Normal
+                    (isMale && hbValue >= 13f) || (!isMale && hbValue >= 12f) ->
+                        R.color.green
+
+                    // Mild
+                    (isMale && hbValue in 11.0f..12.9f) ||
+                            (!isMale && hbValue in 11.0f..11.9f) ->
+                        R.color.yellow
+
+                    // Moderate
+                    hbValue in 8.0f..10.9f ->
+                        R.color.orange
+
+                    // Severe
+                    hbValue < 8f ->
+                        R.color.red
+
+                    else ->
+                        R.color.gray
+                }
+
+                tvHb.setTextColor(
+                    ContextCompat.getColor(root.context, colorRes)
                 )
             }
         }
+
+
+        /**
+         * Bind a text value with color handling
+         */
+        private fun ItemNcdVitalReadingBinding.bindBpValue(
+            bpText: String?
+        ) {
+            var sysText: String? = null
+            var diaText: String? = null
+
+            if(!bpText.isNullOrBlank()){
+                val bpArray = bpText.split("/")
+                if(bpArray.size == 2){
+                    sysText = bpArray[0]
+                    diaText = bpArray[1]
+                }
+            }
+
+            if (sysText.isNullOrBlank() || diaText.isNullOrBlank()) {
+                tvBp.text = NCDReading.NA
+                tvBp.setTextColor(
+                    ContextCompat.getColor(root.context, R.color.gray)
+                )
+                return
+            }
+
+            val sys = sysText.toIntOrNull() ?: 0
+            val dia = diaText.toIntOrNull() ?: 0
+
+            val context = root.context
+
+            // Default Colors
+            var sysColor = ContextCompat.getColor(context, R.color.ui2_bp_default_ekal)
+            var diaColor = ContextCompat.getColor(context, R.color.ui2_bp_default_ekal)
+
+            // SYS logic
+            sysColor = when {
+                sys in 90..119 -> ContextCompat.getColor(context, R.color.ui2_sys1_ekal)
+                sys in 120..139 -> ContextCompat.getColor(context, R.color.ui2_sys2_ekal)
+                else -> sysColor
+            }
+
+            // DIA logic
+            diaColor = when {
+                dia < 80 -> ContextCompat.getColor(context, R.color.ui2_dia1_ekal)
+                dia in 80..99 -> ContextCompat.getColor(context, R.color.ui2_dia2_ekal)
+                else -> diaColor
+            }
+
+            // BP text (e.g., "120/80")
+            val bpString = "$sysText/$diaText"
+
+            // Apply two-color spannable
+            val spannable = SpannableString(bpString).apply {
+                setSpan(
+                    ForegroundColorSpan(sysColor),
+                    0,
+                    sysText.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                setSpan(
+                    ForegroundColorSpan(diaColor),
+                    sysText.length + 1,
+                    bpString.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+
+            tvBp.text = spannable
+        }
+
 
         /**
          * Bind RBS value with conditional coloring

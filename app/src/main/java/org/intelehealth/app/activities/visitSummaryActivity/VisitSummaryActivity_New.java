@@ -552,6 +552,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             expandableCardVisibilityHandling();
             fetchingIntentNcdVitals();
             setupRecyclerView();
+            setViewsData();
             loadData();
             setupClickListeners();
         } else {
@@ -584,14 +585,30 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void fetchingIntentNcdVitals() {
-        patientUuid = getIntent().getExtras().getString("patientUuid");
+        Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
+        mCommonVisitData = new CommonVisitData();
+        patientUuid = bundle.getString("patientUuid");
+        patientGender = bundle.getString("gender");
+        patientName = bundle.getString("name");
+        float_ageYear_Month = bundle.getFloat("float_ageYear_Month", 0);
+
+        mCommonVisitData.setEncounterUuidVitals(encounterVitals);
+        mCommonVisitData.setEncounterUuidAdultIntial(encounterUuidAdultIntial);
+        mCommonVisitData.setPatientUuid(patientUuid);
+        mCommonVisitData.setPatientGender(patientGender);
+        mCommonVisitData.setPatientName(patientName);
+        mCommonVisitData.setPatientAgeYearMonth(float_ageYear_Month);
+
+        queryData(String.valueOf(patientUuid));
+
     }
 
     private void setupRecyclerView() {
         // Initialize adapter with click listener
-        adapter = new NCDReadingAdapter(reading -> {
-            Toast.makeText(this, "Clicked: " + reading.getDate(),
-                    Toast.LENGTH_SHORT).show();
+        adapter = new NCDReadingAdapter(patientGender.equalsIgnoreCase("M"), reading -> {
+           /* Toast.makeText(this, "Clicked: " + reading.getDate(),
+                    Toast.LENGTH_SHORT).show();*/
             return null;
         });
 
@@ -4205,6 +4222,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+
+        if(mIsNCDVitals) return;
+
         PatientsDAO patientsDAO = new PatientsDAO();
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {patientUuid};

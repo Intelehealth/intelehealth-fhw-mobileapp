@@ -1125,5 +1125,5 @@
     <string name="saved_to_downloads">ফাইলটো Downloadsত সংৰক্ষণ কৰা হৈছে</string>
     <string name="failed_to_save_downloads">PDF সংৰক্ষণ কৰাত ব্যৰ্থ</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
-
+    <string name="click_to_view_past_ncd_visits">বিগত %1$sটা NCD ভিজিট চাবলৈ ক্লিক কৰক</string>
 </resources>

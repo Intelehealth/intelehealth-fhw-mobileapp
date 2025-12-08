@@ -675,11 +675,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 count -> {
-                                    if(count>0){
+                                    if (count > 0) {
                                         binding.ncdVisitCountTv.setVisibility(View.VISIBLE);
-                                        binding.ncdVisitCountTv.setText("Click to view the past "+count+"NCD visits");
-                                    }else{
+                                        binding.ncdVisitCountDividerView.setVisibility(View.VISIBLE);
+                                        binding.ncdVisitCountTv.setText(getString(R.string.click_to_view_past_ncd_visits, count));
+                                    } else {
                                         binding.ncdVisitCountTv.setVisibility(View.GONE);
+                                        binding.ncdVisitCountDividerView.setVisibility(View.GONE);
                                     }
                                 },
                                 error -> Log.e("TAG", "Error: " + error.getMessage())

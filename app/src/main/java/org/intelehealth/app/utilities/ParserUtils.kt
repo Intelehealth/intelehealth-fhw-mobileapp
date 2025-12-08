@@ -12,7 +12,7 @@ class ParserUtils {
         * @return BloodPressure object or null if not found
         */
        @JvmStatic
-       fun parseBP(text: String?): String {
+       fun parseBP(text: String?): String? {
            if (text == null || text.isEmpty()) {
                return ""
            }
@@ -45,7 +45,7 @@ class ParserUtils {
         * @return Hemoglobin object or null if not found
         */
        @JvmStatic
-       fun parseHemoglobin(text: String?): String {
+       fun parseHemoglobin(text: String?): String? {
            if (text == null || text.isEmpty()) {
                return ""
            }

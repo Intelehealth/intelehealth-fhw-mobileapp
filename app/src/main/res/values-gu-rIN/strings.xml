@@ -1094,5 +1094,5 @@
     <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
     <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
-
+    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>z
 </resources>

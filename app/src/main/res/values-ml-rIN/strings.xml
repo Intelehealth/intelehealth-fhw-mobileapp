@@ -419,6 +419,8 @@
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
     <string name="screening_lbl">Screening</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">കഴിഞ്ഞ %1$s NCD സന്ദർശനങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക</string>
+
 </resources>
 
 
