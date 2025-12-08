@@ -1066,5 +1066,8 @@
     <string name="hypertension_quit_alcohol_tobacco">ಬಿಪಿ: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
     <string name="ncd_report">NCD ವರದಿ</string>
 
+    <string name="screening_lbl">Screening</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">ಹಿಂದಿನ %1$s NCD ಭೇಟಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
 
 </resources>

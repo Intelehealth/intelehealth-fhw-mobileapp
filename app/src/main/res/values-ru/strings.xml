@@ -522,4 +522,6 @@
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
     <string name="yes_move_ahead">"Yes, move ahead"</string>
     <string name="no_go_back">No, go back</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">Нажмите, чтобы посмотреть предыдущие %1$s визита по НИЗ</string>
 </resources>

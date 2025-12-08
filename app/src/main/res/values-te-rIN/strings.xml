@@ -522,4 +522,6 @@
     <string name="hypertension_reduce_salt">బీపీ: ఉప్పు వినియోగాన్ని తగ్గించండి</string>
     <string name="hypertension_quit_alcohol_tobacco">బీపీ: మద్యం మరియు పొగాకు మానండి</string>
     <string name="ncd_report">NCD నివేదిక</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">గత %1$s NCD సందర్శనలను చూడటానికి క్లిక్ చేయండి</string>
 </resources>

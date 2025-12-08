@@ -10,7 +10,7 @@ package org.intelehealth.app.models
  * @property rbs Random Blood Sugar level in mg/dL
  */
 data class NCDReading(
-    val date: String,
+    val date: String?,
     val bp: String?,
     val hb: String?,
     val rbs: String?

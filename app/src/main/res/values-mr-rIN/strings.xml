@@ -1101,4 +1101,6 @@
     <string name="hypertension_reduce_salt">बीपी: मिठाचे सेवन कमी करा</string>
     <string name="hypertension_quit_alcohol_tobacco">बीपी: मद्यपान आणि तंबाखू सोडा</string>
     <string name="ncd_report">NCD अहवाल</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">मागील %1$s NCD भेटी पाहण्यासाठी क्लिक करा</string>
 </resources>

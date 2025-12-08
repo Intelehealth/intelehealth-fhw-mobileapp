@@ -270,6 +270,7 @@
                                 />
 
                             <View
+                                android:id="@+id/ncd_visit_count_divider_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dip"
                                 android:layout_marginVertical="@dimen/padding_12"

@@ -1360,6 +1360,8 @@ public class VisitsDAO {
                 "AND tbl_obs.conceptuuid = ? " +
                 "AND tbl_visit_attribute.visit_attribute_type_uuid = ? "+
                 "AND tbl_visit.patientuuid = ? "+
+                "AND tbl_visit.enddate IS NOT NULL "+
+                "GROUP BY tbl_visit.uuid "+
                 "ORDER BY tbl_obs.obsservermodifieddate DESC "+
                 "LIMIT 7";
 
@@ -1372,7 +1374,7 @@ public class VisitsDAO {
             if (cursor.moveToFirst()) {
                 do {
                     String value  = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                    String date  = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                    String date  = cursor.getString(cursor.getColumnIndexOrThrow("created_date"));
                     ncdReadings.add(new NCDReading(
                             DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd HH:mm:ss", "dd MMM, yy"),
                             ParserUtils.parseBP(value),
@@ -1403,14 +1405,15 @@ public class VisitsDAO {
         final int MAX_COUNT = 7;
         int count = 0;
 
-        String query = "SELECT COUNT(*) as total " +
+        String query = "SELECT COUNT(DISTINCT tbl_visit.uuid) AS total " +
                 "FROM tbl_obs, tbl_encounter, tbl_visit, tbl_visit_attribute " +
                 "WHERE tbl_obs.encounteruuid = tbl_encounter.uuid " +
                 "AND tbl_encounter.visituuid = tbl_visit.uuid " +
                 "AND tbl_visit_attribute.visit_uuid = tbl_visit.uuid " +
                 "AND tbl_obs.conceptuuid = ? " +
                 "AND tbl_visit_attribute.visit_attribute_type_uuid = ? " +
-                "AND tbl_visit.patientuuid = ?";
+                "AND tbl_visit.patientuuid = ? "+
+                "AND tbl_visit.enddate IS NOT NULL";
 
         Cursor cursor = null;
         try {

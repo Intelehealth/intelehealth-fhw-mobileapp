@@ -956,4 +956,6 @@
     <string name="hypertension_reduce_salt">ବିପି: ଲୁଣର ପରିମାଣ କମାନ୍ତୁ</string>
     <string name="hypertension_quit_alcohol_tobacco">ବିପି: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
     <string name="ncd_report">NCD ରିପୋର୍ଟ</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="click_to_view_past_ncd_visits">ଅତୀତର %1$sଟି NCD ଭିଜିଟ ଦେଖିବା ପାଇଁ କ୍ଲିକ କରନ୍ତୁ</string>
 </resources>
