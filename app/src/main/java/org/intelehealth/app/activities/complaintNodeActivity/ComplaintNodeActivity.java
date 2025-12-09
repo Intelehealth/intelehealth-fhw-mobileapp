@@ -396,6 +396,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
         Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);
+        // show on toast
+        //Toast.makeText(this, "eligibleMMs=" + eligibleMMs, Toast.LENGTH_LONG).show();
 
         // if no eligible mms, then show message
         if (eligibleMMs != null && eligibleMMs.isEmpty()) {

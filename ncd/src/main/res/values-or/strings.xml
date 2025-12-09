@@ -123,7 +123,9 @@
     <string name="max_value_validation_error_msg">ସର୍ବାଧିକ ଅନୁମତି ମୂଲ୍ୟ: <xliff:g id="max_value">%1$s</xliff:g></string>
     <string name="min_length_validation_error_msg">ଉତ୍ତର ପାଇଁ ନ୍ୟূନତମ ଅକ୍ଷର ସଂଖ୍ୟା: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">ଉତ୍ତର ପାଇଁ ସର୍ବାଧିକ ଦଶମିକ ସ୍ଥାନ: <xliff:g id="max_value">%1$s</xliff:g></string>
-    <string name="regex_validation_error_msg">ଉତ୍ତର ନିୟମିତ ପ୍ରକାଶ ସହିତ ମିଳୁନାହିଁ: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">ଉତ୍ତର ନିୟମିତ ପ୍ରକାଶ ସହିତ ମିଳୁନାହିଁ: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ଇନପୁଟ୍‌ରେ ଅନୁମତି ନଥିବା ଅକ୍ଷର ରହିଛି।</string>
+
     <string name="number_format_validation_error_msg">ଦୁଇଟି ସଂଖ୍ୟା ମଧ୍ୟରେ କେବଳ (.) ବ୍ୟବହାର କରନ୍ତୁ। ଅନ୍ୟ କୌଣସି ବିଶେଷ ଅକ୍ଷର ସମର୍ଥିତ ନୁହେଁ।</string>
     <string name="date_format_validation_error_msg">ତାରିଖ ଫର୍ମାଟ୍ ହେବା ଦରକାର: <xliff:g id="locale_format">%1$s</xliff:g> (ଉଦାହରଣ ସ୍ୱରୂପ %2$s)</string>
     <string name="integer_format_validation_error_msg">ସଂଖ୍ୟା <xliff:g id="min_value">%1$s</xliff:g> ଏବଂ <xliff:g id="max_value">%2$s</xliff:g> ମଧ୍ୟରେ ହେବା ଦରକାର</string>

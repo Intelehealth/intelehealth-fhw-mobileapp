@@ -122,7 +122,9 @@
     <string name="max_value_validation_error_msg">সর্বাধিক অনুমোদিত মান: <xliff:g id="max_value">%1$s</xliff:g></string>
     <string name="min_length_validation_error_msg">উত্তরের জন্য ন্যূনতম অক্ষরের সংখ্যা হতে হবে: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">উত্তরে অনুমোদিত সর্বাধিক দশমিক স্থান: <xliff:g id="max_value">%1$s</xliff:g></string>
-    <string name="regex_validation_error_msg">উত্তর নিয়মিত প্রকাশের সাথে মেলে না: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">উত্তর নিয়মিত প্রকাশের সাথে মেলে না: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ইনপুটে এমন কিছু অক্ষর রয়েছে যা অনুমোদিত নয়।</string>
+
     <string name="number_format_validation_error_msg">দুটি সংখ্যার মধ্যে শুধুমাত্র (.) ব্যবহার করুন। অন্যান্য বিশেষ অক্ষর সমর্থিত নয়।</string>
     <string name="date_format_validation_error_msg">তারিখের ফরম্যাট হতে হবে <xliff:g id="locale_format">%1$s</xliff:g> (যেমন %2$s)</string>
     <string name="integer_format_validation_error_msg">সংখ্যা <xliff:g id="min_value">%1$s</xliff:g> এবং <xliff:g id="max_value">%2$s</xliff:g> এর মধ্যে হতে হবে</string>

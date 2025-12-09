@@ -122,7 +122,9 @@
     <string name="max_value_validation_error_msg">મહત્તમ મંજૂર કિંમત: <xliff:g id="max_value">%1$s</xliff:g></string>
     <string name="min_length_validation_error_msg">જવાબ માટે ઓછામાં ઓછા અક્ષરો હોવા જોઈએ: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">જવાબ માટે સ્વીકાર્ય મહત્તમ દશાંશ સ્થાન: <xliff:g id="max_value">%1$s</xliff:g></string>
-    <string name="regex_validation_error_msg">જવાબ નિયમિત અભિવ્યક્તિ સાથે મેળ ખાતો નથી: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">જવાબ નિયમિત અભિવ્યક્તિ સાથે મેળ ખાતો નથી: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ઇનપુટમાં અમાન્ય અક્ષરો છે.</string>
+
     <string name="number_format_validation_error_msg">બે સંખ્યાઓ વચ્ચે ફક્ત (.) નો ઉપયોગ કરો. અન્ય વિશેષ અક્ષરો આધારિત નથી.</string>
     <string name="date_format_validation_error_msg">તારીખ ફોર્મેટ હોવો જોઈએ <xliff:g id="locale_format">%1$s</xliff:g> (જેમ %2$s)</string>
     <string name="integer_format_validation_error_msg">સંખ્યા <xliff:g id="min_value">%1$s</xliff:g> અને <xliff:g id="max_value">%2$s</xliff:g> ની વચ્ચે હોવી જોઈએ</string>

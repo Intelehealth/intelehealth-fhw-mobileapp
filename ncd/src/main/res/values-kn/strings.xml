@@ -122,7 +122,9 @@
     <string name="min_length_validation_error_msg">ಅನುಮತಿಸಲಾದ ಕನಿಷ್ಠ ಅಕ್ಷರಗಳು: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">ಗರಿಷ್ಠ ದಶಮಾಂಶ ಸ್ಥಾನಗಳು: <xliff:g id="max_value">%1$s</xliff:g></string>
 
-    <string name="regex_validation_error_msg">ಉತ್ತರ ನಿಯಮಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">ಉತ್ತರ ನಿಯಮಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ಇನ್‌ಪುಟ್‌ನಲ್ಲಿ ಅನುಮತಿಸದ ಅಕ್ಷರಗಳಿವೆ.</string>
+
     <string name="number_format_validation_error_msg">ಎರಡು ಸಂಖ್ಯೆಗಳ ನಡುವೆ (.) ಬಳಸಿ. ಇತರ ಚಿಹ್ನೆಗಳು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ.</string>
     <string name="date_format_validation_error_msg">ದಿನಾಂಕ ಫಾರ್ಮ್ಯಾಟ್ <xliff:g id="locale_format">%1$s</xliff:g> (ಉದಾ: %2$s)</string>
     <string name="integer_format_validation_error_msg">ಸಂಖ್ಯೆ <xliff:g id="min_value">%1$s</xliff:g> ಮತ್ತು <xliff:g id="max_value">%2$s</xliff:g> ನಡುವೆ ಇರಬೇಕು</string>
