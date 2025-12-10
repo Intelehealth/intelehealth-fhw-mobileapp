@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.LocaleList;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -409,16 +410,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken, boolean isNewUser) {
         if (isNewUser) {
-            // New user -> fetch address suggestions and navigate to ABHA address screen.
-            // Existing user -> update your abha address
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
-            // Existing user -> check user existence.
             checkIsUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
         }
     }
 
-    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
+    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse
+                                                            otpVerificationResponse, String accessToken) {
         ArrayList<String> addressList = new ArrayList<>();
         // api - start
         String url = UrlModifiers.getEnrollABHASuggestionUrl();
@@ -525,40 +524,33 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void checkIsUserExist(String abhaAddress, OTPVerificationResponse abhaProfileResponse) {
-
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String url = UrlModifiers.getCheckExistingUserUrl();
         cpd.show();
         // payload - end
-        Single<ExistUserStatusResponse> abhaProfileResponseSingle =
-                AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
-        new Thread(() -> abhaProfileResponseSingle
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle = AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
+        abhaProfileResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
-                        Timber.tag("checkExistingUserAPI").d("onSuccess: %s", response);
-                        Intent intent;
-                        if (response != null && response.getData() != null &&
-                                !Objects.requireNonNull(response.getData().getUuid()).equalsIgnoreCase("NA")) {
-                            abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
-                            abhaProfileResponse.setUuID(response.getData().getUuid());
-                            intent = new Intent(context, IdentificationActivity_New.class);
-                            intent.putExtra(PAYLOAD, abhaProfileResponse);
-                            intent.putExtra("accessToken", accessToken);
-                            intent.putExtra("patient_detail", true);
-                            intent.putExtra("firstRequestFulfilled", true);
-                            startActivity(intent);
+                        if (response != null && response.getData() != null && response.getData().getUuid() != null) {
+                            String openMrsId = response.getData().getUuid();
+                            boolean doesUserExistOnHmis = !openMrsId.equalsIgnoreCase("NA");
+
+                            if (doesUserExistOnHmis) {
+                                // present on our hmis
+                                navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse, response);
+                            } else {
+                                // not present on our hmis
+                                showDialogForConfirmation(abhaProfileResponse, response);
+                            }
                         } else {
-                            intent = new Intent(context, IdentificationActivity_New.class);
-                            intent.putExtra(PAYLOAD, abhaProfileResponse);
-                            intent.putExtra("accessToken", accessToken);
-                            startActivity(intent);
+                            navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
                         }
-                        finish();
                     }
 
                     @Override
@@ -566,8 +558,47 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                         cpd.dismiss();
                         Timber.tag("checkExistingUserAPI").e("onError: %s", e.toString());
                     }
-                })).start();
+                });
 
+    }
+
+    private void showDialogForConfirmation(OTPVerificationResponse abhaProfileResponse, ExistUserStatusResponse response) {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(
+                CreateAbhaAccountActivity.this,
+                R.drawable.close_patient_svg,
+                getString(R.string.existing_abha_address_found),
+                getString(R.string.you_have_an_existing_abha_address_present, abhaProfileResponse.getABHAProfile().getPhrAddress().get(0)),
+                false,
+                getString(R.string.use_existing),
+                getString(R.string.create_new), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
+                    }
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                        callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
+                    }
+                });
+    }
+
+    private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse, ExistUserStatusResponse response) {
+        abhaProfileResponse.setOpenMrsId(Objects.requireNonNull(response.getData()).getOpenmrsid());
+        abhaProfileResponse.setUuID(response.getData().getUuid());
+        Intent intent = new Intent(context, IdentificationActivity_New.class);
+        intent.putExtra(PAYLOAD, abhaProfileResponse);
+        intent.putExtra("accessToken", accessToken);
+        intent.putExtra("patient_detail", true);
+        intent.putExtra("firstRequestFulfilled", true);
+        startActivity(intent);
+        finish();
+    }
+
+    private void navigateToIdentificationScreenForNewPatient(OTPVerificationResponse abhaProfileResponse) {
+        Intent intent = new Intent(context, IdentificationActivity_New.class);
+        intent.putExtra(PAYLOAD, abhaProfileResponse);
+        intent.putExtra("accessToken", accessToken);
+        startActivity(intent);
+        finish();
     }
 
     public Context setLocale(Context context) {

@@ -2002,4 +2002,10 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="hmis_data">HMIS Data</string>
     <string name="abha_data">ABHA Data</string>
 
+    // Abha Address Creation Flow
+    <string name="existing_abha_address_found">Existing Abha Address Found!</string>
+    <string name="you_have_an_existing_abha_address_present">You have an existing ABHA address present. Would you like to use <b>%1$s</b> as your ABHA address or would you like to create a new one?</string>
+    <string name="use_existing">Use Existing</string>
+    <string name="create_new">Create New</string>
+
 </resources>
