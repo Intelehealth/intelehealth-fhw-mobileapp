@@ -12,7 +12,7 @@ import org.intelehealth.app.utilities.DialogUtils
 class TextViewDialogFragment(
     private val subtitleText: String,
     private val errorMessage: String,
-    private val listener: DialogUtils.TextViewDialogListener
+    private val listener: DialogUtils.TextSelectedListener
 ) : DialogFragment() {
 
     private lateinit var binding: DialogTextViewBinding
@@ -44,13 +44,13 @@ class TextViewDialogFragment(
             if (!isTextValid(enteredText)) {
                 binding.tvEntry.error = errorMessage
             } else {
-                listener.onDialogActionDone(DialogUtils.TextViewDialogListener.POSITIVE_CLICK, enteredText)
+                listener.onDialogActionDone(DialogUtils.TextSelectedListener.POSITIVE_CLICK, enteredText)
                 dismiss()
             }
         }
 
         binding.negativeBtn.setOnClickListener {
-            listener.onDialogActionDone(DialogUtils.TextViewDialogListener.NEGATIVE_CLICK)
+            listener.onDialogActionDone(DialogUtils.TextSelectedListener.NEGATIVE_CLICK)
             dismiss()
         }
     }

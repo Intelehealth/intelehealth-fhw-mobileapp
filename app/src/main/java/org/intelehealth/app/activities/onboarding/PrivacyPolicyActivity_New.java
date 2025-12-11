@@ -160,7 +160,7 @@ public class PrivacyPolicyActivity_New extends BaseActivity {
         TextViewDialogFragment dialogFragment = new TextViewDialogFragment(
                 getString(R.string.please_enter_the_patient_name),
                 getString(R.string.patient_name_cannot_be_empty),
-                new DialogUtils.TextViewDialogListener() {
+                new DialogUtils.TextSelectedListener() {
                     @Override
                     public void onDialogActionDone(int action) {
                     }

@@ -13,11 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.LocaleList;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +40,6 @@ import org.intelehealth.app.activities.identificationActivity.IdentificationActi
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
-import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -52,9 +49,11 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.app.widget.dialogs.ChecklistDialogFragment;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -546,7 +545,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse, response);
                             } else {
                                 // not present on our hmis
-                                showDialogForConfirmation(abhaProfileResponse, response);
+                                showDialogForConfirmation(abhaProfileResponse);
                             }
                         } else {
                             navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
@@ -562,23 +561,35 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     }
 
-    private void showDialogForConfirmation(OTPVerificationResponse abhaProfileResponse, ExistUserStatusResponse response) {
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(
-                CreateAbhaAccountActivity.this,
-                R.drawable.close_patient_svg,
-                getString(R.string.existing_abha_address_found),
-                getString(R.string.you_have_an_existing_abha_address_present, abhaProfileResponse.getABHAProfile().getPhrAddress().get(0)),
-                false,
-                getString(R.string.use_existing),
-                getString(R.string.create_new), action -> {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                        navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
-                    }
-                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
-                        callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
-                    }
-                });
+    private void showDialogForConfirmation(OTPVerificationResponse abhaProfileResponse) {
+        ChecklistDialogFragment dialogFragment = getChecklistDialogFragment(abhaProfileResponse);
+        dialogFragment.setCancelable(false);
+        dialogFragment.show(getSupportFragmentManager(), ChecklistDialogFragment.TAG);
+    }
+
+    @NonNull
+    private ChecklistDialogFragment getChecklistDialogFragment(OTPVerificationResponse abhaProfileResponse) {
+        List<String> addressList = abhaProfileResponse.getABHAProfile().getPhrAddress();
+        return new ChecklistDialogFragment(addressList, new DialogUtils.TextSelectedListener() {
+            @Override
+            public void onDialogActionDone(int action, String text) {
+                if (action == DialogUtils.TextSelectedListener.POSITIVE_CLICK) {
+                    addressList.remove(text);
+                    addressList.add(0, text);
+                    abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
+                    navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
+                }
+
+                if (action == DialogUtils.TextSelectedListener.NEGATIVE_CLICK) {
+                    callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
+                }
+            }
+
+            @Override
+            public void onDialogActionDone(int action) {
+
+            }
+        });
     }
 
     private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse, ExistUserStatusResponse response) {

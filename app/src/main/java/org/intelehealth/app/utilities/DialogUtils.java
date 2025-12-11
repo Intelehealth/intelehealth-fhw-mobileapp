@@ -46,7 +46,7 @@ public class DialogUtils {
         public void onActionDone(int action);
     }
 
-    public interface TextViewDialogListener extends CustomDialogListener {
+    public interface TextSelectedListener extends CustomDialogListener {
         void onDialogActionDone(int action, String text);
     }
 
