@@ -1,8 +1,5 @@
 package org.intelehealth.app.activities.onboarding;
 
-import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -31,7 +27,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.widget.TextViewDialogFragment;
+import org.intelehealth.app.widget.dialogs.TextViewDialogFragment;
 
 import java.util.Locale;
 

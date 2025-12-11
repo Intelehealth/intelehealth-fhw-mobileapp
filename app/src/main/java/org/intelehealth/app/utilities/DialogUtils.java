@@ -1,6 +1,5 @@
 package org.intelehealth.app.utilities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -25,7 +24,6 @@ import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsPreviewGridAdapter;
-import org.intelehealth.app.widget.TextViewDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
