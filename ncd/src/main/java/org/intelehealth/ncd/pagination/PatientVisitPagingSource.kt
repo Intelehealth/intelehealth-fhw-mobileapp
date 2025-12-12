@@ -63,9 +63,10 @@ class PatientVisitPagingSource(
                 patient.visitSpeciality =
                     attrList.find { it.typeUuid == Constants.SPECIALITY }?.value ?: ""
 
-                patient.startDate = patient.startDate?.let { rawDate ->
+                patient.startDate = patient.startDate
+                /* patient.startDate = patient.startDate?.let { rawDate ->
                     formatVisitDateSafely(rawDate)
-                }
+                }*/
             }
 
             // 5. Apply search query filter (keep logic unchanged otherwise)

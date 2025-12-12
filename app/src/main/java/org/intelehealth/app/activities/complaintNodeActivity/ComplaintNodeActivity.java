@@ -21,12 +21,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwnerKt;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagingData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
@@ -49,8 +54,17 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ncd.constants.Constants;
 import org.intelehealth.ncd.fhir.CommonQuestionnaireActivity;
+import org.intelehealth.ncd.linelisting.dao.PatientVisitDao;
+import org.intelehealth.ncd.linelisting.datasource.PatientVisitDataSource;
+import org.intelehealth.ncd.linelisting.datasource.PatientVisitRepository;
+import org.intelehealth.ncd.linelisting.datasource.ProtocolViewModelFactory;
+import org.intelehealth.ncd.linelisting.utils.SinglePatientHelper;
+import org.intelehealth.ncd.linelisting.viewmodels.ProtocolScreenViewModel;
+import org.intelehealth.ncd.model.PatientVisitDetails;
+import org.intelehealth.ncd.room.CategoryDatabase;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,6 +77,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import kotlinx.coroutines.flow.FlowCollector;
+import kotlinx.coroutines.flow.FlowKt;
+import kotlinx.coroutines.flow.Flow;
+import kotlinx.coroutines.flow.FlowCollector;
+import kotlinx.coroutines.flow.FlowKt;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlinx.coroutines.CoroutineScopeKt;
+import androidx.lifecycle.LifecycleOwnerKt;
+
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
@@ -82,6 +107,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private String mAgeAndMonth = "";
     private List<ReasonData> mSelectedComplains = new ArrayList<>();
     private String mIntentFromNCDCategoryName = Constants.GENERAL;
+    private  Map<String, Object> eligibleMmsMap;
+    private List<String> eligibleMMs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -389,13 +416,42 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }*/
 
         // validate the eligible auto select mm for the patient
-        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+       /* CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
 
         Map<String, Object> result =
                 utils.checkForAllEligibleProtocolsBlocking(patientUuid, this);
 
         List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
-        Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);
+        Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);*/
+
+        PatientVisitDao dao = CategoryDatabase.getInstance(this).patientVisitDao();
+        PatientVisitDataSource dataSource = new PatientVisitDataSource(dao);
+        PatientVisitRepository repository = new PatientVisitRepository(dataSource);
+        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+        ProtocolScreenViewModel viewModel = new ViewModelProvider(this, new ProtocolViewModelFactory(repository, utils)).get(ProtocolScreenViewModel.class);
+
+        SinglePatientHelper.getSinglePatientEligibleMMS(
+                Constants.HYPERTENSION_EXCLUSION_AGE,
+                Constants.OTHER_MEDICAL_HISTORY,
+                Constants.ENCOUNTER_VISIT_COMPLETE,
+                patientUuid,
+                viewModel,
+                new SinglePatientHelper.Callback() {
+                    @Override
+                    public void onResult(@NotNull Map<String, ? extends Object> eligibleMms) {
+                        Log.d("TAG", "Eligible MMS: " + eligibleMms.toString());
+
+                        Object mmsObj = eligibleMms.get("eligible_mms");
+                        if (mmsObj instanceof List<?>) {
+                            for (Object obj : (List<?>) mmsObj) {
+                                if (obj instanceof String) {
+                                    eligibleMMs.add((String) obj);
+                                }
+                            }
+                        }
+                        Log.d("TAG", "Eligible MMS List: " + eligibleMMs);                    }
+                }
+        );
 
         // if no eligible mms, then show message
         if (eligibleMMs != null && eligibleMMs.isEmpty()) {

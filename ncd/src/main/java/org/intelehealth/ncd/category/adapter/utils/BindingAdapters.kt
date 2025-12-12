@@ -119,6 +119,16 @@ fun bindProfileImage(imageView: ImageView?, url: String?) {
         imageView.setImageResource(R.drawable.avatar1)
     }
 }
+@BindingAdapter("formattedStartDate")
+fun bindFormattedStartDate(textView: TextView, rawDate: String?) {
+    val formattedDate = DateAndTimeUtils.formatStartVisitDate(
+        rawDate,
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        "dd MMM 'at' hh:mm a"
+    )
+    textView.text = formattedDate ?: ""
+}
+
 
 
 
