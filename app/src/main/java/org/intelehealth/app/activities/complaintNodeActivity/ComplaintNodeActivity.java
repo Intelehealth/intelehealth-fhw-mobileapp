@@ -413,7 +413,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         }*/
 
-        // validate the eligible auto select mm for the patient
+  /*      // validate the eligible auto select mm for the patient
         CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
 
         Map<String, Object> result =
@@ -445,7 +445,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     selectedCategories.add(complaintCategory); // avoid selecting follow-up/screening both
                 }
             }
-        }
+        }*/
+
+        fetchAndAutoSelectComplaints();
 
     }
 
@@ -762,4 +764,62 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void backPress(View view) {
         deleteVisitAndGoBack();
     }
+    private void refreshComplaintsUI() {
+        listAdapter.notifyDataSetChanged();
+    }
+    private void fetchAndAutoSelectComplaints() {
+        PatientVisitDao dao = CategoryDatabase.getInstance(this).patientVisitDao();
+        PatientVisitDataSource dataSource = new PatientVisitDataSource(dao);
+        PatientVisitRepository repository = new PatientVisitRepository(dataSource);
+        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+        ProtocolScreenViewModel viewModel =
+                new ViewModelProvider(this, new ProtocolViewModelFactory(repository, utils))
+                        .get(ProtocolScreenViewModel.class);
+        SinglePatientHelper.getSinglePatientEligibleMMS(
+                Constants.HYPERTENSION_EXCLUSION_AGE,
+                Constants.OTHER_MEDICAL_HISTORY,
+                Constants.ENCOUNTER_VISIT_COMPLETE,
+                patientUuid,
+                viewModel,
+                eligibleMms -> {
+                    List<String> eligibleMMs = new ArrayList<>();
+                    Object mmsObj = eligibleMms.get("eligible_mms");
+                    if (mmsObj instanceof List<?>) {
+                        for (Object obj : (List<?>) mmsObj) {
+                            if (obj instanceof String) {
+                                eligibleMMs.add((String) obj);
+                            }
+                        }
+                    }
+                    Log.d("TAG", "Eligible MMS List: " + eligibleMMs);
+                    runOnUiThread(() -> {
+                        if (eligibleMMs != null && eligibleMMs.isEmpty()) {
+                            displayIneligibleConfirmationDialog();
+                            return;
+                        }
+                        Set<String> selectedCategories = new HashSet<>();
+
+                        for (Node complaint : complaints) {
+                            String complaintCategory = complaint.getCategory();
+                            String complaintText = complaint.getText();
+
+                            for (String protocol : eligibleMMs) {
+                                String protocolFormatted =
+                                        Constants.INSTANCE.getCATEGORY_MAP().get(protocol);
+
+                                if (protocolFormatted != null &&
+                                        protocolFormatted.equalsIgnoreCase(complaintText) &&
+                                        !selectedCategories.contains(complaintCategory)) {
+
+                                    complaint.setSelected(true);
+                                    selectedCategories.add(complaintCategory);
+                                }
+                            }
+                        }
+                        refreshComplaintsUI();
+                    });
+                }
+        );
+    }
+
 }
