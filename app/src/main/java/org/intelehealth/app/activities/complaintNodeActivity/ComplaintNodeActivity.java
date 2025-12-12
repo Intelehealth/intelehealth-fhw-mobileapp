@@ -107,8 +107,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private String mAgeAndMonth = "";
     private List<ReasonData> mSelectedComplains = new ArrayList<>();
     private String mIntentFromNCDCategoryName = Constants.GENERAL;
-    private  Map<String, Object> eligibleMmsMap;
-    private List<String> eligibleMMs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -416,42 +414,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }*/
 
         // validate the eligible auto select mm for the patient
-       /* CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
 
         Map<String, Object> result =
                 utils.checkForAllEligibleProtocolsBlocking(patientUuid, this);
 
         List<String> eligibleMMs = (List<String>) result.get("eligible_mms");
-        Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);*/
-
-        PatientVisitDao dao = CategoryDatabase.getInstance(this).patientVisitDao();
-        PatientVisitDataSource dataSource = new PatientVisitDataSource(dao);
-        PatientVisitRepository repository = new PatientVisitRepository(dataSource);
-        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
-        ProtocolScreenViewModel viewModel = new ViewModelProvider(this, new ProtocolViewModelFactory(repository, utils)).get(ProtocolScreenViewModel.class);
-
-        SinglePatientHelper.getSinglePatientEligibleMMS(
-                Constants.HYPERTENSION_EXCLUSION_AGE,
-                Constants.OTHER_MEDICAL_HISTORY,
-                Constants.ENCOUNTER_VISIT_COMPLETE,
-                patientUuid,
-                viewModel,
-                new SinglePatientHelper.Callback() {
-                    @Override
-                    public void onResult(@NotNull Map<String, ? extends Object> eligibleMms) {
-                        Log.d("TAG", "Eligible MMS: " + eligibleMms.toString());
-
-                        Object mmsObj = eligibleMms.get("eligible_mms");
-                        if (mmsObj instanceof List<?>) {
-                            for (Object obj : (List<?>) mmsObj) {
-                                if (obj instanceof String) {
-                                    eligibleMMs.add((String) obj);
-                                }
-                            }
-                        }
-                        Log.d("TAG", "Eligible MMS List: " + eligibleMMs);                    }
-                }
-        );
+        Log.d(TAG, "autoSelectComplaints: eligibleMMs=" + eligibleMMs);
 
         // if no eligible mms, then show message
         if (eligibleMMs != null && eligibleMMs.isEmpty()) {
