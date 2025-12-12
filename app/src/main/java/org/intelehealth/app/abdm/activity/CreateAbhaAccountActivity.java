@@ -415,8 +415,12 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         }
     }
 
-    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse
-                                                            otpVerificationResponse, String accessToken) {
+    private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
+        if (cpd.isShowing()) {
+            cpd.dismiss();
+        }
+
+        cpd.show();
         ArrayList<String> addressList = new ArrayList<>();
         // api - start
         String url = UrlModifiers.getEnrollABHASuggestionUrl();
@@ -432,8 +436,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
                         Timber.tag(TAG).d("onSuccess: suggestion: %s", enrollSuggestionResponse);
-                        if (enrollSuggestionResponse.getAbhaAddressList() != null) {
+                        cpd.dismiss();
 
+                        if (enrollSuggestionResponse.getAbhaAddressList() != null) {
                             // auto-generated abha preferred address from abdm end.
                             addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
@@ -579,15 +584,13 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
                     navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
                 }
-
-                if (action == DialogUtils.TextSelectedListener.NEGATIVE_CLICK) {
-                    callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
-                }
             }
 
             @Override
             public void onDialogActionDone(int action) {
-
+                if (action == DialogUtils.TextSelectedListener.NEGATIVE_CLICK) {
+                    callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
+                }
             }
         });
     }
