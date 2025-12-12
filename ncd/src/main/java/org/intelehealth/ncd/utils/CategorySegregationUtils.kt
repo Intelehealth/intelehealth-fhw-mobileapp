@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.runBlocking
@@ -359,7 +360,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    private fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+     fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
             Constants.HYPERTENSION_FOLLOW_UP,
@@ -369,9 +370,13 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
         val eligibleMms = mutableListOf<String>()
         val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
+         Log.d(TAG, "kk getEligibleMMsForPatients: patientVisitDetailsList : ${patientVisitDetailsList}")
 
+         Log.d(TAG, "kk getEligibleMMsForPatients: patientId : "+patientId)
         for (category in mmCategories) {
             val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
+            Log.d(TAG, "kk getEligibleMMsForPatients: eligiblePatients : "+eligiblePatients)
+
             if (eligiblePatients.isNotEmpty()) {
                 eligibleMms.add(category)
             }
@@ -408,6 +413,10 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): List<PatientVisitDetails> {
         Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : "+Gson().toJson(patientVisitDetailsList))
         Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : "+category)
+        val gson = GsonBuilder().serializeNulls().create()
+        Log.d("testmulti", "newlist : " +gson.toJson(patientVisitDetailsList))
+
+
         patientVisitDetailsList.forEachIndexed { index, item ->
             val json = Gson().toJson(item)
            // logLong(TAG, "testmulti Patient #$index : $json")
@@ -416,6 +425,8 @@ class CategorySegregationUtils(private val resources: Resources) {
             Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
             Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
+            Constants.ANEMIA_FOLLOW_UP -> filterAnemiaFollowUpPatients(patientVisitDetailsList)
+
             else -> emptyList()
         }
 
@@ -428,18 +439,29 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val followupGiven = detail.isHypertensionFollowupGiven ?: false
-
+            Log.d(TAG, "linelist hyperten screen name : "+detail.firstName + " "+detail.lastName)
+            Log.d(TAG, "linelist hyperten screen age : "+detail.openmrsId)
+            Log.d(TAG, "linelist hyperten screen patientid : "+detail.patientId)
+            Log.d(TAG, "linelist hyperten screen visit id : "+detail.visitId)
+            Log.d(TAG, "linelist hyperten screen isHypertensionFollowupGiven : "+followupGiven)
             // Exclude if follow-up is already given
             if (followupGiven) return@filter false
 
             // Exclude if no attribute value (medical history JSON)
             val medicalHistoryJson = detail.value
+            Log.d(TAG, "linelist hyperten screen medicalHistoryJson : "+medicalHistoryJson)
             if (medicalHistoryJson.isNullOrEmpty()) return@filter false
 
             val hasHistory = isHistoryOfHypertensionPresent(medicalHistoryJson)
             val onMedication = isCurrentlyTakingHypertensionMedication(medicalHistoryJson)
 
+            Log.d(TAG, "linelist hyperten screen hasHistory : "+hasHistory)
+            Log.d(TAG, "linelist hyperten screen onMedication : "+onMedication)
+
             val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+            Log.d(TAG, "linelist hyperten screen meetsAgeCriteria : "+meetsAgeCriteria)
+            Log.d(TAG, "linelist hyperten screen ***************************************************\n")
+
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
@@ -453,6 +475,16 @@ class CategorySegregationUtils(private val resources: Resources) {
             val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
 
             val followupGiven = detail.isHypertensionFollowupGiven
+            Log.d(TAG, "linelist hyperten followup name : "+detail.firstName + " "+detail.lastName)
+            Log.d(TAG, "linelist hyperten followup age : "+detail.openmrsId)
+            Log.d(TAG, "linelist hyperten followup patientid : "+detail.patientId)
+            Log.d(TAG, "linelist hyperten followup visit id : "+detail.visitId)
+            Log.d(TAG, "linelist hyperten followup isHypertensionFollowupGiven : "+followupGiven)
+            Log.d(TAG, "linelist hyperten followup medicalHistoryJson : "+detail.value)
+            Log.d(TAG, "linelist hyperten followup hasHistory : "+isHistoryOfHypertensionPresent(detail.value))
+            Log.d(TAG, "linelist hyperten followup onMedication : "+isCurrentlyTakingHypertensionMedication(detail.value))
+            Log.d(TAG, "linelist hyperten followup isHypertensionFollowupTodayOrLater : "+detail.isHypertensionFollowupTodayOrLater)
+            Log.d(TAG, "linelist hyperten followup ***************************************************\n")
 
             return@filter when {
                 // Case 1: Follow-up not given or null →  check baseline criteria
@@ -479,18 +511,28 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val followupGiven = detail.isAnemiaFollowupGiven ?: false
-
+            Log.d(TAG, "linelist Anemia screen name : "+detail.firstName + " "+detail.lastName)
+            Log.d(TAG, "linelist Anemia screen age : "+detail.openmrsId)
+            Log.d(TAG, "linelist Anemia screen patientid : "+detail.patientId)
+            Log.d(TAG, "linelist Anemia screen visit id : "+detail.visitId)
+            Log.d(TAG, "linelist Anemia screen isAnemiaFollowupGiven : "+followupGiven)
             // Exclude if follow-up is already given
             if (followupGiven) return@filter false
 
             // Exclude if no attribute value (medical history JSON)
             val medicalHistoryJson = detail.value
             if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+            Log.d(TAG, "linelist Anemia screen medicalHistoryJson : "+medicalHistoryJson)
 
             val hasHistory = isHistoryOfAnemiaPresent(medicalHistoryJson)
             val onMedication = isCurrentlyTakingAnemiaMedication(medicalHistoryJson)
 
             val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
+            Log.d(TAG, "linelist Anemia screen hasHistory : "+hasHistory)
+            Log.d(TAG, "linelist Anemia screen onMedication : "+onMedication)
+            Log.d(TAG, "linelist Anemia screen meetsAgeCriteria : "+meetsAgeCriteria)
+            Log.d(TAG, "linelist Anemia screen ***************************************************\n")
+
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
@@ -501,4 +543,43 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): Map<String, Any> = runBlocking {
         checkForAllEligibleProtocols(patientUuid, context)
     }
+    private fun filterAnemiaFollowUpPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val meetsAgeCriteria = age >= Constants.ANEMIA_EXCLUSION_AGE
+
+            val followupGiven = detail.isAnemiaFollowupGiven
+            Log.d(TAG, "linelist Anemia followup name : "+detail.firstName + " "+detail.lastName)
+            Log.d(TAG, "linelist Anemia followup age : "+detail.openmrsId)
+            Log.d(TAG, "linelist Anemia followup patientid : "+detail.patientId)
+            Log.d(TAG, "linelist Anemia followup visit id : "+detail.visitId)
+            Log.d(TAG, "linelist Anemia followup isAnemiaFollowupGiven : "+followupGiven)
+            Log.d(TAG, "linelist Anemia followup medicalHistoryJson : "+detail.value)
+            Log.d(TAG, "linelist Anemia followup hasHistory : "+isHistoryOfAnemiaPresent(detail.value))
+            Log.d(TAG, "linelist Anemia followup onMedication : "+isCurrentlyTakingAnemiaMedication(detail.value))
+            Log.d(TAG, "linelist Anemia followup isAnemiaFollowupTodayOrLater : "+detail.isAnemiaFollowupTodayOrLater)
+            Log.d(TAG, "linelist Anemia followup ***************************************************\n")
+
+            return@filter when {
+                // Case 1: Follow-up not given or null →  check baseline criteria
+                followupGiven != true -> {
+                    val medicalHistoryJson = detail.value
+                    if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+                    val hasHistory = isHistoryOfAnemiaPresent(detail.value)
+                    val onMedication = isCurrentlyTakingAnemiaMedication(detail.value)
+                    meetsAgeCriteria && hasHistory && onMedication
+                }
+
+                // Case 2: Follow-up given → check only the protocol flag
+                else -> {
+                    detail.isAnemiaFollowupTodayOrLater == true
+                    /*    val followUpFlag = detail.followUpFromProtocol ?: false
+                        followUpFlag*/
+                }
+            }
+        }
+    }
+
 }
