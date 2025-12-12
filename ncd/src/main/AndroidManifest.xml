@@ -16,6 +16,12 @@
             android:noHistory="true"
             android:theme="@style/AppThemeMaterialNew" />
 
+        <activity
+            android:name=".linelisting.NcdPatientCategoryActivityNew"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/AppThemeMaterialNew" />
+
     </application>
 
 </manifest>
