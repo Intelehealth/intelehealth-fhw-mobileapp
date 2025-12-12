@@ -121,7 +121,7 @@ class NcdPatientCategoryActivity : AppCompatActivity() {
                 ivClear.visibility = if (hasText) View.VISIBLE else View.GONE
 
                 // Emit search text
-                searchViewModel.updateSearchText(s.toString())
+                searchViewModel.updateSearchTextNew(s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
