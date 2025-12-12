@@ -122,7 +122,9 @@
     <string name="max_value_validation_error_msg">अधिकतम मान अनुमति है: <xliff:g id="max_value">%1$s</xliff:g></string>
     <string name="min_length_validation_error_msg">उत्तर में न्यूनतम वर्णों की संख्या होनी चाहिए: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">उत्तर में अनुमत अधिकतम दशमलव स्थानों की संख्या: <xliff:g id="max_value">%1$s</xliff:g></string>
-    <string name="regex_validation_error_msg">उत्तर नियमित अभिव्यक्ति से मेल नहीं खाता: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">उत्तर नियमित अभिव्यक्ति से मेल नहीं खाता: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">इनपुट में ऐसे अक्षर हैं जो अनुमति नहीं हैं।</string>
+
     <string name="number_format_validation_error_msg">दो संख्याओं के बीच केवल (.) का उपयोग करें। अन्य विशेष वर्ण समर्थित नहीं हैं।</string>
     <string name="date_format_validation_error_msg">तारीख प्रारूप होना चाहिए <xliff:g id="locale_format">%1$s</xliff:g> (जैसे %2$s)</string>
     <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> और <xliff:g id="max_value">%2$s</xliff:g> के बीच होनी चाहिए</string>

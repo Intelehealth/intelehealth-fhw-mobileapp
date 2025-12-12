@@ -122,7 +122,9 @@
     <string name="min_length_validation_error_msg">அனுமதிக்கப்பட்ட குறைந்தபட்ச எழுத்துகள்: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">அதிகபட்ச தசம எண்கள்: <xliff:g id="max_value">%1$s</xliff:g></string>
 
-    <string name="regex_validation_error_msg">பதில் விதிமுறைக்கு பொருந்தவில்லை: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">பதில் விதிமுறைக்கு பொருந்தவில்லை: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">உள்ளீட்டில் அனுமதிக்கப்படாத எழுத்துக்கள் உள்ளன.</string>
+
     <string name="number_format_validation_error_msg">இரு எண்களுக்கு இடையில் (.) மட்டும் பயன்படுத்தவும். பிற எழுத்துக்கள் ஆதரிக்கப்படாது.</string>
     <string name="date_format_validation_error_msg">தேதி வடிவம் <xliff:g id="locale_format">%1$s</xliff:g> (எ.கா.: %2$s) ஆக இருக்க வேண்டும்</string>
     <string name="integer_format_validation_error_msg">எண் <xliff:g id="min_value">%1$s</xliff:g> மற்றும் <xliff:g id="max_value">%2$s</xliff:g> இடைப்பட்டதாக இருக்க வேண்டும்</string>

@@ -122,7 +122,9 @@
     <string name="min_length_validation_error_msg">সৰ্বনিম্ন অক্ষৰ সংখ্যা: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">সৰ্বাধিক দশমিক স্থান: <xliff:g id="max_value">%1$s</xliff:g></string>
 
-    <string name="regex_validation_error_msg">উত্তৰটো ঠিক ধৰণত নাই: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">উত্তৰটো ঠিক ধৰণত নাই: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ইনপুটত অনুমতি নথকা অক্ষৰ আছে।</string>
+
     <string name="number_format_validation_error_msg">দুটা সংখ্যাৰ মাজত কেৱল (.) ব্যৱহাৰ কৰক।</string>
     <string name="date_format_validation_error_msg">তাৰিখৰ ফৰ্মেট হওয়া উচিত <xliff:g id="locale_format">%1$s</xliff:g> (উদাহৰণ: %2$s)</string>
     <string name="integer_format_validation_error_msg">সংখ্যাটো হব লাগে <xliff:g id="min_value">%1$s</xliff:g> আৰু <xliff:g id="max_value">%2$s</xliff:g>ৰ মাজত</string>

@@ -122,7 +122,9 @@
     <string name="min_length_validation_error_msg">అనుమతించబడిన కనిష్ఠ అక్షరాలు: <xliff:g id="min_length">%1$s</xliff:g></string>
     <string name="max_decimal_validation_error_msg">గరిష్ట దశాంశ స్థానాలు: <xliff:g id="max_value">%1$s</xliff:g></string>
 
-    <string name="regex_validation_error_msg">సమాధానం సరైన ఫార్మాట్‌లో లేదు: <xliff:g id="answer_value">%1$s</xliff:g></string>
+<!--    <string name="regex_validation_error_msg">సమాధానం సరైన ఫార్మాట్‌లో లేదు: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ఇన్‌పుట్‌లో అనుమతి లేని అక్షరాలు ఉన్నాయి.</string>
+
     <string name="number_format_validation_error_msg">రెండు సంఖ్యల మధ్య (.) మాత్రమే ఉపయోగించండి. ఇతర చిహ్నాలు అనుమతించబడవు.</string>
     <string name="date_format_validation_error_msg">తేదీ ఆకృతి <xliff:g id="locale_format">%1$s</xliff:g> (ఉదా.: %2$s) గా ఉండాలి</string>
     <string name="integer_format_validation_error_msg">సంఖ్య <xliff:g id="min_value">%1$s</xliff:g> మరియు <xliff:g id="max_value">%2$s</xliff:g> మధ్య ఉండాలి</string>
