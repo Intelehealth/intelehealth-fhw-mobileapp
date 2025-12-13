@@ -1057,8 +1057,8 @@ public class PatientsDAO {
     public static String getPatientUuidByAbhaDetails(String abhaAddress, String abhaNumber) {
         String patientUuid = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        String query = "SELECT uuid FROM tbl_patient WHERE abha_address = ? AND abha_number = ?";
-        try (Cursor cursor = db.rawQuery(query, new String[]{abhaAddress, abhaNumber})) {
+        String query = "SELECT uuid FROM tbl_patient WHERE abha_number = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{abhaNumber})) {
             if (cursor.moveToFirst()) {
                 patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }

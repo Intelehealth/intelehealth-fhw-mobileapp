@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.DialogCheckboxBinding
@@ -53,14 +54,19 @@ class ChecklistDialogFragment(
                 DialogUtils.TextSelectedListener.POSITIVE_CLICK,
                 selectedAbhaAddress
             )
-
-            dismiss()
         }
 
         binding.negativeBtn.setOnClickListener {
             listener.onDialogActionDone(DialogUtils.TextSelectedListener.NEGATIVE_CLICK)
-            dismiss()
         }
+    }
+
+    fun displayError(errorMessage: String) {
+        binding.tvError.text = errorMessage
+    }
+
+    fun shouldShowErrorMessage(shouldShow: Boolean) {
+        binding.tvError.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     private fun setupRadioGroup() {
@@ -71,6 +77,12 @@ class ChecklistDialogFragment(
                 text = address
             }
             binding.rgAbhaAddress.addView(radioButton)
+        }
+
+        binding.rgAbhaAddress.setOnCheckedChangeListener { _, checkedId ->
+            if (binding.tvError.isVisible) {
+                shouldShowErrorMessage(false)
+            }
         }
     }
 

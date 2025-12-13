@@ -1,7 +1,10 @@
 package org.intelehealth.app.activities.patientDetailActivity
 
 import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Environment
 import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Single
@@ -10,37 +13,26 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody
 import org.intelehealth.app.app.AppConstants
-import org.intelehealth.app.app.AppConstants.PICTURES_DIRECTORY_PATH
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.utilities.CameraUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UrlModifiers
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
 
-class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
+class AbhaCardDownloadUtil(
+    private val patientDto: PatientDTO,
+    private val context: Context
+) {
 
     companion object {
         private const val TAG = "AbhaCardDownloadUtil"
+        private const val DIR_NAME = "Intelehealth_AbhaCard"
     }
-
-    private val abhaCardImagePath: String = "$PICTURES_DIRECTORY_PATH/Intelehealth_AbhaCard"
-    val abhaCardFilePath = File(abhaCardImagePath)
-
-    init {
-        if (!doesFilePathExist(abhaCardFilePath)) {
-            createFilePath(abhaCardFilePath)
-        }
-    }
-
-    private fun doesFilePathExist(filePath: File): Boolean = filePath.exists();
-
-    private fun createFilePath(filePath: File) = filePath.mkdirs()
 
     fun isAbhaCardPresent(): Boolean {
-        val fileName: String = patientDto.abhaNumber
-        val imageFile = File(abhaCardImagePath, "$fileName.png")
-        return imageFile.exists()
+        val file = getAbhaCardFile()
+        return file.exists()
     }
 
     fun downloadAbhaCard(
@@ -49,24 +41,25 @@ class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
         accessToken: String,
         activityContext: Activity
     ) {
-        var responseBody: Single<AbhaCardResponseBody> = getResponseBodySingle(
-            scope,
-            token,
-            accessToken
-        )
+        val responseBody: Single<AbhaCardResponseBody> =
+            getResponseBodySingle(scope, token, accessToken)
 
-        val body = Gson().toJson(responseBody)
         responseBody
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : DisposableSingleObserver<AbhaCardResponseBody>() {
+
                 override fun onSuccess(t: AbhaCardResponseBody) {
-                    storeAbhaCard(t.image, patientDto.abhaNumber, activityContext)
-                    SessionManager(activityContext).isCommunicationNumberUsed = false;
+                    storeAbhaCard(t.image, patientDto.abhaNumber)
+
+                    SessionManager(activityContext).apply {
+                        setIsCommunicationNumberUsed(false)
+                        setIsPreferredAddressSet(false)
+                    }
                 }
 
                 override fun onError(e: Throwable) {
-                    Timber.tag(TAG).d("onError: Abha Card Download Failed")
+                    Timber.tag(TAG).e(e, "ABHA Card download failed")
                 }
             })
     }
@@ -74,9 +67,8 @@ class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
     private fun getResponseBodySingle(
         scope: String?,
         token: String?,
-        accessToken: String,
+        accessToken: String
     ): Single<AbhaCardResponseBody> {
-
         val url = UrlModifiers.getABHACardUrl()
         val apiInterface = AppConstants.apiInterface
 
@@ -88,17 +80,40 @@ class AbhaCardDownloadUtil(private val patientDto: PatientDTO) {
         )
     }
 
-    private fun storeAbhaCard(image: String, fileName: String, activityContext: Activity) {
+    private fun storeAbhaCard(
+        image: String,
+        fileName: String
+    ) {
         val decodedBytes = Base64.decode(image, Base64.DEFAULT)
-        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        val filePath = File(AppConstants.IMAGE_PATH + fileName)
+        val bitmap = BitmapFactory.decodeByteArray(
+            decodedBytes,
+            0,
+            decodedBytes.size
+        ) ?: return
 
-        if (!doesFilePathExist(filePath)) {
-            createFilePath(filePath)
+        val dir = File(
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            DIR_NAME
+        )
+
+        if (!dir.exists()) {
+            dir.mkdirs()
         }
 
-        CameraUtils(activityContext, fileName, filePath.toString()).also {
-            it.compressImageAndSaveAbhaCard(bitmap)
+        val file = File(dir, "$fileName.png")
+
+        // HARD overwrite
+        FileOutputStream(file, false).use { fos ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos.flush()
         }
+    }
+
+    private fun getAbhaCardFile(): File {
+        val dir = File(
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            DIR_NAME
+        )
+        return File(dir, "${patientDto.abhaNumber}.png")
     }
 }

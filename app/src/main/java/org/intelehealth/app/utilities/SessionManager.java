@@ -70,6 +70,7 @@ public class SessionManager {
     public static final String CREATE_ABHA = "create_abha";
     public static final String TEMP_SCOPE = "temp_scope";
     public static final String IS_COMMUNICATION_NUMBER_USED = "is_communication_number_used";
+    public static final String IS_PREFERRED_ADDRESS_SET = "is_preferred_address_set";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -590,6 +591,15 @@ public class SessionManager {
 
     public void setIsCommunicationNumberUsed(boolean isCommunicationNumberUsed) {
         editor.putBoolean(IS_COMMUNICATION_NUMBER_USED, isCommunicationNumberUsed);
+        editor.commit();
+    }
+
+    public boolean getIsPreferredAbhaAddressSet() {
+        return pref.getBoolean(IS_PREFERRED_ADDRESS_SET, false);
+    }
+
+    public void setIsPreferredAddressSet(boolean isPreferredAddressSet) {
+        editor.putBoolean(IS_PREFERRED_ADDRESS_SET, isPreferredAddressSet);
         editor.commit();
     }
 }

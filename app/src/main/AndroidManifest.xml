@@ -48,6 +48,16 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.intelehealth.app.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".abdm.activity.CompareAadhaarDataActivity"
             android:exported="false"

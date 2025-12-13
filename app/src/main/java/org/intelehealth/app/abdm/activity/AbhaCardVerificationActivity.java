@@ -923,8 +923,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         String url = UrlModifiers.getCheckExistingUserUrl();
         cpd.show();
         // payload - end
-        Single<ExistUserStatusResponse> abhaProfileResponseSingle =
-                AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle = AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
         new Thread(() -> abhaProfileResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

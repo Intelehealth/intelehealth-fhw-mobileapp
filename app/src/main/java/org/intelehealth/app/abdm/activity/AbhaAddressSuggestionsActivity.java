@@ -290,6 +290,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
             try {
                 abhaAddressET.setTextColor(getResources().getColor(R.color.green3));
+                sessionManager.setIsPreferredAddressSet(true);
                 Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
 
                 String newAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();

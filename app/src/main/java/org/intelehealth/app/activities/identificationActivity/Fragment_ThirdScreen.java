@@ -256,7 +256,13 @@ public class Fragment_ThirdScreen extends Fragment {
             }
 
             if (!patient_detail && otpVerificationResponse != null) {
-                tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
+                List<String> abhaAddressList = otpVerificationResponse.getABHAProfile().getPhrAddress();
+
+                if (abhaAddressList != null && abhaAddressList.size() >= 6) {
+                    tvCreateNewAbhaAddress.setVisibility(View.GONE);
+                } else {
+                    tvCreateNewAbhaAddress.setVisibility(View.VISIBLE);
+                }
             }
 
             if (getArguments().containsKey("accessToken"))
@@ -720,12 +726,12 @@ public class Fragment_ThirdScreen extends Fragment {
     }
 
     private void downloadAbhaCard() {
-        AbhaCardDownloadUtil util = new AbhaCardDownloadUtil(patientDTO);
+        AbhaCardDownloadUtil util = new AbhaCardDownloadUtil(patientDTO, requireActivity());
         HashMap<String, String> tokenHashMap = getTokenHashmap();
         String token = tokenHashMap.get("token");
         String scope = tokenHashMap.get("scope");
 
-        if (!util.isAbhaCardPresent() || sessionManager.getIsCommunicationNumberUsed()) {
+        if (!util.isAbhaCardPresent() || sessionManager.getIsCommunicationNumberUsed() || sessionManager.getIsPreferredAbhaAddressSet()) {
             util.downloadAbhaCard(scope, token, accessToken, requireActivity());
         }
     }

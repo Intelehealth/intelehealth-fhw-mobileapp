@@ -53,6 +53,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -68,6 +69,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.LocaleList;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -353,22 +355,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         btnViewAbhaCard.setOnClickListener(v -> {
-           String filename = patientDTO.getAbhaNumber();
-            String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/Intelehealth_AbhaCard/";
-            File filePath = new File(imagePath);
-            if (!filePath.exists()) {
-                filePath.mkdirs();
-            }
-
-            File imageFile = new File(imagePath, filename + ".png");
-            if (imageFile.exists()) {
-                Log.d("TAG", "File already exists: " + imageFile.getAbsolutePath());
-                openImageFile(imageFile);
-                return;
-            }
-            viewDownloadABHACard();
-
+            openAbhaCard(patientDTO.getAbhaNumber());
         });
+
 
         startVisitBtn.setOnClickListener(v -> {
             patientRegistrationDialog(context,
@@ -458,6 +447,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 onBackPressed();
             }
         });
+    }
+
+    private void openAbhaCard(String abhaNumber) {
+        File dir = new File(
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "Intelehealth_AbhaCard"
+        );
+
+        File file = new File(dir, abhaNumber + ".png");
+
+        if (!file.exists()) {
+            return;
+        }
+
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                file
+        );
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
     }
 
     private void viewDownloadABHACard() {
@@ -577,7 +590,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 @Override
                 public void onChanged(Boolean isSync) {
                     if (isSync) {
-                        Logger.logD("Update data",isSync.toString());
+                        Logger.logD("Update data", isSync.toString());
                         setDisplay(patientDTO.getUuid());
                         IntelehealthApplication.getInstance().isSync.postValue(false);
                     }
@@ -1949,7 +1962,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
     private void openImageFile(File imageFile) {
-        MediaScannerConnection.scanFile(context, new String[] { imageFile.getAbsolutePath() }, null,
+        MediaScannerConnection.scanFile(context, new String[]{imageFile.getAbsolutePath()}, null,
                 (path, uri) -> {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);

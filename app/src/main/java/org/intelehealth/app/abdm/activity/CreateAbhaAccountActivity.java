@@ -81,6 +81,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private String patientName;
 
+    private ChecklistDialogFragment dialogFragment;
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -568,6 +570,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private void showDialogForConfirmation(OTPVerificationResponse abhaProfileResponse) {
         ChecklistDialogFragment dialogFragment = getChecklistDialogFragment(abhaProfileResponse);
+        this.dialogFragment = dialogFragment;
         dialogFragment.setCancelable(false);
         dialogFragment.show(getSupportFragmentManager(), ChecklistDialogFragment.TAG);
     }
@@ -583,13 +586,20 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     addressList.add(0, text);
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
                     navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
+                    dialogFragment.dismiss();
                 }
             }
 
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.TextSelectedListener.NEGATIVE_CLICK) {
-                    callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
+                    if (addressList.size() >= 6) {
+                        dialogFragment.displayError(getString(R.string.you_have_more_than_six_abha_addresses_error));
+                        dialogFragment.shouldShowErrorMessage(true);
+                    } else {
+                        callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
+                        dialogFragment.dismiss();
+                    }
                 }
             }
         });

@@ -106,7 +106,7 @@ public class SyncDAO {
     }
 
 
-    public boolean pullData_Background(final Context context, int pageNo) {
+    public boolean  pullData_Background(final Context context, int pageNo) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
         db = mDbHelper.getWriteDb();
@@ -520,6 +520,7 @@ public class SyncDAO {
         Gson gson = new Gson();
         Log.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String pushRequestModel = gson.toJson(pushRequestApiCall);
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
