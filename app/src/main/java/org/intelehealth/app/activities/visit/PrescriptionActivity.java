@@ -1850,6 +1850,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     @Override
     public void onResume() // register the receiver here
     {
+        super.onResume();
         //get from encountertbl from the encounter
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             visitnoteencounteruuid = getStartVisitNoteEncounterByVisitUUID(visitID);
@@ -1858,7 +1859,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (downloadPrescriptionService == null) {
             registerDownloadPrescription();
         }
-        super.onResume();
 
         callBroadcastReceiver();
     }
