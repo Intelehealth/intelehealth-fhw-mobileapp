@@ -21,17 +21,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwnerKt;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.PagingData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
@@ -60,7 +56,6 @@ import org.intelehealth.ncd.linelisting.datasource.PatientVisitRepository;
 import org.intelehealth.ncd.linelisting.datasource.ProtocolViewModelFactory;
 import org.intelehealth.ncd.linelisting.utils.SinglePatientHelper;
 import org.intelehealth.ncd.linelisting.viewmodels.ProtocolScreenViewModel;
-import org.intelehealth.ncd.model.PatientVisitDetails;
 import org.intelehealth.ncd.room.CategoryDatabase;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
@@ -77,17 +72,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
-import kotlinx.coroutines.flow.FlowCollector;
-import kotlinx.coroutines.flow.FlowKt;
-import kotlinx.coroutines.flow.Flow;
-import kotlinx.coroutines.flow.FlowCollector;
-import kotlinx.coroutines.flow.FlowKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlinx.coroutines.CoroutineScopeKt;
-import androidx.lifecycle.LifecycleOwnerKt;
-
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";

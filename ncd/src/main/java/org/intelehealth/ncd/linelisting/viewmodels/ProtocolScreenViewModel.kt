@@ -1,11 +1,8 @@
 package org.intelehealth.ncd.linelisting.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,20 +10,11 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.linelisting.datasource.PatientVisitRepository
-import org.intelehealth.ncd.linelisting.utils.NoopListCallback
-import org.intelehealth.ncd.linelisting.utils.PatientVisitDetailsDiffCallback
 import org.intelehealth.ncd.linelisting.utils.ProtocolParserHelper
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.CategorySegregationUtils
@@ -100,7 +88,7 @@ class ProtocolScreenViewModel(
                                 patientPhoneNumber = baseVisit.patientPhoneNumber,
                                 personAttributeTypeUuid = baseVisit.personAttributeTypeUuid,
 
-                                // Base visit info
+                                // Base visit info      `               
                                 visitId = baseVisit.visitId,
                                 startDate = baseVisit.startDate,
                                 visitEndDate = baseVisit.visitEndDate,
@@ -123,17 +111,19 @@ class ProtocolScreenViewModel(
 
                     // Step 3: apply category segregation filter
                     .map { pagingData ->
-                        if (skipCategorySegregation) {
+                       /* if (skipCategorySegregation) {
                             Log.d("TAG", "getPatientsPaged: in skip : "+skipCategorySegregation)
                             pagingData // skip segregation
-                        } else {
+                        } else {*/
                             Log.d("TAG", "getPatientsPaged: in non skip : "+skipCategorySegregation)
 
                             pagingData.filter { parsedPatient ->
+                                Log.d("TAGkz", "Merged parsedPatient: $parsedPatient")
+
                                 val resultList = categorySegregationUtils
                                     .segregateAndFetchPatientVisitDetails(listOf(parsedPatient), category)
                                 resultList.isNotEmpty()
-                            }
+                          //  }
                         }
                     }
                     /*.map { pagingData ->
