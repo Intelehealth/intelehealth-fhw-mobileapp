@@ -115,14 +115,6 @@ interface PatientVisitDao {
 
     WHERE 
         (
-            (:patientUuid IS NOT NULL AND :patientUuid != '' AND P.uuid = :patientUuid)
-            OR
-            (
-                (:patientUuid IS NULL OR :patientUuid = '')
-                AND ((julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age)
-            )
-        )
-        AND (
             :searchQuery IS NULL
             OR :searchQuery = ''
             OR P.first_name LIKE '%' || :searchQuery || '%'
@@ -291,15 +283,7 @@ interface PatientVisitDao {
         )
 
     WHERE 
-        (
-            (:patientUuid IS NOT NULL AND :patientUuid != '' AND P.uuid = :patientUuid)
-            OR
-            (
-                (:patientUuid IS NULL OR :patientUuid = '')
-                AND ((julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age)
-            )
-        )
-        AND (
+         (
             :searchQuery IS NULL
             OR :searchQuery = ''
             OR P.first_name LIKE '%' || :searchQuery || '%'
