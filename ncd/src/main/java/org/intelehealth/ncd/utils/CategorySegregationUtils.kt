@@ -439,28 +439,17 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val followupGiven = detail.isHypertensionFollowupGiven ?: false
-            Log.d(TAG, "linelist hyperten screen name : "+detail.firstName + " "+detail.lastName)
-            Log.d(TAG, "linelist hyperten screen age : "+detail.openmrsId)
-            Log.d(TAG, "linelist hyperten screen patientid : "+detail.patientId)
-            Log.d(TAG, "linelist hyperten screen visit id : "+detail.visitId)
-            Log.d(TAG, "linelist hyperten screen isHypertensionFollowupGiven : "+followupGiven)
+
             // Exclude if follow-up is already given
             if (followupGiven) return@filter false
 
             // Exclude if no attribute value (medical history JSON)
             val medicalHistoryJson = detail.value
-            Log.d(TAG, "linelist hyperten screen medicalHistoryJson : "+medicalHistoryJson)
             if (medicalHistoryJson.isNullOrEmpty()) return@filter false
 
             val hasHistory = isHistoryOfHypertensionPresent(medicalHistoryJson)
             val onMedication = isCurrentlyTakingHypertensionMedication(medicalHistoryJson)
-
-            Log.d(TAG, "linelist hyperten screen hasHistory : "+hasHistory)
-            Log.d(TAG, "linelist hyperten screen onMedication : "+onMedication)
-
             val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
-            Log.d(TAG, "linelist hyperten screen meetsAgeCriteria : "+meetsAgeCriteria)
-            Log.d(TAG, "linelist hyperten screen ***************************************************\n")
 
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
@@ -475,16 +464,6 @@ class CategorySegregationUtils(private val resources: Resources) {
             val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
 
             val followupGiven = detail.isHypertensionFollowupGiven
-            Log.d(TAG, "linelist hyperten followup name : "+detail.firstName + " "+detail.lastName)
-            Log.d(TAG, "linelist hyperten followup age : "+detail.openmrsId)
-            Log.d(TAG, "linelist hyperten followup patientid : "+detail.patientId)
-            Log.d(TAG, "linelist hyperten followup visit id : "+detail.visitId)
-            Log.d(TAG, "linelist hyperten followup isHypertensionFollowupGiven : "+followupGiven)
-            Log.d(TAG, "linelist hyperten followup medicalHistoryJson : "+detail.value)
-            Log.d(TAG, "linelist hyperten followup hasHistory : "+isHistoryOfHypertensionPresent(detail.value))
-            Log.d(TAG, "linelist hyperten followup onMedication : "+isCurrentlyTakingHypertensionMedication(detail.value))
-            Log.d(TAG, "linelist hyperten followup isHypertensionFollowupTodayOrLater : "+detail.isHypertensionFollowupTodayOrLater)
-            Log.d(TAG, "linelist hyperten followup ***************************************************\n")
 
             return@filter when {
                 // Case 1: Follow-up not given or null →  check baseline criteria
@@ -511,27 +490,17 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val followupGiven = detail.isAnemiaFollowupGiven ?: false
-            Log.d(TAG, "linelist Anemia screen name : "+detail.firstName + " "+detail.lastName)
-            Log.d(TAG, "linelist Anemia screen age : "+detail.openmrsId)
-            Log.d(TAG, "linelist Anemia screen patientid : "+detail.patientId)
-            Log.d(TAG, "linelist Anemia screen visit id : "+detail.visitId)
-            Log.d(TAG, "linelist Anemia screen isAnemiaFollowupGiven : "+followupGiven)
             // Exclude if follow-up is already given
             if (followupGiven) return@filter false
 
             // Exclude if no attribute value (medical history JSON)
             val medicalHistoryJson = detail.value
             if (medicalHistoryJson.isNullOrEmpty()) return@filter false
-            Log.d(TAG, "linelist Anemia screen medicalHistoryJson : "+medicalHistoryJson)
 
             val hasHistory = isHistoryOfAnemiaPresent(medicalHistoryJson)
             val onMedication = isCurrentlyTakingAnemiaMedication(medicalHistoryJson)
 
             val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
-            Log.d(TAG, "linelist Anemia screen hasHistory : "+hasHistory)
-            Log.d(TAG, "linelist Anemia screen onMedication : "+onMedication)
-            Log.d(TAG, "linelist Anemia screen meetsAgeCriteria : "+meetsAgeCriteria)
-            Log.d(TAG, "linelist Anemia screen ***************************************************\n")
 
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
@@ -548,19 +517,9 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): List<PatientVisitDetails> {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
-            val meetsAgeCriteria = age >= Constants.ANEMIA_EXCLUSION_AGE
+            val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
 
             val followupGiven = detail.isAnemiaFollowupGiven
-            Log.d(TAG, "linelist Anemia followup name : "+detail.firstName + " "+detail.lastName)
-            Log.d(TAG, "linelist Anemia followup age : "+detail.openmrsId)
-            Log.d(TAG, "linelist Anemia followup patientid : "+detail.patientId)
-            Log.d(TAG, "linelist Anemia followup visit id : "+detail.visitId)
-            Log.d(TAG, "linelist Anemia followup isAnemiaFollowupGiven : "+followupGiven)
-            Log.d(TAG, "linelist Anemia followup medicalHistoryJson : "+detail.value)
-            Log.d(TAG, "linelist Anemia followup hasHistory : "+isHistoryOfAnemiaPresent(detail.value))
-            Log.d(TAG, "linelist Anemia followup onMedication : "+isCurrentlyTakingAnemiaMedication(detail.value))
-            Log.d(TAG, "linelist Anemia followup isAnemiaFollowupTodayOrLater : "+detail.isAnemiaFollowupTodayOrLater)
-            Log.d(TAG, "linelist Anemia followup ***************************************************\n")
 
             return@filter when {
                 // Case 1: Follow-up not given or null →  check baseline criteria
