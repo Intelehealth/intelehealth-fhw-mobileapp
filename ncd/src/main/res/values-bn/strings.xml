@@ -159,5 +159,6 @@
     <string name="tab_all">সব</string>
     <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
     <string name="years_abbr">Y</string>
+    <string name="anemia_followup">অ্যানিমিয়া ফলোআপ</string>
 
 </resources>

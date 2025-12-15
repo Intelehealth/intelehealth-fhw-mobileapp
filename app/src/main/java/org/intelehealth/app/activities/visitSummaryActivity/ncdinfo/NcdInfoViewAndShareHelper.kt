@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.VisitAttributeDTO
+import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.exception.DAOException
@@ -74,10 +76,11 @@ class NcdInfoViewAndShareHelper(
                     try {
                         visitAttributeListDAO.insertVisitAttributes(
                             visitUuid,
-                            UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME,
+                            /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
                             UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
                         )
                         visitsDAO.updateVisitSync(visitUuid, "0")
+                        SyncDAO().pushDataApi()
                     } catch (e: DAOException) {
                         throw RuntimeException(e)
                     }
