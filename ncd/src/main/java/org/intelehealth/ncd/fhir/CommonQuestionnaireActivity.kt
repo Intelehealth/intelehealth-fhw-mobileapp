@@ -22,7 +22,6 @@ import android.widget.RadioButton
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +29,6 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commitNow
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.datacapture.QuestionnaireFragment
@@ -46,13 +44,11 @@ import org.hl7.fhir.r4.model.Enumerations
 import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
-import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.intelehealth.ncd.R
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
-import java.util.Locale
 import androidx.activity.OnBackPressedCallback
 
 class CommonQuestionnaireActivity : AppCompatActivity() {
@@ -69,6 +65,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 //            "Abdominal distention_fhir.json",
             "hypertension_screening.json",
             "anemia_screening.json",
+            "anemia_followup.json",
             "diabetes_screening.json",
             "hypertension_followup.json"
         )
@@ -77,6 +74,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 //            "Abdominal distention",
             "Hypertension Screening",
             "Anemia Screening",
+            "Anemia Followup",
             "Diabetes Screening",
             "Hypertension Followup"
         )
@@ -114,6 +112,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 //            "Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
+            getString(R.string.anemia_followup),
             getString(R.string.questionnaire_title_diabetes_screening),
             getString(R.string.questionnaire_title_hypertension_followup)
         )
