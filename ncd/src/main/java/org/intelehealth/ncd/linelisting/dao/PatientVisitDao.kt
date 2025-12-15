@@ -113,7 +113,7 @@ interface PatientVisitDao {
             LIMIT 1
         )
 
-    WHERE 
+    WHERE
         (
             :searchQuery IS NULL
             OR :searchQuery = ''
@@ -128,10 +128,8 @@ interface PatientVisitDao {
     """
     )
     fun getAllVisitsPaged(
-        age: Int,
         attributeTypeUuid: String,
         visitNoteEncounterUuid: String,
-        patientUuid: String,
         searchQuery: String
     ): PagingSource<Int, PatientVisitDetails>
 
@@ -283,6 +281,11 @@ interface PatientVisitDao {
         )
 
     WHERE 
+    (
+            (:patientUuid IS NOT NULL AND :patientUuid != '' AND P.uuid = :patientUuid)
+            
+        )
+        AND 
          (
             :searchQuery IS NULL
             OR :searchQuery = ''
@@ -297,7 +300,6 @@ interface PatientVisitDao {
     """
     )
     fun getPatientAndLatestVisitDetailsByPatientId(
-        age: Int,
         attributeTypeUuid: String,
         visitNoteEncounterUuid: String,
         patientUuid: String,

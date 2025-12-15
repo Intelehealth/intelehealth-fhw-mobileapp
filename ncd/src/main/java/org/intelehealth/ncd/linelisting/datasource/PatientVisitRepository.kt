@@ -13,7 +13,7 @@ class PatientVisitRepository(
         patientUuid: String?,
         searchQuery: String?
     ): PagingSource<Int, PatientVisitDetails> {
-        return dataSource.getPagedVisits(age, attributeTypeUuid, visitNoteEncounterUuid, patientUuid, searchQuery)
+        return dataSource.getPagedVisits(attributeTypeUuid, visitNoteEncounterUuid, searchQuery)
     }
 
     suspend fun getAllVisitsForPatient(
@@ -29,6 +29,6 @@ class PatientVisitRepository(
         patientUuid: String?,
         searchQuery: String?
     ): PatientVisitDetails {
-        return dataSource.getPatientAndLatestVisitDetailsByPatientId(age, attributeTypeUuid, visitNoteEncounterUuid, patientUuid, searchQuery)
+        return dataSource.getPatientAndLatestVisitDetailsByPatientId(attributeTypeUuid, visitNoteEncounterUuid, patientUuid, searchQuery)
     }
 }
