@@ -19,10 +19,23 @@ interface GeneralTabDao {
             P.gender AS gender,
             P.patient_photo AS patientPhoto,
             P.openmrs_id AS openmrs_id,
+            phoneAttr.value AS patientPhoneNumber,
             V.uuid AS visitId,
             V.startdate AS visitStartDate,
             V.enddate AS visitEndDate
         FROM tbl_patient P
+        
+        
+    -- latest phone attribute
+    LEFT JOIN tbl_patient_attribute phoneAttr
+        ON phoneAttr.uuid = (
+            SELECT pa2.uuid
+            FROM tbl_patient_attribute pa2
+            WHERE pa2.patientuuid = P.uuid
+              AND pa2.person_attribute_type_uuid = :patientPhoneNoAttribute
+            ORDER BY pa2.rowid DESC
+            LIMIT 1
+        )
         LEFT JOIN tbl_visit V
             ON V.uuid = (
                 SELECT v2.uuid
@@ -35,7 +48,7 @@ interface GeneralTabDao {
         ORDER BY datetime(V.startdate) DESC
         LIMIT :limit OFFSET :offset
     """)
-    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int): List<PatientVisitDetails>
+    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int, patientPhoneNoAttribute: String): List<PatientVisitDetails>
 
     @Query("""
         SELECT V.uuid AS visitId,
