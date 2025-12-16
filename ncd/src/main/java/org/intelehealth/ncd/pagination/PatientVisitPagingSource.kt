@@ -13,7 +13,8 @@ import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
     private val dataSource: CategoryDataSource,
-    private val query: String
+    private val query: String,
+    private val patientPhoneNoAttribute: String
 ) : PagingSource<Int, PatientVisitDetails>() {
 
    /* override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
@@ -39,7 +40,7 @@ class PatientVisitPagingSource(
             val limit = params.loadSize
 
             // 1. Load main patient + latest visit
-            val patients = dataSource.getPatientsAndVisitsPage(limit, offset)
+            val patients = dataSource.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute)
             if (offset != 0) {
                 delay(0)
             }

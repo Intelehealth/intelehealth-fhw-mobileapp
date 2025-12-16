@@ -18,9 +18,6 @@ object SinglePatientHelper {
     }
     @JvmStatic
     fun getSinglePatientEligibleMMS(
-        age: Int,
-        attributeTypeUuid: String,
-        visitNoteEncounterUuid: String,
         patientUuid: String,
         viewModel: ProtocolScreenViewModel,
         callback: Callback
@@ -28,9 +25,6 @@ object SinglePatientHelper {
         // Launch coroutine in ViewModel scope (or any CoroutineScope)
         viewModel.viewModelScope.launch(Dispatchers.IO) {
             val baseVisit = viewModel.repository.getPatientAndLatestVisitDetailsByPatientId(
-                age = age,
-                attributeTypeUuid = attributeTypeUuid,
-                visitNoteEncounterUuid = visitNoteEncounterUuid,
                 patientUuid = patientUuid,
                 searchQuery = ""
             )

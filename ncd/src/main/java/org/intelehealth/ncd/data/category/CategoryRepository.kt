@@ -113,7 +113,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 pageSize = 5,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PatientVisitPagingSource(dataSource,query) }
+            pagingSourceFactory = { PatientVisitPagingSource(dataSource,query, Constants.PATIENT_PHONE) }
         ).flow
     }
 

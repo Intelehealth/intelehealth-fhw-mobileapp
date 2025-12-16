@@ -762,9 +762,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 new ViewModelProvider(this, new ProtocolViewModelFactory(repository, utils))
                         .get(ProtocolScreenViewModel.class);
         SinglePatientHelper.getSinglePatientEligibleMMS(
-                Constants.HYPERTENSION_EXCLUSION_AGE,
-                Constants.OTHER_MEDICAL_HISTORY,
-                Constants.ENCOUNTER_VISIT_COMPLETE,
                 patientUuid,
                 viewModel,
                 eligibleMms -> {

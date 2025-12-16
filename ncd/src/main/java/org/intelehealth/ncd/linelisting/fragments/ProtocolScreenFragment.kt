@@ -110,10 +110,6 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         lifecycleScope.launchWhenStarted {
             viewModel.getPatientsPaged(
                 category = category,
-                age = age,
-                attributeTypeUuid = Constants.OTHER_MEDICAL_HISTORY,
-                visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
-                patientUuid = null,
                 searchQueryFlow = searchVM.searchTextFlow,
                 skipCategorySegregation = false
             ).collectLatest { pagingData ->

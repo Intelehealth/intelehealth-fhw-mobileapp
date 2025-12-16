@@ -32,10 +32,6 @@ class ProtocolScreenViewModel(
 
     fun getPatientsPaged(
         category: String,
-        age: Int,
-        attributeTypeUuid: String,
-        visitNoteEncounterUuid: String,
-        patientUuid: String? = null,
         searchQueryFlow: Flow<String>,
         skipCategorySegregation: Boolean = false
     ): Flow<PagingData<PatientVisitDetails>> {
@@ -49,10 +45,6 @@ class ProtocolScreenViewModel(
                     pagingSourceFactory = {
                         // Step 1: fetch latest ended visit per patient (paged)
                         repository.getPagedVisits(
-                            age = age,
-                            attributeTypeUuid = attributeTypeUuid,
-                            visitNoteEncounterUuid = visitNoteEncounterUuid,
-                            patientUuid = patientUuid,
                             searchQuery = query
                         )
                     }

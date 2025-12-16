@@ -49,7 +49,7 @@ interface PatientVisitDao {
             SELECT VA.value
             FROM tbl_visit_attribute VA
             WHERE VA.visit_uuid = V.uuid
-              AND VA.visit_attribute_type_uuid = 'bc79d2ab-3c83-48f2-820d-08a02b32faab'
+              AND VA.visit_attribute_type_uuid = :ncdVisitAttribute
             ORDER BY VA.rowid DESC
             LIMIT 1
         ) AS is_ncd_visit,
@@ -59,7 +59,7 @@ interface PatientVisitDao {
             SELECT VA2.value
             FROM tbl_visit_attribute VA2
             WHERE VA2.visit_uuid = V.uuid
-              AND VA2.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d'
+              AND VA2.visit_attribute_type_uuid = :visitSpecialityAttribute
             ORDER BY VA2.rowid DESC
             LIMIT 1
         ) AS visit_speciality,
@@ -71,8 +71,8 @@ interface PatientVisitDao {
             INNER JOIN tbl_encounter E
                 ON O.encounteruuid = E.uuid
             WHERE E.visituuid = V.uuid
-              AND E.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f'
-              AND O.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'
+              AND E.encounter_type_uuid = :chiefComplaintEncounterConceptUuid
+              AND O.conceptuuid = :chiefComplaintObsConceptUuid
             ORDER BY O.rowid DESC
             LIMIT 1
         ) AS chief_complaint_data
@@ -85,7 +85,7 @@ interface PatientVisitDao {
             SELECT pa.uuid
             FROM tbl_patient_attribute pa
             WHERE pa.patientuuid = P.uuid
-              AND pa.person_attribute_type_uuid = :attributeTypeUuid
+              AND pa.person_attribute_type_uuid = :medicalHistoryAttribute
             ORDER BY pa.rowid DESC
             LIMIT 1
         )
@@ -96,7 +96,7 @@ interface PatientVisitDao {
             SELECT pa2.uuid
             FROM tbl_patient_attribute pa2
             WHERE pa2.patientuuid = P.uuid
-              AND pa2.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7'
+              AND pa2.person_attribute_type_uuid = :patientPhoneNoAttribute
             ORDER BY pa2.rowid DESC
             LIMIT 1
         )
@@ -128,9 +128,14 @@ interface PatientVisitDao {
     """
     )
     fun getAllVisitsPaged(
-        attributeTypeUuid: String,
+        medicalHistoryAttribute: String,
         visitNoteEncounterUuid: String,
-        searchQuery: String
+        searchQuery: String,
+        ncdVisitAttribute: String,
+        patientPhoneNoAttribute: String,
+        visitSpecialityAttribute: String,
+        chiefComplaintEncounterConceptUuid: String,
+        chiefComplaintObsConceptUuid: String
     ): PagingSource<Int, PatientVisitDetails>
 
     @Query(
@@ -146,7 +151,7 @@ interface PatientVisitDao {
             SELECT VA.value
             FROM tbl_visit_attribute VA
             WHERE VA.visit_uuid = V.uuid
-              AND VA.visit_attribute_type_uuid = 'bc79d2ab-3c83-48f2-820d-08a02b32faab'
+              AND VA.visit_attribute_type_uuid = :ncdVisitAttribute
             ORDER BY VA.rowid DESC
             LIMIT 1
         ) AS is_ncd_visit,
@@ -156,24 +161,27 @@ interface PatientVisitDao {
     FROM tbl_visit V
     LEFT JOIN tbl_encounter E
         ON E.visituuid = V.uuid
-        AND E.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f'
+        AND E.encounter_type_uuid = :chiefComplaintEncounterConceptUuid
     LEFT JOIN tbl_obs O
         ON O.encounteruuid = E.uuid
-        AND O.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'
+        AND O.conceptuuid = :chiefComplaintObsConceptUuid
     WHERE V.patientuuid = :patientUuid
       AND V.enddate IS NOT NULL
       AND (
             SELECT VA.value
             FROM tbl_visit_attribute VA
             WHERE VA.visit_uuid = V.uuid
-              AND VA.visit_attribute_type_uuid = 'bc79d2ab-3c83-48f2-820d-08a02b32faab'
+              AND VA.visit_attribute_type_uuid = :ncdVisitAttribute
             ORDER BY VA.rowid DESC
             LIMIT 1
           ) = 'true'
     ORDER BY substr(V.startdate,1,19) DESC
     """
     )
-     suspend fun getNcdCompletedVisitsForProtocolFlags(patientUuid: String): List<PatientVisitDetails>
+     suspend fun getNcdCompletedVisitsForProtocolFlags(patientUuid: String,
+                                                       ncdVisitAttribute: String,
+                                                       chiefComplaintEncounterConceptUuid: String,
+                                                       chiefComplaintObsConceptUuid: String): List<PatientVisitDetails>
 
     @Query(
         """
@@ -216,7 +224,7 @@ interface PatientVisitDao {
             SELECT VA.value
             FROM tbl_visit_attribute VA
             WHERE VA.visit_uuid = V.uuid
-              AND VA.visit_attribute_type_uuid = 'bc79d2ab-3c83-48f2-820d-08a02b32faab'
+              AND VA.visit_attribute_type_uuid = :ncdVisitAttribute
             ORDER BY VA.rowid DESC
             LIMIT 1
         ) AS is_ncd_visit,
@@ -226,7 +234,7 @@ interface PatientVisitDao {
             SELECT VA2.value
             FROM tbl_visit_attribute VA2
             WHERE VA2.visit_uuid = V.uuid
-              AND VA2.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d'
+              AND VA2.visit_attribute_type_uuid = :visitSpecialityAttribute
             ORDER BY VA2.rowid DESC
             LIMIT 1
         ) AS visit_speciality,
@@ -238,8 +246,8 @@ interface PatientVisitDao {
             INNER JOIN tbl_encounter E
                 ON O.encounteruuid = E.uuid
             WHERE E.visituuid = V.uuid
-              AND E.encounter_type_uuid = '8d5b27bc-c2cc-11de-8d13-0010c6dffd0f'
-              AND O.conceptuuid = '3edb0e09-9135-481e-b8f0-07a26fa9a5ce'
+              AND E.encounter_type_uuid = :chiefComplaintEncounterConceptUuid
+              AND O.conceptuuid = :chiefComplaintObsConceptUuid
             ORDER BY O.rowid DESC
             LIMIT 1
         ) AS chief_complaint_data
@@ -252,7 +260,7 @@ interface PatientVisitDao {
             SELECT pa.uuid
             FROM tbl_patient_attribute pa
             WHERE pa.patientuuid = P.uuid
-              AND pa.person_attribute_type_uuid = :attributeTypeUuid
+              AND pa.person_attribute_type_uuid = :medicalHistoryAttribute
             ORDER BY pa.rowid DESC
             LIMIT 1
         )
@@ -263,7 +271,7 @@ interface PatientVisitDao {
             SELECT pa2.uuid
             FROM tbl_patient_attribute pa2
             WHERE pa2.patientuuid = P.uuid
-              AND pa2.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7'
+              AND pa2.person_attribute_type_uuid = :patientPhoneNoAttribute
             ORDER BY pa2.rowid DESC
             LIMIT 1
         )
@@ -300,10 +308,15 @@ interface PatientVisitDao {
     """
     )
     fun getPatientAndLatestVisitDetailsByPatientId(
-        attributeTypeUuid: String,
+        medicalHistoryAttribute: String,
         visitNoteEncounterUuid: String,
         patientUuid: String,
-        searchQuery: String
+        searchQuery: String,
+        ncdVisitAttribute: String,
+        patientPhoneNoAttribute: String,
+        visitSpecialityAttribute: String,
+        chiefComplaintEncounterConceptUuid: String,
+        chiefComplaintObsConceptUuid: String
     ): PatientVisitDetails
 
 }
