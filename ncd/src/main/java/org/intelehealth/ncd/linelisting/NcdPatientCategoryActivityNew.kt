@@ -48,6 +48,7 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
         val fragmentList = listOf(
             ProtocolScreenFragment.newInstance(Constants.ANEMIA_SCREENING, age = Constants.ANEMIA_EXCLUSION_AGE),
             ProtocolScreenFragment.newInstance(Constants.ANEMIA_FOLLOW_UP, age = Constants.ANEMIA_EXCLUSION_AGE),
+            ProtocolScreenFragment.newInstance(Constants.DIABETES_SCREENING, age = Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING),
             ProtocolScreenFragment.newInstance(Constants.HYPERTENSION_SCREENING, age =  Constants.HYPERTENSION_EXCLUSION_AGE),
             ProtocolScreenFragment.newInstance(Constants.HYPERTENSION_FOLLOW_UP, age =  Constants.HYPERTENSION_EXCLUSION_AGE),
             GeneralFragment()
@@ -61,6 +62,7 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
         val tabTitles = listOf(
             getString(R.string.tab_anemia_screening),
             getString(R.string.tab_anemia_follow_up),
+            getString(R.string.tab_diabetes_screening),
             getString(R.string.tab_hypertension_screening),
             getString(R.string.tab_hypertension_follow_up),
             getString(R.string.tab_all)

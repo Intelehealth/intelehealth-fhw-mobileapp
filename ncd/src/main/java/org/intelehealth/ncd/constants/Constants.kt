@@ -8,6 +8,7 @@ object Constants {
     const val DIABETES_EXCLUSION_AGE: Int = 20 // Greater or equal to 20 are considered
     const val HYPERTENSION_EXCLUSION_AGE: Int = 18 // Greater than or equal to 18 are considered
     const val GENERAL_EXCLUSION_AGE: Int = 11 // Below age 11 are considered
+    const val DIABETES_EXCLUSION_AGE_LINE_LISTING: Int = 30 // Greater or equal to 20 are considered
 
     const val INTENT_PATIENT_UUID = "patientUuid"
     const val INTENT_PATIENT_NAME = "patientName"

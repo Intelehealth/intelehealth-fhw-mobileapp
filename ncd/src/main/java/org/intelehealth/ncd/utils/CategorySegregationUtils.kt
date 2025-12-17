@@ -426,6 +426,7 @@ class CategorySegregationUtils(private val resources: Resources) {
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
             Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
             Constants.ANEMIA_FOLLOW_UP -> filterAnemiaFollowUpPatients(patientVisitDetailsList)
+            Constants.DIABETES_SCREENING -> filterDiabetesScreeningPatients(patientVisitDetailsList)
 
             else -> emptyList()
         }
@@ -540,5 +541,12 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
         }
     }
-
+    private fun filterDiabetesScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING
+        }
+    }
 }
