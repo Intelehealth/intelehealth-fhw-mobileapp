@@ -502,7 +502,9 @@ public class Fragment_ThirdScreen extends Fragment {
             } else {
                 mAbhaAddressErrorTextView.setVisibility(View.GONE);
                 onPatientCreateClicked();
-                downloadAbhaCard();
+                if (otpVerificationResponse != null || abhaProfileResponse != null) {
+                    downloadAbhaCard();
+                }
             }
         });
 
