@@ -1088,4 +1088,19 @@ public class PatientsDAO {
         return patientUuid != null;
     }
 
+    // get patient abha_address by patient uuid
+    public  String getPatientAbhaAddressByUuid(String patientUuid) {
+        String abhaAddress = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String query = "SELECT abha_address FROM tbl_patient WHERE uuid = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{patientUuid})) {
+            if (cursor.moveToFirst()) {
+                abhaAddress = cursor.getString(cursor.getColumnIndexOrThrow("abha_address"));
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return abhaAddress;
+    }
+
 }

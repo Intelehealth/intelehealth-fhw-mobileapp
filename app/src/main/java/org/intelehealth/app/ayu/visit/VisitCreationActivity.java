@@ -51,6 +51,8 @@ import org.intelehealth.app.ayu.visit.vital.VitalCollectionSummaryFragment;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
@@ -433,6 +435,29 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_6_VISIT_SUMMARY:
+                VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+                // need keep the abha address for visit in visit attributes table.
+                // get the abha address of the patient
+                String abhaAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
+                // "abha_address" = "abc@sbx,pqr@sbx" so we need the 1st one
+                abhaAddress = abhaAddress != null && abhaAddress.contains(",") ? abhaAddress.split(",")[0] : abhaAddress;
+
+
+                if (abhaAddress != null) {
+                    // check if already exist then update the abha address else add new
+                    boolean isAbhaExist = visitAttributeListDAO.isAttributeExistForVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS);
+                    try {
+                        if (isAbhaExist) {
+                            visitAttributeListDAO.updateVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+                        } else {
+                            visitAttributeListDAO.insertVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+                        }
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
