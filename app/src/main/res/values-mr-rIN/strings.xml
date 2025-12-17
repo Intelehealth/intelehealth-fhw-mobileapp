@@ -1087,4 +1087,14 @@
 
     <string name="no_go_back">नाही,मागे जा</string>
 
+    <string name="msg_ekal_thank_you">एकल टेलिमेडिसिन सेवा वापरल्याबद्दल धन्यवाद! दररोज निरोगी राहण्यासाठी सोपे उपाय जाणून घेण्यासाठी लिंकवर क्लिक करा.</string>
+    <string name="anemia_food_advice">रक्ताची कमतरता: लोह, फॉलिक आम्ल आणि प्रथिनेयुक्त अन्न खा</string>
+    <string name="anemia_deworm_hygiene">रक्ताची कमतरता: नियमितपणे जंतनाशक औषध घ्या आणि स्वच्छता पाळा</string>
+    <string name="anemia_quit_alcohol_tobacco">रक्ताची कमतरता: मद्यपान आणि तंबाखू सोडा</string>
+    <string name="diabetes_reduce_sugar">शुगर: साखरेचे सेवन कमी करा</string>
+    <string name="exercise_regularly">नियमित व्यायाम करा</string>
+    <string name="diabetes_quit_alcohol_tobacco">शुगर: मद्यपान आणि तंबाखू सोडा</string>
+    <string name="hypertension_reduce_salt">बीपी: मिठाचे सेवन कमी करा</string>
+    <string name="hypertension_quit_alcohol_tobacco">बीपी: मद्यपान आणि तंबाखू सोडा</string>
+    <string name="ncd_report">NCD अहवाल</string>
 </resources>

@@ -1052,5 +1052,16 @@
 
     <string name="no_go_back">ಇಲ್ಲ,ಹಿಂದಿರುಗಿ</string>
 
+    <string name="msg_ekal_thank_you">ಏಕಲ್ ಟೆಲಿಮೆಡಿಸಿನ್ ಸೇವೆಯನ್ನು ಬಳಸಿದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು! ಪ್ರತಿದಿನ ಆರೋಗ್ಯವಾಗಿರಲು ಸರಳ ಮಾರ್ಗಗಳನ್ನು ತಿಳಿಯಲು ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡಿ.</string>
+    <string name="anemia_food_advice">ರಕ್ತಹೀನತೆ: ಕಬ್ಬಿಣ, ಫೋಲಿಕ್ ಆಮ್ಲ ಮತ್ತು ಪ್ರೋಟೀನ್ ಸಮೃದ್ಧ ಆಹಾರ ಸೇವಿಸಿ</string>
+    <string name="anemia_deworm_hygiene">ರಕ್ತಹೀನತೆ: ನಿಯಮಿತವಾಗಿ ಹುಳ ನಿವಾರಕ ಔಷಧ ಸೇವಿಸಿ ಮತ್ತು ಸ್ವಚ್ಛತೆ ಕಾಪಾಡಿ</string>
+    <string name="anemia_quit_alcohol_tobacco">ರಕ್ತಹೀನತೆ: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
+    <string name="diabetes_reduce_sugar">ಡಯಾಬಿಟಿಸ್: ಸಕ್ಕರೆ ಸೇವನೆ ಕಡಿಮೆ ಮಾಡಿ</string>
+    <string name="exercise_regularly">ನಿಯಮಿತವಾಗಿ ವ್ಯಾಯಾಮ ಮಾಡಿ</string>
+    <string name="diabetes_quit_alcohol_tobacco">ಡಯಾಬಿಟಿಸ್: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
+    <string name="hypertension_reduce_salt">ಬಿಪಿ: ಉಪ್ಪಿನ ಸೇವನೆ ಕಡಿಮೆ ಮಾಡಿ</string>
+    <string name="hypertension_quit_alcohol_tobacco">ಬಿಪಿ: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
+    <string name="ncd_report">NCD ವರದಿ</string>
+
 
 </resources>

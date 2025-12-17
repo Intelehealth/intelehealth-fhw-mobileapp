@@ -1167,5 +1167,15 @@
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="category_already_selected">You already selected an item from %1$s</string>
 
+    <string name="msg_ekal_thank_you">Thank you for using Ekal Telemedicine! Click the link to learn simple ways to stay healthy every day.</string>
+    <string name="anemia_food_advice">Anemia: Eat iron-, folic acid– and protein-rich foods</string>
+    <string name="anemia_deworm_hygiene">Anemia: Deworm regularly and maintain good hygiene</string>
+    <string name="anemia_quit_alcohol_tobacco">Anemia: Quit alcohol and tobacco</string>
+    <string name="diabetes_reduce_sugar">Diabetes: Reduce sugar intake</string>
+    <string name="exercise_regularly">Exercise regularly</string>
+    <string name="diabetes_quit_alcohol_tobacco">Diabetes: Quit alcohol and tobacco</string>
+    <string name="hypertension_reduce_salt">Hypertension: Reduce salt intake</string>
+    <string name="hypertension_quit_alcohol_tobacco">Hypertension: Quit alcohol and tobacco</string>
+    <string name="ncd_report">NCD Report</string>
 
 </resources>

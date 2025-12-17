@@ -942,5 +942,14 @@
     <string name="yes_move_ahead">ହଁ, ଆଗକୁ ବଢ଼ନ୍ତୁ</string>
     <string name="no_go_back">ନା, ପଛକୁ ଯାଆନ୍ତୁ</string>
 
-
+    <string name="msg_ekal_thank_you">ଏକଲ ଟେଲିମେଡିସିନ ସେବା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ! ପ୍ରତିଦିନ ସ୍ୱସ୍ଥ ରହିବାର ସହଜ ଉପାୟ ଜାଣିବା ପାଇଁ ଲିଙ୍କରେ କ୍ଲିକ୍ କରନ୍ତୁ।</string>
+    <string name="anemia_food_advice">ରକ୍ତହୀନତା: ଲୋହ, ଫୋଲିକ ଆମ୍ଲ ଏବଂ ପ୍ରୋଟିନ ସମୃଦ୍ଧ ଖାଦ୍ୟ ଖାଆନ୍ତୁ</string>
+    <string name="anemia_deworm_hygiene">ରକ୍ତହୀନତା: ନିୟମିତ ଭାବେ କୀଡ଼ା ନାଶକ ଔଷଧ ନିଅନ୍ତୁ ଏବଂ ପରିସ୍କାରତା ରଖନ୍ତୁ</string>
+    <string name="anemia_quit_alcohol_tobacco">ରକ୍ତହୀନତା: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
+    <string name="diabetes_reduce_sugar">ଡାଏବେଟିସ: ଚିନିର ପରିମାଣ କମାନ୍ତୁ</string>
+    <string name="exercise_regularly">ନିୟମିତ ଭାବେ ବ୍ୟାୟାମ କରନ୍ତୁ</string>
+    <string name="diabetes_quit_alcohol_tobacco">ଡାଏବେଟିସ: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
+    <string name="hypertension_reduce_salt">ବିପି: ଲୁଣର ପରିମାଣ କମାନ୍ତୁ</string>
+    <string name="hypertension_quit_alcohol_tobacco">ବିପି: ମଦ୍ୟପାନ ଓ ତମାକୁ ବନ୍ଦ କରନ୍ତୁ</string>
+    <string name="ncd_report">NCD ରିପୋର୍ଟ</string>
 </resources>

@@ -509,4 +509,14 @@
 
     <string name="select_one_or_multiple_reasons">ఒకటి లేదా అనేక కారణాలను ఎంచుకోండి</string>
 
+    <string name="msg_ekal_thank_you">ఏకల్ టెలిమెడిసిన్ సేవను ఉపయోగించినందుకు ధన్యవాదాలు! ప్రతిరోజూ ఆరోగ్యంగా ఉండేందుకు సులభమైన మార్గాలు తెలుసుకోవడానికి లింక్‌పై క్లిక్ చేయండి.</string>
+    <string name="anemia_food_advice">రక్తహీనత: ఐరన్, ఫోలిక్ యాసిడ్ మరియు ప్రోటీన్ అధికంగా ఉన్న ఆహారం తినండి</string>
+    <string name="anemia_deworm_hygiene">రక్తహీనత: క్రమం తప్పకుండా కీటకనాశక మందులు వాడండి మరియు శుభ్రత పాటించండి</string>
+    <string name="anemia_quit_alcohol_tobacco">రక్తహీనత: మద్యం మరియు పొగాకు మానండి</string>
+    <string name="diabetes_reduce_sugar">డయాబెటిస్: చక్కెర వినియోగాన్ని తగ్గించండి</string>
+    <string name="exercise_regularly">క్రమం తప్పకుండా వ్యాయామం చేయండి</string>
+    <string name="diabetes_quit_alcohol_tobacco">డయాబెటిస్: మద్యం మరియు పొగాకు మానండి</string>
+    <string name="hypertension_reduce_salt">బీపీ: ఉప్పు వినియోగాన్ని తగ్గించండి</string>
+    <string name="hypertension_quit_alcohol_tobacco">బీపీ: మద్యం మరియు పొగాకు మానండి</string>
+    <string name="ncd_report">NCD నివేదిక</string>
 </resources>
