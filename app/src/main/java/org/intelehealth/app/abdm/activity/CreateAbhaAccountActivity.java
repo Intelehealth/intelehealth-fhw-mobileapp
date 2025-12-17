@@ -40,6 +40,7 @@ import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -85,7 +86,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private String patientName;
 
     private ChecklistDialogFragment dialogFragment;
-    private String mExistingPatientOpenMRSUuid = null;
+    private String mExistingPatientOpenMRSId = null;
     private String mExistingPatientUuid = null;
     private String mExistingPatientABHAProfilePreferredAddress = null;
 
@@ -424,7 +425,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         if (otpVerificationResponse.getABHAProfile().getPhrAddress() == null || otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
-            checkIsUserExist(mExistingPatientABHAProfilePreferredAddress, otpVerificationResponse);
+            // checkIsUserExist(mExistingPatientABHAProfilePreferredAddress, otpVerificationResponse);
+            checkIsUserExist(otpVerificationResponse.getABHAProfile().getABHANumber(), otpVerificationResponse);
         }
         //}
     }
@@ -556,6 +558,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
                         if (response != null && response.getData() != null && response.getData().getUuid() != null) {
+                            // {"status":"OK","data":{"uuid":"1ae229f6-9e7a-40e9-8eff-cb5e5bb71840","openmrsid":"168CD-2"}}
                             String openMrsId = response.getData().getUuid();
                             boolean doesUserExistOnHmis = !openMrsId.equalsIgnoreCase("NA");
 
@@ -567,8 +570,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 showDialogForConfirmation(abhaProfileResponse);
                             }*/
                             if (doesUserExistOnHmis) {
-                                mExistingPatientOpenMRSUuid = openMrsId;
-                                mExistingPatientUuid = response.getData().getOpenmrsid();
+                                mExistingPatientOpenMRSId = response.getData().getOpenmrsid();
+                                mExistingPatientUuid = response.getData().getUuid();
                             }
                             showDialogForConfirmation(abhaProfileResponse);
                         } else {
@@ -603,9 +606,18 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     addressList.add(0, text);
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
                     // check whether the current selected abha address is already existing address or not.
-                    if (mExistingPatientOpenMRSUuid != null && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
+                    //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
+                    // check patient with uuid and abah-address whetehr exist it in local or not
+                    if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
+                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
+
                         // call api to update identifier
-                        updatePatientIdentifier(abhaProfileResponse, text);
+                        if (isExistingPatientWithSelectedAbhaAddress) {
+                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
+                        } else {
+                            // add new identifier to existing patient
+                            updatePatientIdentifier(abhaProfileResponse, text);
+                        }
                     } else {
 
                         navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
@@ -640,7 +652,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         requestBody.setIdentifierType(UuidDictionary.UPDATE_IDENTIFIER_TYPE_UUID);
         requestBody.setLocation(sessionManager.getLocationUuid());
 
-        String url = UrlModifiers.getUpdatePatientIdentifierUrl(mExistingPatientOpenMRSUuid);
+        String url = UrlModifiers.getUpdatePatientIdentifierUrl(mExistingPatientOpenMRSId);
         cpd.show();
         // post method
         Single<Response<ResponseBody>> responseSingle = AppConstants.apiInterface.updatePatientIdentifier(
@@ -673,7 +685,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse/*, ExistUserStatusResponse response*/) {
-        abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSUuid);
+        abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
         abhaProfileResponse.setUuID(mExistingPatientUuid);
         Intent intent = new Intent(context, IdentificationActivity_New.class);
         intent.putExtra(PAYLOAD, abhaProfileResponse);

@@ -3,9 +3,6 @@ package org.intelehealth.app.abdm.activity;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,10 +18,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.dialog.MobileNumberOtpVerificationDialog;
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
@@ -39,6 +38,7 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
@@ -229,17 +229,17 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
         });
 
         binding.layoutHaveABHANumber.buttonMobileNumber.setOnClickListener(v -> {
-                optionSelected = "mobile";
-                binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
-                binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
-                binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
-                binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
-                binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
-                binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
-                binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-                binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
-                binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-                binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            optionSelected = "mobile";
+            binding.layoutHaveABHANumber.llAadharMobile.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.layoutParentUsername.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.layoutParentMobileNo.setVisibility(View.VISIBLE);
+            binding.layoutHaveABHANumber.tvUsernameError.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.flAbhaDetails.setVisibility(View.GONE);
+            binding.layoutHaveABHANumber.buttonMobileNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_ui2));
+            binding.layoutHaveABHANumber.buttonUsername.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.buttonAbhaNumber.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_bg_forgot_pass_disabled_ui2));
+            binding.layoutHaveABHANumber.edittextMobileNumber.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+            binding.layoutHaveABHANumber.edittextUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
         });
 
         binding.layoutHaveABHANumber.buttonAbhaNumber.setOnClickListener(v -> {
@@ -820,11 +820,13 @@ public class AadharMobileVerificationActivity extends AppCompatActivity {
 
                                         if (otpResponse.getABHAProfile().getMobile() != null &&
                                                 otpResponse.getABHAProfile().getMobile().equalsIgnoreCase(mobileNo)) {
-                                            checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+                                            //checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+                                            checkUserExist(otpResponse.getABHAProfile().getABHANumber(), otpResponse);
                                         } else {
                                             MobileNumberOtpVerificationDialog dialog = new MobileNumberOtpVerificationDialog();
                                             dialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                                checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+                                                //checkUserExist(otpResponse.getABHAProfile().getPhrAddress().get(0), otpResponse);
+                                                checkUserExist(otpResponse.getABHAProfile().getABHANumber(), otpResponse);
 
                                             });
                                             dialog.show(getSupportFragmentManager(), "");

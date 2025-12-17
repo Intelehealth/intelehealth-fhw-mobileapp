@@ -1103,4 +1103,25 @@ public class PatientsDAO {
         return abhaAddress;
     }
 
+    public boolean isPatientExistWithAbhaAddress(String patientOpenMRSUuid, String abhaAddress) {
+        boolean isInserted = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
+        try {
+            // abha_address contas , separated values ex ; abc@sbx, pqr@sbx... i need the find abc@sbx
+            Cursor cursor = db.rawQuery("SELECT COUNT(*) as count FROM tbl_patient WHERE uuid = ? AND abha_address LIKE ? COLLATE NOCASE",
+                    new String[]{patientOpenMRSUuid, "%" + abhaAddress + "%"});
+            if (cursor.moveToFirst()) {
+                int count = cursor.getInt(cursor.getColumnIndexOrThrow("count"));
+                isInserted = count > 0;
+            }
+
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        } finally {
+            //db.endTransaction();
+
+        }
+        return isInserted;
+    }
 }
