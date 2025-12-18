@@ -154,7 +154,6 @@ public class UrlModifiers {
     }
 
     public static String getUpdatePatientIdentifierUrl(String patientUuid) {
-        //https://abdm.intelehealth.org/openmrs/ws/rest/v1/patient/<person-uuid>/identifier
         return BuildConfig.SERVER_URL+ "/openmrs/ws/rest/v1/patient/" + patientUuid + "/identifier";
     }
 }

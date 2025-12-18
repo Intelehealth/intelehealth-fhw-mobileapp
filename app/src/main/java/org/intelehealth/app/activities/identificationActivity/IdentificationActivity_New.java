@@ -56,7 +56,6 @@ import java.util.Locale;
 public class IdentificationActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
 
 
-
     SessionManager sessionManager = null;
     private static final String TAG = IdentificationActivity_New.class.getSimpleName();
     PatientDTO patientdto = new PatientDTO();
@@ -157,8 +156,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
                     setscreen(thirdScreen);
                 }
 
-            }
-            else {
+            } else {
                 abdmAutoFillScreensWithValues(firstScreen, intentRx);
             }
 
@@ -201,14 +199,12 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putString("xToken", xToken);
         bundle.putString("txnId", txnId);
         bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
-        bundle.putBoolean("patient_detail", intent.getBooleanExtra("patient_detail", false));
 
         if (intent.hasExtra(PAYLOAD)) {
             otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra(PAYLOAD);
             Log.d("abdmAutoFillScreensWithValues", "payload: " + otpVerificationResponse.toString());
             bundle.putSerializable(PAYLOAD, otpVerificationResponse);
-        }
-        else if (intent.hasExtra(MOBILE_PAYLOAD)) {
+        } else if (intent.hasExtra(MOBILE_PAYLOAD)) {
             abhaProfileResponse = (AbhaProfileResponse) intent.getSerializableExtra(MOBILE_PAYLOAD);
             Log.d("abdmAutoFillScreensWithValues", "payload_mobile: " + abhaProfileResponse.toString());
             bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
@@ -235,12 +231,11 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putString("accessToken", accessToken);
         bundle.putString("xToken", xToken);
         bundle.putString("txnId", txnId);
-        bundle.putBoolean("firstRequestFulfilled",firstRequestFulfilled);
+        bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
 
         if (otpVerificationResponse != null) {
             bundle.putSerializable(PAYLOAD, otpVerificationResponse);
-        }
-        else if (abhaProfileResponse != null) {
+        } else if (abhaProfileResponse != null) {
             bundle.putSerializable(MOBILE_PAYLOAD, abhaProfileResponse);
         }
 
@@ -270,24 +265,22 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
 
 
     public void cancelRegistration(View view) {
-        if(!intentRx.hasExtra("patientUuid")) {
+        if (!intentRx.hasExtra("patientUuid")) {
             patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg),
                     getResources().getString(R.string.close_patient_registration),
                     getResources().getString(R.string.sure_you_want_close_registration),
                     getResources().getString(R.string.yes), getResources().getString(R.string.no),
                     new DialogUtils.CustomDialogListener() {
-                @Override
-                public void onDialogActionDone(int action) {
-                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                        Intent intent = new Intent(context, HomeScreenActivity_New.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            });
-        }
-        else
-        {
+                        @Override
+                        public void onDialogActionDone(int action) {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                Intent intent = new Intent(context, HomeScreenActivity_New.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+        } else {
             Intent intent = new Intent(this, PatientDetailActivity2.class);
             intent.putExtra("patientUuid", patientID_edit);
             intent.putExtra("tag", "searchPatient");

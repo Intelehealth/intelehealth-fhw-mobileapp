@@ -1089,7 +1089,7 @@ public class PatientsDAO {
     }
 
     // get patient abha_address by patient uuid
-    public  String getPatientAbhaAddressByUuid(String patientUuid) {
+    public String getPatientAbhaAddressByUuid(String patientUuid) {
         String abhaAddress = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String query = "SELECT abha_address FROM tbl_patient WHERE uuid = ?";
@@ -1105,23 +1105,23 @@ public class PatientsDAO {
 
     public boolean isPatientExistWithAbhaAddress(String patientOpenMRSUuid, String abhaAddress) {
         boolean isInserted = false;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        //db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = null;
+
         try {
-            // abha_address contas , separated values ex ; abc@sbx, pqr@sbx... i need the find abc@sbx
-            Cursor cursor = db.rawQuery("SELECT COUNT(*) as count FROM tbl_patient WHERE uuid = ? AND abha_address LIKE ? COLLATE NOCASE",
-                    new String[]{patientOpenMRSUuid, "%" + abhaAddress + "%"});
+            cursor = db.rawQuery("SELECT COUNT(*) as count FROM tbl_patient WHERE uuid = ? AND abha_address LIKE ? COLLATE NOCASE", new String[]{patientOpenMRSUuid, "%" + abhaAddress + "%"});
             if (cursor.moveToFirst()) {
                 int count = cursor.getInt(cursor.getColumnIndexOrThrow("count"));
                 isInserted = count > 0;
             }
-
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-        } finally {
-            //db.endTransaction();
-
         }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
         return isInserted;
     }
 }
