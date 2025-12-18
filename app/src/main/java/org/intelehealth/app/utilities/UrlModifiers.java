@@ -3,8 +3,6 @@ package org.intelehealth.app.utilities;
 import android.util.Log;
 
 import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
 
 public class UrlModifiers {
 
@@ -153,5 +151,10 @@ public class UrlModifiers {
 
     public static String getFetchAuthModesUrl() {
         return BuildConfig.SERVER_URL + "/abha/fetchAuthModes";
+    }
+
+    public static String getUpdatePatientIdentifierUrl(String patientUuid) {
+        //https://abdm.intelehealth.org/openmrs/ws/rest/v1/patient/<person-uuid>/identifier
+        return BuildConfig.SERVER_URL+ "/openmrs/ws/rest/v1/patient/" + patientUuid + "/identifier";
     }
 }

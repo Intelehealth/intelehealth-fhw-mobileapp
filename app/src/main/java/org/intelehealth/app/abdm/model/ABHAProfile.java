@@ -5,15 +5,12 @@ package org.intelehealth.app.abdm.model;
  * Email: prajwalwaingankar@gmail.com
  * Mobile: +917304154312
  **/
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class ABHAProfile implements Serializable {
 
@@ -71,6 +68,11 @@ public class ABHAProfile implements Serializable {
     @SerializedName("abhaStatus")
     @Expose
     private String abhaStatus;
+
+//    preferredAddress
+    @SerializedName("preferredAddress")
+    @Expose
+    private String preferredAddress;
 
     public String getFirstName() {
         return firstName;
@@ -236,5 +238,13 @@ public class ABHAProfile implements Serializable {
                 ", aBHANumber='" + aBHANumber + '\'' +
                 ", abhaStatus='" + abhaStatus + '\'' +
                 '}';
+    }
+
+    public String getPreferredAddress() {
+        return preferredAddress;
+    }
+
+    public void setPreferredAddress(String preferredAddress) {
+        this.preferredAddress = preferredAddress;
     }
 }

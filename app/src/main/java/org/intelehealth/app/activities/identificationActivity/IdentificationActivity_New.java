@@ -201,6 +201,7 @@ public class IdentificationActivity_New extends BaseActivity implements NetworkU
         bundle.putString("xToken", xToken);
         bundle.putString("txnId", txnId);
         bundle.putBoolean("firstRequestFulfilled", firstRequestFulfilled);
+        bundle.putBoolean("patient_detail", intent.getBooleanExtra("patient_detail", false));
 
         if (intent.hasExtra(PAYLOAD)) {
             otpVerificationResponse = (OTPVerificationResponse) intent.getSerializableExtra(PAYLOAD);

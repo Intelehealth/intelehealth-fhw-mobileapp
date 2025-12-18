@@ -1,26 +1,25 @@
 package org.intelehealth.app.networkApiCalls;
 
 
-import com.google.protobuf.Any;
-
 import org.intelehealth.app.abdm.model.AadharApiBody;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.EnrollNumberWithABDMRequest;
+import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
+import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
-import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
-import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SearchAbhaProfile;
 import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -298,6 +297,12 @@ public interface ApiInterface {
     Single<Response<ResponseBody>> DOWNLOAD_DOCTOR_ADDITIONAL_DOCUMENT(
             @Url String url,
             @Header("Authorization") String accessToken
+    );
+    @POST
+    Single<Response<ResponseBody>> updatePatientIdentifier(
+            @Url String url,
+            @Header("Authorization") String authHeader,
+            @Body UpdateIdentifierReqBody body
     );
 
 

@@ -34,11 +34,13 @@ import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -47,6 +49,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.dialogs.ChecklistDialogFragment;
@@ -62,6 +65,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 
@@ -82,6 +86,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private String patientName;
 
     private ChecklistDialogFragment dialogFragment;
+    private String mExistingPatientOpenMRSId = null;
+    private String mExistingPatientUuid = null;
+    private String mExistingPatientABHAProfilePreferredAddress = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -410,11 +417,18 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken, boolean isNewUser) {
-        if (isNewUser) {
+        mExistingPatientABHAProfilePreferredAddress = otpVerificationResponse.getABHAProfile().getPreferredAddress();
+        //if (isNewUser) {
+        //  callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
+        //} else {
+        // checkIsUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
+        if (otpVerificationResponse.getABHAProfile().getPhrAddress() == null || otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
-            checkIsUserExist(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0), otpVerificationResponse);
+            // checkIsUserExist(mExistingPatientABHAProfilePreferredAddress, otpVerificationResponse);
+            checkIsUserExist(otpVerificationResponse.getABHAProfile().getABHANumber(), otpVerificationResponse);
         }
+        //}
     }
 
     private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
@@ -544,16 +558,22 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     public void onSuccess(ExistUserStatusResponse response) {
                         cpd.dismiss();
                         if (response != null && response.getData() != null && response.getData().getUuid() != null) {
+                            // {"status":"OK","data":{"uuid":"1ae229f6-9e7a-40e9-8eff-cb5e5bb71840","openmrsid":"168CD-2"}}
                             String openMrsId = response.getData().getUuid();
                             boolean doesUserExistOnHmis = !openMrsId.equalsIgnoreCase("NA");
 
-                            if (doesUserExistOnHmis) {
+                            /*if (doesUserExistOnHmis) {
                                 // present on our hmis
                                 navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse, response);
                             } else {
                                 // not present on our hmis
                                 showDialogForConfirmation(abhaProfileResponse);
+                            }*/
+                            if (doesUserExistOnHmis) {
+                                mExistingPatientOpenMRSId = response.getData().getOpenmrsid();
+                                mExistingPatientUuid = response.getData().getUuid();
                             }
+                            showDialogForConfirmation(abhaProfileResponse);
                         } else {
                             navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
                         }
@@ -585,7 +605,23 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     addressList.remove(text);
                     addressList.add(0, text);
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
-                    navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
+                    // check whether the current selected abha address is already existing address or not.
+                    //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
+                    // check patient with uuid and abah-address whetehr exist it in local or not
+                    if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
+                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
+
+                        // call api to update identifier
+                        if (isExistingPatientWithSelectedAbhaAddress) {
+                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
+                        } else {
+                            // add new identifier to existing patient
+                            updatePatientIdentifier(abhaProfileResponse, text);
+                        }
+                    } else {
+
+                        navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
+                    }
                     dialogFragment.dismiss();
                 }
             }
@@ -605,9 +641,52 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         });
     }
 
-    private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse, ExistUserStatusResponse response) {
-        abhaProfileResponse.setOpenMrsId(Objects.requireNonNull(response.getData()).getOpenmrsid());
-        abhaProfileResponse.setUuID(response.getData().getUuid());
+    private void updatePatientIdentifier(OTPVerificationResponse abhaProfileResponse, String newAbhaAddress) {
+        //{
+        //"identifier":"rocketsingh@sbx",
+        //"identifierType":"59077d8f-8bee-4a6f-a1a8-64365a297da6",
+        //"location":"uuid-for-location"
+        //}
+        UpdateIdentifierReqBody requestBody = new UpdateIdentifierReqBody();
+        requestBody.setIdentifier(newAbhaAddress);
+        requestBody.setIdentifierType(UuidDictionary.UPDATE_IDENTIFIER_TYPE_UUID);
+        requestBody.setLocation(sessionManager.getLocationUuid());
+
+        String url = UrlModifiers.getUpdatePatientIdentifierUrl(mExistingPatientOpenMRSId);
+        cpd.show();
+        // post method
+        Single<Response<ResponseBody>> responseSingle = AppConstants.apiInterface.updatePatientIdentifier(
+                url,
+                "Basic " + sessionManager.getEncoded(),
+                requestBody
+        );
+        responseSingle.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBody> response) {
+                        cpd.dismiss();
+                        if (response.code() == 200 || response.code() == 204) {
+                            Timber.tag(TAG).d("onSuccess: update identifier success");
+                        } else {
+                            Timber.tag(TAG).d("onSuccess: update identifier failed with code %s", response.code());
+                        }
+                        navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        Timber.tag(TAG).e("onError: update identifier error %s", e.toString());
+                    }
+                });
+
+
+    }
+
+    private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse/*, ExistUserStatusResponse response*/) {
+        abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
+        abhaProfileResponse.setUuID(mExistingPatientUuid);
         Intent intent = new Intent(context, IdentificationActivity_New.class);
         intent.putExtra(PAYLOAD, abhaProfileResponse);
         intent.putExtra("accessToken", accessToken);

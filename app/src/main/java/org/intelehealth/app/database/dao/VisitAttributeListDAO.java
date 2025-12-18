@@ -10,13 +10,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Prajwal Waingankar
@@ -67,7 +66,7 @@ public class VisitAttributeListDAO {
             values.put("sync", "1");
 
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {
@@ -186,5 +185,57 @@ public class VisitAttributeListDAO {
         //db.endTransaction();
 
         return specialityValue;
+    }
+
+    public boolean isAttributeExistForVisit(String visitUuid, String visitAttributeTypeUuid) {
+        boolean isExist = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0 LIMIT 1",
+                new String[]{visitUuid, visitAttributeTypeUuid});
+
+        if (cursor.getCount() > 0) {
+            isExist = true;
+        }
+        cursor.close();
+
+
+        return isExist;
+    }
+
+    public void updateVisitAttributes(String visitUuid, String attrValue, String visitAttributeTypeUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("value", attrValue);
+            values.put("sync", "0");
+
+            db.update("tbl_visit_attribute", values, "visit_uuid=? and visit_attribute_type_uuid=?",
+                    new String[]{visitUuid, visitAttributeTypeUuid});
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e("VisitAttrDAO", "updateVisitAttributes: ", e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public String getVisitAttributeValue(String visitUuid, String visitAttributeTypeUuid) {
+        String attrValue = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0 LIMIT 1",
+                new String[]{visitUuid, visitAttributeTypeUuid});
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                attrValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+
+        return attrValue;
     }
 }

@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import static org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity.BEARER_AUTH;
-import static org.intelehealth.app.abdm.utils.ABDMConstant.*;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.BEARER;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_ABHA_ADDRESS;
+import static org.intelehealth.app.abdm.utils.ABDMConstant.SCOPE_MOBILE;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.MOBILE_PAYLOAD;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
@@ -53,7 +55,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edi
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -62,20 +63,16 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.LocaleList;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -86,7 +83,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
@@ -95,8 +91,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -104,12 +98,8 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.activity.AadharMobileVerificationActivity;
 import org.intelehealth.app.abdm.activity.AbhaCardActivity;
 import org.intelehealth.app.abdm.model.AbhaCardResponseBody;
-import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
-import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
-import org.intelehealth.app.abdm.utils.ABDMConstant;
-import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
@@ -125,8 +115,8 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -134,7 +124,6 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.CameraUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -143,7 +132,6 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -159,7 +147,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -212,7 +199,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private String accessToken, xToken, txnId, SCOPE;
 
     private TableRow trAbhaAddress, trAbhaNo;
-
+    private String mLastSelectedAbhaAddress = "";
 
     @Override
     public void onBackPressed() {
@@ -742,6 +729,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        loadPatientData(patientDTO.getUuid());
         initForOpenVisit();
         initForPastVisit();
     }
@@ -775,6 +763,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                 String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                // check with abha addres visit attribute abha address should be matched with patient abha address
+                String visitAbhaAddress = new VisitAttributeListDAO().getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
+                Log.d(TAG, "OPRN - visitAbhaAddress - " + visitAbhaAddress);
+                // if not matched then continue, but some visit may not have the abha address attribute so need to handle that case because patient not having the abha address also
+                if (mLastSelectedAbhaAddress != null) {
+                    if (visitAbhaAddress == null || !visitAbhaAddress.equalsIgnoreCase(mLastSelectedAbhaAddress)) {
+                        Log.d(TAG, "OPEN - visitAbhaAddress not matched");
+                        continue;
+                    }
+                } else {
+                    Log.v(TAG, "OPEN - patientDTO AbhaAddress is null");
+                }
 
                 boolean isCompletedExitedSurvey = false;
                 try {
@@ -968,11 +969,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         startActivity(in);
     }
 
-    public void setDisplay(String dataString) {
+    private void loadPatientData(String patientUuid) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
-        String[] patientArgs = {dataString};
+        String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
@@ -997,14 +998,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
                 patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
-                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
+                String abhaAddress = idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address"));
+                mLastSelectedAbhaAddress = abhaAddress != null && abhaAddress.contains(",") ? abhaAddress.split(",")[0] : abhaAddress;
+                patientDTO.setAbhaAddress(abhaAddress);
 
             } while (idCursor.moveToNext());
         }
         idCursor.close();
 
         String patientSelection1 = "patientuuid = ?";
-        String[] patientArgs1 = {dataString};
+        String[] patientArgs1 = {patientUuid};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
         Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         String name = "";
@@ -1050,7 +1053,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
+    }
 
+    public void setDisplay(String dataString) {
+
+        loadPatientData(dataString);
         if (!sessionManager.getLicenseKey().isEmpty()) {
             hasLicense = true;
         }
@@ -1611,7 +1618,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting abha address value
         if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().equals("")) {
-            patientAbhaAddress.setText(patientDTO.getAbhaAddress());
+           // patientAbhaAddress.setText(patientDTO.getAbhaAddress());
+            patientAbhaAddress.setText(mLastSelectedAbhaAddress);
         } else {
             patientAbhaAddress.setText(getResources().getString(R.string.not_provided));
         }
@@ -1789,6 +1797,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    // check with abha addres visit attribute abha address should be matched with patient abha address
+                    String visitAbhaAddress = new VisitAttributeListDAO().getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
+                    Log.v(TAG, "CLOSED - visitAbhaAddress: " + visitAbhaAddress);
+                    // if not matched then continue, but some visit may not have the abha address attribute so need to handle that case because patient not having the abha address also
+                    if (mLastSelectedAbhaAddress != null) {
+                        if (visitAbhaAddress == null || !visitAbhaAddress.equalsIgnoreCase(mLastSelectedAbhaAddress)) {
+                            Log.v(TAG, "CLOSED - visitAbhaAddress not matched");
+                            continue;
+                        }
+                    } else {
+                        Log.v(TAG, "CLOSED - visitAbhaAddress is null");
+                    }
 
                     boolean isCompletedExitedSurvey = false;
                     try {

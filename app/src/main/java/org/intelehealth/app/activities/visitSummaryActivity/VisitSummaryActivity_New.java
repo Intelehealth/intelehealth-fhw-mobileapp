@@ -108,12 +108,10 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
-import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentViewHolder;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
-import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDoc;
 import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocCallback;
 import org.intelehealth.app.activities.visit.download_doc.DownloadDoctorDocUtils;
@@ -121,7 +119,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
-import org.intelehealth.app.appointmentNew.AppointmentDetailsActivity;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -3640,7 +3637,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (uuid != null) {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
-            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid=?", new String[]{uuid, SPECIALITY});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
