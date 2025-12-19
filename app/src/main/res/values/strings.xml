@@ -2011,4 +2011,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="please_select_an_abha_address_before_proceeding">Please select an ABHA address before proceeding.</string>
     <string name="you_have_more_than_six_abha_addresses_error">A maximum of 6 ABHA addresses are allowed. Please select an ABHA address from the list above.</string>
 
+    <string name="associated_abha_address">Associated Abha Address: %1$s</string>
+
 </resources>

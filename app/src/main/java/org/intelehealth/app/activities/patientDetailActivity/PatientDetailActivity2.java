@@ -741,6 +741,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
 
     private void initForOpenVisit() {
+        VisitAttributeListDAO dao = new VisitAttributeListDAO();
         if (patientDTO == null || patientDTO.getUuid() == null) {
             return;
         }
@@ -763,19 +764,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                 String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-
-                // check with abha addres visit attribute abha address should be matched with patient abha address
-                String visitAbhaAddress = new VisitAttributeListDAO().getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
-                Log.d(TAG, "OPRN - visitAbhaAddress - " + visitAbhaAddress);
-                // if not matched then continue, but some visit may not have the abha address attribute so need to handle that case because patient not having the abha address also
-                if (mLastSelectedAbhaAddress != null) {
-                    if (visitAbhaAddress == null || !visitAbhaAddress.equalsIgnoreCase(mLastSelectedAbhaAddress)) {
-                        Log.d(TAG, "OPEN - visitAbhaAddress not matched");
-                        continue;
-                    }
-                } else {
-                    Log.v(TAG, "OPEN - patientDTO AbhaAddress is null");
-                }
+                String abhaAddressForVisit = dao.getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
 
                 boolean isCompletedExitedSurvey = false;
                 try {
@@ -919,6 +908,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setChiefComplain(visitValue);
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit);
                                 mCurrentVisitDataList.add(pastVisitData);
                                 Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
@@ -1618,7 +1608,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting abha address value
         if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().equals("")) {
-           // patientAbhaAddress.setText(patientDTO.getAbhaAddress());
+            // patientAbhaAddress.setText(patientDTO.getAbhaAddress());
             patientAbhaAddress.setText(mLastSelectedAbhaAddress);
         } else {
             patientAbhaAddress.setText(getResources().getString(R.string.not_provided));
@@ -1780,6 +1770,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void initForPastVisit() {
+        VisitAttributeListDAO dao = new VisitAttributeListDAO();
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
@@ -1797,18 +1788,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
-                    // check with abha addres visit attribute abha address should be matched with patient abha address
-                    String visitAbhaAddress = new VisitAttributeListDAO().getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
-                    Log.v(TAG, "CLOSED - visitAbhaAddress: " + visitAbhaAddress);
-                    // if not matched then continue, but some visit may not have the abha address attribute so need to handle that case because patient not having the abha address also
-                    if (mLastSelectedAbhaAddress != null) {
-                        if (visitAbhaAddress == null || !visitAbhaAddress.equalsIgnoreCase(mLastSelectedAbhaAddress)) {
-                            Log.v(TAG, "CLOSED - visitAbhaAddress not matched");
-                            continue;
-                        }
-                    } else {
-                        Log.v(TAG, "CLOSED - visitAbhaAddress is null");
-                    }
+                    String abhaAddressForVisit = dao.getVisitAttributeValue(visit_id, UuidDictionary.VISIT_ABHA_ADDRESS);
 
                     boolean isCompletedExitedSurvey = false;
                     try {
@@ -1951,6 +1931,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setChiefComplain(visitValue);
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit);
                                     mPastVisitDataList.add(pastVisitData);
                                     Log.v(TAG, new Gson().toJson(mPastVisitDataList));
 

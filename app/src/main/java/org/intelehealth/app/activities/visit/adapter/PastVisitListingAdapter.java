@@ -72,6 +72,13 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 genericViewHolder.separator.setVisibility(View.VISIBLE);
             }
 
+            String abhaAddress = genericViewHolder.pastVisitData.getAbhaAddressForVisit();
+            if (abhaAddress == null || abhaAddress.isEmpty()) {
+                genericViewHolder.tvAbhaAddress.setVisibility(View.GONE);
+            } else {
+                genericViewHolder.tvAbhaAddress.setVisibility(View.VISIBLE);
+                genericViewHolder.tvAbhaAddress.setText(mContext.getString(R.string.associated_abha_address, genericViewHolder.pastVisitData.getAbhaAddressForVisit()));
+            }
         }
     }
 
@@ -85,9 +92,11 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         PastVisitData pastVisitData;
         View separator;
         int index;
+        TextView tvAbhaAddress;
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            tvAbhaAddress = itemView.findViewById(R.id.tv_abha_address);
             separator = itemView.findViewById(R.id.separator);
             chiefComplaintTextView = itemView.findViewById(R.id.chief_complaint_txt);
             visitUUIDTextView = itemView.findViewById(R.id.visitID_tv);

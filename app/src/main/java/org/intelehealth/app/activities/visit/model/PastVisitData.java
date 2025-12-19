@@ -9,7 +9,7 @@ public class PastVisitData implements Parcelable {
     private String chiefComplain;
     private String encounterAdultInitial;
     private String encounterVitals;
-
+    private String abhaAddressForVisit;
 
     public PastVisitData() {
     }
@@ -20,6 +20,7 @@ public class PastVisitData implements Parcelable {
         chiefComplain = in.readString();
         encounterAdultInitial = in.readString();
         encounterVitals = in.readString();
+        abhaAddressForVisit = in.readString();
     }
 
     public static final Creator<PastVisitData> CREATOR = new Creator<PastVisitData>() {
@@ -74,6 +75,14 @@ public class PastVisitData implements Parcelable {
         this.encounterAdultInitial = encounterAdultInitial;
     }
 
+    public String getAbhaAddressForVisit() {
+        return abhaAddressForVisit;
+    }
+
+    public void setAbhaAddressForVisit(String abhaAddressForVisit) {
+        this.abhaAddressForVisit = abhaAddressForVisit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -86,5 +95,6 @@ public class PastVisitData implements Parcelable {
         parcel.writeString(chiefComplain);
         parcel.writeString(encounterAdultInitial);
         parcel.writeString(encounterVitals);
+        parcel.writeString(abhaAddressForVisit);
     }
 }

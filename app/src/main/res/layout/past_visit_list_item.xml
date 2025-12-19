@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,10 +15,28 @@
         android:src="@drawable/arrow_right_icon8" />
 
     <TextView
-        android:id="@+id/chief_complaint_txt"
+        android:id="@+id/tv_abha_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_toStartOf="@+id/vs_arrowRight"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3sp"
+        android:textAppearance="@style/details_head1"
+        android:textColor="@color/green"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="Visit created by: abc@sbx"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/chief_complaint_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_abha_address"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginTop="@dimen/space_5dp"
         android:layout_toStartOf="@+id/vs_arrowRight"
         android:gravity="center_vertical"
         android:lineSpacingExtra="3sp"
