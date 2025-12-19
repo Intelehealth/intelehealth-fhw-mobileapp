@@ -8,105 +8,104 @@
     app:cardCornerRadius="@dimen/margin_16dp"
     app:cardElevation="@dimen/hamburger_margin_start">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_24">
 
-        <ImageView
-            android:id="@+id/dialog_icon"
-            android:layout_width="@dimen/patregist_profileimg_icon"
-            android:layout_height="@dimen/patregist_profileimg_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_32dp"
-            android:contentDescription="@string/alert_icon"
-            android:src="@drawable/close_patient_svg" />
-
-        <RelativeLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginTop="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-            <TextView
-                android:id="@+id/dialog_subtitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fu_margin_start"
-                android:gravity="center"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/you_have_an_existing_abha_address_present"
-                android:textAppearance="@style/dialog_subtitle"
-                android:textColor="@null"
-                android:textSize="@null" />
-
-            <RadioGroup
-                android:id="@+id/rg_abha_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_subtitle"
-                android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical" />
-
-            <RelativeLayout
-                android:id="@+id/rl_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rg_abha_address"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_10"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/positive_btn"
-                    style="@style/positive_btn"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/dialog_icon"
+                    android:layout_width="@dimen/patregist_profileimg_icon"
+                    android:layout_height="@dimen/patregist_profileimg_icon"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_32dp"
+                    android:contentDescription="@string/alert_icon"
+                    android:src="@drawable/close_patient_svg" />
+
+                <TextView
+                    android:id="@+id/dialog_subtitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/ui2_common_primary_bg"
+                    android:layout_marginTop="@dimen/fu_margin_start"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_32dp"
-                    android:paddingVertical="@dimen/margin_15"
-                    android:text="@string/proceed" />
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/you_have_an_existing_abha_address_present"
+                    android:textAppearance="@style/dialog_subtitle"
+                    android:textColor="@null"
+                    android:textSize="@null" />
 
-                <Button
-                    android:id="@+id/negative_btn"
-                    style="@style/negative_btn"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/rg_abha_address"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/positive_btn"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:background="@drawable/ui2_common_primary_bg_disabled"
-                    android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_32dp"
-                    android:paddingVertical="@dimen/margin_15"
-                    android:text="@string/create_new" />
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:orientation="vertical" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_error"
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/rl_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/positive_btn"
+                style="@style/positive_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_buttons"
-                android:layout_marginBottom="@dimen/fu_margin_start"
+                android:background="@drawable/ui2_common_primary_bg"
                 android:gravity="center"
-                android:lineSpacingExtra="3sp"
-                android:textAppearance="@style/registr_error_msg"
-                android:textColor="@null"
-                android:textSize="@null"
-                android:visibility="gone"
-                tools:text="@string/you_have_more_than_six_abha_addresses_error"
-                tools:visibility="visible" />
+                android:paddingHorizontal="@dimen/margin_32dp"
+                android:paddingVertical="@dimen/margin_15"
+                android:text="@string/proceed" />
 
-        </RelativeLayout>
+            <Button
+                android:id="@+id/negative_btn"
+                style="@style/negative_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/ui2_common_primary_bg_disabled"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_32dp"
+                android:paddingVertical="@dimen/margin_15"
+                android:text="@string/create_new" />
 
-    </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/fu_margin_start"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:textAppearance="@style/registr_error_msg"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:visibility="gone"
+            tools:text="@string/you_have_more_than_six_abha_addresses_error"
+            tools:visibility="visible" />
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
