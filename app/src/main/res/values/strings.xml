@@ -1767,6 +1767,6 @@
     <string name="pdf_share_flow_title">Share Prescription</string>
     <string name="feature_not_found">Feature not found</string>
 
-    <string name="poor_quality_msg">Poor quality network switch to audio call</string>
+    <string name="poor_quality_msg">Poor quality network detected.Countinuing with audio call.</string>
 
 </resources>
