@@ -1109,7 +1109,7 @@ public class PatientsDAO {
         Cursor cursor = null;
 
         try {
-            cursor = db.rawQuery("SELECT COUNT(*) as count FROM tbl_patient WHERE uuid = ? AND abha_address LIKE ? COLLATE NOCASE", new String[]{patientOpenMRSUuid, "%" + abhaAddress + "%"});
+            cursor = db.rawQuery("SELECT COUNT(*) as count FROM tbl_patient WHERE openmrs_id = ? AND abha_address LIKE ? COLLATE NOCASE", new String[]{patientOpenMRSUuid, "%" + abhaAddress + "%"});
             if (cursor.moveToFirst()) {
                 int count = cursor.getInt(cursor.getColumnIndexOrThrow("count"));
                 isInserted = count > 0;

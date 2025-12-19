@@ -566,7 +566,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                         cpd.dismiss();
                     }
                 });
-
     }
 
     private void showDialogForConfirmation(OTPVerificationResponse abhaProfileResponse) {
