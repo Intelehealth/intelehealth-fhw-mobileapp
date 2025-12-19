@@ -10,10 +10,26 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .join("tbl_visit v ON p.uuid = v.patientuuid")
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
-            .where(
+            /*.where(
                 "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
                         "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0"
+            )*/
+            //changed for pres count not updated correctly in homescreen from IDA-development_master
+            .where(
+                "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +
+                        "AND (CASE " +
+                        "WHEN EXISTS ( " +
+                        "SELECT 1 FROM tbl_encounter e1  " +
+                        "WHERE e1.visituuid = v.uuid  " +
+                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
+                        "AND (CASE  " +
+                        "WHEN EXISTS ( " +
+                        "SELECT 1 FROM tbl_encounter e2  " +
+                        "WHERE e2.visituuid = v.uuid  " +
+                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 1"
             )
             .build()
     }
@@ -24,7 +40,23 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .join("tbl_visit v ON p.uuid = v.patientuuid")
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
-            .where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")
+            /*.where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")*/
+
+            // changed for pres count not updated correctly in homescreen from IDA-development_master
+            .where(
+                "(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +
+                        "AND (CASE " +
+                        "WHEN EXISTS ( " +
+                        "SELECT 1 FROM tbl_encounter e1  " +
+                        "WHERE e1.visituuid = v.uuid  " +
+                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
+                        "AND (CASE  " +
+                        "WHEN EXISTS ( " +
+                        "SELECT 1 FROM tbl_encounter e2  " +
+                        "WHERE e2.visituuid = v.uuid  " +
+                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 0"
+            )
             .build()
     }
 

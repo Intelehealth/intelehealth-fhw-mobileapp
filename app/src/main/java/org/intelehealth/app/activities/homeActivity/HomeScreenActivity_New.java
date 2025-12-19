@@ -1721,7 +1721,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     progressTvStart.setText((progress) + "%");
                     progressTvEnd.setText(progress + "/100");
                 }
-                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
+                Logger.logD(SyncDAO.PULL_ISSUE, "% ->H " + String.valueOf(progress));
 
                 if (progress == 100) {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);

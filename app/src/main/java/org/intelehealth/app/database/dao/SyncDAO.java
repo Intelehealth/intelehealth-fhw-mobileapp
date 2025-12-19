@@ -629,6 +629,7 @@ public class SyncDAO {
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
         Log.d(TAG, "pullDataBackgroundService: pullurl : "+url);
+        Log.d(TAG, "pullDataBackgroundService: encoded : "+encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override

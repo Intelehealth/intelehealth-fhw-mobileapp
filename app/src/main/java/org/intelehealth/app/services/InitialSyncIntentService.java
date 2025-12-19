@@ -69,6 +69,7 @@ public class InitialSyncIntentService extends IntentService {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        Log.d("TAG", "onHandleIntentsync: "+sync);
         if (sync) {
 
             int nextPageNo = responseDTO.getData().getPageNo();

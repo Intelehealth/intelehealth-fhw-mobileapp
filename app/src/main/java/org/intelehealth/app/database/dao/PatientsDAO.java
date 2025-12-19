@@ -1375,6 +1375,7 @@ public class PatientsDAO extends BaseDao {
                     "AND o.voided='0' " +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
+                    "AND a.enddate IS NULL " + // changed for visit removed but count is not dec
                     "GROUP BY a.patientuuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) ";

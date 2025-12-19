@@ -160,6 +160,7 @@ class RosterQuestionnaireMainActivity : BaseActivity() {
                 val intent = Intent(this, PatientDetailActivity2::class.java)
                 intent.putExtra(PATIENT_UUID, rosterViewModel.patientUuid)
                 startActivity(intent)
+                finish()
             }
         }
     }

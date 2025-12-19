@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -89,6 +91,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1765,6 +1769,61 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
             });
 
+    private ActivityResultLauncher<PickVisualMediaRequest> galleryIntentLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+
+                if (uri != null) {
+                    handleSelectedImage(uri);  // process the image URI (next step)
+                } else {
+                    Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+    private void handleSelectedImage(Uri uri) {
+
+        try {
+            // Generate unique name
+            mLastSelectedImageName = UUID.randomUUID().toString() + ".jpg";
+            String destPath = AppConstants.IMAGE_PATH + mLastSelectedImageName;
+
+            // Copy URI → File
+            InputStream input = getContentResolver().openInputStream(uri);
+            OutputStream output = new FileOutputStream(destPath);
+
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = input.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+
+            input.close();
+            output.close();
+
+            // compress if needed
+            File file = new File(destPath);
+            long fileSizeInKB = file.length() / 1024;
+            long fileSizeInMB = fileSizeInKB / 1024;
+
+            if (fileSizeInMB > 2) {
+                String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName.replace(".jpg", "_compressed.jpg");
+                compressImage(destPath, compressedPath);
+                destPath = compressedPath;
+            }
+
+            // send back to your listener
+            Bundle bundle = new Bundle();
+            bundle.putString("image", destPath);
+            imageUtilsListener.onImageReady(bundle);
+
+            Log.i("ImagePath", destPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to copy image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void compressImage(String inputPath, String outputPath) {
         // Load the bitmap
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -1804,8 +1863,24 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private void galleryStart() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mStartForGalleryResult.launch(intent);
+        /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mStartForGalleryResult.launch(intent);*/
+        Intent intent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+            intent.setType("image/*");
+            mStartForGalleryResult.launch(intent);
+            /*PickVisualMediaRequest request =new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build();
+            galleryIntentLauncher.launch(request);*/
+        } else {
+            intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            mStartForGalleryResult.launch(intent);
+        }
+
     }
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;

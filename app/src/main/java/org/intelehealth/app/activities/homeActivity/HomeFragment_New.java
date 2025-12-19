@@ -551,6 +551,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 +" (followup_date = ? or followup_date = ?) "
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
+                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
                 "GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 

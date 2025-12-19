@@ -138,6 +138,8 @@ public class PatientsFrameJson {
             Visit visit = new Visit();
            /* Multiple visit attributes getting sync - when we restrict to sync multiple visit
             attributes for same visit then this condition not allowing to sync visit with 0 attributes.*/
+
+
            /* if (visitDTO.getAttributes().size() > 0) {*/
 
             //this condition is changed for visit is not closing even we close the visit

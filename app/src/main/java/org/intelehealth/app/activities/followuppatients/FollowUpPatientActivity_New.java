@@ -957,6 +957,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
+                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
                 "GROUP BY a.patientuuid " +
                 "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
@@ -1088,6 +1089,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL "+
+                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
                 "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
@@ -1236,6 +1238,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     skipTodayAndTomorrowQuery +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
+                    "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
                     "GROUP BY a.patientuuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) " +

@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -105,6 +106,9 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -862,6 +866,51 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }
     }
 
+    //code changes for latest update support for every version
+    /*private void pickImage(Intent data){
+        if (data != null) {
+            try {
+                Uri selectedImage = data.getData();
+                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                if (inputStream == null) return;
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                ivProfileImage.invalidate();
+
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        //run on ui thread
+                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
+                    }
+                };
+                thread.start();
+
+                //this code instead of calling BitmapUtils.copyFile(picturePath, finalFilePath);
+                InputStream input = getContentResolver().openInputStream(selectedImage);
+                OutputStream output = new FileOutputStream(finalFilePath);
+
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = input.read(buffer)) > 0) {
+                    output.write(buffer, 0, length);
+                }
+                input.close();
+                output.close();
+                compressImageAndSave(finalFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }*/
+
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -875,8 +924,25 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntentLauncher.launch(cameraIntent);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryIntentLauncher.launch(intent);*/
+                    Intent intent;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                        intent.setType("image/*");
+                        /*PickVisualMediaRequest request =
+                                new PickVisualMediaRequest.Builder()
+                                        .setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType("image/*"))
+                                        .build();
+                        galleryIntentLauncher.launch(request);*/
+
+                    } else {
+                        intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                    }
                     galleryIntentLauncher.launch(intent);
+
                 }
             }
         });

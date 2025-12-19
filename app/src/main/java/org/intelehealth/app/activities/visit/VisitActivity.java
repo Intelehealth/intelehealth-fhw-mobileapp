@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -356,7 +360,7 @@ public class VisitActivity extends BaseActivity implements
     }
 */
    private void updateCounts(boolean isForReceivedPrescription) {
-       new Thread(() -> {
+       /*new Thread(() -> {
            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
            runOnUiThread(() -> {
                if (isForReceivedPrescription)
@@ -365,6 +369,27 @@ public class VisitActivity extends BaseActivity implements
                else
                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
                            getResources().getString(R.string.pending) + "\t(" + count + ")");
+           });
+       }).start();*/
+
+       //changed for count is not updated correctly for pending and received from IDA development_master
+       new Thread(() -> {
+           int count;
+           SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+           if (isForReceivedPrescription) {
+               count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
+           } else {
+               //count = new VisitsDAO().getVisitCountsByStatus(false);
+               count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
+           }
+           int finalCount = count;
+           runOnUiThread(() -> {
+               if (isForReceivedPrescription)
+                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                           getResources().getString(R.string.received) + "\t(" + finalCount + ")");
+               else
+                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                           getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
            });
        }).start();
    }

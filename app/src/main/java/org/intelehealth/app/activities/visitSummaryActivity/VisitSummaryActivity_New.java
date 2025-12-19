@@ -2549,10 +2549,10 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+                /*writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
-                }
+                }*/
             } else {
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -2669,7 +2669,16 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             }
         } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryActivityResult.launch(intent);*/
+                Intent intent;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                    intent.setType("image/*");
+                } else {
+                    intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                }
                 galleryActivityResult.launch(intent);
             }
         }

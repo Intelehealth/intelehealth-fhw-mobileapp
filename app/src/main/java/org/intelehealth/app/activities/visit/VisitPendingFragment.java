@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -395,7 +396,8 @@ public class VisitPendingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                /*int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();*/
+                int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {
@@ -738,7 +740,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private List<PrescriptionModel> olderVisits(int limit, int offset) {
+   /* private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
         String searchQ = "";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
@@ -787,13 +789,13 @@ public class VisitPendingFragment extends Fragment {
 
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
-                /*try {
+                *//*try {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-*/
+*//*
               //  if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
 
                     // emergency - start
@@ -825,6 +827,104 @@ public class VisitPendingFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     olderList.add(model);
                // }
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return olderList;
+    }*/
+
+    //changed for oldervisit data not fetched correctly from IDA-developement_master
+    private List<PrescriptionModel> olderVisits(int limit, int offset) {
+        List<PrescriptionModel> olderList = new ArrayList<>();
+        String searchQ = "";
+        String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
+        if (!searchQuery.isEmpty()) {
+            searchQ = "and (patient_name_new LIKE " + "'%" + searchQuery + "%') ";
+        }
+
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name," +
+                        " p.openmrs_id, p.date_of_birth, p.phone_number," +
+                        "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
+                        " p.gender, v.startdate, v.patientuuid, e.visituuid," +
+                        " e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e1 " +
+                        " WHERE e1.visituuid = v.uuid " +
+                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' " +
+                        ") THEN 1 ELSE 0 " +
+                        "END AS has_exit_survey," +
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e2 " +
+                        "WHERE e2.visituuid = v.uuid " +
+                        "AND e2.encounter_type_uuid = ?" +
+                        ") THEN 1 ELSE 0 " +
+                        "END AS has_visit_complete "+
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
+                        " v.startdate <= DATETIME('now', '-4 day') " +
+                        "AND has_exit_survey = 0 "+
+                        "AND has_visit_complete = 0 "+
+                        searchQ +
+                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+
+                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});
+
+        if (cursor != null && cursor.moveToFirst()) {// Move cursor to first row
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+                model.setHasPrescription(false);
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                /*try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+*/
+                //  if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
+
+                // emergency - start
+                EncounterDAO encounterDAO = new EncounterDAO();
+                String emergencyUuid = "";
+                try {
+                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                    emergencyUuid = "";
+                }
+
+                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                    model.setEmergency(true);
+                else
+                    model.setEmergency(false);
+                // emergency - end
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                model.setVisitUuid(visitID);
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                olderList.add(model);
+                // }
             }
             while (cursor.moveToNext());
         }
