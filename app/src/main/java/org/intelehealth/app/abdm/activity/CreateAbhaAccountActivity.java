@@ -578,8 +578,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     @NonNull
     private ChecklistDialogFragment getChecklistDialogFragment(OTPVerificationResponse abhaProfileResponse) {
-        List<String> addressList = abhaProfileResponse.getABHAProfile().getPhrAddress();
-        return new ChecklistDialogFragment(addressList, new DialogUtils.TextSelectedListener() {
+        ArrayList<String> addressList = new ArrayList<>(abhaProfileResponse.getABHAProfile().getPhrAddress());
+        String preferredAbhaAddress = abhaProfileResponse.getABHAProfile().getPreferredAddress();
+        return ChecklistDialogFragment.Companion.newInstance(preferredAbhaAddress, addressList, new DialogUtils.TextSelectedListener() {
             @Override
             public void onDialogActionDone(int action, String text) {
                 if (action == DialogUtils.TextSelectedListener.POSITIVE_CLICK) {

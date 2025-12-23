@@ -47,12 +47,14 @@
                     android:textColor="@null"
                     android:textSize="@null" />
 
-                <RadioGroup
-                    android:id="@+id/rg_abha_address"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_abha_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/layout_check_list" />
 
             </LinearLayout>
 
