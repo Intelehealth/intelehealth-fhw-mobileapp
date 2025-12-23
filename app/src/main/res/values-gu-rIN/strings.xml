@@ -1101,5 +1101,14 @@
     <string name="yes_move_ahead">હા,આગળ વધો</string>
     <string name="no_go_back">ના,પાછા જાઓ</string>
 
-
+    <string name="msg_ekal_thank_you">એકલ ટેલીમેડિસિન સેવા ઉપયોગ કરવા બદલ આભાર! દરરોજ સ્વસ્થ રહેવાના સરળ માર્ગ જાણવા માટે લિંક પર ક્લિક કરો.</string>
+    <string name="anemia_food_advice">રક્તની ઉણપ: આયરન, ફોલિક એસિડ અને પ્રોટીનથી સમૃદ્ધ ખોરાક લો</string>
+    <string name="anemia_deworm_hygiene">રક્તની ઉણપ: નિયમિત રીતે કીડા ઉતારવાની દવા લો અને સ્વચ્છતા રાખો</string>
+    <string name="anemia_quit_alcohol_tobacco">રક્તની ઉણપ: દારૂ અને તમાકુ છોડો</string>
+    <string name="diabetes_reduce_sugar">શુગર: ખાંડનું સેવન ઓછું કરો</string>
+    <string name="exercise_regularly">નિયમિત કસરત કરો</string>
+    <string name="diabetes_quit_alcohol_tobacco">શુગર: દારૂ અને તમાકુ છોડો</string>
+    <string name="hypertension_reduce_salt">બીપી: મીઠાનું સેવન ઓછું કરો</string>
+    <string name="hypertension_quit_alcohol_tobacco">બીપી: દારૂ અને તમાકુ છોડો</string>
+    <string name="ncd_report">NCD રિપોર્ટ</string>
 </resources>

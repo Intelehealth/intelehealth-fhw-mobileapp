@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.intelehealth.ncd.linelisting.dao.PatientVisitDao
 import org.intelehealth.ncd.model.Encounter
 import org.intelehealth.ncd.model.Obs
 import org.intelehealth.ncd.model.Patient
@@ -26,6 +27,7 @@ abstract class CategoryDatabase : RoomDatabase() {
     abstract fun patientAttributeDao(): PatientAttributeDao
     abstract fun visitDao(): VisitDao
     abstract fun generalTabDao(): GeneralTabDao
+    abstract fun patientVisitDao(): PatientVisitDao
 
     companion object {
 

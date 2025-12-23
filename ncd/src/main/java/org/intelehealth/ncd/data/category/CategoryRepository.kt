@@ -16,6 +16,7 @@ import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class CategoryRepository(private val dataSource: CategoryDataSource) {
@@ -112,7 +113,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
                 pageSize = 5,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PatientVisitPagingSource(dataSource,query) }
+            pagingSourceFactory = { PatientVisitPagingSource(dataSource,query, Constants.PATIENT_PHONE) }
         ).flow
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.runBlocking
@@ -359,7 +360,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-    private fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+     fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
             Constants.HYPERTENSION_FOLLOW_UP,
@@ -369,9 +370,13 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
         val eligibleMms = mutableListOf<String>()
         val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
+         Log.d(TAG, "kk getEligibleMMsForPatients: patientVisitDetailsList : ${patientVisitDetailsList}")
 
+         Log.d(TAG, "kk getEligibleMMsForPatients: patientId : "+patientId)
         for (category in mmCategories) {
             val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
+            Log.d(TAG, "kk getEligibleMMsForPatients: eligiblePatients : "+eligiblePatients)
+
             if (eligiblePatients.isNotEmpty()) {
                 eligibleMms.add(category)
             }
@@ -408,6 +413,10 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): List<PatientVisitDetails> {
         Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : "+Gson().toJson(patientVisitDetailsList))
         Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : "+category)
+        val gson = GsonBuilder().serializeNulls().create()
+        Log.d("testmulti", "newlist : " +gson.toJson(patientVisitDetailsList))
+
+
         patientVisitDetailsList.forEachIndexed { index, item ->
             val json = Gson().toJson(item)
            // logLong(TAG, "testmulti Patient #$index : $json")
@@ -416,6 +425,9 @@ class CategorySegregationUtils(private val resources: Resources) {
             Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
             Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
             Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
+            Constants.ANEMIA_FOLLOW_UP -> filterAnemiaFollowUpPatients(patientVisitDetailsList)
+            Constants.DIABETES_SCREENING -> filterDiabetesScreeningPatients(patientVisitDetailsList)
+
             else -> emptyList()
         }
 
@@ -438,8 +450,8 @@ class CategorySegregationUtils(private val resources: Resources) {
 
             val hasHistory = isHistoryOfHypertensionPresent(medicalHistoryJson)
             val onMedication = isCurrentlyTakingHypertensionMedication(medicalHistoryJson)
-
             val meetsAgeCriteria = age >= Constants.HYPERTENSION_EXCLUSION_AGE
+
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
@@ -479,7 +491,6 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val followupGiven = detail.isAnemiaFollowupGiven ?: false
-
             // Exclude if follow-up is already given
             if (followupGiven) return@filter false
 
@@ -491,6 +502,7 @@ class CategorySegregationUtils(private val resources: Resources) {
             val onMedication = isCurrentlyTakingAnemiaMedication(medicalHistoryJson)
 
             val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
+
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
@@ -500,5 +512,41 @@ class CategorySegregationUtils(private val resources: Resources) {
         context: Context
     ): Map<String, Any> = runBlocking {
         checkForAllEligibleProtocols(patientUuid, context)
+    }
+    private fun filterAnemiaFollowUpPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            val meetsAgeCriteria = age > Constants.ANEMIA_EXCLUSION_AGE
+
+            val followupGiven = detail.isAnemiaFollowupGiven
+
+            return@filter when {
+                // Case 1: Follow-up not given or null →  check baseline criteria
+                followupGiven != true -> {
+                    val medicalHistoryJson = detail.value
+                    if (medicalHistoryJson.isNullOrEmpty()) return@filter false
+                    val hasHistory = isHistoryOfAnemiaPresent(detail.value)
+                    val onMedication = isCurrentlyTakingAnemiaMedication(detail.value)
+                    meetsAgeCriteria && hasHistory && onMedication
+                }
+
+                // Case 2: Follow-up given → check only the protocol flag
+                else -> {
+                    detail.isAnemiaFollowupTodayOrLater == true
+                    /*    val followUpFlag = detail.followUpFromProtocol ?: false
+                        followUpFlag*/
+                }
+            }
+        }
+    }
+    private fun filterDiabetesScreeningPatients(
+        patientVisitDetailsList: List<PatientVisitDetails>
+    ): List<PatientVisitDetails> {
+        return patientVisitDetailsList.filter { detail ->
+            val age = detail.age ?: return@filter false
+            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING
+        }
     }
 }

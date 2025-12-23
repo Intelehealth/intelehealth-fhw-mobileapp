@@ -69,6 +69,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.ncd.category.activity.NcdPatientCategoryActivity;
+import org.intelehealth.ncd.linelisting.NcdPatientCategoryActivityNew;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -350,7 +351,9 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             startActivity(intent);
         });*/
         textlayout_find_patient.setOnClickListener(v -> {
-            Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivity.class);
+        /*    Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivity.class);
+            startActivity(intent);*/
+            Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivityNew.class);
             startActivity(intent);
         });
 

@@ -140,7 +140,7 @@
                             android:layout_toEndOf="@+id/fu_item_calendar"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
-                            android:text='@{visitDetail.startDate}'
+                            app:formattedStartDate="@{visitDetail.startDate}"
                             android:textAppearance="@style/label"
                             android:textColor="@color/search_followup"
                             android:textSize="@dimen/fu_male_textsize" />

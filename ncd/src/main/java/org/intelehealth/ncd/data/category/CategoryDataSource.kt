@@ -23,7 +23,7 @@ class CategoryDataSource(
     suspend fun getPatientVisitRawData(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawData(age, attributeTypeUuid,visitNoteEncounterUuid)
     suspend fun getPatientVisitRawDataForFollowup(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String,patientUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataForFollowup(age, attributeTypeUuid,visitNoteEncounterUuid, patientUuid)
 
-    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int): List<PatientVisitDetails> = generalDao?.getPatientsAndVisitsPage(limit, offset) ?: emptyList()
+    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int, patientPhoneNoAttribute: String): List<PatientVisitDetails> = generalDao?.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute) ?: emptyList()
 
     suspend fun getVisitAttributesBatch(visitIds: List<String>): List<VisitAttributeResult> = generalDao?.getVisitAttributesBatch(
         visitIds,

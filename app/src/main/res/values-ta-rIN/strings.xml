@@ -531,6 +531,15 @@
 
     <string name="select_one_or_multiple_reasons">ஒரு அல்லது பல காரணங்களைத் தேர்ந்தெடுக்கவும்</string>
 
-
+    <string name="msg_ekal_thank_you">ஏகல் டெலிமெடிசின் சேவையை பயன்படுத்தியதற்கு நன்றி! தினமும் ஆரோக்கியமாக இருக்க எளிய வழிகளை அறிய இணைப்பை கிளிக் செய்யவும்.</string>
+    <string name="anemia_food_advice">இரத்தச்சோகை: இரும்புச்சத்து, ஃபோலிக் அமிலம் மற்றும் புரதம் நிறைந்த உணவுகளை உண்ணுங்கள்</string>
+    <string name="anemia_deworm_hygiene">இரத்தச்சோகை: தவறாமல் புழுநாசினி மருந்து எடுத்துக் கொண்டு சுத்தத்தை பேணுங்கள்</string>
+    <string name="anemia_quit_alcohol_tobacco">இரத்தச்சோகை: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="diabetes_reduce_sugar">சர்க்கரை நோய்: சர்க்கரை அளவை குறைக்கவும்</string>
+    <string name="exercise_regularly">தவறாமல் உடற்பயிற்சி செய்யுங்கள்</string>
+    <string name="diabetes_quit_alcohol_tobacco">சர்க்கரை நோய்: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="hypertension_reduce_salt">பிபி: உப்பு அளவை குறைக்கவும்</string>
+    <string name="hypertension_quit_alcohol_tobacco">பிபி: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="ncd_report">NCD அறிக்கை</string>
 </resources>
 

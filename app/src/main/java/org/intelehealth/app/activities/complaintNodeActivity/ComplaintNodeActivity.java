@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,8 +50,16 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ncd.constants.Constants;
 import org.intelehealth.ncd.fhir.CommonQuestionnaireActivity;
+import org.intelehealth.ncd.linelisting.dao.PatientVisitDao;
+import org.intelehealth.ncd.linelisting.datasource.PatientVisitDataSource;
+import org.intelehealth.ncd.linelisting.datasource.PatientVisitRepository;
+import org.intelehealth.ncd.linelisting.datasource.ProtocolViewModelFactory;
+import org.intelehealth.ncd.linelisting.utils.SinglePatientHelper;
+import org.intelehealth.ncd.linelisting.viewmodels.ProtocolScreenViewModel;
+import org.intelehealth.ncd.room.CategoryDatabase;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -388,7 +397,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         }*/
 
-        // validate the eligible auto select mm for the patient
+  /*      // validate the eligible auto select mm for the patient
         CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
 
         Map<String, Object> result =
@@ -422,7 +431,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     selectedCategories.add(complaintCategory); // avoid selecting follow-up/screening both
                 }
             }
-        }
+        }*/
+
+        fetchAndAutoSelectComplaints();
 
     }
 
@@ -739,4 +750,59 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void backPress(View view) {
         deleteVisitAndGoBack();
     }
+    private void refreshComplaintsUI() {
+        listAdapter.notifyDataSetChanged();
+    }
+    private void fetchAndAutoSelectComplaints() {
+        PatientVisitDao dao = CategoryDatabase.getInstance(this).patientVisitDao();
+        PatientVisitDataSource dataSource = new PatientVisitDataSource(dao);
+        PatientVisitRepository repository = new PatientVisitRepository(dataSource);
+        CategorySegregationUtils utils = new CategorySegregationUtils(getResources());
+        ProtocolScreenViewModel viewModel =
+                new ViewModelProvider(this, new ProtocolViewModelFactory(repository, utils))
+                        .get(ProtocolScreenViewModel.class);
+        SinglePatientHelper.getSinglePatientEligibleMMS(
+                patientUuid,
+                viewModel,
+                eligibleMms -> {
+                    List<String> eligibleMMs = new ArrayList<>();
+                    Object mmsObj = eligibleMms.get("eligible_mms");
+                    if (mmsObj instanceof List<?>) {
+                        for (Object obj : (List<?>) mmsObj) {
+                            if (obj instanceof String) {
+                                eligibleMMs.add((String) obj);
+                            }
+                        }
+                    }
+                    Log.d("TAG", "Eligible MMS List: " + eligibleMMs);
+                    runOnUiThread(() -> {
+                        if (eligibleMMs != null && eligibleMMs.isEmpty()) {
+                            displayIneligibleConfirmationDialog();
+                            return;
+                        }
+                        Set<String> selectedCategories = new HashSet<>();
+
+                        for (Node complaint : complaints) {
+                            String complaintCategory = complaint.getCategory();
+                            String complaintText = complaint.getText();
+
+                            for (String protocol : eligibleMMs) {
+                                String protocolFormatted =
+                                        Constants.INSTANCE.getCATEGORY_MAP().get(protocol);
+
+                                if (protocolFormatted != null &&
+                                        protocolFormatted.equalsIgnoreCase(complaintText) &&
+                                        !selectedCategories.contains(complaintCategory)) {
+
+                                    complaint.setSelected(true);
+                                    selectedCategories.add(complaintCategory);
+                                }
+                            }
+                        }
+                        refreshComplaintsUI();
+                    });
+                }
+        );
+    }
+
 }

@@ -8,6 +8,7 @@ object Constants {
     const val DIABETES_EXCLUSION_AGE: Int = 20 // Greater or equal to 20 are considered
     const val HYPERTENSION_EXCLUSION_AGE: Int = 18 // Greater than or equal to 18 are considered
     const val GENERAL_EXCLUSION_AGE: Int = 11 // Below age 11 are considered
+    const val DIABETES_EXCLUSION_AGE_LINE_LISTING: Int = 30 // Greater or equal to 20 are considered
 
     const val INTENT_PATIENT_UUID = "patientUuid"
     const val INTENT_PATIENT_NAME = "patientName"
@@ -48,6 +49,6 @@ val NCD_PROTOCOL_ORDER = listOf(
     const val IS_NCD_VISIT_ATTRIBUTE: String = "bc79d2ab-3c83-48f2-820d-08a02b32faab"  // is ncd visit attribute
     const val SPECIALITY: String = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"  //visit speciality
     const val PATIENT_PHONE: String = "14d4f066-15f5-102d-96e4-000c29c2a5d7"  //patient phone
-
-
+    const val ENCOUNTER_ADULTINITIAL: String = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f" //adult initial encounter
+    const val CURRENT_COMPLAINT: String = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce" //current complaint
 }
