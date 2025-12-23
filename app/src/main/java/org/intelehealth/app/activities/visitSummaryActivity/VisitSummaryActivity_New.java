@@ -6719,7 +6719,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
         String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
         infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage());
-        boolean hasFollowup = value.toLowerCase().contains("followup");
+        boolean hasFollowup = value.toLowerCase().contains("followup") || infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
         if (hasFollowup) {
             if (infoModulesFileUrlsList == null && infoModulesFileUrlsList.isEmpty())
                 return;

@@ -128,7 +128,9 @@
 
     <string name="number_format_validation_error_msg">ଦୁଇଟି ସଂଖ୍ୟା ମଧ୍ୟରେ କେବଳ (.) ବ୍ୟବହାର କରନ୍ତୁ। ଅନ୍ୟ କୌଣସି ବିଶେଷ ଅକ୍ଷର ସମର୍ଥିତ ନୁହେଁ।</string>
     <string name="date_format_validation_error_msg">ତାରିଖ ଫର୍ମାଟ୍ ହେବା ଦରକାର: <xliff:g id="locale_format">%1$s</xliff:g> (ଉଦାହରଣ ସ୍ୱରୂପ %2$s)</string>
-    <string name="integer_format_validation_error_msg">ସଂଖ୍ୟା <xliff:g id="min_value">%1$s</xliff:g> ଏବଂ <xliff:g id="max_value">%2$s</xliff:g> ମଧ୍ୟରେ ହେବା ଦରକାର</string>
+<!--    <string name="integer_format_validation_error_msg">ସଂଖ୍ୟା <xliff:g id="min_value">%1$s</xliff:g> ଏବଂ <xliff:g id="max_value">%2$s</xliff:g> ମଧ୍ୟରେ ହେବା ଦରକାର</string>-->
+    <string name="integer_format_validation_error_msg">ଦୟାକରି ଏକ ବୈଧ ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ!</string>
+
     <string name="decimal_format_validation_error_msg">ଅବୈଧ ସଂଖ୍ୟା</string>
     <string name="optional_helper_text">ଇଚ୍ଛାକୃତ</string>
     <string name="required">ଆବଶ୍ୟକ</string>

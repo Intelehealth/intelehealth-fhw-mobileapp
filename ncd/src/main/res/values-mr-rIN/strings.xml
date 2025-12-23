@@ -127,7 +127,9 @@
 
     <string name="number_format_validation_error_msg">दोन संख्यांदरम्यान फक्त (.) वापरा. इतर कोणतीही विशेष चिन्हे मान्य नाहीत.</string>
     <string name="date_format_validation_error_msg">तारीख फॉरमॅट असावा: <xliff:g id="locale_format">%1$s</xliff:g> (उदा. %2$s)</string>
-    <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> आणि <xliff:g id="max_value">%2$s</xliff:g> दरम्यान असावी</string>
+<!--    <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> आणि <xliff:g id="max_value">%2$s</xliff:g> दरम्यान असावी</string>-->
+    <string name="integer_format_validation_error_msg">कृपया वैध संख्या प्रविष्ट करा!</string>
+
     <string name="decimal_format_validation_error_msg">अवैध संख्या</string>
     <string name="optional_helper_text">ऐच्छिक</string>
     <string name="required">आवश्यक</string>

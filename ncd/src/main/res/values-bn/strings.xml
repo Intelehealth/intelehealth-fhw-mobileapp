@@ -127,7 +127,9 @@
 
     <string name="number_format_validation_error_msg">দুটি সংখ্যার মধ্যে শুধুমাত্র (.) ব্যবহার করুন। অন্যান্য বিশেষ অক্ষর সমর্থিত নয়।</string>
     <string name="date_format_validation_error_msg">তারিখের ফরম্যাট হতে হবে <xliff:g id="locale_format">%1$s</xliff:g> (যেমন %2$s)</string>
-    <string name="integer_format_validation_error_msg">সংখ্যা <xliff:g id="min_value">%1$s</xliff:g> এবং <xliff:g id="max_value">%2$s</xliff:g> এর মধ্যে হতে হবে</string>
+<!--    <string name="integer_format_validation_error_msg">সংখ্যা <xliff:g id="min_value">%1$s</xliff:g> এবং <xliff:g id="max_value">%2$s</xliff:g> এর মধ্যে হতে হবে</string>-->
+    <string name="integer_format_validation_error_msg">অনুগ্রহ করে একটি বৈধ সংখ্যা লিখুন!</string>
+
     <string name="decimal_format_validation_error_msg">অবৈধ সংখ্যা</string>
     <string name="optional_helper_text">ঐচ্ছিক</string>
     <string name="required">প্রয়োজনীয়</string>

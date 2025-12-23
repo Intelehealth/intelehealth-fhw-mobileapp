@@ -127,7 +127,9 @@
 
     <string name="number_format_validation_error_msg">দুটা সংখ্যাৰ মাজত কেৱল (.) ব্যৱহাৰ কৰক।</string>
     <string name="date_format_validation_error_msg">তাৰিখৰ ফৰ্মেট হওয়া উচিত <xliff:g id="locale_format">%1$s</xliff:g> (উদাহৰণ: %2$s)</string>
-    <string name="integer_format_validation_error_msg">সংখ্যাটো হব লাগে <xliff:g id="min_value">%1$s</xliff:g> আৰু <xliff:g id="max_value">%2$s</xliff:g>ৰ মাজত</string>
+<!--    <string name="integer_format_validation_error_msg">সংখ্যাটো হব লাগে <xliff:g id="min_value">%1$s</xliff:g> আৰু <xliff:g id="max_value">%2$s</xliff:g>ৰ মাজত</string>-->
+    <string name="integer_format_validation_error_msg">অনুগ্ৰহ কৰি এটা বৈধ সংখ্যা প্ৰৱেশ কৰক!</string>
+
     <string name="decimal_format_validation_error_msg">অবৈধ সংখ্যা</string>
     <string name="optional_helper_text">ঐচ্ছিক</string>
     <string name="required">আৱশ্যক</string>

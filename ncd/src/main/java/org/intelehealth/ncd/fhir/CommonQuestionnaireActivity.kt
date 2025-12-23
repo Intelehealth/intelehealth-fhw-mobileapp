@@ -289,7 +289,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
                         //bottomActionController.attachAutoToggleForRequiredInputs()
                         // hideNextButtonIn(root)
-                        updateUIComponents();
+                       if(isRecurring) updateUIComponents();
                     }
                 }
             }
