@@ -641,7 +641,10 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
         List<PrescriptionModel> recentList = new ArrayList<>();
-        db.beginTransaction();
+        if (!db.isOpen()) {
+            db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        }
+//        db.beginTransaction();
         String searchQ = "";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
         if (!searchQuery.isEmpty()) {
@@ -734,8 +737,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+       /* db.setTransactionSuccessful();
+        db.endTransaction();*/
         if (recentList.isEmpty()) {
             isRecentFullyLoaded = true;
         }
@@ -845,7 +848,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         if (!db.isOpen()) {
             db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         }
-        db.beginTransaction();
+        /*db.beginTransaction();*/
 
         // ie. visit is active and presc is given.
         /*Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -962,8 +965,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        /*db.setTransactionSuccessful();
+        db.endTransaction();*/
 
         return olderList;
     }

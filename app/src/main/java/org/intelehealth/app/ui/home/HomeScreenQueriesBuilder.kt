@@ -10,7 +10,7 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .join("tbl_visit v ON p.uuid = v.patientuuid")
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
-            /*.where(
+           /* .where(
                 "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
                         "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0"
@@ -33,7 +33,6 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             )
             .build()
     }
-
     fun getPendingPrescriptionVisitsCount(): String {
         return select("COUNT(DISTINCT p.openmrs_id) AS total_count")
             .from("tbl_patient p")

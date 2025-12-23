@@ -740,7 +740,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-   /* private List<PrescriptionModel> olderVisits(int limit, int offset) {
+    private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
         String searchQ = "";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
@@ -789,13 +789,13 @@ public class VisitPendingFragment extends Fragment {
 
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
-                *//*try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
-                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-*//*
+//                try {
+//                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+//                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                }
+
               //  if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
 
                     // emergency - start
@@ -835,10 +835,10 @@ public class VisitPendingFragment extends Fragment {
         db.endTransaction();
 
         return olderList;
-    }*/
+    }
 
     //changed for oldervisit data not fetched correctly from IDA-developement_master
-    private List<PrescriptionModel> olderVisits(int limit, int offset) {
+    /*private List<PrescriptionModel> olderVisits(int limit, int offset) {
         List<PrescriptionModel> olderList = new ArrayList<>();
         String searchQ = "";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
@@ -887,13 +887,13 @@ public class VisitPendingFragment extends Fragment {
 
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
-                /*try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
-                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-*/
+//                try {
+//                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+//                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                }
+
                 //  if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
 
                 // emergency - start
@@ -933,7 +933,7 @@ public class VisitPendingFragment extends Fragment {
         db.endTransaction();
 
         return olderList;
-    }
+    }*/
 
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
