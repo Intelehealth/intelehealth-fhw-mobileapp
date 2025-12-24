@@ -80,6 +80,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "privacynotice_value TEXT" +
             ")";
 
+    //new changes for count update
+    public static final String CREATE_ENCOUNTER_INDEX =
+            "CREATE INDEX IF NOT EXISTS idx_encounter_visituuid_type " +
+                    "ON tbl_encounter(visituuid, encounter_type_uuid)";
+    //new changes for count update
+    public static final String CREATE_OBS_INDEX =
+            "CREATE INDEX IF NOT EXISTS idx_obs_encounteruuid_sync_voided " +
+                    "ON tbl_obs(encounteruuid, sync, voided)";
+
     public static final String CREATE_DR_SPECIALITY =
             "CREATE TABLE IF NOT EXISTS tbl_dr_speciality (" +
                     "uuid TEXT PRIMARY KEY," +
@@ -335,6 +344,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
+//new changes for count update
+        db.execSQL(CREATE_ENCOUNTER_INDEX);
+        db.execSQL(CREATE_OBS_INDEX);
+
         uuidInsert(db);
         database = db;
 
@@ -342,7 +355,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        switch (oldVersion) {
+       /* switch (oldVersion) {
             case 1:
                 //upgrade logic from version 1 to 2
             case 2:
@@ -354,10 +367,21 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
+        }*/
+//new changes for count update
+        if (oldVersion < 5) {
+            // add indexes
+            db.execSQL(CREATE_ENCOUNTER_INDEX);
+            db.execSQL(CREATE_OBS_INDEX);
         }
 
     }
-
+    //new changes for count update-> onconfigure() newly added
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.enableWriteAheadLogging();
+    }
 
     public SQLiteDatabase getWriteDb() {
         if (database != null && database.isOpen())

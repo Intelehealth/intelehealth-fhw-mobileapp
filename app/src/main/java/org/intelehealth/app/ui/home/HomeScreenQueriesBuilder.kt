@@ -4,17 +4,17 @@ import org.intelehealth.app.shared.builder.QueryBuilder
 import org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE
 
 class HomeScreenQueriesBuilder : QueryBuilder() {
-    fun getReceivedPrescriptionVisitsCount(): String {
+   /* fun getReceivedPrescriptionVisitsCount(): String {
         return select("COUNT(DISTINCT p.openmrs_id)")
             .from("tbl_patient p")
             .join("tbl_visit v ON p.uuid = v.patientuuid")
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
-           /* .where(
-                "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
-                        "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
-                        "AND o.voided = 0"
-            )*/
+//            .where(
+//                "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+//                        "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+//                        "AND o.voided = 0"
+//            )
             //changed for pres count not updated correctly in homescreen from IDA-development_master
             .where(
                 "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
@@ -39,7 +39,7 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .join("tbl_visit v ON p.uuid = v.patientuuid")
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
-            /*.where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")*/
+//            .where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")
 
             // changed for pres count not updated correctly in homescreen from IDA-development_master
             .where(
@@ -57,8 +57,53 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
                         "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 0"
             )
             .build()
-    }
+    }*/
 
+    fun getReceivedPrescriptionVisitsCount(): String {
+        return select("COUNT(DISTINCT p.openmrs_id)")
+            .from("tbl_patient p")
+            .join("tbl_visit v ON p.uuid = v.patientuuid")
+            .join("tbl_encounter e ON v.uuid = e.visituuid")
+            .join("tbl_obs o ON e.uuid = o.encounteruuid")
+            .where(
+                "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e1 " +
+                        "   WHERE e1.visituuid = v.uuid " +
+                        "   AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' " +
+                        ") " +
+                        "AND EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e2 " +
+                        "   WHERE e2.visituuid = v.uuid " +
+                        "   AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        ")"
+            )
+            .build()
+    }
+    fun getPendingPrescriptionVisitsCount(): String {
+        return select("COUNT(DISTINCT p.openmrs_id) AS total_count")
+            .from("tbl_patient p")
+            .join("tbl_visit v ON p.uuid = v.patientuuid")
+            .join("tbl_encounter e ON v.uuid = e.visituuid")
+            .join("tbl_obs o ON e.uuid = o.encounteruuid")
+            .where(
+                "(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e1 " +
+                        "   WHERE e1.visituuid = v.uuid " +
+                        "   AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' " +
+                        ") " +
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e2 " +
+                        "   WHERE e2.visituuid = v.uuid " +
+                        "   AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        ")"
+            )
+            .build()
+    }
 
 
     fun getRecentNotEndedVisitsQuery(): String {
