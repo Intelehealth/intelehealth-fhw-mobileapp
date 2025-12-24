@@ -43,7 +43,6 @@ class ChecklistDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args = requireArguments()
-
         preferredAbhaAddress = args.getString(ARG_PREFERRED_ABHA_ADDRESS) ?: ""
         abhaAddressList = args.getStringArrayList(ARG_ABHA_LIST) ?: emptyList()
     }
@@ -59,7 +58,6 @@ class ChecklistDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT

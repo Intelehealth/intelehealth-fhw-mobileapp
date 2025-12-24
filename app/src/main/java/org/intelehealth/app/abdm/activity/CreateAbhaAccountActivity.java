@@ -34,6 +34,7 @@ import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
+import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
 import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
@@ -580,6 +581,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private ChecklistDialogFragment getChecklistDialogFragment(OTPVerificationResponse abhaProfileResponse) {
         ArrayList<String> addressList = new ArrayList<>(abhaProfileResponse.getABHAProfile().getPhrAddress());
         String preferredAbhaAddress = abhaProfileResponse.getABHAProfile().getPreferredAddress();
+
         return ChecklistDialogFragment.Companion.newInstance(preferredAbhaAddress, addressList, new DialogUtils.TextSelectedListener() {
             @Override
             public void onDialogActionDone(int action, String text) {
@@ -587,8 +589,12 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     addressList.remove(text);
                     addressList.add(0, text);
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
+                    // check whether the current selected abha address is already existing address or not.
+                    //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
+                    // check patient with uuid and abah-address whetehr exist it in local or not
                     if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
                         boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
+
                         // call api to update identifier
                         if (isExistingPatientWithSelectedAbhaAddress) {
                             navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
@@ -597,6 +603,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             updatePatientIdentifier(abhaProfileResponse, text);
                         }
                     } else {
+
                         navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
                     }
                     dialogFragment.dismiss();
@@ -617,7 +624,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void updatePatientIdentifier(OTPVerificationResponse abhaProfileResponse, String newAbhaAddress) {
         //{
