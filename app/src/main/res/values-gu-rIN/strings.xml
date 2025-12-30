@@ -1093,13 +1093,12 @@
     <string name="health_information">આરોગ્ય માહિતી</string>
     <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
     <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
-    <string name="please_complete_the_baseline_survey">કૃપા કરીને બેઝલાઇન સર્વે પૂર્ણ કરો.</string>
-    <string name="dialog_baseline_ok">ઓકે</string>
-    <string name="baseline_warning_alert">ચેતવણી!</string>
     <string name="patient_visit_sent_ended">દર્દીની મુલાકાત સફળતાપૂર્વક સેવ થઈ ગઈ છે અને સ્વચાલિત રીતે પૂર્ણ થઈ છે.</string>
 
     <string name="category_already_selected">તમે પહેલેથી જ %1$s માંથી એક આઇટમ પસંદ કરી છે</string>
+    <string name="please_complete_the_baseline_survey">કૃપા કરીને બેઝલાઇન સર્વે પૂર્ણ કરો.</string>
+    <string name="dialog_baseline_ok">ઓકે</string>
+    <string name="baseline_warning_alert">ચેતવણી!</string>
 
     <string name="not_eligible_for_protocols_message">તમે હાલમાં કોઈપણ NCD પ્રોટોકોલ માટે પાત્ર નથી. તેમ છતાં આગળ વધવા માંગતા હો, તો તમારી પસંદગીનો પ્રોટોકોલ પસંદ કરો.</string>
     <string name="yes_move_ahead">હા,આગળ વધો</string>

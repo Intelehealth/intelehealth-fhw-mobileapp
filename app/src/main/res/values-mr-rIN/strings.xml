@@ -1077,7 +1077,6 @@
 
     <string name="saved_to_downloads">फाईल Downloads मध्ये जतन केली गेली</string>
     <string name="failed_to_save_downloads">PDF जतन करण्यात अयशस्वी</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="please_complete_the_baseline_survey">कृपया बेसलाइन सर्व्हे पूर्ण करा.</string>
     <string name="dialog_baseline_ok">ठीक आहे</string>
     <string name="baseline_warning_alert">इशारा!</string>

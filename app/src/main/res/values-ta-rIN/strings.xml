@@ -515,10 +515,10 @@
     <string name="health_information">சுகாதார தகவல்</string>
     <string name="saved_to_downloads">கோப்பு Downloads இல் சேமிக்கப்பட்டது</string>
     <string name="failed_to_save_downloads">PDF சேமிக்க முடியவில்லை</string>
+
     <string name="patient_visit_sent_ended">நோயாளியின் வருகை வெற்றிகரமாக சேமிக்கப்பட்டு தானாக முடிக்கப்பட்டுள்ளது.</string>
 
     <string name="category_already_selected">நீங்கள் %1$s இல் இருந்து ஏற்கனவே ஒரு உருப்படியைத் தேர்ந்தெடுத்துள்ளீர்கள்</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="please_complete_the_baseline_survey">தயவுசெய்து அடிப்படை சர்வேயை முடிக்கவும்.</string>
     <string name="dialog_baseline_ok">சரி</string>
     <string name="baseline_warning_alert">எச்சரிக்கை!</string>
