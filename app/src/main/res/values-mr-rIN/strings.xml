@@ -1536,4 +1536,5 @@
     <string name="feature_not_found">Feature not found</string>
 
     <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क आढळले. ऑडिओ कॉलची गणना सुरू आहे.</string>
+    <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">लक्षणे आणखी वाढल्यास, कृपया जवळच्या डॉक्टरांना किंवा सरकारी आरोग्य सुविधेला भेट द्या.</string>
 </resources>

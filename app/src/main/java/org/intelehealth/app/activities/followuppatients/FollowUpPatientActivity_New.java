@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -79,8 +80,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -660,6 +663,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(initialFollowUpPatients -> {
+                                    Log.d("TAG", "fetchAndSegregateData: "+new Gson().toJson(initialFollowUpPatients));
                                     if (initialFollowUpPatients.isEmpty()) {
                                         if (dataLoadingType == DataLoadingType.INITIAL) {
                                             commonLoadingDialog.dismiss();
@@ -683,6 +687,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                             }
                                             isPageLoading = false;
                                         } else {
+                                            finalMonthsFollowUpDates.clear();
                                             finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                             mTodayRelativeLayout.setVisibility(View.VISIBLE);
                                             mWeekRelativeLayout.setVisibility(View.VISIBLE);
@@ -697,6 +702,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                     ).observeOn(AndroidSchedulers.mainThread())
                                                     .subscribe(result -> {
                                                         if (dataLoadingType == DataLoadingType.INITIAL) {
+                                                            todaysFollowUpDates.clear();
+                                                            tomorrowssFollowUpDates.clear();
                                                             todaysFollowUpDates.addAll(result.first);
                                                             tomorrowssFollowUpDates.addAll(result.second);
                                                             setTodaysDatesInRecyclerView(todaysFollowUpDates);
@@ -705,6 +712,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                             completedRecyclerViews.incrementAndGet();
                                                             completedRecyclerViews.incrementAndGet();
                                                         }
+
+                                                      /*  if(!isDataPresentInTodayOrTomorrow(finalMonthsFollowUpDates)){
+                                                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                                                        }*/
 
                                                         setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
 
@@ -730,6 +741,27 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         );
 
 
+    }
+
+    private boolean isDataPresentInTodayOrTomorrow(List<FollowUpModel> monthList) {
+        Set<String> todayIds = new HashSet<>();
+        Set<String> tomorrowIds = new HashSet<>();
+
+        for (FollowUpModel model : todaysFollowUpDates) {
+            todayIds.add(model.getOpenmrs_id());
+        }
+
+        for (FollowUpModel model : tomorrowssFollowUpDates) {
+            tomorrowIds.add(model.getOpenmrs_id());
+        }
+
+        for (FollowUpModel model : monthList) {
+            if (todayIds.contains(model.getOpenmrs_id())
+                    || tomorrowIds.contains(model.getOpenmrs_id())) {
+                return true; // already present
+            }
+        }
+        return false;
     }
 
 
@@ -957,7 +989,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
-                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
+                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                 searchQuery +
                 "GROUP BY a.patientuuid " +
                 "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
@@ -1089,7 +1122,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL "+
-                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
+                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                searchQuery+
                 "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 

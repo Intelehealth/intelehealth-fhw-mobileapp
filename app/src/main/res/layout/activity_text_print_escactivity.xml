@@ -164,6 +164,16 @@
                             android:paddingBottom="@dimen/padding_card"
                             android:textSize="16sp"
                             tools:text="Doctor Details" />
+                        <TextView
+                            android:id="@+id/tvNotes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/padding_card"
+                            android:paddingBottom="@dimen/padding_card"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:text="@string/if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
