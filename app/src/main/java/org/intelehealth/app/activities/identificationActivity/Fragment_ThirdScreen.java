@@ -99,6 +99,7 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
+import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -935,10 +936,7 @@ public class Fragment_ThirdScreen extends Fragment {
             }
 
             if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
-                SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = syncDAO.pushDataApi();
-                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                new SyncUtils().syncForeground("visitSummary");
             }
 
             if (isPatientInserted && isPatientImageInserted) {

@@ -591,7 +591,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     abhaProfileResponse.getABHAProfile().setPhrAddress(addressList);
                     // check whether the current selected abha address is already existing address or not.
                     //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
-                    // check patient with uuid and abah-address whetehr exist it in local or not
+                    // check patient with uuid and abha-address whether exist it in local or not
                     if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
                         boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
 

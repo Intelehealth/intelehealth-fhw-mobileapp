@@ -169,7 +169,7 @@ class CompareDataActivity : AppCompatActivity() {
         val isUpdated = patientsDAO.updatePatientWithABHA(
             updatedPatientDto
         )
-        SyncUtils().syncBackground()
+        SyncUtils().syncForeground("visitSummary")
 
         if (isUpdated) {
             Intent(this, PatientDetailActivity2::class.java).apply {

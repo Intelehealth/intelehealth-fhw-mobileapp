@@ -1054,7 +1054,7 @@ public class PatientsDAO {
 
     }
 
-    public static String getPatientUuidByAbhaDetails(String abhaAddress, String abhaNumber) {
+    public static String getPatientUuidByAbhaDetails(String abhaNumber) {
         String patientUuid = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         String query = "SELECT uuid FROM tbl_patient WHERE abha_number = ?";

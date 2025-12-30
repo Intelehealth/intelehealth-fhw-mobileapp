@@ -22,12 +22,9 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.LocaleList;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -37,27 +34,23 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.github.ajalt.timberkt.Timber;
-import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.abdm.dialog.AbhaOtpTypeDialogFragment;
 import org.intelehealth.app.abdm.dialog.AccountSelectDialogFragment;
-import org.intelehealth.app.abdm.model.ABHAProfile;
 import org.intelehealth.app.abdm.model.AbhaProfileRequestBody;
 import org.intelehealth.app.abdm.model.AbhaProfileResponse;
 import org.intelehealth.app.abdm.model.Data;
-import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
-import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
 import org.intelehealth.app.abdm.model.FetchAuthModesResponse;
 import org.intelehealth.app.abdm.model.MobileLoginApiBody;
 import org.intelehealth.app.abdm.model.MobileLoginOnOTPVerifiedResponse;
 import org.intelehealth.app.abdm.model.OTPResponse;
 import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
-import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SearchAbhaProfile;
 import org.intelehealth.app.abdm.model.SearchAbhaProfileResponse;
 import org.intelehealth.app.abdm.model.TokenResponse;
+import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.app.abdm.utils.ABDMConstant;
 import org.intelehealth.app.abdm.utils.ABDMUtils;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
@@ -73,16 +66,15 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VerhoeffAlgorithm;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
@@ -916,14 +908,14 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
     }
 
-    private void checkIsUserExist(String abhaAddress, AbhaProfileResponse abhaProfileResponse, String xToken, AbhaProfileRequestBody abhaProfileRequestBody) {
+    private void checkIsUserExist(String abhaNumber, AbhaProfileResponse abhaProfileResponse, String xToken, AbhaProfileRequestBody abhaProfileRequestBody) {
 
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String url = UrlModifiers.getCheckExistingUserUrl();
         cpd.show();
         // payload - end
-        Single<ExistUserStatusResponse> abhaProfileResponseSingle = AppConstants.apiInterface.checkExistingUser(url + abhaAddress, "Basic " + encoded);
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle = AppConstants.apiInterface.checkExistingUser(url + abhaNumber, "Basic " + encoded);
         new Thread(() -> abhaProfileResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -952,20 +944,13 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
 
 
                         if (responseData.getUuid().equalsIgnoreCase("NA")) { // NA response indicates that the patient isn't present on our local db.
-                            Intent intent = new Intent(context, IdentificationActivity_New.class);
-                            intent.putExtra("mobile_payload", abhaProfileResponse);
-                            intent.putExtra("accessToken", accessToken);
-                            intent.putExtra("xToken", xToken);
-                            intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
-                            intent.putExtra("patient_detail", true);
-                            startActivity(intent);
-                            finish();
+                            navigateToIdentificationScreenWithNewPatient(abhaProfileResponse, xToken, abhaProfileRequestBody);
                             return;
                         }
 
                         disposables.add(
                                 Observable.fromCallable(() -> {
-                                                    String patientUuid = PatientsDAO.getPatientUuidByAbhaDetails(abhaProfileResponse.getPreferredAbhaAddress(), abhaProfileResponse.getABHANumber());
+                                                    String patientUuid = PatientsDAO.getPatientUuidByAbhaDetails(abhaProfileResponse.getABHANumber());
 
                                                     if (patientUuid != null) {
                                                         return PatientsDAO.getPatientDetailsByUuid(patientUuid);
@@ -984,19 +969,32 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(
                                                 patientDTO -> {
-                                                    if (patientDTO != null) {
-                                                        abhaProfileResponse.setOpenMrsId(response.getData().getOpenmrsid());
-                                                        abhaProfileResponse.setUuiD(response.getData().getUuid());
-                                                        Intent intent = new Intent(context, CompareDataActivity.class);
-                                                        intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
-                                                        intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
-                                                        intent.putExtra("mobile_payload", abhaProfileResponse);
-                                                        intent.putExtra("accessToken", accessToken);
-                                                        intent.putExtra("xToken", xToken);
-                                                        intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
-                                                        intent.putExtra("patient_detail", true);
-                                                        startActivity(intent);
-                                                        finish();
+                                                    if (patientDTO == null) {
+                                                        return;
+                                                    }
+
+                                                    String hmisAbhaAddress = patientDTO.getAbhaAddress();
+                                                    String enteredAbhaAddress = Objects.requireNonNull(binding.layoutHaveABHANumber.abhaDetails.etAbhaAddress.getText()).toString();
+
+                                                    if (!enteredAbhaAddress.isEmpty()) {
+                                                        //to be used if abha address field is chosen
+                                                        // if the entered abha address isn't linked to the patient identifier table, link it.
+                                                        // else directly guide the user to the compare data screen.
+                                                        if (hmisAbhaAddress.contains(enteredAbhaAddress)) {
+                                                            navigateToCompareDataScreenWithExistingDetails(abhaProfileResponse, patientDTO, xToken, abhaProfileRequestBody.getTxnId());
+                                                        } else {
+                                                            updatePatientIdentifier(abhaProfileResponse, enteredAbhaAddress, patientDTO, xToken, abhaProfileRequestBody.getTxnId());
+                                                        }
+                                                    } else {
+                                                        // to be used if aadhar, mobile, or abha number field is chosen
+                                                        String preferredAbhaAddress = abhaProfileResponse.getPreferredAbhaAddress();
+                                                        // if the preferred abha address isn't linked to the patient identifier table, link it.
+                                                        // else directly guide the user to the compare data screen.
+                                                        if (hmisAbhaAddress.contains(preferredAbhaAddress)) {
+                                                            navigateToCompareDataScreenWithExistingDetails(abhaProfileResponse, patientDTO, xToken, abhaProfileRequestBody.getTxnId());
+                                                        } else {
+                                                            updatePatientIdentifier(abhaProfileResponse, preferredAbhaAddress, patientDTO, xToken, abhaProfileRequestBody.getTxnId());
+                                                        }
                                                     }
                                                 }
                                         )
@@ -1009,9 +1007,71 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                         Timber.tag("checkExistingUserAPI").e("onError: %s", e.toString());
                     }
                 })).
-
                 start();
 
+    }
+
+    private void updatePatientIdentifier(AbhaProfileResponse abhaProfileResponse, String newAbhaAddress, PatientDTO patientDTO, String xToken, String txnId) {
+        UpdateIdentifierReqBody requestBody = new UpdateIdentifierReqBody();
+        requestBody.setIdentifier(newAbhaAddress);
+        requestBody.setIdentifierType(UuidDictionary.UPDATE_IDENTIFIER_TYPE_UUID);
+        requestBody.setLocation(sessionManager.getLocationUuid());
+
+        String url = UrlModifiers.getUpdatePatientIdentifierUrl(patientDTO.getUuid());
+        cpd.show();
+
+        Single<Response<ResponseBody>> responseSingle = AppConstants.apiInterface.updatePatientIdentifier(
+                url,
+                "Basic " + sessionManager.getEncoded(),
+                requestBody
+        );
+
+        responseSingle.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBody> response) {
+                        cpd.dismiss();
+                        if (response.code() == 200 || response.code() == 204) {
+                            Timber.tag(TAG).d("onSuccess: update identifier success");
+                        } else {
+                            Timber.tag(TAG).d("onSuccess: update identifier failed with code %s", response.code());
+                        }
+                        navigateToCompareDataScreenWithExistingDetails(abhaProfileResponse, patientDTO, xToken, txnId);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                        Timber.tag(TAG).e("onError: update identifier error %s", e.toString());
+                    }
+                });
+    }
+
+    private void navigateToIdentificationScreenWithNewPatient(AbhaProfileResponse response, String xToken, AbhaProfileRequestBody abhaProfileRequestBody) {
+        Intent intent = new Intent(context, IdentificationActivity_New.class);
+        intent.putExtra("mobile_payload", response);
+        intent.putExtra("accessToken", accessToken);
+        intent.putExtra("xToken", xToken);
+        intent.putExtra("txnId", abhaProfileRequestBody.getTxnId());
+        intent.putExtra("patient_detail", true);
+        startActivity(intent);
+        finish();
+    }
+
+    private void navigateToCompareDataScreenWithExistingDetails(AbhaProfileResponse abhaProfileResponse, PatientDTO patientDTO, String xToken, String txnId) {
+        abhaProfileResponse.setOpenMrsId(patientDTO.getOpenmrsId());
+        abhaProfileResponse.setUuiD(patientDTO.getUuid());
+        Intent intent = new Intent(context, CompareDataActivity.class);
+        intent.putExtra(IntentKeys.ABHA_PATIENT, abhaProfileResponse);
+        intent.putExtra(IntentKeys.LOCAL_PATIENT, patientDTO);
+        intent.putExtra("mobile_payload", abhaProfileResponse);
+        intent.putExtra("accessToken", accessToken);
+        intent.putExtra("xToken", xToken);
+        intent.putExtra("txnId", txnId);
+        intent.putExtra("patient_detail", true);
+        startActivity(intent);
+        finish();
     }
 
     @Override
