@@ -1066,8 +1066,21 @@
     <string name="hypertension_quit_alcohol_tobacco">ಬಿಪಿ: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
     <string name="ncd_report">NCD ವರದಿ</string>
 
-    <string name="screening_lbl">Screening</string>
-    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">ಇತ್ತೀಚಿನ NCD ರೀಡಿಂಗ್‌ಗಳು</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">ಹಿಂದಿನ %1$s NCD ಭೇಟಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
 
 </resources>

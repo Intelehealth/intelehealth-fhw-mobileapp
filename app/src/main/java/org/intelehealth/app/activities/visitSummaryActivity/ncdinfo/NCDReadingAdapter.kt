@@ -85,7 +85,7 @@ class NCDReadingAdapter(
             if (value?.trim().isNullOrBlank()) {
                 tvHb.text = NCDReading.NA
                 tvHb.setTextColor(
-                    ContextCompat.getColor(root.context, R.color.gray)
+                    ContextCompat.getColor(root.context, R.color.gray_4_1)
                 )
             } else {
                 tvHb.text = value
@@ -112,7 +112,7 @@ class NCDReadingAdapter(
                         R.color.red
 
                     else ->
-                        R.color.gray
+                        R.color.gray_4_1
                 }
 
                 tvHb.setTextColor(
@@ -142,7 +142,7 @@ class NCDReadingAdapter(
             if (sysText.isNullOrBlank() || diaText.isNullOrBlank()) {
                 tvBp.text = NCDReading.NA
                 tvBp.setTextColor(
-                    ContextCompat.getColor(root.context, R.color.gray)
+                    ContextCompat.getColor(root.context, R.color.gray_4_1)
                 )
                 return
             }
@@ -202,7 +202,7 @@ class NCDReadingAdapter(
             if (value.isNullOrBlank()) {
                 tvRbs.text = NCDReading.NA
                 tvRbs.setTextColor(
-                    ContextCompat.getColor(root.context, R.color.gray)
+                    ContextCompat.getColor(root.context, R.color.gray_4_1)
                 )
             } else {
                 tvRbs.text = value
@@ -210,8 +210,11 @@ class NCDReadingAdapter(
                 // Determine color based on RBS value
                 val rbsValue = value.toIntOrNull() ?: 0
                 val colorRes = when {
-                    rbsValue > 140 -> R.color.red
-                    else -> R.color.colorAccent
+                    rbsValue < 70 -> R.color.red          // Hypoglycemia
+                    rbsValue in 70..139 -> R.color.green  // Normal
+                    rbsValue in 140..199 -> R.color.yellow // Pre-Diabetes
+                    rbsValue >= 200 -> R.color.orange2      // Suspected Diabetes
+                    else -> R.color.gray_4_1                   // Fallback for invalid values
                 }
 
                 tvRbs.setTextColor(

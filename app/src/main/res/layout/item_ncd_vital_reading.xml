@@ -16,21 +16,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.2567" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_col2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.57" />
+            app:layout_constraintGuide_percent="0.5133" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_col3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.78" />
+            app:layout_constraintGuide_percent="0.77" />
 
         <!-- Date Column -->
         <TextView
@@ -66,7 +66,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_10"
             android:paddingHorizontal="8dp"
-            android:textColor="@color/gray"
+            android:textColor="#666666"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +93,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_10"
             android:paddingHorizontal="8dp"
-            android:textColor="#F44336"
+            android:textColor="#666666"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +120,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_10"
             android:paddingHorizontal="8dp"
-            android:textColor="#4CAF50"
+            android:textColor="#666666"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

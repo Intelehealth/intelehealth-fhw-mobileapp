@@ -2453,10 +2453,52 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 });
     }
 
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
+                onBack(intent);
+            }
+        });
+    }
+
     public void backPress(View view) {
-        Intent intent = new Intent(this, SearchPatientActivity_New.class);
-        startActivity(intent);
-        finish();
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        onBack(intent);
+    }
+
+    public void onBack(Intent intent) {
+        if (!isBaselineSurveyCompleted && !isBaselineWarningOkClicked) {
+            showBaselineWarningDialog(intent);
+        } else {
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void showBaselineWarningDialog(Intent intent) {
+        DialogUtils dialogUtils = new DialogUtils();
+        MaterialAlertDialogBuilder builder = dialogUtils.showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this, R.drawable.close_patient_svg), getString(R.string.baseline_warning_alert),
+                getString(R.string.please_complete_the_baseline_survey), getString(R.string.dialog_baseline_ok));
+        AlertDialog baselineWarningDialog = builder.show();
+        baselineWarningDialog.setCancelable(false);
+
+        baselineWarningDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        baselineWarningDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        baselineWarningDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        Button okButton = baselineWarningDialog.findViewById(R.id.positive_btn);
+        if (okButton != null) okButton.setOnClickListener(v -> {
+            baselineWarningDialog.dismiss();
+            isBaselineWarningOkClicked = true;
+           /* startActivity(intent);
+            finish();*/
+        });
+
     }
 
     public void syncNow(View view) {
@@ -2466,10 +2508,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             new SyncUtils().syncBackground();
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void onClickNcdVisit(View view) {
-        intentForNcdVisitDetails();
     }
 
     // Receiver class for Openmrs ID

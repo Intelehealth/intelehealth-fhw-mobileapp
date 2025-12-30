@@ -72,5 +72,34 @@ class ParserUtils {
            return ""
        }
 
+
+       /**
+        * Pattern to match RBS format: "Random Blood Sugar(mg/dL) - 56"
+        */
+       @JvmStatic
+       fun parseRBS(text: String?): String? {
+           if (text == null || text.isEmpty()) {
+               return ""
+           }
+
+           val pattern = Pattern.compile(
+               "Random\\s+Blood\\s+Sugar\\s*\\(mg/dL\\)\\s*-\\s*([0-9]+\\.?[0-9]*)",
+               Pattern.CASE_INSENSITIVE
+           )
+           val matcher = pattern.matcher(text)
+
+           if (matcher.find()) {
+               try {
+                   val value = matcher.group(1)
+                   return value
+               } catch (e: java.lang.NumberFormatException) {
+                   e.printStackTrace()
+                   return ""
+               }
+           }
+
+           return ""
+       }
+
    }
 }

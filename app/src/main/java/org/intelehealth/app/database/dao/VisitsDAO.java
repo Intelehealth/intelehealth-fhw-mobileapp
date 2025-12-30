@@ -1379,7 +1379,7 @@ public class VisitsDAO {
                             DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd HH:mm:ss", "dd MMM, yy"),
                             ParserUtils.parseBP(value),
                             ParserUtils.parseHemoglobin(value),
-                            ""
+                            ParserUtils.parseRBS(value)
                     ));
 
                 } while (cursor.moveToNext());
