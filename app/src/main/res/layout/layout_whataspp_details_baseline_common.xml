@@ -52,8 +52,6 @@
             <RadioGroup
                 android:id="@+id/rg_family_whatsapp_options"
                 style="@style/RadioButtonStyleSelection"
-                config="@{generalConfig.familyWhatsapp}"
-                editMode="@{baselineEditMode}"
                 radioButtonValue="@{baseline.familyWhatsApp}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,8 +60,6 @@
 
                 <RadioButton
                     android:id="@+id/radioPersonal"
-                    config="@{generalConfig.familyWhatsapp}"
-                    editMode="@{baselineEditMode}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_20"
@@ -71,8 +67,6 @@
 
                 <RadioButton
                     android:id="@+id/radioFamilyMember"
-                    config="@{generalConfig.familyWhatsapp}"
-                    editMode="@{baselineEditMode}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_20"
@@ -80,8 +74,6 @@
 
                 <RadioButton
                     android:id="@+id/radioFamilyWhatsappNo"
-                    config="@{generalConfig.familyWhatsapp}"
-                    editMode="@{baselineEditMode}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no" />

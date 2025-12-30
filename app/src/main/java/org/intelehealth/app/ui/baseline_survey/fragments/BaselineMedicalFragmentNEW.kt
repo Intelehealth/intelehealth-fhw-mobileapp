@@ -8,9 +8,9 @@ import android.util.Log
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -57,7 +57,7 @@ class BaselineMedicalFragmentNEW :
     }
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
-
+        Log.d("baselineflowMissing", "onBaselineDataLoaded: baselineData : "+baselineData)
         binding.baseline = baselineData
 
         fetchMedicalBaselineConfig()
@@ -519,6 +519,7 @@ class BaselineMedicalFragmentNEW :
                     etAnemiaMedicationNotTakingOtherReason.setText("")
                 }
             }
+            disableAnemiaHistoryIfAnsweredAlready()
         }
     }
 
@@ -534,6 +535,9 @@ class BaselineMedicalFragmentNEW :
        val hideBpSectionInitially = baselineSurveyData.bpValue.equals(getString(R.string.medical_history_no), true)
 
         with(binding.layoutBpMedication) {
+
+            // 🔹 PRE-SELECT & DISABLE FIRST QUESTION IF ALREADY ANSWERED
+
 
             // Q1: Do you have anemia?
             rgBpOptions.setOnCheckedChangeListener { _, checkedId ->
@@ -598,8 +602,35 @@ class BaselineMedicalFragmentNEW :
                     etBpMedicationNotTakingOtherReason.setText("")
                 }
             }
+            disableBpHistoryIfAnsweredAlready()
         }
     }
+
+    private fun disableBpHistoryIfAnsweredAlready() {
+        val bpHistoryValue = baselineSurveyData.bpValue
+
+        with(binding.layoutBpMedication) {
+
+            if (bpHistoryValue.isAnsweredYesOrNo()) {
+                when {
+                    bpHistoryValue.equals(
+                        getString(R.string.medical_history_yes),
+                        true
+                    ) -> rgBpOptions.check(radioBPYes.id)
+
+                    bpHistoryValue.equals(
+                        getString(R.string.medical_history_no),
+                        true
+                    ) -> rgBpOptions.check(radioBPNo.id)
+                }
+                // Disable the first question
+                rgBpOptions.isEnabled = false
+                radioBPYes.isEnabled = false
+                radioBPNo.isEnabled = false
+            }
+        }
+    }
+
     private fun getNotTakingBpMedicationReasonForDb(): String {
         //val selected = binding.layoutBpMedication.autotvReasonForNotTakingBpMedication.text.toString()
         return if (selectedBPNoMedicationReason.equals("Unknown / Other", ignoreCase = true)) {
@@ -681,6 +712,7 @@ class BaselineMedicalFragmentNEW :
                     etDiabetesMedicationNotTakingOtherReason.setText("")
                 }
             }
+            disableDiabetesHistoryIfAnsweredAlready()
         }
     }
     private fun getNotTakingDiabetesMedicationReasonForDb(): String {
@@ -708,16 +740,18 @@ class BaselineMedicalFragmentNEW :
         requireActivity().finish()
 
     }
+
     private fun manageWhatsappQuestions(){
-        val hideWhatsappSectionSectionInitially = baselineSurveyData.familyWhatsApp.equals(getString(R.string.medical_history_no), true)
+        val hideWhatsappSectionSectionInitially = baselineSurveyData.familyWhatsApp.equals(getString(R.string.medical_history_no), true
+            ) || (baselineSurveyData.familyWhatsApp.hasValidAnswer() && baselineSurveyData.selfOrFamilyWhatsappNumber.hasValidAnswer())
 
         with(binding.layoutWhatsappGeneral) {
 
             tilWhatsappNumber.hideDigitErrorOnTextChang(etWhatsappNumber, 10)
+
             rgFamilyWhatsappOptions.setOnCheckedChangeListener { group, checkedId ->
 
-                val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
-                val selectedValue = selectedRadioButton?.text?.toString()
+                disableIDs()
 
                 when (checkedId) {
                     R.id.radioPersonal, R.id.radioFamilyMember -> {
@@ -731,30 +765,22 @@ class BaselineMedicalFragmentNEW :
                         }
 
                         setTitleAsPerSelectedOption(tvWhatsappNumberLabel, englishValue)
-
                     }
                     R.id.radioFamilyWhatsappNo -> {
                         layoutWhatsappNumber.visibility = View.GONE
                         tvWhatsappNumberLabel.text = ""
                     }
                 }
+                //if parent question answered yes/no then disable
+                disableWhatsappQuestionIfAnswered()
+
+                //if parent ques no
                 if (hideWhatsappSectionSectionInitially) {
                     root.visibility =View.GONE
                     hideTitleForGeneral()
                     return@setOnCheckedChangeListener
                 }
-                if (isInitializing) {
-                    isInitializing = false
-                    return@setOnCheckedChangeListener
-                }
-                // reset the etWhatsappNumber and uncheck the cbWhatsappNumberUnknown
-                etWhatsappNumber.text = null
-                cbWhatsappNumberUnknown.isChecked = false
-
-
             }
-
-            // Manage "I don't know" checkbox state
             cbWhatsappNumberUnknown.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     etWhatsappNumber.isEnabled = false
@@ -763,6 +789,19 @@ class BaselineMedicalFragmentNEW :
                     etWhatsappNumber.isEnabled = true
                 }
             }
+        }
+    }
+
+    private fun disableIDs() {
+        with(binding.layoutWhatsappGeneral){
+
+            radioPersonal.isEnabled= false
+            radioFamilyMember.isEnabled =false
+            radioFamilyWhatsappNo.isEnabled = false
+
+            radioPersonal.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+            rgFamilyWhatsappOptions.setOnCheckedChangeListener(null)
+
         }
     }
 
@@ -945,4 +984,89 @@ class BaselineMedicalFragmentNEW :
             }
         }
     }
+    private fun String?.isAnsweredYesOrNo(): Boolean {
+        return !this.isNullOrBlank() && this != "-"
+    }
+    private fun disableDiabetesHistoryIfAnsweredAlready() {
+        val diabetesHistoryValue = baselineSurveyData.diabetesValue
+
+        with(binding.layoutDiabetesMedication) {
+
+            if (diabetesHistoryValue.isAnsweredYesOrNo()) {
+                when {
+                    diabetesHistoryValue.equals(
+                        getString(R.string.medical_history_yes),
+                        true
+                    ) -> rgDiabetesOptions.check(radioDiabetesYes.id)
+
+                    diabetesHistoryValue.equals(
+                        getString(R.string.medical_history_no),
+                        true
+                    ) -> rgDiabetesOptions.check(radioDiabetesNo.id)
+                }
+                // Disable the first question
+                rgDiabetesOptions.isEnabled = false
+                radioDiabetesYes.isEnabled = false
+                radioDiabetesNo.isEnabled = false
+            }
+        }
+    }
+    private fun disableAnemiaHistoryIfAnsweredAlready() {
+        val anemiaHistoryValue = baselineSurveyData.anemiaValue
+
+        with(binding.layoutAnemiaMedication) {
+
+            if (anemiaHistoryValue.isAnsweredYesOrNo()) {
+                when {
+                    anemiaHistoryValue.equals(
+                        getString(R.string.medical_history_yes),
+                        true
+                    ) -> rgAnemiaOptions.check(radioAnemiaYes.id)
+
+                    anemiaHistoryValue.equals(
+                        getString(R.string.medical_history_no),
+                        true
+                    ) -> rgAnemiaOptions.check(radioAnemiaNo.id)
+                }
+                // Disable the first question
+                rgAnemiaOptions.isEnabled = false
+                radioAnemiaYes.isEnabled = false
+                radioAnemiaNo.isEnabled = false
+            }
+        }
+    }
+    private fun disableWhatsappQuestionIfAnswered() {
+        val whatsappValue = baselineSurveyData.familyWhatsApp
+        if (whatsappValue.isNullOrBlank() || whatsappValue == "-") return
+
+        with(binding.layoutWhatsappGeneral) {
+
+            when {
+                whatsappValue.equals(
+                    getString(R.string.generic_yes_personal),
+                    true
+                ) -> rgFamilyWhatsappOptions.check(R.id.radioPersonal)
+
+                whatsappValue.equals(
+                    getString(R.string.generic_yes_family),
+                    true
+                ) -> rgFamilyWhatsappOptions.check(R.id.radioFamilyMember)
+
+                whatsappValue.equals(
+                    getString(R.string.medical_history_no),
+                    true
+                ) -> rgFamilyWhatsappOptions.check(R.id.radioFamilyWhatsappNo)
+            }
+
+            // 🔒 Disable only the first question
+            rgFamilyWhatsappOptions.isEnabled = false
+            radioPersonal.isEnabled = false
+            radioFamilyMember.isEnabled = false
+            radioFamilyWhatsappNo.isEnabled = false
+        }
+    }
+    private fun String?.hasValidAnswer(): Boolean {
+        return !this.isNullOrBlank() && this != "-"
+    }
+
 }
