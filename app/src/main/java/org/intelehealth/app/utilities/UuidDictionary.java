@@ -105,4 +105,5 @@ public class UuidDictionary {
     public static final String  HEALTH_INFO_SHARE_ATTRIBUTE_NAME= "health_info_share_flag";
     public static final String  ATTRIBUTE_TYPE_DATE_CREATED_NAME= "createdDate";
     public static final String ATTRIBUTE_TYPE_PROVIDER_ID_NAME = "providerUUID";
+    public static final String OTHER_MEDICAL_HISTORY ="0bc1ce08-4013-4959-80c6-a6ccf7a208c2";
 }

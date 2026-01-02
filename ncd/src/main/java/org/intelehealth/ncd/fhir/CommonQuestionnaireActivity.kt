@@ -1,6 +1,5 @@
 package org.intelehealth.ncd.fhir
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,8 +10,10 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -23,6 +24,7 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.ToggleButton
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
@@ -34,6 +36,7 @@ import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
@@ -46,10 +49,11 @@ import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.intelehealth.ncd.R
+import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
 import java.text.SimpleDateFormat
-import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
-import androidx.activity.OnBackPressedCallback
+//import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
+//import androidx.activity.OnBackPressedCallback
 
 class CommonQuestionnaireActivity : AppCompatActivity() {
     companion object {
@@ -98,18 +102,19 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     val matchedViews = mutableListOf<View>()
     var appLang: String? = "en"
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
         // Disable/override back button
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    // Do nothing → completely blocks back
-                    hideKeyboard()
-                }
-            })
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showConfirmDialog()
+                hideKeyboard()
+            }
+        })
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val questionnaireTitlesResources = listOf(
@@ -138,9 +143,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             years == 0 -> {
                 "$months ${getString(R.string.months)}"
             }
+
             months == 0 -> {
                 "$years ${getString(R.string.years)}"
             }
+
             else -> {
                 "$years ${getString(R.string.years)} $months ${getString(R.string.months)}"
             }
@@ -201,12 +208,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
+  /*  @SuppressLint("MissingSuperCall")
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         // Do nothing → disables back button
         hideKeyboard()
-    }
+    }*/
 
     private fun loadQuestionnaireFragment(
         questionnaireResponse: Any?,
@@ -288,7 +295,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
                         //bottomActionController.attachAutoToggleForRequiredInputs()
                         // hideNextButtonIn(root)
-                       if(isRecurring) updateUIComponents();
+                        if (isRecurring) updateUIComponents();
                     }
                 }
             }
@@ -658,7 +665,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 lastQuestionnaireResponse?.let {
                     val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
                     lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
-                    Log.println(Log.DEBUG,"FHIR", "Response: $lastQuestionnaireResponseString")
+                    Log.println(Log.DEBUG, "FHIR", "Response: $lastQuestionnaireResponseString")
                     // get the selected_symptoms_list link id
 
                 }
@@ -1079,4 +1086,41 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
           return null
       }
   */
+    fun showConfirmDialog() {
+        Log.d("FHIR", "Showing confirm dialog...")
+        val alertdialogBuilder = MaterialAlertDialogBuilder(this)
+        val inflater = LayoutInflater.from(this)
+        val convertView: View = inflater.inflate(R.layout.dialog_incomplete_alert_message, null)
+        alertdialogBuilder.setView(convertView)
+        alertdialogBuilder.setCancelable(false)
+        //val icon = convertView.findViewById<ImageView?>(R.id.dialog_icon)
+        //val dialog_title = convertView.findViewById<TextView?>(R.id.dialog_title)
+        //val dialog_subtitle = convertView.findViewById<TextView?>(R.id.dialog_subtitle)
+        val positive_btn = convertView.findViewById<Button?>(R.id.positive_btn)
+        val negative_btn = convertView.findViewById<Button?>(R.id.negative_btn)
+
+
+        val alertDialog = alertdialogBuilder.create()
+        alertDialog.getWindow()!!
+            .setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg) // show rounded corner for the dialog
+        alertDialog.getWindow()!!
+            .addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND) // dim backgroun
+        val width = getResources()
+            .getDimensionPixelSize(R.dimen.internet_dialog_width) // set width to your dialog.
+        alertDialog.getWindow()!!.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        negative_btn.setOnClickListener(View.OnClickListener { v: View? ->
+            alertDialog.dismiss()
+            setResult(Activity.RESULT_CANCELED)
+            Log.d("FHIR", "sending back...")
+            finish()
+        })
+
+        positive_btn.setOnClickListener(View.OnClickListener { v: View? ->
+            alertDialog.dismiss()
+
+        })
+
+        alertDialog.show()
+    }
 }

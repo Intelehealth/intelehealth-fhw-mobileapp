@@ -59,7 +59,6 @@ import org.intelehealth.ncd.linelisting.viewmodels.ProtocolScreenViewModel;
 import org.intelehealth.ncd.room.CategoryDatabase;
 import org.intelehealth.ncd.utils.CategorySegregationUtils;
 import org.intelehealth.ncd.utils.DateAndTimeUtils;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +68,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -351,7 +349,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     private void displayIneligibleConfirmationDialog() {
 
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(ComplaintNodeActivity.this,  R.drawable.ui2_ic_ayu_image, "", getResources().getString(R.string.not_eligible_for_protocols_message), false, getResources().getString(R.string.yes_move_ahead), getResources().getString(R.string.no_go_back), new DialogUtils.CustomDialogListener() {
+        dialogUtils.showCommonDialog(ComplaintNodeActivity.this, R.drawable.ui2_ic_ayu_image, "", getResources().getString(R.string.not_eligible_for_protocols_message), false, getResources().getString(R.string.yes_move_ahead), getResources().getString(R.string.no_go_back), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
@@ -661,6 +659,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             // Go to next item
                             currentIndex++;
                             launchNextQuestionnaire();
+                        } else {
+                            // User cancelled
+                            deleteVisitAndGoBack();
                         }
                     }
             );
@@ -750,9 +751,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void backPress(View view) {
         deleteVisitAndGoBack();
     }
+
     private void refreshComplaintsUI() {
         listAdapter.notifyDataSetChanged();
     }
+
     private void fetchAndAutoSelectComplaints() {
         PatientVisitDao dao = CategoryDatabase.getInstance(this).patientVisitDao();
         PatientVisitDataSource dataSource = new PatientVisitDataSource(dao);

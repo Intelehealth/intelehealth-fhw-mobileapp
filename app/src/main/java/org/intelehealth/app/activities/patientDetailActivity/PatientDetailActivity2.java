@@ -128,7 +128,10 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.baseline_survey.activity.BaselineLinelistingQuestionsActivity;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
+import org.intelehealth.app.ui.baseline_survey.helper.MissingLineListingQuestionsHelper;
+import org.intelehealth.app.ui.baseline_survey.helper.MissingLineListingResult;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.BaselineSurveySource;
@@ -483,8 +486,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
+        MissingLineListingQuestionsHelper helper = new MissingLineListingQuestionsHelper(this);
+        MissingLineListingResult resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid());
+        Log.d(TAG, "onCreate: resultModel value : "+new Gson().toJson(resultModel));
 
-        if (!isBaselineSurveyCompleted || !areAllVisitsEnded) {
+
+        if (!isBaselineSurveyCompleted || !areAllVisitsEnded || resultModel.getHasAnyHistoryWithoutMedication()) {
             startVisitBtn.setEnabled(false);
             startSevikaVisitBtn.setEnabled(false);
             binding.startNCDSevikaVisitBtn.setEnabled(false);
@@ -693,6 +700,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 error -> Log.e("TAG", "Error: " + error.getMessage())
                         )
         );
+        boolean skipDialog = getIntent().getBooleanExtra("SKIP_DIALOG", false);
+        Log.d(TAG, "onCreate: resultModel : "+resultModel.getHasAnyHistoryWithoutMedication());
+        Log.d(TAG, "onCreate: skipDialog : "+skipDialog);
+
+        if (!skipDialog) {
+            if(resultModel.getHasAnyHistoryWithoutMedication())
+                showBaselineMissingQuestionsDialog();
+        }
     }
 
     private void startNewVisit() {
@@ -2991,4 +3006,24 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
         }
     }
+    private void showBaselineMissingQuestionsDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(
+                PatientDetailActivity2.this,
+                R.drawable.ui2_ic_warning_internet,
+                getResources().getString(R.string.ncd_baseline),
+                getString(R.string.ncd_baseline_dialog_content),
+                false,
+                getResources().getString(R.string.yes_proceed),
+                getResources().getString(R.string.cancel),
+                action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        Intent intent  =new Intent(PatientDetailActivity2.this, BaselineLinelistingQuestionsActivity.class);
+                        intent.putExtra("patientUuid", patientDTO.getUuid());
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+
 }
