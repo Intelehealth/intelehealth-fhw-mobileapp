@@ -135,7 +135,7 @@ public class DialogUtils {
     public void showCommonDialog(Context context, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_common_message, null);
+        View convertView = inflater.inflate(R.layout.dialog_incomplete_alert_message, null);
         alertdialogBuilder.setView(convertView);
         alertdialogBuilder.setCancelable(false);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);

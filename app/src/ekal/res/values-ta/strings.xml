@@ -30,4 +30,10 @@
     <string name="category_hypertension">உயர் இரத்த அழுத்தம்</string>
     <string name="category_diabetes">சர்க்கரை நோய்</string>
 
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+
+
 </resources>

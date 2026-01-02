@@ -442,4 +442,9 @@
     <string name="category_hypertension">हायपरटेन्शन</string>
     <string name="category_diabetes">डायबिटीज</string>
 
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+
 </resources>
