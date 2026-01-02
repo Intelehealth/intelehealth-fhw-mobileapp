@@ -417,7 +417,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken) {
-        if (otpVerificationResponse.getABHAProfile().getPhrAddress() == null || otpVerificationResponse.getABHAProfile().getPhrAddress().isEmpty()) {
+        String abhaNumber = otpVerificationResponse.getABHAProfile().getABHANumber().replaceAll("-", "");
+        String abhaAddress = otpVerificationResponse.getABHAProfile().getPhrAddress().get(0);
+        boolean isAbhaNumberTheOnlyAddress = (abhaAddress.equalsIgnoreCase(abhaNumber.concat("@sbx")));
+        boolean isNewUser = otpVerificationResponse.getIsNew() && isAbhaNumberTheOnlyAddress;
+
+        // to determine a new user, we're checking if the abha number is the only abha addresses and if isNew is returning true.
+        // if either of these are false, then it is an existing user
+        if (isNewUser) {
             callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
         } else {
             checkIsUserExist(otpVerificationResponse.getABHAProfile().getABHANumber(), otpVerificationResponse);
