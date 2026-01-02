@@ -327,7 +327,14 @@ public class Fragment_ThirdScreen extends Fragment {
         });
 
         tvCreateNewAbhaAddress.setOnClickListener(v -> {
-            callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
+            if (otpVerificationResponse != null && otpVerificationResponse.getABHAProfile() != null) {
+                List<String> abhaAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
+                if (abhaAddresses != null && abhaAddresses.size() >= 6) {
+                    Toast.makeText(getActivity(), getString(R.string.creating_more_than_six_abha_addresses_are_not_allowed), Toast.LENGTH_LONG).show();
+                }
+
+                callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
+            }
         });
     }
 
