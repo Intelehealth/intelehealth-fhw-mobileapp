@@ -72,6 +72,7 @@ class ShowInfoModuleDialog(
                     if (imageView != null) {
                         showPage(0, imageView)
                     }
+                    dialog?.show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -184,12 +185,12 @@ class ShowInfoModuleDialog(
 */
 
 
-        dialog?.show()
+       // dialog?.show()
     }
 
     fun dismiss() {
-        pdfRenderer.close()
-        parcelFileDescriptor.close()
+        if (::pdfRenderer.isInitialized) pdfRenderer.close()
+        if (::parcelFileDescriptor.isInitialized) parcelFileDescriptor.close()
         dialog?.dismiss()
     }
     private fun showPage(index: Int, imageView: ZoomableImageView) {
