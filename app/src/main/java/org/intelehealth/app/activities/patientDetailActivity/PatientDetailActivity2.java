@@ -102,7 +102,6 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -125,7 +124,6 @@ import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineLinelistingQuestionsActivity;
@@ -679,6 +677,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         populateBaselineSurveys();
 
         handleDeviceBackPress();
+        checkForOldPatientMissingNCDBaselineData(resultModel);
     }
 
     private void fetchNcdVisitCount() {
@@ -700,14 +699,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 error -> Log.e("TAG", "Error: " + error.getMessage())
                         )
         );
-        boolean skipDialog = getIntent().getBooleanExtra("SKIP_DIALOG", false);
-        Log.d(TAG, "onCreate: resultModel : "+resultModel.getHasAnyHistoryWithoutMedication());
-        Log.d(TAG, "onCreate: skipDialog : "+skipDialog);
-
-        if (!skipDialog) {
-            if(resultModel.getHasAnyHistoryWithoutMedication())
-                showBaselineMissingQuestionsDialog();
-        }
     }
 
     private void startNewVisit() {
@@ -3024,6 +3015,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         finish();
                     }
                 });
+    }
+    private void checkForOldPatientMissingNCDBaselineData(MissingLineListingResult resultModel) {
+        boolean skipDialog = getIntent().getBooleanExtra("SKIP_DIALOG", false);
+        if (!skipDialog) {
+            if(resultModel!=null && resultModel.getHasAnyHistoryWithoutMedication())
+                showBaselineMissingQuestionsDialog();
+        }
     }
 
 }
