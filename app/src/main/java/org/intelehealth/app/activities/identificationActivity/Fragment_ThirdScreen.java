@@ -331,6 +331,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 List<String> abhaAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
                 if (abhaAddresses != null && abhaAddresses.size() >= 6) {
                     Toast.makeText(getActivity(), getString(R.string.creating_more_than_six_abha_addresses_are_not_allowed), Toast.LENGTH_LONG).show();
+                    return;
                 }
 
                 callFetchAbhaAddressSuggestionsApi(otpVerificationResponse, accessToken);
@@ -357,12 +358,19 @@ public class Fragment_ThirdScreen extends Fragment {
                             addressList.remove(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
 
                             if (!addressList.isEmpty()) {
+
+                                if (patientDTO.getOpenmrsId() != null) {
+                                    otpVerificationResponse.setOpenMrsId(patientDTO.getOpenmrsId());
+                                    otpVerificationResponse.setUuID(patientDTO.getUuid());
+                                }
+
                                 Intent intent = new Intent(getActivity(), AbhaAddressSuggestionsActivity.class);
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
                                 intent.putExtra("firstRequestFulfilled", true);
                                 startActivity(intent);
+
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }

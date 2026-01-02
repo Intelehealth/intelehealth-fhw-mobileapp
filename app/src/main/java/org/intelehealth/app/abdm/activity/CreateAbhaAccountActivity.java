@@ -624,6 +624,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                         dialogFragment.displayError(getString(R.string.you_have_more_than_six_abha_addresses_error));
                         dialogFragment.shouldShowErrorMessage(true);
                     } else {
+                        abhaProfileResponse.setUuID(mExistingPatientUuid);
+                        abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
                         callFetchAbhaAddressSuggestionsApi(abhaProfileResponse, accessToken);
                         dialogFragment.dismiss();
                     }

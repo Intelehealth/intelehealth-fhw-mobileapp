@@ -73,7 +73,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
     private boolean isProgrammaticTextChange = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +142,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         });
 
         binding.submitABHAAddressBtn.setOnClickListener(v -> {
-            resetPhrAddresses();
+//            resetPhrAddresses();
 
             Chip chip = binding.chipGrp.findViewById(binding.chipGrp.getCheckedChipId());
             String selectedChip = chip != null ? chip.getText().toString() : "";
@@ -256,6 +255,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             } else {
                 List<String> phrAddrList = new ArrayList<>();
                 phrAddrList.add(selectedChip);
+                phrAddrList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                 otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddrList);
             }
         }
@@ -293,21 +293,25 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 sessionManager.setIsPreferredAddressSet(true);
                 Toast.makeText(context, getString(R.string.preferred_abha_address_is_set_successfully), Toast.LENGTH_SHORT).show();
 
-                String newAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
-                if (!newAbhaAddress.endsWith("@sbx")) {
-                    newAbhaAddress = newAbhaAddress.concat("@sbx");
+                if (setAbhaAddressResponseResponse.body() != null) {
+                    String preferredAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
+                    String preferredAbhaAddressWithoutSbx = preferredAbhaAddress.replaceAll("@sbx", "");
+                    List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
+                    phrAddresses.remove(preferredAbhaAddressWithoutSbx);
+
+                    if (!preferredAbhaAddress.endsWith("@sbx")) {
+                        preferredAbhaAddress = preferredAbhaAddress.concat("@sbx");
+                    }
+
+                    phrAddresses.add(0, preferredAbhaAddress);
+
+                    Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
+                    dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
+                    dataIntent.putExtra("accessToken", accessToken);
+                    dataIntent.putExtra("firstRequestFulfilled", firstRequestFulfilled);
+                    startActivity(dataIntent);
+                    finish();
                 }
-
-                List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
-                phrAddresses.add(0, newAbhaAddress);
-                otpVerificationResponse.getABHAProfile().setPhrAddress(phrAddresses);
-
-                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-                dataIntent.putExtra("accessToken", accessToken);
-                dataIntent.putExtra("firstRequestFulfilled", firstRequestFulfilled);
-                startActivity(dataIntent);
-                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
