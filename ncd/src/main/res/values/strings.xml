@@ -128,7 +128,8 @@
     <string name="regex_validation_error_msg">The input contains characters that are not allowed.</string>
     <string name="number_format_validation_error_msg">Only use (.) between two numbers. Other special characters are not supported.</string>
     <string name="date_format_validation_error_msg">Date format needs to be <xliff:g id="locale_format">%1$s</xliff:g> (e.g. %2$s)</string>
-    <string name="integer_format_validation_error_msg">Number must be between <xliff:g id="min_value">%1$s</xliff:g> and <xliff:g id="max_value">%2$s</xliff:g></string>
+<!--    <string name="integer_format_validation_error_msg">Number must be between <xliff:g id="min_value">%1$s</xliff:g> and <xliff:g id="max_value">%2$s</xliff:g></string>-->
+    <string name="integer_format_validation_error_msg">Please enter valid number!</string>
     <string name="decimal_format_validation_error_msg">Invalid number</string>
     <string name="optional_helper_text">Optional</string>
     <string name="required">Required</string>
@@ -159,5 +160,8 @@
     <string name="years_abbr">Y</string>
     <string name="medical_history_no">No</string>
 
-
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 </resources>

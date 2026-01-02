@@ -205,4 +205,37 @@
         </item>
     </style>
 
+    <style name="dialog_title">
+        <item name="android:textSize">
+            @dimen/txtsize_20sp
+        </item>
+        <item name="android:textColor">
+            #1B163A
+        </item>
+    </style>
+
+
+    <style name="dialog_subtitle">
+        <item name="android:textSize">
+            @dimen/edittext_textsize_16sp
+        </item>
+        <item name="android:textColor">
+            #7F7B92
+        </item>
+    </style>
+
+
+    <style name="negative_btn">
+        <item name="android:textSize">@dimen/find_patient_hint_size</item>
+        <item name="android:textColor">#2E1E91</item>
+    </style>
+
+    <style name="positive_btn">
+        <item name="android:textSize">
+            @dimen/find_patient_hint_size
+        </item>
+        <item name="android:textColor">
+            #FFFFFF
+        </item>
+    </style>
 </resources>

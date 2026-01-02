@@ -127,7 +127,9 @@
 
     <string name="number_format_validation_error_msg">दो संख्याओं के बीच केवल (.) का उपयोग करें। अन्य विशेष वर्ण समर्थित नहीं हैं।</string>
     <string name="date_format_validation_error_msg">तारीख प्रारूप होना चाहिए <xliff:g id="locale_format">%1$s</xliff:g> (जैसे %2$s)</string>
-    <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> और <xliff:g id="max_value">%2$s</xliff:g> के बीच होनी चाहिए</string>
+<!--    <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> और <xliff:g id="max_value">%2$s</xliff:g> के बीच होनी चाहिए</string>-->
+    <string name="integer_format_validation_error_msg">कृपया एक मान्य संख्या दर्ज करें!</string>
+
     <string name="decimal_format_validation_error_msg">अमान्य संख्या</string>
     <string name="optional_helper_text">वैकल्पिक</string>
     <string name="required">आवश्यक</string>
@@ -158,5 +160,8 @@
     <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
     <string name="years_abbr">Y</string>
 
-
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 </resources>

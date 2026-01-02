@@ -474,6 +474,16 @@ object QuestionnaireUtils {
                 .filterNot { it.endsWith("_measurement", ignoreCase = true) }
                 .joinToString(" - ")
         }
+        for (i in bulletsEnglish.indices) {
+            val bulletPrefix = if (bulletsEnglish[i].startsWith("•")) "• " else ""
+            val content = bulletsEnglish[i].removePrefix("•").trim()
+
+            bulletsEnglish[i] = bulletPrefix + content
+                .split("-")
+                .map { it.trim() }
+                .filterNot { it.endsWith("_measurement", ignoreCase = true) }
+                .joinToString(" - ")
+        }
 
         for (i in bulletsLocal.indices) {
             val bulletPrefix = if (bulletsLocal[i].startsWith("•")) "• " else ""
