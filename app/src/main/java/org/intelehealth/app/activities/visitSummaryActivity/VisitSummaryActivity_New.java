@@ -6718,8 +6718,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void viewAndShareHealthInfoModule() {
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
         String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
-        infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage());
-        boolean hasFollowup = value.toLowerCase().contains("followup");
+        infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
+        Log.d(TAG, "viewAndShareHealthInfoModule: value : "+value);
+        Log.d(TAG, "viewAndShareHealthInfoModule: infoModulesFileUrlsList : "+new Gson().toJson(infoModulesFileUrlsList));
+
+        boolean hasFollowup = value.toLowerCase().contains("followup") || value.toLowerCase().contains("diabetes screening");
         if (hasFollowup) {
             if (infoModulesFileUrlsList == null && infoModulesFileUrlsList.isEmpty())
                 return;
@@ -6749,5 +6752,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
     }
+
 
 }

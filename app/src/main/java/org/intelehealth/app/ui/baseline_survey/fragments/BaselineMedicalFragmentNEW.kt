@@ -45,7 +45,6 @@ class BaselineMedicalFragmentNEW :
     private var isAgeGreaterThan20: Boolean = false
     private var isAgeGreaterThan11: Boolean = false
     private var isAgeGreaterThan18: Boolean = false
-    private var isInitializing = false
     private var patientId: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -799,7 +798,6 @@ class BaselineMedicalFragmentNEW :
             radioFamilyMember.isEnabled =false
             radioFamilyWhatsappNo.isEnabled = false
 
-            radioPersonal.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
             rgFamilyWhatsappOptions.setOnCheckedChangeListener(null)
 
         }
