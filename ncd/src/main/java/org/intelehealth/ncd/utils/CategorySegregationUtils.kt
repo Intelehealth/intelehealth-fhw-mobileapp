@@ -251,7 +251,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].bp == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].hypertension == resources.getString(R.string.medical_history_yes)
         }
     }
 

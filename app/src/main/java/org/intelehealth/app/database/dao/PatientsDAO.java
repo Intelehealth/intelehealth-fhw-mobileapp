@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.intelehealth.app.models.ActivePatientModel;
+import org.intelehealth.app.ui.baseline_survey.constants.Constants;
 import org.intelehealth.app.utilities.CustomLog;
 
 
@@ -43,7 +44,6 @@ public class PatientsDAO {
     private long createdRecordsCount = 0;
     int limit = 10, offset = 0;
     private static final String TAG = "PatientsDAO";
-
 
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
@@ -719,6 +719,7 @@ public class PatientsDAO {
 
         return gender;
     }
+
     public static String fetchDateOfBirth(String patientUuid) {
         String dob = "";
 
@@ -736,6 +737,7 @@ public class PatientsDAO {
 
         return dob;
     }
+
     public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -1231,36 +1233,59 @@ public class PatientsDAO {
         }
         return houseHoldID;
     }
+
     public String getPatientAttributeByPatientUuid(String patientUuid, String attributeName) throws DAOException {
-            String value = "";
-            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-            db.beginTransaction();
-            Cursor cursor = null;
-            try {
-                // Single query with JOIN
-                String sql = "SELECT pa.value\n" +
-                        "FROM tbl_patient_attribute pa\n" +
-                        "INNER JOIN tbl_patient_attribute_master pam\n" +
-                        "    ON pa.person_attribute_type_uuid = pam.uuid\n" +
-                        "WHERE pa.patientuuid = ?\n" +
-                        "  AND pam.name = ?\n" +
-                        "  AND pa.voided = '0' COLLATE NOCASE\n"+  " ORDER BY pa.rowid DESC " +
-                        "LIMIT 1";
-                cursor = db.rawQuery(sql, new String[]{patientUuid, attributeName});
+        String value = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor cursor = null;
+        try {
+            // Single query with JOIN
+            String sql = "SELECT pa.value\n" +
+                    "FROM tbl_patient_attribute pa\n" +
+                    "INNER JOIN tbl_patient_attribute_master pam\n" +
+                    "    ON pa.person_attribute_type_uuid = pam.uuid\n" +
+                    "WHERE pa.patientuuid = ?\n" +
+                    "  AND pam.name = ?\n" +
+                    "  AND pa.voided = '0' COLLATE NOCASE\n" + " ORDER BY pa.rowid DESC " +
+                    "LIMIT 1";
+            cursor = db.rawQuery(sql, new String[]{patientUuid, attributeName});
 
-                if (cursor.moveToLast()) {
-                    value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                }
-
-                db.setTransactionSuccessful();
-            } catch (SQLException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-                throw new DAOException(e);
-            } finally {
-                if (cursor != null) cursor.close();
-                db.endTransaction();
+            if (cursor.moveToLast()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
             }
-            return value;
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            if (cursor != null) cursor.close();
+            db.endTransaction();
         }
+        return value;
     }
 
+    public String fetchBaselineMedicalHistory(String patientId) {
+        String medicalHistory = null;
+
+        SQLiteDatabase db =
+                IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+        String sql = "SELECT value FROM tbl_patient_attribute a WHERE a.patientuuid = ? AND a.person_attribute_type_uuid = ? " +
+                "AND a.value IS NOT NULL AND a.modified_date = (SELECT MAX(b.modified_date) FROM tbl_patient_attribute b " +
+                "WHERE b.patientuuid = a.patientuuid AND b.person_attribute_type_uuid = a.person_attribute_type_uuid)";
+
+        try (Cursor cursor = db.rawQuery(
+                sql,
+                new String[]{patientId, UuidDictionary.OTHER_MEDICAL_HISTORY}
+        )) {
+            if (cursor.moveToFirst()) {
+                medicalHistory =
+                        cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+
+        return medicalHistory;
+    }
+}

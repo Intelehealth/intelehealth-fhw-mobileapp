@@ -81,20 +81,6 @@ class NcdInfoViewAndShareHelper(
         }
     }
 
-    private fun getModuleNameFromUrl(url: String): String {
-        val fileName = url.substringAfterLast("/")
-        val withoutExt = fileName.substringBeforeLast(".")
-
-        // remove prefix & language code
-        val cleaned = withoutExt
-            .removePrefix("hypertension_followup_")
-            .substringBeforeLast("_")
-
-        return cleaned
-            .replace("_", " ")
-            .replaceFirstChar { it.uppercase() }
-    }
-
     fun viewNcdInfoModuleInfoNew(infoModulesFileUrlsList: List<HealthModuleItem>, binding: ActivityVisitSummaryNewBinding) {
         val linearLayoutManager = LinearLayoutManager(context)
         binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.layoutManager = linearLayoutManager
@@ -103,18 +89,18 @@ class NcdInfoViewAndShareHelper(
 
     }
     fun generateWhatsappMessage(phoneNumber: String, fileUrls: List<HealthModuleItem>): String {
-        // Concatenate only the URLs from the model
-        val concatenatedUrls = fileUrls.joinToString(separator = ",\n\n") { it.url }
-
-        val messageText = context.getString(R.string.ncd_info_whatsapp_msg_new) + "\n\n" + concatenatedUrls
-
+        val concatenatedUrls = fileUrls.joinToString(separator = "\n\n") { "${it.displayName}: ${it.url}" }
+        val messageText = context.getString(R.string.msg_ekal_thank_you) + "\n\n" + concatenatedUrls
         val encodedMessage = try {
             URLEncoder.encode(messageText, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             messageText
         }
+        Log.d("TAG", "generateWhatsappMessage: encodedMessage : "+encodedMessage)
+
         return "https://api.whatsapp.com/send?phone=$phoneNumber&text=$encodedMessage"
     }
+
 
 }
