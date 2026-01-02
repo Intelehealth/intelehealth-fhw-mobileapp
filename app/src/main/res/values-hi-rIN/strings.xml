@@ -1104,6 +1104,9 @@
 
     <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
     <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
+    <string name="please_complete_the_baseline_survey">कृपया बेसलाइन सर्वे पूरा करें।</string>
+    <string name="dialog_baseline_ok">ठीक है</string>
+    <string name="baseline_warning_alert">चेतावनी!</string>
     <string name="patient_visit_sent_ended">मरीज़ की विज़िट सफलतापूर्वक सेव होकर स्वचालित रूप से समाप्त हो गई है।</string>
 
     <string name="category_already_selected">%1$s से एक आइटम आप पहले ही चुन चुके हैं</string>
@@ -1123,4 +1126,20 @@
     <string name="hypertension_quit_alcohol_tobacco">बीपी: शराब और तंबाकू छोड़ें</string>
     <string name="ncd_report">NCD रिपोर्ट</string>
 
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">हाल की NCD रीडिंग</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">पिछली %1$s NCD विज़िट देखने के लिए क्लिक करें</string>
 </resources>

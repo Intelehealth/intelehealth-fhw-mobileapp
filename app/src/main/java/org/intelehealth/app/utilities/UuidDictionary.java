@@ -101,6 +101,8 @@ public class UuidDictionary {
     public static final String HW_FOLLOWUP_CONCEPT_ID = "596c7f50-ec12-4ad8-b92a-7491ad80341b";
     public static final String VISIT_UPLOAD_TIME = "e76eee5e-9d73-4d07-8f30-16b77e626ccf";
     public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
+    public static final String HEALTH_INFO_SHARE_ATTRIBUTE = "4557d68a-e1a7-4a5a-89eb-1f8c74367b5f";
+    public static final String  HEALTH_INFO_SHARE_ATTRIBUTE_NAME= "health_info_share_flag";
     public static final String  ATTRIBUTE_TYPE_DATE_CREATED_NAME= "createdDate";
     public static final String ATTRIBUTE_TYPE_PROVIDER_ID_NAME = "providerUUID";
     public static final String OTHER_MEDICAL_HISTORY ="0bc1ce08-4013-4959-80c6-a6ccf7a208c2";

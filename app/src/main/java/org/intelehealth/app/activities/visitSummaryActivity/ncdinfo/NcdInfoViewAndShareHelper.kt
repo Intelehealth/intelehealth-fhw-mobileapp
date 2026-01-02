@@ -1,39 +1,38 @@
 package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.database.dao.VisitAttributeListDAO
+import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding
 import org.intelehealth.app.models.dto.PatientAttributesDTO
+import org.intelehealth.app.models.dto.VisitAttributeDTO
+import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.CustomLog
+import org.intelehealth.app.utilities.UuidDictionary
+import org.intelehealth.app.utilities.exception.DAOException
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
+import kotlin.uuid.Uuid
 
 class NcdInfoViewAndShareHelper(
     private val context: Context,
-    private val mBinding: ActivityVisitSummaryNewBinding
+    private val mBinding: ActivityVisitSummaryNewBinding,
+    private val visitUuid: String,
+    private val visitsDAO: VisitsDAO,
+    private val visitAttributeListDAO: VisitAttributeListDAO
 ) {
 
     private val baseUrl = "https://afitraining.ekalarogya.org:3004/ncdinfo/"
@@ -71,6 +70,21 @@ class NcdInfoViewAndShareHelper(
         shareBtn.setOnClickListener {
             val phoneNumber = editText.text.toString()
             if (phoneNumber.isNotEmpty() && phoneNumber.length==10) {
+                val isInserted: Boolean =
+                    visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
+                if (!isInserted) {
+                    try {
+                        visitAttributeListDAO.insertVisitAttributes(
+                            visitUuid,
+                            /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
+                            UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
+                        )
+                        visitsDAO.updateVisitSync(visitUuid, "0")
+                        SyncDAO().pushDataApi()
+                    } catch (e: DAOException) {
+                        throw RuntimeException(e)
+                    }
+                }
                 val whatsappMessage = generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList)
                 CustomLog.v("whatsappMessage", whatsappMessage)
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)))

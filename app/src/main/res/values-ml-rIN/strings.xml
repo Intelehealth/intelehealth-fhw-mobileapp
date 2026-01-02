@@ -419,6 +419,11 @@
     <string name="visit_reason_txt">സന്ദർശന കാരണം</string>
 
     <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="please_complete_the_baseline_survey">ദയവായി ബേസ്ലൈൻ സർവേ പൂർത്തിയാക്കുക.</string>
+    <string name="dialog_baseline_ok">ശരി</string>
+    <string name="baseline_warning_alert">മുന്നറിയിപ്പ്!</string>
+
     <string name="screening_lbl">സ്ക്രീനിംഗ്</string>
 
     <string name="patient_visit_sent_ended">രോഗിയുടെ സന്ദർശനം വിജയകരമായി സേവ് ചെയ്ത് സ്വയം അവസാനിപ്പിച്ചു.</string>
@@ -430,6 +435,23 @@
     <string name="not_eligible_for_protocols_message">നിങ്ങൾ ഇപ്പോൾ ഏതെങ്കിലും NCD പ്രോട്ടോക്കോളിന് അർഹരല്ല. എന്നിരുന്നാലും മുന്നോട്ട് പോകാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, നിങ്ങളുടെ ഇഷ്ടമുള്ള പ്രോട്ടോക്കോൾ തിരഞ്ഞെടുക്കുക.</string>
     <string name="yes_move_ahead">അതെ,മുന്നോട്ട് പോകുക</string>
     <string name="no_go_back">ഇല്ല,തിരികെ പോകുക</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">സമീപകാല NCD റീഡിംഗുകൾ</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">കഴിഞ്ഞ %1$s NCD സന്ദർശനങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക</string>
 
 </resources>
 

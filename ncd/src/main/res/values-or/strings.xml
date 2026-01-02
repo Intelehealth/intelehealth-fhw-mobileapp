@@ -160,6 +160,7 @@
     <string name="tab_all">ସବୁ</string>
     <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
     <string name="years_abbr">Y</string>
+    <string name="anemia_followup">ଅନିମିଆ ଅନୁସରଣ</string>
 
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>

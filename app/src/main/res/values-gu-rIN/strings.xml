@@ -1096,6 +1096,9 @@
     <string name="patient_visit_sent_ended">દર્દીની મુલાકાત સફળતાપૂર્વક સેવ થઈ ગઈ છે અને સ્વચાલિત રીતે પૂર્ણ થઈ છે.</string>
 
     <string name="category_already_selected">તમે પહેલેથી જ %1$s માંથી એક આઇટમ પસંદ કરી છે</string>
+    <string name="please_complete_the_baseline_survey">કૃપા કરીને બેઝલાઇન સર્વે પૂર્ણ કરો.</string>
+    <string name="dialog_baseline_ok">ઓકે</string>
+    <string name="baseline_warning_alert">ચેતવણી!</string>
 
     <string name="not_eligible_for_protocols_message">તમે હાલમાં કોઈપણ NCD પ્રોટોકોલ માટે પાત્ર નથી. તેમ છતાં આગળ વધવા માંગતા હો, તો તમારી પસંદગીનો પ્રોટોકોલ પસંદ કરો.</string>
     <string name="yes_move_ahead">હા,આગળ વધો</string>
@@ -1111,4 +1114,21 @@
     <string name="hypertension_reduce_salt">બીપી: મીઠાનું સેવન ઓછું કરો</string>
     <string name="hypertension_quit_alcohol_tobacco">બીપી: દારૂ અને તમાકુ છોડો</string>
     <string name="ncd_report">NCD રિપોર્ટ</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">તાજેતરના NCD રીડિંગ્સ</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>z
 </resources>

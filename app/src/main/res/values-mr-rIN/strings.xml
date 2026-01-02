@@ -1077,6 +1077,10 @@
 
     <string name="saved_to_downloads">फाईल Downloads मध्ये जतन केली गेली</string>
     <string name="failed_to_save_downloads">PDF जतन करण्यात अयशस्वी</string>
+    <string name="please_complete_the_baseline_survey">कृपया बेसलाइन सर्व्हे पूर्ण करा.</string>
+    <string name="dialog_baseline_ok">ठीक आहे</string>
+    <string name="baseline_warning_alert">इशारा!</string>
+
     <string name="patient_visit_sent_ended">रुग्णाची भेट यशस्वीरित्या सेव्ह होऊन स्वयंचलितपणे संपली आहे.</string>
 
     <string name="category_already_selected">आपण आधीच %1$s मधून एक आयटम निवडले आहे</string>
@@ -1097,4 +1101,21 @@
     <string name="hypertension_reduce_salt">बीपी: मिठाचे सेवन कमी करा</string>
     <string name="hypertension_quit_alcohol_tobacco">बीपी: मद्यपान आणि तंबाखू सोडा</string>
     <string name="ncd_report">NCD अहवाल</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">अलीकडील NCD रीडिंग</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">मागील %1$s NCD भेटी पाहण्यासाठी क्लिक करा</string>
 </resources>

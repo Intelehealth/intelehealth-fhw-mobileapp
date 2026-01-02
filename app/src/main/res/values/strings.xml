@@ -1166,6 +1166,9 @@
     <string name="failed_to_save_downloads">Failed to save PDF</string>
     <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
     <string name="category_already_selected">You already selected an item from %1$s</string>
+    <string name="please_complete_the_baseline_survey">Please complete the Baseline Survey.</string>
+    <string name="dialog_baseline_ok">Ok</string>
+    <string name="baseline_warning_alert">Alert!</string>
 
     <string name="msg_ekal_thank_you">Thank you for using Ekal Telemedicine! Click the link to learn simple ways to stay healthy every day.</string>
     <string name="anemia_food_advice">Anemia: Eat iron-, folic acid– and protein-rich foods</string>
@@ -1181,5 +1184,24 @@
     <string name="ncd_baseline">NCD Baseline</string>
     <string name="ncd_baseline_dialog_content">Answering to few baseline questions is mandatory for NCD visit &amp; Doctor visit workflow</string>
     <string name="data_saved">Data saved</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">Recent NCD Readings</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+
+    <string name="click_to_view_past_ncd_visits">Click to view the past %1$s NCD visits</string>
+
 
 </resources>

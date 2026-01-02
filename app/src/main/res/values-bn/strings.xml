@@ -1082,21 +1082,27 @@
     <string name="saved_to_downloads">ফাইলটি Downloads-এ সংরক্ষিত হয়েছে</string>
     <string name="failed_to_save_downloads">PDF সংরক্ষণ করতে ব্যর্থ হয়েছে</string>
     <string name="patient_visit_sent_ended">রোগীর ভিজিট সফলভাবে সংরক্ষিত হয়েছে এবং স্বয়ংক্রিয়ভাবে শেষ হয়েছে।</string>
+    <string name="please_complete_the_baseline_survey">অনুগ্রহ করে বেসলাইন সার্ভে সম্পূর্ণ করুন।</string>
+    <string name="dialog_baseline_ok">ঠিক আছে</string>
+    <string name="baseline_warning_alert">সতর্কতা!</string>
 
     <string name="category_already_selected">আপনি %1$s থেকে একটি আইটেম ইতিমধ্যেই নির্বাচন করেছেন</string>
 
-    <string name="not_eligible_for_protocols_message">আপনি এই মুহূর্তে কোনো NCD প্রোটোকলের জন্য যোগ্য নন। তবুও আপনি এগোতে চাইলে আপনার পছন্দের প্রোটোকল নির্বাচন করুন।</string>
-    <string name="yes_move_ahead">হ্যাঁ, এগিয়ে যান</string>
-    <string name="no_go_back">না, ফিরে যান</string>
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">সাম্প্রতিক NCD রিডিং</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
 
-    <string name="msg_ekal_thank_you">একল টেলিমেডিসন পরিষেবা ব্যবহার করার জন্য ধন্যবাদ! প্রতিদিন সুস্থ থাকার সহজ উপায় জানার জন্য লিঙ্কে ক্লিক করুন।</string>
-    <string name="anemia_food_advice">রক্তস্বল্পতা: আয়রন, ফোলিক অ্যাসিড ও প্রোটিনসমৃদ্ধ খাবার খান</string>
-    <string name="anemia_deworm_hygiene">রক্তস্বল্পতা: নিয়মিত কৃমিনাশক ওষুধ খান এবং পরিষ্কার-পরিচ্ছন্ন থাকুন</string>
-    <string name="anemia_quit_alcohol_tobacco">রক্তস্বল্পতা: মদ ও তামাক ছাড়ুন</string>
-    <string name="diabetes_reduce_sugar">ডায়াবেটিস: চিনির পরিমাণ কমান</string>
-    <string name="exercise_regularly">নিয়মিত ব্যায়াম করুন</string>
-    <string name="diabetes_quit_alcohol_tobacco">ডায়াবেটিস: মদ ও তামাক ছাড়ুন</string>
-    <string name="hypertension_reduce_salt">বিপি: লবণের পরিমাণ কমান</string>
-    <string name="hypertension_quit_alcohol_tobacco">বিপি: মদ ও তামাক ছাড়ুন</string>
-    <string name="ncd_report">NCD রিপোর্ট</string>
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">বিগত %1$sটি NCD ভিজিট দেখতে ক্লিক করুন</string>
+
 </resources>

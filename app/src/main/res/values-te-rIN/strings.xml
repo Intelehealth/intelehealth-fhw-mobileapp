@@ -496,6 +496,9 @@
 
     <string name="category_already_selected">మీరు ఇప్పటికే %1$s నుండి ఒక అంశాన్ని ఎంచుకున్నారు</string>
     <string name="visit_successfully_sent">విజిట్ విజయవంతంగా సేవ్ చేయబడింది!</string>
+    <string name="please_complete_the_baseline_survey">దయచేసి బేస్‌లైన్ సర్వేను పూర్తి చేయండి.</string>
+    <string name="dialog_baseline_ok">సరే</string>
+    <string name="baseline_warning_alert">హెచ్చరిక!</string>
 
     <string name="what_is_reason_for_this_visit">ఈ విజిట్‌కు కారణం ఏమిటి?</string>
 
@@ -519,4 +522,21 @@
     <string name="hypertension_reduce_salt">బీపీ: ఉప్పు వినియోగాన్ని తగ్గించండి</string>
     <string name="hypertension_quit_alcohol_tobacco">బీపీ: మద్యం మరియు పొగాకు మానండి</string>
     <string name="ncd_report">NCD నివేదిక</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">ఇటీవలి NCD రీడింగ్‌లు</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">గత %1$s NCD సందర్శనలను చూడటానికి క్లిక్ చేయండి</string>
 </resources>

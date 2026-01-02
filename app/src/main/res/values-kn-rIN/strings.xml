@@ -1040,6 +1040,9 @@
     <string name="enter_whatsapp_number">ದಯವಿಟ್ಟು WhatsApp ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="share_ncd_info_dialog_title">ಈ NCD ಆರೋಗ್ಯ ಮಾಹಿತಿಯನ್ನು ಈ WhatsApp ಸಂಖ್ಯೆಗೆ ಹಂಚಲಾಗುತ್ತದೆ</string>
 
+    <string name="please_complete_the_baseline_survey">ದಯವಿಟ್ಟು ಬೇಸ್‌ಲೈನ್ ಸಮೀಕ್ಷೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ.</string>
+    <string name="dialog_baseline_ok">ಸರಿ</string>
+    <string name="baseline_warning_alert">ಎಚ್ಚರಿಕೆ!</string>
     <string name="screening_lbl">ಸ್ಕ್ರೀನಿಂಗ್</string>
 
     <string name="patient_visit_sent_ended">ರೋಗಿಯ ಭೇಟಿ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದ್ದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಂತ್ಯಗೊಂಡಿದೆ.</string>
@@ -1063,5 +1066,21 @@
     <string name="hypertension_quit_alcohol_tobacco">ಬಿಪಿ: ಮದ್ಯಪಾನ ಮತ್ತು ತಂಬಾಕು ಬಿಡಿ</string>
     <string name="ncd_report">NCD ವರದಿ</string>
 
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">ಇತ್ತೀಚಿನ NCD ರೀಡಿಂಗ್‌ಗಳು</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">ಹಿಂದಿನ %1$s NCD ಭೇಟಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
 
 </resources>
