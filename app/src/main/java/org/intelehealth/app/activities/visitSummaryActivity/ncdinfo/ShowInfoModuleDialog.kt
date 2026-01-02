@@ -77,7 +77,7 @@ class ShowInfoModuleDialog(
             } catch (e: Exception) {
                 e.printStackTrace()
                 (context as Activity).runOnUiThread {
-                    Toast.makeText(context, "Failed to load PDF", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.failed_to_load_the_page), Toast.LENGTH_SHORT).show()
                 }
             }
         }.start()
