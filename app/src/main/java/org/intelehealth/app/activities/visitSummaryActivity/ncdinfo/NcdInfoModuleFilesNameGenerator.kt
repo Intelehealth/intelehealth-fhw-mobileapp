@@ -3,13 +3,12 @@ package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import org.intelehealth.ncd.constants.Constants.NCD_HEALTH_INFO_MODULES
 import java.util.regex.Pattern
 
 
 class NcdInfoModuleFilesNameGenerator {
     private val TAG = "NcdInfoModuleFilesNameG"
-
-    private val baseUrl = "https://afitraining.ekalarogya.org:3004/ncdinfo/"
 
     private fun splitComplaintBlocks(text: String): List<String> {
         return text.split("►")
@@ -54,15 +53,12 @@ class NcdInfoModuleFilesNameGenerator {
 
         val commonModules = setOf("exercise") // modules to keep only once
         val seenCommonModules = mutableSetOf<String>()
+        val exerciseItems = mutableListOf<HealthModuleItem>()
 
         blocks.forEach { block ->
             val chiefComplaint = extractChiefComplaint(block)
             if (chiefComplaint.isEmpty()) return@forEach
-            Log.d(TAG, "generateModulesNew: chiefComplaint : "+chiefComplaint)
-            // Allow only follow-up protocols + diabetes screening
             if (!isInfoModuleAllowed(chiefComplaint)) return@forEach
-            Log.d(TAG, "generateModulesNew: chiefComplaint 11: "+chiefComplaint)
-
             val modules = extractInformationModules(block)
             if (modules.isEmpty()) return@forEach
 
@@ -71,22 +67,26 @@ class NcdInfoModuleFilesNameGenerator {
             modules.forEach { module ->
                 val moduleLower = module.lowercase()
 
-                // Deduplicate only common modules
-                if (moduleLower in commonModules && !seenCommonModules.add(moduleLower)) return@forEach
-
                 val normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
-
                 val moduleFileName = "${baseName}_${normalizedModuleNameForUrl}_${languageCode}.pdf"
 
                 val item = HealthModuleItem(
                     moduleName = module,
-                    url = "$baseUrl$moduleFileName"
+                    url = "$NCD_HEALTH_INFO_MODULES$moduleFileName"
                 )
-                item.displayName = HealthModuleTitleMapper.getDisplayName(context, module,chiefComplaint)
+                item.displayName = HealthModuleTitleMapper.getDisplayName(context, module, chiefComplaint)
 
-                result.add(item)
+                if (moduleLower in commonModules) {
+                    // store exercise separately to add later at the bottom
+                    if (seenCommonModules.add(moduleLower)) {
+                        exerciseItems.add(item)
+                    }
+                } else {
+                    result.add(item) // add normal modules immediately
+                }
             }
         }
+        result.addAll(exerciseItems)
 
         return result
     }
