@@ -318,6 +318,5 @@ public class AppConstants {
     public static final String IS_NCD_VISIT_ATTRIBUTE = "bc79d2ab-3c83-48f2-820d-08a02b32faab";
     public static final String NCD_PROTOCOL_DIRECTORY = "engines/ncd";
     public static final String PROTOCOL_DIRECTORY = "engines";
-
-
+    public static final String NCD_REPORT_BASE_URL = "https://afitraining.ekalarogya.org/intelehealth/index.html#/r/";
 }
