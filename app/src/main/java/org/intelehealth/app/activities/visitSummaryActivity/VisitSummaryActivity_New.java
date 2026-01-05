@@ -548,6 +548,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         mIsNCDVitals = getIntent().getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
         if (mIsNCDVitals) {
+            mBinding.layoutVisitSummaryItems.ncdVitalsLay.getRoot().setVisibility(View.VISIBLE);
             handleNcdVisitsViewVisibility();
             handleNcdVitalsViewVisibility();
             expandableCardVisibilityHandling();
@@ -582,6 +583,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             language = sessionManager.getAppLanguage();
             //shareAndViewInfoModel();
             viewAndShareHealthInfoModule();
+            mBinding.layoutVisitSummaryItems.ncdVitalsLay.getRoot().setVisibility(View.GONE);
         }
     }
 
