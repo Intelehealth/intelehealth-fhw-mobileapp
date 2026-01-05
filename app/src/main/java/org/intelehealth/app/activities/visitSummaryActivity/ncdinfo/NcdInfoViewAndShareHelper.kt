@@ -108,8 +108,13 @@ class NcdInfoViewAndShareHelper(
         patientUuid: String?
     ): String {
         val ncdMessageTitle = context.getString(R.string.ncd_report)
-        val baseMessage = context.getString(R.string.msg_ekal_thank_you)
+        //val baseMessage = context.getString(R.string.msg_ekal_thank_you)
         val ncdReportUrl = NCD_REPORT_BASE_URL + patientUuid
+        val baseMessage = if (fileUrls.isNotEmpty()) {
+            context.getString(R.string.msg_ekal_thank_you)
+        } else {
+            context.getString(R.string.msg_ekal_thank_you_ncd_report)
+        }
         val urlsPart = if (fileUrls.isNotEmpty()) {
             fileUrls.joinToString(separator = "\n\n") { "${it.displayName}: ${it.url}" } +
                     "\n\n$ncdMessageTitle: $ncdReportUrl"

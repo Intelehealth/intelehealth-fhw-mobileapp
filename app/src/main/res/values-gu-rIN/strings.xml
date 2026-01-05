@@ -1130,5 +1130,6 @@
     <string name="hb_icon">Hemoglobin icon</string>
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
-    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>z
+    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>
+    <string name="msg_ekal_thank_you_ncd_report">એકલ ટેલીમેડિસિન સેવા ઉપયોગ કરવા બદલ આભાર!</string>
 </resources>

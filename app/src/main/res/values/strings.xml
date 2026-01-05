@@ -1204,5 +1204,6 @@
     <string name="click_to_view_past_ncd_visits">Click to view the past %1$s NCD visits</string>
 
     <string name="failed_to_load_the_page">Failed to load the page</string>
+    <string name="msg_ekal_thank_you_ncd_report">Thank you for using Ekal Telemedicine!</string>
 
 </resources>

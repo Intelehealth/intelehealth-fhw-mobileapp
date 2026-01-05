@@ -563,5 +563,7 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">கடந்த %1$s NCD வருகைகளைப் பார்க்க கிளிக் செய்யவும்</string>
+    <string name="msg_ekal_thank_you_ncd_report">ஏகல் டெலிமெடிசின் சேவையை பயன்படுத்தியதற்கு நன்றி!</string>
+
 </resources>
 
