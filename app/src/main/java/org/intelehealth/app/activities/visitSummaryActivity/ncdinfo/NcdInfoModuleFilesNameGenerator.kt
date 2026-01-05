@@ -65,9 +65,18 @@ class NcdInfoModuleFilesNameGenerator {
             val baseName = chiefComplaint.lowercase().replace("\\s+".toRegex(), "_")
 
             modules.forEach { module ->
-                val moduleLower = module.lowercase()
+                val moduleLower = module.lowercase().removeSuffix(".")
+                Log.d(TAG, "generateModulesNew: moduleLower : "+moduleLower)
 
-                val normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
+                var normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
+                Log.d(TAG, "generateModulesNew:  normalizedModuleNameForUrl   : "+normalizedModuleNameForUrl)
+                if(normalizedModuleNameForUrl == "increase_intake_of_iron_folic_acid_and_protein_rich_foods")
+                    normalizedModuleNameForUrl = "increase_iron_folicacid_protein_intake"
+
+                if(normalizedModuleNameForUrl == "deworming_health_&_hygiene")
+                    normalizedModuleNameForUrl = "deworming_health_and_hygiene"
+
+
                 val moduleFileName = "${baseName}_${normalizedModuleNameForUrl}_${languageCode}.pdf"
 
                 val item = HealthModuleItem(
