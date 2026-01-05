@@ -353,9 +353,7 @@ public class Fragment_ThirdScreen extends Fragment {
                     @Override
                     public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
                         if (enrollSuggestionResponse.getAbhaAddressList() != null) {
-                            addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
-                            addressList.remove(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0));
 
                             if (!addressList.isEmpty()) {
 

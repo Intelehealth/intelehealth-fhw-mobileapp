@@ -451,15 +451,12 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
                     public void onSuccess(EnrollSuggestionResponse enrollSuggestionResponse) {
-                        Timber.tag(TAG).d("onSuccess: suggestion: %s", enrollSuggestionResponse);
                         cpd.dismiss();
 
                         if (enrollSuggestionResponse.getAbhaAddressList() != null) {
-                            // auto-generated abha preferred address from abdm end.
-                            addressList.addAll(otpVerificationResponse.getABHAProfile().getPhrAddress());
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
-                            if (addressList.size() > 0) {
+                            if (!addressList.isEmpty()) {
                                 Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
