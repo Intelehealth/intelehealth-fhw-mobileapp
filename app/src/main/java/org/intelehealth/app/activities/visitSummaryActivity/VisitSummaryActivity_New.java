@@ -548,14 +548,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         mIsNCDVitals = getIntent().getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
         if (mIsNCDVitals) {
-            handleNcdVisitsViewVisibility();
-            handleNcdVitalsViewVisibility();
-            expandableCardVisibilityHandling();
-            fetchingIntentNcdVitals();
-            setupRecyclerView();
-            setViewsData();
-            loadData();
-            setupClickListeners();
+          showRecentNcdVitals();
         } else {
             fetchingIntent();
             expandableCardVisibilityHandling();
@@ -583,6 +576,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //shareAndViewInfoModel();
             viewAndShareHealthInfoModule();
         }
+    }
+
+    void showRecentNcdVitals(){
+        handleNcdVisitsViewVisibility();
+        handleNcdVitalsViewVisibility();
+        expandableCardVisibilityHandling();
+        fetchingIntentNcdVitals();
+        setupRecyclerView();
+        setViewsData();
+        loadData();
+        setupClickListeners();
     }
 
     private void fetchingIntentNcdVitals() {
@@ -872,9 +876,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-        if (mIsNCDVisit) {
+        if (!mIsNCDVisit) {
             handleNcdVisitsViewVisibility();
             findViewById(R.id.ncd_vitals_lay).setVisibility(View.GONE);
+        }else{
+            showRecentNcdVitals();
         }
         // receiver
         registerBroadcastReceiverDynamically();
