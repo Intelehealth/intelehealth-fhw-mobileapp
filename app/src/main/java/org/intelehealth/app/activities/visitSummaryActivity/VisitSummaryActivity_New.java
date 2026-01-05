@@ -574,6 +574,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             language = sessionManager.getAppLanguage();
             viewAndShareHealthInfoModule();
+            mBinding.layoutVisitSummaryItems.ncdVitalsLay.getRoot().setVisibility(View.GONE);
         }
     }
 
