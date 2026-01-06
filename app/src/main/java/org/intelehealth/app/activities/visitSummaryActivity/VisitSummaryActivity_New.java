@@ -6890,11 +6890,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void viewAndShareHealthInfoModule() {
+        if(mIsNCDVisit){
+            mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
+        }
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
         String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
         infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
         boolean hasFollowup = infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
-        Log.d(TAG, "kkzz viewAndShareHealthInfoModule: hasFollowup : "+hasFollowup);
         if (hasFollowup) {
             if (infoModulesFileUrlsList !=null && !infoModulesFileUrlsList.isEmpty()){
                 viewInfoModule();
@@ -6908,9 +6910,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void viewInfoModule() {
-        Log.d(TAG, "kkzz viewInfoModule: infoModulesFileUrlsList : "+infoModulesFileUrlsList.size());
-        Log.d(TAG, "kkzz viewInfoModule: infoModulesFileUrlsList : "+new Gson().toJson(infoModulesFileUrlsList));
-
         mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
             //mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
             mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleHeaderRelative.setOnClickListener(v -> {
@@ -6951,6 +6950,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
     }
     private void shareNCDReportOnWhatsapp() {
+        if(mIsNCDVisit){
+            mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
+        }
         mBinding.layoutShareInfoModule.setOnClickListener(v -> {
             List<HealthModuleItem> list = new ArrayList<>();
             NcdInfoViewAndShareHelper shareHelper = new NcdInfoViewAndShareHelper(context, mBinding, visitUuid, visitsDAO, visitAttributeListDAO);

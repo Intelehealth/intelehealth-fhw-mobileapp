@@ -1271,7 +1271,7 @@
                 <RelativeLayout
                     android:id="@+id/layout_share_info_module"
                     android:layout_width="match_parent"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_height="@dimen/fu_btn_size"
                     android:layout_marginStart="@dimen/margin_24"
                     android:layout_marginEnd="@dimen/margin_24"
