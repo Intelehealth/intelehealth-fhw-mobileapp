@@ -548,15 +548,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         networkUtils = new NetworkUtils(this, this);
         mIsNCDVitals = getIntent().getBooleanExtra(IntentKeys.IS_NCD_VITALS_EVENT, false);
         if (mIsNCDVitals) {
-            handleNcdVisitsViewVisibility();
-            handleNcdVitalsViewVisibility();
-            expandableCardVisibilityHandling();
-            fetchingIntentNcdVitals();
-            setupRecyclerView();
-            setViewsData();
-            loadData();
-            setupClickListeners();
-            shareNCDReportOnWhatsapp();
+          showRecentNcdVitals();
         } else {
             fetchingIntent();
             expandableCardVisibilityHandling();
@@ -583,6 +575,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             language = sessionManager.getAppLanguage();
             viewAndShareHealthInfoModule();
         }
+    }
+
+    /**
+     * showing last 7 ncd vitals only
+     * and disabling other cards
+     */
+    void showRecentNcdVitals(){
+        handleNcdVisitsViewVisibility();
+        handleNcdVitalsViewVisibility();
+        expandableCardVisibilityHandling();
+        fetchingIntentNcdVitals();
+        setupRecyclerView();
+        setViewsData();
+        loadData();
+        setupClickListeners();
     }
 
     private void fetchingIntentNcdVitals() {
@@ -872,9 +879,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Log.d(TAG, "fetchingIntent: mIsNCDVisit : " + mIsNCDVisit);
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
-        if (mIsNCDVisit) {
-            handleNcdVisitsViewVisibility();
+        if (!mIsNCDVisit) {
+            //disabling last 7 ncd view if the visit is doctor
+            //handleNcdVisitsViewVisibility();
             findViewById(R.id.ncd_vitals_lay).setVisibility(View.GONE);
+        }else{
+            //enabling last 7 ncd view if the visit is ncd
+            //showRecentNcdVitals();
+            handleNcdVitalsViewVisibility();
+            expandableCardVisibilityHandling();
+            fetchingIntentNcdVitals();
+            setupRecyclerView();
+            setViewsData();
+            loadData();
+
+            findViewById(R.id.ncd_vitals_lay).setVisibility(View.VISIBLE);
+            findViewById(R.id.visitReasonCard).setVisibility(View.VISIBLE);
+            findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
         }
         // receiver
         registerBroadcastReceiverDynamically();
