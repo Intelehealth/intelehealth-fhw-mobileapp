@@ -6869,8 +6869,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void viewAndShareHealthInfoModule() {
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
         String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
-        List<HealthModuleItem> infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
+        infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
         boolean hasFollowup = infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
+        Log.d(TAG, "kkzz viewAndShareHealthInfoModule: hasFollowup : "+hasFollowup);
         if (hasFollowup) {
             if (infoModulesFileUrlsList !=null && !infoModulesFileUrlsList.isEmpty()){
                 viewInfoModule();
@@ -6884,12 +6885,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void viewInfoModule() {
-        boolean hasFollowup = infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
-        if (hasFollowup) {
-            if (infoModulesFileUrlsList == null && infoModulesFileUrlsList.isEmpty())
-                return;
-            mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.GONE);
-            mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
+        Log.d(TAG, "kkzz viewInfoModule: infoModulesFileUrlsList : "+infoModulesFileUrlsList.size());
+        Log.d(TAG, "kkzz viewInfoModule: infoModulesFileUrlsList : "+new Gson().toJson(infoModulesFileUrlsList));
+
+        mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
             //mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
             mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleHeaderRelative.setOnClickListener(v -> {
                 if (mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.getVisibility() == View.VISIBLE) {
@@ -6909,7 +6908,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context, mBinding, visitUuid, visitsDAO, visitAttributeListDAO);
             ncdInfoViewAndShareHelper.viewNcdInfoModuleInfoNew(infoModulesFileUrlsList, mBinding);
-        }
+
     }
 
     private void shareInfoModule() {
