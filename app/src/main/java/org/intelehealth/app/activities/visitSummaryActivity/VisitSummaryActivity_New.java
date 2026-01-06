@@ -578,6 +578,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
+    /**
+     * showing last 7 ncd vitals only
+     * and disabling other cards
+     */
     void showRecentNcdVitals(){
         handleNcdVisitsViewVisibility();
         handleNcdVitalsViewVisibility();
@@ -877,10 +881,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBinding.fabStartChat.setVisibility(mIsNCDVisit ? View.GONE : View.VISIBLE);
 
         if (!mIsNCDVisit) {
-            handleNcdVisitsViewVisibility();
+            //disabling last 7 ncd view if the visit is doctor
+            //handleNcdVisitsViewVisibility();
             findViewById(R.id.ncd_vitals_lay).setVisibility(View.GONE);
         }else{
-            showRecentNcdVitals();
+            //enabling last 7 ncd view if the visit is ncd
+            //showRecentNcdVitals();
+            handleNcdVitalsViewVisibility();
+            expandableCardVisibilityHandling();
+            fetchingIntentNcdVitals();
+            setupRecyclerView();
+            setViewsData();
+            loadData();
+
+            findViewById(R.id.ncd_vitals_lay).setVisibility(View.VISIBLE);
+            findViewById(R.id.visitReasonCard).setVisibility(View.VISIBLE);
         }
         // receiver
         registerBroadcastReceiverDynamically();
