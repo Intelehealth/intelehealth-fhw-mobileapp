@@ -824,7 +824,7 @@ public class PrescriptionBuilder {
 
         for (String medicine : medicationDataArray) {
             if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
-                if(!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")){
+                if (!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")) {
                     additionalInstructionsData.append(listOpeningTag);
                     additionalInstructionsData.append(divOpeningTag);
                     additionalInstructionsData.append(spanOpeningTag);
@@ -1533,6 +1533,7 @@ public class PrescriptionBuilder {
     /**
      * medication data is different from others
      * so using separate function fot this
+     *
      * @param data
      * @return
      */
@@ -1559,14 +1560,14 @@ public class PrescriptionBuilder {
                 data = data.concat(Node.big_bullet).concat(" ").concat(string);
                 data = data.concat("\n");
             } else {
-                if(!string.matches(RegexUtils.getAdditionalInstructionRegex()) && string.contains("::")){
+                if (!string.matches(RegexUtils.getAdditionalInstructionRegex()) && string.contains("::")) {
                     additionalInstruction = additionalInstruction.concat("\n");
                     additionalInstruction = additionalInstruction.concat(Node.big_bullet).concat(" ").concat(string);
                     //additionalInstruction = additionalInstruction.concat("\n");
                 }
             }
         }
-        if(!additionalInstruction.isEmpty()){
+        if (!additionalInstruction.isEmpty()) {
             data = data + "\n\n"
                     + activityContext.getString(R.string.prescription_additional_ins) + ":\n"
                     + additionalInstruction;
@@ -1612,8 +1613,8 @@ public class PrescriptionBuilder {
     }
 
     private Typeface getSignatureTypeface(String font) {
-       // 4.1.3 code
-        /* String directory = "font/youthness.ttf";
+        // 4.1.3 code
+        String directory = "font/youthness.ttf";
         if (font != null) {
             if (font.equalsIgnoreCase("Youthness")) {
                 directory = "font/youthness.ttf";
@@ -1623,9 +1624,10 @@ public class PrescriptionBuilder {
                 directory = "font/arty.otf";
             } else if (font.equalsIgnoreCase("Almondita")) {
                 directory = "font/almondita.ttf";
-            }*/
-        // NCD side code
-        String directory = "font/almondita.ttf";
+            }
+        }
+            // NCD side code
+        /*String directory = "font/almondita.ttf";
         if(font!=null) {
             if (font.equalsIgnoreCase("Youthness")) {
                 directory = "font/Youthness.ttf";
@@ -1636,88 +1638,88 @@ public class PrescriptionBuilder {
             } else if (font.equalsIgnoreCase("Almondita")) {
                 directory = "font/almondita.ttf";
             }
+        }*/
+
+            return Typeface.createFromAsset(activityContext.getAssets(), directory);
         }
 
-        return Typeface.createFromAsset(activityContext.getAssets(), directory);
-    }
-
-    public void build(String fileName) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Display display = activityContext.getDisplay();
-            if (display != null) {
-                display.getRealMetrics(metrics);
-            }
-        } else {
-            WindowManager windowManager = activityContext.getWindowManager();
-            windowManager.getDefaultDisplay().getMetrics(metrics);
-        }
-
-        // Measure the view at the exact width and unspecified height to determine the total height needed
-        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-        binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
-
-        int viewHeight = binding.getRoot().getMeasuredHeight();
-        int viewWidth = metrics.widthPixels;
-
-        // Create a PDF document with a single page that matches the content height
-        PdfDocument pdfDocument = new PdfDocument();
-
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
-        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
-
-        Canvas canvas = page.getCanvas();
-        binding.getRoot().draw(canvas);
-
-        pdfDocument.finishPage(page);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
-            // This code looks if there are  existing prescription and deletes them.
-            Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
-            String selection = MediaStore.MediaColumns.DISPLAY_NAME + "=?";
-            String[] selectionArgs = new String[]{fileName};
-
-            try (Cursor cursor = activityContext.getContentResolver().query(contentUri, null, selection, selectionArgs, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    // Found the existing file, delete it
-                    int idColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
-                    Uri fileUri = ContentUris.withAppendedId(contentUri, cursor.getLong(idColumn));
-                    activityContext.getContentResolver().delete(fileUri, null, null);
+        public void build (String fileName){
+            DisplayMetrics metrics = new DisplayMetrics();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Display display = activityContext.getDisplay();
+                if (display != null) {
+                    display.getRealMetrics(metrics);
                 }
+            } else {
+                WindowManager windowManager = activityContext.getWindowManager();
+                windowManager.getDefaultDisplay().getMetrics(metrics);
             }
 
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
-            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+            // Measure the view at the exact width and unspecified height to determine the total height needed
+            binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
-            Uri uri = activityContext.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-            if (uri != null) {
-                try (OutputStream out = activityContext.getContentResolver().openOutputStream(uri)) {
-                    pdfDocument.writeTo(out);
+            binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
+
+            int viewHeight = binding.getRoot().getMeasuredHeight();
+            int viewWidth = metrics.widthPixels;
+
+            // Create a PDF document with a single page that matches the content height
+            PdfDocument pdfDocument = new PdfDocument();
+
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
+            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+            Canvas canvas = page.getCanvas();
+            binding.getRoot().draw(canvas);
+
+            pdfDocument.finishPage(page);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+                // This code looks if there are  existing prescription and deletes them.
+                Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+                String selection = MediaStore.MediaColumns.DISPLAY_NAME + "=?";
+                String[] selectionArgs = new String[]{fileName};
+
+                try (Cursor cursor = activityContext.getContentResolver().query(contentUri, null, selection, selectionArgs, null)) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        // Found the existing file, delete it
+                        int idColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
+                        Uri fileUri = ContentUris.withAppendedId(contentUri, cursor.getLong(idColumn));
+                        activityContext.getContentResolver().delete(fileUri, null, null);
+                    }
+                }
+
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+                Uri uri = activityContext.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                if (uri != null) {
+                    try (OutputStream out = activityContext.getContentResolver().openOutputStream(uri)) {
+                        pdfDocument.writeTo(out);
+                        pdfDocument.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error saving PDF", e);
+                    }
+                }
+            } else {
+                File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File filePath = new File(downloadsDir, fileName);
+
+                if (filePath.exists()) {
+                    // If the file exists, delete it
+                    boolean isDeleted = filePath.delete();
+                }
+
+                try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                    pdfDocument.writeTo(fos);
                     pdfDocument.close();
+                    fos.close();
                 } catch (IOException e) {
                     throw new RuntimeException("Error saving PDF", e);
                 }
             }
-        } else {
-            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            File filePath = new File(downloadsDir, fileName);
-
-            if (filePath.exists()) {
-                // If the file exists, delete it
-                boolean isDeleted = filePath.delete();
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                pdfDocument.writeTo(fos);
-                pdfDocument.close();
-                fos.close();
-            } catch (IOException e) {
-                throw new RuntimeException("Error saving PDF", e);
-            }
         }
     }
-}

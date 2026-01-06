@@ -1112,11 +1112,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String fontFamilyFile = "";
         if (details != null && details.getFontOfSign() != null) {
             if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/youthness.ttf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/asem.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/arty.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }

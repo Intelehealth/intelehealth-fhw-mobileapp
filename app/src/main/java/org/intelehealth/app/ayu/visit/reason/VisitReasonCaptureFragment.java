@@ -2,7 +2,6 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -362,6 +361,9 @@ public class VisitReasonCaptureFragment extends Fragment {
 
             }
             for (String s : temp) {
+                if(!s.endsWith(".json")){
+                    continue;
+                }
                 String fileName = s.split(".json")[0];
                 Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
