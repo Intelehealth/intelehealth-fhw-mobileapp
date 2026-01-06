@@ -126,4 +126,22 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+    <string name="screening_lbl">Screening</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="please_complete_the_baseline_survey">Please complete the Baseline Survey.</string>
+    <string name="dialog_baseline_ok">Ok</string>
+    <string name="baseline_warning_alert">Alert!</string>
+    <string name="category_already_selected">You already selected an item from %1$s</string>
 </resources>

@@ -1051,5 +1051,88 @@
     <string name="my_achievements">আমার সাফল্য</string>
 
 
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">দর্শনের কারণ</string>
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="never_prescribed_medication">আমাকে কখনই ওষুধ দেওয়া হয়নি</string>
+    <string name="forgot_to_take_it">নিতে ভুলে গেছি</string>
+    <string name="cannot_afford_medications">আমি ওষুধ দিতে পারি না</string>
+    <string name="ran_out_of_medication">আমার ওষুধ ফুরিয়ে গেছে/ ওষুধ হারিয়ে গেছে</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">আমার পিএইচসি এর সাথে ফলোআপ করা দরকার</string>
+    <string name="i_dont_think_i_need_it">আমি এটা প্রয়োজন মনে করি না</string>
+    <string name="side_effect_related_to_medication">ওষুধের সাথে সম্পর্কিত পার্শ্ব প্রতিক্রিয়া</string>
+    <string name="unknown_other">অজানা/অন্য</string>
+
+    <string name="are_you_taking_any_medication_for_bp">আপনি কি বর্তমানে বিপি এর জন্য ওষুধ খাচ্ছেন?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">আপনি কি বর্তমানে ডায়াবেটিস এর জন্য ওষুধ খাচ্ছেন? </string>
+    <string name="are_you_taking_any_medication_for_anemia">আপনি কি বর্তমানে রক্তাল্পতা এর জন্য ওষুধ খাচ্ছেন?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">আপনার বিপি জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">আপনার ডায়াবেটিস জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">আপনার রক্তাল্পতা জন্য আপনাকে কি গত 1 বছরের মধ্যে একজন স্বাস্থ্যসেবা কর্মী দেখেছেন?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">কেন আপনি আপনার বিপি ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">কেন আপনি আপনার ডায়াবেটিস ওষুধ খাচ্ছেন না?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">কেন আপনি আপনার রক্তাল্পতা ওষুধ খাচ্ছেন না?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">পরিবারের সদস্য হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">ব্যক্তিগত হোয়াটসঅ্যাপ অ্যাকাউন্টের সাথে যুক্ত মোবাইল নম্বরটি কী?</string>
+    <string name="i_dont_know">আমি জানি না</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">একল কি আপনাকে আমাদের সফরের সারাংশের একটি বিনামূল্যের হোয়াটসঅ্যাপ বার্তা পাঠাতে পারে?</string>
+    <string name="yes_family_member">হ্যাঁ (পরিবারের সদস্য)</string>
+    <string name="yes_personal">হ্যাঁ (ব্যক্তিগত)</string>
+    <string name="send_summary_on_whatsApp">সারাংশ হোয়াটসঅ্যাপে পাঠান</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">আপনি অথবা আপনার পরিবারের কেউ কি হোয়াটসঅ্যাপ ব্যবহার করেন?</string>
+
+    <string name="view_ncd_module">তথ্য মডিউল দেখুন</string>
+    <string name="share_ncd_module">তথ্য মডিউল শেয়ার করুন</string>
+    <string name="suggested_info_modules">প্রস্তাবিত NCD স্বাস্থ্য তথ্য মডিউল</string>
+    <string name="ncd_info_whatsapp_msg">হ্যালো, Intelehealth ব্যবহার করার জন্য ধন্যবাদ।\nHypertension এর জন্য আপনার স্বাস্থ্য তথ্য মডিউল ডাউনলোড করতে এখানে ক্লিক করুন</string>
+    <string name="enter_whatsapp_number">অনুগ্রহ করে WhatsApp নম্বর লিখুন</string>
+    <string name="share_ncd_info_dialog_title">এই NCD স্বাস্থ্য তথ্যটি এই WhatsApp নম্বরে শেয়ার করা হবে</string>
+
+    <string name="new_ncd_sevika_visit">নতুন NCD/সেবিকা ভিজিট</string>
+    <string name="screening_lbl">স্ক্রিনিং</string>
+
+    <string name="decrease_salt_intake">লবণের ব্যবহার কমান</string>
+    <string name="exercise">ব্যায়াম</string>
+    <string name="alcohol_and_tobacco_cessation">মদ্যপান এবং তামাক ত্যাগ</string>
+    <string name="ncd_info_whatsapp_msg_new">একল টেলিমেডিসিন ব্যবহার করার জন্য ধন্যবাদ। অনুগ্রহ করে তথ্য ডাউনলোড করুন এবং উচ্চ রক্তচাপ নিয়ন্ত্রণ বা কমানোর জন্য পড়ুন</string>
+    <string name="health_information">স্বাস্থ্য তথ্য</string>
+    <string name="saved_to_downloads">ফাইলটি Downloads-এ সংরক্ষিত হয়েছে</string>
+    <string name="failed_to_save_downloads">PDF সংরক্ষণ করতে ব্যর্থ হয়েছে</string>
+    <string name="patient_visit_sent_ended">রোগীর ভিজিট সফলভাবে সংরক্ষিত হয়েছে এবং স্বয়ংক্রিয়ভাবে শেষ হয়েছে।</string>
+    <string name="please_complete_the_baseline_survey">অনুগ্রহ করে বেসলাইন সার্ভে সম্পূর্ণ করুন।</string>
+    <string name="dialog_baseline_ok">ঠিক আছে</string>
+    <string name="baseline_warning_alert">সতর্কতা!</string>
+
+    <string name="category_already_selected">আপনি %1$s থেকে একটি আইটেম ইতিমধ্যেই নির্বাচন করেছেন</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">সাম্প্রতিক NCD রিডিং</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">বিগত %1$sটি NCD ভিজিট দেখতে ক্লিক করুন</string>
 
 </resources>

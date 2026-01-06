@@ -33,13 +33,13 @@ android {
             archivesBaseName = "intelehealth_kf-" + versionName + " - " + date
         }
 
-        biocon {
+        /*biocon {
             dimension client
             applicationId "org.intelehealth.biocon"
             versionCode 1
             versionName '1.0'
             archivesBaseName = "intelehealth_biocon-" + versionName + " - " + date
-        }
+        }*/
 
         bmgf {
             dimension client

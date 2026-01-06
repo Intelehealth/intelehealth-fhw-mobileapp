@@ -35,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     buildTypes {
@@ -87,6 +88,7 @@ dependencies {
     implementation project(':fcm')
     implementation project(':config')
     implementation project(':videolibrary')
+    implementation project(':ncd')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -102,7 +104,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.2.0'
-
+// Required for core library desugaring
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
     //fingerprint lock
     implementation 'androidx.biometric:biometric:1.1.0'
 

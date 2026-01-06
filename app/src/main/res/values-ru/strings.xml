@@ -502,4 +502,46 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+    <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+    <string name="screening_lbl">Screening</string>
+    <string name="please_complete_the_baseline_survey">Пожалуйста, завершите базовый опрос.</string>
+    <string name="dialog_baseline_ok">Ок</string>
+    <string name="baseline_warning_alert">Тревога!</string>
+
+    <string name="category_already_selected">You already selected an item from %1$s</string>
+    <string name="what_is_reason_for_this_visit">What is the reason for this visit?</string>
+
+    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
+    <string name="yes_move_ahead">"Yes, move ahead"</string>
+    <string name="no_go_back">No, go back</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">Недавние показатели НИЗ</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">Нажмите, чтобы посмотреть предыдущие %1$s визита по НИЗ</string>
 </resources>

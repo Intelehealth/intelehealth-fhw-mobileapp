@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="years_abbr">Y</string>
+    <string name="anemia_followup">Anemia Followup</string>
+</resources>

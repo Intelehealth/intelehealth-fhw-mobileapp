@@ -1,0 +1,167 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="video_library">வீடியோ நூலகம்</string>
+    <string name="no_videos_found_on_server">சர்வரில் எந்த வீடியோக்களும் இல்லை</string>
+
+    <string name="type_to_search">தேட தட்டச்சு செய்யவும்…</string>
+
+    <!-- Search Patient Screen Tabs -->
+    <string name="tab_anemia_screening">அனீமியா திரையாய்வு</string>
+    <string name="tab_anemia_follow_up">அனீமியா தொடர்ச்சி</string>
+    <string name="tab_diabetes_screening">நீரிழிவு திரையாய்வு</string>
+    <string name="tab_diabetes_follow_up">நீரிழிவு தொடர்ச்சி</string>
+    <string name="tab_hypertension_screening">அதிக இரத்த அழுத்த திரையாய்வு</string>
+    <string name="tab_hypertension_follow_up">அதிக இரத்த அழுத்த தொடர்ச்சி</string>
+    <string name="tab_general">பொது</string>
+    <string name="search_patient">நோயாளியைத் தேடுக</string>
+
+    <string name="medical_history_yes">ஆம்</string>
+    <string name="age">வயது</string>
+    <string name="years">ஆண்டு</string>
+    <string name="months">மாதம்</string>
+    <string name="days">நாள்</string>
+    <string name="sample_name_open_mrs_id_text">ரவி குமார், 2AGY-87</string>
+    <string name="sample_age_text">வயது: 16 ஆண்டு 10 மாதம் 16 நாள்</string>
+    <string name="sample_disease_category">மாதிரி நோய்</string>
+
+    <string name="search_text_filed_hint">பெயர், ஐடி அல்லது மொபைல் மூலம் தேடுக</string>
+    <string name="no_data_found">தகவல் எதுவும் இல்லை</string>
+    <string name="patient_not_found">நோயாளி கிடைக்கவில்லை!</string>
+    <string name="correct_search_string_message">சரியான பெயர், ஐடி அல்லது மொபைல் எண்ணைப் பயன்படுத்தி தேடவும் அல்லது புதிய நோயாளியை பதிவு செய்யவும்.</string>
+    <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>
+    <string name="presc_pending">மருத்துவப் பரிந்துரை நிலுவையில்</string>
+    <string name="priority">முன்னுரிமை</string>
+    <string name="search_date_txt">24 மே, மாலை 3:15</string>
+    <string name="five_presc_received">%1$s மருத்துவப் பரிந்துரைகள் பெறப்பட்டன</string>
+    <string name="presc_received">மருத்துவப் பரிந்துரை பெறப்பட்டது</string>
+    <string name="visit_not_uploaded">விசிட் பதிவேற்றப்படவில்லை</string>
+    <string name="search_gender">ஆண் 22</string>
+    <string name="search_txt_enter">நோயாளர் பெயர் அல்லது ஐடி உள்ளிடவும்</string>
+    <string name="search_hint_text">முன்பு தேடியவை</string>
+    <string name="all_patients_txt">அனைத்து நோயாளிகளும்</string>
+    <string name="clear">அழி</string>
+    <string name="search_pat_not_found_txt">நோயாளி கிடைக்கவில்லை!</string>
+
+    <!-- 1.1 Navigation -->
+    <string name="button_pagination_next">அடுத்தது</string>
+    <string name="button_pagination_previous">முன்</string>
+    <string name="back_button_text">பின்செல்</string>
+    <string name="edit_button_text">திருத்து</string>
+    <string name="review_answers_text">பதில்களை பரிசீலிக்கவும்</string>
+    <string name="button_review">பரிசீலனை</string>
+    <string name="submit_questionnaire">சமர்ப்பிக்கவும்</string>
+    <string name="cancel_questionnaire">@android:string/cancel</string>
+    <string name="questionnaire_review_mode_title">சமர்ப்பிக்கும் முன் பதில்களை பரிசீலிக்கவும்</string>
+
+    <!-- 1.2 Submit Pop-up -->
+    <string name="questionnaire_validation_error_headline">பிழைகள் கண்டறியப்பட்டன</string>
+    <string name="questionnaire_validation_error_supporting_text">பின்வரும் கேள்விகளை சரிசெய்க:</string>
+    <string name="questionnaire_validation_error_item_text_with_bullet">• %s</string>
+    <string name="questionnaire_validation_error_submit_button_text">எப்படியிருந்தாலும் சமர்ப்பிக்கவும்</string>
+    <string name="questionnaire_validation_error_fix_button_text">கேள்விகளை சரிசெய்க</string>
+
+    <!-- 1.3 Cancel Pop-up -->
+    <string name="questionnaire_cancel_text">நீங்கள் கேள்வித்தாளில் இருந்து வெளியேற விரும்புகிறீர்களா?</string>
+
+    <!-- 2.1 All Widgets -->
+    <string name="not_answered">பதில் அளிக்கப்படவில்லை</string>
+    <string name="help">உதவி</string>
+
+    <!-- 2.2 Boolean -->
+    <string name="no">இல்லை</string>
+    <string name="yes">ஆம்</string>
+
+    <!-- 2.3 Drop Down -->
+    <string name="hyphen">-</string>
+
+    <!-- 2.4 Multi Select / Open Choice -->
+    <string name="open_choice_other">மற்றவை</string>
+    <string name="open_choice_other_hint">தனிப்பயன் பதிலை உள்ளிடவும்</string>
+    <string name="open_choice_other_add_another">மற்றொரு பதிலைச் சேர்க்கவும்</string>
+    <string name="multi_select_dialog_subtitle">பொருந்துவதை அனைத்தையும் தேர்வு செய்யவும்</string>
+    <string name="save">சேமிக்கவும்</string>
+    <string name="cancel">ரத்து</string>
+
+    <!-- 2.5 Date / DateTime -->
+    <string name="date">தேதி</string>
+    <string name="time">நேரம்</string>
+    <string name="select_date">தேதியைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="select_time">நேரத்தைத் தேர்ந்தெடுக்கவும்</string>
+
+    <!-- 2.6 Attachment widget -->
+    <string name="take_photo">புகைப்படம் எடுக்க</string>
+    <string name="cd_photo_preview">புகைப்பட முன்னோட்டம்</string>
+    <string name="cd_file_icon_preview">கோப்பு ஐகான் முன்னோட்டம்</string>
+    <string name="upload_photo">புகைப்படத்தைப் பதிவேற்றவும்</string>
+    <string name="upload_audio">ஆடியோ பதிவேற்றம்</string>
+    <string name="upload_video">வீடியோ பதிவேற்றம்</string>
+    <string name="upload_document">ஆவணத்தை பதிவேற்றவும்</string>
+    <string name="upload_file">கோப்பைப் பதிவேற்றவும்</string>
+    <string name="delete">அழிக்கவும்</string>
+    <string name="max_size_image_above_limit_validation_error_msg">பிழை: படத்தின் அளவு %1$s MB-ஐ மீறுகிறது</string>
+    <string name="max_size_file_above_limit_validation_error_msg">பிழை: கோப்பின் அளவு %1$s MB-ஐ மீறுகிறது</string>
+    <string name="upload_failed">பதிவேற்றம் தோல்வியுற்றது</string>
+    <string name="mime_type_wrong_media_format_validation_error_msg">பிழை: தவறான மீடியா வடிவம்</string>
+    <string name="uploaded">பதிவேற்றப்பட்டது</string>
+    <string name="image_uploaded">படம் பதிவேற்றப்பட்டது</string>
+    <string name="file_uploaded">கோப்பு பதிவேற்றப்பட்டது</string>
+    <string name="video_uploaded">வீடியோ பதிவேற்றப்பட்டது</string>
+    <string name="audio_uploaded">ஆடியோ பதிவேற்றப்பட்டது</string>
+    <string name="image_deleted">படம் நீக்கப்பட்டது</string>
+    <string name="file_deleted">கோப்பு நீக்கப்பட்டது</string>
+    <string name="video_deleted">வீடியோ நீக்கப்பட்டது</string>
+    <string name="audio_deleted">ஆடியோ நீக்கப்பட்டது</string>
+
+    <!-- 2.7 Group -->
+    <string name="group_header_add_item_button">உருப்படியைச் சேர்க்கவும்</string>
+
+    <!-- 3.1 Validation -->
+    <string name="required_constraint_validation_error_msg">இந்த புலத்திற்கு பதில் அவசியம்.</string>
+    <string name="min_value_validation_error_msg">குறைந்தபட்ச மதிப்பு: <xliff:g id="min_value">%1$s</xliff:g></string>
+    <string name="max_value_validation_error_msg">அதிகபட்ச மதிப்பு: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="min_length_validation_error_msg">அனுமதிக்கப்பட்ட குறைந்தபட்ச எழுத்துகள்: <xliff:g id="min_length">%1$s</xliff:g></string>
+    <string name="max_decimal_validation_error_msg">அதிகபட்ச தசம எண்கள்: <xliff:g id="max_value">%1$s</xliff:g></string>
+
+<!--    <string name="regex_validation_error_msg">பதில் விதிமுறைக்கு பொருந்தவில்லை: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">உள்ளீட்டில் அனுமதிக்கப்படாத எழுத்துக்கள் உள்ளன.</string>
+
+    <string name="number_format_validation_error_msg">இரு எண்களுக்கு இடையில் (.) மட்டும் பயன்படுத்தவும். பிற எழுத்துக்கள் ஆதரிக்கப்படாது.</string>
+    <string name="date_format_validation_error_msg">தேதி வடிவம் <xliff:g id="locale_format">%1$s</xliff:g> (எ.கா.: %2$s) ஆக இருக்க வேண்டும்</string>
+<!--    <string name="integer_format_validation_error_msg">எண் <xliff:g id="min_value">%1$s</xliff:g> மற்றும் <xliff:g id="max_value">%2$s</xliff:g> இடைப்பட்டதாக இருக்க வேண்டும்</string>-->
+    <string name="integer_format_validation_error_msg">தயவுசெய்து சரியான எண்ணை உள்ளிடுங்கள்!</string>
+
+    <string name="decimal_format_validation_error_msg">தவறான எண்</string>
+    <string name="optional_helper_text">விருப்பத்தேர்வு</string>
+    <string name="required">தேவையானது</string>
+    <string name="required_text_and_new_line">தேவையானது\n</string>
+    <string name="space_asterisk">\u0020\u002a</string>
+    <string name="repeated_group_title">%1$s. %2$s</string>
+    <string name="add_repeated_group_item">%1$s சேர்க்கவும்</string>
+
+    <string name="abnormal_bp_message">
+        அசாதாரண இரத்த அழுத்தம் கண்டறியப்பட்டது. தயவுசெய்து 5 நிமிடங்கள் கழித்து மீண்டும் BP ஐ பரிசோதிக்கவும்.
+        &#10;&#10;இந்த உரையாடல் %1$02d:%2$02d இல் மூடப்படும்.
+    </string>
+
+    <string name="bp_alert_title">BP எச்சரிக்கை</string>
+    <string name="input_error_title">உள்ளீட்டு பிழை</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+        சிஸ்டாலிக் BP (SBP) டயாஸ்டாலிக் BP (DBP) ஐ விட அதிகமாக இருக்க வேண்டும். தயவுசெய்து மதிப்புகளை சரிசெய்க.
+    </string>
+    <string name="ok_btn_lbl">சரி</string>
+
+    <string name="questionnaire_title_hypertension_screening">அதிக இரத்த அழுத்த திரையாய்வு</string>
+    <string name="questionnaire_title_anemia_screening">அனீமியா திரையாய்வு</string>
+    <string name="questionnaire_title_diabetes_screening">நீரிழிவு திரையாய்வு</string>
+    <string name="questionnaire_title_hypertension_followup">அதிக இரத்த அழுத்த தொடர்ச்சி</string>
+
+    <string name="bp_measurement">BP அளவு - %1$s/%2$s</string>
+    <string name="tab_all">அனைத்து</string>
+    <string name="questionnaire_title_anemia_followup">அனீமியா தொடர்ச்சி</string>
+    <string name="years_abbr">Y</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+</resources>

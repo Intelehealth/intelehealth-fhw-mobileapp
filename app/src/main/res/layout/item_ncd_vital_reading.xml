@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <!-- Guidelines -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2567" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5133" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_col3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.77" />
+
+        <!-- Date Column -->
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="@dimen/padding_10"
+            android:paddingEnd="8dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_col1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="15 Oct, 25" />
+
+        <!-- Divider 1 -->
+        <View
+            android:id="@+id/divider_1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#EEEEEE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_col1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- BP Column -->
+        <TextView
+            android:id="@+id/tv_bp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_10"
+            android:paddingHorizontal="8dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_col2"
+            app:layout_constraintStart_toEndOf="@id/guideline_col1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="148/92" />
+
+        <!-- Divider 2 -->
+        <View
+            android:id="@+id/divider_2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#EEEEEE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_col2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- HB Column -->
+        <TextView
+            android:id="@+id/tv_hb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_10"
+            android:paddingHorizontal="8dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_col3"
+            app:layout_constraintStart_toEndOf="@id/guideline_col2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="21" />
+
+        <!-- Divider 3 -->
+        <View
+            android:id="@+id/divider_3"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#EEEEEE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_col3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- RBS Column -->
+        <TextView
+            android:id="@+id/tv_rbs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_10"
+            android:paddingHorizontal="8dp"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_col3"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="90" />
+
+        <View
+            android:id="@+id/divider_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEEEEE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

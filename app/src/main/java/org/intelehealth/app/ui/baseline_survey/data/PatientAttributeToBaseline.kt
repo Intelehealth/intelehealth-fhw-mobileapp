@@ -52,6 +52,12 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
 
                 Column.AYUSHMAN_CARD_STATUS.value -> baseline.ayushmanCard =
                     it.value.returnEmptyIfHyphen()
+
+                Column.SELF_OR_FAMILY_WHATSAPP.value -> baseline.selfOrFamilyWhatsappNumber =
+                    it.value.returnEmptyIfHyphen()
+
+                Column.CAN_EKAL_SEND_WHATSAPP_MESSAGE.value -> baseline.canEkalSendFreeWhatsAppMessageForVisitSummary =
+                    it.value.returnEmptyIfHyphen()
             }
         }
     }
@@ -178,6 +184,16 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()
         baseline.surgeryValue = medicalHistory.anySurgeries.returnEmptyIfHyphen()
         baseline.surgeryReason = medicalHistory.reasonForSurgery.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForAnemia = medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForAnemia = medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingAnemiaMedication = medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForBP = medicalHistory.medicationForBP.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForBP = medicalHistory.healthWorkerForBP.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingBPMedication = medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
+        baseline.takingAnyMedicationForDiabetes = medicalHistory.medicationForDiabetes.returnEmptyIfHyphen()
+        baseline.haveYouSeenToHWinPastOneYearForDiabetes = medicalHistory.healthWorkerForDiabetes.returnEmptyIfHyphen()
+        baseline.reasonForNotTakingDiabetesMedication = medicalHistory.reasonForNoDiabetesMedication.returnEmptyIfHyphen()
+
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {

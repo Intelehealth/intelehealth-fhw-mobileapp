@@ -805,4 +805,13 @@ public class SessionManager {
         return pref.getString(CUSTOM_LOG_VERSION, "");
     }
 
+
+    public void setBaseLineWarningInfo(String uuid) {
+        editor.putBoolean(uuid, true);
+        editor.commit();
+    }
+
+    public Boolean getBaseLineWarningInfo(String uuid) {
+        return pref.getBoolean(uuid, false);
+    }
 }

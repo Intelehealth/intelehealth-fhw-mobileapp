@@ -1068,4 +1068,106 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">भेंट का कारण</string>
+
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="never_prescribed_medication">मुझे कभी दवाएँ निर्धारित नहीं की गईं</string>
+    <string name="forgot_to_take_it">मैं इसे लेना भूल गया</string>
+    <string name="cannot_afford_medications">मैं दवाएँ नहीं खरीद सकता</string>
+    <string name="ran_out_of_medication">मेरी दवाएँ ख़त्म हो गईं / दवाएँ खो गईं</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">मुझे अपने पीएचसी से अनुवर्ती कार्रवाई की आवश्यकता है</string>
+    <string name="i_dont_think_i_need_it">मुझे नहीं लगता कि मुझे इसकी जरूरत है</string>
+    <string name="side_effect_related_to_medication">दवा से संबंधित दुष्प्रभाव</string>
+    <string name="unknown_other">अज्ञात / अन्य</string>
+
+    <string name="are_you_taking_any_medication_for_bp">क्या आप वर्तमान में बीपी के लिए दवाएं ले रहे हैं?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">क्या आप वर्तमान में मधुमेह के लिए दवाएं ले रहे हैं?</string>
+    <string name="are_you_taking_any_medication_for_anemia">क्या आप वर्तमान में एनीमिया के लिए दवाएं ले रहे हैं?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी बीपी के लिए देखा है?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी मधुमेह के लिए देखा है?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">क्या पिछले 1 वर्ष के भीतर किसी स्वास्थ्यकर्मी ने आपको आपकी एनीमिया के लिए देखा है?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">आप अपनी बीपी दवाएँ क्यों नहीं ले रहे हैं?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">आप अपनी मधुमेह दवाएँ क्यों नहीं ले रहे हैं?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">आप अपनी एनीमिया दवाएँ क्यों नहीं ले रहे हैं?</string>
+
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">परिवार के सदस्य व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">व्यक्तिगत व्हाट्सएप से जुड़ा मोबाइल नंबर क्या है?</string>
+
+    <string name="i_dont_know">मुझे नहीं पता</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">क्या एकल आपको हमारी यात्रा के सारांश का एक मुफ्त व्हाट्सएप संदेश भेज सकता है?</string>
+    <string name="yes_family_member">हां (परिवार के सदस्य)</string>
+    <string name="yes_personal">हां (व्यक्तिगत)</string>
+    <string name="send_summary_on_whatsApp">सारांश व्हाट्सऐप पर भेजें</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?</string>
+
+    <string name="view_ncd_module">जानकारी मॉड्यूल देखें</string>
+    <string name="share_ncd_module">जानकारी मॉड्यूल साझा करें</string>
+    <string name="suggested_info_modules">अनुशंसित NCD स्वास्थ्य जानकारी मॉड्यूल</string>
+    <string name="ncd_info_whatsapp_msg">नमस्ते, Intelehealth का उपयोग करने के लिए धन्यवाद।\nहाइपरटेंशन के लिए अपना स्वास्थ्य जानकारी मॉड्यूल डाउनलोड करने के लिए, यहाँ क्लिक करें</string>
+    <string name="enter_whatsapp_number">कृपया व्हाट्सएप नंबर दर्ज करें</string>
+    <string name="share_ncd_info_dialog_title">यह NCD स्वास्थ्य जानकारी इस व्हाट्सएप नंबर पर साझा की जाएगी</string>
+
+    <string name="screening_lbl">स्क्रीनिंग</string>
+
+    <string name="decrease_salt_intake">नमक का सेवन कम करें</string>
+    <string name="exercise">व्यायाम</string>
+    <string name="alcohol_and_tobacco_cessation">शराब और तंबाकू का परित्याग</string>
+    <string name="ncd_info_whatsapp_msg_new">एकल टेलीमेडिसिन का उपयोग करने के लिए धन्यवाद। कृपया जानकारी डाउनलोड करें और उच्च रक्तचाप को प्रबंधित या कम करने के लिए पढ़ें</string>
+    <string name="health_information">स्वास्थ्य जानकारी</string>
+
+    <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
+    <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
+    <string name="please_complete_the_baseline_survey">कृपया बेसलाइन सर्वे पूरा करें।</string>
+    <string name="dialog_baseline_ok">ठीक है</string>
+    <string name="baseline_warning_alert">चेतावनी!</string>
+    <string name="patient_visit_sent_ended">मरीज़ की विज़िट सफलतापूर्वक सेव होकर स्वचालित रूप से समाप्त हो गई है।</string>
+
+    <string name="category_already_selected">%1$s से एक आइटम आप पहले ही चुन चुके हैं</string>
+
+    <string name="not_eligible_for_protocols_message">आप इस समय किसी भी NCD प्रोटोकॉल के लिए पात्र नहीं हैं। यदि आप फिर भी आगे बढ़ना चाहते हैं, तो अपनी पसंद का प्रोटोकॉल चुनें।</string>
+    <string name="yes_move_ahead">हाँ, आगे बढ़ें</string>
+    <string name="no_go_back">नहीं, वापस जाएँ</string>
+
+    <string name="msg_ekal_thank_you">एकल टेलीमेडिसिन सेवा का उपयोग करने के लिए धन्यवाद! हर दिन स्वस्थ रहने के आसान तरीके जानने के लिए लिंक पर क्लिक करें।</string>
+    <string name="anemia_food_advice">खून की कमी: आयरन, फोलिक एसिड और प्रोटीन से भरपूर भोजन खाएं</string>
+    <string name="anemia_deworm_hygiene">खून की कमी: नियमित रूप से कृमिनाशक दवा लें और स्वच्छता बनाए रखें</string>
+    <string name="anemia_quit_alcohol_tobacco">खून की कमी: शराब और तंबाकू छोड़ें</string>
+    <string name="diabetes_reduce_sugar">शुगर: चीनी का सेवन कम करें</string>
+    <string name="exercise_regularly">नियमित रूप से व्यायाम करें</string>
+    <string name="diabetes_quit_alcohol_tobacco">शुगर: शराब और तंबाकू छोड़ें</string>
+    <string name="hypertension_reduce_salt">बीपी: नमक का सेवन कम करें</string>
+    <string name="hypertension_quit_alcohol_tobacco">बीपी: शराब और तंबाकू छोड़ें</string>
+    <string name="ncd_report">NCD रिपोर्ट</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">हाल की NCD रीडिंग</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">पिछली %1$s NCD विज़िट देखने के लिए क्लिक करें</string>
 </resources>

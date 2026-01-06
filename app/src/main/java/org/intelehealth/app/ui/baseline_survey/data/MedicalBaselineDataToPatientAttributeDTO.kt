@@ -41,12 +41,21 @@ fun bindMedicalBaselinePatientAttributes(
         createPatientAttribute(
             patientId, PatientAttributesDTO.Column.OTHER_MEDICAL_HISTORY.value,
             getMedicalHistory(
-                baseline.bpValue,
-                baseline.diabetesValue,
-                baseline.arthritisValue,
-                baseline.anemiaValue,
-                baseline.surgeryValue,
-                baseline.surgeryReason
+                bpCheck = baseline.bpValue,
+                diabetesCheck = baseline.diabetesValue,
+                arthritisCheck = baseline.arthritisValue,
+                anemiaCheck = baseline.anemiaValue,
+                surgeryCheck = baseline.surgeryValue,
+                reasonForSurgery = baseline.surgeryReason,
+                medicationForAnemia = baseline.takingAnyMedicationForAnemia,
+                healthWorkerForAnemia = baseline.haveYouSeenToHWinPastOneYearForAnemia,
+                reasonForNoAnemiaMedication = baseline.reasonForNotTakingAnemiaMedication,
+                medicationForBP = baseline.takingAnyMedicationForBP,
+                healthWorkerForBP = baseline.haveYouSeenToHWinPastOneYearForBP,
+                reasonForNoBPMedication = baseline.reasonForNotTakingBPMedication,
+                medicationForDiabetes = baseline.takingAnyMedicationForDiabetes,
+                healthWorkerForDiabetes = baseline.haveYouSeenToHWinPastOneYearForDiabetes,
+                reasonForNoDiabetesMedication = baseline.reasonForNotTakingDiabetesMedication
             ),
             patientsDAO
         )
@@ -114,17 +123,36 @@ private fun getMedicalHistory(
     arthritisCheck: String,
     anemiaCheck: String,
     surgeryCheck: String,
-    reasonForSurgery: String
-): String = Gson().toJson(
+    reasonForSurgery: String,
+    medicationForAnemia: String,
+    healthWorkerForAnemia: String,
+    reasonForNoAnemiaMedication: String,
+    medicationForBP: String,
+    healthWorkerForBP: String,
+    reasonForNoBPMedication: String,
+    medicationForDiabetes: String,
+    healthWorkerForDiabetes: String,
+    reasonForNoDiabetesMedication: String
+    ): String = Gson().toJson(
     listOf(
-        MedicalHistory(
-            bpCheck.storeHyphenIfEmpty(),
-            diabetesCheck.storeHyphenIfEmpty(),
-            arthritisCheck.storeHyphenIfEmpty(),
-            anemiaCheck.storeHyphenIfEmpty(),
-            surgeryCheck.storeHyphenIfEmpty(),
-            reasonForSurgery.storeHyphenIfEmpty()
-        )
+      MedicalHistory(
+                bp = bpCheck.storeHyphenIfEmpty(),
+        diabetes = diabetesCheck.storeHyphenIfEmpty(),
+        arthritis = arthritisCheck.storeHyphenIfEmpty(),
+        anemia = anemiaCheck.storeHyphenIfEmpty(),
+        anySurgeries = surgeryCheck.storeHyphenIfEmpty(),
+        reasonForSurgery = reasonForSurgery.storeHyphenIfEmpty(),
+        medicationForAnemia = medicationForAnemia.storeHyphenIfEmpty(),
+        healthWorkerForAnemia = healthWorkerForAnemia.storeHyphenIfEmpty(),
+        reasonForNoAnemiaMedication = reasonForNoAnemiaMedication.storeHyphenIfEmpty(),
+        medicationForBP = medicationForBP.storeHyphenIfEmpty(),
+        healthWorkerForBP = healthWorkerForBP.storeHyphenIfEmpty(),
+        reasonForNoHypertensionMedication = reasonForNoBPMedication.storeHyphenIfEmpty(),
+        hypertension = bpCheck.storeHyphenIfEmpty(),
+        medicationForDiabetes = medicationForDiabetes.storeHyphenIfEmpty(),
+        healthWorkerForDiabetes = healthWorkerForDiabetes.storeHyphenIfEmpty(),
+        reasonForNoDiabetesMedication = reasonForNoDiabetesMedication.storeHyphenIfEmpty()
+    )
     )
 )
 

@@ -78,6 +78,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -97,10 +98,10 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
-import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -114,6 +115,7 @@ import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityPatientDetail2Binding;
 import org.intelehealth.app.enums.ListTypeEnum;
@@ -124,7 +126,10 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.baseline_survey.activity.BaselineLinelistingQuestionsActivity;
 import org.intelehealth.app.ui.baseline_survey.activity.BaselineSurveyActivity;
+import org.intelehealth.app.ui.baseline_survey.helper.MissingLineListingQuestionsHelper;
+import org.intelehealth.app.ui.baseline_survey.helper.MissingLineListingResult;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.BaselineSurveySource;
@@ -134,6 +139,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.IntentKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -153,6 +159,7 @@ import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.config.room.entity.PatientRegistrationFields;
+import org.intelehealth.ncd.constants.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -169,6 +176,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -242,6 +250,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     String houseHoldValue = "";
     private boolean areAllVisitsEnded = true;
 
+    private String mIntentFromNCDCategoryName = Constants.GENERAL;
+    private CompositeDisposable disposables = new CompositeDisposable();
+
+    private boolean isBaselineWarningOkClicked = false;
+
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
@@ -300,9 +313,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
 
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+
+            // to know from which category NCD screening is being started
+            mIntentFromNCDCategoryName = intent.getStringExtra(Constants.INTENT_NCD_CATEGORY);
         }
 
         initUI();
+
+        fetchNcdVisitCount();
+
+        binding.ncdVisitCountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentForNcdVisitDetails();
+            }
+        });
 
 
         personal_edit.setOnClickListener(v -> {
@@ -346,8 +371,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
-            startActivity(i);
-            finish();
+            /*startActivity(i);
+            finish();*/
+            onBack(intent);
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -434,12 +460,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         ivAddBaselineSurvey.setOnClickListener(view -> {
-            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL, getIntent());
             finish();
         });
 
         llChangeBaselineSurvey.setOnClickListener(view -> {
-            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL);
+            BaselineSurveyActivity.startBaselineSurvey(this, patientDTO.getUuid(), BaselineSurveyStage.GENERAL, BaselineSurveySource.PATIENT_DETAIL, getIntent());
             finish();
         });
 
@@ -461,15 +487,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
+        MissingLineListingQuestionsHelper helper = new MissingLineListingQuestionsHelper(this);
+        MissingLineListingResult resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid());
+        Log.d(TAG, "onCreate: resultModel value : "+new Gson().toJson(resultModel));
 
-        if (!isBaselineSurveyCompleted || !areAllVisitsEnded) {
+
+        if (!isBaselineSurveyCompleted || !areAllVisitsEnded || resultModel.getHasAnyHistoryWithoutMedication()) {
             startVisitBtn.setEnabled(false);
             startSevikaVisitBtn.setEnabled(false);
+            binding.startNCDSevikaVisitBtn.setEnabled(false);
             ivAddBaselineSurvey.setVisibility(View.VISIBLE);
             llChangeBaselineSurvey.setVisibility(View.GONE);
         } else {
             startVisitBtn.setEnabled(true);
             startSevikaVisitBtn.setEnabled(true);
+            binding.startNCDSevikaVisitBtn.setEnabled(true);
             ivAddBaselineSurvey.setVisibility(View.GONE);
             llChangeBaselineSurvey.setVisibility(View.VISIBLE);
         }
@@ -477,6 +509,147 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
             populateFamilyMembers(houseHoldValue);
         }
+        binding.startNCDSevikaVisitBtn.setOnClickListener(view -> {
+            new DialogUtils().showCommonDialog(
+                    this,
+                    R.drawable.ic_sevika_service_start,
+                    getResources().getString(R.string.start_newadvice_confirmation_title),
+                    getResources().getString(R.string.start_newadvice_confirmation_msg),
+                    false,
+                    getResources().getString(R.string.generic_yes),
+                    getResources().getString(R.string.generic_no),
+                    action -> {
+                        /*if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            //
+                            Intent intent2 = new Intent(PatientDetailActivity2.this, VisitCreationActivity.class);
+                            CommonVisitData commonVisitData = new CommonVisitData();
+                            commonVisitData.setPatientUuid(patientDTO.getUuid());
+                            commonVisitData.setPrivacyNote(privacy_value_selected);
+                            intent2.putExtra("CommonVisitData", commonVisitData);
+                            IntelehealthApplication.getInstance().setVisitType(AppConstants.VISIT_TYPE_SEVIKA);
+
+                            startActivity(intent2);
+                            finish();
+                        }*/
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            // before starting, we determine if it is new visit for a returning patient
+                            // extract both FH and PMH
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                            Date todayDate = new Date();
+                            todayDate = DateUtils.addMinutes(todayDate, -5);
+                            String thisDate = currentDate.format(todayDate);
+
+                            String uuid = UUID.randomUUID().toString();
+                            /*EncounterDAO encounterDAO = new EncounterDAO();
+                            encounterDTO = new EncounterDTO();
+                            encounterDTO.setUuid(UUID.randomUUID().toString());
+                            encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+                            encounterDTO.setEncounterTime(thisDate);
+                            encounterDTO.setVisituuid(uuid);
+                            encounterDTO.setSyncd(false);
+                            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                            encounterDTO.setVoided(0);
+                            encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.*/
+
+                            /*if (!startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+                                try {
+                                    encounterDAO.createEncountersToDB(encounterDTO);
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                }
+                            }*/
+
+                            /*InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+                            SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+                            String CREATOR_ID = sessionManager.getCreatorID();
+                            returning = false;
+                            sessionManager.setReturning(returning);
+
+                            String[] cols = {"value"};
+                            Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                                    new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                                    null, null, null);
+
+                            if (cursor.moveToFirst()) {
+                                // rows present
+                                do {
+                                    // so that null data is not appended
+                                    phistory = phistory + cursor.getString(0);
+
+                                }
+                                while (cursor.moveToNext());
+                                returning = true;
+                                sessionManager.setReturning(returning);
+                            }
+                            cursor.close();
+
+                            Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                                    new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+                                    null, null, null);
+                            if (cursor1.moveToFirst()) {
+                                // rows present
+                                do {
+                                    fhistory = fhistory + cursor1.getString(0);
+                                }
+                                while (cursor1.moveToNext());
+                                returning = true;
+                                sessionManager.setReturning(returning);
+                            }
+                            cursor1.close();*/
+
+                            // Will display data for patient as it is present in database
+                            // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+                            // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+                            VisitDTO visitDTO = new VisitDTO();
+                            visitDTO.setUuid(uuid);
+                            visitDTO.setPatientuuid(patientDTO.getUuid());
+                            visitDTO.setStartdate(thisDate);
+                            visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+                            visitDTO.setLocationuuid(sessionManager.getCurrentLocationUuid());
+                            visitDTO.setSyncd(false);
+                            visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+                            VisitsDAO visitsDAO = new VisitsDAO();
+                            try {
+                                visitsDAO.insertPatientToDB(visitDTO);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                            VisitAttributeListDAO dao = new VisitAttributeListDAO();
+                            try {
+                                boolean isInserted = dao.insertIsNcdVisitAttribute(uuid, "true");
+                            } catch (DAOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
+                            int age = DateAndTimeUtils.getAgeInYear(patientDTO.getDateofbirth(), context);
+
+                            Intent intent2 = new Intent(PatientDetailActivity2.this, ComplaintNodeActivity.class);
+                            intent2.putExtra("patientUuid", patientDTO.getUuid());
+                            intent2.putExtra("visitUuid", uuid);
+                            intent2.putExtra("encounterUuidVitals", "");
+                            intent2.putExtra("encounterUuidAdultIntial", "");
+                            intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+                            intent2.putExtra("name", fullName);
+                            intent2.putExtra("age", age);
+                            intent2.putExtra("tag", "new");
+                            intent2.putExtra("advicefrom", "Sevika");
+                            intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+                            intent2.putExtra(Constants.INTENT_NCD_CATEGORY, mIntentFromNCDCategoryName);
+                            startActivity(intent2);
+
+
+                            /*if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
+                                insertIsNcdSevikaVisitAttribute(uuid);
+                                navigateToComplaintScreen(uuid);
+                            } else {
+                                navigateToVitalsScreen(uuid);
+                            }*/
+                        }
+                    }
+            );
+        });
 
         startSevikaVisitBtn.setOnClickListener(view -> {
             new DialogUtils().showCommonDialog(
@@ -505,6 +678,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         populateBaselineSurveys();
+
+        handleDeviceBackPress();
+        checkForOldPatientMissingNCDBaselineData(resultModel);
+    }
+
+    private void fetchNcdVisitCount() {
+        disposables.add(
+                Single.fromCallable(() -> VisitsDAO.fetchObservationValuesCount(patientDTO.getUuid()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                count -> {
+                                    if (count > 0) {
+                                        binding.ncdVisitCountTv.setVisibility(View.VISIBLE);
+                                        binding.ncdVisitCountDividerView.setVisibility(View.VISIBLE);
+                                        binding.ncdVisitCountTv.setText(getString(R.string.click_to_view_past_ncd_visits, count));
+                                    } else {
+                                        binding.ncdVisitCountTv.setVisibility(View.GONE);
+                                        binding.ncdVisitCountDividerView.setVisibility(View.GONE);
+                                    }
+                                },
+                                error -> Log.e("TAG", "Error: " + error.getMessage())
+                        )
+        );
     }
 
     private void startNewVisit() {
@@ -669,7 +866,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //TODO: need to check why two instance
         compositeDisposable.dispose();
+        disposables.dispose();
     }
 
     @Override
@@ -1380,6 +1579,20 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         in.putExtra("float_ageYear_Month", float_ageYear_Month);
         in.putExtra("tag", "VisitDetailsActivity");
         in.putExtra("is_sevika_visit", getVisitStatus(pastVisitData));
+        startActivity(in);
+    }
+
+    /**
+     * using this intent to handle ncd item click
+     */
+    private void intentForNcdVisitDetails() {
+        Intent in = new Intent(PatientDetailActivity2.this, VisitSummaryActivity_New.class);
+        in.putExtra("patientUuid", patientDTO.getUuid());
+        in.putExtra("gender", mGender);
+        in.putExtra("name", patientName);
+        in.putExtra("float_ageYear_Month", float_ageYear_Month);
+        in.putExtra("tag", "VisitDetailsActivity");
+        in.putExtra(IntentKeys.IS_NCD_VITALS_EVENT, true);
         startActivity(in);
     }
 
@@ -2261,10 +2474,52 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
 
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
+                onBack(intent);
+            }
+        });
+    }
+
     public void backPress(View view) {
-        Intent intent = new Intent(this, SearchPatientActivity_New.class);
-        startActivity(intent);
-        finish();
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        onBack(intent);
+    }
+
+    public void onBack(Intent intent) {
+        if (!isBaselineSurveyCompleted && !isBaselineWarningOkClicked) {
+            showBaselineWarningDialog(intent);
+        } else {
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void showBaselineWarningDialog(Intent intent) {
+        DialogUtils dialogUtils = new DialogUtils();
+        MaterialAlertDialogBuilder builder = dialogUtils.showErrorDialogWithTryAgainButton(this, ContextCompat.getDrawable(this, R.drawable.close_patient_svg), getString(R.string.baseline_warning_alert),
+                getString(R.string.please_complete_the_baseline_survey), getString(R.string.dialog_baseline_ok));
+        AlertDialog baselineWarningDialog = builder.show();
+        baselineWarningDialog.setCancelable(false);
+
+        baselineWarningDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        baselineWarningDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        baselineWarningDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+
+        Button okButton = baselineWarningDialog.findViewById(R.id.positive_btn);
+        if (okButton != null) okButton.setOnClickListener(v -> {
+            baselineWarningDialog.dismiss();
+            isBaselineWarningOkClicked = true;
+           /* startActivity(intent);
+            finish();*/
+        });
+
     }
 
     public void syncNow(View view) {
@@ -2760,4 +3015,31 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
         }
     }
+    private void showBaselineMissingQuestionsDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(
+                PatientDetailActivity2.this,
+                R.drawable.ui2_ic_warning_internet,
+                getResources().getString(R.string.ncd_baseline),
+                getString(R.string.ncd_baseline_dialog_content),
+                false,
+                getResources().getString(R.string.yes_proceed),
+                getResources().getString(R.string.cancel),
+                action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        Intent intent  =new Intent(PatientDetailActivity2.this, BaselineLinelistingQuestionsActivity.class);
+                        intent.putExtra("patientUuid", patientDTO.getUuid());
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+    private void checkForOldPatientMissingNCDBaselineData(MissingLineListingResult resultModel) {
+        boolean skipDialog = getIntent().getBooleanExtra("SKIP_DIALOG", false);
+        if (!skipDialog) {
+            if(resultModel!=null && resultModel.getHasAnyHistoryWithoutMedication())
+                showBaselineMissingQuestionsDialog();
+        }
+    }
+
 }

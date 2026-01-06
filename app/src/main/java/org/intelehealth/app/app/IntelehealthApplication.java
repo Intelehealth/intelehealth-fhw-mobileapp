@@ -50,6 +50,7 @@ import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.ncd.fhir.FhirInitializer;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -125,6 +126,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         // keeping the base url in one singleton object for using in apprtc module
 
     /*    configureCrashReporting();
+       /* configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);
@@ -164,6 +166,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         }
         new WorkScheduler().scheduleDailyApiWorker(this);
 
+        FhirInitializer.INSTANCE.init();
     }
 
     private void configureCrashReporting() {

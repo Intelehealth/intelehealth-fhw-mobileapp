@@ -106,7 +106,7 @@
     <string name="hb_check_question">শেষবার কখন আপনি আপনার HB স্তর পরীক্ষা করেছিলেন?</string>
     <string name="bp_check_question">শেষ কবে আপনার রক্তচাপ পরীক্ষা করা হয়েছিল?</string>
     <string name="sugar_check_question">শেষবার কখন আপনি আপনার চিনির মাত্রা পরীক্ষা করেছিলেন?</string>
-    <string name="bp_label">BP</string>
+    <string name="bp_label">বিপি</string>
     <string name="diabetes_label">ডায়াবেটিস</string>
     <string name="arthritis_label">বাত</string>
     <string name="anemia_label">রক্তশূন্যতা</string>
@@ -293,7 +293,7 @@
     <string name="family_whatsapp_question">আপনি বা আপনার পরিবারের কেউ কি WhatsApp ব্যবহার করেন?</string>
     <string name="marital_status_question">আপনার বৈবাহিক অবস্থা কি?</string>
 
-    <string name="please_install_whatsapp">এই প্রেসক্রিপশন শেয়ার করার জন্য অনুগ্রহ করে WhatsApp ইনস্টল করুন।</string>
+    <string name="please_install_whatsapp">এই প্রেসক্রিপশন শেয়ার করার জন্য অনুগ্রহ করে হোয়াটসঅ্যাপ ইনস্টল করুন।</string>
     <string name="select_occupation_txt">পেশা নির্বাচন করুন</string>
     <string name="in_new">ইঞ্চি</string>
     <string name="inch_new">ভিতরে</string>
@@ -436,5 +436,15 @@
     </string-array>
 
     <string name="prescription_disclaimer">ঘোষণা: চিকিৎসার পরেও যদি আপনার অবস্থার উন্নতি না হয়, তাহলে অনুগ্রহ করে দ্রুত আপনার নিকটস্থ হাসপাতালে এবং একজন চিকিৎসকের পরামর্শ নিন। টেলিমেডিসিন পরিষেবা একটি সীমিত পরামর্শ, এবং এটি সরাসরি ব্যক্তিগত পরীক্ষার বিকল্প নয়।</string>
+    <string name="new_ncd_sevika_visit">নতুন NCD/সেবিকা ভিজিট</string>
+
+    <string name="category_anemia">অ্যানিমিয়া</string>
+    <string name="category_hypertension">হাইপারটেনশন</string>
+    <string name="category_diabetes">ডায়াবেটিস</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 
 </resources>

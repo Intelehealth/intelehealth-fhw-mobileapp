@@ -49,6 +49,19 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
+        <activity
+            android:name=".ui.baseline_survey.activity.BaselineLinelistingQuestionsActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan"  />
+        <activity
+            android:name=".ui.baseline_survey.activity.MedicalMissingBaselineQuestionsActivity"
+            android:exported="true"
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.visitSummaryActivity.ncdinfo.WebviewTestActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -66,7 +79,6 @@
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.onboarding.CommonWebviewActivity"
             android:screenOrientation="portrait"
@@ -186,7 +198,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.vitalActivity.VitalsActivity"
             android:configChanges="uiMode"
@@ -281,13 +292,12 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".ui.baseline_survey.activity.BaselineSurveyActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.notification.view.NotificationActivity"
             android:screenOrientation="portrait"
@@ -424,7 +434,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"

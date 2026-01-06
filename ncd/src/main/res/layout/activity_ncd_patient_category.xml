@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".category.activity.NcdPatientCategoryActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar_relative"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/search_toolbar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/search_toolbar"
+        android:backgroundTint="?colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/toolbar_margin_right"
+            android:layout_marginTop="@dimen/toolbar_margin_top"
+            android:layout_marginRight="@dimen/toolbar_margin_right"
+            android:layout_marginBottom="@dimen/margin_20dp">
+
+            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/backbtn"
+                android:layout_width="@dimen/toolbar_margin_left"
+                android:layout_height="@dimen/toolbar_margin_left"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_arrow_back_white" />
+
+            <!-- Frame 100030 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_margin_top"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_toEndOf="@+id/backbtn"
+                android:background="@drawable/search_edittext_vector">
+
+                <EditText
+                    android:id="@+id/search_txt_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/fu_vs_margin_start"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_toStartOf="@+id/icon_search"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_txt_enter"
+                    android:lineSpacingExtra="3sp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="@dimen/fu_name_txt_size"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch" />
+
+                <ImageView
+                    android:id="@+id/icon_clear"
+                    android:layout_width="@dimen/search_icon_toolbar"
+                    android:layout_height="@dimen/search_icon_toolbar"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_baseline_clear_20"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/icon_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:background="@drawable/ic_search_white_icon8" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_patient_searched"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_relative"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/search_hint_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/toolbar_margin_right"
+            android:layout_marginTop="@dimen/toolbar_margin_right"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/search_hint_text"
+            android:textAppearance="@style/search_hint_text"
+            android:textColor="@null"
+            android:textSize="@dimen/fu_male_textsize"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_selected_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_hint_text"
+            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/toolbar_margin_right"
+            android:layout_marginTop="@dimen/margin_16" />
+
+        <View
+            android:id="@+id/divider_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_below="@id/rcv_selected_container"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_1" />
+
+        <TextView
+            android:id="@+id/all_patients_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_view"
+            android:layout_marginStart="@dimen/toolbar_margin_right"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/all_patients_txt"
+            android:textAppearance="@style/search_hint_text"
+            android:textColor="@null"
+            android:textSize="@dimen/fu_male_textsize"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/search_clear_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_view"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/toolbar_margin_right"
+            android:background="@drawable/round_corner_gray_light"
+            android:paddingHorizontal="@dimen/margin_8"
+            android:paddingVertical="4dip"
+            android:text="@string/clear"
+            android:textAppearance="@style/label"
+            android:textColor="@null"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+    <include
+        android:id="@+id/view_nopatientfound"
+        layout="@layout/no_patient_found_placeholder"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_relative"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_relative"
+        android:layout_marginTop="@dimen/search_empty_margin_top" />
+    <!--<com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="5dp"
+        app:endIconDrawable="@drawable/ic_baseline_clear_24"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:drawablePadding="5dp"
+            android:hint="@string/search_text_filed_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="@dimen/search_text_size" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="15dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_patient_searched"
+        tools:itemCount="3"
+        tools:listitem="@layout/list_item_search_protocolwise" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_no_data_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="15dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_relative">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_search_patient_not_found"
+            app:srcCompat="@drawable/ic_search_icon_background" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_patient_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15sp"
+            android:text="@string/patient_not_found"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_correct_string_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15sp"
+            android:gravity="center"
+            android:text="@string/correct_search_string_message"
+            android:textSize="17sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_create_new_patient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:text="@string/add_new_patient"
+            android:textAllCaps="false"
+            app:icon="@drawable/user_plus"
+            app:iconSize="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+<!--
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_back_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_search_patient"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="@string/search_patient"
+                    android:textColor="@color/white"
+                    android:textSize="23sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/toolbar_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:paddingHorizontal="5dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_search_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+-->
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fu_card_margin_sides"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/fu_card_margin_sides"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_patient_searched"
+        app:tabMode="scrollable">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_anemia_screening" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_anemia_follow_up" />
+
+     <!--   <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_diabetes_screening" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_diabetes_follow_up" />-->
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_hypertension_screening" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_hypertension_follow_up" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_all" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/viewPagerContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tl_category"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:overScrollMode="never"
+        android:visibility="visible" />
+    </FrameLayout>
+
+   <!-- <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_category"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tl_category" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

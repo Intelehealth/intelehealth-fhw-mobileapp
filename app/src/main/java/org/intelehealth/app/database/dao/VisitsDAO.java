@@ -1,18 +1,23 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.database.InteleHealthDatabaseHelper.database;
+import static org.intelehealth.app.utilities.UuidDictionary.CURRENT_COMPLAINT;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.IS_NCD_VISIT_ATTRIBUTE;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.NCDReading;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
@@ -20,10 +25,13 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class VisitsDAO {
 
@@ -232,11 +240,23 @@ public class VisitsDAO {
         return  isupdatedone;
 }
 */
-
+    private boolean isDateFormat(String date, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+            sdf.setLenient(false);
+            sdf.parse(date);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     //update - end....
 
     public List<VisitDTO> unsyncedVisits() {
+        String patternToCheck = "MMM dd, yyyy hh:mm:ss a";
+        String patternTarget = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -252,6 +272,21 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+
+                //sending share visit attribute after visit sync (After visit sync the stop date format get changed)
+                //that's why added the logic to check format
+                //if local date format is not like web then converting it to web format
+                String endDate = idCursor.getString(idCursor.getColumnIndexOrThrow("enddate"));
+                if (isDateFormat(endDate, patternToCheck)) {
+                    String convertedDate = DateAndTimeUtils.formatDateFromOnetoAnother(
+                            endDate,
+                            patternToCheck,
+                            patternTarget
+                    );
+                    visitDTO.setEnddate(convertedDate);
+                } else {
+                    visitDTO.setEnddate(endDate);
+                }
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttrs(visitDTO.getUuid());
@@ -1280,4 +1315,125 @@ public class VisitsDAO {
 
         return doctorVisit;
     }
+
+    public static int deleteVisitUsingVisitUuid(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        String table = "tbl_visit";
+        String whereClause = "uuid=?";
+        String[] whereArgs = new String[]{String.valueOf(visitUuid)};
+        return db.delete(table, whereClause, whereArgs);
+    }
+
+    public static String getComplaintValueInEnglish(String visitUuid) {
+        String value = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT o.uuid, o.value, o.conceptuuid, e.uuid AS encounter_uuid,e.encounter_type_uuid,v.uuid AS visit_uuid FROM tbl_obs o JOIN tbl_encounter e ON o.encounteruuid = e.uuid JOIN tbl_visit v ON e.visituuid = v.uuid WHERE v.uuid = ? AND e.encounter_type_uuid = ? AND o.conceptuuid = ? ORDER BY o.rowid DESC LIMIT 1";
+        Log.d(TAG, "getComplaintValueInEnglish: query : " + query);
+        Cursor cursor = db.rawQuery(query, new String[]{visitUuid, ENCOUNTER_ADULTINITIAL, CURRENT_COMPLAINT});
+        Log.d(TAG, "getComplaintValueInEnglish: cursor : " + cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+        return value;
+    }
+
+
+    /**
+     * Fetches observation values based on the specified concept UUID and visit attribute type UUID
+     *
+     * @return List of ObservationValue objects containing the value fields
+     */
+    public static List<NCDReading> fetchObservationValues(
+            String patientUuid
+    ) {
+        List<NCDReading> ncdReadings = new ArrayList<>();
+
+        String query = "SELECT tbl_obs.*" +
+                "FROM tbl_obs, tbl_encounter, tbl_visit, tbl_visit_attribute " +
+                "WHERE tbl_obs.encounteruuid = tbl_encounter.uuid " +
+                "AND tbl_encounter.visituuid = tbl_visit.uuid " +
+                "AND tbl_visit_attribute.visit_uuid = tbl_visit.uuid " +
+                "AND tbl_obs.conceptuuid = ? " +
+                "AND tbl_visit_attribute.visit_attribute_type_uuid = ? "+
+                "AND tbl_visit.patientuuid = ? "+
+                "AND tbl_visit.enddate IS NOT NULL "+
+                "GROUP BY tbl_visit.uuid "+
+                "ORDER BY tbl_obs.obsservermodifieddate DESC "+
+                "LIMIT 7";
+
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+            cursor = db.rawQuery(query, new String[]{CURRENT_COMPLAINT,IS_NCD_VISIT_ATTRIBUTE, patientUuid});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String value  = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                    String date  = cursor.getString(cursor.getColumnIndexOrThrow("created_date"));
+                    ncdReadings.add(new NCDReading(
+                            DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd HH:mm:ss", "dd MMM, yy"),
+                            ParserUtils.parseBP(value),
+                            ParserUtils.parseHemoglobin(value),
+                            ParserUtils.parseRBS(value)
+                    ));
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return ncdReadings;
+    }
+
+
+    /**
+     * Fetches the count of NCD readings for a patient (maximum 7)
+     * @param patientUuid The UUID of the patient
+     * @return Count of NCD observation records (capped at 7)
+     */
+    public static int fetchObservationValuesCount(String patientUuid) {
+        final int MAX_COUNT = 7;
+        int count = 0;
+
+        String query = "SELECT COUNT(DISTINCT tbl_visit.uuid) AS total " +
+                "FROM tbl_obs, tbl_encounter, tbl_visit, tbl_visit_attribute " +
+                "WHERE tbl_obs.encounteruuid = tbl_encounter.uuid " +
+                "AND tbl_encounter.visituuid = tbl_visit.uuid " +
+                "AND tbl_visit_attribute.visit_uuid = tbl_visit.uuid " +
+                "AND tbl_obs.conceptuuid = ? " +
+                "AND tbl_visit_attribute.visit_attribute_type_uuid = ? " +
+                "AND tbl_visit.patientuuid = ? "+
+                "AND tbl_visit.enddate IS NOT NULL";
+
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+            cursor = db.rawQuery(query, new String[]{CURRENT_COMPLAINT, IS_NCD_VISIT_ATTRIBUTE, patientUuid});
+
+            if (cursor.moveToFirst()) {
+                int totalCount = cursor.getInt(cursor.getColumnIndexOrThrow("total"));
+                count = Math.min(totalCount, MAX_COUNT);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return count;
+    }
+
 }

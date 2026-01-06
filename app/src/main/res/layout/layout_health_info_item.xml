@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_item_exercise"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_12">
+
+    <TextView
+        android:id="@+id/tv_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="@dimen/margin_5"
+        android:layout_toStartOf="@+id/iv_exercise"
+        android:drawablePadding="5dp"
+        android:textAppearance="@style/caption"
+        android:textColor="@color/textview_color"
+        android:textSize="@dimen/find_patient_hint_size" />
+
+    <ImageView
+        android:id="@+id/iv_exercise"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:src="@drawable/ui2_icon_view_info_module" />
+</RelativeLayout>

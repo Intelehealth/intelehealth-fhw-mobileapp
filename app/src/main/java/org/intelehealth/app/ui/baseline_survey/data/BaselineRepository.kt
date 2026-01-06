@@ -1,6 +1,8 @@
 package org.intelehealth.app.ui.baseline_survey.data
 
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import com.google.gson.Gson
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
@@ -26,6 +28,7 @@ class BaselineRepository(
             patientId,
             patientsDAO
         )
+        Log.d("TAG", "createPatientAttributes: medicalAttributesList : "+Gson().toJson(medicalAttributesList))
 
         val otherAttributesList = bindOtherBaselinePatientAttributes(
             baseline,

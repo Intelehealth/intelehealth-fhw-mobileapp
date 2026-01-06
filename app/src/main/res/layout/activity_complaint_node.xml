@@ -3,127 +3,240 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
     tools:context=".activities.complaintNodeActivity.ComplaintNodeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!--<com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Visit Reason"
+            app:titleTextColor="@color/primary_text" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>-->
 
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?actionBarSize"
+        android:paddingHorizontal="@dimen/toolbar_margin_left">
+
+        <ImageButton
+            android:id="@+id/img_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:contentDescription="img_btn_cancel"
+            android:onClick="backPress"
+            app:srcCompat="@drawable/cancel_btn_cross" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/imb_btn_refresh"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="1sp"
+            android:text="Lincon Testing"
+            android:textAppearance="@style/label"
+            android:textColor="@null"
+            android:textSize="@dimen/toolbar_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_toStartOf="@+id/imb_btn_refresh"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="1sp"
+            android:text="Lincon Testing"
+            android:textAppearance="@style/caption_fu_openmrsId"
+            android:textColor="@null"
+            android:textSize="@dimen/text_13sp"
+            android:textStyle="normal" />
+
+        <ImageButton
+            android:id="@+id/imb_btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/common_title_margin_top"
+            android:layout_toStartOf="@+id/img_btn_cancel"
+            android:background="@null"
+            android:contentDescription="imb_btn_refresh"
+            android:onClick="syncNow"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_refreshbtn" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_sub_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="@dimen/margin_8"
+        android:lineSpacingExtra="1sp"
+        android:paddingHorizontal="@dimen/toolbar_margin_left"
+        android:text="@string/visit_reason_txt"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/toolbar_text_size"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/prog_bar_step1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_below="@id/tv_sub_title"
+        android:layout_marginVertical="8dip"
+        android:progress="100"
+        android:progressTint="@color/colorPrimary" />
 
     <LinearLayout
         android:id="@+id/header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/tv_sub_title"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:layout_below="@+id/app_bar_view">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:src="@drawable/ui2_ic_ayu_image_blue" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:src="@drawable/chat_bubble_top" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/img_question"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_question_indicator"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+            android:background="@drawable/ui2_chat_bubble_square_round"
+            android:padding="@dimen/padding_15">
 
             <TextView
-                android:id="@+id/tv_selectComplaint"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_visit_reason_t1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/what_is_the_reason_for_your_visit"
-                android:textSize="18sp"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                android:layout_weight="1"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/what_is_reason_for_this_visit"
+                android:textColor="@color/ui2_black_text_color"
+                android:textSize="@dimen/text_18sp" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tv_visit_reason_t2"
+                style="@style/label_misc_txt_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_visit_reason_t1"
+                android:lineSpacingExtra="1sp"
+                android:text="@string/select_one_or_multiple_reasons" />
+
+            <AutoCompleteTextView
+                android:id="@+id/actv_reasons"
+                style="@style/edittext_textcolor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_below="@+id/tv_visit_reason_t2"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:background="@drawable/edittext_border_blue"
+                android:drawableStart="@drawable/ui2_ic_search_icon_home"
+                android:drawablePadding="@dimen/margin_8"
+                android:hint="@string/type_or_select_reason"
+                android:inputType="textAutoComplete"
+                android:padding="@dimen/padding_10"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textSize="@dimen/edittext_textsize_16sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
     </LinearLayout>
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:id="@+id/llSuggestedComplaints"-->
-    <!--        android:layout_below="@id/header_view"-->
-    <!--        android:layout_margin="16dp">-->
-
-    <!--        <TextView-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="Suggested Complaints (Based on Vitals):"-->
-    <!--            android:textColor="@color/gray_2"/>-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/rvSuggestedComplaints"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_margin="10dp"-->
-    <!--            android:visibility="gone"-->
-    <!--            tools:visibility="visible"/>-->
-
-    <!--        <View-->
-    <!--            android:id="@+id/divider_view"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="1dp"-->
-    <!--            android:layout_below="@id/rvSuggestedComplaints"-->
-    <!--            android:layout_marginHorizontal="10dp"-->
-    <!--            android:layout_marginTop="20dp"-->
-    <!--            android:background="@color/gray_1" />-->
-
-    <!--    </LinearLayout>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:srcCompat="@drawable/ic_done_24dp" />
+        app:srcCompat="@drawable/ic_done_24dp"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/sections_screening_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_view"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginVertical="@dimen/margin_16"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_alphabets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="1sp"
+            android:text="@string/screening_lbl"
+            android:textColor="@color/gray_3"
+            android:textSize="@dimen/terms_link_text_size"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginStart="@dimen/margin_10"
+            android:background="@color/gray_1" />
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/fab"
-        android:layout_below="@+id/header_view"
-        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/sections_screening_ll"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_marginEnd="10dp"
         android:fadeScrollbars="false"
+        android:padding="@dimen/margin_16"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarFadeDuration="0"
         android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbars="vertical"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </RelativeLayout>

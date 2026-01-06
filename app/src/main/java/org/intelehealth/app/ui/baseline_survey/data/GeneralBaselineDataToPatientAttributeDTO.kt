@@ -91,6 +91,21 @@ fun bindGeneralBaselinePatientAttributes(
                 patientsDAO
             )
         )
+        add(
+            createPatientAttribute(
+                patientId, PatientAttributesDTO.Column.SELF_OR_FAMILY_WHATSAPP.value,
+                baseline.selfOrFamilyWhatsappNumber.storeHyphenIfEmpty(),
+                patientsDAO
+            )
+        )
+        add(
+            createPatientAttribute(
+                patientId, PatientAttributesDTO.Column.CAN_EKAL_SEND_WHATSAPP_MESSAGE.value,
+                baseline.canEkalSendFreeWhatsAppMessageForVisitSummary.storeHyphenIfEmpty(),
+                patientsDAO
+            )
+        )
+
     }
 }
 

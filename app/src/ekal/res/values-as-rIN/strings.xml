@@ -106,7 +106,7 @@
     <string name="hb_check_question">শেষবাৰৰ বাবে কেতিয়া HB লেভেল পৰীক্ষা কৰা হৈছিল?</string>
     <string name="bp_check_question">শেষবাৰৰ বাবে কেতিয়া বি পি পৰীক্ষা কৰা হৈছিল?</string>
     <string name="sugar_check_question">শেষবাৰৰ বাবে কেতিয়া চেনিৰ মাত্ৰা পৰীক্ষা কৰা হৈছিল?</string>
-    <string name="bp_label">বি পি</string>
+    <string name="bp_label">বিপি</string>
     <string name="diabetes_label">ডায়েবিটিছ</string>
     <string name="arthritis_label">গাঠিৰ বিষ</string>
     <string name="anemia_label">ৰক্তহীনতা</string>
@@ -437,5 +437,16 @@
     </string-array>
 
     <string name="prescription_disclaimer">ঘোষণা: চিকিৎসাৰ পাছতো যদি আপোনাৰ অৱস্থা উন্নতি নহয়, তেতিয়া অনুগ্ৰহ কৰি  সোনকালেই ওচৰৰ হাস্পতালত  বা এজন চিকিৎসকৰ পৰামৰ্শ লওক। টেলিমেডিচিন সেৱা এটা সীমিত পৰামৰ্শহে আৰু ই প্ৰকৃত চিকিৎসাৰ বিকল্প নহয়।</string>
+    <string name="new_ncd_sevika_visit">নতুন NCD/সেৱিকা ভ্ৰমণ</string>
+
+
+    <string name="category_anemia">এনিমিয়া</string>
+    <string name="category_hypertension">হাইপাৰটেনচন</string>
+    <string name="category_diabetes">ডায়াবেটিছ</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 
 </resources>

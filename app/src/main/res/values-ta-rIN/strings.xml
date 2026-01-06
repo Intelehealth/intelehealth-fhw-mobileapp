@@ -277,11 +277,34 @@
     <string name="gender_male">ஆண்</string>
     <string name="gender_female">பெண்</string>
     <string name="document_">ஆவணம்-</string>
+    <!--    <string name="gender">பாலினம்</string>-->
+    <!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->
+    <!--    <string name="what_is_your_occupation">உங்களுடைய தொழில் என்ன?*</string>-->
+    <!--    <string name="do_you_have_a_bank_account">உங்களிடம் வங்கி கணக்கு இருக்கிறதா?*</string>-->
+    <!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">நீங்கள் தனிப்பட்ட முறையில் எந்த வகையான மொபைல் போனை வைத்திருக்கிறீர்கள்? *</string>-->
+    <!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களில் யாரோ வாட்ஸ்அப்பைப் பயன்படுத்துகிறீர்களா? *</string>-->
+    <!--    <string name="total_number_of_members_in_the_household">வீட்டிலுள்ள மொத்த உறுப்பினர்களின் எண்ணிக்கை *</string>-->
+    <!--    <string name="enter_number">எண்ணை உள்ளிடவும்</string>-->
+    <!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">எத்தனை உறுப்பினர்கள் பொதுவாக உங்கள் வீட்டில் வசிக்கிறார்கள் அல்லது இப்போது உங்களுடன் தங்கியிருக்கிறார்கள் *</string>-->
+    <!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">உங்கள் வீட்டு உறுப்பினர்களுக்குக் குடிநீரின் முக்கிய ஆதாரம் எது? *</string>-->
+    <!--    <string name="what_do_you_do_to_make_drinking_water_safer">குடிநீரைப் பாதுகாப்பானதாக்க நீங்கள் என்ன செய்கிறீர்கள்? *</string>-->
+    <!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">அங்குச் செல்லவும், தண்ணீர் எடுக்கவும், ஒரே பயணத்தில் திரும்பி வரவும் எவ்வளவு நேரம் ஆகும்? *</string>-->
+    <!--    <string name="declined">பதிலளிக்க மறுத்துவிட்டார்</string>-->
+    <!--    <string name="enter_time">நேரத்தை உள்ளிடவும்</string>-->
+    <!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">கடந்த இரண்டு வாரங்களில், இந்த மூலத்திலிருந்து வரும் நீர் குறைந்தது ஒரு முழு நாளுக்குக் கிடைக்கவில்லையா? *</string>-->
+    <!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">உங்கள் வீட்டு உறுப்பினர்கள் பொதுவாக என்ன வகையான கழிப்பறை வசதியைப் பயன்படுத்துகிறார்கள்? *</string>-->
+    <!--    <string name="select_the_structure_of_house">வீட்டின் கட்டமைப்பைத் தேர்ந்தெடுக்கவும் *</string>-->
+    <!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">உங்கள் குடும்பத்திற்கு எவ்வளவு ஹெக்டேர் சாகுபடி நிலம் உள்ளது? *</string>-->
+    <!--    <string name="enter_answer">பதிலை உள்ளிடவும்</string>-->
+    <!--    <string name="enter_occupation">தொழில் உள்ளிடவும்</string>-->
+    <!--    <string name="select">தேர்ந்தெடு</string>-->
     <string name="Hours">மணி</string>
     <string name="Days">நாட்கள்</string>
     <string name="Weeks">வாரங்கள்</string>
     <string name="Months">மாதங்கள்</string>
     <string name="Years">ஆண்டுகள்</string>
+    <!--    <string name="image_saved">படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!</string>-->
+    <!--    <string name="emergency_confirmation">இந்த வருகையை அவசரநிலையாக அமைக்க விரும்புகிறீர்களா?</string>-->
     <string name="per_Hour">ஒரு மணி நேரத்திற்கு</string>
     <string name="per_Day">ஒரு நாளைக்கு</string>
     <string name="per_Week">வாரத்திற்கு</string>
@@ -289,7 +312,24 @@
     <string name="per_Year">வருடத்திற்கு</string>
 
     <!-- Setup Activity -->
+    <!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
+    <string name="title_activity_question_node" translatable="false">கேள்விமுனைசெயல்பாடு</string>
+    <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
+    <!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
+    <!--    <string name="speciality">சிறப்பு</string>-->
+    <!--    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>-->
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
+
+    <!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
+    <!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
+    <!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
+    <string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
+    <string name="reject_permission_results">நீங்கள் அனுமதியை நிராகரித்தால், இந்த சேவையைப் பயன்படுத்த முடியாது. தயவுசெய்து [அமைத்தல்] > [அனுமதி] அனுமதிகளை இயக்கவும்</string>
+    <string name="current_time">\"நடப்பு நேரம் => \"</string>
+    <string name="gender_male">ஆண்</string>
+    <string name="gender_female">பெண்</string>
+    <string name="retry_again">மீண்டும் முயற்சிக்கவும்!</string>
+    <string name="ok_close_now">சரி, அதை மூடவும்</string>
     <string name="select_specialization_text">தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
@@ -557,6 +597,32 @@
     <string name="bp_dia">பிபி டயஸ்டாலிக்</string>
     <string name="pulse_bpm">நாடி (பிபிஎம்)</string>
     <string name="spo2">SpO2 (%)</string>
+    <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
+    <string name="temperature_f_new">வெப்பநிலை (F)</string>
+    <string name="confirm">Confirm</string>
+    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
+    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
+    <string name="select_any_one">Select any one</string>
+    <string name="select_one_or_more">ஒன்று அல்லது அதற்கு மேல் தேர்வு செய்யவும்</string>
+
+    <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
+    <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
+    <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
+    <string name="sanity_alert_title">Please wash/sanitize your hands</string>
+    <string name="slider_desc">range slider</string>
+    <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
+    <string name="ui2_no_information">No information</string>
+
+    <string name="confirm_visit_reason">விழிப்பின் காரணத்தை உறுதிப்படுத்தவா?</string>
+    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">நோயாளிக்கு கீழ்க்காணும் காரணங்களுக்காக வருகை உள்ளதா என்று நீங்கள் உறுதியாக உள்ளீர்களா?</string>
+
+    <string name="know_more_txt">Know more</string>
+    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
+    <string name="follow_up_visits_not_found">Follow up visits not found!</string>
+    <string name="enter_occupation_txt">Enter Occupation</string>
+    <string name="education">Education</string>
+    <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
+    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
     <string name="respiratory_rate_breaths_min">சுவாச விகிதம் (மூச்சு/நிமிடம்)</string>
     <string name="temperature_f_new">வெப்பநிலை (எஃப்)</string>
     <string name="confirm">உறுதிப்படுத்தவும்</string>
@@ -1010,6 +1076,26 @@
     <string name="hint_drop_down_district">மாவட்டத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="lbl_clear_all">அனைத்தையும் அழிக்கவும்</string>
     <string name="sync">புதுப்பிப்பு</string>
+    <string name="sending_otp">Sending OTP...</string>
+
+    <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>
+    <string name="phone_number">தொலைபேசி எண்</string>
+    <string name="visitDetails_text">வருகை சுருக்கம்</string>
+    <string name="_phy_examination">%1$d/%2$d உடல் பரிசோதனை</string>
+    <string name="setup">அமைவு</string>
+    <string name="setup_new">அமைவு</string>
+    <string name="error_login_title">உள்நுழைவில் பிழை</string>
+    <string name="camera">கேமரா</string>
+    <string name="permission_camera_rationale">கேமரா முன்னோட்டத்தைக் காட்ட கேமரா அனுமதி தேவை.</string>
+    <string name="permission_camera_denied">கேமரா அனுமதி மறுக்கப்பட்டது. கேமராவை அணுக அதை வழங்குவதைக் கருத்தில் கொள்ளவும்!</string>
+    <string name="permission_camera_never_askagain">மீண்டும் ஒருபோதும் கேட்க வேண்டாம் என்பதன் மூலம் கேமரா அனுமதி மறுக்கப்பட்டது.</string>
+    <string name="button_allow">அனுமதி</string>
+    <string name="button_deny">மறுக்கவும்</string>
+    <string name="switch_flash">ஃப்ளாஷை மாற்றவும்</string>
+    <string name="switch_camera">கேமராவை மாற்றவும்</string>
+    <string name="flash_auto">ஃப்ளாஷ் ஆட்டோ</string>
+    <string name="flash_off">ஃப்ளாஷ் ஆஃப் செய்யவும்</string>
+    <string name="flash_on">ஃப்ளாஷ் ஆன் செய்யவும்</string>
     <string name="sending_otp">OTP அனுப்பப்படுகிறது...</string>
 
     <string name="view_prescription_lbl">மருந்தைப் பார்க்கவும்</string>
@@ -1044,4 +1130,119 @@
     <string name="date_range">தேதி வரம்பு</string>
     <string name="my_achievements">என் சாதனைகள்</string>
 
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">வருகை காரணம்</string>
+
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களோ வாட்ஸ்அப் பயன்படுத்துகிறீர்களா?*</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">உங்கள் குடும்ப உறுப்பினர் வாட்ஸ்அப் கணக்குடன் தொடர்புடைய மொபைல் எண் என்ன?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">உங்கள் தனிப்பட்ட வாட்ஸ்அப் கணக்குடன் தொடர்புடைய மொபைல் எண் என்ன?</string>
+    <string name="i_dont_know">எனக்கு தெரியாது</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">எங்கள் வருகையின் சுருக்கத்தை எங்களுக்கு இலவச வாட்ஸ்அப் செய்தியாக ஏகல் அனுப்ப முடியுமா?</string>
+    <string name="yes_family_member">ஆம் (குடும்ப உறுப்பினர்)</string>
+    <string name="yes_personal">ஆம் (தனிப்பட்ட)</string>
+    <string name="send_summary_on_whatsApp">சுருக்கத்தை வாட்ஸ்அப் இல் அனுப்பவும்</string>
+
+    <string name="family_whatsapp_question">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களோ வாட்ஸ்அப் பயன்படுத்துகிறீர்களா?</string>
+    <string name="generic_yes_personal">ஆம் (தனிப்பட்ட)</string>
+    <string name="generic_yes_family">ஆம் (குடும்ப உறுப்பினர்)</string>
+
+    <string name="are_you_taking_any_medication_for_bp">நீங்கள் தற்போது இரத்த அழுத்தம் க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">நீங்கள் தற்போது நீரிழிவு நோய் க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+    <string name="are_you_taking_any_medication_for_anemia">நீங்கள் தற்போது இரத்தச்சோகை க்கு மருந்துகள் எடுத்துக்கொள்கிறீர்களா?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">கடந்த 1 ஆண்டில் இரத்த அழுத்தம் க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">கடந்த 1 ஆண்டில் நீரிழிவு க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">கடந்த 1 ஆண்டில் இரத்தச்சோகை க்காக நீங்கள் ஏதேனும் சுகாதார பணியாளரை சந்தித்தீர்களா?
+</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">நீங்கள் ஏன் இரத்த அழுத்தம் மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">நீங்கள் ஏன் நீரிழிவு மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">நீங்கள் ஏன் இரத்தச்சோகை மருந்துகளை எடுத்துக்கொள்வதில்லை?</string>
+
+    <string name="never_prescribed_medication">எனக்கு எப்போதும் மருந்துகள் பரிந்துரைக்கப்படவில்லை</string>
+    <string name="forgot_to_take_it">நான் எடுத்துக் கொள்ள மறந்துவிட்டேன்</string>
+    <string name="cannot_afford_medications">நான் மருந்துகளை வாங்க முடியாது</string>
+    <string name="ran_out_of_medication">என் மருந்துகள் முடிந்துவிட்டது / தொலைந்துவிட்டது</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">எனக்கு என் PHC-இல் பின்தொடர்பு தேவை</string>
+    <string name="i_dont_think_i_need_it">எனக்கு அது தேவையில்லை என்று நினைக்கிறேன்</string>
+    <string name="side_effect_related_to_medication">மருந்துகளின் பக்கவிளைவுகள்</string>
+    <string name="unknown_other">தெரியாது / பிற</string>
+    <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>
+    <string name="select_your_choice">உங்கள் தேர்வைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="bp_label">இரத்த அழுத்தம்</string>
+    <string name="anemia_label">இரத்தச்சோகை</string>
+
+    <string name="view_ncd_module">தகவல் தொகுதியைப் பார்க்க</string>
+    <string name="share_ncd_module">தகவல் தொகுதியைப் பகிர்</string>
+    <string name="suggested_info_modules">பரிந்துரைக்கப்பட்ட NCD சுகாதாரத் தகவல் தொகுதிகள்</string>
+    <string name="ncd_info_whatsapp_msg">வணக்கம், Intelehealth பயன்படுத்தியதற்கு நன்றி.\nHypertension க்கான உங்கள் சுகாதாரத் தகவல் தொகுதியைப் பதிவிறக்கம் செய்ய இங்கே சொடுக்கவும்</string>
+    <string name="enter_whatsapp_number">தயவுசெய்து WhatsApp எண்ணை உள்ளிடவும்</string>
+    <string name="share_ncd_info_dialog_title">இந்த NCD சுகாதாரத் தகவல் இந்த WhatsApp எண்ணுக்கு பகிரப்படும்</string>
+
+
+    <string name="screening_lbl">திரையாய்வு</string>
+
+    <string name="ncd_info_whatsapp_msg_new">Ekal Telemedicine பயன்படுத்தியதற்கு நன்றி. தயவுசெய்து தகவலை பதிவிறக்கம் செய்து உயர் இரத்த அழுத்தத்தை நிர்வகிக்க அல்லது குறைக்க படியுங்கள்</string>
+    <string name="health_information">சுகாதார தகவல்</string>
+    <string name="saved_to_downloads">கோப்பு Downloads இல் சேமிக்கப்பட்டது</string>
+    <string name="failed_to_save_downloads">PDF சேமிக்க முடியவில்லை</string>
+
+    <string name="patient_visit_sent_ended">நோயாளியின் வருகை வெற்றிகரமாக சேமிக்கப்பட்டு தானாக முடிக்கப்பட்டுள்ளது.</string>
+
+    <string name="category_already_selected">நீங்கள் %1$s இல் இருந்து ஏற்கனவே ஒரு உருப்படியைத் தேர்ந்தெடுத்துள்ளீர்கள்</string>
+    <string name="please_complete_the_baseline_survey">தயவுசெய்து அடிப்படை சர்வேயை முடிக்கவும்.</string>
+    <string name="dialog_baseline_ok">சரி</string>
+    <string name="baseline_warning_alert">எச்சரிக்கை!</string>
+
+
+    <string name="visit_successfully_sent">வருகை வெற்றிகரமாக சேமிக்கப்பட்டது!</string>
+    <string name="what_is_reason_for_this_visit">இந்த வருகைக்கான காரணம் என்ன?</string>
+
+    <string name="not_eligible_for_protocols_message">நீங்கள் தற்போது எந்த NCD நெறிமுறைக்கும் தகுதியற்றவர். இருப்பினும் நீங்கள் தொடர விரும்பினால், உங்கள் விருப்பமான நெறிமுறையைத் தேர்வு செய்யவும்.</string>
+    <string name="yes_move_ahead">ஆம், தொடரவும்</string>
+    <string name="no_go_back">இல்லை, பின்செல்லவும்</string>
+
+    <string name="start_newadvice_confirmation_msg">நீங்கள் ஒரு சேவிகா ஆலோசனையைத் தொடங்க விரும்புகிறீர்களா?</string>
+    <string name="start_newadvice_confirmation_title">சேவிகா ஆலோசனையை தொடங்கவும்</string>
+
+    <string name="select_one_or_multiple_reasons">ஒரு அல்லது பல காரணங்களைத் தேர்ந்தெடுக்கவும்</string>
+
+    <string name="msg_ekal_thank_you">ஏகல் டெலிமெடிசின் சேவையை பயன்படுத்தியதற்கு நன்றி! தினமும் ஆரோக்கியமாக இருக்க எளிய வழிகளை அறிய இணைப்பை கிளிக் செய்யவும்.</string>
+    <string name="anemia_food_advice">இரத்தச்சோகை: இரும்புச்சத்து, ஃபோலிக் அமிலம் மற்றும் புரதம் நிறைந்த உணவுகளை உண்ணுங்கள்</string>
+    <string name="anemia_deworm_hygiene">இரத்தச்சோகை: தவறாமல் புழுநாசினி மருந்து எடுத்துக் கொண்டு சுத்தத்தை பேணுங்கள்</string>
+    <string name="anemia_quit_alcohol_tobacco">இரத்தச்சோகை: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="diabetes_reduce_sugar">சர்க்கரை நோய்: சர்க்கரை அளவை குறைக்கவும்</string>
+    <string name="exercise_regularly">தவறாமல் உடற்பயிற்சி செய்யுங்கள்</string>
+    <string name="diabetes_quit_alcohol_tobacco">சர்க்கரை நோய்: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="hypertension_reduce_salt">பிபி: உப்பு அளவை குறைக்கவும்</string>
+    <string name="hypertension_quit_alcohol_tobacco">பிபி: மது மற்றும் புகையிலை தவிர்க்கவும்</string>
+    <string name="ncd_report">NCD அறிக்கை</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">சமீபத்திய NCD அளவீடுகள்</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">கடந்த %1$s NCD வருகைகளைப் பார்க்க கிளிக் செய்யவும்</string>
 </resources>

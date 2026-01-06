@@ -50,6 +50,8 @@ class PatientRegConfigKeys {
         const val GENERAL_CASTE = "general_caste"
         const val GENERAL_EDUCATION = "general_education"
         const val GENERAL_ECONOMIC_STATUS = "general_economic_status"
+        const val SELF_FAMILY_WHATSAPP_NUMBER = "self_or_family_whatsapp_number"
+        const val CAN_EKAL_SEND_WHATSAPP_MESSAGE = "can_ekal_send_free_whatsapp_message_for_visit_summary"
 
         // MEDICAL
         const val HB_CHECK = "hb_check"
@@ -70,6 +72,17 @@ class PatientRegConfigKeys {
         const val ALCOHOL_RATE = "alcohol_rate"
         const val ALCOHOL_DURATION = "alcohol_duration"
         const val ALCOHOL_FREQUENCY = "alcohol_frequency"
+        const val TAKING_ANY_MEDICATION_FOR_ANEMIA = "taking_any_medication_for_anemia"
+        const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA = "have_you_seen_to_hw_in_past_one_year_for_anemia"
+        const val REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION = "reason_for_not_taking_anemia_medication"
+        const val OTHER_REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION = "other_reason_for_not_taking_anemia_medication"
+        const val TAKING_ANY_MEDICATION_FOR_BP = "taking_any_medication_for_bp"
+        const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_BP = "have_you_seen_to_hw_in_past_one_year_for_bp"
+        const val REASON_FOR_NOT_TAKING_BP_MEDICATION = "reason_for_not_taking_bp_medication"
+        const val TAKING_ANY_MEDICATION_FOR_DIABETES = "taking_any_medication_for_diabetes"
+        const val HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_DIABETES = "have_you_seen_to_hw_in_past_one_year_for_diabetes"
+        const val REASON_FOR_NOT_TAKING_DIABETES_MEDICATION = "reason_for_not_taking_diabetes_medication"
+        const val OTHER_REASON_FOR_NOT_TAKING_DIABETES_MEDICATION = "other_reason_for_not_taking_diabetes_medication"
 
         // OTHERS
         const val HEAD_OF_HOUSEHOLD = "HEAD_OF_HOUSEHOLD"

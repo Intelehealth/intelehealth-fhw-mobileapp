@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -196,7 +196,7 @@
 
                 <include
                     android:id="@+id/family_member_card"
-                    layout="@layout/patdetail_family_members_layout"/>
+                    layout="@layout/patdetail_family_members_layout" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -247,11 +247,36 @@
                                     android:textAppearance="@style/patdetail_header1" />
                             </LinearLayout>
 
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dip"
                                 android:layout_marginVertical="@dimen/padding_12"
                                 android:background="@color/gray_1" />
+
+                            <TextView
+                                android:id="@+id/ncd_visit_count_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:paddingStart="@dimen/std_24dp"
+                                android:paddingEnd="@dimen/std_24dp"
+                                android:paddingTop="@dimen/padding_10"
+                                android:paddingBottom="@dimen/padding_10"
+                                android:textSize="16sp"
+                                android:text=""
+                                android:textColor="@color/colorAccent"
+                                app:drawableEndCompat="@drawable/arrow_right_icon8"
+                                app:drawableTint="@color/colorAccent"
+                                />
+
+                            <View
+                                android:id="@+id/ncd_visit_count_divider_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dip"
+                                android:layout_marginVertical="@dimen/padding_12"
+                                android:background="@color/gray_1" />
+
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rcv_past_visits"
@@ -330,15 +355,16 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/relative_firstscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:orientation="vertical"
             android:visibility="visible">
 
             <Button
-                android:id="@+id/startSevikaVisitBtn"
+                android:id="@+id/startNCDSevikaVisitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -352,9 +378,25 @@
                 android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
                 android:paddingStart="@dimen/margin_30"
                 android:paddingEnd="@dimen/margin_14"
-                android:text="@string/start_sevika_visit"
+                android:text="@string/new_ncd_sevika_visit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
+
+            <Button
+                android:id="@+id/startSevikaVisitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:paddingStart="@dimen/margin_30"
+                android:paddingEnd="@dimen/margin_14"
+                android:text="@string/start_sevika_visit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txtsize_patdetail_16sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/startVisitBtn"
@@ -374,6 +416,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </RelativeLayout>
 </layout>

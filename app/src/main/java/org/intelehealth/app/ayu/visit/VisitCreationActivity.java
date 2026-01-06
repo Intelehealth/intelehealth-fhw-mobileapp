@@ -5,6 +5,7 @@ import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -251,22 +252,25 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //startActivity(intent2);
         //finish();
 
-       /* commenting temporary for ekal 4.0 prod, as ncd not on prod yet
-       //added new visit attribute to identify ncd visits - like ncd project - required for my achievements section
-        if(IntelehealthApplication.getInstance().getVisitType().equals(AppConstants.VISIT_TYPE_SEVIKA)){
-            VisitAttributeListDAO dao = new VisitAttributeListDAO();
-            try {
-                boolean isInserted = dao.insertIsNcdVisitAttribute(visitUuid, "true");
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-*/
     }
 
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         featureActiveStatus = activeStatus;
         if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
             CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());

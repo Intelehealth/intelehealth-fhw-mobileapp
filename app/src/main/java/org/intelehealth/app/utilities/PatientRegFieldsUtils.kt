@@ -179,6 +179,8 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.GENERAL_CASTE -> caste = it
                     PatientRegConfigKeys.GENERAL_EDUCATION -> education = it
                     PatientRegConfigKeys.GENERAL_ECONOMIC_STATUS -> economicStatus = it
+                    PatientRegConfigKeys.SELF_FAMILY_WHATSAPP_NUMBER -> selfOrFamilyWhatsappNumber = it
+                    PatientRegConfigKeys.CAN_EKAL_SEND_WHATSAPP_MESSAGE -> canEkalSendFreeWhatsAppMessageForVisitSummary = it
                 }
             }
         }
@@ -208,6 +210,15 @@ object PatientRegFieldsUtils {
                     PatientRegConfigKeys.ALCOHOL_RATE -> alcoholRate = it
                     PatientRegConfigKeys.ALCOHOL_DURATION -> alcoholDuration = it
                     PatientRegConfigKeys.ALCOHOL_FREQUENCY -> alcoholFrequency = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_ANEMIA -> takingAnyMedicationForAnemia = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_ANEMIA -> haveYouSeenToHWinPastOneYearForAnemia = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_ANEMIA_MEDICATION -> reasonForNotTakingAnemiaMedication = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_BP -> takingAnyMedicationForBP = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_BP -> haveYouSeenToHWinPastOneYearForBP = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_BP_MEDICATION -> reasonForNotTakingBPMedication = it
+                    PatientRegConfigKeys.TAKING_ANY_MEDICATION_FOR_DIABETES -> takingAnyMedicationForDiabetes = it
+                    PatientRegConfigKeys.HAVE_YOU_SEEN_TO_HW_IN_PAST_ONE_YEAR_FOR_DIABETES -> haveYouSeenToHWinPastOneYearForDiabetes = it
+                    PatientRegConfigKeys.REASON_FOR_NOT_TAKING_DIABETES_MEDICATION -> reasonForNotTakingDiabetesMedication = it
                 }
             }
         }

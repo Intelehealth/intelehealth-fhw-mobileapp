@@ -263,7 +263,7 @@ public class SyncDAO {
         } else {
             sessionManager.setTriggerNoti("yes");
         }
-        return null;
+        return true;
     }
 
 

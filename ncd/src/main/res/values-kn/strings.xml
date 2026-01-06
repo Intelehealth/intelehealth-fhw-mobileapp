@@ -1,0 +1,167 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="video_library">ವೀಡಿಯೋ ಗ್ರಂಥಾಲಯ</string>
+    <string name="no_videos_found_on_server">ಸರ್ವರ್‌ನಲ್ಲಿ ಯಾವುದೇ ವೀಡಿಯೊಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
+
+    <string name="type_to_search">ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ…</string>
+
+    <!-- Search Patient Screen Tabs -->
+    <string name="tab_anemia_screening">ಅನೀಮಿಯಾ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="tab_anemia_follow_up">ಅನೀಮಿಯಾ ಫಾಲೋ-ಅಪ್</string>
+    <string name="tab_diabetes_screening">ಮಧುಮೇಹ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="tab_diabetes_follow_up">ಮಧುಮೇಹ ಫಾಲೋ-ಅಪ್</string>
+    <string name="tab_hypertension_screening">ಹೈಪರ್‌ಟೆನ್ಶನ್ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="tab_hypertension_follow_up">ಹೈಪರ್‌ಟೆನ್ಶನ್ ಫಾಲೋ-ಅಪ್</string>
+    <string name="tab_general">ಸಾಮಾನ್ಯ</string>
+    <string name="search_patient">ರೋಗಿಯನ್ನು ಹುಡುಕಿ</string>
+
+    <string name="medical_history_yes">ಹೌದು</string>
+    <string name="age">ವಯಸ್ಸು</string>
+    <string name="years">ವರ್ಷ</string>
+    <string name="months">ತಿಂಗಳು</string>
+    <string name="days">ದಿನ</string>
+    <string name="sample_name_open_mrs_id_text">ರವಿಕುಮಾರ, 2AGY-87</string>
+    <string name="sample_age_text">ವಯಸ್ಸು: 16 ವರ್ಷ 10 ತಿಂಗಳು 16 ದಿನ</string>
+    <string name="sample_disease_category">ಉದಾಹರಣಾ ರೋಗ</string>
+
+    <string name="search_text_filed_hint">ಹೆಸರು, ಐಡಿ ಅಥವಾ ಮೊಬೈಲ್ ಮೂಲಕ ಹುಡುಕಿ</string>
+    <string name="no_data_found">ಯಾವುದೇ ದತ್ತಾಂಶ ಸಿಗಲಿಲ್ಲ</string>
+    <string name="patient_not_found">ರೋಗಿ ಕಂಡುಬರಲಿಲ್ಲ!</string>
+    <string name="correct_search_string_message">ಸರಿಯಾದ ಹೆಸರು, ಐಡಿ ಅಥವಾ ಮೊಬೈಲ್ ಬಳಸಿ ಹುಡುಕಿ ಅಥವಾ ಹೊಸ ರೋಗಿಯನ್ನು ನೋಂದಾಯಿಸಿ.</string>
+    <string name="add_new_patient">ಹೊಸ ರೋಗಿಯನ್ನು ಸೇರಿಸಿ</string>
+    <string name="presc_pending">ಪ್ರಿಸ್ಕ್ರಿಪ್ಶನ್ ಬಾಕಿ</string>
+    <string name="priority">ಪ್ರಾಥಮ್ಯ</string>
+    <string name="search_date_txt">24 ಮೇ, ಸಂಜೆ 3:15 ಕ್ಕೆ</string>
+    <string name="five_presc_received">%1$s ಪ್ರಿಸ್ಕ್ರಿಪ್ಶನ್‌ಗಳು ಬಂದಿವೆ</string>
+    <string name="presc_received">ಪ್ರಿಸ್ಕ್ರಿಪ್ಶನ್ ಬಂದಿದೆ</string>
+    <string name="visit_not_uploaded">ಭೇಟಿ ಅಪ್‌ಲೋಡ್ ಆಗಿಲ್ಲ</string>
+    <string name="search_gender">ಪು 22</string>
+    <string name="search_txt_enter">ರೋಗಿಯ ಹೆಸರು ಅಥವಾ ಐಡಿ ನಮೂದಿಸಿ</string>
+    <string name="search_hint_text">ಹಿಂದೆ ಹುಡುಕಿರುವವು</string>
+    <string name="all_patients_txt">ಎಲ್ಲಾ ರೋಗಿಗಳು</string>
+    <string name="clear">ಕ್ಲಿಯರ್</string>
+    <string name="search_pat_not_found_txt">ರೋಗಿ ಕಂಡುಬರಲಿಲ್ಲ!</string>
+
+    <!-- 1.1 Navigation -->
+    <string name="button_pagination_next">ಮುಂದೆ</string>
+    <string name="button_pagination_previous">ಹಿಂದೆ</string>
+    <string name="back_button_text">ಹಿಂದಿರುಗಿ</string>
+    <string name="edit_button_text">ತಿದ್ದು</string>
+    <string name="review_answers_text">ಉತ್ತರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+    <string name="button_review">ಪರಿಶೀಲನೆ</string>
+    <string name="submit_questionnaire">ಸಲ್ಲಿಸು</string>
+    <string name="cancel_questionnaire">@android:string/cancel</string>
+    <string name="questionnaire_review_mode_title">ಸಲ್ಲಿಸುವ ಮೊದಲು ಉತ್ತರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+
+    <!-- 1.2 Submit Pop-up -->
+    <string name="questionnaire_validation_error_headline">ದೋಷಗಳು ಕಂಡುಬಂದಿವೆ</string>
+    <string name="questionnaire_validation_error_supporting_text">ಈ ಪ್ರಶ್ನೆಗಳನ್ನು ಸರಿಪಡಿಸಿ:</string>
+    <string name="questionnaire_validation_error_item_text_with_bullet">• %s</string>
+    <string name="questionnaire_validation_error_submit_button_text">ಹಾಗೇ ಸಲ್ಲಿಸಿ</string>
+    <string name="questionnaire_validation_error_fix_button_text">ಪ್ರಶ್ನೆಗಳನ್ನು ಸರಿಪಡಿಸಿ</string>
+
+    <!-- 1.3 Cancel Pop-up -->
+    <string name="questionnaire_cancel_text">ನೀವು ಪ್ರಶ್ನಾವಳಿಯಿಂದ ನಿರ್ಗಮಿಸಲು ಬಯಸುವಿರಾ?</string>
+
+    <!-- 2.1 All Widgets -->
+    <string name="not_answered">ಉತ್ತರ ನೀಡಿಲ್ಲ</string>
+    <string name="help">ಸಹಾಯ</string>
+
+    <!-- 2.2 Boolean -->
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="yes">ಹೌದು</string>
+
+    <!-- 2.3 Drop Down -->
+    <string name="hyphen">-</string>
+
+    <!-- 2.4 Multi Select / Open Choice -->
+    <string name="open_choice_other">ಇತರೆ</string>
+    <string name="open_choice_other_hint">ಕಸ್ಟಮ್ ಆಯ್ಕೆ ನಮೂದಿಸಿ</string>
+    <string name="open_choice_other_add_another">ಮತ್ತೊಂದು ಉತ್ತರ ಸೇರಿಸಿ</string>
+    <string name="multi_select_dialog_subtitle">ಅನ್ವಯಿಸುವುದನ್ನೆಲ್ಲಾ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="save">ಸೇವ್ ಮಾಡಿ</string>
+    <string name="cancel">ರದ್ದು</string>
+
+    <!-- 2.5 Date / DateTime -->
+    <string name="date">ದಿನಾಂಕ</string>
+    <string name="time">ಸಮಯ</string>
+    <string name="select_date">ದಿನಾಂಕ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="select_time">ಸಮಯ ಆಯ್ಕೆಮಾಡಿ</string>
+
+    <!-- 2.6 Attachment widget -->
+    <string name="take_photo">ಫೋಟೋ ತೆಗೆಯಿರಿ</string>
+    <string name="cd_photo_preview">ಫೋಟೋ ಪೂರ್ವದೃಶ್ಯ</string>
+    <string name="cd_file_icon_preview">ಫೈಲ್‌ ಐಕಾನ್ ಪೂರ್ವದೃಶ್ಯ</string>
+    <string name="upload_photo">ಫೋಟೋ ಅಪ್‌ಲೋಡ್</string>
+    <string name="upload_audio">ಆಡಿಯೋ ಅಪ್‌ಲೋಡ್</string>
+    <string name="upload_video">ವೀಡಿಯೋ ಅಪ್‌ಲೋಡ್</string>
+    <string name="upload_document">ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್‌ಲೋಡ್</string>
+    <string name="upload_file">ಫೈಲ್ ಅಪ್‌ಲೋಡ್</string>
+    <string name="delete">ಅಳಿಸಿ</string>
+    <string name="max_size_image_above_limit_validation_error_msg">ದೋಷ: ಚಿತ್ರ ಗಾತ್ರ %1$s MB ಕ್ಕಿಂತ ಹೆಚ್ಚು</string>
+    <string name="max_size_file_above_limit_validation_error_msg">ದೋಷ: ಫೈಲ್ ಗಾತ್ರ %1$s MB ಕ್ಕಿಂತ ಹೆಚ್ಚು</string>
+    <string name="upload_failed">ಅಪ್‌ಲೋಡ್ ವಿಫಲ</string>
+    <string name="mime_type_wrong_media_format_validation_error_msg">ದೋಷ: ತಪ್ಪಾದ ಮೀಡಿಯಾ ಫಾರ್ಮ್ಯಾಟ್</string>
+    <string name="uploaded">ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ</string>
+    <string name="image_uploaded">ಚಿತ್ರ ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ</string>
+    <string name="file_uploaded">ಫೈಲ್ ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ</string>
+    <string name="video_uploaded">ವೀಡಿಯೋ ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ</string>
+    <string name="audio_uploaded">ಆಡಿಯೋ ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ</string>
+    <string name="image_deleted">ಚಿತ್ರ ಅಳಿಸಲಾಗಿದೆ</string>
+    <string name="file_deleted">ಫೈಲ್ ಅಳಿಸಲಾಗಿದೆ</string>
+    <string name="video_deleted">ವೀಡಿಯೋ ಅಳಿಸಲಾಗಿದೆ</string>
+    <string name="audio_deleted">ಆಡಿಯೋ ಅಳಿಸಲಾಗಿದೆ</string>
+
+    <!-- 2.7 Group -->
+    <string name="group_header_add_item_button">ಐಟಂ ಸೇರಿಸಿ</string>
+
+    <!-- 3.1 Validation -->
+    <string name="required_constraint_validation_error_msg">ಈ ಕ್ಷೇತ್ರಕ್ಕೆ ಉತ್ತರ ಅಗತ್ಯ.</string>
+    <string name="min_value_validation_error_msg">ಕನಿಷ್ಠ ಮೌಲ್ಯ: <xliff:g id="min_value">%1$s</xliff:g></string>
+    <string name="max_value_validation_error_msg">ಗರಿಷ್ಠ ಮೌಲ್ಯ: <xliff:g id="max_value">%1$s</xliff:g></string>
+    <string name="min_length_validation_error_msg">ಅನುಮತಿಸಲಾದ ಕನಿಷ್ಠ ಅಕ್ಷರಗಳು: <xliff:g id="min_length">%1$s</xliff:g></string>
+    <string name="max_decimal_validation_error_msg">ಗರಿಷ್ಠ ದಶಮಾಂಶ ಸ್ಥಾನಗಳು: <xliff:g id="max_value">%1$s</xliff:g></string>
+
+<!--    <string name="regex_validation_error_msg">ಉತ್ತರ ನಿಯಮಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ: <xliff:g id="answer_value">%1$s</xliff:g></string>-->
+    <string name="regex_validation_error_msg">ಇನ್‌ಪುಟ್‌ನಲ್ಲಿ ಅನುಮತಿಸದ ಅಕ್ಷರಗಳಿವೆ.</string>
+
+    <string name="number_format_validation_error_msg">ಎರಡು ಸಂಖ್ಯೆಗಳ ನಡುವೆ (.) ಬಳಸಿ. ಇತರ ಚಿಹ್ನೆಗಳು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ.</string>
+    <string name="date_format_validation_error_msg">ದಿನಾಂಕ ಫಾರ್ಮ್ಯಾಟ್ <xliff:g id="locale_format">%1$s</xliff:g> (ಉದಾ: %2$s)</string>
+<!--    <string name="integer_format_validation_error_msg">ಸಂಖ್ಯೆ <xliff:g id="min_value">%1$s</xliff:g> ಮತ್ತು <xliff:g id="max_value">%2$s</xliff:g> ನಡುವೆ ಇರಬೇಕು</string>-->
+    <string name="integer_format_validation_error_msg">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ!</string>
+
+    <string name="decimal_format_validation_error_msg">ಅಮಾನ್ಯ ಸಂಖ್ಯೆ</string>
+    <string name="optional_helper_text">ಐಚ್ಛಿಕ</string>
+    <string name="required">ಅಗತ್ಯ</string>
+    <string name="required_text_and_new_line">ಅಗತ್ಯ\n</string>
+    <string name="space_asterisk">\u0020\u002a</string>
+    <string name="repeated_group_title">%1$s. %2$s</string>
+    <string name="add_repeated_group_item">%1$s ಸೇರಿಸಿ</string>
+
+    <string name="abnormal_bp_message">
+        ಅಸಹಜ ರಕ್ತದೊತ್ತಡ ಕಂಡುಬಂದಿದೆ. ದಯವಿಟ್ಟು 5 ನಿಮಿಷಗಳ ನಂತರ BP ಮರು ಪರೀಕ್ಷಿಸಿ.
+        &#10;&#10;ಈ ಸಂವಾದವು %1$02d:%2$02d ರಂದು ಮುಚ್ಚಲ್ಪಡುತ್ತದೆ.
+    </string>
+
+    <string name="bp_alert_title">BP ಎಚ್ಚರಿಕೆ</string>
+    <string name="input_error_title">ಇನ್‌ಪುಟ್ ದೋಷ</string>
+    <string name="systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values">
+        ಸಿಸ್ಟಾಲಿಕ್ BP (SBP) ಡಯಾಸ್ಟಾಲಿಕ್ BP (DBP) ಗಿಂತ ಹೆಚ್ಚು ಇರಬೇಕು. ದಯವಿಟ್ಟು ಮೌಲ್ಯಗಳನ್ನು ಸರಿಪಡಿಸಿ.
+    </string>
+    <string name="ok_btn_lbl">ಸರಿ</string>
+
+    <string name="questionnaire_title_hypertension_screening">ಹೈಪರ್‌ಟೆನ್ಶನ್ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="questionnaire_title_anemia_screening">ಅನೀಮಿಯಾ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="questionnaire_title_diabetes_screening">ಮಧುಮೇಹ ಸ್ಕ್ರೀನಿಂಗ್</string>
+    <string name="questionnaire_title_hypertension_followup">ಹೈಪರ್‌ಟೆನ್ಶನ್ ಫಾಲೋಅಪ್</string>
+
+    <string name="bp_measurement">BP ಅಳೆಯಿಕೆ - %1$s/%2$s</string>
+    <string name="tab_all">ಎಲ್ಲಾ</string>
+    <string name="questionnaire_title_anemia_followup">ಅನೀಮಿಯಾ ಫಾಲೋಅಪ್</string>
+    <string name="years_abbr">Y</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+</resources>

@@ -439,5 +439,15 @@
     </string-array>
 
     <string name="prescription_disclaimer">सूचना: उपचारानंतरही जर तुमच्या स्थितीत सुधारणा होत नसेल, तर कृपया शक्य तितक्या लवकर जवळच्या रुग्णालयात जा किंवा डॉक्टरांचा सल्ला घ्या. टेलिमेडिसिन सेवा ही मर्यादित सल्ला सेवा आहे आणि प्रत्यक्ष तपासणीची जागा घेऊ शकत नाही.</string>
+    <string name="new_ncd_sevika_visit">नवीन NCD/सेविका भेट</string>
+
+    <string name="category_anemia">अ‍ॅनिमिया</string>
+    <string name="category_hypertension">हायपरटेन्शन</string>
+    <string name="category_diabetes">डायबिटीज</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 
 </resources>

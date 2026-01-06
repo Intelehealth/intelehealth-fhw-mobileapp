@@ -58,6 +58,8 @@
     <string-array name="speciality_values">
         <item>Select Specialization</item>
         <item>@string/specialty_general_physician</item>
+<!--        <item>General Physician</item>-->
+        <item>NCD Consultation</item>
     </string-array>
 
     <string-array name="speciality_value_hindi">
@@ -3465,6 +3467,17 @@
         <item>8అడుగులు 1అంగుళం.</item>
         <item>8అడుగులు 2అంగుళం.</item>
         <item>8అడుగులు 3అంగుళం.</item>
+    </string-array>
+
+    <string-array name="reason_for_not_taking_bp_medication">
+        <item>@string/never_prescribed_medication</item>
+        <item>@string/forgot_to_take_it</item>
+        <item>@string/cannot_afford_medications</item>
+        <item>@string/ran_out_of_medication</item>
+        <item>@string/i_am_needing_follow_up_with_my_PHC</item>
+        <item>@string/i_dont_think_i_need_it</item>
+        <item>@string/side_effect_related_to_medication</item>
+        <item>@string/unknown_other</item>
     </string-array>
 
 </resources>

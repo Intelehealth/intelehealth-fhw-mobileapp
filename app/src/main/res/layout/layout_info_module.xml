@@ -1,0 +1,48 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/layoutInfo"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:weightSum="2">
+
+
+
+        <Button
+            android:id="@+id/btn_view_ncd_module"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:padding="@dimen/margin_12"
+            android:text="@string/view_ncd_module"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btn_share_ncd_module"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/fu_btn_size"
+            android:layout_marginStart="@dimen/common_edittext_margin_top"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:lineHeight="@dimen/button_line_height"
+            android:padding="@dimen/margin_12"
+            android:text="@string/share_ncd_module"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout>

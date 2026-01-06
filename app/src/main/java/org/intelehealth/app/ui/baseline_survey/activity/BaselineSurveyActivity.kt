@@ -36,6 +36,7 @@ import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.room.entity.FeatureActiveStatus
+import org.intelehealth.ncd.constants.Constants
 
 
 /**
@@ -202,10 +203,12 @@ class BaselineSurveyActivity : BaseActivity() {
                 BaselineSurveyStage.GENERAL -> {
                     tvIndicatorBaselineGeneral.isSelected = true
                 }
+
                 BaselineSurveyStage.MEDICAL -> {
                     tvIndicatorBaselineGeneral.isActivated = true
                     tvIndicatorBaselineMedical.isSelected = true
                 }
+
                 BaselineSurveyStage.OTHER -> {
                     tvIndicatorBaselineGeneral.isActivated = true
                     tvIndicatorBaselineMedical.isActivated = true
@@ -252,12 +255,19 @@ class BaselineSurveyActivity : BaseActivity() {
             context: Context,
             patientId: String? = null,
             stage: BaselineSurveyStage = BaselineSurveyStage.GENERAL,
-            source: BaselineSurveySource = BaselineSurveySource.PATIENT_DETAIL
+            source: BaselineSurveySource = BaselineSurveySource.PATIENT_DETAIL,
+            intent: Intent? = null
+
         ) {
             Intent(context, BaselineSurveyActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(BASELINE_CURRENT_STAGE, stage)
                 putExtra(BASELINE_CURRENT_SOURCE, source)
+                putExtra(
+                    Constants.INTENT_NCD_CATEGORY,
+                    intent?.getStringExtra(Constants.INTENT_NCD_CATEGORY)
+                )
+
             }.also { context.startActivity(it) }
         }
     }

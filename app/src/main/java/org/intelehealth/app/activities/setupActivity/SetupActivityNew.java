@@ -11,7 +11,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,8 +47,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -66,16 +63,21 @@ import com.parse.Parse;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.models.Location;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributeRequest;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
 import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.LocationValidationUtils;
@@ -824,6 +826,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     private void uploadLocationData(String cleanUrl) {
         String finalURL = "https://" + cleanUrl.concat(":3004/api/openmrs/location/").concat(sessionManager.getCurrentLocationUuid());
+        CustomLog.d(TAG, "uploadLocationData: finalURL : " + finalURL);
         LocationAttributeRequest requestBody = getLocationAttributeRequestBody();
 
         Observable<LocationAttributesResponse> pushLocationDataObservable = AppConstants.apiInterface.PUSH_LOCATION_UUIDS(finalURL, "Bearer " + sessionManager.getJwtAuthToken(), requestBody.getLocationAttributes());

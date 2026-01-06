@@ -438,5 +438,19 @@
     </string-array>
 
     <string name="prescription_disclaimer">घोषणा: यदि इलाज के बाद भी आपकी स्थिति में सुधार नहीं होता है, तो कृपया जल्द से जल्द अपने नजदीकी अस्पताल जाएं या किसी डॉक्टर से परामर्श लें। टेलीमेडिसिन सेवा एक सीमित परामर्श है और यह व्यक्तिगत जांच का विकल्प नहीं है</string>
+    <string name="new_ncd_sevika_visit">नया NCD/सेविका विज़िट</string>
+
+    <string name="category_anemia">एनीमिया</string>
+    <string name="category_hypertension">हाइपरटेंशन</string>
+    <string name="category_diabetes">डायबिटीज़</string>
+
+    <string name="not_eligible_for_protocols_message">आप इस समय किसी भी NCD प्रोटोकॉल के लिए पात्र नहीं हैं। यदि आप फिर भी आगे बढ़ना चाहते हैं, तो अपनी पसंद का प्रोटोकॉल चुनें।</string>
+    <string name="yes_move_ahead">हाँ, आगे बढ़ें</string>
+    <string name="no_go_back">नहीं, वापस जाएँ</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
 
 </resources>

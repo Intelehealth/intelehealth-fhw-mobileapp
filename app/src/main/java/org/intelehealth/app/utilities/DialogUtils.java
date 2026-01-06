@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +23,6 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
@@ -208,8 +206,9 @@ public class DialogUtils {
                                               CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View convertView = inflater.inflate(R.layout.dialog_common_message, null);
+        View convertView = inflater.inflate(R.layout.dialog_incomplete_alert_message, null);
         alertdialogBuilder.setView(convertView);
+        alertdialogBuilder.setCancelable(false);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
         TextView dialog_title = convertView.findViewById(R.id.dialog_title);
         TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
@@ -221,6 +220,8 @@ public class DialogUtils {
             dialog_subtitle.setVisibility(View.GONE);
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
+        if(title==null || title.equalsIgnoreCase(""))
+            dialog_title.setVisibility(View.GONE);
         dialog_subtitle.setText(message);
         positive_btn.setText(positiveBtnText);
         negative_btn.setText(negativeBtnText);
@@ -239,14 +240,22 @@ public class DialogUtils {
         negative_btn.setOnClickListener(v -> {
             SafeDialogUtil.dismissDialog(context, alertDialog);
 
-            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+            //customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+            //alertDialog.dismiss();
+            if (customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
-            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+           /* if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
                 //alertDialog.dismiss();
-            }
-            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+            }*/
+            //customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+            //alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
+            if (customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         SafeDialogUtil.showDialog(context, alertDialog);
@@ -280,7 +289,7 @@ public class DialogUtils {
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
+        alertDialog.setCancelable(false);
         negative_btn.setOnClickListener(v -> {
             SafeDialogUtil.dismissDialog(context, alertDialog);
 

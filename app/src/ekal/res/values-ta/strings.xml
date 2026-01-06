@@ -333,6 +333,18 @@
     <string name="prescription_follow_up">பின்தொடர்தல்</string>
 
     <string name="sample_text">மாதிரி உரை</string>
+    <string name="new_ncd_sevika_visit">புதிய NCD/சேவிகா வருகை</string>
+
+
+    <string name="category_anemia">அனீமியா</string>
+    <string name="category_hypertension">உயர் இரத்த அழுத்தம்</string>
+    <string name="category_diabetes">சர்க்கரை நோய்</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+
 
     <string name="prescription_dr_email">மின்னஞ்சல்: %1$s</string>
     <string name="prescription_dr_registration">பதிவு எண்: %1$s</string>

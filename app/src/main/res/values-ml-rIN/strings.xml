@@ -303,7 +303,8 @@
     <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
     <string name="select_any_one">Select any one</string>
-    <string name="select_one_or_more">Select one or more</string>
+    <string name="select_one_or_more">ഒന്ന് അല്ലെങ്കിൽ അതിലധികം തിരഞ്ഞെടുക്കുക</string>
+
     <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
     <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
     <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
@@ -409,6 +410,53 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">സന്ദർശന കാരണം</string>
+
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="please_complete_the_baseline_survey">ദയവായി ബേസ്ലൈൻ സർവേ പൂർത്തിയാക്കുക.</string>
+    <string name="dialog_baseline_ok">ശരി</string>
+    <string name="baseline_warning_alert">മുന്നറിയിപ്പ്!</string>
+
+    <string name="screening_lbl">സ്ക്രീനിംഗ്</string>
+
+    <string name="patient_visit_sent_ended">രോഗിയുടെ സന്ദർശനം വിജയകരമായി സേവ് ചെയ്ത് സ്വയം അവസാനിപ്പിച്ചു.</string>
+
+    <string name="category_already_selected">നിങ്ങൾ ഇതിനകം %1$s ൽ നിന്ന് ഒരു ഇനം തിരഞ്ഞെടുത്തിരിക്കുന്നു</string>
+    <string name="visit_successfully_sent">भेट यशस्वीरीत्या जतन करण्यात आली!</string>
+    <string name="what_is_reason_for_this_visit">ഈ സന്ദർശനത്തിന്റെ കാരണം എന്താണ്?</string>
+
+    <string name="not_eligible_for_protocols_message">നിങ്ങൾ ഇപ്പോൾ ഏതെങ്കിലും NCD പ്രോട്ടോക്കോളിന് അർഹരല്ല. എന്നിരുന്നാലും മുന്നോട്ട് പോകാൻ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, നിങ്ങളുടെ ഇഷ്ടമുള്ള പ്രോട്ടോക്കോൾ തിരഞ്ഞെടുക്കുക.</string>
+    <string name="yes_move_ahead">അതെ,മുന്നോട്ട് പോകുക</string>
+    <string name="no_go_back">ഇല്ല,തിരികെ പോകുക</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">സമീപകാല NCD റീഡിംഗുകൾ</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">കഴിഞ്ഞ %1$s NCD സന്ദർശനങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക</string>
+
 </resources>
 
 

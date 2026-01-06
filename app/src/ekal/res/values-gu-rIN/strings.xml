@@ -106,7 +106,7 @@
     <string name="hb_check_question">છેલ્લી વાર તમે તમારું સુગર લેવલ  ક્યારે તપાસ્યું હતું?</string>
     <string name="bp_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
     <string name="sugar_check_question">છેલ્લી વાર તમે તમારું બીપી ક્યારે તપાસ્યું હતું?</string>
-    <string name="bp_label">બી.પી</string>
+    <string name="bp_label">બીપી</string>
     <string name="diabetes_label">સુગર</string>
     <string name="arthritis_label">ગાંઠ</string>
     <string name="anemia_label">એનીમિયા</string>
@@ -438,5 +438,16 @@
     </string-array>
 
     <string name="prescription_disclaimer">નોટ: જો સારવાર બાદ તમારી સ્થિતિમાં સુધારો ન થાય, તો કૃપા કરીને ઝડપથી તમારા નજીકના હોસ્પિટલમાં જાઓ અથવા ડૉક્ટરની સલાહ લો. ટેલિમેડિસીન સેવા મર્યાદિત સલાહ છે અને વ્યક્તિગત તપાસનો વિકલ્પ નથી.</string>
+    <string name="new_ncd_sevika_visit">નવું NCD/સેવિકા મુલાકાત</string>
+
+    <string name="category_anemia">એનીમિયા</string>
+    <string name="category_hypertension">હાઇપરટેન્શન</string>
+    <string name="category_diabetes">ડાયાબિટીસ</string>
+
+    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_button_dialog">Discard</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
+
 
 </resources>

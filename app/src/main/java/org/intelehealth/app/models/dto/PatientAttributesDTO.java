@@ -116,6 +116,8 @@ public class PatientAttributesDTO implements Serializable {
         COOKING_FUEL("cookingFuel"),
         HOUSEHOLD_LIGHTING("householdLighting"),
         SOAP_HAND_WASHING_OCCASION("soapHandWashingOccasion"),
+        SELF_OR_FAMILY_WHATSAPP("doYourFamilyMembersUseWhatsAppResponse"),
+        CAN_EKAL_SEND_WHATSAPP_MESSAGE("canEkalSendFreeWhatsAppMessageForVisitSummary"),
         TAKE_OUR_SERVICE("TakeOurService");
         public final String value;
 

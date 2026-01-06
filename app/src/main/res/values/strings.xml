@@ -13,7 +13,7 @@
     <string name="action_home">Home</string>
 
 
-      //Database Schema Names
+    //Database Schema Names
 
     //Login Screen
     <string name="title_activity_login">Intelehealth</string>
@@ -665,8 +665,7 @@
     <string name="try_again">Try again</string>
 
 
-
-    //fingerprint IDA_613
+    <!--    //fingerprint IDA_613-->
     <string name="fingerprint_lock">Fingerprint Lock</string>
     <string name="fingerprint_lock_enabled">Fingerprint lock enabled!</string>
     <string name="fingerprint_lock_disabled">Fingerprint lock disabled!</string>
@@ -1107,5 +1106,107 @@
     <string name="daily_time_spent_by_sevika_tooltip_title">Total time spent by sevika</string>
     <string name="daily_time_spent_by_sevika_tooltip_content">The time when sevikas\nhas the app open\nin the foreground.</string>
     <string name="todays_tab_achievement">Daily</string>
+
+    <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
+    <string name="yes_move_ahead">"Yes,move ahead"</string>
+    <string name="no_go_back">No,go back</string>
+    <string name="please_move_to_next_question">Please move to next question</string>
+    <string name="please_confirm_your_details">Please Confirm Your Details</string>
+    <string name="back_desc">back_desc</string>
+    <string name="next_desc">next_desc</string>
+    <string name="Minute">Minutes</string>
+    <string name="node_input_empty_error">%1$s  should not be empty !</string>
+    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
+    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
+    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
+    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="visit_reason_txt">Visit Reason</string>
+    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+
+    <string name="are_you_taking_any_medication_for_bp">Are you currently taking any medication for BP?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">Are you currently taking any medication for diabetes?</string>
+    <string name="are_you_taking_any_medication_for_anemia">Are you currently taking any medication for anemia?</string>
+
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">Have you been seen by a healthcare worker within the past 1 year for your BP?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">Have you been seen by a healthcare worker within the past 1 year for your diabetes?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">Have you been seen by a healthcare worker within the past 1 year for your anemia?</string>
+
+    <string name="why_are_you_not_taking_your_bp_medication">Why are you not taking your BP medication?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">Why are you not taking your diabetes medication?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">Why are you not taking your anemia medication?</string>
+
+    <string name="never_prescribed_medication">I was never prescribed medications.</string>
+    <string name="forgot_to_take_it">I forgot to take it.</string>
+    <string name="cannot_afford_medications">I cannot afford medications.</string>
+    <string name="ran_out_of_medication">I ran out of medications / lost medications.</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">I am needing follow up with my PHC.</string>
+    <string name="i_dont_think_i_need_it">I don\'t think I need it.</string>
+    <string name="side_effect_related_to_medication">Side effect related to medication.</string>
+    <string name="unknown_other">Unknown / Other</string>
+
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family members use WhatsApp?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">What is the mobile number associated with your family member WhatsApp account?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">What is the mobile number associated with your personal WhatsApp account?</string>
+    <string name="i_dont_know">I don\’t know</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">Can Ekal send a free WhatsApp message of the summary of our visit to you?</string>
+    <string name="yes_family_member">Yes (Family Member)</string>
+    <string name="yes_personal">Yes (Personal)</string>
+    <string name="send_summary_on_whatsApp">Send Summary on WhatsApp</string>
+    <string name="new_ncd_sevika_visit">New NCD/Sevika Visit</string>
+    <string name="screening_lbl">Screening</string>
+
+    <string name="view_ncd_module">View info module</string>
+    <string name="share_ncd_module">Share info module</string>
+    <string name="share_ncd_info_dialog_title">NCD health information will be share to this whatsapp number</string>
+    <string name="suggested_info_modules">Suggested NCD health information modules</string>
+    <string name="ncd_info_whatsapp_msg">Hello, Thank you for using Intelehealth.\nTo download your health info module for hypertension, Click here</string>
+    <string name="enter_whatsapp_number">Please enter whatsapp number</string>
+
+    <string name="decrease_salt_intake">Decrease salt intake</string>
+    <string name="exercise">Exercise</string>
+    <string name="alcohol_and_tobacco_cessation">Alcohol and tobacco cessation</string>
+    <string name="ncd_info_whatsapp_msg_new">Thank you for using Ekal Telemedicine. Please download and read the information to manage or reduce hypertension</string>
+    <string name="health_information">Health information</string>
+    <string name="saved_to_downloads">File saved to Downloads</string>
+    <string name="failed_to_save_downloads">Failed to save PDF</string>
+    <string name="patient_visit_sent_ended">Patient\'s visit has been successfully saved and auto ended.</string>
+    <string name="category_already_selected">You already selected an item from %1$s</string>
+    <string name="please_complete_the_baseline_survey">Please complete the Baseline Survey.</string>
+    <string name="dialog_baseline_ok">Ok</string>
+    <string name="baseline_warning_alert">Alert!</string>
+
+    <string name="msg_ekal_thank_you">Thank you for using Ekal Telemedicine! Click the link to learn simple ways to stay healthy every day.</string>
+    <string name="anemia_food_advice">Anemia: Eat iron-, folic acid– and protein-rich foods</string>
+    <string name="anemia_deworm_hygiene">Anemia: Deworm regularly and maintain good hygiene</string>
+    <string name="anemia_quit_alcohol_tobacco">Anemia: Quit alcohol and tobacco</string>
+    <string name="diabetes_reduce_sugar">Diabetes: Reduce sugar intake</string>
+    <string name="exercise_regularly">Exercise regularly</string>
+    <string name="diabetes_quit_alcohol_tobacco">Diabetes: Quit alcohol and tobacco</string>
+    <string name="hypertension_reduce_salt">Hypertension: Reduce salt intake</string>
+    <string name="hypertension_quit_alcohol_tobacco">Hypertension: Quit alcohol and tobacco</string>
+    <string name="ncd_report">NCD Report</string>
+    <string name="yes_proceed">Yes, Proceed</string>
+    <string name="ncd_baseline">NCD Baseline</string>
+    <string name="ncd_baseline_dialog_content">Answering to few baseline questions is mandatory for NCD visit &amp; Doctor visit workflow</string>
+    <string name="data_saved">Data saved</string>
+
+    <!-- NCD Card Strings -->
+    <string name="recent_ncd_readings">Recent NCD Readings</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+
+    <string name="click_to_view_past_ncd_visits">Click to view the past %1$s NCD visits</string>
+
 
 </resources>

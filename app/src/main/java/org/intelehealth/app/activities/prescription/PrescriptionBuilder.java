@@ -1612,7 +1612,8 @@ public class PrescriptionBuilder {
     }
 
     private Typeface getSignatureTypeface(String font) {
-        String directory = "font/youthness.ttf";
+       // 4.1.3 code
+        /* String directory = "font/youthness.ttf";
         if (font != null) {
             if (font.equalsIgnoreCase("Youthness")) {
                 directory = "font/youthness.ttf";
@@ -1620,6 +1621,18 @@ public class PrescriptionBuilder {
                 directory = "font/asem.otf";
             } else if (font.equalsIgnoreCase("Arty")) {
                 directory = "font/arty.otf";
+            } else if (font.equalsIgnoreCase("Almondita")) {
+                directory = "font/almondita.ttf";
+            }*/
+        // NCD side code
+        String directory = "font/almondita.ttf";
+        if(font!=null) {
+            if (font.equalsIgnoreCase("Youthness")) {
+                directory = "font/Youthness.ttf";
+            } else if (font.equalsIgnoreCase("Asem")) {
+                directory = "font/Asem.otf";
+            } else if (font.equalsIgnoreCase("Arty")) {
+                directory = "font/Arty.otf";
             } else if (font.equalsIgnoreCase("Almondita")) {
                 directory = "font/almondita.ttf";
             }
