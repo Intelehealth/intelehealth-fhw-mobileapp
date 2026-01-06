@@ -32,14 +32,14 @@ import kotlin.uuid.Uuid
 class NcdInfoViewAndShareHelper(
     private val context: Context,
     private val mBinding: ActivityVisitSummaryNewBinding,
-    private val visitUuid: String,
+    private val visitUuid: String?,
     private val visitsDAO: VisitsDAO,
     private val visitAttributeListDAO: VisitAttributeListDAO
 ) {
 
     fun showShareDialog(
         patientUuid: String?,
-        infoModulesFileUrlsList: List<HealthModuleItem>
+        infoModulesFileUrlsList: List<HealthModuleItem> = emptyList()
     ) {
         val patientsDAO = PatientsDAO()
         val patientWhatsappNo: String? = patientsDAO.getPatientAttributeByPatientUuid(
@@ -70,19 +70,21 @@ class NcdInfoViewAndShareHelper(
         shareBtn.setOnClickListener {
             val phoneNumber = editText.text.toString()
             if (phoneNumber.isNotEmpty() && phoneNumber.length==10) {
-                val isInserted: Boolean =
-                    visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
-                if (!isInserted) {
-                    try {
-                        visitAttributeListDAO.insertVisitAttributes(
-                            visitUuid,
-                            /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
-                            UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
-                        )
-                        visitsDAO.updateVisitSync(visitUuid, "0")
-                        SyncDAO().pushDataApi()
-                    } catch (e: DAOException) {
-                        throw RuntimeException(e)
+                if (!visitUuid.isNullOrEmpty()) {
+                    val isInserted: Boolean =
+                        visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
+                    if (!isInserted) {
+                        try {
+                            visitAttributeListDAO.insertVisitAttributes(
+                                visitUuid,
+                                /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
+                                UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
+                            )
+                            visitsDAO.updateVisitSync(visitUuid, "0")
+                            SyncDAO().pushDataApi()
+                        } catch (e: DAOException) {
+                            throw RuntimeException(e)
+                        }
                     }
                 }
                 val whatsappMessage = generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList, patientUuid)

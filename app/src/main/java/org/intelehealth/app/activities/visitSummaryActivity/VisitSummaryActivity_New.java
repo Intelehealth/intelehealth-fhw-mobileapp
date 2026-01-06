@@ -556,6 +556,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setViewsData();
             loadData();
             setupClickListeners();
+            shareNCDReportOnWhatsapp();
         } else {
             fetchingIntent();
             expandableCardVisibilityHandling();
@@ -580,7 +581,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             checkIfVisitIsEnded();
 
             language = sessionManager.getAppLanguage();
-            //shareAndViewInfoModel();
             viewAndShareHealthInfoModule();
         }
     }
@@ -6869,16 +6869,28 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void viewAndShareHealthInfoModule() {
         NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
         String value = VisitsDAO.getComplaintValueInEnglish(visitUUID);
-        infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
-        Log.d(TAG, "viewAndShareHealthInfoModule: value : "+value);
-        Log.d(TAG, "viewAndShareHealthInfoModule: infoModulesFileUrlsList : "+new Gson().toJson(infoModulesFileUrlsList));
+        List<HealthModuleItem> infoModulesFileUrlsList = fileGenerator.generateModulesNew(value, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
+        boolean hasFollowup = infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
+        if (hasFollowup) {
+            if (infoModulesFileUrlsList !=null && !infoModulesFileUrlsList.isEmpty()){
+                viewInfoModule();
+                if(visitUuid!=null && !visitUuid.isEmpty()){
+                    shareInfoModule();
+                }
+            }
+        }else {
+            shareNCDReportOnWhatsapp();
+        }
+    }
 
+    private void viewInfoModule() {
         boolean hasFollowup = infoModulesFileUrlsList != null && !infoModulesFileUrlsList.isEmpty();
         if (hasFollowup) {
             if (infoModulesFileUrlsList == null && infoModulesFileUrlsList.isEmpty())
                 return;
+            mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.GONE);
             mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleCard.setVisibility(View.VISIBLE);
-            mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
+            //mBinding.layoutShareInfoModule.setVisibility(View.VISIBLE);
             mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.infoModuleHeaderRelative.setOnClickListener(v -> {
                 if (mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.getVisibility() == View.VISIBLE) {
                     mBinding.layoutVisitSummaryItems.layoutHealthInfoModule.vsInfoModuleHeaderExpandview.setVisibility(View.GONE);
@@ -6895,27 +6907,33 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             });
 
-            NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(
-                    context,
-                    mBinding,
-                    visitUuid,
-                    visitsDAO,
-                    visitAttributeListDAO
-            );
+            NcdInfoViewAndShareHelper ncdInfoViewAndShareHelper = new NcdInfoViewAndShareHelper(context, mBinding, visitUuid, visitsDAO, visitAttributeListDAO);
             ncdInfoViewAndShareHelper.viewNcdInfoModuleInfoNew(infoModulesFileUrlsList, mBinding);
-
-
-            mBinding.layoutShareInfoModule.setOnClickListener(v -> {
-                ncdInfoViewAndShareHelper.showShareDialog(
-                        patientUuid,
-                        infoModulesFileUrlsList
-
-                );
-            });
-
         }
-
     }
 
+    private void shareInfoModule() {
+        mBinding.layoutShareInfoModule.setOnClickListener(v -> {
+            if (visitUUID == null || visitUUID.isEmpty()) {
+                return;
+            }
+            String complaintValue = VisitsDAO.getComplaintValueInEnglish(visitUUID);
+            NcdInfoModuleFilesNameGenerator fileGenerator = new NcdInfoModuleFilesNameGenerator();
+            List<HealthModuleItem> infoModulesFileUrlsList = fileGenerator.generateModulesNew(complaintValue, sessionManager.getAppLanguage(), VisitSummaryActivity_New.this);
+
+            if (infoModulesFileUrlsList == null || infoModulesFileUrlsList.isEmpty()) {
+                return;
+            }
+            NcdInfoViewAndShareHelper shareHelper = new NcdInfoViewAndShareHelper(context, mBinding, visitUuid, visitsDAO, visitAttributeListDAO);
+            shareHelper.showShareDialog(patientUuid, infoModulesFileUrlsList);
+        });
+    }
+    private void shareNCDReportOnWhatsapp() {
+        mBinding.layoutShareInfoModule.setOnClickListener(v -> {
+            List<HealthModuleItem> list = new ArrayList<>();
+            NcdInfoViewAndShareHelper shareHelper = new NcdInfoViewAndShareHelper(context, mBinding, visitUuid, visitsDAO, visitAttributeListDAO);
+            shareHelper.showShareDialog(patientUuid,list);
+        });
+    }
 
 }
