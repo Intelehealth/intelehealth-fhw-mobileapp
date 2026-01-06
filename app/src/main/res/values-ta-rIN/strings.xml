@@ -123,19 +123,19 @@
     <string name="visit_summary_patient_details">விவரங்களைப் பார்வையிடவும்</string>
 
     <!-- Camera Permissions -->
-    <string name="permission_camera_rationale">கேமரா முன்னோட்டத்தைக் காட்ட கேமரா அனுமதி தேவை.</string>
-    <string name="permission_camera_denied">கேமரா அனுமதி மறுக்கப்பட்டது. கேமராவை அணுக அதை வழங்குவதைக் கருத்தில் கொள்ளவும்!</string>
-    <string name="permission_camera_never_askagain">மீண்டும் ஒருபோதும் கேட்க வேண்டாம் என்பதன் மூலம் கேமரா அனுமதி மறுக்கப்பட்டது.</string>
-    <string name="button_allow">அனுமதி</string>
-    <string name="button_deny">மறுக்கவும்</string>
+<!--    <string name="permission_camera_rationale">கேமரா முன்னோட்டத்தைக் காட்ட கேமரா அனுமதி தேவை.</string>-->
+<!--    <string name="permission_camera_denied">கேமரா அனுமதி மறுக்கப்பட்டது. கேமராவை அணுக அதை வழங்குவதைக் கருத்தில் கொள்ளவும்!</string>-->
+<!--    <string name="permission_camera_never_askagain">மீண்டும் ஒருபோதும் கேட்க வேண்டாம் என்பதன் மூலம் கேமரா அனுமதி மறுக்கப்பட்டது.</string>-->
+<!--    <string name="button_allow">அனுமதி</string>-->
+<!--    <string name="button_deny">மறுக்கவும்</string>-->
     <string name="button_ok">சரி</string>
     <string name="button_cancel">ரத்துசெய்</string>
     <string name="picture_taken">படம் எடுக்கப்பட்டது</string>
-    <string name="switch_flash">ஃப்ளாஷை மாற்றவும்</string>
-    <string name="switch_camera">கேமராவை மாற்றவும்</string>
-    <string name="flash_auto">ஃப்ளாஷ் ஆட்டோ</string>
-    <string name="flash_off">ஃப்ளாஷ் ஆஃப் செய்யவும்</string>
-    <string name="flash_on">ஃப்ளாஷ் ஆன் செய்யவும்</string>
+<!--    <string name="switch_flash">ஃப்ளாஷை மாற்றவும்</string>-->
+<!--    <string name="switch_camera">கேமராவை மாற்றவும்</string>-->
+<!--    <string name="flash_auto">ஃப்ளாஷ் ஆட்டோ</string>-->
+<!--    <string name="flash_off">ஃப்ளாஷ் ஆஃப் செய்யவும்</string>-->
+<!--    <string name="flash_on">ஃப்ளாஷ் ஆன் செய்யவும்</string>-->
 
     <!-- SEND SMS Permissions -->
     <string name="permission_sms_rationale">எஸ்எம்எஸ் அனுப்ப எஸ்எம்எஸ் அனுமதி தேவை.</string>
@@ -202,7 +202,7 @@
 
     <string name="associated_symptoms">தொடர்புடைய அறிகுறிகள்</string>
     <string name="enter_server_url">சேவையக உர்ல் ஐ உள்ளிடவும்</string>
-    <string name="enter_license_key">உரிம விசையை உள்ளிடவும்<b>உரிம விசையை உள்ளிடவும்</b></string>
+<!--    <string name="enter_license_key">உரிம விசையை உள்ளிடவும்<b>உரிம விசையை உள்ளிடவும்</b></string>-->
     <string name="invalid_url">தவறான வலைதள முகவரி</string>
     <string name="years">ஆண்டுகள்</string>
     <string name="months">மாதங்கள்</string>
@@ -313,7 +313,7 @@
 
     <!-- Setup Activity -->
     <!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
-    <string name="title_activity_question_node" translatable="false">கேள்விமுனைசெயல்பாடு</string>
+<!--    <string name="title_activity_question_node" translatable="false">கேள்விமுனைசெயல்பாடு</string>-->
     <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
     <!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
     <!--    <string name="speciality">சிறப்பு</string>-->
@@ -323,13 +323,13 @@
     <!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
     <!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
     <!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
-    <string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
+    <!--<string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
     <string name="reject_permission_results">நீங்கள் அனுமதியை நிராகரித்தால், இந்த சேவையைப் பயன்படுத்த முடியாது. தயவுசெய்து [அமைத்தல்] > [அனுமதி] அனுமதிகளை இயக்கவும்</string>
     <string name="current_time">\"நடப்பு நேரம் => \"</string>
     <string name="gender_male">ஆண்</string>
     <string name="gender_female">பெண்</string>
     <string name="retry_again">மீண்டும் முயற்சிக்கவும்!</string>
-    <string name="ok_close_now">சரி, அதை மூடவும்</string>
+    <string name="ok_close_now">சரி, அதை மூடவும்</string>-->
     <string name="select_specialization_text">தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
@@ -358,7 +358,7 @@
     <string name="app_sync_dialog_title">பயன்பாட்டை ஒத்திசைக்கிறது</string>
 
     <!-- Language Screen -->
-    <string name="error_login_title">உள்நுழைவில் பிழை</string>
+<!--    <string name="error_login_title">உள்நுழைவில் பிழை</string>-->
     <string name="config_file_error">கட்டமைப்பு கோப்பு பிழை</string>
     <string name="not_connected_txt">இணையத்துடன் இணைக்கப்படவில்லை!</string>
 
@@ -414,7 +414,7 @@
     <string name="forgot_password_instruction">உங்கள் கணக்கை மீண்டும் அணுக கீழே உள்ள வழிமுறைகளைப் பின்பற்றவும்</string>
     <string name="mobile_number">மொபைல் எண்</string>
     <string name="login">உள்நுழை</string>
-    <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>
+<!--    <string name="enter_mobile_no">மொபைல் எண்ணை உள்ளிடவும்</string>-->
     <string name="enter_verification_code">சரிபார்ப்பு குறியீட்டை உள்ளிடவும்</string>
     <string name="otp_sent">6 இலக்க OTP உங்கள் பதிவு செய்யப்பட்ட எண்ணுக்கும் மின்னஞ்சலுக்கும் அனுப்பப்பட்டது.\nதயவுசெய்து OTP-ஐ சரிபார்த்து உள்ளிடவும்.</string>
     <string name="no_otp_received">OTP பெறவில்லையா?</string>
@@ -441,7 +441,7 @@
     <string name="hello_i_am_ayu">வணக்கம், நான் ஆயு,</string>
     <string name="ayu_intro">ஒரு டிஜிட்டல் சுகாதார உதவியாளர். தொடங்குவோம்!</string>
     <string name="agree_to_terms">ஒப்புக்கொள் <font color="#2F1E91"><u>விதிமுறைகள் மற்றும் நிபந்தனைகள்</u></font> மற்றும் <font color="#2F1E91"><u>தனியுரிமைக் கொள்கை</u></font></string>
-    <string name="setup">அமைவு</string>
+<!--    <string name="setup">அமைவு</string>-->
     <string name="terms_and_conditions">விதிமுறைகள் மற்றும் நிபந்தனைகள்</string>
     <string name="privacy_policy">தனியுரிமைக் கொள்கை</string>
     <string name="decline">மறுக்கவும்</string>
@@ -461,7 +461,7 @@
     <string name="reset_app_new_title">பயன்பாட்டை மீட்டமைக்கவா?</string>
     <string name="snack_policy">தயவுசெய்து விதிமுறைகள் மற்றும் நிபந்தனைகள் மற்றும் தனியுரிமைக் கொள்கையை ஒப்புக்கொள்ளவும்</string>
 
-    <string name="setup_new">அமைவு</string>
+<!--    <string name="setup_new">அமைவு</string>-->
     <string name="one_time_setup">தயவுசெய்து உங்கள் ஒரு முறை அமைவு செயல்பாட்டை முடிக்கவும்</string>
     <string name="enter_following_details">பின்வரும் விவரங்களை உள்ளிடவும்</string>
     <string name="location_new">இருப்பிடம்</string>
@@ -489,7 +489,7 @@
     <string name="other">மற்றவை</string>
     <string name="age">வயது</string>
     <string name="date_of_birth">பிறந்த தேதி</string>
-    <string name="phone_number">தொலைபேசி எண்</string>
+<!--    <string name="phone_number">தொலைபேசி எண்</string>-->
     <string name="enter_phone_number">தொலைபேசி எண்ணை உள்ளிடவும்</string>
     <string name="email">மின்னஞ்சல்</string>
     <string name="enter_your_email">மின்னஞ்சல் ஐடியை உள்ளிடவும்</string>
@@ -564,7 +564,7 @@
     <string name="fu_detiails_date">மே 21, 2022</string>
     <string name="gp_txt">பொது மருத்துவர்</string>
     <string name="dr_speciality">மருத்துவரின் சிறப்பு</string>
-    <string name="visitDetails_text">வருகை சுருக்கம்</string>
+<!--    <string name="visitDetails_text">வருகை சுருக்கம்</string>-->
     <string name="followup_date_txtv">ஜூன் 12 அன்று பின்தொடரவும்</string>
     <string name="followup_info">தயவுசெய்து பிரஜ்வல் வைங்கன்கரின் பின்தொடரவும் வருகையை எடுக்கவும்.</string>
     <string name="search_txt_enter">நோயாளி பெயர் அல்லது ஐடியை தட்டச்சு செய்யவும்</string>
@@ -581,7 +581,7 @@
     <string name="notifi_archived_notifi">காப்பகப்படுத்தப்பட்ட அறிவிப்புகள்</string>
     <string name="five_presc_received">%1$s மருந்துகள் பெறப்பட்டன</string>
 
-    <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>
+<!--    <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>-->
 
     <string name="aboutus_termscondition">எங்கள் <a href="https://intelehealth.org/terms-of-use">விதிமுறைகள் மற்றும் நிபந்தனைகளை</a> பார்க்கவும்</string>
     <string name="visit_intelehealth_for_more">மேலும் தகவலுக்கு எங்கள் இணையதளமான intelehealth.org ஐப் பார்வையிடவும்</string>
@@ -597,37 +597,37 @@
     <string name="bp_dia">பிபி டயஸ்டாலிக்</string>
     <string name="pulse_bpm">நாடி (பிபிஎம்)</string>
     <string name="spo2">SpO2 (%)</string>
-    <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
-    <string name="temperature_f_new">வெப்பநிலை (F)</string>
-    <string name="confirm">Confirm</string>
-    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>
-    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>
-    <string name="select_any_one">Select any one</string>
-    <string name="select_one_or_more">ஒன்று அல்லது அதற்கு மேல் தேர்வு செய்யவும்</string>
+<!--    <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>-->
+<!--    <string name="temperature_f_new">வெப்பநிலை (F)</string>-->
+<!--    <string name="confirm">Confirm</string>-->
+<!--    <string name="ui2_physical_exam_summay_title">%1$d/%2$d Physical examination summary</string>-->
+<!--    <string name="ui2_medical_hist_title_text">%1$d/%2$d Medical history summary</string>-->
+<!--    <string name="select_any_one">Select any one</string>-->
+<!--    <string name="select_one_or_more">ஒன்று அல்லது அதற்கு மேல் தேர்வு செய்யவும்</string>-->
 
-    <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>
-    <string name="video_call_req_sent">Request is sent to doctor for a video call</string>
-    <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>
-    <string name="sanity_alert_title">Please wash/sanitize your hands</string>
-    <string name="slider_desc">range slider</string>
-    <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>
-    <string name="ui2_no_information">No information</string>
+<!--    <string name="unablet_get_the_doct_info_alert">Unable to get the doctor details!</string>-->
+<!--    <string name="video_call_req_sent">Request is sent to doctor for a video call</string>-->
+<!--    <string name="postal_code_6_dig_invalid_txt">Please enter 6 digit valid postal code</string>-->
+<!--    <string name="sanity_alert_title">Please wash/sanitize your hands</string>-->
+<!--    <string name="slider_desc">range slider</string>-->
+<!--    <string name="drag_tow_capture_range_from_0_to_100">Drag tow capture range from 0 to 100</string>-->
+<!--    <string name="ui2_no_information">No information</string>-->
 
-    <string name="confirm_visit_reason">விழிப்பின் காரணத்தை உறுதிப்படுத்தவா?</string>
-    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">நோயாளிக்கு கீழ்க்காணும் காரணங்களுக்காக வருகை உள்ளதா என்று நீங்கள் உறுதியாக உள்ளீர்களா?</string>
+<!--    <string name="confirm_visit_reason">விழிப்பின் காரணத்தை உறுதிப்படுத்தவா?</string>-->
+<!--    <string name="are_you_sure_the_patient_has_the_following_reasons_for_a_visit">நோயாளிக்கு கீழ்க்காணும் காரணங்களுக்காக வருகை உள்ளதா என்று நீங்கள் உறுதியாக உள்ளீர்களா?</string>-->
 
-    <string name="know_more_txt">Know more</string>
-    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
-    <string name="follow_up_visits_not_found">Follow up visits not found!</string>
-    <string name="enter_occupation_txt">Enter Occupation</string>
-    <string name="education">Education</string>
-    <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
-    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
-    <string name="respiratory_rate_breaths_min">சுவாச விகிதம் (மூச்சு/நிமிடம்)</string>
-    <string name="temperature_f_new">வெப்பநிலை (எஃப்)</string>
-    <string name="confirm">உறுதிப்படுத்தவும்</string>
-    <string name="ui2_physical_exam_summay_title">%1$d/%2$d உடல் பரிசோதனை சுருக்கம்</string>
-    <string name="ui2_medical_hist_title_text">%1$d/%2$d மருத்துவ வரலாறு சுருக்கம்</string>
+<!--    <string name="know_more_txt">Know more</string>-->
+<!--    <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>-->
+<!--    <string name="follow_up_visits_not_found">Follow up visits not found!</string>-->
+<!--    <string name="enter_occupation_txt">Enter Occupation</string>-->
+<!--    <string name="education">Education</string>-->
+<!--    <string name="enter_your_relation_with_patient">Enter your relation with patient</string>-->
+<!--    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>-->
+<!--    <string name="respiratory_rate_breaths_min">சுவாச விகிதம் (மூச்சு/நிமிடம்)</string>-->
+<!--    <string name="temperature_f_new">வெப்பநிலை (எஃப்)</string>-->
+<!--    <string name="confirm">உறுதிப்படுத்தவும்</string>-->
+<!--    <string name="ui2_physical_exam_summay_title">%1$d/%2$d உடல் பரிசோதனை சுருக்கம்</string>-->
+<!--    <string name="ui2_medical_hist_title_text">%1$d/%2$d மருத்துவ வரலாறு சுருக்கம்</string>-->
     <string name="priority_hint">அவசரநிலையில் இதை இயக்கவும்.</string>
     <string name="mobile_no_not_provided">மொபைல் எண் வழங்கப்படவில்லை.</string>
     <string name="please_wait_app_reset">பயன்பாடு மீட்டமைக்கப்படும் வரை ஒரு கணம் காத்திருங்கள்.</string>
@@ -826,7 +826,7 @@
     <string name="_appointment">நியமனம்!</string>
     <string name="today_at">இன்று</string>
     <string name="has_an_appointment_with">இவருடன் ஒரு நியமனம் உள்ளது</string>
-    <string name="_phy_examination">%1$d/%2$d உடல் பரிசோதனை</string>
+<!--    <string name="_phy_examination">%1$d/%2$d உடல் பரிசோதனை</string>-->
     <string name="_medical_family_history">%1$d/%2$d. மருத்துவ வரலாறு: குடும்ப வரலாறு</string>
     <string name="add_image_by">படத்தைச் சேர்க்கவும்</string>
     <string name="please_take">தயவுசெய்து எடுக்கவும்</string>
@@ -846,7 +846,7 @@
     <string name="add_additional_documents">கூடுதல் ஆவணங்களைச் சேர்க்கவும்</string>
     <string name="send_visit">வருகையை அனுப்பவா?</string>
     <string name="are_you_sure_you_want_to_send_visit">வருகையை மருத்துவருக்கு அனுப்ப விரும்புகிறீர்களா?</string>
-    <string name="visit_successfully_sent">வருகை வெற்றிகரமாக அனுப்பப்பட்டது!</string>
+<!--    <string name="visit_successfully_sent">வருகை வெற்றிகரமாக அனுப்பப்பட்டது!</string>-->
     <string name="patient_visit_sent">நோயாளியின் வருகை மருத்துவருக்கு வெற்றிகரமாக அனுப்பப்பட்டது.</string>
     <string name="previously_scheduled_on">முன்பு அட்டவணையிடப்பட்டது</string>
     <string name="rescheduled_on">மறு அட்டவணையிடப்பட்டது</string>
@@ -891,8 +891,8 @@
     <string name="corresponding_address_2">தொடர்பு முகவரி 2</string>
     <string name="patients_waiting_for_closure">3 நோயாளிகளின் வருகைகள் மூடப்பட காத்திருக்கின்றன, தயவுசெய்து வருகையை முடிக்கவும்.</string>
     <string name="no_visit_found">வருகை எதுவும் கிடைக்கவில்லை</string>
-    <string name="what_is_reason_for_this_visit">இந்த வருகைக்கு காரணம் என்ன?</string>
-    <string name="select_one_or_multiple_reasons">ஒரு அல்லது பல காரணங்களைத் தேர்ந்தெடுக்கவும்</string>
+<!--    <string name="what_is_reason_for_this_visit">இந்த வருகைக்கு காரணம் என்ன?</string>-->
+<!--    <string name="select_one_or_multiple_reasons">ஒரு அல்லது பல காரணங்களைத் தேர்ந்தெடுக்கவும்</string>-->
     <string name="selected_reasons">தேர்ந்தெடுக்கப்பட்ட காரணங்கள்</string>
     <string name="recently_searched">சமீபத்தில் தேடப்பட்டவை</string>
     <string name="not_searched_anything_yet">இன்னும் எதையும் தேடவில்லை!</string>
@@ -917,7 +917,7 @@
     <string name="_corresponding_address_2">தொடர்பு \nமுகவரி 2</string>
     <string name="other_details">மற்ற விவரங்கள்</string>
 
-    <string name="camera">கேமரா</string>
+<!--    <string name="camera">கேமரா</string>-->
     <string name="gallery">கேலரி</string>
     <string name="document">ஆவணம்</string>
     <string name="enter_the_credentials">இன்டெலிஹெல்த் குழுவால் வழங்கப்பட்ட நற்சான்றிதழ்களை உள்ளிடவும்.</string>
@@ -1076,7 +1076,7 @@
     <string name="hint_drop_down_district">மாவட்டத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="lbl_clear_all">அனைத்தையும் அழிக்கவும்</string>
     <string name="sync">புதுப்பிப்பு</string>
-    <string name="sending_otp">Sending OTP...</string>
+<!--    <string name="sending_otp">Sending OTP...</string>-->
 
     <string name="add_new_patient">புதிய நோயாளியைச் சேர்க்கவும்</string>
     <string name="phone_number">தொலைபேசி எண்</string>
