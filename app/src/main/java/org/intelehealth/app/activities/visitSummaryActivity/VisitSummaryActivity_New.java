@@ -896,6 +896,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             findViewById(R.id.ncd_vitals_lay).setVisibility(View.VISIBLE);
             findViewById(R.id.visitReasonCard).setVisibility(View.VISIBLE);
+            findViewById(R.id.imagebutton_edit_complaint).setVisibility(View.GONE);
             findViewById(R.id.associ_sym_relative).setVisibility(View.GONE);
         }
         // receiver
