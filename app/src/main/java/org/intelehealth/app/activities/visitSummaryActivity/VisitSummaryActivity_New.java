@@ -590,6 +590,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setViewsData();
         loadData();
         setupClickListeners();
+        shareNCDReportOnWhatsapp();
     }
 
     private void fetchingIntentNcdVitals() {
