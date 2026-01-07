@@ -574,7 +574,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             language = sessionManager.getAppLanguage();
             viewAndShareHealthInfoModule();
-            mBinding.layoutVisitSummaryItems.ncdVitalsLay.getRoot().setVisibility(View.GONE);
         }
     }
 
@@ -616,7 +615,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private void setupRecyclerView() {
         // Initialize adapter with click listener
-        adapter = new NCDReadingAdapter(patientGender.equalsIgnoreCase("M"), reading -> {
+        String gender = patientGender;
+        if(gender == null){
+            gender = patient.getGender();
+        }
+        adapter = new NCDReadingAdapter(gender.equalsIgnoreCase("M"), reading -> {
            /* Toast.makeText(this, "Clicked: " + reading.getDate(),
                     Toast.LENGTH_SHORT).show();*/
             return null;
@@ -1071,6 +1074,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         findViewById(R.id.vitalsCard).setVisibility(View.GONE);
         findViewById(R.id.physExamCard).setVisibility(View.GONE);
         findViewById(R.id.cardMedicalHistory).setVisibility(View.GONE);
+        findViewById(R.id.visitTr).setVisibility(View.GONE);
     }
 
     private void handleNcdVitalsViewVisibility() {

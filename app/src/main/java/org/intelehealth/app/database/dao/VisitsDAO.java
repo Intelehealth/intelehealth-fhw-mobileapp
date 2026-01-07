@@ -1386,7 +1386,7 @@ public class VisitsDAO {
     ) {
         List<NCDReading> ncdReadings = new ArrayList<>();
 
-        String query = "SELECT tbl_obs.*" +
+        String query = "SELECT tbl_obs.*, tbl_visit.startdate " +
                 "FROM tbl_obs, tbl_encounter, tbl_visit, tbl_visit_attribute " +
                 "WHERE tbl_obs.encounteruuid = tbl_encounter.uuid " +
                 "AND tbl_encounter.visituuid = tbl_visit.uuid " +
@@ -1396,7 +1396,7 @@ public class VisitsDAO {
                 "AND tbl_visit.patientuuid = ? " +
                 "AND tbl_visit.enddate IS NOT NULL " +
                 "GROUP BY tbl_visit.uuid " +
-                "ORDER BY tbl_obs.obsservermodifieddate DESC " +
+                "ORDER BY tbl_visit.startdate DESC " +
                 "LIMIT 7";
 
         Cursor cursor = null;
@@ -1408,9 +1408,9 @@ public class VisitsDAO {
             if (cursor.moveToFirst()) {
                 do {
                     String value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                    String date = cursor.getString(cursor.getColumnIndexOrThrow("created_date"));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
                     ncdReadings.add(new NCDReading(
-                            DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd HH:mm:ss", "dd MMM, yy"),
+                            DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM, yy"),
                             ParserUtils.parseBP(value),
                             ParserUtils.parseHemoglobin(value),
                             ParserUtils.parseRBS(value)
