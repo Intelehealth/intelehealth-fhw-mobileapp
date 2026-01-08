@@ -85,16 +85,9 @@ object ProtocolParserHelper {
         )
 
         for (visit in sortedVisits) {
-            Log.d(TAG, "parsePatientHistory1: visit : "+visit)
-            Log.e("NCD_DEBUG", "isNcdVisit='"+visit.isNcdVisit+"'")
-
             if (!visit.isNcdVisit.equals("true", ignoreCase = true)) continue
-            Log.d(TAG, "parsePatientHistory2: visit : "+visit)
-
             val blocks = visit.chiefComplaintData?.let { extractComplaintBlocks(it) }
-            Log.d(TAG, "parsePatientHistory3: blocks : "+blocks)
             if (blocks.isNullOrEmpty()) continue
-            Log.d(TAG, "parsePatientHistory4: blocks : "+blocks)
 
             for (block in blocks) {
                 val complaint = "<b>(.*?)</b>".toRegex()
@@ -115,10 +108,8 @@ object ProtocolParserHelper {
                         .toRegex()
                         .find(block)
                         ?.groupValues?.getOrNull(1)
-                        ?: continue
 
-                val followUpDate = parseFollowUpDate(followUpDateStr)
-                Log.d(TAG, "parsePatientHistory: followUpDate : "+followUpDate)
+
                 if (!foundGiven[protocol]!!) {
                     when (protocol) {
                         "hypertension" -> result.isHypertensionFollowupGiven = true
@@ -127,8 +118,8 @@ object ProtocolParserHelper {
                     }
                     foundGiven[protocol] = true
                 }
-
-                if (!foundTodayOrLater[protocol]!!) {
+                val followUpDate = parseFollowUpDate(followUpDateStr)
+                if (followUpDateStr != null && !foundTodayOrLater[protocol]!!) {
                     val isTodayOrLater = !today.before(followUpDate)
 
                     when (protocol) {
@@ -140,11 +131,9 @@ object ProtocolParserHelper {
                 }
             }
         }
-        Log.d("TAGkz", "flagsfromfun: flagsOnlyPatient 1 : ${result}")
-        Log.d("TAGkz", "flagsfromfun: flagsOnlyPatient 2 : "+Gson().toJson(result))
         return result
     }
-    fun parseFollowUpDate(raw: String?): Date? {
+    private fun parseFollowUpDate(raw: String?): Date? {
         if (raw.isNullOrBlank()) return null
 
         val formats = listOf(

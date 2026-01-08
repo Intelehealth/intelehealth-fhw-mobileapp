@@ -546,7 +546,11 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): List<PatientVisitDetails> {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
-            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING
+            val hasPreviousVisit = detail.isDiabetesFollowupGiven
+            Log.d(TAG, "filterDiabetesScreeningPatients: compalint: "+detail.chiefComplaintData)
+            Log.d(TAG, "filterDiabetesScreeningPatients: hasPreviousVisit: "+hasPreviousVisit)
+
+            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING && hasPreviousVisit != true
         }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
+import org.intelehealth.app.app.AppConstants.NCD_REPORT_BASE_URL
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitAttributeListDAO
@@ -31,16 +32,14 @@ import kotlin.uuid.Uuid
 class NcdInfoViewAndShareHelper(
     private val context: Context,
     private val mBinding: ActivityVisitSummaryNewBinding,
-    private val visitUuid: String,
+    private val visitUuid: String?,
     private val visitsDAO: VisitsDAO,
     private val visitAttributeListDAO: VisitAttributeListDAO
 ) {
 
-    private val baseUrl = "https://afitraining.ekalarogya.org:3004/ncdinfo/"
-
     fun showShareDialog(
         patientUuid: String?,
-        infoModulesFileUrlsList: List<HealthModuleItem>
+        infoModulesFileUrlsList: List<HealthModuleItem> = emptyList()
     ) {
         val patientsDAO = PatientsDAO()
         val patientWhatsappNo: String? = patientsDAO.getPatientAttributeByPatientUuid(
@@ -71,22 +70,24 @@ class NcdInfoViewAndShareHelper(
         shareBtn.setOnClickListener {
             val phoneNumber = editText.text.toString()
             if (phoneNumber.isNotEmpty() && phoneNumber.length==10) {
-                val isInserted: Boolean =
-                    visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
-                if (!isInserted) {
-                    try {
-                        visitAttributeListDAO.insertVisitAttributes(
-                            visitUuid,
-                            /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
-                            UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
-                        )
-                        visitsDAO.updateVisitSync(visitUuid, "0")
-                        SyncDAO().pushDataApi()
-                    } catch (e: DAOException) {
-                        throw RuntimeException(e)
+                if (!visitUuid.isNullOrEmpty()) {
+                    val isInserted: Boolean =
+                        visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
+                    if (!isInserted) {
+                        try {
+                            visitAttributeListDAO.insertVisitAttributes(
+                                visitUuid,
+                                /*UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE_NAME*/"true",
+                                UuidDictionary.HEALTH_INFO_SHARE_ATTRIBUTE
+                            )
+                            visitsDAO.updateVisitSync(visitUuid, "0")
+                            SyncDAO().pushDataApi()
+                        } catch (e: DAOException) {
+                            throw RuntimeException(e)
+                        }
                     }
                 }
-                val whatsappMessage = generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList)
+                val whatsappMessage = generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList, patientUuid)
                 CustomLog.v("whatsappMessage", whatsappMessage)
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)))
                 alertDialog.dismiss()
@@ -103,19 +104,36 @@ class NcdInfoViewAndShareHelper(
         binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.adapter = ncdHealthInfoAdapter
 
     }
-    fun generateWhatsappMessage(phoneNumber: String, fileUrls: List<HealthModuleItem>): String {
-        val concatenatedUrls = fileUrls.joinToString(separator = "\n\n") { "${it.displayName}: ${it.url}" }
-        val messageText = context.getString(R.string.msg_ekal_thank_you) + "\n\n" + concatenatedUrls
+    private fun generateWhatsappMessage(
+        phoneNumber: String,
+        fileUrls: List<HealthModuleItem>,
+        patientUuid: String?
+    ): String {
+        val ncdMessageTitle = context.getString(R.string.ncd_report)
+        //val baseMessage = context.getString(R.string.msg_ekal_thank_you)
+        val ncdReportUrl = NCD_REPORT_BASE_URL + patientUuid
+        val baseMessage = if (fileUrls.isNotEmpty()) {
+            context.getString(R.string.msg_ekal_thank_you)
+        } else {
+            context.getString(R.string.msg_ekal_thank_you_ncd_report)
+        }
+        val urlsPart = if (fileUrls.isNotEmpty()) {
+            fileUrls.joinToString(separator = "\n\n") { "${it.displayName}: ${it.url}" } +
+                    "\n\n$ncdMessageTitle: $ncdReportUrl"
+        } else {
+            "$ncdMessageTitle: $ncdReportUrl"
+        }
+        val messageText = "$baseMessage\n\n$urlsPart"
         val encodedMessage = try {
             URLEncoder.encode(messageText, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             messageText
         }
-        Log.d("TAG", "generateWhatsappMessage: encodedMessage : "+encodedMessage)
+
+        Log.d("TAG", "generateWhatsappMessage: encodedMessage : $encodedMessage")
 
         return "https://api.whatsapp.com/send?phone=$phoneNumber&text=$encodedMessage"
     }
-
 
 }

@@ -17,11 +17,16 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
     private val yesString = resources.getString(R.string.medical_history_yes)
     private val noString = resources.getString(R.string.medical_history_no)
 
-    fun evaluateMedicalHistory(patientId: String?): MissingLineListingResult {
+    fun evaluateMedicalHistory(patientId: String?, patientAge: Int?): MissingLineListingResult {
         val medicalHistoryJson: String? = PatientsDAO().fetchBaselineMedicalHistory(patientId)
         val history: MedicalHistory? = convertJsonToMedicalHistory(medicalHistoryJson)
         Log.e("MedicalHistoryParser", "medicalHistoryJson: ${medicalHistoryJson}")
         Log.e("MedicalHistoryParser", "history: ${history}")
+        val age = patientAge ?: 0
+        Log.d("TAG", "evaluateMedicalHistory: age : "+age)
+        val isApplicableForAnemia = age > 11
+        val isApplicableForBP = age >= 18
+        val isApplicableForDiabetes = age >= 20
 
         if (history == null) {
             val emptyStatus = ComplaintStatus(false, false)
@@ -34,30 +39,40 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
         }
 
         val anemiaStatus = ComplaintStatus(
-            hasHistory = isHistoryPresent(history.anemia),
-            onMedication = isMedicationPresent(history.medicationForAnemia),
+            hasHistory = isApplicableForAnemia &&  isHistoryPresent(history.anemia),
+            onMedication = isApplicableForAnemia && isMedicationPresent(history.medicationForAnemia),
           /*  isHwForComplaintPresent = isHwForComplaintPresent(history.healthWorkerForAnemia),
             isReasonForNoMedicationPresent = isReasonForNoMedicationPresent(history.healthWorkerForAnemia)*/
         )
 
         val bpStatus = ComplaintStatus(
-            hasHistory = isHistoryPresent(history.hypertension),
-            onMedication = isMedicationPresent(history.medicationForBP)
+            hasHistory = isApplicableForBP && isHistoryPresent(history.hypertension),
+            onMedication = isApplicableForBP && isMedicationPresent(history.medicationForBP)
         )
 
         val diabetesStatus = ComplaintStatus(
-            hasHistory = isHistoryPresent(history.diabetes),
-            onMedication = isMedicationPresent(history.medicationForDiabetes)
+            hasHistory = isApplicableForDiabetes && isHistoryPresent(history.diabetes),
+            onMedication = isApplicableForDiabetes && isMedicationPresent(history.medicationForDiabetes)
         )
 
+        // ---------- MISSING MEDICATION CHECK (AGE-SAFE) ----------
         val hasAnyHistoryWithoutMedication = listOf(
+            Triple(anemiaStatus, history.anemia, isApplicableForAnemia),
+            Triple(bpStatus, history.hypertension, isApplicableForBP),
+            Triple(diabetesStatus, history.diabetes, isApplicableForDiabetes)
+        ).any { (status, historyValue, isAgeEligible) ->
+            isAgeEligible &&
+                    historyValue.equals(yesString, ignoreCase = true) &&
+                    !status.onMedication
+        }
+       /* val hasAnyHistoryWithoutMedication = listOf(
             anemiaStatus to history.anemia,
             bpStatus to history.hypertension,
             diabetesStatus to history.diabetes
         ).any { (status, histValue) ->
             histValue.equals(resources.getString(R.string.medical_history_yes), ignoreCase = true)
                     && !status.onMedication
-        }
+        }*/
 
 
         return MissingLineListingResult(
@@ -79,7 +94,7 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
         val trimmedValue = value.trim()
         return trimmedValue.equals(yesString, true) || trimmedValue.equals(noString, true)
     }
-    fun convertJsonToMedicalHistory(medicalHistoryJson: String?): MedicalHistory? {
+    private fun convertJsonToMedicalHistory(medicalHistoryJson: String?): MedicalHistory? {
         if (medicalHistoryJson.isNullOrBlank()) return null
 
         return try {
@@ -95,26 +110,10 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
                 jsonElement.isJsonObject -> gson.fromJson(jsonElement, MedicalHistory::class.java)
                 else -> null
             }
-
-           /* // Merge hypertension into bp if bp is empty
-            if (history != null && (history.bp.isNullOrBlank() || history.bp.trim() == "-") && !history.hypertension.isNullOrBlank()) {
-                history.bp = history.hypertension
-            }
-*/
-            history // return the object
+            history
         } catch (e: Exception) {
             Log.e("MedicalHistoryParser", "Failed to parse: ${e.message}")
             null
         }
-    }
-    private fun isHwForComplaintPresent(value: String?): Boolean {
-        if (value.isNullOrBlank() || value.trim() == "-") return false
-        val trimmedValue = value.trim()
-        return trimmedValue.equals(yesString, true) || trimmedValue.equals(noString, true)
-    }
-    private fun isReasonForNoMedicationPresent(value: String?): Boolean {
-        if (value.isNullOrBlank() || value.trim() == "-") return false
-        val trimmedValue = value.trim()
-        return trimmedValue.equals(yesString, true) || trimmedValue.equals(noString, true)
     }
 }

@@ -1105,4 +1105,14 @@
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">বিগত %1$sটি NCD ভিজিট দেখতে ক্লিক করুন</string>
 
+    <string name="msg_ekal_thank_you">একল টেলিমেডিসিন পরিষেবা ব্যবহার করার জন্য ধন্যবাদ! প্রতিদিন সুস্থ থাকার সহজ উপায় জানার জন্য লিঙ্কে ক্লিক করুন।</string>
+    <string name="anemia_food_advice">রক্তশূন্যতা: আয়রন, ফলিক অ্যাসিড ও প্রোটিনসমৃদ্ধ খাবার খান</string>
+    <string name="anemia_deworm_hygiene">রক্তশূন্যতা: নিয়মিত কৃমিনাশক ওষুধ খান এবং পরিষ্কার-পরিচ্ছন্ন থাকুন</string>
+    <string name="anemia_quit_alcohol_tobacco">রক্তশূন্যতা: মদ ও তামাক ছেড়ে দিন</string>
+    <string name="diabetes_reduce_sugar">চিনি রোগ: চিনির পরিমাণ কমান</string>
+    <string name="exercise_regularly">নিয়মিত ব্যায়াম করুন</string>
+    <string name="diabetes_quit_alcohol_tobacco">চিনি রোগ: মদ ও তামাক ছেড়ে দিন</string>
+    <string name="hypertension_reduce_salt">বিপি: লবণের পরিমাণ কমান</string>
+    <string name="hypertension_quit_alcohol_tobacco">বিপি: মদ ও তামাক ছেড়ে দিন</string>
+    <string name="ncd_report">NCD রিপোর্ট</string>
 </resources>
