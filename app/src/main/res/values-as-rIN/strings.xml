@@ -1212,4 +1212,12 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">বিগত %1$sটা NCD ভিজিট চাবলৈ ক্লিক কৰক</string>
+    <string name="msg_ekal_thank_you_ncd_report">একল টেলিমেডিচিন সেৱা ব্যৱহাৰ কৰাৰ বাবে ধন্যবাদ!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD সম্পৰ্কীয় প্ৰশ্নসমূহ অসম্পূৰ্ণ!</string>
+    <string name="ncd_questions_are_incomplete_body">আপুনি নিশ্চিতভাৱে উত্তৰসমূহ বাতিল কৰিব বিচাৰে নেকি?</string>
+    <string name="ncd_baseline_dialog_content">NCD ভিজিট আৰু ডাক্তৰৰ ভিজিট ৱৰ্কফ্ল ৰ বাবে কেইটামান বেছলাইন প্ৰশ্নৰ উত্তৰ দিয়া বাধ্যতামূলক</string>
+    <string name="data_saved">তথ্য সংৰক্ষণ কৰা হৈছে</string>
+    <string name="ncd_baseline">NCD-বেছলাইন</string>
+
 </resources>

@@ -3,13 +3,12 @@ package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import org.intelehealth.ncd.constants.Constants.NCD_HEALTH_INFO_MODULES
 import java.util.regex.Pattern
 
 
 class NcdInfoModuleFilesNameGenerator {
     private val TAG = "NcdInfoModuleFilesNameG"
-
-    private val baseUrl = "https://afitraining.ekalarogya.org:3004/ncdinfo/"
 
     private fun splitComplaintBlocks(text: String): List<String> {
         return text.split("►")
@@ -54,39 +53,49 @@ class NcdInfoModuleFilesNameGenerator {
 
         val commonModules = setOf("exercise") // modules to keep only once
         val seenCommonModules = mutableSetOf<String>()
+        val exerciseItems = mutableListOf<HealthModuleItem>()
 
         blocks.forEach { block ->
             val chiefComplaint = extractChiefComplaint(block)
             if (chiefComplaint.isEmpty()) return@forEach
-            Log.d(TAG, "generateModulesNew: chiefComplaint : "+chiefComplaint)
-            // Allow only follow-up protocols + diabetes screening
             if (!isInfoModuleAllowed(chiefComplaint)) return@forEach
-            Log.d(TAG, "generateModulesNew: chiefComplaint 11: "+chiefComplaint)
-
             val modules = extractInformationModules(block)
             if (modules.isEmpty()) return@forEach
 
             val baseName = chiefComplaint.lowercase().replace("\\s+".toRegex(), "_")
 
             modules.forEach { module ->
-                val moduleLower = module.lowercase()
+                val moduleLower = module.lowercase().removeSuffix(".")
+                Log.d(TAG, "generateModulesNew: moduleLower : "+moduleLower)
 
-                // Deduplicate only common modules
-                if (moduleLower in commonModules && !seenCommonModules.add(moduleLower)) return@forEach
+                var normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
+                Log.d(TAG, "generateModulesNew:  normalizedModuleNameForUrl   : "+normalizedModuleNameForUrl)
+                if(normalizedModuleNameForUrl == "increase_intake_of_iron_folic_acid_and_protein_rich_foods")
+                    normalizedModuleNameForUrl = "increase_iron_folicacid_protein_intake"
 
-                val normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
+                if(normalizedModuleNameForUrl == "deworming_health_&_hygiene")
+                    normalizedModuleNameForUrl = "deworming_health_and_hygiene"
+
 
                 val moduleFileName = "${baseName}_${normalizedModuleNameForUrl}_${languageCode}.pdf"
 
                 val item = HealthModuleItem(
                     moduleName = module,
-                    url = "$baseUrl$moduleFileName"
+                    url = "$NCD_HEALTH_INFO_MODULES$moduleFileName"
                 )
-                item.displayName = HealthModuleTitleMapper.getDisplayName(context, module,chiefComplaint)
+                item.displayName = HealthModuleTitleMapper.getDisplayName(context, module, chiefComplaint)
 
-                result.add(item)
+                if (moduleLower in commonModules) {
+                    // store exercise separately to add later at the bottom
+                    if (seenCommonModules.add(moduleLower)) {
+                        exerciseItems.add(item)
+                    }
+                } else {
+                    result.add(item) // add normal modules immediately
+                }
             }
         }
+        result.addAll(exerciseItems)
 
         return result
     }

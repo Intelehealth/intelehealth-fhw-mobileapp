@@ -1170,4 +1170,12 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">पिछली %1$s NCD विज़िट देखने के लिए क्लिक करें</string>
+    <string name="msg_ekal_thank_you_ncd_report">एकल टेलीमेडिसिन सेवा का उपयोग करने के लिए धन्यवाद!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD से संबंधित प्रश्न अधूरे हैं!</string>
+    <string name="ncd_questions_are_incomplete_body">क्या आप वाकई उत्तरों को हटाना चाहते हैं?</string>
+    <string name="ncd_baseline_dialog_content">NCD विज़िट और डॉक्टर विज़िट वर्कफ़्लो के लिए कुछ बेसलाइन प्रश्नों के उत्तर देना अनिवार्य है</string>
+    <string name="data_saved">डेटा सहेजा गया</string>
+    <string name="ncd_baseline">NCD-बेसलाइन</string>
+
 </resources>

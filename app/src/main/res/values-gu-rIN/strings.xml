@@ -1119,7 +1119,7 @@
     <string name="alcohol_and_tobacco_cessation">શરાબ અને તંબાકુ છોડી દેવું</string>
     <string name="ncd_info_whatsapp_msg_new">એકલ ટેલિમેડિસિન ઉપયોગ કરવા માટે આભાર. કૃપા કરીને માહિતી ડાઉનલોડ કરો અને ઉચ્ચ રક્તચાપ વ્યવસ્થાપિત કરવા અથવા ઘટાડવા માટે વાંચો</string>
     <string name="health_information">આરોગ્ય માહિતી</string>
-    <string name="saved_to_downloads">फ़ाइल Downloads में सहेज दी गई</string>
+    <string name="saved_to_downloads">ફાઇલ ડાઉનલોડ્સમાં સેવ થઈ ગઈ છે</string>
     <string name="failed_to_save_downloads">PDF सहेजने में विफल</string>
     <string name="patient_visit_sent_ended">દર્દીની મુલાકાત સફળતાપૂર્વક સેવ થઈ ગઈ છે અને સ્વચાલિત રીતે પૂર્ણ થઈ છે.</string>
 
@@ -1158,5 +1158,13 @@
     <string name="hb_icon">Hemoglobin icon</string>
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
-    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>z
+    <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>
+    <string name="msg_ekal_thank_you_ncd_report">એકલ ટેલીમેડિસિન સેવા ઉપયોગ કરવા બદલ આભાર!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD સંબંધિત પ્રશ્નો અધૂરા છે!</string>
+    <string name="ncd_questions_are_incomplete_body">શું તમે ખરેખર આપેલા જવાબો રદ કરવા માંગો છો?</string>
+    <string name="ncd_baseline_dialog_content">NCD મુલાકાત અને ડોક્ટર મુલાકાતની પ્રક્રિયા માટે કેટલાક બેઝલાઇન પ્રશ્નોના જવાબ આપવો ફરજિયાત છે</string>
+    <string name="data_saved">ડેટા સાચવાયો</string>
+    <string name="ncd_baseline">NCD-બેઝલાઇન</string>
+
 </resources>

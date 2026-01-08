@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,8 @@ class NcdHealthInfoAdapter(
         } else {
             holder.layoutItem.visibility = View.VISIBLE
 
-            holder.textView.text = getLocalizedModuleName(context, item.moduleName)
+            //holder.textView.text = getLocalizedModuleName(context, item.moduleName)
+            holder.textView.text = item.displayName
             holder.imageView.setOnClickListener {
                 if ((NetworkConnection.isOnline(context))) {
                     val pdfDialog = ShowInfoModuleDialog(context, item.url, item.moduleName)
@@ -56,15 +58,4 @@ class NcdHealthInfoAdapter(
 
 
     override fun getItemCount(): Int = moduleItems.size
-
-    private fun getLocalizedModuleName(context: Context, moduleName: String): String {
-        return when (moduleName.lowercase()) {
-            "decrease salt intake" -> context.getString(R.string.decrease_salt_intake)
-            "exercise" -> context.getString(R.string.exercise)
-            "alcohol and tobacco cessation" -> context.getString(R.string.alcohol_and_tobacco_cessation)
-
-            else -> moduleName
-        }
-    }
-
 }

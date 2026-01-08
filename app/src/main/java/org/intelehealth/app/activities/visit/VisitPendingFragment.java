@@ -82,7 +82,7 @@ import java.util.Objects;
  * Email: prajwalwaingankar@gmail.com
  */
 // Handle the share icon click
-public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVisitClickListener{
+public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVisitClickListener {
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
@@ -147,7 +147,8 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
     }
 
     @Override
-    public void onShareIconClicked(PrescriptionModel model) {}
+    public void onShareIconClicked(PrescriptionModel model) {
+    }
 
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
@@ -232,7 +233,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
 
-      //  olderList = new ArrayList<>();  // IDA-1347 ticket.
+        //  olderList = new ArrayList<>();  // IDA-1347 ticket.
     }
 
 
@@ -293,14 +294,13 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
     private void setRecentMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        }
-        else {
+        } else {
             if (recentList != null && recentList.size() == 0) {
                 isRecentFullyLoaded = true;
                 return;
             }
 
-          //  recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            //  recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 recentList.addAll(tempList);
@@ -316,14 +316,13 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
     private void setOlderMoreDataIntoRecyclerView() {
         if (recent.size() > 0 || older.size() > 0) {
 
-        }
-        else {
+        } else {
             if (olderList != null && olderList.size() == 0) {
                 isolderFullyLoaded = true;
                 return;
             }
 
-          //  olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            //  olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 olderList.addAll(tempList);
@@ -387,9 +386,9 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase(""))
-                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.blue_border_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.blue_border_bg));
                 else
-                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_common_input_bg));
+                    searchview_pending.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_common_input_bg));
                 return false;
             }
         });
@@ -463,25 +462,33 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+        Cursor cursor = db.rawQuery("select v.uuid as vuid, p.uuid as puid, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" v.enddate is null and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "and o.voided = 0 " +
+                        "and v.startdate > DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
-                String puid = cursor.getString(cursor.getColumnIndexOrThrow("puid"));
+                String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
 
-                List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
+                //List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
 
-                for(String vuid : visitUuidList){
+                //for (String vuid : visitUuidList) {
                     PrescriptionModel model = new PrescriptionModel();
                     model.setHasPrescription(false);
 
@@ -524,7 +531,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         recentList.add(model);
                     }
-                }
+                //}
             }
             while (cursor.moveToNext());
         }
@@ -533,17 +540,26 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         return recentList;
 
     }
+
     private List<PrescriptionModel> recentVisits() {
         // new
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        //" v.enddate is null and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate > DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                "where p.uuid = v.patientuuid " +
+                "and v.uuid = e.visituuid " +
+                "and euid = o.encounteruuid " +
+                //" v.enddate is null and" +
+                "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                "and o.voided = 0 " +
+                "and v.startdate > DATETIME('now', '-4 day') " +
+                "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                "where  attr.visit_uuid = v.uuid " +
+                "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -607,22 +623,31 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+        Cursor cursor = db.rawQuery("select v.uuid as vuid, p.uuid as puid, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" v.enddate is null and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate <= DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+                        " and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "and o.voided = 0 " +
+                        "and v.startdate <= DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "group by p.openmrs_id " +
+                        "ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
-                String puid = cursor.getString(cursor.getColumnIndexOrThrow("puid"));
+                String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
 
-                List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
+                //List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
 
-                for(String vuid : visitUuidList){
+                //for (String vuid : visitUuidList) {
                     PrescriptionModel model = new PrescriptionModel();
                     model.setHasPrescription(false);
 
@@ -665,7 +690,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         olderList.add(model);
                     }
-                }
+              //  }
             }
             while (cursor.moveToNext());
         }
@@ -675,18 +700,26 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
 
         return olderList;
     }
+
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" v.enddate is null and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " v.startdate <= DATETIME('now', '-4 day') group by p.openmrs_id ORDER BY v.startdate DESC",
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +
+                        "and v.startdate <= DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "group by p.openmrs_id ORDER BY v.startdate DESC",
 
-                new String[]{});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -987,13 +1020,12 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                                 String fullName = firstName + " " + middleName + " " + lastName;
 
                                 if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
-                                        || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                     older.add(model);
                                 } else {
                                     // do nothing
                                 }
-                            }
-                            else {
+                            } else {
                                 String firstName = model.getFirst_name().toLowerCase();
                                 String lastName = model.getLast_name().toLowerCase();
                                 String fullName = firstName + " " + lastName;
@@ -1086,11 +1118,11 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         CustomLog.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
         recent_adapter = new VisitAdapter(getActivity(), recentList, this);
-      //  recycler_recent.setNestedScrollingEnabled(false);
+        //  recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
         older_adapter = new VisitAdapter(getActivity(), olderList, this);
-     //   recycler_older.setNestedScrollingEnabled(false);
+        //   recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
     }
 

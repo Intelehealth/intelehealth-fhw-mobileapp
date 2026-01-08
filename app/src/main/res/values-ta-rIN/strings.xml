@@ -1245,4 +1245,14 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">கடந்த %1$s NCD வருகைகளைப் பார்க்க கிளிக் செய்யவும்</string>
+    <string name="msg_ekal_thank_you_ncd_report">ஏகல் டெலிமெடிசின் சேவையை பயன்படுத்தியதற்கு நன்றி!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD தொடர்பான கேள்விகள் முழுமையல்ல!</string>
+    <string name="ncd_questions_are_incomplete_body">நீங்கள் பதில்களை நிச்சயமாக கைவிட விரும்புகிறீர்களா?</string>
+    <string name="ncd_baseline_dialog_content">NCD மற்றும் மருத்துவர் விஜிட் செயல்முறைக்காக சில அடிப்படை கேள்விகளுக்கு பதிலளிப்பது கட்டாயம்</string>
+    <string name="data_saved">தரவு சேமிக்கப்பட்டது</string>
+    <string name="ncd_baseline">NCD-அடிப்படை</string>
+
+</resources>
+
 </resources>
